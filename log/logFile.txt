@@ -1,0 +1,137 @@
+sep. 10, 2017 4:03:34 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException
+	at zyx.Main.main(Main.java:12)
+
+sep. 17, 2017 9:43:34 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.IllegalArgumentException: FloatBuffer is not direct
+	at org.lwjgl.BufferChecks.checkDirect(BufferChecks.java:139)
+	at org.lwjgl.opengl.GL15.glBufferData(GL15.java:155)
+	at zyx.Main.draw(Main.java:38)
+	at zyx.Main.main(Main.java:21)
+
+sep. 17, 2017 10:10:05 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+org.lwjgl.opengl.OpenGLException: Cannot use offsets when Array Buffer Object is disabled
+	at org.lwjgl.opengl.GLChecks.ensureArrayVBOenabled(GLChecks.java:93)
+	at org.lwjgl.opengl.GL20.glVertexAttribPointer(GL20.java:890)
+	at zyx.Main.load(Main.java:76)
+	at zyx.Main.main(Main.java:23)
+
+sep. 17, 2017 10:13:07 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+org.lwjgl.opengl.OpenGLException: Cannot use offsets when Array Buffer Object is disabled
+	at org.lwjgl.opengl.GLChecks.ensureArrayVBOenabled(GLChecks.java:93)
+	at org.lwjgl.opengl.GL20.glVertexAttribPointer(GL20.java:890)
+	at zyx.Main.load(Main.java:76)
+	at zyx.Main.main(Main.java:20)
+
+sep. 17, 2017 10:14:16 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+org.lwjgl.opengl.OpenGLException: Cannot use offsets when Array Buffer Object is disabled
+	at org.lwjgl.opengl.GLChecks.ensureArrayVBOenabled(GLChecks.java:93)
+	at org.lwjgl.opengl.GL20.glVertexAttribPointer(GL20.java:890)
+	at zyx.Main.load(Main.java:76)
+	at zyx.Main.main(Main.java:20)
+
+sep. 17, 2017 10:15:37 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+org.lwjgl.opengl.OpenGLException: Cannot use offsets when Array Buffer Object is disabled
+	at org.lwjgl.opengl.GLChecks.ensureArrayVBOenabled(GLChecks.java:93)
+	at org.lwjgl.opengl.GL20.glVertexAttribPointer(GL20.java:890)
+	at zyx.Main.load(Main.java:76)
+	at zyx.Main.main(Main.java:20)
+
+sep. 17, 2017 10:17:37 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+org.lwjgl.opengl.OpenGLException: Cannot use offsets when Array Buffer Object is disabled
+	at org.lwjgl.opengl.GLChecks.ensureArrayVBOenabled(GLChecks.java:93)
+	at org.lwjgl.opengl.GL20.glVertexAttribPointer(GL20.java:890)
+	at zyx.Main.load(Main.java:77)
+	at zyx.Main.main(Main.java:20)
+
+sep. 17, 2017 10:21:26 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+org.lwjgl.opengl.OpenGLException: Cannot use offsets when Array Buffer Object is disabled
+	at org.lwjgl.opengl.GLChecks.ensureArrayVBOenabled(GLChecks.java:93)
+	at org.lwjgl.opengl.GL20.glVertexAttribPointer(GL20.java:890)
+	at zyx.Main.load(Main.java:74)
+	at zyx.Main.main(Main.java:20)
+
+sep. 17, 2017 10:23:45 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+org.lwjgl.opengl.OpenGLException: Cannot use offsets when Array Buffer Object is disabled
+	at org.lwjgl.opengl.GLChecks.ensureArrayVBOenabled(GLChecks.java:93)
+	at org.lwjgl.opengl.GL20.glVertexAttribPointer(GL20.java:890)
+	at zyx.Main.load(Main.java:74)
+	at zyx.Main.main(Main.java:20)
+
+sep. 17, 2017 10:24:29 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+org.lwjgl.opengl.OpenGLException: Cannot use offsets when Array Buffer Object is disabled
+	at org.lwjgl.opengl.GLChecks.ensureArrayVBOenabled(GLChecks.java:93)
+	at org.lwjgl.opengl.GL20.glVertexAttribPointer(GL20.java:890)
+	at zyx.Main.load(Main.java:75)
+	at zyx.Main.main(Main.java:20)
+
+sep. 19, 2017 7:13:51 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+org.lwjgl.opengl.OpenGLException: Cannot use offsets when Array Buffer Object is disabled
+	at org.lwjgl.opengl.GLChecks.ensureArrayVBOenabled(GLChecks.java:93)
+	at org.lwjgl.opengl.GL20.glVertexAttribPointer(GL20.java:890)
+	at zyx.opengl.shader.ShaderUtils.assignAtribute(ShaderUtils.java:35)
+	at zyx.opengl.shader.implementations.BaseShader.postLoading(BaseShader.java:20)
+	at zyx.opengl.shader.AbstractShader.load(AbstractShader.java:31)
+	at zyx.opengl.shader.ShaderManager.initialize(ShaderManager.java:27)
+	at zyx.Main.load(Main.java:40)
+	at zyx.Main.main(Main.java:22)
+
+sep. 19, 2017 7:18:53 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+org.lwjgl.opengl.OpenGLException: Cannot use offsets when Array Buffer Object is disabled
+	at org.lwjgl.opengl.GLChecks.ensureArrayVBOenabled(GLChecks.java:93)
+	at org.lwjgl.opengl.GL20.glVertexAttribPointer(GL20.java:890)
+	at zyx.opengl.shader.ShaderUtils.assignAtribute(ShaderUtils.java:37)
+	at zyx.opengl.shader.implementations.BaseShader.postLoading(BaseShader.java:20)
+	at zyx.opengl.shader.AbstractShader.load(AbstractShader.java:37)
+	at zyx.opengl.shader.ShaderManager.initialize(ShaderManager.java:27)
+	at zyx.Main.load(Main.java:40)
+	at zyx.Main.main(Main.java:22)
+
+sep. 19, 2017 7:20:06 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+org.lwjgl.opengl.OpenGLException: Cannot use offsets when Array Buffer Object is disabled
+	at org.lwjgl.opengl.GLChecks.ensureArrayVBOenabled(GLChecks.java:93)
+	at org.lwjgl.opengl.GL20.glVertexAttribPointer(GL20.java:890)
+	at zyx.opengl.shader.ShaderUtils.assignAtribute(ShaderUtils.java:37)
+	at zyx.opengl.shader.implementations.BaseShader.postLoading(BaseShader.java:20)
+	at zyx.opengl.shader.AbstractShader.load(AbstractShader.java:37)
+	at zyx.opengl.shader.ShaderManager.initialize(ShaderManager.java:27)
+	at zyx.Main.load(Main.java:40)
+	at zyx.Main.main(Main.java:22)
+
+sep. 19, 2017 7:22:45 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+org.lwjgl.opengl.OpenGLException: Cannot use offsets when Array Buffer Object is disabled
+	at org.lwjgl.opengl.GLChecks.ensureArrayVBOenabled(GLChecks.java:93)
+	at org.lwjgl.opengl.GL20.glVertexAttribPointer(GL20.java:890)
+	at zyx.opengl.shader.ShaderUtils.assignAtribute(ShaderUtils.java:38)
+	at zyx.opengl.shader.implementations.BaseShader.postLoading(BaseShader.java:20)
+	at zyx.opengl.shader.AbstractShader.load(AbstractShader.java:37)
+	at zyx.opengl.shader.ShaderManager.initialize(ShaderManager.java:27)
+	at zyx.Main.load(Main.java:40)
+	at zyx.Main.main(Main.java:22)
+
+sep. 19, 2017 7:24:24 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+org.lwjgl.opengl.OpenGLException: Cannot use offsets when Array Buffer Object is disabled
+	at org.lwjgl.opengl.GLChecks.ensureArrayVBOenabled(GLChecks.java:93)
+	at org.lwjgl.opengl.GL20.glVertexAttribPointer(GL20.java:890)
+	at zyx.opengl.shader.ShaderUtils.assignAtribute(ShaderUtils.java:37)
+	at zyx.opengl.shader.implementations.BaseShader.postLoading(BaseShader.java:24)
+	at zyx.opengl.shader.AbstractShader.load(AbstractShader.java:37)
+	at zyx.opengl.shader.ShaderManager.initialize(ShaderManager.java:27)
+	at zyx.Main.load(Main.java:40)
+	at zyx.Main.main(Main.java:22)
+
