@@ -1,11 +1,7 @@
 package zyx;
 
-import java.io.IOException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
-import org.newdawn.slick.util.ResourceLoader;
 import zyx.opengl.SetupOpenGlCommand;
 import zyx.opengl.models.implementations.SimpleModel;
 import zyx.opengl.shaders.ShaderManager;
@@ -17,9 +13,8 @@ public class Main
 {
 
 	private static SimpleModel model;
-	private static Texture textureImage;
 
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args)
 	{
 		new SetupOpenGlCommand().execute();
 
@@ -38,7 +33,6 @@ public class Main
 		}
 		
 		model.dispose();
-		textureImage.release();
 	}
 
 	private static void draw()
@@ -48,19 +42,12 @@ public class Main
 		model.draw();
 	}
 
-	private static void load() throws IOException
+	private static void load()
 	{
 		ShaderManager.INSTANCE.initialize();
-		ShaderManager.INSTANCE.activate(Shader.BASE);
+		ShaderManager.INSTANCE.bind(Shader.WORLD);
 
 		model = new SimpleModel();
-
-		String filename = String.format("textures/%s.%s", "sample", "png");
-		textureImage = TextureLoader.getTexture("png", ResourceLoader.getResourceAsStream(filename), GL11.GL_NEAREST);
-		textureImage.bind();
-		
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);		
 	}
 
 }

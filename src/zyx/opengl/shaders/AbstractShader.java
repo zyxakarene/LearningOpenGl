@@ -1,12 +1,13 @@
 package zyx.opengl.shaders;
 
 import zyx.opengl.shaders.source.ShaderSourceLoader;
+import zyx.utils.interfaces.IUpdateable;
 
-public abstract class AbstractShader
+public abstract class AbstractShader implements IUpdateable
 {
 
 	protected int vertexShader, fragmentShader;
-	
+
 	public int program;
 
 	static final Object LOCK = new Object();
@@ -17,6 +18,16 @@ public abstract class AbstractShader
 		{
 			throw new RuntimeException();
 		}
+	}
+
+	@Override
+	public void update(int elapsedTime)
+	{
+	}
+
+	public final void bind()
+	{
+		ShaderUtils.useShader(program);
 	}
 
 	final void load()
@@ -32,14 +43,10 @@ public abstract class AbstractShader
 		postLoading();
 	}
 
-	final void activate()
-	{
-		ShaderUtils.useShader(program);
-	}
-
 	protected abstract void postLoading();
 
 	protected abstract String getVertexName();
 
 	protected abstract String getFragmentName();
+
 }

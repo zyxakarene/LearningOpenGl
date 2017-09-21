@@ -3,19 +3,22 @@ package zyx.opengl.models;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
+import zyx.opengl.textures.GameTexture;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IDrawable;
 
 public abstract class AbstractModel implements IDrawable, IDisposeable
 {
 
-	private final AbstractShader meshShader;
+	protected final AbstractShader meshShader;
 	
 	private final int vao;
 	private final int vbo;
 	private final int ebo;
 
 	private int elementCount;
+	
+	private GameTexture texture;
 
 	public AbstractModel(Shader shader)
 	{
@@ -41,9 +44,21 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 		this.elementCount = elementData.length;
 	}
 
+	protected void setTexture(GameTexture texture)
+	{
+		this.texture = texture;
+	}
+
 	@Override
 	public void draw()
 	{
+		meshShader.bind();
+		
+		if (texture != null)
+		{
+			texture.bind();
+		}
+		
 		ModelUtils.drawElements(vao, elementCount);
 	}
 

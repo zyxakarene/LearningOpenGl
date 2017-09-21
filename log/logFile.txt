@@ -152,3 +152,8 @@ org.lwjgl.opengl.OpenGLException: Cannot use offsets when Element Array Buffer O
 	at zyx.Main.draw(Main.java:44)
 	at zyx.Main.main(Main.java:34)
 
+sep. 21, 2017 7:08:03 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.Main.main(Main.java:41)
+

@@ -1,23 +1,40 @@
 package zyx.opengl.models.implementations;
 
-import java.util.Arrays;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.models.AbstractModel;
+import zyx.opengl.shaders.implementations.BaseShader;
 import zyx.opengl.shaders.implementations.Shader;
+import zyx.opengl.textures.GameTexture;
+import zyx.utils.FloatMath;
 
 public class SimpleModel extends AbstractModel
 {
 
+	private static final Vector3f ROTATION_X = new Vector3f(1.0f, 0.0f, 0.0f);
+	private static final Vector3f ROTATION_Y = new Vector3f(0.0f, 1.0f, 0.0f);
+	private static final Vector3f ROTATION_Z = new Vector3f(0.0f, 0.0f, 1.0f);
+
+	private static final Vector3f TRANSLATE = new Vector3f();
+	private static final Vector3f SCALE = new Vector3f();
+
+	private static final Matrix4f MAT = BaseShader.MATRIX_TRANS;
+
+	private final BaseShader baseShader;
+
 	public SimpleModel()
 	{
-		super(Shader.BASE);
+		super(Shader.WORLD);
+
+		baseShader = (BaseShader) meshShader;
 
 		float vertexData[] =
 		{
 			//Position		//Texcoords
-			-0.5f, 0.5f,	0.0f, 0.0f, // Top-left
-			0.5f, 0.5f,		1.0f, 0.0f, // Top-right
-			0.5f, -0.5f,	1.0f, 1.0f, // Bottom-right
-			-0.5f, -0.5f,	0.0f, 1.0f  // Bottom-left
+			-0.5f, 0.5f, 0.0f, 0.0f, // Top-left
+			0.5f, 0.5f, 1.0f, 0.0f, // Top-right
+			0.5f, -0.5f, 1.0f, 1.0f, // Bottom-right
+			-0.5f, -0.5f, 0.0f, 1.0f  // Bottom-left
 		};
 
 		int elementData[] =
@@ -27,6 +44,23 @@ public class SimpleModel extends AbstractModel
 		};
 
 		setVertexData(vertexData, elementData);
+		setTexture(new GameTexture("sample", "png"));
+	}
+
+	float angle = 0;
+	@Override
+	public void draw()
+	{
+		angle += 0.1f;
+		TRANSLATE.x = (FloatMath.random() * 2) - 1;
+		TRANSLATE.y = (FloatMath.random() * 2) - 1;
+		TRANSLATE.z = 0;
+		
+		MAT.setIdentity();
+		MAT.rotate(angle, ROTATION_Z);
+		
+		baseShader.upload();
+		super.draw();
 	}
 
 	@Override
