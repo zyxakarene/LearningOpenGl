@@ -1,4 +1,4 @@
-package zyx.opengl.shader;
+package zyx.opengl.shaders;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

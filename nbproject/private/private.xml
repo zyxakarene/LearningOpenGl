@@ -3,10 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="games">
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/shader/AbstractShader.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/Main.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/shader/ShaderManager.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/utils/GameConstants.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/implementations/SimpleModel.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/shader/source/vertex.shader</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/AbstractModel.java</file>
         </group>
     </open-files>
 </project-private>

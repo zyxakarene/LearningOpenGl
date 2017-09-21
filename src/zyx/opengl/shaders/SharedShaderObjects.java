@@ -1,4 +1,4 @@
-package zyx.opengl.shader;
+package zyx.opengl.shaders;
 
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Matrix4f;

@@ -1,4 +1,4 @@
-package zyx.opengl.shader.source;
+package zyx.opengl.shaders.source;
 
 import java.io.IOException;
 import java.io.InputStream;

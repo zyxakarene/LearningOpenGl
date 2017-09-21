@@ -1,8 +1,8 @@
-package zyx.opengl.shader;
+package zyx.opengl.shaders;
 
 import java.util.HashMap;
-import zyx.opengl.shader.implementations.BaseShader;
-import zyx.opengl.shader.implementations.Shader;
+import zyx.opengl.shaders.implementations.BaseShader;
+import zyx.opengl.shaders.implementations.Shader;
 
 public class ShaderManager
 {

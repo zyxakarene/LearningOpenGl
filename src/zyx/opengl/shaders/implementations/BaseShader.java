@@ -1,6 +1,6 @@
-package zyx.opengl.shader.implementations;
+package zyx.opengl.shaders.implementations;
 
-import zyx.opengl.shader.AbstractShader;
+import zyx.opengl.shaders.AbstractShader;
 
 public class BaseShader extends AbstractShader
 {

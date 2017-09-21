@@ -135,3 +135,20 @@ org.lwjgl.opengl.OpenGLException: Cannot use offsets when Array Buffer Object is
 	at zyx.Main.load(Main.java:40)
 	at zyx.Main.main(Main.java:22)
 
+sep. 21, 2017 5:33:04 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: Resource not found: textures/sample.png
+	at org.newdawn.slick.util.ResourceLoader.getResourceAsStream(ResourceLoader.java:69)
+	at zyx.Main.load(Main.java:67)
+	at zyx.Main.main(Main.java:28)
+
+sep. 21, 2017 5:44:25 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+org.lwjgl.opengl.OpenGLException: Cannot use offsets when Element Array Buffer Object is disabled
+	at org.lwjgl.opengl.GLChecks.ensureElementVBOenabled(GLChecks.java:105)
+	at org.lwjgl.opengl.GL11.glDrawElements(GL11.java:1105)
+	at zyx.opengl.models.ModelUtils.drawElements(ModelUtils.java:94)
+	at zyx.opengl.models.AbstractModel.draw(AbstractModel.java:47)
+	at zyx.Main.draw(Main.java:44)
+	at zyx.Main.main(Main.java:34)
+

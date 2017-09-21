@@ -1,6 +1,6 @@
-package zyx.opengl.shader;
+package zyx.opengl.shaders;
 
-import zyx.opengl.shader.source.ShaderSourceLoader;
+import zyx.opengl.shaders.source.ShaderSourceLoader;
 
 public abstract class AbstractShader
 {
