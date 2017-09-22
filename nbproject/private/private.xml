@@ -5,8 +5,10 @@
         <group name="games">
             <file>file:/D:/Programmering/Tutorial5/src/zyx/Main.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/implementations/SimpleModel.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/shader/source/vertex.shader</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/shaders/ShaderManager.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/AbstractModel.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/camera/Projection.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/camera/Camera.java</file>
         </group>
     </open-files>
 </project-private>
