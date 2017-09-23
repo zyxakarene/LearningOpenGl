@@ -157,3 +157,12 @@ SEVERE: An uncaught exception was thrown by thread 'main'
 java.lang.NullPointerException
 	at zyx.Main.main(Main.java:41)
 
+sep. 23, 2017 9:43:36 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at org.lwjgl.util.vector.Vector3f.set(Vector3f.java:96)
+	at zyx.opengl.models.implementations.WorldModel.transform(WorldModel.java:53)
+	at zyx.game.GameObject.draw(GameObject.java:31)
+	at zyx.Main.draw(Main.java:49)
+	at zyx.Main.main(Main.java:34)
+

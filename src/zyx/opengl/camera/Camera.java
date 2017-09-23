@@ -1,27 +1,22 @@
 package zyx.opengl.camera;
 
-import org.lwjgl.util.vector.Matrix4f;
-import zyx.opengl.models.implementations.SimpleModel;
+import zyx.game.behavior.camera.CameraUpdateViewBehavior;
+import zyx.game.behavior.freefly.CameraFreeFlyBehavior;
+import zyx.game.components.GameObject;
 import zyx.opengl.shaders.implementations.WorldShader;
+import zyx.utils.interfaces.IPositionable;
 import zyx.utils.interfaces.IUpdateable;
 
-public class Camera implements IUpdateable
+public class Camera extends GameObject implements IUpdateable, IPositionable
 {
-	
-	private final Matrix4f projection = WorldShader.MATRIX_PROJECTION;
-	
+		
 	public Camera()
 	{
-		Projection.createPerspective(70f, 0.01f, 2f, projection);
+		Projection.createPerspective(70f, 0.001f, 2f, WorldShader.MATRIX_PROJECTION);
 		
-		WorldShader.MATRIX_VIEW.setIdentity();
-		WorldShader.MATRIX_VIEW.rotate(-1f, SimpleModel.ROTATION_X);
-	}
-
-	@Override
-	public void update(int elapsedTime)
-	{
+		addBehavior(new CameraFreeFlyBehavior());
+		addBehavior(new CameraUpdateViewBehavior());
 		
+		position.z = -1;
 	}
-	
 }
