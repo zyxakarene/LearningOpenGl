@@ -9,30 +9,33 @@ import zyx.utils.interfaces.IUpdateable;
 
 public class GameObject implements IUpdateable, IPositionable
 {
+
 	protected final Vector3f position;
 	protected final Vector3f rotation;
-		
+	protected final Vector3f scale;
+
 	private final BehaviorBundle behaviors;
 
 	public GameObject()
 	{
-		position = new Vector3f();
-		rotation = new Vector3f();
-		
+		position	=	new Vector3f(0, 0, 0);
+		rotation	=	new Vector3f(0, 0, 0);
+		scale		=	new Vector3f(1, 1, 1);
+
 		behaviors = new BehaviorBundle(this);
 	}
-	
+
 	@Override
 	public void update(int elapsedTime)
 	{
 		behaviors.update(elapsedTime);
 	}
-	
+
 	public final void addBehavior(Behavior behavior)
 	{
 		behaviors.addBehavior(behavior);
 	}
-	
+
 	public Behavior getBehaviorById(BehaviorType type)
 	{
 		return behaviors.getBehaviorById(type);
@@ -48,5 +51,42 @@ public class GameObject implements IUpdateable, IPositionable
 	public Vector3f getRotation()
 	{
 		return rotation;
+	}
+
+	public void setPosition(float x, float y, float z)
+	{
+		position.x = x;
+		position.y = y;
+		position.z = z;
+	}
+	
+	public void setX(float x)
+	{
+		position.x = x;
+	}
+
+	public void setY(float y)
+	{
+		position.y = y;
+	}
+
+	public void setZ(float z)
+	{
+		position.z = z;
+	}
+	
+	public float getX()
+	{
+		return position.x;
+	}
+	
+	public float getY()
+	{
+		return position.y;
+	}
+	
+	public float getZ()
+	{
+		return position.z;
 	}
 }

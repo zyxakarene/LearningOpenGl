@@ -3,31 +3,36 @@ package zyx;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import zyx.game.components.WorldObject;
+import zyx.game.components.screen.DisplayObject;
 import zyx.game.controls.KeyboardControl;
 import zyx.game.controls.MouseControl;
+import zyx.opengl.GLUtils;
 import zyx.opengl.SetupOpenGlCommand;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
+import zyx.utils.FPSCounter;
 import zyx.utils.GameConstants;
-import zyx.utils.exceptions.GLErrors;
 
 public class Main
 {
 
 	private static Camera camera;
 	private static WorldObject object;
+	
+	private static DisplayObject disp;
 
 	public static void main(String[] args)
 	{
 		new SetupOpenGlCommand().execute();
+		GL11.glClearColor(0.3f, 0.3f, 0.3f, 1);
 		
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GLUtils.enableGLSettings();
 
 		load();
 
-		GLErrors.errorCheck();
-
+		GLUtils.errorCheck();
+		
 		while (!Display.isCloseRequested())
 		{
 			Display.update();
@@ -36,7 +41,9 @@ public class Main
 			update();
 			draw();
 
-			GLErrors.errorCheck();
+			GLUtils.errorCheck();
+			
+			FPSCounter.updateFPS();
 		}
 	}
 
@@ -54,6 +61,7 @@ public class Main
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		
 		object.draw();
+//		disp.draw();
 	}
 
 	private static void load()
@@ -64,6 +72,7 @@ public class Main
 		camera = new Camera();
 		
 		object = new WorldObject();
+//		disp = new DisplayObject();
 	}
 
 }

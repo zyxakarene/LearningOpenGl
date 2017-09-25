@@ -166,3 +166,81 @@ java.lang.NullPointerException
 	at zyx.Main.draw(Main.java:49)
 	at zyx.Main.main(Main.java:34)
 
+sep. 25, 2017 5:37:00 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GL Error
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:16)
+	at zyx.Main.main(Main.java:43)
+
+sep. 25, 2017 5:37:58 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GL Error
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:16)
+	at zyx.Main.main(Main.java:43)
+
+sep. 25, 2017 5:38:36 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GL Error
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:16)
+	at zyx.Main.main(Main.java:43)
+
+sep. 25, 2017 5:38:52 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GL Error
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:16)
+	at zyx.Main.main(Main.java:43)
+
+sep. 25, 2017 5:39:22 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GL Error
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:16)
+	at zyx.Main.main(Main.java:43)
+
+sep. 25, 2017 5:42:33 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GL Error
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:16)
+	at zyx.Main.main(Main.java:44)
+
+sep. 25, 2017 5:43:10 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GL Error
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:16)
+	at zyx.Main.main(Main.java:44)
+
+sep. 25, 2017 5:43:43 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GL Error
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:16)
+	at zyx.Main.main(Main.java:44)
+
+sep. 25, 2017 5:44:05 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GL Error
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:16)
+	at zyx.Main.main(Main.java:44)
+
+sep. 25, 2017 5:44:16 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GL Error
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:16)
+	at zyx.Main.main(Main.java:44)
+
+sep. 25, 2017 5:46:48 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GL Error
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:16)
+	at zyx.Main.main(Main.java:44)
+
+sep. 25, 2017 5:47:01 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GL Error
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:16)
+	at zyx.Main.main(Main.java:42)
+
+sep. 25, 2017 5:47:33 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GL Error
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:16)
+	at zyx.Main.main(Main.java:44)
+

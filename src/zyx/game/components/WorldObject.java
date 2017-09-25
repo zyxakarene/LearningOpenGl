@@ -1,6 +1,7 @@
 package zyx.game.components;
 
 import zyx.opengl.models.implementations.WorldModel;
+import zyx.opengl.models.loading.ZmfLoader;
 import zyx.utils.interfaces.IDrawable;
 
 public class WorldObject extends GameObject implements IDrawable
@@ -9,15 +10,14 @@ public class WorldObject extends GameObject implements IDrawable
 
 	public WorldObject()
 	{
-		model = new WorldModel();
-		
-		model.setScale(30);
+		model = ZmfLoader.loadFromZmf("robot_normal.zmf");
+		model.setScale(1);
 	}
 
 	@Override
 	public void draw()
 	{
-		model.transform(position, rotation);
+		model.transform(position, rotation, scale);
 		model.draw();
 	}
 }

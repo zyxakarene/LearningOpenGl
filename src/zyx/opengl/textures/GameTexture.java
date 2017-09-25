@@ -17,7 +17,7 @@ public class GameTexture implements IDisposeable
 
 	public void bind()
 	{
-		if (this != texture)
+		if (this != currentlyBoundTexture)
 		{
 			texture.bind();
 			currentlyBoundTexture = texture;

@@ -1,5 +1,6 @@
 package zyx.opengl.models;
 
+import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
@@ -10,20 +11,24 @@ import zyx.utils.interfaces.IDrawable;
 public abstract class AbstractModel implements IDrawable, IDisposeable
 {
 
+	protected static final Vector3f SHARED_ROTATION = new Vector3f(0, 0, 0);
+	protected static final Vector3f SHARED_POSITION = new Vector3f(0, 0, 0);
+	protected static final Vector3f SHARED_SCALE = new Vector3f(1, 1, 1);
+
 	protected final AbstractShader meshShader;
-	
+
 	private final int vao;
 	private final int vbo;
 	private final int ebo;
 
 	private int elementCount;
-	
+
 	private GameTexture texture;
 
 	public AbstractModel(Shader shader)
 	{
 		meshShader = ShaderManager.INSTANCE.get(shader);
-		
+
 		vao = ModelUtils.generateVertexArray();
 		ModelUtils.bindVertexArray(vao);
 
@@ -53,12 +58,12 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 	public void draw()
 	{
 		meshShader.bind();
-		
+
 		if (texture != null)
 		{
 			texture.bind();
 		}
-		
+
 		ModelUtils.drawElements(vao, elementCount);
 	}
 
