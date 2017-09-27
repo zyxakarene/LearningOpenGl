@@ -29,6 +29,8 @@ public class WorldShader extends AbstractShader
 
 	public void upload()
 	{
+		bind();
+		
 		UniformUtils.setUniformMatrix(projectionMatrixTrans, MATRIX_PROJECTION);
 		UniformUtils.setUniformMatrix(viewMatrixTrans, MATRIX_VIEW);
 		UniformUtils.setUniformMatrix(modelMatrixTrans, MATRIX_MODEL);
@@ -37,13 +39,13 @@ public class WorldShader extends AbstractShader
 	@Override
 	protected String getVertexName()
 	{
-		return "worldVertex.shader";
+		return "WorldVertex.shader";
 	}
 
 	@Override
 	protected String getFragmentName()
 	{
-		return "worldFragment.shader";
+		return "WorldFragment.shader";
 	}
 
 }

@@ -1,35 +1,38 @@
 package zyx.opengl.models.implementations;
 
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.models.AbstractModel;
-import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.opengl.shaders.implementations.Shader;
-import zyx.opengl.shaders.implementations.UIShader;
-import zyx.opengl.textures.GameTexture;
+import zyx.opengl.shaders.implementations.ScreenShader;
 import zyx.utils.FloatMath;
 import zyx.utils.GeometryUtils;
 
 public class ScreenModel extends AbstractModel
 {
 
-	private static final Matrix4f MODEL_MATRIX = UIShader.MATRIX_MODEL;
+	protected static float SHARED_ROTATION = 0f;
+	protected static Vector3f SHARED_POSITION = new Vector3f(0, 0, 0);
+	protected static Vector3f SHARED_SCALE = new Vector3f(1f, 1f, 1f);
 
-	private final UIShader shader;
+	private static final Matrix4f MODEL_MATRIX = ScreenShader.MATRIX_MODEL;
 
-	public ScreenModel()
+	private final ScreenShader shader;
+
+	public ScreenModel(String texture)
 	{
-		super(Shader.UI);
+		super(Shader.SCREEN);
 
-		shader = (UIShader) meshShader;
+		shader = (ScreenShader) meshShader;
 
 		float vertexData[] =
 		{
-			//Position		//Texcoords
-			-0.5f, 0.5f, 0.0f, 0.0f, // Top-left
-			0.5f, 0.5f, 1.0f, 0.0f, // Top-right
-			0.5f, -0.5f, 1.0f, 1.0f, // Bottom-right
-			-0.5f, -0.5f, 0.0f, 1.0f  // Bottom-left
+			//  Position      Color             Texcoords
+			0, 0, 0, 0, // Top-left
+			100, 0, 1, 0, // Top-right
+			100, -100, 1, 1, // Bottom-right
+			0, -100, 0, 1  // Bottom-left
 		};
 
 		int elementData[] =
@@ -39,34 +42,29 @@ public class ScreenModel extends AbstractModel
 		};
 
 		setVertexData(vertexData, elementData);
-		setTexture(new GameTexture("sample", "png"));
+		setTexture(texture);
 	}
 
-	public void transform(Vector3f position, Vector3f rotation, Vector3f scale)
+	public void transform(Vector2f position, float rotation, Vector2f scale)
 	{
-		SHARED_POSITION.set(position);
-		SHARED_ROTATION.set(rotation);
-		SHARED_SCALE.set(scale);
+		SHARED_POSITION.set(position.x, position.y);
+		SHARED_ROTATION = -rotation;
+		SHARED_SCALE.set(scale.x, scale.y);
 	}
 
-	public void setScale(float newScale)
+	public void resetTransform()
 	{
-		SHARED_SCALE.set(newScale, newScale, newScale);
+		MODEL_MATRIX.setIdentity();
 	}
 
 	@Override
 	public void draw()
 	{
-		MODEL_MATRIX.setIdentity();
-		
 		MODEL_MATRIX.translate(SHARED_POSITION);
-		
-		MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.x), GeometryUtils.ROTATION_X);
-		MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.y), GeometryUtils.ROTATION_Y);
-		MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.z), GeometryUtils.ROTATION_Z);
+
+		MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION), GeometryUtils.ROTATION_Z);
 
 		MODEL_MATRIX.scale(SHARED_SCALE);
-
 		shader.upload();
 		super.draw();
 	}

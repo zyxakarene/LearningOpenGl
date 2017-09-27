@@ -1,19 +1,15 @@
 package zyx.opengl.models;
 
-import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.GameTexture;
+import zyx.opengl.textures.TextureManager;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IDrawable;
 
 public abstract class AbstractModel implements IDrawable, IDisposeable
 {
-
-	protected static final Vector3f SHARED_ROTATION = new Vector3f(0, 0, 0);
-	protected static final Vector3f SHARED_POSITION = new Vector3f(0, 0, 0);
-	protected static final Vector3f SHARED_SCALE = new Vector3f(1, 1, 1);
 
 	protected final AbstractShader meshShader;
 
@@ -49,9 +45,14 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 		this.elementCount = elementData.length;
 	}
 
-	protected void setTexture(GameTexture texture)
+	protected void setTexture(String texture)
 	{
-		this.texture = texture;
+		this.texture = TextureManager.getTexture(texture);
+	}
+
+	public GameTexture getTexture()
+	{
+		return texture;
 	}
 
 	@Override

@@ -5,8 +5,9 @@ in vec2 Texcoord;
 out vec4 outColor;
 
 uniform sampler2D tex;
+uniform vec2 screenSize;
 
 void main()
 {
-    outColor =  texture(tex, vec2(Texcoord.x, -Texcoord.y));
+    outColor =  texture(tex, Texcoord);
 }

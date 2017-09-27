@@ -3,8 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="games">
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/loading/ZmfLoader.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/Main.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/textures/TextureManager.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/game/components/WorldObject.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/shaders/ShaderManager.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/game/components/screen/DisplayObjectContainer.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/implementations/ScreenModel.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/shaders/source/uiVertex.shader</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/shaders/implementations/UIShader.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/game/components/screen/Image.java</file>
         </group>
     </open-files>
 </project-private>

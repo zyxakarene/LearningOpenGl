@@ -3,7 +3,7 @@ package zyx.opengl.shaders;
 import java.util.HashMap;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.opengl.shaders.implementations.Shader;
-import zyx.opengl.shaders.implementations.UIShader;
+import zyx.opengl.shaders.implementations.ScreenShader;
 import zyx.utils.interfaces.IUpdateable;
 
 public class ShaderManager implements IUpdateable
@@ -26,7 +26,7 @@ public class ShaderManager implements IUpdateable
 	public void initialize()
 	{
 		shaderMap.put(Shader.WORLD, new WorldShader(AbstractShader.LOCK));
-		shaderMap.put(Shader.UI, new UIShader(AbstractShader.LOCK));
+		shaderMap.put(Shader.SCREEN, new ScreenShader(AbstractShader.LOCK));
 		
 		int length = shaders.length;
 		for (int i = 0; i < length; i++)

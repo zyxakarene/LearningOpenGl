@@ -8,8 +8,8 @@ public class GLUtils
 
     public static void errorCheck()
     {
-        int errorID = GL11.glGetError();
-        if (errorID != GL11.GL_NO_ERROR)
+        int errorID;
+        while ((errorID = GL11.glGetError()) != GL11.GL_NO_ERROR)
         {
             System.out.println("GLError: " + GLU.gluErrorString(errorID));
 			
@@ -29,7 +29,7 @@ public class GLUtils
 
     public static void enableGLSettings()
     {
-        GL11.glEnable(GL11.GL_CULL_FACE);
+//        GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
     }
 }

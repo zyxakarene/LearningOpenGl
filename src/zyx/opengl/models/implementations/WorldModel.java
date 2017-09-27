@@ -5,13 +5,16 @@ import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.opengl.shaders.implementations.Shader;
-import zyx.opengl.textures.GameTexture;
 import zyx.utils.FloatMath;
 import zyx.utils.GeometryUtils;
 
 public class WorldModel extends AbstractModel
 {
-	
+
+	protected static final Vector3f SHARED_ROTATION = new Vector3f(0, 0, 0);
+	protected static final Vector3f SHARED_POSITION = new Vector3f(0, 0, 0);
+	protected static final Vector3f SHARED_SCALE = new Vector3f(1, 1, 1);
+
 	private static final Matrix4f MODEL_MATRIX = WorldShader.MATRIX_MODEL;
 
 	private final WorldShader shader;
@@ -25,10 +28,10 @@ public class WorldModel extends AbstractModel
 		float vertexData[] =
 		{
 			//Position		//Texcoords
-			-0.5f, 0.5f, -1f, 0.0f, 0.0f, // Top-left
-			0.5f, 0.5f, 0.0f, 1.0f, 0.0f, // Top-right
-			0.5f, -0.5f, 0.0f, 1.0f, 1.0f, // Bottom-right
-			-0.5f, -0.5f, 0.0f, 0.0f, 1.0f  // Bottom-left
+			-0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, // Top-left
+			0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, // Top-right
+			0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, // Bottom-right
+			-0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f  // Bottom-left
 		};
 
 		int elementData[] =
@@ -38,17 +41,17 @@ public class WorldModel extends AbstractModel
 		};
 
 		setVertexData(vertexData, elementData);
-		setTexture(new GameTexture("sample", "png"));
+		setTexture("sample");
 	}
 
 	public WorldModel(float vertexData[], int elementData[])
 	{
 		super(Shader.WORLD);
-		
+
 		shader = (WorldShader) meshShader;
-		
+
 		setVertexData(vertexData, elementData);
-		setTexture(new GameTexture("TowerBase", "png"));
+		setTexture("TowerBase");
 	}
 
 	public void transform(Vector3f position, Vector3f rotation, Vector3f scale)
@@ -83,6 +86,6 @@ public class WorldModel extends AbstractModel
 	{
 		addAttribute("position", 3, 8, 0);
 		addAttribute("texcoord", 2, 8, 3);
-//		addAttribute("normal", 2, 8, 3);
+//		addAttribute("normal", 2, 8, 5);
 	}
 }

@@ -31,26 +31,24 @@ class Projection
 		return out;
 	}
 
-	static Matrix4f createOrthographic(float near, float far)
+	static Matrix4f createOrthographic(float near, float far, Matrix4f out)
 	{
-		float scale = 50f;
-		
-		float left = -WIDTH / scale;
-		float right = WIDTH / scale;
-		float top = HEIGHT / scale;
-		float bottom = -HEIGHT / scale;
+		float left = -WIDTH / 2;
+		float right = WIDTH / 2;
+		float top = HEIGHT / 2;
+		float bottom = -HEIGHT / 2;
 
-		Matrix4f OrthoMatrix = new Matrix4f();
+		out.setIdentity();
 
-		OrthoMatrix.m00 = 2.0f / (right - left);
-		OrthoMatrix.m11 = 2.0f / (top - bottom);
-		OrthoMatrix.m22 = -2.0f / (far - near);
+		out.m00 = 2.0f / (right - left);
+		out.m11 = 2.0f / (top - bottom);
+		out.m22 = -2.0f / (far - near);
 
-		OrthoMatrix.m30 = -(right + left) / (right - left);
-		OrthoMatrix.m31 = -(top + bottom) / (top - bottom);
-		OrthoMatrix.m32 = -(far + near) / (far - near);
-		OrthoMatrix.m33 = 1.0f;
+		out.m30 = -(right + left) / (right - left);
+		out.m31 = -(top + bottom) / (top - bottom);
+		out.m32 = -(far + near) / (far - near);
+		out.m33 = 1.0f;
 
-		return OrthoMatrix;
+		return out;
 	}
 }

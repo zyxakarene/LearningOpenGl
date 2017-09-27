@@ -36,4 +36,9 @@ class UniformUtils
 
 		GL20.glUniformMatrix4(uniform, false, MATRIX_FLOAT_BUFFER);
 	}
+	
+	static void setUniform2F(int uniform, float x, float y)
+    {
+        GL20.glUniform2f(uniform, x, y);
+    }
 }
