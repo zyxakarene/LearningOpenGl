@@ -8,10 +8,8 @@
             <file>file:/D:/Programmering/Tutorial5/src/zyx/game/components/WorldObject.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/shaders/ShaderManager.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/game/components/screen/DisplayObjectContainer.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/implementations/ScreenModel.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/shaders/source/uiVertex.shader</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/shaders/implementations/UIShader.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/game/components/screen/Image.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/game/components/GameObject.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/shaders/implementations/ScreenShader.java</file>
         </group>
     </open-files>
 </project-private>

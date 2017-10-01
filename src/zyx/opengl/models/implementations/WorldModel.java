@@ -17,7 +17,7 @@ public class WorldModel extends AbstractModel
 
 	private static final Matrix4f MODEL_MATRIX = WorldShader.MATRIX_MODEL;
 
-	private final WorldShader shader;
+	public final WorldShader shader;
 
 	public WorldModel()
 	{

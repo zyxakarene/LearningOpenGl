@@ -90,14 +90,21 @@ public class DisplayObjectContainer extends DisplayObject
 	private final Matrix4f backupMatrix = new Matrix4f();
 	
 	@Override
-	public void draw()
+	protected final void draw()
 	{
+		transform();
 		backupMatrix.load(ScreenShader.MATRIX_MODEL);
-		
 		for (int i = 0; i < numChildren; i++)
 		{
 			loopHelper = children.get(i);
+			
+			shader.upload();
+			
 			loopHelper.draw();
+			
+			ScreenShader.MATRIX_MODEL.load(backupMatrix);
 		}
 	}
+	
+	
 }

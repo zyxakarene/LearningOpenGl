@@ -12,7 +12,7 @@ public class ZmfLoader
 		long start = System.currentTimeMillis();
 		try
 		{
-			File input = new File("models/" + name);
+			File input = new File("assets/models/" + name);
 
 			RandomAccessFile raf = new RandomAccessFile(input, "r");
 			byte[] buffer = new byte[(int) raf.length()];

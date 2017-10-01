@@ -454,3 +454,55 @@ java.lang.RuntimeException: GL Error
 	at zyx.Main.draw(Main.java:66)
 	at zyx.Main.main(Main.java:42)
 
+okt. 01, 2017 1:54:28 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException
+	at zyx.game.components.screen.DisplayObjectContainer.draw(DisplayObjectContainer.java:107)
+	at zyx.game.components.screen.DisplayObjectContainer.draw(DisplayObjectContainer.java:103)
+	at zyx.game.components.screen.Stage.drawStage(Stage.java:16)
+	at zyx.Main.draw(Main.java:69)
+	at zyx.Main.main(Main.java:47)
+
+okt. 01, 2017 1:54:39 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException
+	at zyx.game.components.screen.DisplayObjectContainer.draw(DisplayObjectContainer.java:107)
+	at zyx.game.components.screen.DisplayObjectContainer.draw(DisplayObjectContainer.java:103)
+	at zyx.game.components.screen.Stage.drawStage(Stage.java:16)
+	at zyx.Main.draw(Main.java:69)
+	at zyx.Main.main(Main.java:47)
+
+okt. 01, 2017 2:34:44 PM zyx.utils.exceptions.Msg error
+SEVERE: Failed to load texture
+java.lang.RuntimeException: Resource not found: textures/sample.png
+	at org.newdawn.slick.util.ResourceLoader.getResourceAsStream(ResourceLoader.java:69)
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:18)
+	at zyx.opengl.textures.TextureManager.getTexture(TextureManager.java:14)
+	at zyx.opengl.models.AbstractModel.setTexture(AbstractModel.java:50)
+	at zyx.opengl.models.implementations.ScreenModel.<init>(ScreenModel.java:34)
+	at zyx.game.components.screen.Image.<init>(Image.java:12)
+	at zyx.Main.load(Main.java:81)
+	at zyx.Main.main(Main.java:37)
+
+okt. 01, 2017 2:34:44 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: java.lang.RuntimeException: Resource not found: textures/sample.png
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:26)
+	at zyx.opengl.textures.TextureManager.getTexture(TextureManager.java:14)
+	at zyx.opengl.models.AbstractModel.setTexture(AbstractModel.java:50)
+	at zyx.opengl.models.implementations.ScreenModel.<init>(ScreenModel.java:34)
+	at zyx.game.components.screen.Image.<init>(Image.java:12)
+	at zyx.Main.load(Main.java:81)
+	at zyx.Main.main(Main.java:37)
+Caused by: java.lang.RuntimeException: Resource not found: textures/sample.png
+	at org.newdawn.slick.util.ResourceLoader.getResourceAsStream(ResourceLoader.java:69)
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:18)
+	... 6 more
+
+okt. 01, 2017 2:34:56 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.WorldObject.draw(WorldObject.java:21)
+	at zyx.Main.draw(Main.java:68)
+	at zyx.Main.main(Main.java:47)
+

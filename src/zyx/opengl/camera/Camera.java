@@ -20,5 +20,12 @@ public class Camera extends GameObject implements IUpdateable, IPositionable
 		addBehavior(new CameraUpdateViewBehavior());
 		
 		position.z = -1;
+		
+		position.x = -18;
+		position.y =11;
+		position.z = -25;
+		
+		rotation.x = -50;
+		rotation.z = 300;
 	}
 }

@@ -25,9 +25,10 @@ public class Image extends DisplayObject
 	}
 
 	@Override
-	public void draw()
+	protected final void draw()
 	{
-		model.transform(position, rotation, scale);
+		transform();
+		shader.upload();
 		model.draw();
 	}
 }

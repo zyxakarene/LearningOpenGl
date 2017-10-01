@@ -14,7 +14,7 @@ class TextureUtils
 	{
 		try
 		{
-			String filename = String.format("textures/%s.%s", name, format);
+			String filename = String.format("assets/textures/%s.%s", name, format);
 			InputStream stream = ResourceLoader.getResourceAsStream(filename);
 			Texture texture = TextureLoader.getTexture(format, stream, GL11.GL_NEAREST);
 
