@@ -7,6 +7,8 @@ class FontFile
 {
 	private static final FontKerning NULL_KERNING = new FontKerning();
 	
+	float lineHeight;
+	
 	ArrayList<FontCharacter> characters = new ArrayList<>();
 	ArrayList<FontKerning> kernings = new ArrayList<>();
 

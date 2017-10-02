@@ -506,3 +506,103 @@ java.lang.NullPointerException
 	at zyx.Main.draw(Main.java:68)
 	at zyx.Main.main(Main.java:47)
 
+okt. 02, 2017 8:01:58 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.textures.bitmapfont.TextGenerator.addCharacter(TextGenerator.java:49)
+	at zyx.opengl.textures.bitmapfont.Text.setText(Text.java:28)
+	at zyx.game.components.screen.Textfield.setText(Textfield.java:22)
+	at zyx.Main.load(Main.java:126)
+	at zyx.Main.main(Main.java:45)
+
+okt. 02, 2017 8:02:43 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.textures.bitmapfont.TextGenerator.addCharacter(TextGenerator.java:50)
+	at zyx.opengl.textures.bitmapfont.Text.setText(Text.java:28)
+	at zyx.game.components.screen.Textfield.setText(Textfield.java:22)
+	at zyx.Main.load(Main.java:126)
+	at zyx.Main.main(Main.java:45)
+
+okt. 02, 2017 8:04:09 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.textures.bitmapfont.TextGenerator.addCharacter(TextGenerator.java:48)
+	at zyx.opengl.textures.bitmapfont.Text.setText(Text.java:28)
+	at zyx.game.components.screen.Textfield.setText(Textfield.java:22)
+	at zyx.Main.load(Main.java:126)
+	at zyx.Main.main(Main.java:45)
+
+okt. 02, 2017 8:05:10 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.textures.bitmapfont.TextGenerator.addCharacter(TextGenerator.java:54)
+	at zyx.opengl.textures.bitmapfont.Text.setText(Text.java:28)
+	at zyx.game.components.screen.Textfield.setText(Textfield.java:22)
+	at zyx.Main.load(Main.java:126)
+	at zyx.Main.main(Main.java:45)
+
+okt. 02, 2017 8:27:48 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.textures.bitmapfont.TextGenerator.addCharacter(TextGenerator.java:55)
+	at zyx.opengl.textures.bitmapfont.Text.setText(Text.java:28)
+	at zyx.game.components.screen.Textfield.setText(Textfield.java:24)
+	at zyx.Main.main(Main.java:67)
+
+okt. 02, 2017 8:28:11 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.textures.bitmapfont.TextGenerator.addCharacter(TextGenerator.java:55)
+	at zyx.opengl.textures.bitmapfont.Text.setText(Text.java:28)
+	at zyx.game.components.screen.Textfield.setText(Textfield.java:24)
+	at zyx.Main.main(Main.java:67)
+
+okt. 02, 2017 8:28:16 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.textures.bitmapfont.TextGenerator.addCharacter(TextGenerator.java:55)
+	at zyx.opengl.textures.bitmapfont.Text.setText(Text.java:28)
+	at zyx.game.components.screen.Textfield.setText(Textfield.java:24)
+	at zyx.Main.main(Main.java:67)
+
+okt. 02, 2017 8:28:33 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.textures.bitmapfont.TextGenerator.addCharacter(TextGenerator.java:55)
+	at zyx.opengl.textures.bitmapfont.Text.setText(Text.java:28)
+	at zyx.game.components.screen.Textfield.setText(Textfield.java:24)
+	at zyx.Main.main(Main.java:67)
+
+okt. 02, 2017 8:29:30 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.textures.bitmapfont.TextGenerator.addCharacter(TextGenerator.java:55)
+	at zyx.opengl.textures.bitmapfont.Text.setText(Text.java:28)
+	at zyx.game.components.screen.Textfield.setText(Textfield.java:24)
+	at zyx.Main.main(Main.java:67)
+
+okt. 02, 2017 8:30:07 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.textures.bitmapfont.TextGenerator.addCharacter(TextGenerator.java:55)
+	at zyx.opengl.textures.bitmapfont.Text.setText(Text.java:28)
+	at zyx.game.components.screen.Textfield.setText(Textfield.java:24)
+	at zyx.Main.main(Main.java:68)
+
+okt. 02, 2017 8:30:11 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.textures.bitmapfont.TextGenerator.addCharacter(TextGenerator.java:55)
+	at zyx.opengl.textures.bitmapfont.Text.setText(Text.java:28)
+	at zyx.game.components.screen.Textfield.setText(Textfield.java:24)
+	at zyx.Main.main(Main.java:68)
+
+okt. 02, 2017 8:31:02 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.textures.bitmapfont.TextGenerator.addCharacter(TextGenerator.java:55)
+	at zyx.opengl.textures.bitmapfont.Text.setText(Text.java:28)
+	at zyx.game.components.screen.Textfield.setText(Textfield.java:24)
+	at zyx.Main.main(Main.java:74)
+

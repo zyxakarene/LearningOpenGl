@@ -1,6 +1,5 @@
 package zyx.opengl.textures.bitmapfont;
 
-import java.util.Arrays;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.shaders.implementations.Shader;
 
@@ -19,8 +18,6 @@ public class Text extends AbstractModel
 	
 	public void setText(String text)
 	{
-		
-		
 		TextGenerator generator = new TextGenerator(font.fontFile);
 		
 		int len = text.length();
@@ -36,9 +33,6 @@ public class Text extends AbstractModel
 		
 		bindVao();
 		setVertexData(vertexData, elementData);
-		
-		System.out.println(Arrays.toString(vertexData));
-		System.out.println(Arrays.toString(elementData));
 	}
 
 	@Override

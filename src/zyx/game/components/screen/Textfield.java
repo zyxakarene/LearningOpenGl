@@ -1,7 +1,9 @@
 package zyx.game.components.screen;
 
+import zyx.opengl.shaders.implementations.ScreenShader;
 import zyx.opengl.textures.bitmapfont.BitmapFont;
 import zyx.opengl.textures.bitmapfont.Text;
+import zyx.utils.FloatMath;
 
 public class Textfield extends DisplayObject
 {
@@ -42,7 +44,12 @@ public class Textfield extends DisplayObject
 	@Override
 	protected void draw()
 	{
+		transform();
+		shader.upload();
 		glText.draw();
+		
+		System.out.println(ScreenShader.MATRIX_MODEL);
+		System.out.println(FloatMath.toRadians(-rotation));
 	}
 
 }

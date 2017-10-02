@@ -26,6 +26,7 @@ public class BitmapFontGenerator
 
 		DataInputStream in = new DataInputStream(new ByteArrayInputStream(buffer));
 		
+		short lineHeight = in.readShort();
 		short characters = in.readShort();
 		short kernings = in.readShort();
 		
@@ -42,6 +43,8 @@ public class BitmapFontGenerator
 			kerning = new FontKerning(in);
 			fontFile.kernings.add(kerning);
 		}
+		
+		fontFile.lineHeight = lineHeight;
 		
 		fontFile.generateMaps();
 	}
