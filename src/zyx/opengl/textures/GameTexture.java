@@ -2,11 +2,15 @@ package zyx.opengl.textures;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
+import zyx.utils.geometry.Rectangle;
 import zyx.utils.interfaces.IDisposeable;
 
 public class GameTexture implements IDisposeable
 {
-
+	private static final Rectangle SIMPLE_TEXTURE_MAPPING = new Rectangle(0, 0, 1, 1);
+	
+	public float x, y, u, v;
+	
 	public final float width;
 	public final float height;
 	
@@ -14,12 +18,22 @@ public class GameTexture implements IDisposeable
 
 	private Texture texture;
 
-	GameTexture(String name, String format)
+	public GameTexture(String path)
 	{
-		texture = TextureUtils.createTexture(name, format);
+		this(path, SIMPLE_TEXTURE_MAPPING);
+	}
+	
+	public GameTexture(String path, Rectangle rect)
+	{
+		texture = TextureUtils.createTexture(path);
 		
-		width = texture.getWidth();
-		height = texture.getHeight();
+		width = texture.getImageWidth();
+		height = texture.getImageHeight();
+		
+		x = rect.x;
+		y = rect.y;
+		u = rect.width;
+		v = rect.height;
 	}
 
 	public void bind()

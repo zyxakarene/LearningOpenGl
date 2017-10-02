@@ -1,6 +1,8 @@
 package zyx.game.components.screen;
 
 import zyx.opengl.models.implementations.ScreenModel;
+import zyx.opengl.textures.GameTexture;
+import zyx.game.controls.textures.TextureManager;
 
 public class Image extends DisplayObject
 {
@@ -9,7 +11,8 @@ public class Image extends DisplayObject
 	
 	public Image(String texture)
 	{
-		model = new ScreenModel(texture);
+		GameTexture gameTexture = TextureManager.getTexture(texture);
+		model = new ScreenModel(gameTexture);
 	}
 	
 	@Override

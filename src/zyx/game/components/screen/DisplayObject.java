@@ -38,9 +38,13 @@ public abstract class DisplayObject implements IPositionable2D
 		SCALE_3F.x = scale.x;
 		SCALE_3F.y = scale.y;
 		
+		position.y *= -1;
+		
 		ScreenShader.MATRIX_MODEL.translate(position);
 		ScreenShader.MATRIX_MODEL.rotate(FloatMath.toRadians(-rotation), GeometryUtils.ROTATION_Z);
 		ScreenShader.MATRIX_MODEL.scale(SCALE_3F);
+		
+		position.y *= -1;
 	}
 	
 	public float getScaleX()

@@ -3,25 +3,27 @@ package zyx.opengl.models.implementations;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.ScreenShader;
+import zyx.opengl.textures.GameTexture;
 
 public class ScreenModel extends AbstractModel
 {
 
 	public final ScreenShader shader;
 
-	public ScreenModel(String texture)
+	public ScreenModel(GameTexture texture)
 	{
 		super(Shader.SCREEN);
 
 		shader = (ScreenShader) meshShader;
 
+		GameTexture t = texture;
 		float vertexData[] =
 		{
-			//  Position      Color             Texcoords
-			0, 0, 0, 0, // Top-left
-			100, 0, 1, 0, // Top-right
-			100, -100, 1, 1, // Bottom-right
-			0, -100, 0, 1  // Bottom-left
+			//Position			Texcoords
+			0, 0,				t.x, t.y, // Top-left
+			100, 0,				t.u, t.y, // Top-right
+			100, -100,			t.u, t.v, // Bottom-right
+			0, -100,			t.x, t.v  // Bottom-left
 		};
 
 		int elementData[] =

@@ -5,6 +5,7 @@ import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.opengl.shaders.implementations.Shader;
+import zyx.game.controls.textures.TextureManager;
 import zyx.utils.FloatMath;
 import zyx.utils.GeometryUtils;
 
@@ -41,7 +42,7 @@ public class WorldModel extends AbstractModel
 		};
 
 		setVertexData(vertexData, elementData);
-		setTexture("sample");
+		setTexture(TextureManager.getTexture("sample"));
 	}
 
 	public WorldModel(float vertexData[], int elementData[])
@@ -51,7 +52,7 @@ public class WorldModel extends AbstractModel
 		shader = (WorldShader) meshShader;
 
 		setVertexData(vertexData, elementData);
-		setTexture("TowerBase");
+		setTexture(TextureManager.getTexture("TowerBase"));
 	}
 
 	public void transform(Vector3f position, Vector3f rotation, Vector3f scale)

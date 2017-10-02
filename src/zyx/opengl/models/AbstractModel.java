@@ -4,7 +4,6 @@ import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.GameTexture;
-import zyx.opengl.textures.TextureManager;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IDrawable;
 
@@ -37,6 +36,11 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 		setupAttributes();
 	}
 
+	protected void bindVao()
+	{
+		ModelUtils.bindVertexArray(vao);
+	}
+	
 	protected void setVertexData(float[] vertexData, int[] elementData)
 	{
 		ModelUtils.fillVBO_Static(vertexData);
@@ -45,9 +49,9 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 		this.elementCount = elementData.length;
 	}
 
-	protected void setTexture(String texture)
+	protected void setTexture(GameTexture texture)
 	{
-		this.texture = TextureManager.getTexture(texture);
+		this.texture = texture;
 	}
 
 	public GameTexture getTexture()
