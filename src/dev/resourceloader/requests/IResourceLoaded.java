@@ -1,4 +1,4 @@
-package dev.resourceloader;
+package dev.resourceloader.requests;
 
 public interface IResourceLoaded<T>
 {

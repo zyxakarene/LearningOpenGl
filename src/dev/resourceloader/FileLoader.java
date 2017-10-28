@@ -1,16 +1,14 @@
 package dev.resourceloader;
 
 import dev.resourceloader.requests.ResourceRequest;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.util.logging.Level;
 import zyx.utils.GameConstants;
 
 class FileLoader
 {
 
+	private static final int BUFFER_SIZE = 8192;
 	private static final byte[] EMPTY_DATA = new byte[0];
 
 	private final ResourceRequest request;
@@ -33,15 +31,21 @@ class FileLoader
 		}
 		catch (IOException ex)
 		{
-			handleIOException();
+			handleIOException(ex);
 		}
 	}
 
 	private void readFileData(final RandomAccessFile raf) throws IOException
 	{
-		byte[] buffer = new byte[1024];
+		byte[] buffer = new byte[BUFFER_SIZE];
 		int len;
 		int fileSize = (int) raf.length();
+		
+		if (raf.length() > fileSize)
+		{
+			throw new IOException("File size too large");
+		}
+		
 		ByteArrayOutputStream out = new ByteArrayOutputStream(fileSize);
 
 		while ((len = raf.read(buffer)) != -1)
@@ -52,9 +56,9 @@ class FileLoader
 		request.setData(out.toByteArray());
 	}
 
-	private void handleIOException()
+	private void handleIOException(IOException ex)
 	{
-		String msg = String.format("Error while loading file %s", request.path);
+		String msg = String.format("Error while loading file %s. Error: \"%s\"", request.path, ex.getMessage());
 		GameConstants.LOGGER.log(Level.SEVERE, msg);
 
 		request.setData(EMPTY_DATA);

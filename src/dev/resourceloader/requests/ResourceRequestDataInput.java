@@ -1,6 +1,5 @@
 package dev.resourceloader.requests;
 
-import dev.resourceloader.IResourceLoaded;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 

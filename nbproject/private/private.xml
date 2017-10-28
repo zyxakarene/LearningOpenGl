@@ -7,11 +7,16 @@
             <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/shaders/ShaderManager.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/game/components/screen/DisplayObjectContainer.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/game/components/screen/Stage.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/dev/resourceloader/requests/IResourceLoaded.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/dev/resourceloader/ResourceRunner.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/textures/bitmapfont/FontFile.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/shaders/AbstractShader.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/shaders/implementations/ScreenShader.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/camera/Camera.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/GLUtils.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/dev/resourceloader/ResourceExchange.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/game/components/screen/Textfield.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/dev/resourceloader/requests/vo/ResourceByteArray.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/Main.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/textures/bitmapfont/BitmapFontGenerator.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/loading/ZmfLoader.java</file>
@@ -19,7 +24,9 @@
             <file>file:/D:/Programmering/Tutorial5/src/dev/GameFrame.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/dev/resourceloader/FileLoader.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/implementations/WorldModel.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/dev/resourceloader/ResourceLoader.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/textures/bitmapfont/TextGenerator.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/dev/resourceloader/requests/ResourceRequestString.java</file>
         </group>
     </open-files>
 </project-private>

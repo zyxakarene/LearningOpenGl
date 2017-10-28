@@ -1,11 +1,11 @@
 package dev;
 
-import dev.resourceloader.IResourceLoaded;
-import dev.resourceloader.ResourceByteArray;
+import dev.resourceloader.requests.IResourceLoaded;
 import dev.resourceloader.ResourceLoader;
-import dev.resourceloader.requests.ResourceRequestByteArray;
+import dev.resourceloader.requests.ResourceRequest;
+import dev.resourceloader.requests.ResourceRequestString;
 
-public class GameFrame extends javax.swing.JFrame implements IResourceLoaded<ResourceByteArray>
+public class GameFrame extends javax.swing.JFrame implements IResourceLoaded<String>
 {
 	public GameFrame()
 	{
@@ -52,7 +52,7 @@ public class GameFrame extends javax.swing.JFrame implements IResourceLoaded<Res
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
     {//GEN-HEADEREND:event_jButton1ActionPerformed
-        ResourceRequestByteArray req = new ResourceRequestByteArray("D:/Utorrent Downloads/rct_exs.iso", this);
+        ResourceRequest req = new ResourceRequestString("C:\\Users\\Rene\\Documents\\list.txt", this);
 		ResourceLoader.getInstance().addRequest(req);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -60,7 +60,7 @@ public class GameFrame extends javax.swing.JFrame implements IResourceLoaded<Res
 	{
 		java.awt.EventQueue.invokeLater(() ->
 		{
-			ResourceLoader.getInstance().initialize(3);
+			ResourceLoader.getInstance().addThreads(3);
 			new GameFrame().setVisible(true);
 		});
 		
@@ -92,11 +92,8 @@ public class GameFrame extends javax.swing.JFrame implements IResourceLoaded<Res
     // End of variables declaration//GEN-END:variables
 
 	@Override
-	public void resourceLoaded(ResourceByteArray data)
-	{
-		byte[] buf = new byte[1024];
-		int len = data.read(buf);
-		
-		System.out.println("Got " + data.length() + " bytes");
+	public void resourceLoaded(String text)
+	{		
+		System.out.println("Got " + text);
 	}
 }

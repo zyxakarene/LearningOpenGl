@@ -20,11 +20,11 @@ public class ResourceLoader implements IDisposeable
 	{
 	}
 
-	public void initialize(int threadCount)
+	public void addThreads(int numThreads)
 	{
 		Thread loader;
 		ResourceRunner runner;
-		for (int i = 0; i < threadCount; i++)
+		for (int i = 0; i < numThreads; i++)
 		{
 			runner = new ResourceRunner();
 			loader = new Thread(runner);
@@ -55,5 +55,7 @@ public class ResourceLoader implements IDisposeable
 		}
 
 		runners.clear();
+		
+		ResourceExchange.dispose();
 	}
 }

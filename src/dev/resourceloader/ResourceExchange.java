@@ -3,10 +3,10 @@ package dev.resourceloader;
 import dev.resourceloader.requests.ResourceRequest;
 import java.util.LinkedList;
 
-public class ResourceExchange
+class ResourceExchange
 {
 
-	static final Object LOCK = new Object();
+	private static final Object LOCK = new Object();
 
 	private static final LinkedList<ResourceRequest> LOAD_REQUESTS = new LinkedList<>();
 	private static final LinkedList<ResourceRequest> COMPLETED_LOADS = new LinkedList<>();
@@ -77,6 +77,15 @@ public class ResourceExchange
 				
 				request.callback.resourceLoaded(request.getData());
 			}
+		}
+	}
+
+	static void dispose()
+	{
+		synchronized (LOCK)
+		{
+			COMPLETED_LOADS.clear();
+			LOAD_REQUESTS.clear();
 		}
 	}
 }

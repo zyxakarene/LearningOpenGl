@@ -1,7 +1,5 @@
 package dev.resourceloader.requests;
 
-import dev.resourceloader.IResourceLoaded;
-
 public abstract class ResourceRequest
 {
 	public String path;

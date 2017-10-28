@@ -1,7 +1,6 @@
 package dev.resourceloader.requests;
 
-import dev.resourceloader.IResourceLoaded;
-import dev.resourceloader.ResourceByteArray;
+import dev.resourceloader.requests.vo.ResourceByteArray;
 
 public class ResourceRequestByteArray extends ResourceRequest
 {
