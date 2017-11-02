@@ -47,9 +47,6 @@ public class Textfield extends DisplayObject
 		transform();
 		shader.upload();
 		glText.draw();
-		
-		System.out.println(ScreenShader.MATRIX_MODEL);
-		System.out.println(FloatMath.toRadians(-rotation));
 	}
 
 }

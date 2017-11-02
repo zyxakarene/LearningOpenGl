@@ -10,8 +10,7 @@ public class WorldObject extends GameObject implements IDrawable
 
 	public WorldObject()
 	{
-		model = ZmfLoader.loadFromZmf("robot_normal.zmf");
-		scale.set(0.1f, 0.1f, 0.1f);
+		model = ZmfLoader.loadFromZmf("mesh.zmf");
 	}
 
 	@Override

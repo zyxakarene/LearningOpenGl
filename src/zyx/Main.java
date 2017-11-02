@@ -1,5 +1,6 @@
 package zyx;
 
+import dev.bones.BoneControl;
 import java.io.File;
 import java.io.IOException;
 import org.lwjgl.input.Keyboard;
@@ -47,6 +48,8 @@ public class Main
 		load();
 
 		GLUtils.errorCheck();
+		
+		new BoneControl().setVisible(true);
 
 		float time = 0;
 		while (!Display.isCloseRequested())
@@ -120,7 +123,8 @@ public class Main
 //		image.position.x = 10;
 
 		field = new Textfield(bmpFont);
-		field.setText("Testing bitmap fonts\nbecause fuck everything");
+		field.scale.set(0.2f, 0.2f);
+		field.setText("Testing bitmap fonts");
 		field.position.x = GameConstants.GAME_WIDTH / 4;
 		field.position.y = GameConstants.GAME_HEIGHT / 4;
 

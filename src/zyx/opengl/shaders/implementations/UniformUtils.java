@@ -1,6 +1,7 @@
 package zyx.opengl.shaders.implementations;
 
 import java.nio.FloatBuffer;
+import java.util.HashMap;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
@@ -8,7 +9,10 @@ import org.lwjgl.util.vector.Matrix4f;
 class UniformUtils
 {
 
-	private static final FloatBuffer MATRIX_FLOAT_BUFFER = BufferUtils.createFloatBuffer(16);
+	private static Matrix4f[] matrixArray = new Matrix4f[1];
+	
+	private static FloatBuffer buff;
+	private static final HashMap<Integer, FloatBuffer> BUFFERS = new HashMap<>();
 
 	/**
 	 * Returns an integer pointing to the uniform of the given name in the given program
@@ -30,11 +34,38 @@ class UniformUtils
 	 */
 	static void setUniformMatrix(int uniform, Matrix4f matrix)
 	{
-		MATRIX_FLOAT_BUFFER.clear();
-		matrix.store(MATRIX_FLOAT_BUFFER);
-		MATRIX_FLOAT_BUFFER.flip();
+		matrixArray[0] = matrix;
+		setUniformMatrix(uniform, matrixArray);
+	}
+	
+	/**
+	 * Uploads the given matrix array into the given uniform
+	 *
+	 * @param uniform The uniform to upload to
+	 * @param matrices The data to upload
+	 */
+	static void setUniformMatrix(int uniform, Matrix4f[] matrices)
+	{
+		int size = 16 * matrices.length;
+		
+		if (BUFFERS.containsKey(size) == false)
+		{
+			buff = BufferUtils.createFloatBuffer(size);
+			BUFFERS.put(size, buff);
+		}
+		else
+		{
+			buff = BUFFERS.get(size);
+		}
+		
+		buff.clear();
+		for (Matrix4f matrix : matrices)
+		{
+			matrix.store(buff);
+		}
+		buff.flip();
 
-		GL20.glUniformMatrix4(uniform, false, MATRIX_FLOAT_BUFFER);
+		GL20.glUniformMatrix4(uniform, false, buff);
 	}
 	
 	static void setUniform2F(int uniform, float x, float y)

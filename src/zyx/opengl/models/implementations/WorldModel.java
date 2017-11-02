@@ -20,31 +20,6 @@ public class WorldModel extends AbstractModel
 
 	public final WorldShader shader;
 
-	public WorldModel()
-	{
-		super(Shader.WORLD);
-
-		shader = (WorldShader) meshShader;
-
-		float vertexData[] =
-		{
-			//Position		//Texcoords
-			-0.5f, 0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, // Top-left
-			0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, // Top-right
-			0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, // Bottom-right
-			-0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f  // Bottom-left
-		};
-
-		int elementData[] =
-		{
-			0, 1, 2,
-			2, 3, 0
-		};
-
-		setVertexData(vertexData, elementData);
-		setTexture(TextureManager.getTexture("sample"));
-	}
-
 	public WorldModel(float vertexData[], int elementData[])
 	{
 		super(Shader.WORLD);
@@ -85,8 +60,10 @@ public class WorldModel extends AbstractModel
 	@Override
 	protected void setupAttributes()
 	{
-		addAttribute("position", 3, 8, 0);
-		addAttribute("texcoord", 2, 8, 3);
-//		addAttribute("normal", 2, 8, 5);
+		addAttribute("position", 3, 12, 0);
+		addAttribute("normals", 3, 12, 3);
+		addAttribute("texcoord", 2, 12, 6);
+		addAttribute("indexes", 2, 12, 8);
+		addAttribute("weights", 2, 12, 10);
 	}
 }
