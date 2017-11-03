@@ -3,18 +3,26 @@ package dev.bones;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.utils.FloatMath;
 import zyx.utils.GeometryUtils;
 
-public class BoneControl extends javax.swing.JFrame
+public class SnakeControl extends javax.swing.JFrame
 {
 
+	private Matrix4f bone1Default;
+	private Matrix4f bone2Default;
+	private Matrix4f bone3Default;
+	private Matrix4f bone4Default;
+	
+	private Matrix4f bone1DefaultI;
+	private Matrix4f bone2DefaultI;
+	private Matrix4f bone3DefaultI;
+	private Matrix4f bone4DefaultI;
+	
 	private Matrix4f bone1;
 	private Matrix4f bone2;
 	private Matrix4f bone3;
@@ -25,10 +33,10 @@ public class BoneControl extends javax.swing.JFrame
 	private Matrix4f bone3Normal;
 	private Matrix4f bone4Normal;
 
-	private Matrix4f bone1Rest;
-	private Matrix4f bone2Rest;
-	private Matrix4f bone3Rest;
-	private Matrix4f bone4Rest;
+	private Matrix4f bone1Inverse;
+	private Matrix4f bone2Inverse;
+	private Matrix4f bone3Inverse;
+	private Matrix4f bone4Inverse;
 	private final WorldShader shader;
 
 	private float slider1X = 0;
@@ -39,7 +47,7 @@ public class BoneControl extends javax.swing.JFrame
 	private static final Vector3f SHARED_POSITION = new Vector3f();
 	private static final Vector3f SHARED_ROTATION = new Vector3f();
 
-	public BoneControl()
+	public SnakeControl()
 	{
 		initComponents();
 
@@ -50,11 +58,25 @@ public class BoneControl extends javax.swing.JFrame
 		bone3 = shader.BONES[3];
 		bone4 = shader.BONES[4];
 
-		transform(bone1, 0, 0, 0, 0, -1.5708f, 0);
-		transform(bone2, 25, 0, 0, 0, 0, 0);
-		transform(bone3, 25, 0, 0, 0, 0, 0);
-		transform(bone4, 25, 0, 0, 0, 0, 0);
+		transform(bone1, 0, 0, 0, -0.349054, -1.0979, 0);
+		transform(bone2, 25, 0, 0, 1.26766, 0.133236, -0.707357);
+		transform(bone3, 25, 0, 0, 1.29614, -0.682041, 0.45644);
+		transform(bone4, 25, 0, 0, -0.39605, 0.78552, 0.275484);
 
+		bone1Default = new Matrix4f(bone1);
+		bone2Default = new Matrix4f(bone2);
+		bone3Default = new Matrix4f(bone3);
+		bone4Default = new Matrix4f(bone4);
+		
+		bone1DefaultI = new Matrix4f(bone1);
+		bone2DefaultI = new Matrix4f(bone2);
+		bone3DefaultI = new Matrix4f(bone3);
+		bone4DefaultI = new Matrix4f(bone4);
+		bone1DefaultI.invert();
+		bone2DefaultI.invert();
+		bone3DefaultI.invert();
+		bone4DefaultI.invert();
+		
 		Matrix4f.mul(bone4, bone3, bone4);
 		Matrix4f.mul(bone4, bone2, bone4);
 		Matrix4f.mul(bone4, bone1, bone4);
@@ -71,31 +93,31 @@ public class BoneControl extends javax.swing.JFrame
 
 		setupRest();
 		SetupEvents();
-
+		
 		update();
 	}
 
 	private void update()
 	{
 		Matrix4f bone1End = new Matrix4f();
-		Matrix4f.mul(bone1Normal, bone1Rest, bone1End);
+		Matrix4f.mul(bone1Normal, bone1Inverse, bone1End);
 		transform(bone1End, 0, 0, 0, slider1X, 0, 0);
-		
+
 		Matrix4f bone2End = new Matrix4f();
-		Matrix4f.mul(bone2Normal, bone2Rest, bone2End);
+		Matrix4f.mul(bone2Normal, bone2Inverse, bone2End);
 		Matrix4f.mul(bone2End, bone1End, bone2End);
 		transform(bone2End, 0, 0, 0, slider2X, 0, 0);
 
 		Matrix4f bone3End = new Matrix4f();
-		Matrix4f.mul(bone3Normal, bone3Rest, bone3End);
+		Matrix4f.mul(bone3Normal, bone3Inverse, bone3End);
 		Matrix4f.mul(bone3End, bone2End, bone3End);
 		transform(bone3End, 0, 0, 0, slider3X, 0, 0);
 
 		Matrix4f bone4End = new Matrix4f();
-		Matrix4f.mul(bone4Normal, bone4Rest, bone4End);
+		Matrix4f.mul(bone4Normal, bone4Inverse, bone4End);
 		Matrix4f.mul(bone4End, bone3End, bone4End);
 		transform(bone4End, 0, 0, 0, slider4X, 0, 0);
-
+		
 		bone1.load(bone1End);
 		bone2.load(bone2End);
 		bone3.load(bone3End);
@@ -119,6 +141,7 @@ public class BoneControl extends javax.swing.JFrame
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("SNAKE");
 
         slider1.setMaximum(180);
         slider1.setMinimum(-180);
@@ -212,21 +235,21 @@ public class BoneControl extends javax.swing.JFrame
 
 	private void setupRest()
 	{
-		bone1Rest = new Matrix4f(bone1);
-		bone2Rest = new Matrix4f(bone2);
-		bone3Rest = new Matrix4f(bone3);
-		bone4Rest = new Matrix4f(bone4);
+		bone1Inverse = new Matrix4f(bone1);
+		bone2Inverse = new Matrix4f(bone2);
+		bone3Inverse = new Matrix4f(bone3);
+		bone4Inverse = new Matrix4f(bone4);
 
-		bone1Rest.invert();
-		bone2Rest.invert();
-		bone3Rest.invert();
-		bone4Rest.invert();
+		bone1Inverse.invert();
+		bone2Inverse.invert();
+		bone3Inverse.invert();
+		bone4Inverse.invert();
 	}
 
-	private void transform(Matrix4f bone, float x, float y, float z, float rotX, float rotY, float rotZ)
+	private void transform(Matrix4f bone, double x, double y, double z, double rotX, double rotY, double rotZ)
 	{
-		SHARED_POSITION.set(x, y, z);
-		SHARED_ROTATION.set(rotX, rotY, rotZ);
+		SHARED_POSITION.set((float) x, (float) y, (float) z);
+		SHARED_ROTATION.set((float) rotX, (float) rotY, (float) rotZ);
 		bone.translate(SHARED_POSITION);
 		bone.rotate(SHARED_ROTATION.x, GeometryUtils.ROTATION_X);
 		bone.rotate(SHARED_ROTATION.y, GeometryUtils.ROTATION_Y);

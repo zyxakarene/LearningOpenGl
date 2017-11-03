@@ -1,6 +1,7 @@
 package zyx;
 
-import dev.bones.BoneControl;
+import dev.bones.MeshControl;
+import dev.bones.SnakeControl;
 import java.io.File;
 import java.io.IOException;
 import org.lwjgl.input.Keyboard;
@@ -49,7 +50,7 @@ public class Main
 
 		GLUtils.errorCheck();
 		
-		new BoneControl().setVisible(true);
+		new SnakeControl().setVisible(true);
 
 		float time = 0;
 		while (!Display.isCloseRequested())
