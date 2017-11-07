@@ -1,5 +1,6 @@
 package dev.bones;
 
+import dev.bones.skeleton.Joint;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import org.lwjgl.util.vector.Matrix4f;
@@ -13,30 +14,16 @@ import zyx.utils.GeometryUtils;
 public class SnakeControl extends javax.swing.JFrame
 {
 
-	private Matrix4f bone1Default;
-	private Matrix4f bone2Default;
-	private Matrix4f bone3Default;
-	private Matrix4f bone4Default;
-	
-	private Matrix4f bone1DefaultI;
-	private Matrix4f bone2DefaultI;
-	private Matrix4f bone3DefaultI;
-	private Matrix4f bone4DefaultI;
+	private Joint joint1;
+	private Joint joint2;
+	private Joint joint3;
+	private Joint joint4;
 	
 	private Matrix4f bone1;
 	private Matrix4f bone2;
 	private Matrix4f bone3;
 	private Matrix4f bone4;
 
-	private Matrix4f bone1Normal;
-	private Matrix4f bone2Normal;
-	private Matrix4f bone3Normal;
-	private Matrix4f bone4Normal;
-
-	private Matrix4f bone1Inverse;
-	private Matrix4f bone2Inverse;
-	private Matrix4f bone3Inverse;
-	private Matrix4f bone4Inverse;
 	private final WorldShader shader;
 
 	private float slider1X = 0;
@@ -58,40 +45,8 @@ public class SnakeControl extends javax.swing.JFrame
 		bone3 = shader.BONES[3];
 		bone4 = shader.BONES[4];
 
-		transform(bone1, 0, 0, 0, -0.349054, -1.0979, 0);
-		transform(bone2, 25, 0, 0, 1.26766, 0.133236, -0.707357);
-		transform(bone3, 25, 0, 0, 1.29614, -0.682041, 0.45644);
-		transform(bone4, 25, 0, 0, -0.39605, 0.78552, 0.275484);
-
-		bone1Default = new Matrix4f(bone1);
-		bone2Default = new Matrix4f(bone2);
-		bone3Default = new Matrix4f(bone3);
-		bone4Default = new Matrix4f(bone4);
-		
-		bone1DefaultI = new Matrix4f(bone1);
-		bone2DefaultI = new Matrix4f(bone2);
-		bone3DefaultI = new Matrix4f(bone3);
-		bone4DefaultI = new Matrix4f(bone4);
-		bone1DefaultI.invert();
-		bone2DefaultI.invert();
-		bone3DefaultI.invert();
-		bone4DefaultI.invert();
-		
-		Matrix4f.mul(bone4, bone3, bone4);
-		Matrix4f.mul(bone4, bone2, bone4);
-		Matrix4f.mul(bone4, bone1, bone4);
-
-		Matrix4f.mul(bone3, bone2, bone3);
-		Matrix4f.mul(bone3, bone1, bone3);
-
-		Matrix4f.mul(bone2, bone1, bone2);
-
-		bone1Normal = new Matrix4f(bone1);
-		bone2Normal = new Matrix4f(bone2);
-		bone3Normal = new Matrix4f(bone3);
-		bone4Normal = new Matrix4f(bone4);
-
-		setupRest();
+//		setupBonesSnake();
+		setupBonesMesh();
 		SetupEvents();
 		
 		update();
@@ -99,29 +54,49 @@ public class SnakeControl extends javax.swing.JFrame
 
 	private void update()
 	{
-		Matrix4f bone1End = new Matrix4f();
-		Matrix4f.mul(bone1Normal, bone1Inverse, bone1End);
-		transform(bone1End, 0, 0, 0, slider1X, 0, 0);
-
-		Matrix4f bone2End = new Matrix4f();
-		Matrix4f.mul(bone2Normal, bone2Inverse, bone2End);
-		Matrix4f.mul(bone2End, bone1End, bone2End);
-		transform(bone2End, 0, 0, 0, slider2X, 0, 0);
-
-		Matrix4f bone3End = new Matrix4f();
-		Matrix4f.mul(bone3Normal, bone3Inverse, bone3End);
-		Matrix4f.mul(bone3End, bone2End, bone3End);
-		transform(bone3End, 0, 0, 0, slider3X, 0, 0);
-
-		Matrix4f bone4End = new Matrix4f();
-		Matrix4f.mul(bone4Normal, bone4Inverse, bone4End);
-		Matrix4f.mul(bone4End, bone3End, bone4End);
-		transform(bone4End, 0, 0, 0, slider4X, 0, 0);
+		Matrix4f animation1 = new Matrix4f();
+		Matrix4f animation2 = new Matrix4f();
+		Matrix4f animation3 = new Matrix4f();
+		Matrix4f animation4 = new Matrix4f();
+//		transform(animation1, 0, 0, 0, 0,  slider1X, 0);
+//		transform(animation2, 25, 0, 0, 0, slider2X, 0);
+//		transform(animation3, 25, 0, 0, 0, slider3X, 0);
+//		transform(animation4, 25, 0, 0, 0, slider4X, 0);
 		
-		bone1.load(bone1End);
-		bone2.load(bone2End);
-		bone3.load(bone3End);
-		bone4.load(bone4End);
+		transform(animation1, 0, 0, 0, -0.349054, -1.0979 + slider1X, 0);
+		transform(animation2, 25, 0, 0, 1.26766, 0.133236 + slider2X, -0.707357);
+		transform(animation3, 25, 0, 0, 1.29614, -0.682041 + slider3X, 0.45644);
+		transform(animation4, 25, 0, 0, -0.39605, 0.78552 + slider4X, 0.275484);
+
+		joint1.setAnimationTransform(animation1);
+		joint2.setAnimationTransform(animation2);
+		joint3.setAnimationTransform(animation3);
+		joint4.setAnimationTransform(animation4);
+		joint1.calcAnimationTransform(new Matrix4f());
+		
+//		Matrix4f bone1End = new Matrix4f();
+//		transform(bone1End, 0, 0, 0, 0, -1.5708 + slider1X, 0);
+//		Matrix4f.mul(bone1End, joint1.getInverse(), bone1End);
+//		
+//		Matrix4f bone2End = new Matrix4f(joint2.getInverse());
+//		transform(bone2End, 25, 0, 0, slider2X, 0, 0);
+//		Matrix4f.mul(bone2End, joint2.getInverse(), bone2End);
+//		Matrix4f.mul(bone2End, bone1End, bone2End);
+//
+//		Matrix4f bone3End = new Matrix4f(joint3.getInverse());
+//		transform(bone3End, 25, 0, 0, 0, slider3X, 0);
+//		Matrix4f.mul(bone3End, joint3.getInverse(), bone3End);
+//		Matrix4f.mul(bone3End, bone2End, bone3End);
+//
+//		Matrix4f bone4End = new Matrix4f(joint4.getInverse());
+//		transform(bone4End, 25, 0, 0, 0, slider4X, 0);
+//		Matrix4f.mul(bone4End, joint4.getInverse(), bone4End);
+//		Matrix4f.mul(bone4End, bone3End, bone4End);
+		
+		bone1.load(joint1.getAnimation());
+		bone2.load(joint2.getAnimation());
+		bone3.load(joint3.getAnimation());
+		bone4.load(joint4.getAnimation());
 
 	}
 
@@ -233,27 +208,14 @@ public class SnakeControl extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-	private void setupRest()
-	{
-		bone1Inverse = new Matrix4f(bone1);
-		bone2Inverse = new Matrix4f(bone2);
-		bone3Inverse = new Matrix4f(bone3);
-		bone4Inverse = new Matrix4f(bone4);
-
-		bone1Inverse.invert();
-		bone2Inverse.invert();
-		bone3Inverse.invert();
-		bone4Inverse.invert();
-	}
-
 	private void transform(Matrix4f bone, double x, double y, double z, double rotX, double rotY, double rotZ)
 	{
 		SHARED_POSITION.set((float) x, (float) y, (float) z);
 		SHARED_ROTATION.set((float) rotX, (float) rotY, (float) rotZ);
 		bone.translate(SHARED_POSITION);
-		bone.rotate(SHARED_ROTATION.x, GeometryUtils.ROTATION_X);
-		bone.rotate(SHARED_ROTATION.y, GeometryUtils.ROTATION_Y);
 		bone.rotate(SHARED_ROTATION.z, GeometryUtils.ROTATION_Z);
+		bone.rotate(SHARED_ROTATION.y, GeometryUtils.ROTATION_Y);
+		bone.rotate(SHARED_ROTATION.x, GeometryUtils.ROTATION_X);
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -289,6 +251,48 @@ public class SnakeControl extends javax.swing.JFrame
 		slider2.addMouseMotionListener(adap);
 		slider3.addMouseMotionListener(adap);
 		slider4.addMouseMotionListener(adap);
+	}
+
+	private void setupBonesSnake()
+	{
+		transform(bone1, 0, 0, 0, -0.349054, -1.0979, 0);
+		joint1 = new Joint(bone1);
+		
+		transform(bone2, 25, 0, 0, 1.26766, 0.133236, -0.707357);
+		joint2 = new Joint(bone2);
+		
+		transform(bone3, 25, 0, 0, 1.29614, -0.682041, 0.45644);
+		joint3 = new Joint(bone3);
+		
+		transform(bone4, 25, 0, 0, -0.39605, 0.78552, 0.275484);
+		joint4 = new Joint(bone4);
+		
+		joint1.addChild(joint2);
+		joint2.addChild(joint3);
+		joint3.addChild(joint4);
+		
+		joint1.calcInverseBindTransform(new Matrix4f());
+	}
+	
+	private void setupBonesMesh()
+	{
+		transform(bone1, 0, 0, 0, 0, -1.5708, 0);
+		joint1 = new Joint(bone1);
+		
+		transform(bone2, 25, 0, 0, 0, 0, 0);
+		joint2 = new Joint(bone2);
+		
+		transform(bone3, 25, 0, 0, 0, 0, 0);
+		joint3 = new Joint(bone3);
+		
+		transform(bone4, 25, 0, 0, 0, 0, 0);
+		joint4 = new Joint(bone4);
+		
+		joint1.addChild(joint2);
+		joint2.addChild(joint3);
+		joint3.addChild(joint4);
+		
+		joint1.calcInverseBindTransform(new Matrix4f());
 	}
 
 }

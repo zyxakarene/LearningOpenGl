@@ -1,4 +1,4 @@
-package dev.resourceloader.requests;
+package zyx.game.controls.resourceloader.requests;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;

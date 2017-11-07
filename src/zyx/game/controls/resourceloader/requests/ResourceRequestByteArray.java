@@ -1,6 +1,6 @@
-package dev.resourceloader.requests;
+package zyx.game.controls.resourceloader.requests;
 
-import dev.resourceloader.requests.vo.ResourceByteArray;
+import zyx.game.controls.resourceloader.requests.vo.ResourceByteArray;
 
 public class ResourceRequestByteArray extends ResourceRequest
 {

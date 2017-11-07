@@ -10,7 +10,7 @@ public class WorldObject extends GameObject implements IDrawable
 
 	public WorldObject()
 	{
-		model = ZmfLoader.loadFromZmf("snake.zmf");
+		model = ZmfLoader.loadFromZmf("mesh.zmf");
 	}
 
 	@Override

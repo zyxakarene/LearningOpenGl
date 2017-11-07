@@ -1,6 +1,6 @@
-package dev.resourceloader;
+package zyx.game.controls.resourceloader;
 
-import dev.resourceloader.requests.ResourceRequest;
+import zyx.game.controls.resourceloader.requests.ResourceRequest;
 import java.util.ArrayList;
 import zyx.utils.interfaces.IDisposeable;
 

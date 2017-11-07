@@ -1,4 +1,4 @@
-package dev.resourceloader.requests;
+package zyx.game.controls.resourceloader.requests;
 
 public class ResourceRequestString extends ResourceRequest
 {
