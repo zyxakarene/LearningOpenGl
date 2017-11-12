@@ -4,6 +4,16 @@ public class FloatMath
 {
     public static final float PI = (float) Math.PI;
 
+	public static int floor(float value)
+	{
+		return (int) value;
+	}
+	
+	public static int ceil(float value)
+	{
+		return (int) value + 1;
+	}
+	
     public static float abs(float value)
     {
         return Math.abs(value);

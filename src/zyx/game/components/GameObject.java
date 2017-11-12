@@ -26,9 +26,9 @@ public class GameObject implements IUpdateable, IPositionable
 	}
 
 	@Override
-	public void update(int elapsedTime)
+	public void update(long timestamp, int elapsedTime)
 	{
-		behaviors.update(elapsedTime);
+		behaviors.update(timestamp, elapsedTime);
 	}
 
 	public final void addBehavior(Behavior behavior)

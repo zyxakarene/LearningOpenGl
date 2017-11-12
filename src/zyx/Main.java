@@ -22,6 +22,7 @@ import zyx.opengl.camera.Camera;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.textures.bitmapfont.BitmapFont;
 import zyx.opengl.textures.bitmapfont.BitmapFontGenerator;
+import zyx.utils.DeltaTime;
 import zyx.utils.FPSCounter;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
@@ -91,8 +92,13 @@ public class Main
 		KeyboardControl.checkKeys();
 		MouseControl.check();
 
-		camera.update(16);
-		robot.update(16);
+		DeltaTime.update();
+		
+		int elapsed = DeltaTime.getElapsedTime();
+		long timestamp = DeltaTime.getTimestamp();
+		
+		camera.update(timestamp, elapsed);
+		robot.update(timestamp, elapsed);
 	}
 
 	private static void draw()

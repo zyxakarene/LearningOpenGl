@@ -606,3 +606,29 @@ java.lang.NullPointerException
 	at zyx.game.components.screen.Textfield.setText(Textfield.java:24)
 	at zyx.Main.main(Main.java:74)
 
+nov. 12, 2017 1:44:12 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.ArithmeticException: / by zero
+	at zyx.utils.DeltaTime.update(DeltaTime.java:16)
+	at zyx.Main.update(Main.java:95)
+	at zyx.Main.main(Main.java:62)
+
+nov. 12, 2017 2:42:52 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at dev.bones.animation.AnimationTransformer.transform(AnimationTransformer.java:20)
+	at dev.bones.animation.Animator.update(Animator.java:47)
+	at dev.bones.skeleton.Skeleton.update(Skeleton.java:40)
+	at dev.bones.SnakeControl.update(SnakeControl.java:123)
+	at dev.bones.SnakeControl.<init>(SnakeControl.java:60)
+	at zyx.Main.main(Main.java:54)
+
+nov. 12, 2017 3:11:21 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'Thread-4'
+java.lang.ArrayIndexOutOfBoundsException: 5
+	at dev.bones.animation.Animator.update(Animator.java:48)
+	at dev.bones.skeleton.Skeleton.update(Skeleton.java:44)
+	at dev.bones.SnakeControl.update(SnakeControl.java:107)
+	at dev.bones.SnakeControl.access$000(SnakeControl.java:13)
+	at dev.bones.SnakeControl$1.run(SnakeControl.java:247)
+

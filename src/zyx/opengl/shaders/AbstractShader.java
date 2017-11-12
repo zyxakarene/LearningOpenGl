@@ -21,7 +21,7 @@ public abstract class AbstractShader implements IUpdateable
 	}
 
 	@Override
-	public void update(int elapsedTime)
+	public void update(long timestamp, int elapsedTime)
 	{
 	}
 

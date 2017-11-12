@@ -1,28 +1,38 @@
 package dev.bones.skeleton;
 
+import dev.bones.transform.JointTransform;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.lwjgl.util.vector.Matrix4f;
+import zyx.utils.interfaces.IDisposeable;
 
-public class Joint
+public class Joint implements IDisposeable
 {
 
-	private final List<Joint> children;
-	private final Matrix4f animatedTransform;
-	private final Matrix4f inverseBindTransform;
+	public final int id;
+	public final String name;
 	
-	private final Matrix4f localBindTransform;
+	private List<Joint> children;
 	
-	private final Matrix4f finalTransform;
+	private Matrix4f animatedTransform;
+	private Matrix4f inverseBindTransform;
+	
+	private Matrix4f localBindTransform;
+	
+	private final Matrix4f outTransform;
 
-	public Joint(Matrix4f bindTransform)
+	public Joint(int id, String name, JointTransform transform, Matrix4f outTransform)
 	{
+		this.id = id;
+		this.name = name;
+		
 		children = new ArrayList<>();
 		animatedTransform = new Matrix4f();
 		inverseBindTransform = new Matrix4f();
-		localBindTransform = new Matrix4f(bindTransform);
+		localBindTransform = transform.getMatrix();
 		
-		finalTransform = new Matrix4f();
+		this.outTransform = outTransform;
 	}
 	
 	public void addChild(Joint child)
@@ -48,24 +58,41 @@ public class Joint
 	public void calcAnimationTransform(Matrix4f parentTransform)
 	{
 		Matrix4f currentLocalTransform = new Matrix4f(animatedTransform);
-		Matrix4f currentTransform = Matrix4f.mul(parentTransform, currentLocalTransform, null);
+		Matrix4f.mul(parentTransform, currentLocalTransform, outTransform);
 		for (Joint childJoint : children)
 		{
-			childJoint.calcAnimationTransform(currentTransform);
+			childJoint.calcAnimationTransform(outTransform);
 		}
 		
-		Matrix4f.mul(currentTransform, inverseBindTransform, currentTransform);
-		finalTransform.load(currentTransform);
+		Matrix4f.mul(outTransform, inverseBindTransform, outTransform);
 	}
 
 	public Matrix4f getInverse()
 	{
 		return inverseBindTransform;
 	}
-	
-	public Matrix4f getAnimation()
+
+	public void addToMap(HashMap<String, Joint> map)
 	{
-		return finalTransform;
+		map.put(name, this);
+		
+		for (Joint child : children)
+		{
+			child.addToMap(map);
+		}
+	}
+
+	@Override
+	public void dispose()
+	{
+		for (Joint child : children)
+		{
+			child.dispose();
+		}
+		
+		children.clear();
+		
+		children = null;
 	}
 	
 }

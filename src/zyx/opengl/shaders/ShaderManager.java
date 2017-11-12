@@ -46,12 +46,12 @@ public class ShaderManager implements IUpdateable
 	}
 
 	@Override
-	public void update(int elapsedTime)
+	public void update(long timestamp, int elapsedTime)
 	{
 		int len = shaderArray.length;
 		for (int i = 0; i < len; i++)
 		{
-			shaderArray[i].update(elapsedTime);
+			shaderArray[i].update(timestamp, elapsedTime);
 		}
 	}
 }

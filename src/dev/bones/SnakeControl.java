@@ -1,38 +1,25 @@
 package dev.bones;
 
+import dev.bones.animation.Animation;
+import dev.bones.animation.AnimationFrame;
 import dev.bones.skeleton.Joint;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import dev.bones.skeleton.Skeleton;
+import dev.bones.transform.JointTransform;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.WorldShader;
-import zyx.utils.FloatMath;
-import zyx.utils.GeometryUtils;
 
 public class SnakeControl extends javax.swing.JFrame
 {
 
-	private Joint joint1;
-	private Joint joint2;
-	private Joint joint3;
-	private Joint joint4;
-	
 	private Matrix4f bone1;
 	private Matrix4f bone2;
 	private Matrix4f bone3;
 	private Matrix4f bone4;
 
 	private final WorldShader shader;
-
-	private float slider1X = 0;
-	private float slider2X = 0;
-	private float slider3X = 0;
-	private float slider4X = 0;
-
-	private static final Vector3f SHARED_POSITION = new Vector3f();
-	private static final Vector3f SHARED_ROTATION = new Vector3f();
+	private Skeleton skeleton;
 
 	public SnakeControl()
 	{
@@ -45,59 +32,79 @@ public class SnakeControl extends javax.swing.JFrame
 		bone3 = shader.BONES[3];
 		bone4 = shader.BONES[4];
 
-//		setupBonesSnake();
-		setupBonesMesh();
-		SetupEvents();
-		
+		createSkeleton();
+		SetupThread();
+
 		update();
+	}
+
+	private void createSkeleton()
+	{
+		String animationName = "idle";
+		
+		JointTransform bone1Transform = new JointTransform(0, 0, 0, 0, -1.5708f, 0);
+		Joint skeletonJoint1 = new Joint(1, "bone1", bone1Transform, bone1);
+
+		JointTransform bone2Transform = new JointTransform(25, 0, 0, 0, 0, 0);
+		Joint skeletonJoint2 = new Joint(2, "bone2", bone2Transform, bone2);
+
+		JointTransform bone3Transform = new JointTransform(25, 0, 0, 0, 0, 0);
+		Joint skeletonJoint3 = new Joint(3, "bone3", bone3Transform, bone3);
+
+		JointTransform bone4Transform = new JointTransform(25, 0, 0, 0, 0, 0);
+		Joint skeletonJoint4 = new Joint(4, "bone4", bone4Transform, bone4);
+
+		skeletonJoint1.addChild(skeletonJoint2);
+		skeletonJoint2.addChild(skeletonJoint3);
+		skeletonJoint3.addChild(skeletonJoint4);
+		
+		skeleton = new Skeleton(skeletonJoint1);
+		
+		Animation idleAnimation = new Animation(animationName, 5);
+		AnimationFrame frame0 = new AnimationFrame();
+		AnimationFrame frame1 = new AnimationFrame();
+		AnimationFrame frame2 = new AnimationFrame();
+		AnimationFrame frame3 = new AnimationFrame();
+		AnimationFrame frame4 = new AnimationFrame();
+		
+		frame0.addTransform(skeletonJoint1.name, new JointTransform(0, 0, 0, 0, -1.5708f, 0));
+		frame0.addTransform(skeletonJoint2.name, new JointTransform(25, 0, 0, 0, 1.5708f, 0));
+		frame0.addTransform(skeletonJoint3.name, new JointTransform(25, 0, 0, 0, -1.5708f, 0));
+		frame0.addTransform(skeletonJoint4.name, new JointTransform(25, 0, 0, 0, -1, 0));
+		
+		frame1.addTransform(skeletonJoint1.name, new JointTransform(0, 0, 0, 0, -1.0472f, 0));
+		frame1.addTransform(skeletonJoint2.name, new JointTransform(25, 0, 0, 0, 1.0472f, 0));
+		frame1.addTransform(skeletonJoint3.name, new JointTransform(25, 0, 0, 0, -1.0472f, 0));
+		frame1.addTransform(skeletonJoint4.name, new JointTransform(25, 0, 0, 0, 0.5f, 0));
+		
+		frame2.addTransform(skeletonJoint1.name, new JointTransform(0, 0, 0, 0, -0.523599f, 0));
+		frame2.addTransform(skeletonJoint2.name, new JointTransform(25, 0, 0, 0, 0.523599f, 0));
+		frame2.addTransform(skeletonJoint3.name, new JointTransform(25, 0, 0, 0, -0.523599f, 0));
+		frame2.addTransform(skeletonJoint4.name, new JointTransform(25, 0, 0, 0, 0.75f, 0));
+		
+		frame3.addTransform(skeletonJoint1.name, new JointTransform(0, 0, 0, 0, -1.0472f, 0));
+		frame3.addTransform(skeletonJoint2.name, new JointTransform(25, 0, 0, 0, 1.0472f, 0));
+		frame3.addTransform(skeletonJoint3.name, new JointTransform(25, 0, 0, 0, -1.0472f, 0));
+		frame3.addTransform(skeletonJoint4.name, new JointTransform(25, 0, 0, 0, -2, 0));
+		
+		frame4.addTransform(skeletonJoint1.name, new JointTransform(0, 0, 0, 0, -1.5708f, 0));
+		frame4.addTransform(skeletonJoint2.name, new JointTransform(25, 0, 0, 0, 1.5708f, 0));
+		frame4.addTransform(skeletonJoint3.name, new JointTransform(25, 0, 0, 0, -1.5708f, 0));
+		frame4.addTransform(skeletonJoint4.name, new JointTransform(25, 0, 0, 0, 1, 0));
+		
+		idleAnimation.setFrame(0, frame0);
+		idleAnimation.setFrame(1, frame1);
+		idleAnimation.setFrame(2, frame2);
+		idleAnimation.setFrame(3, frame3);
+		idleAnimation.setFrame(4, frame4);
+		
+		skeleton.addAnimation(animationName, idleAnimation);
+		skeleton.setCurrentAnimation(animationName);
 	}
 
 	private void update()
 	{
-		Matrix4f animation1 = new Matrix4f();
-		Matrix4f animation2 = new Matrix4f();
-		Matrix4f animation3 = new Matrix4f();
-		Matrix4f animation4 = new Matrix4f();
-//		transform(animation1, 0, 0, 0, 0,  slider1X, 0);
-//		transform(animation2, 25, 0, 0, 0, slider2X, 0);
-//		transform(animation3, 25, 0, 0, 0, slider3X, 0);
-//		transform(animation4, 25, 0, 0, 0, slider4X, 0);
-		
-		transform(animation1, 0, 0, 0, -0.349054, -1.0979 + slider1X, 0);
-		transform(animation2, 25, 0, 0, 1.26766, 0.133236 + slider2X, -0.707357);
-		transform(animation3, 25, 0, 0, 1.29614, -0.682041 + slider3X, 0.45644);
-		transform(animation4, 25, 0, 0, -0.39605, 0.78552 + slider4X, 0.275484);
-
-		joint1.setAnimationTransform(animation1);
-		joint2.setAnimationTransform(animation2);
-		joint3.setAnimationTransform(animation3);
-		joint4.setAnimationTransform(animation4);
-		joint1.calcAnimationTransform(new Matrix4f());
-		
-//		Matrix4f bone1End = new Matrix4f();
-//		transform(bone1End, 0, 0, 0, 0, -1.5708 + slider1X, 0);
-//		Matrix4f.mul(bone1End, joint1.getInverse(), bone1End);
-//		
-//		Matrix4f bone2End = new Matrix4f(joint2.getInverse());
-//		transform(bone2End, 25, 0, 0, slider2X, 0, 0);
-//		Matrix4f.mul(bone2End, joint2.getInverse(), bone2End);
-//		Matrix4f.mul(bone2End, bone1End, bone2End);
-//
-//		Matrix4f bone3End = new Matrix4f(joint3.getInverse());
-//		transform(bone3End, 25, 0, 0, 0, slider3X, 0);
-//		Matrix4f.mul(bone3End, joint3.getInverse(), bone3End);
-//		Matrix4f.mul(bone3End, bone2End, bone3End);
-//
-//		Matrix4f bone4End = new Matrix4f(joint4.getInverse());
-//		transform(bone4End, 25, 0, 0, 0, slider4X, 0);
-//		Matrix4f.mul(bone4End, joint4.getInverse(), bone4End);
-//		Matrix4f.mul(bone4End, bone3End, bone4End);
-		
-		bone1.load(joint1.getAnimation());
-		bone2.load(joint2.getAnimation());
-		bone3.load(joint3.getAnimation());
-		bone4.load(joint4.getAnimation());
-
+		skeleton.update(System.currentTimeMillis(), 16);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -208,16 +215,6 @@ public class SnakeControl extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-	private void transform(Matrix4f bone, double x, double y, double z, double rotX, double rotY, double rotZ)
-	{
-		SHARED_POSITION.set((float) x, (float) y, (float) z);
-		SHARED_ROTATION.set((float) rotX, (float) rotY, (float) rotZ);
-		bone.translate(SHARED_POSITION);
-		bone.rotate(SHARED_ROTATION.z, GeometryUtils.ROTATION_Z);
-		bone.rotate(SHARED_ROTATION.y, GeometryUtils.ROTATION_Y);
-		bone.rotate(SHARED_ROTATION.x, GeometryUtils.ROTATION_X);
-	}
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -230,69 +227,29 @@ public class SnakeControl extends javax.swing.JFrame
     private javax.swing.JSlider slider4;
     // End of variables declaration//GEN-END:variables
 
-	private void SetupEvents()
+	private void SetupThread()
 	{
-		MouseMotionAdapter adap = new MouseMotionAdapter()
+		Thread t = new Thread()
 		{
 			@Override
-			public void mouseDragged(MouseEvent e)
+			public void run()
 			{
-				slider1X = FloatMath.toRadians(slider1.getValue());
-				slider2X = FloatMath.toRadians(slider2.getValue());
-				slider3X = FloatMath.toRadians(slider3.getValue());
-				slider4X = FloatMath.toRadians(slider4.getValue());
-
-				update();
+				while (true)
+				{					
+					try
+					{
+						Thread.sleep(16);
+					}
+					catch (InterruptedException ex)
+					{
+					}
+					
+					update();
+				}
 			}
-
 		};
-
-		slider1.addMouseMotionListener(adap);
-		slider2.addMouseMotionListener(adap);
-		slider3.addMouseMotionListener(adap);
-		slider4.addMouseMotionListener(adap);
+		
+		t.setDaemon(true);
+		t.start();
 	}
-
-	private void setupBonesSnake()
-	{
-		transform(bone1, 0, 0, 0, -0.349054, -1.0979, 0);
-		joint1 = new Joint(bone1);
-		
-		transform(bone2, 25, 0, 0, 1.26766, 0.133236, -0.707357);
-		joint2 = new Joint(bone2);
-		
-		transform(bone3, 25, 0, 0, 1.29614, -0.682041, 0.45644);
-		joint3 = new Joint(bone3);
-		
-		transform(bone4, 25, 0, 0, -0.39605, 0.78552, 0.275484);
-		joint4 = new Joint(bone4);
-		
-		joint1.addChild(joint2);
-		joint2.addChild(joint3);
-		joint3.addChild(joint4);
-		
-		joint1.calcInverseBindTransform(new Matrix4f());
-	}
-	
-	private void setupBonesMesh()
-	{
-		transform(bone1, 0, 0, 0, 0, -1.5708, 0);
-		joint1 = new Joint(bone1);
-		
-		transform(bone2, 25, 0, 0, 0, 0, 0);
-		joint2 = new Joint(bone2);
-		
-		transform(bone3, 25, 0, 0, 0, 0, 0);
-		joint3 = new Joint(bone3);
-		
-		transform(bone4, 25, 0, 0, 0, 0, 0);
-		joint4 = new Joint(bone4);
-		
-		joint1.addChild(joint2);
-		joint2.addChild(joint3);
-		joint3.addChild(joint4);
-		
-		joint1.calcInverseBindTransform(new Matrix4f());
-	}
-
 }

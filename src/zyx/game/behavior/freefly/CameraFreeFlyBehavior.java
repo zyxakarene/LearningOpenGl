@@ -7,6 +7,7 @@ import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.controls.KeyboardControl;
 import zyx.game.controls.MouseControl;
+import zyx.utils.DeltaTime;
 import zyx.utils.FloatMath;
 
 public class CameraFreeFlyBehavior extends Behavior
@@ -40,7 +41,7 @@ public class CameraFreeFlyBehavior extends Behavior
 	}
 
 	@Override
-	public void update(int elapsedTime)
+	public void update(long timestamp, int elapsedTime)
 	{
 		if (KeyboardControl.wasKeyPressed(Keyboard.KEY_Z))
 		{
@@ -49,8 +50,8 @@ public class CameraFreeFlyBehavior extends Behavior
 
 		if (Mouse.isGrabbed())
 		{
-			int dx = MouseControl.getMovementX();
-			int dy = MouseControl.getMovementY();
+			int dx = (int) (MouseControl.getMovementX() * DeltaTime.getDeltaVariant());
+			int dy = (int) (MouseControl.getMovementY() * DeltaTime.getDeltaVariant());
 			rotate(-dy, 0, dx, elapsedTime);
 		}
 
@@ -128,7 +129,7 @@ public class CameraFreeFlyBehavior extends Behavior
             case (RIGHT):
             {
                 dX = FloatMath.sin(FloatMath.toRadians(cameraRotation.z + 90)) * MOVE_SPEED * multiplier;
-                dY = FloatMath.cos(FloatMath.toRadians(cameraRotation.z + 90)) * MOVE_SPEED * multiplier;;
+                dY = FloatMath.cos(FloatMath.toRadians(cameraRotation.z + 90)) * MOVE_SPEED * multiplier;
 
 				cameraPosition.x -= dX;
                 cameraPosition.y -= dY;

@@ -29,7 +29,7 @@ public class BehaviorBundle implements IUpdateable
 	}
 
 	@Override
-	public void update(int elapsedTime)
+	public void update(long timestamp, int elapsedTime)
 	{
 		int len = behaviors.size();
 		Behavior behavior;
@@ -39,7 +39,7 @@ public class BehaviorBundle implements IUpdateable
 			
 			if(behavior.active)
 			{
-				behavior.update(elapsedTime);
+				behavior.update(timestamp, elapsedTime);
 			}
 		}
 	}
