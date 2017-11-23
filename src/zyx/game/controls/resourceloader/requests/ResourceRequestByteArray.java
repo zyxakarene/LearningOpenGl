@@ -6,7 +6,7 @@ public class ResourceRequestByteArray extends ResourceRequest
 {
 	private ResourceByteArray data;
 
-	public ResourceRequestByteArray(String path, IResourceLoaded callback)
+	public ResourceRequestByteArray(String path, IResourceLoaded<Object> callback)
 	{
 		super(path, callback);
 	}

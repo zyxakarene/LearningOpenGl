@@ -1,20 +1,16 @@
 package zyx.game.components.screen;
 
-import zyx.opengl.shaders.implementations.ScreenShader;
 import zyx.opengl.textures.bitmapfont.BitmapFont;
 import zyx.opengl.textures.bitmapfont.Text;
-import zyx.utils.FloatMath;
 
 public class Textfield extends DisplayObject
 {
 
-	private final BitmapFont font;
 	private final Text glText;
 	private String text;
 
 	public Textfield(BitmapFont font)
 	{
-		this.font = font;
 		this.glText = new Text(font);
 	}
 

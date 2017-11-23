@@ -3,9 +3,9 @@ package zyx.game.controls.resourceloader.requests;
 public abstract class ResourceRequest
 {
 	public String path;
-	public IResourceLoaded callback;
+	public IResourceLoaded<Object> callback;
 
-	public ResourceRequest(String path, IResourceLoaded callback)
+	public ResourceRequest(String path, IResourceLoaded<Object> callback)
 	{
 		this.path = path;
 		this.callback = callback;

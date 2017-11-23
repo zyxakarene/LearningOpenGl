@@ -5,6 +5,11 @@
         <group name="games">
             <file>file:/D:/Programmering/Tutorial5/src/zyx/Main.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/dev/bones/SnakeControl.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/game/components/WorldObject.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/shaders/source/WorldVertex.shader</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/utils/GameConstants.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/implementations/WorldModel.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/dev/bones/skeleton/Joint.java</file>
         </group>
     </open-files>
 </project-private>

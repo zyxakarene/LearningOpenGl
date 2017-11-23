@@ -7,7 +7,7 @@ public class ResourceRequestDataInput extends ResourceRequest
 {
 	private DataInputStream data;
 
-	public ResourceRequestDataInput(String path, IResourceLoaded callback)
+	public ResourceRequestDataInput(String path, IResourceLoaded<Object> callback)
 	{
 		super(path, callback);
 	}

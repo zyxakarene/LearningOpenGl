@@ -5,7 +5,6 @@ import dev.bones.animation.AnimationFrame;
 import dev.bones.skeleton.Joint;
 import dev.bones.skeleton.Skeleton;
 import dev.bones.transform.JointTransform;
-import org.lwjgl.util.vector.Matrix4f;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.WorldShader;
@@ -13,24 +12,14 @@ import zyx.opengl.shaders.implementations.WorldShader;
 public class SnakeControl extends javax.swing.JFrame
 {
 
-	private Matrix4f bone1;
-	private Matrix4f bone2;
-	private Matrix4f bone3;
-	private Matrix4f bone4;
-
-	private final WorldShader shader;
 	private Skeleton skeleton;
 
 	public SnakeControl()
 	{
 		initComponents();
 
-		shader = (WorldShader) ShaderManager.INSTANCE.get(Shader.WORLD);
-
-		bone1 = shader.BONES[1];
-		bone2 = shader.BONES[2];
-		bone3 = shader.BONES[3];
-		bone4 = shader.BONES[4];
+		WorldShader shader = (WorldShader) ShaderManager.INSTANCE.get(Shader.WORLD);
+		Joint.setBones(shader.BONES);
 
 		createSkeleton();
 		SetupThread();
@@ -41,42 +30,42 @@ public class SnakeControl extends javax.swing.JFrame
 	private void createSkeleton()
 	{
 		String animationName = "idle";
-		
+
 		JointTransform bone1Transform = new JointTransform(0, 0, 0, 0, -1.5708f, 0);
-		Joint skeletonJoint1 = new Joint(1, "bone1", bone1Transform, bone1);
+		Joint skeletonJoint1 = new Joint(1, "bone1", bone1Transform);
 
 		JointTransform bone2Transform = new JointTransform(25, 0, 0, 0, 0, 0);
-		Joint skeletonJoint2 = new Joint(2, "bone2", bone2Transform, bone2);
+		Joint skeletonJoint2 = new Joint(2, "bone2", bone2Transform);
 
 		JointTransform bone3Transform = new JointTransform(25, 0, 0, 0, 0, 0);
-		Joint skeletonJoint3 = new Joint(3, "bone3", bone3Transform, bone3);
+		Joint skeletonJoint3 = new Joint(3, "bone3", bone3Transform);
 
 		JointTransform bone4Transform = new JointTransform(25, 0, 0, 0, 0, 0);
-		Joint skeletonJoint4 = new Joint(4, "bone4", bone4Transform, bone4);
+		Joint skeletonJoint4 = new Joint(4, "bone4", bone4Transform);
 
 		skeletonJoint1.addChild(skeletonJoint2);
 		skeletonJoint2.addChild(skeletonJoint3);
 		skeletonJoint3.addChild(skeletonJoint4);
-		
+
 		skeleton = new Skeleton(skeletonJoint1);
-		
+
 		Animation idleAnimation = new Animation(animationName, 5);
 		AnimationFrame frame0 = new AnimationFrame();
 		AnimationFrame frame1 = new AnimationFrame();
 		AnimationFrame frame2 = new AnimationFrame();
 		AnimationFrame frame3 = new AnimationFrame();
 		AnimationFrame frame4 = new AnimationFrame();
-		
+
 		frame0.addTransform(skeletonJoint1.name, new JointTransform(0, 0, 0, 0, -1.5708f, 0));
 		frame0.addTransform(skeletonJoint2.name, new JointTransform(25, 0, 0, 0, 1.5708f, 0));
 		frame0.addTransform(skeletonJoint3.name, new JointTransform(25, 0, 0, 0, -1.5708f, 0));
 		frame0.addTransform(skeletonJoint4.name, new JointTransform(25, 0, 0, 0, -1, 0));
-		
+
 		frame1.addTransform(skeletonJoint1.name, new JointTransform(0, 0, 0, 0, -1.0472f, 0));
 		frame1.addTransform(skeletonJoint2.name, new JointTransform(25, 0, 0, 0, 1.0472f, 0));
 		frame1.addTransform(skeletonJoint3.name, new JointTransform(25, 0, 0, 0, -1.0472f, 0));
 		frame1.addTransform(skeletonJoint4.name, new JointTransform(25, 0, 0, 0, 0.5f, 0));
-		
+
 		frame2.addTransform(skeletonJoint1.name, new JointTransform(0, 0, 0, 0, -0.523599f, 0));
 		frame2.addTransform(skeletonJoint2.name, new JointTransform(25, 0, 0, 0, 0.523599f, 0));
 		frame2.addTransform(skeletonJoint3.name, new JointTransform(25, 0, 0, 0, -0.523599f, 0));
@@ -97,14 +86,17 @@ public class SnakeControl extends javax.swing.JFrame
 		idleAnimation.setFrame(2, frame2);
 		idleAnimation.setFrame(3, frame3);
 		idleAnimation.setFrame(4, frame4);
-		
+
 		skeleton.addAnimation(animationName, idleAnimation);
 		skeleton.setCurrentAnimation(animationName);
 	}
 
+	private long timer = System.currentTimeMillis();
+
 	private void update()
 	{
-		skeleton.update(System.currentTimeMillis(), 16);
+		timer += 16;
+		skeleton.update(timer, 16);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -121,6 +113,7 @@ public class SnakeControl extends javax.swing.JFrame
         jLabel3 = new javax.swing.JLabel();
         slider4 = new javax.swing.JSlider();
         jLabel4 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SNAKE");
@@ -153,6 +146,15 @@ public class SnakeControl extends javax.swing.JFrame
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Bone 4");
 
+        jButton1.setText("Update");
+        jButton1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -173,6 +175,9 @@ public class SnakeControl extends javax.swing.JFrame
                 .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(slider4, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jButton1)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,7 +197,9 @@ public class SnakeControl extends javax.swing.JFrame
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(slider4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(112, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addContainerGap(83, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -215,7 +222,13 @@ public class SnakeControl extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
+    {//GEN-HEADEREND:event_jButton1ActionPerformed
+		
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -235,7 +248,7 @@ public class SnakeControl extends javax.swing.JFrame
 			public void run()
 			{
 				while (true)
-				{					
+				{
 					try
 					{
 						Thread.sleep(16);
@@ -243,12 +256,12 @@ public class SnakeControl extends javax.swing.JFrame
 					catch (InterruptedException ex)
 					{
 					}
-					
+
 					update();
 				}
 			}
 		};
-		
+
 		t.setDaemon(true);
 		t.start();
 	}

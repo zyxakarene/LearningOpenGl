@@ -1,7 +1,11 @@
 package zyx.opengl.models.loading;
 
-import java.io.*;
-import java.util.Arrays;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
 import zyx.opengl.models.implementations.WorldModel;
 
 public class ZmfLoader
@@ -40,6 +44,8 @@ public class ZmfLoader
 			long end = System.currentTimeMillis();
 			System.out.println("Took " + (end - start) + "ms to load " + name);
 
+			raf.close();
+			
 			return result;
 
 		}

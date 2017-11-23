@@ -1,6 +1,5 @@
 package zyx;
 
-import dev.bones.MeshControl;
 import dev.bones.SnakeControl;
 import java.io.File;
 import java.io.IOException;

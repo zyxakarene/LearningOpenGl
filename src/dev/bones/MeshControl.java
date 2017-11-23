@@ -2,10 +2,10 @@ package dev.bones;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.opengl.shaders.AbstractShader;
+
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.WorldShader;

@@ -10,6 +10,8 @@ import zyx.utils.interfaces.IDisposeable;
 public class Joint implements IDisposeable
 {
 
+	private static Matrix4f[] shaderBones;
+	
 	public final int id;
 	public final String name;
 	
@@ -22,7 +24,7 @@ public class Joint implements IDisposeable
 	
 	private final Matrix4f outTransform;
 
-	public Joint(int id, String name, JointTransform transform, Matrix4f outTransform)
+	public Joint(int id, String name, JointTransform transform)
 	{
 		this.id = id;
 		this.name = name;
@@ -32,7 +34,7 @@ public class Joint implements IDisposeable
 		inverseBindTransform = new Matrix4f();
 		localBindTransform = transform.getMatrix();
 		
-		this.outTransform = outTransform;
+		outTransform = shaderBones[id];
 	}
 	
 	public void addChild(Joint child)
@@ -82,6 +84,11 @@ public class Joint implements IDisposeable
 		}
 	}
 
+	public static void setBones(Matrix4f[] bones)
+	{
+		shaderBones = bones;
+	}
+	
 	@Override
 	public void dispose()
 	{

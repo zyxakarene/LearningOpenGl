@@ -1,8 +1,8 @@
 package dev.bones.animation;
 
-import dev.bones.skeleton.Joint;
 import java.util.HashMap;
-import org.lwjgl.util.vector.Matrix4f;
+
+import dev.bones.skeleton.Joint;
 import zyx.utils.DeltaTime;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
@@ -10,7 +10,6 @@ import zyx.utils.interfaces.IUpdateable;
 
 public class Animator implements IUpdateable
 {
-	private static final int ANIMATION_FRAMERATE = GameConstants.ANIMATION_FRAMERATE; //24
 	private static final int ANIMATION_MS_PER_FRAME = GameConstants.ANIMATION_MS_PER_FRAME; //41
 
 	private long animationStartedAt;

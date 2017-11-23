@@ -4,7 +4,7 @@ public class ResourceRequestString extends ResourceRequest
 {
 	private String data;
 
-	public ResourceRequestString(String path, IResourceLoaded callback)
+	public ResourceRequestString(String path, IResourceLoaded<Object> callback)
 	{
 		super(path, callback);
 	}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="lib/lwjgl.jar" sourcepath="D:/Programmering/Libraries/lwjgl-2.8.5/src"/>
+	<classpathentry kind="lib" path="lib/slick-util.jar" sourcepath="D:/Programmering/Libraries/slick-util/src"/>
+	<classpathentry kind="lib" path="lib/lwjgl_util.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

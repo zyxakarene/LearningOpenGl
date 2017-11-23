@@ -27,7 +27,7 @@ public class WorldModel extends AbstractModel
 		shader = (WorldShader) meshShader;
 
 		setVertexData(vertexData, elementData);
-		setTexture(TextureManager.getTexture("TowerBase"));
+		setTexture(TextureManager.getTexture("tile"));
 	}
 
 	public void transform(Vector3f position, Vector3f rotation, Vector3f scale)
