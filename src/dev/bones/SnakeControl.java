@@ -1,10 +1,10 @@
 package dev.bones;
 
-import dev.bones.animation.Animation;
-import dev.bones.animation.AnimationFrame;
-import dev.bones.skeleton.Joint;
-import dev.bones.skeleton.Skeleton;
-import dev.bones.transform.JointTransform;
+import zyx.opengl.models.implementations.bones.animation.Animation;
+import zyx.opengl.models.implementations.bones.animation.AnimationFrame;
+import zyx.opengl.models.implementations.bones.skeleton.Joint;
+import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
+import zyx.opengl.models.implementations.bones.transform.JointTransform;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.WorldShader;

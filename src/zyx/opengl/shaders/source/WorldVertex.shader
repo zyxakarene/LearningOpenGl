@@ -1,6 +1,6 @@
 #version 420
 
-const int MAX_JOINTS = 10;//max joints allowed in a skeleton
+const int MAX_JOINTS = 20;//max joints allowed in a skeleton
 const int MAX_WEIGHTS = 2;//max number of joints that can affect a vertex
 
 
@@ -16,7 +16,7 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
-uniform mat4 bones[10];
+uniform mat4 bones[MAX_JOINTS];
 
 void main()
 {

@@ -1,10 +1,14 @@
-package dev.bones.skeleton;
+package zyx.opengl.models.implementations.bones.skeleton;
 
-import dev.bones.transform.JointTransform;
+import zyx.opengl.models.implementations.bones.transform.JointTransform;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.lwjgl.util.vector.Matrix4f;
+import zyx.opengl.shaders.AbstractShader;
+import zyx.opengl.shaders.ShaderManager;
+import zyx.opengl.shaders.implementations.Shader;
+import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.utils.interfaces.IDisposeable;
 
 public class Joint implements IDisposeable
@@ -33,7 +37,7 @@ public class Joint implements IDisposeable
 		animatedTransform = new Matrix4f();
 		inverseBindTransform = new Matrix4f();
 		localBindTransform = transform.getMatrix();
-		
+
 		outTransform = shaderBones[id];
 	}
 	

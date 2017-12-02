@@ -30,13 +30,18 @@ public class ZmfLoader
 			float vertexData[] = new float[verticies];
 			int elementData[] = new int[elements];
 
+			System.out.println(verticies + " floats");
+			System.out.println(elements + " elements");
+			
 			for (int i = 0; i < verticies; i++)
 			{
 				vertexData[i] = in.readFloat();
 			}
+			System.out.println("Elements:");
 			for (int i = 0; i < elements; i++)
 			{
 				elementData[i] = in.readShort();
+				System.out.println(elementData[i]);
 			}
 
 			WorldModel result = new WorldModel(vertexData, elementData);

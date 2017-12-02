@@ -1,7 +1,7 @@
-package dev.bones.animation;
+package zyx.opengl.models.implementations.bones.animation;
 
-import dev.bones.skeleton.Joint;
-import dev.bones.transform.JointTransform;
+import zyx.opengl.models.implementations.bones.skeleton.Joint;
+import zyx.opengl.models.implementations.bones.transform.JointTransform;
 import java.util.HashMap;
 import org.lwjgl.util.vector.Matrix4f;
 

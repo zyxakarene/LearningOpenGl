@@ -1,6 +1,6 @@
-package dev.bones.animation;
+package zyx.opengl.models.implementations.bones.animation;
 
-import dev.bones.transform.JointTransform;
+import zyx.opengl.models.implementations.bones.transform.JointTransform;
 import java.util.HashMap;
 
 public class AnimationFrame

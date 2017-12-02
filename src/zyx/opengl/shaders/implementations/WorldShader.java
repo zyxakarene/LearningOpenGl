@@ -1,6 +1,7 @@
 package zyx.opengl.shaders.implementations;
 
 import org.lwjgl.util.vector.Matrix4f;
+import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.shaders.AbstractShader;
 
 public class WorldShader extends AbstractShader
@@ -10,7 +11,7 @@ public class WorldShader extends AbstractShader
 	public static final Matrix4f MATRIX_VIEW = new Matrix4f();
 	public static final Matrix4f MATRIX_MODEL = new Matrix4f();
 	
-	public final Matrix4f[] BONES = new Matrix4f[10];
+	public final Matrix4f[] BONES = new Matrix4f[20];
 
 	private int projectionMatrixTrans;
 	private int viewMatrixTrans;
@@ -25,6 +26,8 @@ public class WorldShader extends AbstractShader
 		{
 			BONES[i] = new Matrix4f();
 		}
+		
+		Joint.setBones(BONES);
 	}
 
 	@Override

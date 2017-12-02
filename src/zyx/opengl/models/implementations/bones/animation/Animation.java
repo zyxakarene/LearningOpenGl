@@ -1,4 +1,4 @@
-package dev.bones.animation;
+package zyx.opengl.models.implementations.bones.animation;
 
 public class Animation
 {

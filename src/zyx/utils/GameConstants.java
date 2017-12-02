@@ -13,7 +13,7 @@ public class GameConstants
 	public static final Logger LOGGER = Logger.getGlobal();
 	public static final String TEXTURE_FORMAT = "png";
 	
-	public static final int ANIMATION_FRAMERATE = 2;
-	public static final int ANIMATION_MS_PER_FRAME = 1000 / ANIMATION_FRAMERATE;
+	public static final float ANIMATION_FRAMERATE = 6f;
+	public static final float ANIMATION_MS_PER_FRAME = 1000f / ANIMATION_FRAMERATE;
 
 }

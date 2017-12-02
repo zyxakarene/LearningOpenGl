@@ -1,8 +1,8 @@
-package dev.bones.animation;
+package zyx.opengl.models.implementations.bones.animation;
 
 import java.util.HashMap;
 
-import dev.bones.skeleton.Joint;
+import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.utils.DeltaTime;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
@@ -10,8 +10,6 @@ import zyx.utils.interfaces.IUpdateable;
 
 public class Animator implements IUpdateable
 {
-	private static final int ANIMATION_MS_PER_FRAME = GameConstants.ANIMATION_MS_PER_FRAME; //41
-
 	private long animationStartedAt;
 	private float currentFrame;
 	private Animation currentAnimation;
@@ -42,16 +40,19 @@ public class Animator implements IUpdateable
 			float timeSinceStart = (int) (timestamp - animationStartedAt);
 			int animationLength = currentAnimation.length;
 			
-			currentFrame = (timeSinceStart / ANIMATION_MS_PER_FRAME) % animationLength;
+			currentFrame = (timeSinceStart / GameConstants.ANIMATION_MS_PER_FRAME) % animationLength;
 			
 			int prevFrame = FloatMath.floor(currentFrame);
 			int nextFrame = FloatMath.ceil(currentFrame);
+			
 			if (nextFrame >= animationLength)
 			{
 				nextFrame = currentAnimation.loopable ? 0 : animationLength - 1;
 			}
 			
 			float percentage = currentFrame - prevFrame;
+			
+			System.out.println(percentage + "% between frame " + prevFrame + " and " + nextFrame);
 			
 			AnimationFrame prevAnimationFrame = currentAnimation.frames[prevFrame];
 			AnimationFrame nextAnimationFrame = currentAnimation.frames[nextFrame];

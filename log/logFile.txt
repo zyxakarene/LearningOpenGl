@@ -632,3 +632,70 @@ java.lang.ArrayIndexOutOfBoundsException: 5
 	at dev.bones.SnakeControl.access$000(SnakeControl.java:13)
 	at dev.bones.SnakeControl$1.run(SnakeControl.java:247)
 
+dec. 02, 2017 2:05:48 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.WorldObject.update(WorldObject.java:28)
+	at zyx.Main.update(Main.java:100)
+	at zyx.Main.main(Main.java:61)
+
+dec. 02, 2017 2:09:06 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.WorldObject.update(WorldObject.java:28)
+	at zyx.Main.update(Main.java:100)
+	at zyx.Main.main(Main.java:61)
+
+dec. 02, 2017 2:10:12 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.WorldObject.update(WorldObject.java:28)
+	at zyx.Main.update(Main.java:100)
+	at zyx.Main.main(Main.java:61)
+
+dec. 02, 2017 2:10:54 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.WorldObject.update(WorldObject.java:28)
+	at zyx.Main.update(Main.java:100)
+	at zyx.Main.main(Main.java:61)
+
+dec. 02, 2017 2:11:05 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.WorldObject.update(WorldObject.java:28)
+	at zyx.Main.update(Main.java:100)
+	at zyx.Main.main(Main.java:61)
+
+dec. 02, 2017 2:12:01 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.WorldObject.update(WorldObject.java:28)
+	at zyx.Main.update(Main.java:100)
+	at zyx.Main.main(Main.java:61)
+
+dec. 02, 2017 2:23:51 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.models.implementations.bones.animation.AnimationTransformer.transform(AnimationTransformer.java:31)
+	at zyx.opengl.models.implementations.bones.animation.AnimationTransformer.transform(AnimationTransformer.java:24)
+	at zyx.opengl.models.implementations.bones.animation.Animator.update(Animator.java:59)
+	at zyx.opengl.models.implementations.bones.skeleton.Skeleton.update(Skeleton.java:44)
+	at zyx.opengl.models.implementations.BoneModel.update(BoneModel.java:26)
+	at zyx.game.components.WorldObject.update(WorldObject.java:28)
+	at zyx.Main.update(Main.java:100)
+	at zyx.Main.main(Main.java:61)
+
+dec. 02, 2017 10:37:39 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.ArrayIndexOutOfBoundsException: 14
+	at zyx.opengl.models.implementations.bones.skeleton.Joint.<init>(Joint.java:41)
+	at zyx.opengl.models.loading.bones.ZafLoader.getJointFrom(ZafLoader.java:56)
+	at zyx.opengl.models.loading.bones.ZafLoader.getJointFrom(ZafLoader.java:60)
+	at zyx.opengl.models.loading.bones.ZafLoader.getJointFrom(ZafLoader.java:60)
+	at zyx.opengl.models.loading.bones.ZafLoader.getJointFrom(ZafLoader.java:60)
+	at zyx.opengl.models.loading.bones.ZafLoader.loadFromZaf(ZafLoader.java:31)
+	at zyx.game.components.WorldObject.<init>(WorldObject.java:16)
+	at zyx.Main.load(Main.java:117)
+	at zyx.Main.main(Main.java:49)
+

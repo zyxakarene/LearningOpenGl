@@ -49,8 +49,6 @@ public class Main
 		load();
 
 		GLUtils.errorCheck();
-		
-		new SnakeControl().setVisible(true);
 
 		float time = 0;
 		while (!Display.isCloseRequested())

@@ -8,8 +8,9 @@ import zyx.opengl.shaders.implementations.Shader;
 import zyx.game.controls.textures.TextureManager;
 import zyx.utils.FloatMath;
 import zyx.utils.GeometryUtils;
+import zyx.utils.interfaces.IUpdateable;
 
-public class WorldModel extends AbstractModel
+public class WorldModel extends AbstractModel implements IUpdateable
 {
 
 	protected static final Vector3f SHARED_ROTATION = new Vector3f(0, 0, 0);
@@ -27,7 +28,7 @@ public class WorldModel extends AbstractModel
 		shader = (WorldShader) meshShader;
 
 		setVertexData(vertexData, elementData);
-		setTexture(TextureManager.getTexture("tile"));
+		setTexture(TextureManager.getTexture("knight"));
 	}
 
 	public void transform(Vector3f position, Vector3f rotation, Vector3f scale)
@@ -65,5 +66,10 @@ public class WorldModel extends AbstractModel
 		addAttribute("texcoord", 2, 12, 6);
 		addAttribute("indexes", 2, 12, 8);
 		addAttribute("weights", 2, 12, 10);
+	}
+
+	@Override
+	public void update(long timestamp, int elapsedTime)
+	{
 	}
 }

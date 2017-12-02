@@ -1,9 +1,10 @@
-package dev.bones.skeleton;
+package zyx.opengl.models.implementations.bones.skeleton;
 
-import dev.bones.animation.Animation;
-import dev.bones.animation.Animator;
+import zyx.opengl.models.implementations.bones.animation.Animation;
+import zyx.opengl.models.implementations.bones.animation.Animator;
 import java.util.HashMap;
 import org.lwjgl.util.vector.Matrix4f;
+import zyx.opengl.models.implementations.bones.transform.JointTransform;
 import zyx.utils.interfaces.IUpdateable;
 
 public class Skeleton implements IUpdateable
@@ -21,6 +22,8 @@ public class Skeleton implements IUpdateable
 		rootJoint = root;
 		jointMap = new HashMap<>();
 		animations = new HashMap<>();
+		
+		jointMap.put("dummy", new Joint(0, "dummy", new JointTransform(0, 0, 0, 0, 0, 0)));
 		
 		rootJoint.calcInverseBindTransform(DUMMY_MATRIX);
 		rootJoint.addToMap(jointMap);
