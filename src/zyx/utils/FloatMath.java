@@ -59,7 +59,7 @@ public class FloatMath
         return (float) Math.atan(a);
     }
     
-    public static float atan2(float x, float y)
+    public static float atan2(float y, float x)
     {
         return (float) Math.atan2(y, x);
     }

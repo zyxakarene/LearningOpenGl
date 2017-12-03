@@ -4,6 +4,8 @@ import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.transform.JointTransform;
 import java.util.HashMap;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Quaternion;
+import org.lwjgl.util.vector.Vector3f;
 
 class AnimationTransformer
 {
@@ -27,8 +29,16 @@ class AnimationTransformer
 
 	private static void transform(JointTransform prevTransform, JointTransform nextTransform, Joint joint, float percentage)
 	{
-		prevTransform.lerpTo(nextTransform, percentage, LERP_MATRIX);
+		Quaternion slerp = JointTransform.slerp(prevTransform.q, nextTransform.q, percentage);
+		
+		Vector3f euler = JointTransform.toEuler3(slerp);
+		prevTransform.lerpToTwo(nextTransform, percentage, euler, LERP_MATRIX);
+		
+		System.out.println("Slerp: " + slerp);
+//		prevTransform.lerpTo(nextTransform, percentage, LERP_MATRIX);
 		joint.setAnimationTransform(LERP_MATRIX);
+		
+		System.out.println();
 	}
 
 }
