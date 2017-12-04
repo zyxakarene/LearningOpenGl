@@ -5,10 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.lwjgl.util.vector.Matrix4f;
-import zyx.opengl.shaders.AbstractShader;
-import zyx.opengl.shaders.ShaderManager;
-import zyx.opengl.shaders.implementations.Shader;
-import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.utils.interfaces.IDisposeable;
 
 public class Joint implements IDisposeable

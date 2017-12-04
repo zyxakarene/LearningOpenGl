@@ -6,11 +6,20 @@ import java.util.HashMap;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.utils.math.MatrixUtils;
+import zyx.utils.tween.TweenUtils;
 
 class AnimationTransformer
 {
 
-	private static final Matrix4f LERP_MATRIX = new Matrix4f();
+	private static final Vector3f PREV_POS = new Vector3f();
+	private static final Vector3f NEXT_POS = new Vector3f();
+	private static final Quaternion PREV_ROT = new Quaternion();
+	private static final Quaternion NEXT_ROT = new Quaternion();
+	
+	private static final Quaternion INTERPOLATED_ROT = new Quaternion();
+	private static final Vector3f INTERPOLATED_POS = new Vector3f();
+	private static final Matrix4f TRANSFORM_MATRIX = new Matrix4f();
 
 	static void transform(HashMap<String, JointTransform> prevTransforms, HashMap<String, JointTransform> nextTransforms, HashMap<String, Joint> joints, float percentage)
 	{
@@ -29,16 +38,15 @@ class AnimationTransformer
 
 	private static void transform(JointTransform prevTransform, JointTransform nextTransform, Joint joint, float percentage)
 	{
-		Quaternion slerp = JointTransform.slerp(prevTransform.q, nextTransform.q, percentage);
+		prevTransform.getPosition(PREV_POS);
+		nextTransform.getPosition(NEXT_POS);
+		prevTransform.getRotation(PREV_ROT);
+		nextTransform.getRotation(NEXT_ROT);
 		
-		Vector3f euler = JointTransform.toEuler3(slerp);
-		prevTransform.lerpToTwo(nextTransform, percentage, euler, LERP_MATRIX);
+		TweenUtils.LINEAR.lerp(PREV_POS, NEXT_POS, percentage, INTERPOLATED_POS);
+		TweenUtils.LINEAR.slerp(PREV_ROT, NEXT_ROT, percentage, INTERPOLATED_ROT);
 		
-		System.out.println("Slerp: " + slerp);
-//		prevTransform.lerpTo(nextTransform, percentage, LERP_MATRIX);
-		joint.setAnimationTransform(LERP_MATRIX);
-		
-		System.out.println();
+		MatrixUtils.transformMatrix(INTERPOLATED_ROT, INTERPOLATED_POS, TRANSFORM_MATRIX);
+		joint.setAnimationTransform(TRANSFORM_MATRIX);
 	}
-
 }

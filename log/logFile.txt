@@ -699,3 +699,23 @@ java.lang.ArrayIndexOutOfBoundsException: 14
 	at zyx.Main.load(Main.java:117)
 	at zyx.Main.main(Main.java:49)
 
+dec. 04, 2017 8:40:03 PM zyx.opengl.models.loading.bones.ZafLoader loadFromZaf
+SEVERE: Error at loading a zaf file
+java.io.UTFDataFormatException: malformed input around byte 10
+	at java.io.DataInputStream.readUTF(DataInputStream.java:656)
+	at java.io.DataInputStream.readUTF(DataInputStream.java:564)
+	at zyx.opengl.models.loading.bones.SmdBone.read(SmdBone.java:27)
+	at zyx.opengl.models.loading.bones.SmdBone.read(SmdBone.java:42)
+	at zyx.opengl.models.loading.bones.SmdObject.read(SmdObject.java:16)
+	at zyx.opengl.models.loading.bones.ZafLoader.loadFromZaf(ZafLoader.java:29)
+	at zyx.game.components.WorldObject.<init>(WorldObject.java:16)
+	at zyx.Main.load(Main.java:115)
+	at zyx.Main.main(Main.java:49)
+
+dec. 04, 2017 8:40:03 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.WorldObject.update(WorldObject.java:32)
+	at zyx.Main.update(Main.java:98)
+	at zyx.Main.main(Main.java:59)
+

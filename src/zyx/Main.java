@@ -1,6 +1,5 @@
 package zyx;
 
-import dev.bones.SnakeControl;
 import java.io.File;
 import java.io.IOException;
 import org.lwjgl.input.Keyboard;

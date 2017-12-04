@@ -15,6 +15,7 @@ class SmdBone
 	float restRotX;
 	float restRotY;
 	float restRotZ;
+	float restRotW;
 	
 	SmdBone()
 	{
@@ -31,6 +32,7 @@ class SmdBone
 		restRotX = in.readFloat();
 		restRotY = in.readFloat();
 		restRotZ = in.readFloat();
+		restRotW = in.readFloat();
 		
 		byte childrenCount = in.readByte();
 		children = new SmdBone[childrenCount];

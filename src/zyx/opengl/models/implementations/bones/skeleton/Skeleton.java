@@ -23,7 +23,7 @@ public class Skeleton implements IUpdateable
 		jointMap = new HashMap<>();
 		animations = new HashMap<>();
 		
-		jointMap.put("dummy", new Joint(0, "dummy", new JointTransform(0, 0, 0, 0, 0, 0)));
+		jointMap.put("dummy", new Joint(0, "dummy", new JointTransform(0, 0, 0, 0, 0, 0, 0)));
 		
 		rootJoint.calcInverseBindTransform(DUMMY_MATRIX);
 		rootJoint.addToMap(jointMap);

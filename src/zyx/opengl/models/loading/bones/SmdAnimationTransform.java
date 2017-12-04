@@ -13,6 +13,7 @@ class SmdAnimationTransform
 	float rotX;
 	float rotY;
 	float rotZ;
+	float rotW;
 
 	SmdAnimationTransform()
 	{
@@ -28,5 +29,6 @@ class SmdAnimationTransform
 		rotX = in.readFloat();
 		rotY = in.readFloat();
 		rotZ = in.readFloat();
+		rotW = in.readFloat();
 	}
 }
