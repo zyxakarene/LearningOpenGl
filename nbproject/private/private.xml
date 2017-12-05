@@ -3,15 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="games">
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/utils/tween/TweenUtils.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/Main.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/game/components/WorldObject.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/implementations/bones/animation/Animator.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/implementations/BoneModel.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/implementations/bones/transform/JointTransform.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/camera/Camera.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/game/controls/resourceloader/ResourceLoader.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/game/controls/resourceloader/ResourceRunner.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/SetupOpenGlCommand.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/implementations/bones/animation/AnimationTransformer.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/shaders/ShaderUtils.java</file>
         </group>
     </open-files>
 </project-private>

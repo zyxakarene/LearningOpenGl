@@ -719,3 +719,29 @@ java.lang.NullPointerException
 	at zyx.Main.update(Main.java:98)
 	at zyx.Main.main(Main.java:59)
 
+dec. 04, 2017 9:32:32 PM zyx.utils.exceptions.GameLogger info
+INFO: shader 1 compiled.
+dec. 04, 2017 9:32:32 PM zyx.utils.exceptions.GameLogger info
+INFO: shader 2 compiled.
+dec. 04, 2017 9:32:32 PM zyx.utils.exceptions.GameLogger info
+INFO: shader 4 compiled.
+dec. 04, 2017 9:32:32 PM zyx.utils.exceptions.GameLogger info
+INFO: shader 5 compiled.
+dec. 04, 2017 10:04:40 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GL Error
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:17)
+	at zyx.Main.main(Main.java:50)
+
+dec. 04, 2017 10:05:45 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GLError: No error
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:16)
+	at zyx.Main.main(Main.java:50)
+
+dec. 04, 2017 10:05:56 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GLError: [No error]
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
+	at zyx.Main.main(Main.java:50)
+

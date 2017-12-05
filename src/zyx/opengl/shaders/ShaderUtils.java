@@ -1,10 +1,9 @@
 package zyx.opengl.shaders;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
+import zyx.utils.cheats.Print;
 
 public class ShaderUtils
 {
@@ -88,13 +87,15 @@ public class ShaderUtils
 		int shaderCompileStatus = glGetShaderi(shaderId, GL_COMPILE_STATUS);
 		if (shaderCompileStatus == GL11.GL_TRUE)
 		{
-			System.out.println(String.format("shader %s compiled.", shaderId));
+			String msg = String.format("shader %s compiled.", shaderId);
+			Print.out(msg);
 		}
 		else
 		{
 			String error = glGetShaderInfoLog(shaderId, 512);
 			String errorMsg = String.format("A shader was not compiled correctly:\n%s", error);
-			Logger.getLogger("Shader Logger").log(Level.SEVERE, errorMsg);
+			
+			Print.err(errorMsg);
 
 			System.exit(-1);
 		}

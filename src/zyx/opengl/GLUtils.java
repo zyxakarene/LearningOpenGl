@@ -11,9 +11,8 @@ public class GLUtils
 		int errorID;
 		while ((errorID = GL11.glGetError()) != GL11.GL_NO_ERROR)
 		{
-			System.out.println("GLError: " + GLU.gluErrorString(errorID));
-
-			throw new RuntimeException("GL Error");
+			String msg = String.format("GLError: [%s]", GLU.gluErrorString(errorID));
+			throw new RuntimeException(msg);
 		}
 	}
 
