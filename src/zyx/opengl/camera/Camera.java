@@ -1,31 +1,55 @@
 package zyx.opengl.camera;
 
-import zyx.game.behavior.camera.CameraUpdateViewBehavior;
-import zyx.game.behavior.freefly.CameraFreeFlyBehavior;
-import zyx.game.components.GameObject;
+import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.shaders.implementations.ScreenShader;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.utils.interfaces.IPositionable;
-import zyx.utils.interfaces.IUpdateable;
 
-public class Camera extends GameObject implements IUpdateable, IPositionable
+public class Camera implements IPositionable
 {
-		
-	public Camera()
+
+	private static Camera instance = new Camera();
+
+	public static Camera getInstance()
 	{
+		return instance;
+	}
+
+	private Vector3f position;
+	private Vector3f rotation;
+	private boolean initialized;
+
+	private Camera()
+	{
+		position = new Vector3f();
+		rotation = new Vector3f();
+		initialized = false;
+	}
+
+	public void initialize()
+	{
+		if (initialized)
+		{
+			return;
+		}
+		
+		initialized = true;
 		Projection.createPerspective(70f, 0.001f, 2f, WorldShader.MATRIX_PROJECTION);
 		Projection.createOrthographic(1f, 2f, ScreenShader.MATRIX_PROJECTION);
-		
-		addBehavior(new CameraFreeFlyBehavior());
-		addBehavior(new CameraUpdateViewBehavior());
-		
-		position.z = -1;
-		
-		position.x = -18;
-		position.y =11;
-		position.z = -25;
-		
-		rotation.x = -50;
-		rotation.z = 300;
+
+		position.set(-18, 11, -25);
+		rotation.set(-50, 0, 300);
+	}
+
+	@Override
+	public Vector3f getPosition()
+	{
+		return position;
+	}
+
+	@Override
+	public Vector3f getRotation()
+	{
+		return rotation;
 	}
 }

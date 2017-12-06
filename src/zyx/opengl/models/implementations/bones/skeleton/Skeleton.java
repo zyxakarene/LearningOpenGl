@@ -4,6 +4,7 @@ import zyx.opengl.models.implementations.bones.animation.Animation;
 import zyx.opengl.models.implementations.bones.animation.Animator;
 import java.util.HashMap;
 import org.lwjgl.util.vector.Matrix4f;
+import zyx.opengl.models.implementations.bones.animation.AnimationController;
 import zyx.opengl.models.implementations.bones.transform.JointTransform;
 import zyx.utils.interfaces.IUpdateable;
 
@@ -36,9 +37,9 @@ public class Skeleton implements IUpdateable
 		animations.put(name, animation);
 	}
 
-	public void setCurrentAnimation(String name)
+	public void setCurrentAnimation(AnimationController controller)
 	{
-		animator.setCurrentAnimation(name);
+		animator.setCurrentAnimation(controller);
 	}
 	
 	@Override

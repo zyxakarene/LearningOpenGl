@@ -11,6 +11,7 @@ import zyx.game.components.screen.DisplayObjectContainer;
 import zyx.game.components.screen.Image;
 import zyx.game.components.screen.Stage;
 import zyx.game.components.screen.Textfield;
+import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.KeyboardControl;
 import zyx.game.controls.MouseControl;
 import zyx.game.controls.textures.TextureManager;
@@ -24,12 +25,15 @@ import zyx.utils.DeltaTime;
 import zyx.utils.FPSCounter;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
+import zyx.utils.cheats.Print;
 
 public class Main
 {
 
-	private static Camera camera;
-	private static WorldObject robot;
+	private static CameraController camera;
+	private static WorldObject object1;
+	private static WorldObject object2;
+	private static WorldObject object3;
 
 	private static Stage stage;
 	private static BitmapFont bmpFont;
@@ -62,6 +66,10 @@ public class Main
 
 			GLUtils.errorCheck();
 
+			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_2))
+			{
+				object1.setAnimation("walk");
+			}
 			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_1))
 			{
 				field.rotation += 5;
@@ -94,14 +102,18 @@ public class Main
 		long timestamp = DeltaTime.getTimestamp();
 		
 		camera.update(timestamp, elapsed);
-		robot.update(timestamp, elapsed);
+		object1.update(timestamp, elapsed);
+		object2.update(timestamp, elapsed);
+		object3.update(timestamp, elapsed);
 	}
 
 	private static void draw()
 	{
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
-		robot.draw();
+		object1.draw();
+		object2.draw();
+		object3.draw();
 
 		GLUtils.disableDepthTest();
 		stage.drawStage();
@@ -110,8 +122,14 @@ public class Main
 
 	private static void load()
 	{
-		camera = new Camera();
-		robot = new WorldObject();
+		Camera.getInstance().initialize();
+		
+		camera = new CameraController();
+		object1 = new WorldObject("walk");
+		object2 = new WorldObject("attack");
+		object3 = new WorldObject("invalid");
+		object2.setX(-50);
+		object3.setX(-100);
 		stage = Stage.instance;
 
 		DisplayObjectContainer container = new DisplayObjectContainer();

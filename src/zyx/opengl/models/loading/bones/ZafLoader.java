@@ -1,8 +1,9 @@
 package zyx.opengl.models.loading.bones;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.logging.Level;
-import zyx.opengl.models.implementations.BoneModel;
+import zyx.opengl.models.implementations.WorldModel;
 
 import zyx.opengl.models.implementations.bones.animation.Animation;
 import zyx.opengl.models.implementations.bones.animation.AnimationFrame;
@@ -14,8 +15,15 @@ import zyx.utils.GameConstants;
 public class ZafLoader
 {
 
-	public static BoneModel loadFromZaf(String name)
+	private static HashMap<String, WorldModel> cache = new HashMap<>();
+	
+	public static WorldModel loadFromZaf(String name)
 	{
+		if (cache.containsKey(name))
+		{
+			return cache.get(name);
+		}
+		
 		long start = System.currentTimeMillis();
 		File input = new File("assets/models/" + name);
 		try (RandomAccessFile raf = new RandomAccessFile(input, "r"))
@@ -33,10 +41,12 @@ public class ZafLoader
 			Skeleton skeleton = new Skeleton(rootJoint);
 			addAnimationsTo(skeleton, smd.animations);
 			
-			BoneModel result = new BoneModel(smd.triangleData, smd.elementData, skeleton);
+			WorldModel result = new WorldModel(smd.triangleData, smd.elementData, skeleton);
 			
 			long end = System.currentTimeMillis();
 			System.out.println("Took " + (end - start) + "ms to load " + name);
+			
+			cache.put(name, result);
 			
 			return result;
 		}

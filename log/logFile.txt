@@ -745,3 +745,13 @@ java.lang.RuntimeException: GLError: [No error]
 	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
 	at zyx.Main.main(Main.java:50)
 
+dec. 05, 2017 8:48:52 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.ArrayIndexOutOfBoundsException: -11
+	at zyx.opengl.models.implementations.bones.animation.Animator.update(Animator.java:53)
+	at zyx.opengl.models.implementations.bones.skeleton.Skeleton.update(Skeleton.java:48)
+	at zyx.opengl.models.implementations.WorldModel.update(WorldModel.java:84)
+	at zyx.game.components.WorldObject.update(WorldObject.java:33)
+	at zyx.Main.update(Main.java:100)
+	at zyx.Main.main(Main.java:60)
+

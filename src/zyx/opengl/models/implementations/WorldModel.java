@@ -6,11 +6,13 @@ import zyx.opengl.models.AbstractModel;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.game.controls.textures.TextureManager;
+import zyx.opengl.models.implementations.bones.animation.AnimationController;
+import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
+import zyx.utils.DeltaTime;
 import zyx.utils.FloatMath;
 import zyx.utils.GeometryUtils;
-import zyx.utils.interfaces.IUpdateable;
 
-public class WorldModel extends AbstractModel implements IUpdateable
+public class WorldModel extends AbstractModel
 {
 
 	protected static final Vector3f SHARED_ROTATION = new Vector3f(0, 0, 0);
@@ -21,11 +23,14 @@ public class WorldModel extends AbstractModel implements IUpdateable
 
 	public final WorldShader shader;
 
-	public WorldModel(float vertexData[], int elementData[])
+	private Skeleton skeleton;
+
+	public WorldModel(float vertexData[], int elementData[], Skeleton skeleton)
 	{
 		super(Shader.WORLD);
 
-		shader = (WorldShader) meshShader;
+		this.shader = (WorldShader) meshShader;
+		this.skeleton = skeleton;
 
 		setVertexData(vertexData, elementData);
 		setTexture(TextureManager.getTexture("knight"));
@@ -38,6 +43,11 @@ public class WorldModel extends AbstractModel implements IUpdateable
 		SHARED_SCALE.set(scale);
 	}
 
+	public void setAnimation(AnimationController controller)
+	{
+		skeleton.setCurrentAnimation(controller);
+	}
+
 	public void setScale(float newScale)
 	{
 		SHARED_SCALE.set(newScale, newScale, newScale);
@@ -46,6 +56,8 @@ public class WorldModel extends AbstractModel implements IUpdateable
 	@Override
 	public void draw()
 	{
+		skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
+
 		MODEL_MATRIX.setIdentity();
 		MODEL_MATRIX.translate(SHARED_POSITION);
 		MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.x), GeometryUtils.ROTATION_X);
@@ -66,10 +78,5 @@ public class WorldModel extends AbstractModel implements IUpdateable
 		addAttribute("texcoord", 2, 12, 6);
 		addAttribute("indexes", 2, 12, 8);
 		addAttribute("weights", 2, 12, 10);
-	}
-
-	@Override
-	public void update(long timestamp, int elapsedTime)
-	{
 	}
 }

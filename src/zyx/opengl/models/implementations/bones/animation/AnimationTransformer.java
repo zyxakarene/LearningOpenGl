@@ -1,5 +1,6 @@
 package zyx.opengl.models.implementations.bones.animation;
 
+import java.util.Collection;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.transform.JointTransform;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ class AnimationTransformer
 	private static final Vector3f NEXT_POS = new Vector3f();
 	private static final Quaternion PREV_ROT = new Quaternion();
 	private static final Quaternion NEXT_ROT = new Quaternion();
-	
+
 	private static final Quaternion INTERPOLATED_ROT = new Quaternion();
 	private static final Vector3f INTERPOLATED_POS = new Vector3f();
 	private static final Matrix4f TRANSFORM_MATRIX = new Matrix4f();
@@ -36,17 +37,30 @@ class AnimationTransformer
 		}
 	}
 
+	static void nullTransform(HashMap<String, Joint> jointMap)
+	{
+		TRANSFORM_MATRIX.setIdentity();
+
+		Collection<Joint> jointCollection = jointMap.values();
+		for (Joint joint : jointCollection)
+		{
+			joint.setTPose();
+		}
+	}
+
 	private static void transform(JointTransform prevTransform, JointTransform nextTransform, Joint joint, float percentage)
 	{
 		prevTransform.getPosition(PREV_POS);
 		nextTransform.getPosition(NEXT_POS);
 		prevTransform.getRotation(PREV_ROT);
 		nextTransform.getRotation(NEXT_ROT);
-		
+
 		TweenUtils.LINEAR.lerp(PREV_POS, NEXT_POS, percentage, INTERPOLATED_POS);
 		TweenUtils.LINEAR.slerp(PREV_ROT, NEXT_ROT, percentage, INTERPOLATED_ROT);
-		
+
 		MatrixUtils.transformMatrix(INTERPOLATED_ROT, INTERPOLATED_POS, TRANSFORM_MATRIX);
+		
 		joint.setAnimationTransform(TRANSFORM_MATRIX);
 	}
+
 }

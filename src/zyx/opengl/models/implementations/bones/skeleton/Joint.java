@@ -36,6 +36,11 @@ public class Joint implements IDisposeable
 
 		outTransform = shaderBones[id];
 	}
+
+	public Matrix4f getLocalBindTransform()
+	{
+		return localBindTransform;
+	}
 	
 	public void addChild(Joint child)
 	{
@@ -59,8 +64,7 @@ public class Joint implements IDisposeable
 	
 	public void calcAnimationTransform(Matrix4f parentTransform)
 	{
-		Matrix4f currentLocalTransform = new Matrix4f(animatedTransform);
-		Matrix4f.mul(parentTransform, currentLocalTransform, outTransform);
+		Matrix4f.mul(parentTransform, animatedTransform, outTransform);
 		for (Joint childJoint : children)
 		{
 			childJoint.calcAnimationTransform(outTransform);
@@ -100,6 +104,11 @@ public class Joint implements IDisposeable
 		children.clear();
 		
 		children = null;
+	}
+
+	public void setTPose()
+	{
+		animatedTransform.load(localBindTransform);
 	}
 	
 }
