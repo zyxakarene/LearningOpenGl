@@ -23,17 +23,27 @@ public class WorldModel extends AbstractModel
 
 	public final WorldShader shader;
 
+	private boolean loaded;
+
 	private Skeleton skeleton;
 
-	public WorldModel(float vertexData[], int elementData[], Skeleton skeleton)
+	public WorldModel()
 	{
 		super(Shader.WORLD);
-
 		this.shader = (WorldShader) meshShader;
-		this.skeleton = skeleton;
+		this.loaded = false;
+	}
 
-		setVertexData(vertexData, elementData);
-		setTexture(TextureManager.getTexture("knight"));
+	protected void OnLoaded(LoadableValueObject vo)
+	{
+		shader.bind();
+		bindVao();
+
+		skeleton = vo.skeleton;
+		setVertexData(vo.vertexData, vo.elementData);
+		setTexture(TextureManager.getTexture(vo.texture));
+
+		loaded = true;
 	}
 
 	public void transform(Vector3f position, Vector3f rotation, Vector3f scale)
@@ -45,7 +55,10 @@ public class WorldModel extends AbstractModel
 
 	public void setAnimation(AnimationController controller)
 	{
-		skeleton.setCurrentAnimation(controller);
+		if (loaded)
+		{
+			skeleton.setCurrentAnimation(controller);
+		}
 	}
 
 	public void setScale(float newScale)
@@ -56,18 +69,21 @@ public class WorldModel extends AbstractModel
 	@Override
 	public void draw()
 	{
-		skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
+		if (loaded)
+		{
+			skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
 
-		MODEL_MATRIX.setIdentity();
-		MODEL_MATRIX.translate(SHARED_POSITION);
-		MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.x), GeometryUtils.ROTATION_X);
-		MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.y), GeometryUtils.ROTATION_Y);
-		MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.z), GeometryUtils.ROTATION_Z);
+			MODEL_MATRIX.setIdentity();
+			MODEL_MATRIX.translate(SHARED_POSITION);
+			MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.x), GeometryUtils.ROTATION_X);
+			MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.y), GeometryUtils.ROTATION_Y);
+			MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.z), GeometryUtils.ROTATION_Z);
 
-		MODEL_MATRIX.scale(SHARED_SCALE);
+			MODEL_MATRIX.scale(SHARED_SCALE);
 
-		shader.upload();
-		super.draw();
+			shader.upload();
+			super.draw();
+		}
 	}
 
 	@Override

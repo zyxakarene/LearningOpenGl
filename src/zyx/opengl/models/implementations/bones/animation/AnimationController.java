@@ -1,22 +1,22 @@
 package zyx.opengl.models.implementations.bones.animation;
 
 import zyx.utils.DeltaTime;
-import zyx.utils.cheats.Print;
 
 public class AnimationController
 {
+	private static final String DEFAULT_ANIMATION = "idle";
+	
 	String animation;
 	long animationStartedAt;
 
-	public AnimationController(String animation)
+	public AnimationController()
 	{
-		setAnimation(animation);
+		setAnimation(DEFAULT_ANIMATION);
 	}
 	
 	public final void setAnimation(String name)
 	{
 		animation = name;
 		animationStartedAt = DeltaTime.getTimestamp();
-		Print.out("Animate started at", animationStartedAt);
 	}
 }

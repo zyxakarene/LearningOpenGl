@@ -1,9 +1,8 @@
 package zyx.opengl.models.loading.bones;
 
 import java.io.*;
-import java.util.HashMap;
 import java.util.logging.Level;
-import zyx.opengl.models.implementations.WorldModel;
+import zyx.opengl.models.implementations.LoadableValueObject;
 
 import zyx.opengl.models.implementations.bones.animation.Animation;
 import zyx.opengl.models.implementations.bones.animation.AnimationFrame;
@@ -11,48 +10,28 @@ import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.implementations.bones.transform.JointTransform;
 import zyx.utils.GameConstants;
+import zyx.utils.cheats.Print;
 
 public class ZafLoader
 {
 
-	private static HashMap<String, WorldModel> cache = new HashMap<>();
-	
-	public static WorldModel loadFromZaf(String name)
+	public static LoadableValueObject loadFromZaf(DataInputStream in)
 	{
-		if (cache.containsKey(name))
-		{
-			return cache.get(name);
-		}
-		
-		long start = System.currentTimeMillis();
-		File input = new File("assets/models/" + name);
-		try (RandomAccessFile raf = new RandomAccessFile(input, "r"))
-		{
-			byte[] buffer = new byte[(int) raf.length()];
-			raf.read(buffer, 0, buffer.length);
-			
-			DataInputStream in = new DataInputStream(new ByteArrayInputStream(buffer));
-			
+		try
+		{			
 			SmdObject smd = new SmdObject();
 			smd.read(in);
-
+			
 			Joint rootJoint = getJointFrom(smd.rootBone);
 			
 			Skeleton skeleton = new Skeleton(rootJoint);
 			addAnimationsTo(skeleton, smd.animations);
 			
-			WorldModel result = new WorldModel(smd.triangleData, smd.elementData, skeleton);
-			
-			long end = System.currentTimeMillis();
-			System.out.println("Took " + (end - start) + "ms to load " + name);
-			
-			cache.put(name, result);
-			
-			return result;
+			return new LoadableValueObject(smd.triangleData, smd.elementData, skeleton, "knight");
 		}
 		catch (IOException e)
 		{
-			GameConstants.LOGGER.log(Level.SEVERE, "Error at loading a zaf file", e);
+			GameConstants.LOGGER.log(Level.SEVERE, "Error at loading a zaf data", e);
 			return null;
 		}
 	}

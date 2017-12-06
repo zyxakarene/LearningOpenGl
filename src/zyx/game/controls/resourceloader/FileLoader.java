@@ -4,6 +4,7 @@ import zyx.game.controls.resourceloader.requests.ResourceRequest;
 import java.io.*;
 import java.util.logging.Level;
 import zyx.utils.GameConstants;
+import zyx.utils.cheats.Print;
 
 class FileLoader
 {
@@ -22,12 +23,12 @@ class FileLoader
 	{
 		File file = new File(request.path);
 
-		System.out.println("Loading file " + file);
+		Print.out("Loading file", file);
 
 		try (RandomAccessFile raf = new RandomAccessFile(file, "r"))
 		{
 			readFileData(raf);
-			System.out.println("Load done!");
+			Print.out("Load done!");
 		}
 		catch (IOException ex)
 		{
@@ -35,7 +36,7 @@ class FileLoader
 		}
 	}
 
-	private void readFileData(final RandomAccessFile raf) throws IOException
+	private void readFileData(RandomAccessFile raf) throws IOException
 	{
 		byte[] buffer = new byte[BUFFER_SIZE];
 		int len;
@@ -46,14 +47,15 @@ class FileLoader
 			throw new IOException("File size too large");
 		}
 		
-		ByteArrayOutputStream out = new ByteArrayOutputStream(fileSize);
-
+		byte[] data = new byte[fileSize];
+		int count = 0;
 		while ((len = raf.read(buffer)) != -1)
 		{
-			out.write(buffer, 0, len);
+			System.arraycopy(buffer, 0, data, count, len);
+			count += len;
 		}
 
-		request.setData(out.toByteArray());
+		request.setData(data);
 	}
 
 	private void handleIOException(IOException ex)

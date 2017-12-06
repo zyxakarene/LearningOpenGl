@@ -39,8 +39,10 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 	protected void bindVao()
 	{
 		ModelUtils.bindVertexArray(vao);
+		ModelUtils.bindBufferObject_Array(vbo);
+		ModelUtils.bindBufferObject_Element(ebo);
 	}
-	
+
 	protected void setVertexData(float[] vertexData, int[] elementData)
 	{
 		ModelUtils.fillVBO_Static(vertexData);

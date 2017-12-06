@@ -755,3 +755,83 @@ java.lang.ArrayIndexOutOfBoundsException: -11
 	at zyx.Main.update(Main.java:100)
 	at zyx.Main.main(Main.java:60)
 
+dec. 06, 2017 8:22:06 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.IndexOutOfBoundsException: Index: -1, Size: 0
+	at java.util.LinkedList.checkElementIndex(LinkedList.java:555)
+	at java.util.LinkedList.get(LinkedList.java:476)
+	at zyx.game.controls.resourceloader.ResourceExchange.addLoad(ResourceExchange.java:29)
+	at zyx.game.controls.resourceloader.ResourceLoader.addRequest(ResourceLoader.java:46)
+	at zyx.game.components.world.model.LoadableModel.load(LoadableModel.java:20)
+	at zyx.game.components.WorldObject.<init>(WorldObject.java:16)
+	at zyx.Main.load(Main.java:132)
+	at zyx.Main.main(Main.java:54)
+
+dec. 06, 2017 8:29:14 PM zyx.opengl.models.loading.bones.ZafLoader loadFromZaf
+SEVERE: Error at loading a zaf data
+java.io.EOFException
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at zyx.opengl.models.loading.bones.SmdBone.read(SmdBone.java:26)
+	at zyx.opengl.models.loading.bones.SmdObject.read(SmdObject.java:16)
+	at zyx.opengl.models.loading.bones.ZafLoader.loadFromZaf(ZafLoader.java:22)
+	at zyx.game.components.world.model.LoadableModel.resourceLoaded(LoadableModel.java:28)
+	at zyx.game.components.world.model.LoadableModel.resourceLoaded(LoadableModel.java:13)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:91)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:41)
+	at zyx.Main.main(Main.java:64)
+
+dec. 06, 2017 8:29:14 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.models.implementations.WorldModel.OnLoaded(WorldModel.java:39)
+	at zyx.game.components.world.model.LoadableModel.resourceLoaded(LoadableModel.java:29)
+	at zyx.game.components.world.model.LoadableModel.resourceLoaded(LoadableModel.java:13)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:91)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:41)
+	at zyx.Main.main(Main.java:64)
+
+dec. 06, 2017 8:31:59 PM zyx.opengl.models.loading.bones.ZafLoader loadFromZaf
+SEVERE: Error at loading a zaf data
+java.io.EOFException
+	at java.io.DataInputStream.readByte(DataInputStream.java:267)
+	at zyx.opengl.models.loading.bones.SmdBone.read(SmdBone.java:26)
+	at zyx.opengl.models.loading.bones.SmdObject.read(SmdObject.java:16)
+	at zyx.opengl.models.loading.bones.ZafLoader.loadFromZaf(ZafLoader.java:23)
+	at zyx.game.components.world.model.LoadableModel.resourceLoaded(LoadableModel.java:28)
+	at zyx.game.components.world.model.LoadableModel.resourceLoaded(LoadableModel.java:13)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:91)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:41)
+	at zyx.Main.main(Main.java:64)
+
+dec. 06, 2017 8:31:59 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.models.implementations.WorldModel.OnLoaded(WorldModel.java:39)
+	at zyx.game.components.world.model.LoadableModel.resourceLoaded(LoadableModel.java:29)
+	at zyx.game.components.world.model.LoadableModel.resourceLoaded(LoadableModel.java:13)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:91)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:41)
+	at zyx.Main.main(Main.java:64)
+
+dec. 06, 2017 8:42:09 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.Main.load(Main.java:135)
+	at zyx.Main.main(Main.java:54)
+
+dec. 06, 2017 8:45:00 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GLError: [Out of memory]
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
+	at zyx.Main.main(Main.java:71)
+
+dec. 06, 2017 8:45:07 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GLError: [Out of memory]
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
+	at zyx.Main.main(Main.java:71)
+

@@ -1,5 +1,6 @@
 package zyx.game.controls.resourceloader;
 
+import java.util.HashMap;
 import zyx.game.controls.resourceloader.requests.ResourceRequest;
 import java.util.LinkedList;
 
@@ -8,6 +9,7 @@ class ResourceExchange
 
 	private static final Object LOCK = new Object();
 
+	private static final HashMap<String, ResourceRequest> REQUEST_MAP = new HashMap<>();
 	private static final LinkedList<ResourceRequest> LOAD_REQUESTS = new LinkedList<>();
 	private static final LinkedList<ResourceRequest> COMPLETED_LOADS = new LinkedList<>();
 
@@ -23,7 +25,19 @@ class ResourceExchange
 	{
 		synchronized (LOCK)
 		{
-			LOAD_REQUESTS.add(request);
+			if (REQUEST_MAP.containsKey(request.path))
+			{
+				ResourceRequest otherRequest = REQUEST_MAP.get(request.path);
+				otherRequest.mergeFrom(request);
+
+				request.dispose();
+			}
+			else
+			{
+				LOAD_REQUESTS.add(request);
+				REQUEST_MAP.put(request.path, request);
+			}
+
 			LOCK.notify();
 		}
 	}
@@ -74,9 +88,12 @@ class ResourceExchange
 			while (!COMPLETED_LOADS.isEmpty())
 			{
 				request = COMPLETED_LOADS.removeFirst();
-				
-				request.callback.resourceLoaded(request.getData());
+				request.complete(request.getData());
+
+				request.dispose();
 			}
+			
+			REQUEST_MAP.clear();
 		}
 	}
 

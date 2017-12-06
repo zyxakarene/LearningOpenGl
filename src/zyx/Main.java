@@ -14,6 +14,7 @@ import zyx.game.components.screen.Textfield;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.KeyboardControl;
 import zyx.game.controls.MouseControl;
+import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.textures.TextureManager;
 import zyx.opengl.GLUtils;
 import zyx.opengl.SetupOpenGlCommand;
@@ -23,9 +24,7 @@ import zyx.opengl.textures.bitmapfont.BitmapFont;
 import zyx.opengl.textures.bitmapfont.BitmapFontGenerator;
 import zyx.utils.DeltaTime;
 import zyx.utils.FPSCounter;
-import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
-import zyx.utils.cheats.Print;
 
 public class Main
 {
@@ -48,16 +47,19 @@ public class Main
 
 		ShaderManager.INSTANCE.initialize();
 
+		ResourceLoader.getInstance().addThreads(3);
+
 		loadFontLogic();
 		load();
 
 		GLUtils.errorCheck();
 
-		float time = 0;
 		while (!Display.isCloseRequested())
 		{
 			Display.update();
 			Display.sync(GameConstants.FPS);
+
+			ResourceLoader.getInstance().handleResourceReplies();
 
 			update();
 			draw();
@@ -66,19 +68,20 @@ public class Main
 
 			GLUtils.errorCheck();
 
-			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_2))
-			{
-				object1.setAnimation("walk");
-			}
 			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_1))
 			{
-				field.rotation += 5;
-				time += 0.1f;
-				field.scale.set(FloatMath.sin(time) + 0.5f, FloatMath.sin(time) + 0.5f);
-
-				field.position.x = (GameConstants.GAME_WIDTH / 2) + FloatMath.cos(time) * 100f;
-				field.position.y = (GameConstants.GAME_HEIGHT / 2) + FloatMath.sin(time) * 100f;
-				
+				object1.load("assets/models/knight.zaf");
+				object1.setAnimation("walk");
+			}
+			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_2))
+			{
+				object2.load("assets/models/knight.zaf");
+				object2.setAnimation("attack");
+			}
+			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_3))
+			{
+				object3.load("assets/models/knight.zaf");
+				object3.setAnimation("idle");
 			}
 
 			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_ESCAPE))
@@ -97,10 +100,10 @@ public class Main
 		MouseControl.check();
 
 		DeltaTime.update();
-		
+
 		int elapsed = DeltaTime.getElapsedTime();
 		long timestamp = DeltaTime.getTimestamp();
-		
+
 		camera.update(timestamp, elapsed);
 		object1.update(timestamp, elapsed);
 		object2.update(timestamp, elapsed);
@@ -123,7 +126,7 @@ public class Main
 	private static void load()
 	{
 		Camera.getInstance().initialize();
-		
+
 		camera = new CameraController();
 		object1 = new WorldObject("walk");
 		object2 = new WorldObject("attack");

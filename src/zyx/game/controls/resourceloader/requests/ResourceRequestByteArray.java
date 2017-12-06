@@ -6,7 +6,7 @@ public class ResourceRequestByteArray extends ResourceRequest
 {
 	private ResourceByteArray data;
 
-	public ResourceRequestByteArray(String path, IResourceLoaded<Object> callback)
+	public ResourceRequestByteArray(String path, IResourceLoaded<ResourceByteArray> callback)
 	{
 		super(path, callback);
 	}
@@ -21,5 +21,14 @@ public class ResourceRequestByteArray extends ResourceRequest
 	public Object getData()
 	{
 		return data;
+	}
+	
+	@Override
+	protected void onPostComplete()
+	{
+		if (data.markSupported())
+		{
+			data.reset();
+		}
 	}
 }
