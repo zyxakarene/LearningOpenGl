@@ -23,6 +23,7 @@ public class Joint implements IDisposeable
 	private Matrix4f localBindTransform;
 	
 	private final Matrix4f outTransform;
+	public final Matrix4f lastFinalTransform;
 
 	public Joint(int id, String name, JointTransform transform)
 	{
@@ -35,6 +36,7 @@ public class Joint implements IDisposeable
 		localBindTransform = transform.getMatrix();
 
 		outTransform = shaderBones[id];
+		lastFinalTransform = new Matrix4f();
 	}
 
 	public Matrix4f getLocalBindTransform()
@@ -70,7 +72,10 @@ public class Joint implements IDisposeable
 			childJoint.calcAnimationTransform(outTransform);
 		}
 		
+		lastFinalTransform.load(outTransform);
+		
 		Matrix4f.mul(outTransform, inverseBindTransform, outTransform);
+		
 	}
 
 	public Matrix4f getInverse()

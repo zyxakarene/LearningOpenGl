@@ -7,6 +7,7 @@ import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.game.controls.textures.TextureManager;
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
+import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.utils.DeltaTime;
 import zyx.utils.FloatMath;
@@ -25,13 +26,19 @@ public class WorldModel extends AbstractModel
 
 	private boolean loaded;
 
-	private Skeleton skeleton;
+	protected Skeleton skeleton;
+	private Matrix4f attachPoint;
 
 	public WorldModel()
 	{
 		super(Shader.WORLD);
 		this.shader = (WorldShader) meshShader;
 		this.loaded = false;
+	}
+
+	public Joint getAttatchment(String name)
+	{
+		return skeleton.getBoneByName(name);
 	}
 
 	protected void OnLoaded(LoadableValueObject vo)
@@ -66,6 +73,11 @@ public class WorldModel extends AbstractModel
 		SHARED_SCALE.set(newScale, newScale, newScale);
 	}
 
+	public void setPos(Matrix4f attatchPoint)
+	{
+		this.attachPoint = attatchPoint;
+	}
+
 	@Override
 	public void draw()
 	{
@@ -73,7 +85,18 @@ public class WorldModel extends AbstractModel
 		{
 			skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
 
-			MODEL_MATRIX.setIdentity();
+			if (attachPoint != null)
+			{
+				MODEL_MATRIX.setIdentity();
+				
+				MODEL_MATRIX.translate(new Vector3f(100, 0, 0));
+				Matrix4f.mul(MODEL_MATRIX, attachPoint, MODEL_MATRIX);
+			}
+			else
+			{
+				MODEL_MATRIX.setIdentity();
+			}
+
 			MODEL_MATRIX.translate(SHARED_POSITION);
 			MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.x), GeometryUtils.ROTATION_X);
 			MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.y), GeometryUtils.ROTATION_Y);

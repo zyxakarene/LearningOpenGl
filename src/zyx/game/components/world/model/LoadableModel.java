@@ -1,6 +1,7 @@
 package zyx.game.components.world.model;
 
 import java.io.DataInputStream;
+import org.lwjgl.util.vector.Matrix4f;
 import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.game.controls.resourceloader.requests.ResourceRequest;

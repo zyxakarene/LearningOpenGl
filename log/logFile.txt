@@ -835,3 +835,41 @@ java.lang.RuntimeException: GLError: [Out of memory]
 	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
 	at zyx.Main.main(Main.java:71)
 
+dec. 07, 2017 7:43:04 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.models.implementations.bones.animation.AnimationTransformer.transform(AnimationTransformer.java:63)
+	at zyx.opengl.models.implementations.bones.animation.AnimationTransformer.transform(AnimationTransformer.java:36)
+	at zyx.opengl.models.implementations.bones.animation.Animator.update(Animator.java:57)
+	at zyx.opengl.models.implementations.bones.skeleton.Skeleton.update(Skeleton.java:48)
+	at zyx.opengl.models.implementations.WorldModel.draw(WorldModel.java:74)
+	at zyx.game.components.WorldObject.draw(WorldObject.java:35)
+	at zyx.Main.draw(Main.java:117)
+	at zyx.Main.main(Main.java:65)
+
+dec. 07, 2017 7:48:24 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'Thread-4'
+java.util.NoSuchElementException
+	at java.util.LinkedList.removeLast(LinkedList.java:283)
+	at zyx.game.controls.resourceloader.ResourceExchange.getRequest(ResourceExchange.java:57)
+	at zyx.game.controls.resourceloader.ResourceRunner.run(ResourceRunner.java:18)
+	at java.lang.Thread.run(Thread.java:745)
+
+dec. 07, 2017 7:48:43 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'Thread-4'
+java.util.NoSuchElementException
+	at java.util.LinkedList.removeLast(LinkedList.java:283)
+	at zyx.game.controls.resourceloader.ResourceExchange.getRequest(ResourceExchange.java:57)
+	at zyx.game.controls.resourceloader.ResourceRunner.run(ResourceRunner.java:18)
+	at java.lang.Thread.run(Thread.java:745)
+
+dec. 07, 2017 7:56:23 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at org.lwjgl.util.vector.Matrix4f.load(Matrix4f.java:158)
+	at org.lwjgl.util.vector.Matrix4f.load(Matrix4f.java:146)
+	at zyx.opengl.models.implementations.WorldModel.draw(WorldModel.java:96)
+	at zyx.game.components.WorldObject.draw(WorldObject.java:37)
+	at zyx.Main.draw(Main.java:114)
+	at zyx.Main.main(Main.java:66)
+

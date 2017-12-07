@@ -13,9 +13,9 @@ class ResourceRunner implements Runnable, IDisposeable
 	{
 		while (enabled)
 		{
-			if (ResourceExchange.hasLoadRequests())
+			ResourceRequest request = ResourceExchange.getRequest();
+			if (request != null)
 			{
-				ResourceRequest request = ResourceExchange.getRequest();
 				FileLoader loader = new FileLoader(request);
 				loader.loadFile();
 								

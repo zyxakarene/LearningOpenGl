@@ -48,4 +48,9 @@ public class Skeleton implements IUpdateable
 		animator.update(timestamp, elapsedTime);
 		rootJoint.calcAnimationTransform(DUMMY_MATRIX);
 	}
+	
+	public Joint getBoneByName(String name)
+	{
+		return jointMap.get(name);
+	}
 }

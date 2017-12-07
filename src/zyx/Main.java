@@ -19,6 +19,7 @@ import zyx.game.controls.textures.TextureManager;
 import zyx.opengl.GLUtils;
 import zyx.opengl.SetupOpenGlCommand;
 import zyx.opengl.camera.Camera;
+import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.textures.bitmapfont.BitmapFont;
 import zyx.opengl.textures.bitmapfont.BitmapFontGenerator;
@@ -70,18 +71,14 @@ public class Main
 
 			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_1))
 			{
-				object1.load("assets/models/knight.zaf");
-				object1.setAnimation("walk");
+				Joint joint = object1.getAttatchment("Skeleton_Hand_R");
+				object3.setPos(joint.lastFinalTransform);
 			}
 			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_2))
 			{
-				object2.load("assets/models/knight.zaf");
-				object2.setAnimation("attack");
 			}
 			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_3))
 			{
-				object3.load("assets/models/knight.zaf");
-				object3.setAnimation("idle");
 			}
 
 			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_ESCAPE))
@@ -106,7 +103,7 @@ public class Main
 
 		camera.update(timestamp, elapsed);
 		object1.update(timestamp, elapsed);
-		object2.update(timestamp, elapsed);
+//		object2.update(timestamp, elapsed);
 		object3.update(timestamp, elapsed);
 	}
 
@@ -115,7 +112,7 @@ public class Main
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
 		object1.draw();
-		object2.draw();
+//		object2.draw();
 		object3.draw();
 
 		GLUtils.disableDepthTest();
@@ -131,9 +128,16 @@ public class Main
 		object1 = new WorldObject("walk");
 		object2 = new WorldObject("attack");
 		object3 = new WorldObject("invalid");
+		object1.setX(100);
 		object2.setX(-50);
-		object3.setX(-100);
 		stage = Stage.instance;
+
+		object1.load("assets/models/knight.zaf");
+		object2.load("assets/models/knight.zaf");
+		object3.load("assets/models/knight.zaf");
+		object1.setAnimation("attack");
+		object2.setAnimation("attack");
+		object3.setAnimation("walk");
 
 		DisplayObjectContainer container = new DisplayObjectContainer();
 		Image image = new Image("sample");
@@ -152,7 +156,7 @@ public class Main
 		field.position.x = GameConstants.GAME_WIDTH / 4;
 		field.position.y = GameConstants.GAME_HEIGHT / 4;
 
-		stage.addChild(field);
+//		stage.addChild(field);
 	}
 
 	private static void loadFontLogic()

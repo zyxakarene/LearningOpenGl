@@ -7,7 +7,7 @@ import java.util.LinkedList;
 class ResourceExchange
 {
 
-	private static final Object LOCK = new Object();
+	static final Object LOCK = new Object();
 
 	private static final HashMap<String, ResourceRequest> REQUEST_MAP = new HashMap<>();
 	private static final LinkedList<ResourceRequest> LOAD_REQUESTS = new LinkedList<>();
@@ -54,7 +54,14 @@ class ResourceExchange
 	{
 		synchronized (LOCK)
 		{
-			return LOAD_REQUESTS.removeLast();
+			if (LOAD_REQUESTS.isEmpty())
+			{
+				return null;
+			}
+			else
+			{
+				return LOAD_REQUESTS.removeLast();
+			}
 		}
 	}
 
@@ -92,7 +99,7 @@ class ResourceExchange
 
 				request.dispose();
 			}
-			
+
 			REQUEST_MAP.clear();
 		}
 	}
