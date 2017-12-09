@@ -4,24 +4,27 @@ import org.lwjgl.util.vector.Vector3f;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorBundle;
 import zyx.game.behavior.BehaviorType;
+import zyx.game.controls.SharedPools;
+import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IPositionable;
 import zyx.utils.interfaces.IUpdateable;
 
-public class GameObject implements IUpdateable, IPositionable
+public class GameObject implements IUpdateable, IPositionable, IDisposeable
 {
 
-	protected final Vector3f position;
-	protected final Vector3f rotation;
-	protected final Vector3f scale;
+	protected Vector3f position;
+	protected Vector3f rotation;
+	protected Vector3f scale;
 
-	private final BehaviorBundle behaviors;
+	private BehaviorBundle behaviors;
 
 	public GameObject()
 	{
-		position	=	new Vector3f(0, 0, 0);
-		rotation	=	new Vector3f(0, 0, 0);
-		scale		=	new Vector3f(1, 1, 1);
-
+		position	=	SharedPools.VECTOR_POOL.getInstance();
+		rotation	=	SharedPools.VECTOR_POOL.getInstance();
+		scale		=	SharedPools.VECTOR_POOL.getInstance();
+		scale.set(1, 1, 1);
+		
 		behaviors = new BehaviorBundle(this);
 	}
 
@@ -88,5 +91,20 @@ public class GameObject implements IUpdateable, IPositionable
 	public float getZ()
 	{
 		return position.z;
+	}
+
+	@Override
+	public void dispose()
+	{
+		behaviors.dispose();
+		
+		SharedPools.VECTOR_POOL.releaseInstance(position);
+		SharedPools.VECTOR_POOL.releaseInstance(rotation);
+		SharedPools.VECTOR_POOL.releaseInstance(scale);
+		
+		position = null;
+		rotation = null;
+		scale = null;
+		behaviors = null;
 	}
 }

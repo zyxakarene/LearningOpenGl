@@ -19,7 +19,6 @@ import zyx.game.controls.textures.TextureManager;
 import zyx.opengl.GLUtils;
 import zyx.opengl.SetupOpenGlCommand;
 import zyx.opengl.camera.Camera;
-import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.textures.bitmapfont.BitmapFont;
 import zyx.opengl.textures.bitmapfont.BitmapFontGenerator;
@@ -31,9 +30,11 @@ public class Main
 {
 
 	private static CameraController camera;
-	private static WorldObject object1;
-	private static WorldObject object2;
-	private static WorldObject object3;
+	private static WorldObject mainKnight;
+	private static WorldObject attachedKnight1;
+	private static WorldObject attachedKnight2;
+	private static WorldObject attachedKnight3;
+	private static WorldObject attachedKnight4;
 
 	private static Stage stage;
 	private static BitmapFont bmpFont;
@@ -71,14 +72,19 @@ public class Main
 
 			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_1))
 			{
-				Joint joint = object1.getAttatchment("Skeleton_Hand_R");
-				object3.setPos(joint.lastFinalTransform);
+				mainKnight.addAttachment(attachedKnight1, "Skeleton_Hand_R");
 			}
 			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_2))
 			{
+				attachedKnight1.addAttachment(attachedKnight2, "Skeleton_Hand_R");
 			}
 			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_3))
 			{
+				attachedKnight2.addAttachment(attachedKnight3, "Skeleton_Hand_R");
+			}
+			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_4))
+			{
+				attachedKnight3.addAttachment(attachedKnight4, "Skeleton_Hand_R");
 			}
 
 			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_ESCAPE))
@@ -102,18 +108,18 @@ public class Main
 		long timestamp = DeltaTime.getTimestamp();
 
 		camera.update(timestamp, elapsed);
-		object1.update(timestamp, elapsed);
-//		object2.update(timestamp, elapsed);
-		object3.update(timestamp, elapsed);
+		mainKnight.update(timestamp, elapsed);
+//		dummyObject.update(timestamp, elapsed);
+//		object3.update(timestamp, elapsed);
 	}
 
 	private static void draw()
 	{
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
-		object1.draw();
-//		object2.draw();
-		object3.draw();
+		mainKnight.draw();
+//		dummyObject.draw();
+//		object3.draw();
 
 		GLUtils.disableDepthTest();
 		stage.drawStage();
@@ -125,19 +131,23 @@ public class Main
 		Camera.getInstance().initialize();
 
 		camera = new CameraController();
-		object1 = new WorldObject("walk");
-		object2 = new WorldObject("attack");
-		object3 = new WorldObject("invalid");
-		object1.setX(100);
-		object2.setX(-50);
+		mainKnight = new WorldObject("invalid");
+		attachedKnight1 = new WorldObject("invalid");
+		attachedKnight2 = new WorldObject("invalid");
+		attachedKnight3 = new WorldObject("invalid");
+		attachedKnight4 = new WorldObject("invalid");
 		stage = Stage.instance;
 
-		object1.load("assets/models/knight.zaf");
-		object2.load("assets/models/knight.zaf");
-		object3.load("assets/models/knight.zaf");
-		object1.setAnimation("attack");
-		object2.setAnimation("attack");
-		object3.setAnimation("walk");
+		mainKnight.load("assets/models/knight.zaf");
+		attachedKnight1.load("assets/models/knight.zaf");
+		attachedKnight2.load("assets/models/knight.zaf");
+		attachedKnight3.load("assets/models/knight.zaf");
+		attachedKnight4.load("assets/models/knight.zaf");
+		mainKnight.setAnimation("attack");
+		attachedKnight1.setAnimation("attack");
+		attachedKnight2.setAnimation("attack");
+		attachedKnight3.setAnimation("attack");
+		attachedKnight4.setAnimation("attack");
 
 		DisplayObjectContainer container = new DisplayObjectContainer();
 		Image image = new Image("sample");

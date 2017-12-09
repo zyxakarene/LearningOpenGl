@@ -3,13 +3,14 @@ package zyx.game.behavior;
 import java.util.ArrayList;
 import java.util.HashMap;
 import zyx.game.components.GameObject;
+import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IUpdateable;
 
-public class BehaviorBundle implements IUpdateable
+public class BehaviorBundle implements IUpdateable, IDisposeable
 {
-	private final HashMap<BehaviorType, Behavior> behaviorMap;
-	private final ArrayList<Behavior> behaviors;
-	private final GameObject gameObject;
+	private HashMap<BehaviorType, Behavior> behaviorMap;
+	private ArrayList<Behavior> behaviors;
+	private GameObject gameObject;
 
 	public BehaviorBundle(GameObject gameObject)
 	{
@@ -48,5 +49,23 @@ public class BehaviorBundle implements IUpdateable
 	{
 		return behaviorMap.get(id);
 	}
-	
+
+	@Override
+	public void dispose()
+	{
+		int len = behaviors.size();
+		Behavior behavior;
+		for (int i = 0; i < len; i++)
+		{
+			behavior = behaviors.get(i);
+			behavior.dispose();
+		}
+		
+		behaviors.clear();
+		behaviorMap.clear();
+		
+		behaviors = null;
+		gameObject = null;
+		behaviorMap = null;
+	}
 }

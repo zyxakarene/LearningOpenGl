@@ -1,9 +1,8 @@
 package zyx.game.components;
 
-import org.lwjgl.util.vector.Matrix4f;
+import java.util.ArrayList;
 import zyx.game.components.world.model.LoadableModel;
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
-import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.utils.interfaces.IDrawable;
 
 public class WorldObject extends GameObject implements IDrawable
@@ -12,10 +11,13 @@ public class WorldObject extends GameObject implements IDrawable
 	private final LoadableModel model;
 	private AnimationController animationController;
 
+	private ArrayList<WorldObject> attachments;
+	
 	public WorldObject(String animation)
 	{
 		model = new LoadableModel();
 		animationController = new AnimationController();
+		attachments = new ArrayList<>();
 	}
 	
 	public void load(String path)
@@ -36,14 +38,21 @@ public class WorldObject extends GameObject implements IDrawable
 		model.transform(position, rotation, scale);
 		model.draw();
 	}
-
-	public Joint getAttatchment(String name)
+	
+	public void addAttachment(WorldObject child, String attachmentPoint)
 	{
-		return model.getAttatchment(name);
+		attachments.add(child);
+		model.addAttachment(child.model, child.animationController, this, attachmentPoint);
 	}
 
-	public void setPos(Matrix4f attatchPoint)
+	@Override
+	public void update(long timestamp, int elapsedTime)
 	{
-		model.setPos(attatchPoint);
+		super.update(timestamp, elapsedTime);
+		
+		for (WorldObject attachment : attachments)
+		{
+			attachment.update(timestamp, elapsedTime);
+		}
 	}
 }

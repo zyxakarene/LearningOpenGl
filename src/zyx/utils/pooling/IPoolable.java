@@ -1,4 +1,4 @@
-package dev.pool;
+package zyx.utils.pooling;
 
 import zyx.utils.interfaces.IDisposeable;
 

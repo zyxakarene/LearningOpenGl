@@ -1,9 +1,10 @@
 package zyx.game.behavior;
 
 import zyx.game.components.GameObject;
+import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IUpdateable;
 
-public abstract class Behavior implements IUpdateable
+public abstract class Behavior implements IUpdateable, IDisposeable
 {
 
 	BehaviorType type;
@@ -29,5 +30,12 @@ public abstract class Behavior implements IUpdateable
 
 	public void initialize()
 	{
+	}
+
+	@Override
+	public void dispose()
+	{
+		type = null;
+		gameObject = null;
 	}
 }

@@ -1,4 +1,4 @@
-package dev.pool;
+package zyx.utils.pooling;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -6,7 +6,7 @@ import java.util.LinkedList;
 class PoolAdder
 {
 
-	static void addToPool(LinkedList pool, Class<? extends IPoolable> type, int amount, Object[] initializeArgs)
+	static void addToPool(LinkedList pool, Class type, int amount, Object[] initializeArgs)
 	{
 		try
 		{
@@ -19,13 +19,16 @@ class PoolAdder
 		}
 	}
 
-	private static void innerInitialize(LinkedList pool, Class<? extends IPoolable> type, int initialSize, Object[] initializeArgs) throws ReflectiveOperationException
+	private static void innerInitialize(LinkedList pool, Class type, int initialSize, Object[] initializeArgs) throws ReflectiveOperationException
 	{
-		IPoolable poolableObject;
+		Object poolableObject;
 		for (int i = 0; i < initialSize; i++)
 		{
 			poolableObject = type.newInstance();
-			poolableObject.initialize(initializeArgs);
+			if (poolableObject instanceof IPoolable)
+			{
+				((IPoolable) poolableObject).initialize(initializeArgs);
+			}
 			pool.add(poolableObject);
 		}
 	}

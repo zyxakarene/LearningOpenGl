@@ -1,22 +1,29 @@
-package dev.pool;
+package zyx.utils.pooling;
 
 import java.util.LinkedList;
 import zyx.utils.interfaces.IDisposeable;
 
-public class GenericPool<T extends IPoolable> implements IDisposeable
+public class ObjectPool<T> implements IDisposeable
 {
 
+	private static final Object[] EMPTY_ARRAY = new Object[0];
+
 	private final LinkedList<T> pool;
-	private final Class<T> typeClass;
+	private final Class<? extends T> typeClass;
 	private final Object[] initializeArgs;
 
-	public GenericPool(Class<T> type, int initialSize, Object... arguments)
+	public ObjectPool(Class<? extends T> type, int initialSize, Object[] args)
 	{
 		pool = new LinkedList<>();
 		typeClass = type;
-		initializeArgs = arguments;
+		initializeArgs = args;
 
 		PoolAdder.addToPool(pool, typeClass, initialSize, initializeArgs);
+	}
+
+	public ObjectPool(Class<? extends T> type, int initialSize)
+	{
+		this(type, initialSize, EMPTY_ARRAY);
 	}
 
 	public T getInstance()
@@ -26,17 +33,18 @@ public class GenericPool<T extends IPoolable> implements IDisposeable
 			PoolAdder.addToPool(pool, typeClass, 3, initializeArgs);
 		}
 
-		T instance = pool.remove();
-		instance.reset();
-		
-		return instance;
+		return pool.remove();
 	}
 
 	public void releaseInstance(T instance)
 	{
-		instance.release();
-
 		pool.add(instance);
+	}
+
+	@Override
+	public String toString()
+	{
+		return String.format("%s<%s> - Size: %s", getClass(), typeClass, pool.size());
 	}
 
 	@Override
@@ -47,21 +55,16 @@ public class GenericPool<T extends IPoolable> implements IDisposeable
 		for (int i = 0; i < len; i++)
 		{
 			instance = pool.remove();
-			instance.dispose();
+			if (instance instanceof IDisposeable)
+			{
+				((IDisposeable) instance).dispose();
+			}
 		}
-		
+
 		len = initializeArgs.length;
 		for (int i = 0; i < len; i++)
 		{
 			initializeArgs[i] = null;
 		}
 	}
-
-	@Override
-	public String toString()
-	{
-		return String.format("GenericPool<%s> - Size: %s", typeClass, pool.size());
-	}
-	
-	
 }

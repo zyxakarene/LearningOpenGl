@@ -16,6 +16,7 @@ public class Joint implements IDisposeable
 	public final String name;
 	
 	private List<Joint> children;
+	private boolean isAttachmentPoint;
 	
 	private Matrix4f animatedTransform;
 	private Matrix4f inverseBindTransform;
@@ -37,6 +38,8 @@ public class Joint implements IDisposeable
 
 		outTransform = shaderBones[id];
 		lastFinalTransform = new Matrix4f();
+		
+		isAttachmentPoint = name.equals("Skeleton_Hand_R");
 	}
 
 	public Matrix4f getLocalBindTransform()
@@ -72,7 +75,10 @@ public class Joint implements IDisposeable
 			childJoint.calcAnimationTransform(outTransform);
 		}
 		
-		lastFinalTransform.load(outTransform);
+		if (isAttachmentPoint)
+		{
+			lastFinalTransform.load(outTransform);
+		}
 		
 		Matrix4f.mul(outTransform, inverseBindTransform, outTransform);
 		

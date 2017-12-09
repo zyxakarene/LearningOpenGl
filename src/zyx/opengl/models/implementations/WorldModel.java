@@ -1,17 +1,21 @@
 package zyx.opengl.models.implementations;
 
+import java.util.ArrayList;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.game.components.world.model.LoadableModel;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.game.controls.textures.TextureManager;
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
+import zyx.opengl.models.implementations.bones.attachments.Attachment;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.utils.DeltaTime;
 import zyx.utils.FloatMath;
 import zyx.utils.GeometryUtils;
+import zyx.utils.interfaces.IPositionable;
 
 public class WorldModel extends AbstractModel
 {
@@ -26,14 +30,15 @@ public class WorldModel extends AbstractModel
 
 	private boolean loaded;
 
-	protected Skeleton skeleton;
-	private Matrix4f attachPoint;
+	private Skeleton skeleton;
+	private ArrayList<Attachment> attachments;
 
 	public WorldModel()
 	{
 		super(Shader.WORLD);
 		this.shader = (WorldShader) meshShader;
 		this.loaded = false;
+		this.attachments = new ArrayList<>();
 	}
 
 	public Joint getAttatchment(String name)
@@ -73,9 +78,16 @@ public class WorldModel extends AbstractModel
 		SHARED_SCALE.set(newScale, newScale, newScale);
 	}
 
-	public void setPos(Matrix4f attatchPoint)
+	public void addAttachment(LoadableModel model, AnimationController animations, IPositionable position, String attachmentPoint)
 	{
-		this.attachPoint = attatchPoint;
+		Attachment attachment = new Attachment();
+		attachment.child = model;
+		attachment.parent = this;
+		attachment.animations = animations;
+		attachment.position = position;
+		attachment.joint = skeleton.getBoneByName(attachmentPoint);
+
+		attachments.add(attachment);
 	}
 
 	@Override
@@ -85,27 +97,54 @@ public class WorldModel extends AbstractModel
 		{
 			skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
 
-			if (attachPoint != null)
-			{
-				MODEL_MATRIX.setIdentity();
-				
-				MODEL_MATRIX.translate(new Vector3f(100, 0, 0));
-				Matrix4f.mul(MODEL_MATRIX, attachPoint, MODEL_MATRIX);
-			}
-			else
-			{
-				MODEL_MATRIX.setIdentity();
-			}
+			MODEL_MATRIX.setIdentity();
+			transform();
 
-			MODEL_MATRIX.translate(SHARED_POSITION);
-			MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.x), GeometryUtils.ROTATION_X);
-			MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.y), GeometryUtils.ROTATION_Y);
-			MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.z), GeometryUtils.ROTATION_Z);
-
-			MODEL_MATRIX.scale(SHARED_SCALE);
-
-			shader.upload();
 			super.draw();
+
+			for (Attachment attachment : attachments)
+			{
+				attachment.child.drawAsAttachment(attachment);
+			}
+		}
+	}
+
+	private void transform()
+	{
+		MODEL_MATRIX.translate(SHARED_POSITION);
+		MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.x), GeometryUtils.ROTATION_X);
+		MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.y), GeometryUtils.ROTATION_Y);
+		MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.z), GeometryUtils.ROTATION_Z);
+
+		MODEL_MATRIX.scale(SHARED_SCALE);
+
+		shader.upload();
+
+	}
+
+	private void drawAsAttachment(Attachment attachment)
+	{
+		setAnimation(attachment.animations);
+
+		Matrix4f bonePosCopy = new Matrix4f(attachment.joint.lastFinalTransform);
+		Matrix4f.mul(MODEL_MATRIX, bonePosCopy, bonePosCopy);
+		
+		Vector3f invertPos = attachment.position.getPosition().negate(null);
+
+		skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
+
+		MODEL_MATRIX.setIdentity();
+
+		MODEL_MATRIX.translate(attachment.position.getPosition());
+		Matrix4f.mul(MODEL_MATRIX, bonePosCopy, MODEL_MATRIX);
+		MODEL_MATRIX.translate(invertPos);
+
+		transform();
+		super.draw();
+
+		for (Attachment attachment2 : attachments)
+		{
+			attachment2.child.drawAsAttachment(attachment2);
 		}
 	}
 
