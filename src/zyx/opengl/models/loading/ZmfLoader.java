@@ -44,7 +44,7 @@ public class ZmfLoader
 				System.out.println(elementData[i]);
 			}
 
-			WorldModel result = new WorldModel();
+			WorldModel result = new WorldModel(null);
 			
 			long end = System.currentTimeMillis();
 			System.out.println("Took " + (end - start) + "ms to load " + name);

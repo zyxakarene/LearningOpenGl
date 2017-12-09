@@ -3,6 +3,7 @@ package zyx.opengl.models.loading.bones;
 import java.io.*;
 import java.util.logging.Level;
 import zyx.opengl.models.implementations.LoadableValueObject;
+import zyx.opengl.models.implementations.WorldModel;
 
 import zyx.opengl.models.implementations.bones.animation.Animation;
 import zyx.opengl.models.implementations.bones.animation.AnimationFrame;
@@ -10,12 +11,11 @@ import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.implementations.bones.transform.JointTransform;
 import zyx.utils.GameConstants;
-import zyx.utils.cheats.Print;
 
 public class ZafLoader
 {
-
-	public static LoadableValueObject loadFromZaf(DataInputStream in)
+	
+	public static WorldModel loadFromZaf(DataInputStream in)
 	{
 		try
 		{			
@@ -27,7 +27,8 @@ public class ZafLoader
 			Skeleton skeleton = new Skeleton(rootJoint);
 			addAnimationsTo(skeleton, smd.animations);
 			
-			return new LoadableValueObject(smd.triangleData, smd.elementData, skeleton, "knight");
+			LoadableValueObject vo = new LoadableValueObject(smd.triangleData, smd.elementData, skeleton, "knight");
+			return new WorldModel(vo);
 		}
 		catch (IOException e)
 		{

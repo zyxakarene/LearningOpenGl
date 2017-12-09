@@ -3,12 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="games">
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/game/components/world/Scene.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/Main.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/game/components/WorldObject.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/implementations/bones/skeleton/Joint.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/dev/pool/GenericPool.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/implementations/WorldModel.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/game/components/GameObject.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/game/controls/resourceloader/requests/ResourceRequest.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/game/controls/resourceloader/ResourceRunner.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/game/components/world/model/LoadableModel.java</file>
+            <file>file:/D:/Programmering/Tutorial5/src/zyx/game/controls/resourceloader/requests/ResourceRequestDataInput.java</file>
         </group>
     </open-files>
 </project-private>

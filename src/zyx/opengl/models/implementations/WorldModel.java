@@ -1,9 +1,7 @@
 package zyx.opengl.models.implementations;
 
-import java.util.ArrayList;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.game.components.world.model.LoadableModel;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.opengl.shaders.implementations.Shader;
@@ -15,7 +13,6 @@ import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.utils.DeltaTime;
 import zyx.utils.FloatMath;
 import zyx.utils.GeometryUtils;
-import zyx.utils.interfaces.IPositionable;
 
 public class WorldModel extends AbstractModel
 {
@@ -28,36 +25,23 @@ public class WorldModel extends AbstractModel
 
 	public final WorldShader shader;
 
-	private boolean loaded;
-
 	private Skeleton skeleton;
-	private ArrayList<Attachment> attachments;
 
-	public WorldModel()
+	public WorldModel(LoadableValueObject vo)
 	{
 		super(Shader.WORLD);
 		this.shader = (WorldShader) meshShader;
-		this.loaded = false;
-		this.attachments = new ArrayList<>();
+
+		skeleton = vo.skeleton;
+		setVertexData(vo.vertexData, vo.elementData);
+		setTexture(TextureManager.getTexture(vo.texture));
 	}
 
 	public Joint getAttatchment(String name)
 	{
 		return skeleton.getBoneByName(name);
 	}
-
-	protected void OnLoaded(LoadableValueObject vo)
-	{
-		shader.bind();
-		bindVao();
-
-		skeleton = vo.skeleton;
-		setVertexData(vo.vertexData, vo.elementData);
-		setTexture(TextureManager.getTexture(vo.texture));
-
-		loaded = true;
-	}
-
+	
 	public void transform(Vector3f position, Vector3f rotation, Vector3f scale)
 	{
 		SHARED_POSITION.set(position);
@@ -67,10 +51,7 @@ public class WorldModel extends AbstractModel
 
 	public void setAnimation(AnimationController controller)
 	{
-		if (loaded)
-		{
-			skeleton.setCurrentAnimation(controller);
-		}
+		skeleton.setCurrentAnimation(controller);
 	}
 
 	public void setScale(float newScale)
@@ -78,35 +59,15 @@ public class WorldModel extends AbstractModel
 		SHARED_SCALE.set(newScale, newScale, newScale);
 	}
 
-	public void addAttachment(LoadableModel model, AnimationController animations, IPositionable position, String attachmentPoint)
-	{
-		Attachment attachment = new Attachment();
-		attachment.child = model;
-		attachment.parent = this;
-		attachment.animations = animations;
-		attachment.position = position;
-		attachment.joint = skeleton.getBoneByName(attachmentPoint);
-
-		attachments.add(attachment);
-	}
-
 	@Override
 	public void draw()
 	{
-		if (loaded)
-		{
-			skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
+		skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
 
-			MODEL_MATRIX.setIdentity();
-			transform();
+		MODEL_MATRIX.setIdentity();
+		transform();
 
-			super.draw();
-
-			for (Attachment attachment : attachments)
-			{
-				attachment.child.drawAsAttachment(attachment);
-			}
-		}
+		super.draw();
 	}
 
 	private void transform()
@@ -119,16 +80,15 @@ public class WorldModel extends AbstractModel
 		MODEL_MATRIX.scale(SHARED_SCALE);
 
 		shader.upload();
-
 	}
 
-	private void drawAsAttachment(Attachment attachment)
+	public void drawAsAttachment(Attachment attachment)
 	{
 		setAnimation(attachment.animations);
 
 		Matrix4f bonePosCopy = new Matrix4f(attachment.joint.lastFinalTransform);
 		Matrix4f.mul(MODEL_MATRIX, bonePosCopy, bonePosCopy);
-		
+
 		Vector3f invertPos = attachment.position.getPosition().negate(null);
 
 		skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
@@ -141,11 +101,6 @@ public class WorldModel extends AbstractModel
 
 		transform();
 		super.draw();
-
-		for (Attachment attachment2 : attachments)
-		{
-			attachment2.child.drawAsAttachment(attachment2);
-		}
 	}
 
 	@Override
@@ -156,5 +111,10 @@ public class WorldModel extends AbstractModel
 		addAttribute("texcoord", 2, 12, 6);
 		addAttribute("indexes", 2, 12, 8);
 		addAttribute("weights", 2, 12, 10);
+	}
+
+	public Joint getBoneByName(String boneName)
+	{
+		return skeleton.getBoneByName(boneName);
 	}
 }
