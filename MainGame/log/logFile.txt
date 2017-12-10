@@ -1024,3 +1024,29 @@ Caused by: java.lang.RuntimeException: Resource not found: assets/textures/sampl
 	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:18)
 	... 7 more
 
+dec. 10, 2017 4:24:20 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.util.ConcurrentModificationException
+	at java.util.HashMap$HashIterator.nextNode(HashMap.java:1429)
+	at java.util.HashMap$KeyIterator.next(HashMap.java:1453)
+	at zyx.game.controls.models.ModelManager.dispose(ModelManager.java:77)
+	at zyx.Main.dispose(Main.java:114)
+	at zyx.Main.main(Main.java:87)
+
+dec. 10, 2017 4:24:57 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.util.ConcurrentModificationException
+	at java.util.HashMap$HashIterator.nextNode(HashMap.java:1429)
+	at java.util.HashMap$KeyIterator.next(HashMap.java:1453)
+	at zyx.game.controls.models.ModelManager.dispose(ModelManager.java:77)
+	at zyx.Main.dispose(Main.java:114)
+	at zyx.Main.main(Main.java:87)
+
+dec. 10, 2017 4:25:58 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.models.implementations.WorldModel.setAnimation(WorldModel.java:53)
+	at zyx.game.components.WorldObject.draw(WorldObject.java:70)
+	at zyx.Main.draw(Main.java:149)
+	at zyx.Main.main(Main.java:67)
+

@@ -66,7 +66,7 @@ public class ModelManager implements IDisposeable
 		while (keys.hasNext())
 		{
 			key = keys.next();
-			requestEntry = currentRequests.remove(key);
+			requestEntry = currentRequests.get(key);
 			
 			requestEntry.dispose();
 		}
@@ -75,7 +75,7 @@ public class ModelManager implements IDisposeable
 		while (keys.hasNext())
 		{
 			key = keys.next();
-			cacheEntry = cache.remove(key);
+			cacheEntry = cache.get(key);
 			
 			cacheEntry.dispose();
 		}

@@ -83,6 +83,7 @@ public class WorldObject extends GameObject implements IDrawable, IResourceLoade
 	{
 		if (loaded)
 		{
+			model.setAnimation(animationController);
 			model.drawAsAttachment(attachment);
 
 			for (Attachment attachment2 : attachments)
@@ -106,8 +107,6 @@ public class WorldObject extends GameObject implements IDrawable, IResourceLoade
 				Attachment attachment = new Attachment();
 				attachment.child = child;
 				attachment.parent = this;
-				attachment.animations = animationController;
-				attachment.position = this;
 				attachment.joint = model.getBoneByName(attachmentPoint);
 
 				attachments.add(attachment);

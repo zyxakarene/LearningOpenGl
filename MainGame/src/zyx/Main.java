@@ -78,7 +78,7 @@ public class Main
 				mainKnight.load("assets/models/knight/knight.zaf");
 				attachedKnight1.load("assets/models/knight/knight.zaf");
 				mainKnight.setAnimation("attack");
-				attachedKnight1.setAnimation("attack");
+				attachedKnight1.setAnimation("walk");
 				
 				mainKnight.addAttachment(attachedKnight1, "Skeleton_Hand_R");
 			}
@@ -111,7 +111,7 @@ public class Main
 			mainKnight = null;
 		}
 		
-		ModelManager.getInstance().dispose();
+//		ModelManager.getInstance().dispose();
 //		SharedPools.MATRIX_POOL.dispose();
 //		SharedPools.VECTOR_POOL.dispose();
 //		SharedPools.QUARERNION_POOL.dispose();

@@ -83,18 +83,16 @@ public class WorldModel extends AbstractModel
 
 	public void drawAsAttachment(Attachment attachment)
 	{
-		setAnimation(attachment.animations);
-
 		Matrix4f bonePosCopy = new Matrix4f(attachment.joint.getFinalTransform());
 		Matrix4f.mul(MODEL_MATRIX, bonePosCopy, bonePosCopy);
 
-		Vector3f invertPos = attachment.position.getPosition().negate(null);
+		Vector3f invertPos = attachment.parent.getPosition().negate(null);
 
 		skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
 
 		MODEL_MATRIX.setIdentity();
 
-		MODEL_MATRIX.translate(attachment.position.getPosition());
+		MODEL_MATRIX.translate(attachment.parent.getPosition());
 		Matrix4f.mul(MODEL_MATRIX, bonePosCopy, MODEL_MATRIX);
 		MODEL_MATRIX.translate(invertPos);
 
