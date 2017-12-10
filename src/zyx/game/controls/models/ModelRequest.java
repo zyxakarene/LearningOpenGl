@@ -14,13 +14,11 @@ class ModelRequest implements IResourceLoaded<DataInputStream>, IDisposeable
 {
 
 	private String path;
-	private IModelLoaded onLoaded;
 	private ArrayList<IResourceLoaded<WorldModel>> callbacks;
 
-	ModelRequest(String path, IModelLoaded onLoaded, IResourceLoaded<WorldModel> callback)
+	ModelRequest(String path, IResourceLoaded<WorldModel> callback)
 	{
 		this.path = path;
-		this.onLoaded = onLoaded;
 		this.callbacks = new ArrayList<>();
 
 		callbacks.add(callback);
@@ -49,7 +47,7 @@ class ModelRequest implements IResourceLoaded<DataInputStream>, IDisposeable
 			callback.resourceLoaded(model);
 		}
 		
-		onLoaded.modelLoaded(path, model);
+		ModelManager.getInstance().modelLoaded(path, model);
 	}
 
 	@Override
@@ -58,7 +56,6 @@ class ModelRequest implements IResourceLoaded<DataInputStream>, IDisposeable
 		callbacks.clear();
 		
 		path = null;
-		onLoaded = null;
 		callbacks = null;
 	}
 

@@ -2,6 +2,7 @@ package zyx.opengl.models.loading.bones;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import zyx.utils.cheats.Print;
 
 class SmdObject
 {
@@ -14,18 +15,18 @@ class SmdObject
 	{
 		rootBone = new SmdBone();
 		rootBone.read(in);
-		
+
 		int triangleCount = in.readInt();
 		triangleData = new float[triangleCount * 3 * 12];
-		System.out.println(triangleCount + " triangles");
-		System.out.println(triangleData.length + " floats");
+		Print.out(triangleCount + " triangles");
+		Print.out(triangleData.length + " floats");
 		for (int i = 0; i < triangleData.length; i++)
 		{
 			triangleData[i] = in.readFloat();
 		}
 
 		elementData = new int[triangleCount * 3];
-		System.out.println(elementData.length + " elements");
+		Print.out(elementData.length + " elements");
 		for (int i = 0; i < elementData.length; i++)
 		{
 			elementData[i] = i;

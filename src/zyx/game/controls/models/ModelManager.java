@@ -5,12 +5,12 @@ import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.utils.interfaces.IDisposeable;
 
-public class ModelManager implements IModelLoaded, IDisposeable
+public class ModelManager implements IDisposeable
 {
 
 	private static final ModelManager INSTANCE = new ModelManager();
 
-	private HashMap<String, WorldModel> cache;
+	private HashMap<String, ModelCacheEntry> cache;
 	private HashMap<String, ModelRequest> currentRequests;
 
 	private ModelManager()
@@ -28,7 +28,10 @@ public class ModelManager implements IModelLoaded, IDisposeable
 	{
 		if (cache.containsKey(path))
 		{
-			callback.resourceLoaded(cache.get(path));
+			ModelCacheEntry entry = cache.get(path);
+			entry.count += 1;
+			
+			callback.resourceLoaded(entry.model);
 		}
 		else if (currentRequests.containsKey(path))
 		{
@@ -37,25 +40,27 @@ public class ModelManager implements IModelLoaded, IDisposeable
 		}
 		else
 		{
-			ModelRequest request = new ModelRequest(path, this, callback);
+			ModelRequest request = new ModelRequest(path, callback);
 			currentRequests.put(path, request);
 		}
 	}
 
-	@Override
-	public void modelLoaded(String path, WorldModel model)
+	void modelLoaded(String path, WorldModel model)
 	{
+		ModelCacheEntry cacheEntry = new ModelCacheEntry(model);
+		cache.put(path, cacheEntry);
+		
 		ModelRequest request = currentRequests.remove(path);
 		request.dispose();
 	}
-
+	
 	@Override
 	public void dispose()
 	{		
 		String key;
 		Iterator<String> keys;
 		ModelRequest requestEntry;
-		WorldModel cacheEntry;
+		ModelCacheEntry cacheEntry;
 				
 		keys = currentRequests.keySet().iterator();
 		while (keys.hasNext())
@@ -77,8 +82,5 @@ public class ModelManager implements IModelLoaded, IDisposeable
 		
 		currentRequests.clear();
 		cache.clear();
-		
-		cache = null;
-		currentRequests = null;
 	}
 }

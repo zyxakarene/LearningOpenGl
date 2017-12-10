@@ -873,3 +873,68 @@ java.lang.NullPointerException
 	at zyx.Main.draw(Main.java:114)
 	at zyx.Main.main(Main.java:66)
 
+dec. 09, 2017 10:19:03 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.WorldObject.addAttachment(WorldObject.java:80)
+	at zyx.Main.main(Main.java:80)
+
+dec. 09, 2017 10:32:46 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.Main.dispose(Main.java:106)
+	at zyx.Main.main(Main.java:85)
+
+dec. 09, 2017 10:32:54 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.WorldObject.dispose(WorldObject.java:140)
+	at zyx.game.components.WorldObject.dispose(WorldObject.java:134)
+	at zyx.Main.dispose(Main.java:106)
+	at zyx.Main.main(Main.java:85)
+
+dec. 09, 2017 10:33:34 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.GameObject.update(GameObject.java:34)
+	at zyx.game.components.WorldObject.update(WorldObject.java:119)
+	at zyx.Main.update(Main.java:123)
+	at zyx.Main.main(Main.java:64)
+
+dec. 09, 2017 10:34:00 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.controls.models.ModelManager.loadModel(ModelManager.java:29)
+	at zyx.game.components.WorldObject.load(WorldObject.java:35)
+	at zyx.Main.main(Main.java:76)
+
+dec. 09, 2017 11:24:17 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.Main.dispose(Main.java:106)
+	at zyx.Main.main(Main.java:85)
+
+dec. 09, 2017 11:42:35 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.ClassCastException: org.lwjgl.util.vector.Vector3f cannot be cast to zyx.utils.pooling.IPoolable
+	at zyx.utils.pooling.GenericPool.releaseInstance(GenericPool.java:5)
+	at zyx.game.components.GameObject.dispose(GameObject.java:101)
+	at zyx.game.components.WorldObject.dispose(WorldObject.java:130)
+	at zyx.Main.dispose(Main.java:109)
+	at zyx.Main.main(Main.java:86)
+
+dec. 10, 2017 9:45:05 AM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.ClassCastException: org.lwjgl.util.vector.Matrix4f cannot be cast to zyx.utils.pooling.IPoolable
+	at zyx.utils.pooling.GenericPool.releaseInstance(GenericPool.java:5)
+	at zyx.opengl.models.implementations.bones.skeleton.Joint.dispose(Joint.java:131)
+	at zyx.opengl.models.implementations.bones.skeleton.Joint.dispose(Joint.java:122)
+	at zyx.opengl.models.implementations.bones.skeleton.Joint.dispose(Joint.java:122)
+	at zyx.opengl.models.implementations.bones.skeleton.Joint.dispose(Joint.java:122)
+	at zyx.opengl.models.implementations.bones.skeleton.Skeleton.dispose(Skeleton.java:64)
+	at zyx.opengl.models.implementations.WorldModel.dispose(WorldModel.java:125)
+	at zyx.game.controls.models.ModelCacheEntry.dispose(ModelCacheEntry.java:20)
+	at zyx.game.controls.models.ModelManager.dispose(ModelManager.java:80)
+	at zyx.Main.dispose(Main.java:113)
+	at zyx.Main.main(Main.java:86)
+

@@ -1,9 +1,9 @@
 package zyx.utils.pooling.model;
 
-import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Quaternion;
 import zyx.utils.pooling.IPoolable;
 
-public class PoolableVector3f extends Vector3f implements IPoolable
+public class PoolableQuaternion extends Quaternion implements IPoolable
 {
 
 	@Override
@@ -17,12 +17,12 @@ public class PoolableVector3f extends Vector3f implements IPoolable
 		x = 0;
 		y = 0;
 		z = 0;
+		w = 1;
 	}
 
 	@Override
 	public void release()
 	{
-
 	}
 
 	@Override

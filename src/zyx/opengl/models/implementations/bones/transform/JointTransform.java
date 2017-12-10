@@ -1,26 +1,23 @@
 package zyx.opengl.models.implementations.bones.transform;
 
-import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.utils.math.MatrixUtils;
+import zyx.game.controls.SharedPools;
+import zyx.utils.interfaces.IDisposeable;
 
-public class JointTransform
+public class JointTransform implements IDisposeable
 {
 
-	private final Matrix4f matrix;
-	
-	private final Quaternion rotation;
-	private final Vector3f position;
+	private Quaternion rotation;
+	private Vector3f position;
 
 	public JointTransform(float x, float y, float z, float rotX, float rotY, float rotZ, float rotW)
 	{
-		matrix = new Matrix4f();
-
-		rotation = new Quaternion(rotX, rotY, rotZ, rotW);
-		position = new Vector3f(x, y, z);
+		rotation = SharedPools.QUARERNION_POOL.getInstance();
+		position = SharedPools.VECTOR_POOL.getInstance();
 		
-		MatrixUtils.transformMatrix(rotation, position, matrix);
+		position.set(x, y, z);
+		rotation.set(rotX, rotY, rotZ, rotW);
 	}
 
 	public void getPosition(Vector3f out)
@@ -37,9 +34,14 @@ public class JointTransform
 		out.z = rotation.z;
 		out.w = rotation.w;
 	}
-	
-	public Matrix4f getMatrix()
+
+	@Override
+	public void dispose()
 	{
-		return matrix;
+		SharedPools.QUARERNION_POOL.releaseInstance(rotation);
+		SharedPools.VECTOR_POOL.releaseInstance(position);
+		
+		rotation = null;
+		position = null;
 	}
 }

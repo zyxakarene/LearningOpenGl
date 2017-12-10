@@ -23,8 +23,7 @@ public class WorldModel extends AbstractModel
 
 	private static final Matrix4f MODEL_MATRIX = WorldShader.MATRIX_MODEL;
 
-	public final WorldShader shader;
-
+	private WorldShader shader;
 	private Skeleton skeleton;
 
 	public WorldModel(LoadableValueObject vo)
@@ -86,7 +85,7 @@ public class WorldModel extends AbstractModel
 	{
 		setAnimation(attachment.animations);
 
-		Matrix4f bonePosCopy = new Matrix4f(attachment.joint.lastFinalTransform);
+		Matrix4f bonePosCopy = new Matrix4f(attachment.joint.getFinalTransform());
 		Matrix4f.mul(MODEL_MATRIX, bonePosCopy, bonePosCopy);
 
 		Vector3f invertPos = attachment.position.getPosition().negate(null);
@@ -117,4 +116,17 @@ public class WorldModel extends AbstractModel
 	{
 		return skeleton.getBoneByName(boneName);
 	}
+
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+		
+		skeleton.dispose();
+		
+		skeleton = null;
+		shader = null;
+	}
+	
+	
 }

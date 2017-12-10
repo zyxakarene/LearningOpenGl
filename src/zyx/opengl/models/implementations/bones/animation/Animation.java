@@ -1,6 +1,8 @@
 package zyx.opengl.models.implementations.bones.animation;
 
-public class Animation
+import zyx.utils.interfaces.IDisposeable;
+
+public class Animation implements IDisposeable
 {
 	int length;
 	boolean loopable;
@@ -20,5 +22,18 @@ public class Animation
 	{
 		animationFrame.frame = frame;
 		frames[frame] = animationFrame;
+	}
+
+	@Override
+	public void dispose()
+	{
+		int len = frames.length;
+		for (int i = 0; i < len; i++)
+		{
+			frames[i].dispose();
+		}
+		
+		name = null;
+		frames = null;
 	}
 }

@@ -1,11 +1,13 @@
 package zyx.game.components;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import zyx.game.controls.models.ModelManager;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
 import zyx.opengl.models.implementations.bones.attachments.Attachment;
+import zyx.opengl.models.implementations.bones.attachments.AttachmentRequest;
 import zyx.utils.interfaces.IDrawable;
 
 public class WorldObject extends GameObject implements IDrawable, IResourceLoaded<WorldModel>
@@ -18,7 +20,9 @@ public class WorldObject extends GameObject implements IDrawable, IResourceLoade
 	private ArrayList<WorldObject> attachedObjects;
 	private ArrayList<Attachment> attachments;
 
-	public WorldObject(String animation)
+	private LinkedList<AttachmentRequest> attachmentRequests;
+
+	public WorldObject()
 	{
 		animationController = new AnimationController();
 		attachedObjects = new ArrayList<>();
@@ -36,6 +40,16 @@ public class WorldObject extends GameObject implements IDrawable, IResourceLoade
 	{
 		model = data;
 		loaded = true;
+
+		if (attachmentRequests != null)
+		{
+			AttachmentRequest request;
+			while (attachmentRequests.isEmpty() == false)
+			{
+				request = attachmentRequests.remove();
+				addAttachment(request.child, request.attachmentPoint);
+			}
+		}
 	}
 
 	public void setAnimation(String name)
@@ -59,28 +73,44 @@ public class WorldObject extends GameObject implements IDrawable, IResourceLoade
 			}
 		}
 	}
-	
+
 	private void drawAsAttachment(Attachment attachment)
 	{
-		model.drawAsAttachment(attachment);
-		
-		for (Attachment attachment2 : attachments)
+		if (loaded)
 		{
-			attachment2.child.drawAsAttachment(attachment2);
+			model.drawAsAttachment(attachment);
+
+			for (Attachment attachment2 : attachments)
+			{
+				attachment2.child.drawAsAttachment(attachment2);
+			}
 		}
 	}
 
 	public void addAttachment(WorldObject child, String attachmentPoint)
 	{
-		Attachment attachment = new Attachment();
-		attachment.child = child;
-		attachment.parent = this;
-		attachment.animations = animationController;
-		attachment.position = this;
-		attachment.joint = model.getBoneByName(attachmentPoint);
+		if (loaded)
+		{
+			Attachment attachment = new Attachment();
+			attachment.child = child;
+			attachment.parent = this;
+			attachment.animations = animationController;
+			attachment.position = this;
+			attachment.joint = model.getBoneByName(attachmentPoint);
 
-		attachments.add(attachment);
-		attachedObjects.add(child);
+			attachments.add(attachment);
+			attachedObjects.add(child);
+		}
+		else
+		{
+			if (attachmentRequests == null)
+			{
+				attachmentRequests = new LinkedList<>();
+			}
+
+			AttachmentRequest request = new AttachmentRequest(child, attachmentPoint);
+			attachmentRequests.add(request);
+		}
 	}
 
 	@Override
@@ -92,5 +122,30 @@ public class WorldObject extends GameObject implements IDrawable, IResourceLoade
 		{
 			attachment.update(timestamp, elapsedTime);
 		}
+	}
+
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+		
+		for (WorldObject attachedObject : attachedObjects)
+		{
+			attachedObject.dispose();
+		}
+		
+		attachments.clear();
+		attachedObjects.clear();
+		
+		if (attachmentRequests != null)
+		{
+			attachmentRequests.clear();
+		}
+		
+		animationController = null;
+		model = null;
+		attachments = null;
+		attachedObjects = null;
+		attachmentRequests = null;
 	}
 }

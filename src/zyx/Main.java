@@ -14,6 +14,8 @@ import zyx.game.components.screen.Textfield;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.KeyboardControl;
 import zyx.game.controls.MouseControl;
+import zyx.game.controls.SharedPools;
+import zyx.game.controls.models.ModelManager;
 import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.textures.TextureManager;
 import zyx.opengl.GLUtils;
@@ -32,9 +34,6 @@ public class Main
 	private static CameraController camera;
 	private static WorldObject mainKnight;
 	private static WorldObject attachedKnight1;
-	private static WorldObject attachedKnight2;
-	private static WorldObject attachedKnight3;
-	private static WorldObject attachedKnight4;
 
 	private static Stage stage;
 	private static BitmapFont bmpFont;
@@ -70,21 +69,27 @@ public class Main
 
 			GLUtils.errorCheck();
 
-			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_1))
+			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_1) && mainKnight == null)
 			{
+				mainKnight = new WorldObject();
+				attachedKnight1 = new WorldObject();
+
+				mainKnight.load("assets/models/knight.zaf");
+				attachedKnight1.load("assets/models/knight.zaf");
+				mainKnight.setAnimation("attack");
+				attachedKnight1.setAnimation("attack");
+				
 				mainKnight.addAttachment(attachedKnight1, "Skeleton_Hand_R");
 			}
 			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_2))
 			{
-				attachedKnight1.addAttachment(attachedKnight2, "Skeleton_Hand_R");
+				dispose();
 			}
 			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_3))
 			{
-				attachedKnight2.addAttachment(attachedKnight3, "Skeleton_Hand_R");
 			}
 			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_4))
 			{
-				attachedKnight3.addAttachment(attachedKnight4, "Skeleton_Hand_R");
 			}
 
 			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_ESCAPE))
@@ -97,6 +102,20 @@ public class Main
 		}
 	}
 
+	private static void dispose()
+	{
+		if (mainKnight != null)
+		{
+			mainKnight.dispose();
+			mainKnight = null;
+		}
+		
+		ModelManager.getInstance().dispose();
+//		SharedPools.MATRIX_POOL.dispose();
+//		SharedPools.VECTOR_POOL.dispose();
+//		SharedPools.QUARERNION_POOL.dispose();
+	}
+	
 	private static void update()
 	{
 		KeyboardControl.checkKeys();
@@ -108,7 +127,10 @@ public class Main
 		long timestamp = DeltaTime.getTimestamp();
 
 		camera.update(timestamp, elapsed);
-		mainKnight.update(timestamp, elapsed);
+		if (mainKnight != null)
+		{
+			mainKnight.update(timestamp, elapsed);
+		}
 //		dummyObject.update(timestamp, elapsed);
 //		object3.update(timestamp, elapsed);
 	}
@@ -117,7 +139,10 @@ public class Main
 	{
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
-		mainKnight.draw();
+		if (mainKnight != null)
+		{
+			mainKnight.draw();
+		}
 //		dummyObject.draw();
 //		object3.draw();
 
@@ -131,28 +156,19 @@ public class Main
 		Camera.getInstance().initialize();
 
 		camera = new CameraController();
-		mainKnight = new WorldObject("invalid");
-		attachedKnight1 = new WorldObject("invalid");
-		attachedKnight2 = new WorldObject("invalid");
-		attachedKnight3 = new WorldObject("invalid");
-		attachedKnight4 = new WorldObject("invalid");
-		stage = Stage.instance;
-
-		mainKnight.load("assets/models/knight.zaf");
-		attachedKnight1.load("assets/models/knight.zaf");
-		attachedKnight2.load("assets/models/knight.zaf");
-		attachedKnight3.load("assets/models/knight.zaf");
-		attachedKnight4.load("assets/models/knight.zaf");
-		mainKnight.setAnimation("attack");
-		attachedKnight1.setAnimation("attack");
-		attachedKnight2.setAnimation("attack");
-		attachedKnight3.setAnimation("attack");
-		attachedKnight4.setAnimation("attack");
+//		mainKnight = new WorldObject("invalid");
+//		attachedKnight1 = new WorldObject("invalid");
+//
+//		mainKnight.load("assets/models/knight.zaf");
+//		attachedKnight1.load("assets/models/knight.zaf");
+//		mainKnight.setAnimation("attack");
+//		attachedKnight1.setAnimation("attack");
 
 		DisplayObjectContainer container = new DisplayObjectContainer();
 		Image image = new Image("sample");
 
 		container.addChild(image);
+		stage = Stage.instance;
 		stage.addChild(container);
 
 		container.position.x = 50;

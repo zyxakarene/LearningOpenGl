@@ -3,28 +3,33 @@ package zyx.opengl.models.implementations.bones.skeleton;
 import zyx.opengl.models.implementations.bones.animation.Animation;
 import zyx.opengl.models.implementations.bones.animation.Animator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import org.lwjgl.util.vector.Matrix4f;
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
-import zyx.opengl.models.implementations.bones.transform.JointTransform;
+import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IUpdateable;
 
-public class Skeleton implements IUpdateable
+public class Skeleton implements IUpdateable, IDisposeable
 {	
 	private static final Matrix4f DUMMY_MATRIX = new Matrix4f();
 	
-	private final Joint rootJoint;
-	private final HashMap<String, Joint> jointMap;
-	private final HashMap<String, Animation> animations;
+	private Joint rootJoint;
+	private Joint dummyJoint;
+	private HashMap<String, Joint> jointMap;
+	private HashMap<String, Animation> animations;
+	private Animator animator;
 	
-	private final Animator animator;
+	private LinkedList<Animation> animationList;
 
-	public Skeleton(Joint root)
+	public Skeleton(Joint root, Joint meshJoint)
 	{
 		rootJoint = root;
 		jointMap = new HashMap<>();
 		animations = new HashMap<>();
+		animationList = new LinkedList<>();
 		
-		jointMap.put("dummy", new Joint(0, "dummy", new JointTransform(0, 0, 0, 0, 0, 0, 0)));
+		dummyJoint = meshJoint;
+		jointMap.put(dummyJoint.name, dummyJoint);
 		
 		rootJoint.calcInverseBindTransform(DUMMY_MATRIX);
 		rootJoint.addToMap(jointMap);
@@ -35,6 +40,7 @@ public class Skeleton implements IUpdateable
 	public void addAnimation(String name, Animation animation)
 	{
 		animations.put(name, animation);
+		animationList.add(animation);
 	}
 
 	public void setCurrentAnimation(AnimationController controller)
@@ -52,5 +58,29 @@ public class Skeleton implements IUpdateable
 	public Joint getBoneByName(String name)
 	{
 		return jointMap.get(name);
+	}
+
+	@Override
+	public void dispose()
+	{
+		rootJoint.dispose();
+		animator.dispose();
+		dummyJoint.dispose();
+		
+		while (animationList.isEmpty() == false)
+		{			
+			animationList.remove().dispose();
+		}
+		
+		jointMap.clear();
+		animations.clear();
+		animationList.clear();
+		
+		rootJoint = null;
+		jointMap = null;
+		animations = null;
+		animator = null;
+		animationList = null;
+		dummyJoint = null;
 	}
 }

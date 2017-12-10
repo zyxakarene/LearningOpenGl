@@ -5,17 +5,17 @@ import java.util.HashMap;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
-import zyx.utils.cheats.Print;
+import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IUpdateable;
 
-public class Animator implements IUpdateable
+public class Animator implements IUpdateable, IDisposeable
 {
 
 	private long animationStartedAt;
 	private Animation currentAnimation;
 
-	private final HashMap<String, Joint> joints;
-	private final HashMap<String, Animation> animations;
+	private HashMap<String, Joint> joints;
+	private HashMap<String, Animation> animations;
 
 	public Animator(HashMap<String, Joint> joints, HashMap<String, Animation> animations)
 	{
@@ -60,5 +60,13 @@ public class Animator implements IUpdateable
 		{
 			AnimationTransformer.nullTransform(joints);
 		}
+	}
+
+	@Override
+	public void dispose()
+	{
+		currentAnimation = null;
+		joints = null;
+		animations = null;
 	}
 }
