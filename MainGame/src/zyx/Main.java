@@ -42,7 +42,7 @@ public class Main
 	public static void main(String[] args)
 	{
 		new SetupOpenGlCommand().execute();
-		GL11.glClearColor(0.3f, 0.3f, 0.3f, 1);
+		GL11.glClearColor(0.60f, 0.80f, 0.92f, 1);
 
 		GLUtils.enableGLSettings();
 
