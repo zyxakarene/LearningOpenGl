@@ -32,6 +32,7 @@ public class Main
 {
 
 	private static CameraController camera;
+	private static WorldObject platform;
 	private static WorldObject mainKnight;
 	private static WorldObject attachedKnight1;
 
@@ -74,8 +75,8 @@ public class Main
 				mainKnight = new WorldObject();
 				attachedKnight1 = new WorldObject();
 
-				mainKnight.load("assets/models/knight.zaf");
-				attachedKnight1.load("assets/models/knight.zaf");
+				mainKnight.load("assets/models/knight/knight.zaf");
+				attachedKnight1.load("assets/models/knight/knight.zaf");
 				mainKnight.setAnimation("attack");
 				attachedKnight1.setAnimation("attack");
 				
@@ -131,6 +132,7 @@ public class Main
 		{
 			mainKnight.update(timestamp, elapsed);
 		}
+		platform.update(timestamp, elapsed);
 //		dummyObject.update(timestamp, elapsed);
 //		object3.update(timestamp, elapsed);
 	}
@@ -143,6 +145,8 @@ public class Main
 		{
 			mainKnight.draw();
 		}
+		
+		platform.draw();
 //		dummyObject.draw();
 //		object3.draw();
 
@@ -164,8 +168,11 @@ public class Main
 //		mainKnight.setAnimation("attack");
 //		attachedKnight1.setAnimation("attack");
 
+		platform = new WorldObject();
+		platform.load("assets/models/platform.zaf");
+
 		DisplayObjectContainer container = new DisplayObjectContainer();
-		Image image = new Image("sample");
+		Image image = new Image("sample.png");
 
 		container.addChild(image);
 		stage = Stage.instance;

@@ -28,11 +28,15 @@ public class Skeleton implements IUpdateable, IDisposeable
 		animations = new HashMap<>();
 		animationList = new LinkedList<>();
 		
-		dummyJoint = meshJoint;
-		jointMap.put(dummyJoint.name, dummyJoint);
 		
 		rootJoint.calcInverseBindTransform(DUMMY_MATRIX);
 		rootJoint.addToMap(jointMap);
+		
+		dummyJoint = meshJoint;
+		if (jointMap.size() > 1)
+		{
+			jointMap.put(dummyJoint.name, dummyJoint);
+		}
 		
 		animator = new Animator(jointMap, animations);
 	}

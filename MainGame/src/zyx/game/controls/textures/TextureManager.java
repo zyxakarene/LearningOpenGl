@@ -11,7 +11,7 @@ public class TextureManager
 
 	public static GameTexture getTexture(String name)
 	{
-		String path = String.format("assets/textures/%s.%s", name, GameConstants.TEXTURE_FORMAT);
+		String path = String.format("assets/textures/%s", name);
 		return getTextureInner(path);
 	}
 

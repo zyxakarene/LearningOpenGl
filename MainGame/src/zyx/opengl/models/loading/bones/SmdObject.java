@@ -10,6 +10,7 @@ class SmdObject
 	float[] vertexData;
 	int[] elementData;
 	SmdAnimation[] animations;
+	String texture;
 	
 	public void read(DataInputStream in) throws IOException
 	{
@@ -40,5 +41,7 @@ class SmdObject
 			animations[i] = new SmdAnimation();
 			animations[i].read(in);
 		}
+		
+		texture = in.readUTF();
 	}
 }

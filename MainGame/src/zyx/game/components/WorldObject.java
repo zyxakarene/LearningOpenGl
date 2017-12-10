@@ -8,11 +8,15 @@ import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
 import zyx.opengl.models.implementations.bones.attachments.Attachment;
 import zyx.opengl.models.implementations.bones.attachments.AttachmentRequest;
+import zyx.opengl.models.implementations.bones.skeleton.Joint;
+import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IDrawable;
 
 public class WorldObject extends GameObject implements IDrawable, IResourceLoaded<WorldModel>
 {
 
+	private String path;
+	
 	private boolean loaded;
 	private WorldModel model;
 	private AnimationController animationController;
@@ -32,6 +36,7 @@ public class WorldObject extends GameObject implements IDrawable, IResourceLoade
 
 	public void load(String path)
 	{
+		this.path = path;
 		ModelManager.getInstance().loadModel(path, this);
 	}
 
@@ -91,15 +96,23 @@ public class WorldObject extends GameObject implements IDrawable, IResourceLoade
 	{
 		if (loaded)
 		{
-			Attachment attachment = new Attachment();
-			attachment.child = child;
-			attachment.parent = this;
-			attachment.animations = animationController;
-			attachment.position = this;
-			attachment.joint = model.getBoneByName(attachmentPoint);
+			Joint attachJoint = model.getBoneByName(attachmentPoint);
+			if (attachJoint == null)
+			{
+				Print.out("Warning: No such bone", attachmentPoint, "on", this);
+			}
+			else
+			{
+				Attachment attachment = new Attachment();
+				attachment.child = child;
+				attachment.parent = this;
+				attachment.animations = animationController;
+				attachment.position = this;
+				attachment.joint = model.getBoneByName(attachmentPoint);
 
-			attachments.add(attachment);
-			attachedObjects.add(child);
+				attachments.add(attachment);
+				attachedObjects.add(child);
+			}
 		}
 		else
 		{
@@ -147,5 +160,11 @@ public class WorldObject extends GameObject implements IDrawable, IResourceLoade
 		attachments = null;
 		attachedObjects = null;
 		attachmentRequests = null;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "WorldObject{" + path + '}';
 	}
 }

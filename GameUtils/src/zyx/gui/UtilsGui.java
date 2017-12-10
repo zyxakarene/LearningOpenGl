@@ -1,9 +1,15 @@
 package zyx.gui;
 
-import zyx.logic.converter.obj.ObjConverter;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import zyx.gui.smd.QcComboBox;
 import zyx.logic.UtilsLogger;
 import zyx.logic.converter.fnt.FntConverter;
-import zyx.logic.converter.smd.SmdConverter;
+import zyx.logic.converter.smd.SmdParser;
+import zyx.logic.converter.smd.control.QcFile;
+import zyx.logic.converter.smd.control.QcParser;
 import zyx.logic.watcher.WatcherManager;
 
 public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListener.IWindowOpened
@@ -11,15 +17,18 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
 
 	private final WindowCreatedListener windowCreated;
 	
-	private ObjConverter objConverter;
 	private FntConverter fntConverter;
-	private SmdConverter smdConverter;
 	
 	private WatcherManager watcher;
+	
+	private QcComboBox qcCombo;
 
 	public UtilsGui()
 	{
 		initComponents();
+		
+		qcCombo = new QcComboBox();
+		jPanel1.add(qcCombo);
 
 		windowCreated = new WindowCreatedListener(this);
 		addWindowListener(windowCreated);
@@ -30,14 +39,11 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
 	{
 		removeWindowListener(windowCreated);
 		
-		objConverter = new ObjConverter(objPanel);
 		fntConverter = new FntConverter(fntPanel);
-		smdConverter = new SmdConverter(smdPanel);
 		
 		UtilsLogger.setOutput(logArea);
 		
-		
-		watcher = new WatcherManager(smdConverter, objConverter, fntConverter);
+		watcher = new WatcherManager(fntConverter);
 		watcher.initialize();
 	}
 
@@ -46,41 +52,15 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
     private void initComponents()
     {
 
-        objPanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         logArea = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
         fntPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        smdPanel = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        smdCompileButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        objPanel.setBackground(new java.awt.Color(255, 255, 255));
-        objPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText(".obj Converter");
-
-        javax.swing.GroupLayout objPanelLayout = new javax.swing.GroupLayout(objPanel);
-        objPanel.setLayout(objPanelLayout);
-        objPanelLayout.setHorizontalGroup(
-            objPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(objPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        objPanelLayout.setVerticalGroup(
-            objPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(objPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
-                .addContainerGap())
-        );
 
         logArea.setColumns(20);
         logArea.setRows(5);
@@ -107,55 +87,48 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
             fntPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(fntPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        smdPanel.setBackground(new java.awt.Color(255, 255, 255));
-        smdPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText(".smd Converter");
-
-        javax.swing.GroupLayout smdPanelLayout = new javax.swing.GroupLayout(smdPanel);
-        smdPanel.setLayout(smdPanelLayout);
-        smdPanelLayout.setHorizontalGroup(
-            smdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(smdPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        smdPanelLayout.setVerticalGroup(
-            smdPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(smdPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        smdCompileButton.setText("Convert");
+        smdCompileButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                smdCompileButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(objPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(smdPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(fntPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(smdCompileButton))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(fntPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(objPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(fntPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(smdPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(fntPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(smdCompileButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -164,17 +137,29 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void smdCompileButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_smdCompileButtonActionPerformed
+    {//GEN-HEADEREND:event_smdCompileButtonActionPerformed
+		try
+		{
+			File inputQc = qcCombo.getSelectedItem();
+			QcFile parsedQc = new QcParser().parseFile(inputQc);
+			new SmdParser(parsedQc).parseFiles();
+		}
+		catch (IOException ex)
+		{
+			Logger.getLogger(UtilsGui.class.getName()).log(Level.SEVERE, null, ex);
+		}
+    }//GEN-LAST:event_smdCompileButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel fntPanel;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea logArea;
-    private javax.swing.JPanel objPanel;
-    private javax.swing.JPanel smdPanel;
+    private javax.swing.JButton smdCompileButton;
     // End of variables declaration//GEN-END:variables
 
 }

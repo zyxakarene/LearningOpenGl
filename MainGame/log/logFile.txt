@@ -995,3 +995,32 @@ java.lang.NullPointerException
 	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:41)
 	at zyx.Main.main(Main.java:63)
 
+dec. 10, 2017 3:58:58 PM zyx.utils.exceptions.Msg error
+SEVERE: Failed to load texture
+java.lang.RuntimeException: Resource not found: assets/textures/sample
+	at org.newdawn.slick.util.ResourceLoader.getResourceAsStream(ResourceLoader.java:69)
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:18)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:28)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:23)
+	at zyx.game.controls.textures.TextureManager.getTextureInner(TextureManager.java:28)
+	at zyx.game.controls.textures.TextureManager.getTexture(TextureManager.java:15)
+	at zyx.game.components.screen.Image.<init>(Image.java:14)
+	at zyx.Main.load(Main.java:175)
+	at zyx.Main.main(Main.java:55)
+
+dec. 10, 2017 3:58:58 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: java.lang.RuntimeException: Resource not found: assets/textures/sample
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:26)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:28)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:23)
+	at zyx.game.controls.textures.TextureManager.getTextureInner(TextureManager.java:28)
+	at zyx.game.controls.textures.TextureManager.getTexture(TextureManager.java:15)
+	at zyx.game.components.screen.Image.<init>(Image.java:14)
+	at zyx.Main.load(Main.java:175)
+	at zyx.Main.main(Main.java:55)
+Caused by: java.lang.RuntimeException: Resource not found: assets/textures/sample
+	at org.newdawn.slick.util.ResourceLoader.getResourceAsStream(ResourceLoader.java:69)
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:18)
+	... 7 more
+
