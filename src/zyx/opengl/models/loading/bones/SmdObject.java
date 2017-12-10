@@ -7,7 +7,7 @@ import zyx.utils.cheats.Print;
 class SmdObject
 {
 	SmdBone rootBone;
-	float[] triangleData;
+	float[] vertexData;
 	int[] elementData;
 	SmdAnimation[] animations;
 	
@@ -16,22 +16,22 @@ class SmdObject
 		rootBone = new SmdBone();
 		rootBone.read(in);
 
-		int triangleCount = in.readInt();
-		triangleData = new float[triangleCount * 3 * 12];
-		Print.out(triangleCount + " triangles");
-		Print.out(triangleData.length + " floats");
-		for (int i = 0; i < triangleData.length; i++)
+		int vertexCount = in.readInt();
+		vertexData = new float[vertexCount * 12];
+		Print.out(vertexCount + " verticies");
+		Print.out(vertexData.length + " floats");
+		for (int i = 0; i < vertexData.length; i++)
 		{
-			triangleData[i] = in.readFloat();
+			vertexData[i] = in.readFloat();
 		}
 
-		elementData = new int[triangleCount * 3];
+		int elementCount = in.readInt();
+		elementData = new int[elementCount];
 		Print.out(elementData.length + " elements");
 		for (int i = 0; i < elementData.length; i++)
 		{
-			elementData[i] = i;
+			elementData[i] = in.readShort();
 		}
-		
 		
 		int animationLength = in.readInt();
 		animations = new SmdAnimation[animationLength];

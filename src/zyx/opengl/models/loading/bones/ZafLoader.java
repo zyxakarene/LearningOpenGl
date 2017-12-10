@@ -36,7 +36,7 @@ public class ZafLoader
 			Skeleton skeleton = new Skeleton(rootJoint, meshJoint);
 			addAnimationsTo(skeleton, smd.animations);
 			
-			LoadableValueObject vo = new LoadableValueObject(smd.triangleData, smd.elementData, skeleton, "knight");
+			LoadableValueObject vo = new LoadableValueObject(smd.vertexData, smd.elementData, skeleton, "knight");
 			return new WorldModel(vo);
 		}
 		catch (IOException e)

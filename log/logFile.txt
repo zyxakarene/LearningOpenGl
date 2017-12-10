@@ -938,3 +938,60 @@ java.lang.ClassCastException: org.lwjgl.util.vector.Matrix4f cannot be cast to z
 	at zyx.Main.dispose(Main.java:113)
 	at zyx.Main.main(Main.java:86)
 
+dec. 10, 2017 10:41:07 AM zyx.opengl.models.loading.bones.ZafLoader loadFromZaf
+SEVERE: Error at loading a zaf data
+java.io.EOFException
+	at java.io.DataInputStream.readInt(DataInputStream.java:392)
+	at java.io.DataInputStream.readFloat(DataInputStream.java:446)
+	at zyx.opengl.models.loading.bones.SmdObject.read(SmdObject.java:25)
+	at zyx.opengl.models.loading.bones.ZafLoader.loadFromZaf(ZafLoader.java:31)
+	at zyx.game.controls.models.ModelRequest.resourceLoaded(ModelRequest.java:43)
+	at zyx.game.controls.models.ModelRequest.resourceLoaded(ModelRequest.java:13)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:98)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:41)
+	at zyx.Main.main(Main.java:63)
+
+dec. 10, 2017 10:41:07 AM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.WorldObject.addAttachment(WorldObject.java:99)
+	at zyx.game.components.WorldObject.resourceLoaded(WorldObject.java:50)
+	at zyx.game.components.WorldObject.resourceLoaded(WorldObject.java:13)
+	at zyx.game.controls.models.ModelRequest.resourceLoaded(ModelRequest.java:47)
+	at zyx.game.controls.models.ModelRequest.resourceLoaded(ModelRequest.java:13)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:98)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:41)
+	at zyx.Main.main(Main.java:63)
+
+dec. 10, 2017 10:42:10 AM zyx.opengl.models.loading.bones.ZafLoader loadFromZaf
+SEVERE: Error at loading a zaf data
+java.io.UTFDataFormatException: malformed input around byte 842
+	at java.io.DataInputStream.readUTF(DataInputStream.java:656)
+	at java.io.DataInputStream.readUTF(DataInputStream.java:564)
+	at zyx.opengl.models.loading.bones.SmdAnimationTransform.read(SmdAnimationTransform.java:24)
+	at zyx.opengl.models.loading.bones.SmdAnimationFrame.read(SmdAnimationFrame.java:26)
+	at zyx.opengl.models.loading.bones.SmdAnimation.read(SmdAnimation.java:25)
+	at zyx.opengl.models.loading.bones.SmdObject.read(SmdObject.java:41)
+	at zyx.opengl.models.loading.bones.ZafLoader.loadFromZaf(ZafLoader.java:31)
+	at zyx.game.controls.models.ModelRequest.resourceLoaded(ModelRequest.java:43)
+	at zyx.game.controls.models.ModelRequest.resourceLoaded(ModelRequest.java:13)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:98)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:41)
+	at zyx.Main.main(Main.java:63)
+
+dec. 10, 2017 10:42:10 AM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.WorldObject.addAttachment(WorldObject.java:99)
+	at zyx.game.components.WorldObject.resourceLoaded(WorldObject.java:50)
+	at zyx.game.components.WorldObject.resourceLoaded(WorldObject.java:13)
+	at zyx.game.controls.models.ModelRequest.resourceLoaded(ModelRequest.java:47)
+	at zyx.game.controls.models.ModelRequest.resourceLoaded(ModelRequest.java:13)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:98)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:41)
+	at zyx.Main.main(Main.java:63)
+
