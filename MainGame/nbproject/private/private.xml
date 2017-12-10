@@ -5,7 +5,6 @@
         <group name="games">
             <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/implementations/bones/animation/Animation.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/game/components/GameObject.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/implementations/bones/animation/AnimationFrame.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/utils/pooling/ObjectPool.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/implementations/bones/transform/JointTransform.java</file>
             <file>file:/D:/Programmering/Tutorial5/src/zyx/Main.java</file>
