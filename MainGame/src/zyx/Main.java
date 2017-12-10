@@ -6,16 +6,15 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import zyx.game.components.WorldObject;
+import zyx.game.components.GameObject;
 import zyx.game.components.screen.DisplayObjectContainer;
 import zyx.game.components.screen.Image;
 import zyx.game.components.screen.Stage;
 import zyx.game.components.screen.Textfield;
+import zyx.game.components.world.World3D;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.KeyboardControl;
 import zyx.game.controls.MouseControl;
-import zyx.game.controls.SharedPools;
-import zyx.game.controls.models.ModelManager;
 import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.textures.TextureManager;
 import zyx.opengl.GLUtils;
@@ -32,11 +31,12 @@ public class Main
 {
 
 	private static CameraController camera;
-	private static WorldObject platform;
-	private static WorldObject mainKnight;
-	private static WorldObject attachedKnight1;
+	private static GameObject platform;
+	private static GameObject mainKnight;
+	private static GameObject attachedKnight1;
 
 	private static Stage stage;
+	private static World3D world;
 	private static BitmapFont bmpFont;
 	private static Textfield field;
 
@@ -72,15 +72,20 @@ public class Main
 
 			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_1) && mainKnight == null)
 			{
-				mainKnight = new WorldObject();
-				attachedKnight1 = new WorldObject();
+				mainKnight = new GameObject();
+				attachedKnight1 = new GameObject();
 
+				platform.addChild(mainKnight);
+				mainKnight.setX(100);
+				
 				mainKnight.load("assets/models/knight/knight.zaf");
 				attachedKnight1.load("assets/models/knight/knight.zaf");
 				mainKnight.setAnimation("attack");
 				attachedKnight1.setAnimation("walk");
 				
 				mainKnight.addAttachment(attachedKnight1, "Skeleton_Hand_R");
+				
+//				world.addChild(mainKnight);
 			}
 			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_2))
 			{
@@ -141,12 +146,14 @@ public class Main
 	{
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
-		if (mainKnight != null)
-		{
-			mainKnight.draw();
-		}
+//		if (mainKnight != null)
+//		{
+//			mainKnight.draw();
+//		}
 		
-		platform.draw();
+		world.drawScene();
+		
+//		platform.draw();
 //		dummyObject.draw();
 //		object3.draw();
 
@@ -160,15 +167,15 @@ public class Main
 		Camera.getInstance().initialize();
 
 		camera = new CameraController();
-//		mainKnight = new WorldObject("invalid");
-//		attachedKnight1 = new WorldObject("invalid");
+//		mainKnight = new GameObject("invalid");
+//		attachedKnight1 = new GameObject("invalid");
 //
 //		mainKnight.load("assets/models/knight.zaf");
 //		attachedKnight1.load("assets/models/knight.zaf");
 //		mainKnight.setAnimation("attack");
 //		attachedKnight1.setAnimation("attack");
 
-		platform = new WorldObject();
+		platform = new GameObject();
 		platform.load("assets/models/platform.zaf");
 
 		DisplayObjectContainer container = new DisplayObjectContainer();
@@ -177,6 +184,9 @@ public class Main
 		container.addChild(image);
 		stage = Stage.instance;
 		stage.addChild(container);
+		
+		world = World3D.instance;
+		world.addChild(platform);
 
 		container.position.x = 50;
 		container.position.y = 500;

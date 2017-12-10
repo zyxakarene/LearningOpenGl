@@ -1,6 +1,6 @@
 package zyx.game.behavior;
 
-import zyx.game.components.GameObject;
+import zyx.game.components.WorldObject;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IUpdateable;
 
@@ -10,7 +10,7 @@ public abstract class Behavior implements IUpdateable, IDisposeable
 	BehaviorType type;
 	boolean active;
 	
-	protected GameObject gameObject;
+	protected WorldObject gameObject;
 
 	public Behavior(BehaviorType type)
 	{
@@ -23,7 +23,7 @@ public abstract class Behavior implements IUpdateable, IDisposeable
 		this.active = active;
 	}
 	
-	void setGameObject(GameObject gameObject)
+	void setGameObject(WorldObject gameObject)
 	{
 		this.gameObject = gameObject;
 	}

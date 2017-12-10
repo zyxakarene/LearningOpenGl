@@ -1050,3 +1050,31 @@ java.lang.NullPointerException
 	at zyx.Main.draw(Main.java:149)
 	at zyx.Main.main(Main.java:67)
 
+dec. 10, 2017 9:30:25 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.ExceptionInInitializerError
+	at zyx.Main.load(Main.java:168)
+	at zyx.Main.main(Main.java:57)
+Caused by: java.lang.RuntimeException: Uncompilable source code - draw() in zyx.game.components.WorldObject cannot implement draw() in zyx.utils.interfaces.IDrawable
+  attempting to assign weaker access privileges; was public
+	at zyx.game.components.GameObject.<clinit>(GameObject.java:18)
+	... 2 more
+
+dec. 10, 2017 9:30:45 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.WorldObject.draw(WorldObject.java:53)
+	at zyx.game.components.WorldObject.draw(WorldObject.java:55)
+	at zyx.game.components.world.Scene.drawScene(Scene.java:16)
+	at zyx.Main.draw(Main.java:153)
+	at zyx.Main.main(Main.java:69)
+
+dec. 10, 2017 9:33:41 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.WorldObject.draw(WorldObject.java:71)
+	at zyx.game.components.WorldObject.draw(WorldObject.java:73)
+	at zyx.game.components.world.Scene.drawScene(Scene.java:16)
+	at zyx.Main.draw(Main.java:153)
+	at zyx.Main.main(Main.java:69)
+
