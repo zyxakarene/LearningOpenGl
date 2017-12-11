@@ -1,6 +1,5 @@
-package zyx.game.components.world;
+package zyx.engine.components.world;
 
-import zyx.game.components.WorldObject;
 import zyx.opengl.shaders.implementations.WorldShader;
 
 public final class World3D extends WorldObject

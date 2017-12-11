@@ -1,4 +1,4 @@
-package zyx.game.components.screen;
+package zyx.engine.components.screen;
 
 import zyx.opengl.models.implementations.ScreenModel;
 import zyx.opengl.textures.GameTexture;

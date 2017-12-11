@@ -1,4 +1,4 @@
-package zyx.game.components.screen;
+package zyx.engine.components.screen;
 
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -31,7 +31,7 @@ public abstract class DisplayObject implements IPositionable2D
 
 	public abstract float getWidth();
 	public abstract float getHeight();
-	protected abstract void draw();
+	abstract void draw();
 
 	public void transform()
 	{

@@ -1,4 +1,4 @@
-package zyx.game.components.screen;
+package zyx.engine.components.screen;
 
 import java.util.ArrayList;
 import org.lwjgl.util.vector.Matrix4f;
@@ -90,7 +90,7 @@ public class DisplayObjectContainer extends DisplayObject
 	private final Matrix4f backupMatrix = new Matrix4f();
 	
 	@Override
-	protected final void draw()
+	final void draw()
 	{
 		transform();
 		backupMatrix.load(ScreenShader.MATRIX_MODEL);

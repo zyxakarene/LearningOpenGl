@@ -1,11 +1,10 @@
-package zyx.game.components;
+package zyx.engine.components.world;
 
 import java.util.ArrayList;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.controls.SharedPools;
 import zyx.opengl.shaders.ShaderManager;
-import zyx.opengl.shaders.implementations.ScreenShader;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.utils.interfaces.IDisposeable;
@@ -77,7 +76,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		removeFromParent(false);
 	}
 
-	protected final void draw()
+	final void draw()
 	{
 		onTransform();
 		onDraw();

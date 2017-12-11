@@ -7,11 +7,11 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import zyx.game.components.GameObject;
-import zyx.game.components.screen.DisplayObjectContainer;
-import zyx.game.components.screen.Image;
-import zyx.game.components.screen.Stage;
-import zyx.game.components.screen.Textfield;
-import zyx.game.components.world.World3D;
+import zyx.engine.components.screen.DisplayObjectContainer;
+import zyx.engine.components.screen.Image;
+import zyx.engine.components.screen.Stage;
+import zyx.engine.components.screen.Textfield;
+import zyx.engine.components.world.World3D;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.KeyboardControl;
 import zyx.game.controls.MouseControl;
@@ -208,7 +208,7 @@ public class Main
 		field.position.x = GameConstants.GAME_WIDTH / 4;
 		field.position.y = GameConstants.GAME_HEIGHT / 4;
 
-//		stage.addChild(field);
+		stage.addChild(field);
 	}
 
 	private static void loadFontLogic()

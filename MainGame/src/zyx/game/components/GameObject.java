@@ -1,5 +1,6 @@
 package zyx.game.components;
 
+import zyx.engine.components.world.WorldObject;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import zyx.game.behavior.Behavior;

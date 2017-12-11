@@ -1,4 +1,4 @@
-package zyx.game.components.screen;
+package zyx.engine.components.screen;
 
 import zyx.opengl.textures.bitmapfont.BitmapFont;
 import zyx.opengl.textures.bitmapfont.Text;

@@ -2,7 +2,7 @@ package zyx.game.behavior;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import zyx.game.components.WorldObject;
+import zyx.engine.components.world.WorldObject;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IUpdateable;
 

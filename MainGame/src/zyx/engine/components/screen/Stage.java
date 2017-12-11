@@ -1,4 +1,4 @@
-package zyx.game.components.screen;
+package zyx.engine.components.screen;
 
 import zyx.opengl.shaders.implementations.ScreenShader;
 
