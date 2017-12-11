@@ -16,7 +16,8 @@ import zyx.utils.GeometryUtils;
 
 public class WorldModel extends AbstractModel
 {
-
+	private static final Vector3f ATTACHMENT_INVERT_VECTOR = new Vector3f();
+	
 	protected static final Vector3f SHARED_ROTATION = new Vector3f(0, 0, 0);
 	protected static final Vector3f SHARED_POSITION = new Vector3f(0, 0, 0);
 	protected static final Vector3f SHARED_SCALE = new Vector3f(1, 1, 1);
@@ -64,10 +65,7 @@ public class WorldModel extends AbstractModel
 	public void draw()
 	{
 		skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
-		transform();
-		
-		MODEL_MATRIX.setIdentity();
-
+		shader.uploadBones();
 		super.draw();
 	}
 
@@ -82,21 +80,19 @@ public class WorldModel extends AbstractModel
 
 		shader.upload();
 	}
-
+	
 	public void drawAsAttachment(Attachment attachment)
 	{
 		Matrix4f bonePosCopy = new Matrix4f(attachment.joint.getFinalTransform());
 		Matrix4f.mul(MODEL_MATRIX, bonePosCopy, bonePosCopy);
 
-		Vector3f invertPos = attachment.parent.getPosition().negate(null);
+		attachment.parent.getPosition().negate(ATTACHMENT_INVERT_VECTOR);
 
 		skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
 
 		MODEL_MATRIX.setIdentity();
-
-		MODEL_MATRIX.translate(attachment.parent.getPosition());
 		Matrix4f.mul(MODEL_MATRIX, bonePosCopy, MODEL_MATRIX);
-		MODEL_MATRIX.translate(invertPos);
+		MODEL_MATRIX.translate(ATTACHMENT_INVERT_VECTOR);
 
 		transform();
 		super.draw();

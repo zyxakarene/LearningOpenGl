@@ -25,7 +25,9 @@ import zyx.opengl.textures.bitmapfont.BitmapFont;
 import zyx.opengl.textures.bitmapfont.BitmapFontGenerator;
 import zyx.utils.DeltaTime;
 import zyx.utils.FPSCounter;
+import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
+import zyx.utils.cheats.Print;
 
 public class Main
 {
@@ -75,8 +77,9 @@ public class Main
 				mainKnight = new GameObject();
 				attachedKnight1 = new GameObject();
 
+				platform.setX(-100);
+				
 				platform.addChild(mainKnight);
-				mainKnight.setX(100);
 				
 				mainKnight.load("assets/models/knight/knight.zaf");
 				attachedKnight1.load("assets/models/knight/knight.zaf");
@@ -131,6 +134,10 @@ public class Main
 
 		int elapsed = DeltaTime.getElapsedTime();
 		long timestamp = DeltaTime.getTimestamp();
+		
+		Print.out("Time:", timestamp);
+		platform.setRotZ(platform.getRotZ() + (elapsed * 0.05f));
+		platform.setY(FloatMath.sin(timestamp * 0.001f) * 100);
 
 		camera.update(timestamp, elapsed);
 //		if (mainKnight != null)
@@ -152,6 +159,8 @@ public class Main
 //		}
 		
 		world.drawScene();
+		
+//		platform.drawA();
 		
 //		platform.draw();
 //		dummyObject.draw();
