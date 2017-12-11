@@ -53,6 +53,16 @@ public class WorldShader extends AbstractShader
 		}
 	}
 
+	public void uploadBones()
+	{
+		bind();
+
+		synchronized(BONES)
+		{
+			UniformUtils.setUniformMatrix(boneMatrixTrans, BONES);
+		}
+	}
+
 	@Override
 	protected String getVertexName()
 	{

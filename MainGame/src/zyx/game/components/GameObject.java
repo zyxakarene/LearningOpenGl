@@ -1,37 +1,153 @@
 package zyx.game.components;
 
-import org.lwjgl.util.vector.Vector3f;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorBundle;
 import zyx.game.behavior.BehaviorType;
-import zyx.game.controls.SharedPools;
-import zyx.utils.interfaces.IDisposeable;
-import zyx.utils.interfaces.IPositionable;
+import zyx.game.controls.models.ModelManager;
+import zyx.game.controls.resourceloader.requests.IResourceLoaded;
+import zyx.opengl.models.implementations.WorldModel;
+import zyx.opengl.models.implementations.bones.animation.AnimationController;
+import zyx.opengl.models.implementations.bones.attachments.Attachment;
+import zyx.opengl.models.implementations.bones.attachments.AttachmentRequest;
+import zyx.opengl.models.implementations.bones.skeleton.Joint;
+import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IUpdateable;
 
-public class GameObject implements IUpdateable, IPositionable, IDisposeable
+public class GameObject extends WorldObject implements IUpdateable, IResourceLoaded<WorldModel>
 {
 
-	protected Vector3f position;
-	protected Vector3f rotation;
-	protected Vector3f scale;
+	private String path;
+
+	private boolean loaded;
+	private WorldModel model;
+	private AnimationController animationController;
+
+	private ArrayList<GameObject> attachedObjects;
+	private ArrayList<Attachment> attachments;
+	private LinkedList<AttachmentRequest> attachmentRequests;
 
 	private BehaviorBundle behaviors;
 
 	public GameObject()
 	{
-		position	=	SharedPools.VECTOR_POOL.getInstance();
-		rotation	=	SharedPools.VECTOR_POOL.getInstance();
-		scale		=	SharedPools.VECTOR_POOL.getInstance();
-		scale.set(1, 1, 1);
-		
 		behaviors = new BehaviorBundle(this);
+
+		animationController = new AnimationController();
+		attachedObjects = new ArrayList<>();
+		attachments = new ArrayList<>();
+		loaded = false;
+	}
+
+	public void load(String path)
+	{
+		this.path = path;
+		ModelManager.getInstance().loadModel(path, this);
+	}
+
+	@Override
+	public void resourceLoaded(WorldModel data)
+	{
+		model = data;
+		loaded = true;
+
+		if (attachmentRequests != null)
+		{
+			AttachmentRequest request;
+			while (attachmentRequests.isEmpty() == false)
+			{
+				request = attachmentRequests.remove();
+				addAttachment(request.child, request.attachmentPoint);
+			}
+		}
+	}
+
+	public void setAnimation(String name)
+	{
+		animationController.setAnimation(name);
+	}
+
+	@Override
+	protected void onTransform()
+	{
+		if (loaded)
+		{
+			model.setAnimation(animationController);
+			model.transform(position, rotation, scale);
+		}
+	}
+
+	@Override
+	protected void onDraw()
+	{
+		if (loaded)
+		{
+			model.setAnimation(animationController);
+			model.draw();
+
+			for (Attachment attachment : attachments)
+			{
+				attachment.child.drawAsAttachment(attachment);
+			}
+		}
+	}
+
+	private void drawAsAttachment(Attachment attachment)
+	{
+		if (loaded)
+		{
+			model.setAnimation(animationController);
+			model.drawAsAttachment(attachment);
+
+			for (Attachment attachment2 : attachments)
+			{
+				attachment2.child.drawAsAttachment(attachment2);
+			}
+		}
+	}
+
+	public void addAttachment(GameObject child, String attachmentPoint)
+	{
+		if (loaded)
+		{
+			Joint attachJoint = model.getBoneByName(attachmentPoint);
+			if (attachJoint == null)
+			{
+				Print.out("Warning: No such bone", attachmentPoint, "on", this);
+			}
+			else
+			{
+				Attachment attachment = new Attachment();
+				attachment.child = child;
+				attachment.parent = this;
+				attachment.joint = model.getBoneByName(attachmentPoint);
+
+				attachments.add(attachment);
+				attachedObjects.add(child);
+			}
+		}
+		else
+		{
+			if (attachmentRequests == null)
+			{
+				attachmentRequests = new LinkedList<>();
+			}
+
+			AttachmentRequest request = new AttachmentRequest(child, attachmentPoint);
+			attachmentRequests.add(request);
+		}
 	}
 
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
 		behaviors.update(timestamp, elapsedTime);
+
+		for (GameObject attachment : attachedObjects)
+		{
+			attachment.update(timestamp, elapsedTime);
+		}
 	}
 
 	public final void addBehavior(Behavior behavior)
@@ -45,66 +161,36 @@ public class GameObject implements IUpdateable, IPositionable, IDisposeable
 	}
 
 	@Override
-	public Vector3f getPosition()
-	{
-		return position;
-	}
-
-	@Override
-	public Vector3f getRotation()
-	{
-		return rotation;
-	}
-
-	public void setPosition(float x, float y, float z)
-	{
-		position.x = x;
-		position.y = y;
-		position.z = z;
-	}
-	
-	public void setX(float x)
-	{
-		position.x = x;
-	}
-
-	public void setY(float y)
-	{
-		position.y = y;
-	}
-
-	public void setZ(float z)
-	{
-		position.z = z;
-	}
-	
-	public float getX()
-	{
-		return position.x;
-	}
-	
-	public float getY()
-	{
-		return position.y;
-	}
-	
-	public float getZ()
-	{
-		return position.z;
-	}
-
-	@Override
 	public void dispose()
 	{
+		super.dispose();
+
+		for (GameObject attachedObject : attachedObjects)
+		{
+			attachedObject.dispose();
+		}
+
+		attachments.clear();
+		attachedObjects.clear();
+
+		if (attachmentRequests != null)
+		{
+			attachmentRequests.clear();
+		}
+
 		behaviors.dispose();
-		
-		SharedPools.VECTOR_POOL.releaseInstance(position);
-		SharedPools.VECTOR_POOL.releaseInstance(rotation);
-		SharedPools.VECTOR_POOL.releaseInstance(scale);
-		
-		position = null;
-		rotation = null;
-		scale = null;
+
+		animationController = null;
+		model = null;
+		attachments = null;
+		attachedObjects = null;
+		attachmentRequests = null;
 		behaviors = null;
+	}
+
+	@Override
+	public String toString()
+	{
+		return String.format("WorldObject{%s, playing animation: %s}", path, animationController);
 	}
 }

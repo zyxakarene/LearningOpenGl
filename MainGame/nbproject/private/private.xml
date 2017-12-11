@@ -3,20 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="games">
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/implementations/bones/animation/Animation.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/game/components/GameObject.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/utils/pooling/ObjectPool.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/implementations/bones/transform/JointTransform.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/Main.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/game/components/WorldObject.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/implementations/bones/skeleton/Joint.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/game/controls/models/ModelManager.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/loading/bones/ZafLoader.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/implementations/WorldModel.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/utils/pooling/GenericPool.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/opengl/models/implementations/bones/skeleton/Skeleton.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/game/controls/SharedPools.java</file>
-            <file>file:/D:/Programmering/Tutorial5/src/zyx/game/controls/resourceloader/ResourceRunner.java</file>
+            <file>file:/D:/Programmering/LearningOpenGl/MainGame/src/zyx/game/components/WorldObject.java</file>
+            <file>file:/D:/Programmering/LearningOpenGl/MainGame/src/zyx/game/components/screen/DisplayObjectContainer.java</file>
+            <file>file:/D:/Programmering/LearningOpenGl/MainGame/src/zyx/game/components/GameObject.java</file>
+            <file>file:/D:/Programmering/LearningOpenGl/MainGame/src/zyx/opengl/models/implementations/WorldModel.java</file>
+            <file>file:/D:/Programmering/LearningOpenGl/MainGame/src/zyx/Main.java</file>
+            <file>file:/D:/Programmering/LearningOpenGl/MainGame/src/zyx/opengl/shaders/implementations/WorldShader.java</file>
+            <file>file:/D:/Programmering/LearningOpenGl/MainGame/src/zyx/opengl/models/AbstractModel.java</file>
         </group>
     </open-files>
 </project-private>
