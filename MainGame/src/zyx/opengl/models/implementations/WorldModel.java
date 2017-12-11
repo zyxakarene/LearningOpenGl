@@ -46,6 +46,8 @@ public class WorldModel extends AbstractModel
 		SHARED_POSITION.set(position);
 		SHARED_ROTATION.set(rotation);
 		SHARED_SCALE.set(scale);
+		
+		transform();
 	}
 
 	public void setAnimation(AnimationController controller)
@@ -62,9 +64,9 @@ public class WorldModel extends AbstractModel
 	public void draw()
 	{
 		skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
-
-		MODEL_MATRIX.setIdentity();
 		transform();
+		
+		MODEL_MATRIX.setIdentity();
 
 		super.draw();
 	}

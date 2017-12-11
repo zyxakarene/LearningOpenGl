@@ -19,4 +19,12 @@ public class AnimationController
 		animation = name;
 		animationStartedAt = DeltaTime.getTimestamp();
 	}
+
+	@Override
+	public String toString()
+	{
+		return animation;
+	}
+	
+	
 }

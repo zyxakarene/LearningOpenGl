@@ -69,13 +69,21 @@ public class GameObject extends WorldObject implements IUpdateable, IResourceLoa
 	}
 
 	@Override
+	protected void onTransform()
+	{
+		if (loaded)
+		{
+			model.setAnimation(animationController);
+			model.transform(position, rotation, scale);
+		}
+	}
+
+	@Override
 	protected void onDraw()
 	{
 		if (loaded)
 		{
 			model.setAnimation(animationController);
-
-			model.transform(position, rotation, scale);
 			model.draw();
 
 			for (Attachment attachment : attachments)
@@ -183,6 +191,6 @@ public class GameObject extends WorldObject implements IUpdateable, IResourceLoa
 	@Override
 	public String toString()
 	{
-		return "WorldObject{" + path + '}';
+		return String.format("WorldObject{%s, playing animation: %s}", path, animationController);
 	}
 }

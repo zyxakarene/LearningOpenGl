@@ -1,13 +1,20 @@
 package zyx.game.components;
 
 import java.util.ArrayList;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.controls.SharedPools;
+import zyx.opengl.shaders.ShaderManager;
+import zyx.opengl.shaders.implementations.ScreenShader;
+import zyx.opengl.shaders.implementations.Shader;
+import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IPositionable;
 
 public abstract class WorldObject implements IPositionable, IDisposeable
 {
+
+	private final Matrix4f backupMatrix = new Matrix4f();
 
 	protected Vector3f position;
 	protected Vector3f rotation;
@@ -15,6 +22,8 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 
 	private WorldObject parent;
 	private ArrayList<WorldObject> children;
+
+	protected final WorldShader shader;
 
 	public WorldObject()
 	{
@@ -24,6 +33,8 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		scale.set(1, 1, 1);
 
 		children = new ArrayList<>();
+
+		shader = (WorldShader) ShaderManager.INSTANCE.get(Shader.WORLD);
 	}
 
 	public void addChild(WorldObject child)
@@ -47,20 +58,20 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 			throw new RuntimeException(msg);
 		}
 	}
-	
+
 	public void removeFromParent(boolean dispose)
 	{
 		if (parent != null)
 		{
 			parent.removeChild(this);
 		}
-		
+
 		if (dispose)
 		{
 			dispose();
 		}
 	}
-	
+
 	public void removeFromParent()
 	{
 		removeFromParent(false);
@@ -68,19 +79,28 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 
 	protected final void draw()
 	{
+		onTransform();
+		onDraw();
+	
+		backupMatrix.load(WorldShader.MATRIX_MODEL);
+
 		for (WorldObject child : children)
 		{
+			shader.upload();
+			
 			child.draw();
+			
+			WorldShader.MATRIX_MODEL.load(backupMatrix);
 		}
 
-		onDraw();
+		
 	}
 
 	@Override
 	public void dispose()
 	{
 		removeFromParent(false);
-		
+
 		for (WorldObject child : children)
 		{
 			child.dispose();
@@ -111,6 +131,8 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	}
 
 	abstract protected void onDraw();
+
+	abstract protected void onTransform();
 
 	//<editor-fold defaultstate="collapsed" desc="Getter & Setter">
 	public void setPosition(float x, float y, float z)

@@ -133,11 +133,11 @@ public class Main
 		long timestamp = DeltaTime.getTimestamp();
 
 		camera.update(timestamp, elapsed);
-		if (mainKnight != null)
-		{
-			mainKnight.update(timestamp, elapsed);
-		}
-		platform.update(timestamp, elapsed);
+//		if (mainKnight != null)
+//		{
+//			mainKnight.update(timestamp, elapsed);
+//		}
+//		platform.update(timestamp, elapsed);
 //		dummyObject.update(timestamp, elapsed);
 //		object3.update(timestamp, elapsed);
 	}

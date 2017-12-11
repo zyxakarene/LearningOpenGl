@@ -1,6 +1,7 @@
 package zyx.game.components.world;
 
 import zyx.game.components.WorldObject;
+import zyx.opengl.shaders.implementations.WorldShader;
 
 public final class World3D extends WorldObject
 {
@@ -20,7 +21,11 @@ public final class World3D extends WorldObject
 	protected void onDraw()
 	{
 	}
-	
-	
+
+	@Override
+	protected void onTransform()
+	{
+		WorldShader.MATRIX_MODEL.setIdentity();
+	}
 
 }
