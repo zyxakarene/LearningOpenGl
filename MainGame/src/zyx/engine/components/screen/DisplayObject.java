@@ -69,5 +69,9 @@ public abstract class DisplayObject implements IPositionable2D
 		return rotation;
 	}
 
+	void setScreenPos(float x, float y)
+	{
+	}
+
 	
 }

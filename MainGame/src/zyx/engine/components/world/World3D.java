@@ -13,6 +13,7 @@ public final class World3D extends WorldObject
 
 	public void drawScene()
 	{
+		shader.bind();
 		draw();
 	}
 

@@ -1,6 +1,6 @@
 package zyx.opengl.textures.bitmapfont;
 
-import java.util.List;
+import java.util.*;
 
 class FontUtils
 {
@@ -9,9 +9,20 @@ class FontUtils
 		int len = list.size();
 		float[] result = new float[len];
 		
-		for (int i = 0; i < len; i++)
+		if (list instanceof RandomAccess)
 		{
-			result[i] = list.get(i);
+			for (int i = 0; i < len; i++)
+			{
+				result[i] = list.get(i);
+			}
+		}
+		else
+		{
+			Iterator<Float> iterator = list.iterator();
+			for (int i = 0; i < len; i++)
+			{
+				result[i] = iterator.next();
+			}
 		}
 		
 		return result;
@@ -22,9 +33,20 @@ class FontUtils
 		int len = list.size();
 		int[] result = new int[len];
 		
-		for (int i = 0; i < len; i++)
+		if (list instanceof RandomAccess)
 		{
-			result[i] = list.get(i);
+			for (int i = 0; i < len; i++)
+			{
+				result[i] = list.get(i);
+			}
+		}
+		else
+		{
+			Iterator<Integer> iterator = list.iterator();
+			for (int i = 0; i < len; i++)
+			{
+				result[i] = iterator.next();
+			}
 		}
 		
 		return result;

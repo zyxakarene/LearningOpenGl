@@ -13,6 +13,7 @@ public final class Stage extends DisplayObjectContainer
 	
 	public final void drawStage()
 	{
+		shader.bind();
 		draw();
 	}
 

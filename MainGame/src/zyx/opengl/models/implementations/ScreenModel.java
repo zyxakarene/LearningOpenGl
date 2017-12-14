@@ -28,14 +28,14 @@ public class ScreenModel extends AbstractModel
 
 		int elementData[] =
 		{
-			0, 1, 2,
-			2, 3, 0
+			2, 1, 0,
+			0, 3, 2
 		};
 
 		setVertexData(vertexData, elementData);
 		setTexture(texture);
 	}
-
+	
 	@Override
 	protected void setupAttributes()
 	{

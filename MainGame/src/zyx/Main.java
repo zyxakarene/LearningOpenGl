@@ -12,6 +12,7 @@ import zyx.engine.components.screen.Image;
 import zyx.engine.components.screen.Stage;
 import zyx.engine.components.screen.Textfield;
 import zyx.engine.components.world.World3D;
+import zyx.engine.utils.RayPicker;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.KeyboardControl;
 import zyx.game.controls.MouseControl;
@@ -135,11 +136,12 @@ public class Main
 		int elapsed = DeltaTime.getElapsedTime();
 		long timestamp = DeltaTime.getTimestamp();
 		
-		Print.out("Time:", timestamp);
 		platform.setRotZ(platform.getRotZ() + (elapsed * 0.05f));
 		platform.setY(FloatMath.sin(timestamp * 0.001f) * 100);
 
 		camera.update(timestamp, elapsed);
+		RayPicker.getInstance().updateMousePos(MouseControl.getPosX(), MouseControl.getPosY());
+//		Print.out(RayPicker.getInstance().getRay());
 //		if (mainKnight != null)
 //		{
 //			mainKnight.update(timestamp, elapsed);
@@ -189,6 +191,11 @@ public class Main
 
 		DisplayObjectContainer container = new DisplayObjectContainer();
 		Image image = new Image("sample.png");
+		image.position.x = 50;
+		image.position.y = 30;
+		Image image2 = new Image("sample.png");
+		image2.position.x = 530;
+		image2.position.y = 500;
 
 		container.addChild(image);
 		stage = Stage.instance;
@@ -197,8 +204,9 @@ public class Main
 		world = World3D.instance;
 		world.addChild(platform);
 
-		container.position.x = 50;
+		container.position.x = 500;
 		container.position.y = 500;
+		container.rotation = 45;
 //		container.rotation = 45;
 //		image.position.x = 10;
 
@@ -209,6 +217,7 @@ public class Main
 		field.position.y = GameConstants.GAME_HEIGHT / 4;
 
 		stage.addChild(field);
+		stage.addChild(image2);
 	}
 
 	private static void loadFontLogic()

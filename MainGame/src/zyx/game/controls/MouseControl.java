@@ -1,6 +1,7 @@
 package zyx.game.controls;
 
 import org.lwjgl.input.Mouse;
+import zyx.utils.GameConstants;
 
 public class MouseControl
 {
@@ -11,6 +12,7 @@ public class MouseControl
     private static boolean clickedSpecial1;
     private static boolean clickedSpecial2;
     private static int dX, dY;
+	private static int x, y;
 
     public static boolean wasLeftClicked()
     {
@@ -47,11 +49,22 @@ public class MouseControl
         return dY;
     }
 
+	public static int getPosX()
+	{
+		return x;
+	}
+
+	public static int getPosY()
+	{
+		return y;
+	}
+
     public static void check()
     {
         resetData();
         checkNewClicks();
         checkMovements();
+        checkPosition();
     }
 
     private static void resetData()
@@ -105,4 +118,10 @@ public class MouseControl
         dX = Mouse.getDX();
         dY = Mouse.getDY();
     }
+
+	private static void checkPosition()
+	{
+		x = Mouse.getX();
+		y = GameConstants.GAME_HEIGHT - Mouse.getY();
+	}
 }

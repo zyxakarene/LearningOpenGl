@@ -40,6 +40,11 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	{
 		if (child.parent != this)
 		{
+			if (child.parent != null)
+			{
+				child.removeFromParent(false);
+			}
+			
 			child.parent = this;
 			children.add(child);
 		}
@@ -69,11 +74,6 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		{
 			dispose();
 		}
-	}
-
-	public void removeFromParent()
-	{
-		removeFromParent(false);
 	}
 
 	final void draw()

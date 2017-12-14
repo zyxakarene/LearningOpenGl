@@ -1,0 +1,19 @@
+=Gameplay=
+3D Sound
+
+=Engine=
+Difuse lighting
+Direct lighting
+Bump mapping
+Shadows
+Terrain/Displacements
+async texture loading
+Load required textures with zaf model
+Skybox
+
+=Core=
+UI overhaul
+UI Components (Buttons mainly)
+Clicking/hovering on items
+Ray picking
+Terrain physics

@@ -37,7 +37,6 @@ public class ScreenShader extends AbstractShader
 	{
 		MATRIX_MODEL.m22 = 1f;
 		
-		bind();
 		UniformUtils.setUniformMatrix(modelMatrixTrans, MATRIX_MODEL);
 		UniformUtils.setUniformMatrix(viewMatrixTrans, MATRIX_VIEW);
 		UniformUtils.setUniformMatrix(projectionMatrixTrans, MATRIX_PROJECTION);

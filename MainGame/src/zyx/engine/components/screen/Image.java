@@ -4,7 +4,7 @@ import zyx.opengl.models.implementations.ScreenModel;
 import zyx.opengl.textures.GameTexture;
 import zyx.game.controls.textures.TextureManager;
 
-public class Image extends DisplayObject
+public class Image extends DisplayObject implements IClickable
 {
 
 	private ScreenModel model;
