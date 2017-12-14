@@ -38,7 +38,7 @@ public class Textfield extends DisplayObject
 	}
 
 	@Override
-	protected void draw()
+	void onDraw()
 	{
 		transform();
 		shader.upload();

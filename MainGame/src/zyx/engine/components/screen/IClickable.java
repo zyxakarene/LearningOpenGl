@@ -1,6 +1,6 @@
 package zyx.engine.components.screen;
 
-public interface IClickable
+interface IClickable
 {
-	
+	public void checkClick();
 }

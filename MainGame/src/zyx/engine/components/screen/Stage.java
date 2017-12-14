@@ -22,4 +22,12 @@ public final class Stage extends DisplayObjectContainer
 	{
 		ScreenShader.MATRIX_MODEL.setIdentity();
 	}
+
+	@Override
+	public void dispose()
+	{
+		throw new RuntimeException("Do not dispose the stage please");
+	}
+	
+	
 }

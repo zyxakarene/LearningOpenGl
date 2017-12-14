@@ -6,11 +6,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import zyx.engine.components.screen.*;
 import zyx.game.components.GameObject;
-import zyx.engine.components.screen.DisplayObjectContainer;
-import zyx.engine.components.screen.Image;
-import zyx.engine.components.screen.Stage;
-import zyx.engine.components.screen.Textfield;
 import zyx.engine.components.world.World3D;
 import zyx.engine.utils.RayPicker;
 import zyx.game.components.world.camera.CameraController;
@@ -218,6 +215,10 @@ public class Main
 
 		stage.addChild(field);
 		stage.addChild(image2);
+		
+		Button btn = new Button("BtnUp.png", "BtnHover.png", "BtnDown.png");
+		btn.position.set(100, 200);
+		stage.addChild(btn);
 	}
 
 	private static void loadFontLogic()

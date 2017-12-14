@@ -1,7 +1,5 @@
 package zyx.engine.components.screen;
 
-import java.awt.Polygon;
-import java.awt.Shape;
 import java.util.ArrayList;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
@@ -95,10 +93,11 @@ public class DisplayObjectContainer extends DisplayObject
 	}
 
 	@Override
-	final void draw()
+	void onDraw()
 	{
 		transform();
 		HELPER_MATRIX.load(ScreenShader.MATRIX_MODEL);
+		
 		DisplayObject loopHelper;
 		for (int i = 0; i < numChildren; i++)
 		{
@@ -109,6 +108,7 @@ public class DisplayObjectContainer extends DisplayObject
 			loopHelper.draw();
 			if (loopHelper instanceof IClickable)
 			{
+				((IClickable) loopHelper).checkClick();
 				Vector4f mousePos = new Vector4f(MouseControl.getPosX(), -MouseControl.getPosY(), -1, 1);
 				
 				Matrix4f inverse = new Matrix4f(ScreenShader.MATRIX_MODEL);
@@ -120,7 +120,7 @@ public class DisplayObjectContainer extends DisplayObject
 				
 				if (mousePos.x >= 0 && mousePos.y <= 0 && mousePos.x <= 100 && mousePos.y >= -100)
 				{
-					loopHelper.rotation++;
+//					loopHelper.rotation++;
 				}
 				
 				
@@ -138,11 +138,24 @@ public class DisplayObjectContainer extends DisplayObject
 				Print.out("Container:", this, loopHelper, "has corner", corner);
 			}
 			
-			Polygon s = new Polygon();
-
-
 			ScreenShader.MATRIX_MODEL.load(HELPER_MATRIX);
 		}
 	}
+
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+		
+		for (int i = 0; i < numChildren; i++)
+		{
+			children.get(i).dispose();
+		}
+		
+		children.clear();
+		children = null;
+	}
+	
+	
 
 }

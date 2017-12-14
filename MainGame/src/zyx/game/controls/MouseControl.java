@@ -1,10 +1,12 @@
 package zyx.game.controls;
 
 import org.lwjgl.input.Mouse;
+import org.lwjgl.util.vector.Vector4f;
 import zyx.utils.GameConstants;
 
 public class MouseControl
 {
+	public static final Vector4f MOUSE_POS = new Vector4f(0, 0, -1, 1);
 
     private static boolean clickedLeft;
     private static boolean clickedRight;
@@ -123,5 +125,8 @@ public class MouseControl
 	{
 		x = Mouse.getX();
 		y = GameConstants.GAME_HEIGHT - Mouse.getY();
+		
+		MOUSE_POS.x = x;
+		MOUSE_POS.y = y;
 	}
 }

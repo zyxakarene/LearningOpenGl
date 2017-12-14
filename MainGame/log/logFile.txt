@@ -1078,3 +1078,34 @@ java.lang.NullPointerException
 	at zyx.Main.draw(Main.java:153)
 	at zyx.Main.main(Main.java:69)
 
+dec. 14, 2017 7:39:59 PM zyx.utils.exceptions.Msg error
+SEVERE: Failed to load texture
+java.lang.RuntimeException: Resource not found: assets/textures/BtnUp
+	at org.newdawn.slick.util.ResourceLoader.getResourceAsStream(ResourceLoader.java:69)
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:18)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:28)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:23)
+	at zyx.game.controls.textures.TextureManager.getTextureInner(TextureManager.java:28)
+	at zyx.game.controls.textures.TextureManager.getTexture(TextureManager.java:15)
+	at zyx.engine.components.screen.Image.<init>(Image.java:14)
+	at zyx.engine.components.screen.Button.<init>(Button.java:20)
+	at zyx.Main.load(Main.java:219)
+	at zyx.Main.main(Main.java:55)
+
+dec. 14, 2017 7:39:59 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: java.lang.RuntimeException: Resource not found: assets/textures/BtnUp
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:26)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:28)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:23)
+	at zyx.game.controls.textures.TextureManager.getTextureInner(TextureManager.java:28)
+	at zyx.game.controls.textures.TextureManager.getTexture(TextureManager.java:15)
+	at zyx.engine.components.screen.Image.<init>(Image.java:14)
+	at zyx.engine.components.screen.Button.<init>(Button.java:20)
+	at zyx.Main.load(Main.java:219)
+	at zyx.Main.main(Main.java:55)
+Caused by: java.lang.RuntimeException: Resource not found: assets/textures/BtnUp
+	at org.newdawn.slick.util.ResourceLoader.getResourceAsStream(ResourceLoader.java:69)
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:18)
+	... 8 more
+

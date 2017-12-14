@@ -42,5 +42,4 @@ public class ScreenModel extends AbstractModel
 		addAttribute("position", 2, 4, 0);
 		addAttribute("texcoord", 2, 4, 2);
 	}
-
 }

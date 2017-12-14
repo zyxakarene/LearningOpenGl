@@ -4,7 +4,7 @@ import zyx.opengl.models.implementations.ScreenModel;
 import zyx.opengl.textures.GameTexture;
 import zyx.game.controls.textures.TextureManager;
 
-public class Image extends DisplayObject implements IClickable
+public class Image extends DisplayObject
 {
 
 	private ScreenModel model;
@@ -28,10 +28,19 @@ public class Image extends DisplayObject implements IClickable
 	}
 
 	@Override
-	protected final void draw()
+	void onDraw()
 	{
 		transform();
 		shader.upload();
 		model.draw();
+	}
+
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+		
+		model.dispose();
+		model = null;
 	}
 }

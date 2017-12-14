@@ -85,5 +85,8 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 	public void dispose()
 	{
 		ModelUtils.disposeModel(vao, vbo, ebo);
+		
+		texture.dispose();
+		texture = null;
 	}
 }
