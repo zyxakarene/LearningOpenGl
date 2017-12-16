@@ -1109,3 +1109,29 @@ Caused by: java.lang.RuntimeException: Resource not found: assets/textures/BtnUp
 	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:18)
 	... 8 more
 
+dec. 16, 2017 12:16:02 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.UnsupportedOperationException: Not supported yet.
+	at zyx.game.controls.input.InputManager.checkKeyboard(InputManager.java:73)
+	at zyx.game.controls.input.InputManager.update(InputManager.java:47)
+	at zyx.Main.update(Main.java:135)
+	at zyx.Main.main(Main.java:67)
+
+dec. 16, 2017 2:04:58 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.ArrayIndexOutOfBoundsException: -1
+	at zyx.game.controls.input.MouseData.setClickData(MouseData.java:40)
+	at zyx.game.controls.input.InputManager.checkMouse(InputManager.java:61)
+	at zyx.game.controls.input.InputManager.update(InputManager.java:42)
+	at zyx.Main.update(Main.java:135)
+	at zyx.Main.main(Main.java:67)
+
+dec. 16, 2017 2:05:10 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.ArrayIndexOutOfBoundsException: -1
+	at zyx.game.controls.input.MouseData.setClickData(MouseData.java:40)
+	at zyx.game.controls.input.InputManager.checkMouse(InputManager.java:61)
+	at zyx.game.controls.input.InputManager.update(InputManager.java:42)
+	at zyx.Main.update(Main.java:135)
+	at zyx.Main.main(Main.java:67)
+

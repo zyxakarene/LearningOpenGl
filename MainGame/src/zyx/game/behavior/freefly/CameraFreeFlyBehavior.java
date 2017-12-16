@@ -6,7 +6,7 @@ import org.lwjgl.util.vector.Vector3f;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.controls.KeyboardControl;
-import zyx.game.controls.MouseControl;
+import zyx.game.controls.input.MouseData;
 import zyx.utils.DeltaTime;
 import zyx.utils.FloatMath;
 
@@ -50,8 +50,8 @@ public class CameraFreeFlyBehavior extends Behavior
 
 		if (Mouse.isGrabbed())
 		{
-			int dx = (int) (MouseControl.getMovementX() * DeltaTime.getDeltaVariant());
-			int dy = (int) (MouseControl.getMovementY() * DeltaTime.getDeltaVariant());
+			int dx = (int) (MouseData.instance.dX * DeltaTime.getDeltaVariant());
+			int dy = (int) (MouseData.instance.dY * DeltaTime.getDeltaVariant());
 			rotate(-dy, 0, dx, elapsedTime);
 		}
 

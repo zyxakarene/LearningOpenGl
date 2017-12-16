@@ -10,9 +10,12 @@ import zyx.engine.components.screen.*;
 import zyx.game.components.GameObject;
 import zyx.engine.components.world.World3D;
 import zyx.engine.utils.RayPicker;
+import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.KeyboardControl;
-import zyx.game.controls.MouseControl;
+import zyx.game.controls.MegaManager;
+import zyx.game.controls.input.InputManager;
+import zyx.game.controls.input.MouseData;
 import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.textures.TextureManager;
 import zyx.opengl.GLUtils;
@@ -61,8 +64,6 @@ public class Main
 			Display.update();
 			Display.sync(GameConstants.FPS);
 
-			ResourceLoader.getInstance().handleResourceReplies();
-
 			update();
 			draw();
 
@@ -74,8 +75,6 @@ public class Main
 			{
 				mainKnight = new GameObject();
 				attachedKnight1 = new GameObject();
-
-				platform.setX(-100);
 				
 				platform.addChild(mainKnight);
 				
@@ -125,19 +124,15 @@ public class Main
 	
 	private static void update()
 	{
-		KeyboardControl.checkKeys();
-		MouseControl.check();
-
 		DeltaTime.update();
-
-		int elapsed = DeltaTime.getElapsedTime();
 		long timestamp = DeltaTime.getTimestamp();
+		int elapsed = DeltaTime.getElapsedTime();
 		
+		MegaManager.update(timestamp, elapsed);
+
 		platform.setRotZ(platform.getRotZ() + (elapsed * 0.05f));
-		platform.setY(FloatMath.sin(timestamp * 0.001f) * 100);
 
 		camera.update(timestamp, elapsed);
-		RayPicker.getInstance().updateMousePos(MouseControl.getPosX(), MouseControl.getPosY());
 //		Print.out(RayPicker.getInstance().getRay());
 //		if (mainKnight != null)
 //		{
@@ -158,8 +153,6 @@ public class Main
 //		}
 		
 		world.drawScene();
-		
-//		platform.drawA();
 		
 //		platform.draw();
 //		dummyObject.draw();

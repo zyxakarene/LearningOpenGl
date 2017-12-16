@@ -3,7 +3,7 @@ package zyx.engine.components.screen;
 import java.util.ArrayList;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
-import zyx.game.controls.MouseControl;
+import zyx.game.controls.input.MouseData;
 import zyx.opengl.shaders.implementations.ScreenShader;
 import zyx.utils.cheats.Print;
 
@@ -106,37 +106,6 @@ public class DisplayObjectContainer extends DisplayObject
 			shader.upload();
 
 			loopHelper.draw();
-			if (loopHelper instanceof IClickable)
-			{
-				((IClickable) loopHelper).checkClick();
-				Vector4f mousePos = new Vector4f(MouseControl.getPosX(), -MouseControl.getPosY(), -1, 1);
-				
-				Matrix4f inverse = new Matrix4f(ScreenShader.MATRIX_MODEL);
-				inverse.invert();
-				
-				Print.out("Mouse on screen at:", mousePos.x, mousePos.y);
-				Matrix4f.transform(inverse, mousePos, mousePos);
-				Print.out("Mouse transformed to:", mousePos.x, mousePos.y);
-				
-				if (mousePos.x >= 0 && mousePos.y <= 0 && mousePos.x <= 100 && mousePos.y >= -100)
-				{
-//					loopHelper.rotation++;
-				}
-				
-				
-				Vector4f pos = new Vector4f(0, 0, -1, 1);
-				Vector4f corner = new Vector4f(100, -100, -1, 1);
-				Matrix4f.transform(ScreenShader.MATRIX_MODEL, corner, corner);
-				Matrix4f.transform(ScreenShader.MATRIX_MODEL, pos, pos);
-				
-				
-
-				Print.out("Container:", this, loopHelper, "was drawn at", ScreenShader.MATRIX_MODEL.m30, -ScreenShader.MATRIX_MODEL.m31);
-				Print.out("Container:", this, loopHelper, "has calculated pos at", pos);
-				Matrix4f.transform(inverse, corner, corner);
-				Print.out("Container:", this, loopHelper, "reverted to", corner);
-				Print.out("Container:", this, loopHelper, "has corner", corner);
-			}
 			
 			ScreenShader.MATRIX_MODEL.load(HELPER_MATRIX);
 		}
