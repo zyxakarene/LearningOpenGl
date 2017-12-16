@@ -1,8 +1,9 @@
 package zyx.engine.utils.callbacks;
 
 import java.util.ArrayList;
+import zyx.utils.interfaces.IDisposeable;
 
-public class CustomCallback<T>
+public class CustomCallback<T> implements IDisposeable
 {
 	private ArrayList<ICallback<T>> callbacks;
 
@@ -39,5 +40,12 @@ public class CustomCallback<T>
 			callback = callbacks.get(i);
 			callback.onCallback(data);
 		}
+	}
+
+	@Override
+	public void dispose()
+	{
+		callbacks.clear();
+		callbacks = null;
 	}
 }

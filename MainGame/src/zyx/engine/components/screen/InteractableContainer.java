@@ -14,6 +14,7 @@ public abstract class InteractableContainer extends DisplayObjectContainer
 
 	private boolean wasMouseOver;
 	private boolean wasMouseDown;
+	private boolean wasMouseDownOutside;
 
 	public InteractableContainer()
 	{
@@ -37,47 +38,46 @@ public abstract class InteractableContainer extends DisplayObjectContainer
 
 		MOUSE_POS_HELPER.x = MouseData.instance.x;
 		MOUSE_POS_HELPER.y = -MouseData.instance.y;
-		
+
 		Matrix4f.transform(invertedModel, MOUSE_POS_HELPER, MOUSE_POS_HELPER);
 
-		boolean mouseCollision = MOUSE_POS_HELPER.x >= 0   && MOUSE_POS_HELPER.y <= 0 && 
-								 MOUSE_POS_HELPER.x <= 100 && MOUSE_POS_HELPER.y >= -100;
-		if(!mouseCollision && MouseData.instance.isLeftClicked())
+		boolean mouseCollision = MOUSE_POS_HELPER.x >= 0 && MOUSE_POS_HELPER.y <= 0 && MOUSE_POS_HELPER.x <= getQuadWidth() && MOUSE_POS_HELPER.y >= -getQuadHeight();
+		boolean isLeftDown = MouseData.instance.isLeftDown();
+
+		if (!wasMouseOver && isLeftDown)
 		{
-			wasMouseDown = false;
-			wasMouseOver = false;
+			wasMouseDownOutside = true;
 		}
-		
+
 		if (!wasMouseOver && mouseCollision)
 		{
-			if (wasMouseDown)
-			{
-				onMouseDown();
-			}
-			else
-			{
-				onMouseEnter();
-			}
 			wasMouseOver = true;
+			onMouseEnter();
 		}
 		else if (wasMouseOver && !mouseCollision)
 		{
-			onMouseExit();
 			wasMouseOver = false;
+			onMouseExit();
 		}
 
-		if (mouseCollision)
+		if (!wasMouseDownOutside && mouseCollision)
 		{
-			if (!wasMouseDown && MouseData.instance.isLeftDown())
+			if (!wasMouseDown && isLeftDown)
 			{
 				onMouseDown();
 				wasMouseDown = true;
 			}
-			else if (wasMouseDown && !MouseData.instance.isLeftDown())
+			else if (wasMouseDown && !isLeftDown)
 			{
 				onMouseClick();
 				wasMouseDown = false;
 			}
+		}
+
+		if (isLeftDown == false)
+		{
+			wasMouseDownOutside = false;
+			wasMouseDown = false;
 		}
 	}
 
@@ -86,6 +86,11 @@ public abstract class InteractableContainer extends DisplayObjectContainer
 	protected abstract void onMouseExit();
 
 	protected abstract void onMouseDown();
-	
+
 	protected abstract void onMouseClick();
+	
+	protected abstract float getQuadWidth();
+	protected abstract float getQuadHeight();
+	
+	
 }
