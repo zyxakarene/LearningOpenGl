@@ -45,4 +45,14 @@ public class Textfield extends DisplayObject
 		glText.draw();
 	}
 
+	@Override
+	public void setWidth(float value)
+	{
+	}
+
+	@Override
+	public void setHeight(float value)
+	{
+	}
+
 }

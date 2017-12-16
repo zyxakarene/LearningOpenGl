@@ -3,6 +3,7 @@ package zyx.engine.components.screen;
 import zyx.engine.utils.ClickDispatcher;
 import zyx.engine.utils.callbacks.CustomCallback;
 import zyx.engine.utils.callbacks.ICallback;
+import zyx.utils.FloatMath;
 import zyx.utils.cheats.Print;
 
 public class Button extends InteractableContainer implements ICallback<InteractableContainer>
@@ -47,8 +48,12 @@ public class Button extends InteractableContainer implements ICallback<Interacta
 	@Override
 	public void onCallback(InteractableContainer data)
 	{
+		rotation += 10;
 		position.x += 10;
-//		rotation = FloatMath.random() * 360;
+//		setWidth(50 + FloatMath.random() * -200f);
+//		setHeight(50 + FloatMath.random() * -200f);
+scale.x = 1;
+scale.y = -1;
 	}
 
 	@Override

@@ -36,6 +36,16 @@ public class ScreenModel extends AbstractModel
 		setTexture(texture);
 	}
 	
+	public float getWidth()
+	{
+		return getTexture().width;
+	}
+	
+	public float getHeight()
+	{
+		return getTexture().height;
+	}
+	
 	@Override
 	protected void setupAttributes()
 	{

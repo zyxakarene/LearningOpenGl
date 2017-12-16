@@ -2,8 +2,6 @@ package zyx.engine.components.screen;
 
 import java.util.ArrayList;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector4f;
-import zyx.game.controls.input.MouseData;
 import zyx.opengl.shaders.implementations.ScreenShader;
 import zyx.utils.cheats.Print;
 
@@ -91,6 +89,18 @@ public class DisplayObjectContainer extends DisplayObject
 		}
 
 		return mostDown - mostUp;
+	}
+	
+	@Override
+	public void setWidth(float value)
+	{
+		scale.x = value / getWidth();
+	}
+	
+	@Override
+	public void setHeight(float value)
+	{
+		scale.y = value / getHeight();
 	}
 
 	@Override

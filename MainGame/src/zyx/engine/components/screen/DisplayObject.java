@@ -43,6 +43,8 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 
 	public abstract float getWidth();
 	public abstract float getHeight();
+	public abstract void setWidth(float value);
+	public abstract void setHeight(float value);
 	abstract void onDraw();
 	
 	final void draw()

@@ -32,16 +32,24 @@ public abstract class InteractableContainer extends DisplayObjectContainer
 
 	protected boolean hasMouseCollision(boolean hasCollided)
 	{
-		MOUSE_POS_HELPER.x = MouseData.instance.x;
-		MOUSE_POS_HELPER.y = -MouseData.instance.y;
+		if (hasCollided)
+		{
+			updateButtonState(false);
+			return false;
+		}
+		else
+		{
+			MOUSE_POS_HELPER.x = MouseData.instance.x;
+			MOUSE_POS_HELPER.y = -MouseData.instance.y;
 
-		Matrix4f.transform(invertedModel, MOUSE_POS_HELPER, MOUSE_POS_HELPER);
+			Matrix4f.transform(invertedModel, MOUSE_POS_HELPER, MOUSE_POS_HELPER);
 
-		boolean collision = MOUSE_POS_HELPER.x >= 0 && MOUSE_POS_HELPER.y <= 0 && MOUSE_POS_HELPER.x <= getQuadWidth() && MOUSE_POS_HELPER.y >= -getQuadHeight();
-		
-		updateButtonState(collision && !hasCollided);
-		
-		return collision;
+			boolean collision = MOUSE_POS_HELPER.x >= 0 && MOUSE_POS_HELPER.y <= 0 && MOUSE_POS_HELPER.x <= getQuadWidth() && MOUSE_POS_HELPER.y >= -getQuadHeight();
+
+			updateButtonState(collision && !hasCollided);
+
+			return collision;
+		}
 	}
 
 	@Override

@@ -159,7 +159,9 @@ public class Main
 //		object3.draw();
 
 		GLUtils.disableDepthTest();
+		GLUtils.disableCulling();
 		stage.drawStage();
+		GLUtils.enableCulling();
 		GLUtils.enableDepthTest();
 	}
 
