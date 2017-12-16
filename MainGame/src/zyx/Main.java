@@ -212,6 +212,10 @@ public class Main
 		Button btn = new Button("BtnUp.png", "BtnHover.png", "BtnDown.png");
 		btn.position.set(100, 200);
 		stage.addChild(btn);
+		
+		Checkbox checkbox = new Checkbox("BtnUp.png", "BtnHover.png", "BtnDown.png", "Check.png");
+		checkbox.position.set(125, 220);
+		stage.addChild(checkbox);
 	}
 
 	private static void loadFontLogic()

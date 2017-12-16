@@ -30,18 +30,41 @@ public abstract class InteractableContainer extends DisplayObjectContainer
 		invertedModel = null;
 	}
 
-	@Override
-	void onDraw()
+	protected boolean hasMouseCollision(boolean hasCollided)
 	{
-		super.onDraw();
-		Matrix4f.invert(ScreenShader.MATRIX_MODEL, invertedModel);
-
 		MOUSE_POS_HELPER.x = MouseData.instance.x;
 		MOUSE_POS_HELPER.y = -MouseData.instance.y;
 
 		Matrix4f.transform(invertedModel, MOUSE_POS_HELPER, MOUSE_POS_HELPER);
 
-		boolean mouseCollision = MOUSE_POS_HELPER.x >= 0 && MOUSE_POS_HELPER.y <= 0 && MOUSE_POS_HELPER.x <= getQuadWidth() && MOUSE_POS_HELPER.y >= -getQuadHeight();
+		boolean collision = MOUSE_POS_HELPER.x >= 0 && MOUSE_POS_HELPER.y <= 0 && MOUSE_POS_HELPER.x <= getQuadWidth() && MOUSE_POS_HELPER.y >= -getQuadHeight();
+		
+		updateButtonState(collision && !hasCollided);
+		
+		return collision;
+	}
+
+	@Override
+	void onDraw()
+	{
+		super.onDraw();
+		Matrix4f.invert(ScreenShader.MATRIX_MODEL, invertedModel);
+	}
+
+	protected abstract void onMouseEnter();
+
+	protected abstract void onMouseExit();
+
+	protected abstract void onMouseDown();
+
+	protected abstract void onMouseClick();
+
+	protected abstract float getQuadWidth();
+
+	protected abstract float getQuadHeight();
+
+	private void updateButtonState(boolean mouseCollision)
+	{
 		boolean isLeftDown = MouseData.instance.isLeftDown();
 
 		if (!wasMouseOver && isLeftDown)
@@ -78,19 +101,6 @@ public abstract class InteractableContainer extends DisplayObjectContainer
 		{
 			wasMouseDownOutside = false;
 			wasMouseDown = false;
-		}
-	}
+		}	}
 
-	protected abstract void onMouseEnter();
-
-	protected abstract void onMouseExit();
-
-	protected abstract void onMouseDown();
-
-	protected abstract void onMouseClick();
-	
-	protected abstract float getQuadWidth();
-	protected abstract float getQuadHeight();
-	
-	
 }

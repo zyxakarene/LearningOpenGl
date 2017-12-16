@@ -5,14 +5,14 @@ import zyx.engine.utils.callbacks.CustomCallback;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.utils.cheats.Print;
 
-public class Button extends InteractableContainer implements ICallback<Button>
+public class Button extends InteractableContainer implements ICallback<InteractableContainer>
 {
 
-	private Image upImg;
-	private Image hoverImg;
-	private Image downImg;
+	protected Image upImg;
+	protected Image hoverImg;
+	protected Image downImg;
 
-	public CustomCallback<Button> onButtonClicked;
+	public CustomCallback<InteractableContainer> onButtonClicked;
 
 	public Button(String upTexture, String hoverTexture, String downTexture)
 	{
@@ -45,10 +45,10 @@ public class Button extends InteractableContainer implements ICallback<Button>
 	}
 
 	@Override
-	public void onCallback(Button data)
+	public void onCallback(InteractableContainer data)
 	{
 		position.x += 10;
-		rotation = FloatMath.random() * 360;
+//		rotation = FloatMath.random() * 360;
 	}
 
 	@Override

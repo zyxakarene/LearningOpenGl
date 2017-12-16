@@ -9,6 +9,7 @@ import zyx.utils.cheats.Print;
 
 public class DisplayObjectContainer extends DisplayObject
 {
+
 	private final Matrix4f HELPER_MATRIX = new Matrix4f();
 
 	private ArrayList<DisplayObject> children;
@@ -97,7 +98,7 @@ public class DisplayObjectContainer extends DisplayObject
 	{
 		transform();
 		HELPER_MATRIX.load(ScreenShader.MATRIX_MODEL);
-		
+
 		DisplayObject loopHelper;
 		for (int i = 0; i < numChildren; i++)
 		{
@@ -106,8 +107,25 @@ public class DisplayObjectContainer extends DisplayObject
 			shader.upload();
 
 			loopHelper.draw();
-			
+
 			ScreenShader.MATRIX_MODEL.load(HELPER_MATRIX);
+		}
+	}
+
+	protected final void checkClicks(boolean hasCollision)
+	{
+		DisplayObject loopHelper;
+		for (int i = numChildren - 1; i >= 0; i--)
+		{
+			loopHelper = children.get(i);
+			if (loopHelper instanceof InteractableContainer)
+			{
+				hasCollision = ((InteractableContainer) loopHelper).hasMouseCollision(hasCollision) || hasCollision;
+			}
+			else if (loopHelper instanceof DisplayObjectContainer)
+			{
+				((DisplayObjectContainer) loopHelper).checkClicks(hasCollision);
+			}
 		}
 	}
 
@@ -115,16 +133,14 @@ public class DisplayObjectContainer extends DisplayObject
 	public void dispose()
 	{
 		super.dispose();
-		
+
 		for (int i = 0; i < numChildren; i++)
 		{
 			children.get(i).dispose();
 		}
-		
+
 		children.clear();
 		children = null;
 	}
-	
-	
 
 }

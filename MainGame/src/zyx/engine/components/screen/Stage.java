@@ -15,6 +15,8 @@ public final class Stage extends DisplayObjectContainer
 	{
 		shader.bind();
 		draw();
+		
+		checkClicks(false);
 	}
 
 	@Override

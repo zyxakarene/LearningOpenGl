@@ -1,15 +1,15 @@
 package zyx.engine.utils;
 
 import java.util.LinkedList;
-import zyx.engine.components.screen.Button;
+import zyx.engine.components.screen.InteractableContainer;
 import zyx.engine.utils.callbacks.CustomCallback;
 
 public class ClickDispatcher
 {
 	private static final ClickDispatcher instance = new ClickDispatcher();
 	
-	private LinkedList<CustomCallback<Button>> callbacks;
-	private LinkedList<Button> buttons;
+	private LinkedList<CustomCallback<InteractableContainer>> callbacks;
+	private LinkedList<InteractableContainer> buttons;
 	
 	private ClickDispatcher()
 	{
@@ -24,8 +24,8 @@ public class ClickDispatcher
 
 	public void dispatchEvents()
 	{
-		CustomCallback<Button> callback;
-		Button button;
+		CustomCallback<InteractableContainer> callback;
+		InteractableContainer button;
 		while (callbacks.isEmpty() == false)
 		{			
 			callback = callbacks.removeFirst();
@@ -35,7 +35,7 @@ public class ClickDispatcher
 		}
 	}
 	
-	public void addClick(CustomCallback<Button> callback, Button button)
+	public void addClick(CustomCallback<InteractableContainer> callback, InteractableContainer button)
 	{
 		callbacks.add(callback);
 		buttons.add(button);
