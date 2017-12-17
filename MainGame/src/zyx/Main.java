@@ -8,6 +8,7 @@ import org.lwjgl.opengl.*;
 import zyx.engine.components.screen.*;
 import zyx.game.components.GameObject;
 import zyx.engine.components.world.World3D;
+import zyx.game.components.screen.AddBitmapFontButton;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.MegaManager;
 import zyx.game.controls.input.KeyboardData;
@@ -211,7 +212,7 @@ public class Main
 //		stage.addChild(field);
 		stage.addChild(image2);
 		
-		Button btn = new Button("assets/textures/BtnUp.png", "assets/textures/BtnHover.png", "assets/textures/BtnDown.png");
+		AddBitmapFontButton btn = new AddBitmapFontButton("assets/textures/BtnUp.png", "assets/textures/BtnHover.png", "assets/textures/BtnDown.png");
 		btn.position.set(100, 200);
 		stage.addChild(btn);
 		

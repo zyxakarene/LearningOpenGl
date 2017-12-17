@@ -1,5 +1,6 @@
 package zyx.engine.components.screen;
 
+import zyx.engine.utils.callbacks.CustomCallback;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.opengl.models.implementations.ScreenModel;
 import zyx.opengl.textures.GameTexture;
@@ -10,16 +11,19 @@ public class Image extends DisplayObject implements IResourceLoaded<GameTexture>
 
 	private String path;
 	private ScreenModel model;
-	private boolean loaded;
+	public boolean loaded;
 
 	private float originalWidth;
 	private float originalHeight;
+
+	public CustomCallback<Image> onLoaded;
 
 	public Image()
 	{
 		originalWidth = 0;
 		originalHeight = 0;
 		loaded = false;
+		onLoaded = new CustomCallback<>(true);
 	}
 
 	public void load(String path)
@@ -32,10 +36,12 @@ public class Image extends DisplayObject implements IResourceLoaded<GameTexture>
 	public void resourceLoaded(GameTexture texture)
 	{
 		model = new ScreenModel(texture);
-		
+
 		originalWidth = getWidth();
 		originalHeight = getHeight();
 		loaded = true;
+		
+		onLoaded.dispatch(this);
 	}
 
 	@Override
@@ -45,7 +51,7 @@ public class Image extends DisplayObject implements IResourceLoaded<GameTexture>
 		{
 			return model.getWidth() * scale.x;
 		}
-		
+
 		return 0;
 	}
 
@@ -56,7 +62,7 @@ public class Image extends DisplayObject implements IResourceLoaded<GameTexture>
 		{
 			return model.getHeight() * scale.y;
 		}
-		
+
 		return 0;
 	}
 
@@ -83,7 +89,7 @@ public class Image extends DisplayObject implements IResourceLoaded<GameTexture>
 	{
 		transform();
 		shader.upload();
-		
+
 		if (loaded)
 		{
 			model.draw();

@@ -63,7 +63,6 @@ public class SoundManager implements IUpdateable, IDisposeable
 			playingSound = playingSounds[i];
 			if (playingSound != null)
 			{
-				Print.out("Updating a playing sound:", playingSound);
 				playingSound.update(timestamp, elapsedTime);
 			}
 		}
