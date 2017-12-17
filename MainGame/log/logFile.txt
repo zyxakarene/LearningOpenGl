@@ -1172,3 +1172,203 @@ java.lang.NullPointerException
 	at zyx.Main.update(Main.java:128)
 	at zyx.Main.main(Main.java:61)
 
+dec. 17, 2017 9:26:00 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file assets/images/sample.png. Error: "assets\images\sample.png (The system cannot find the path specified)"
+dec. 17, 2017 9:26:00 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file BtnDown.png. Error: "BtnDown.png (The system cannot find the file specified)"
+dec. 17, 2017 9:26:00 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file BtnHover.png. Error: "BtnHover.png (The system cannot find the file specified)"
+dec. 17, 2017 9:26:00 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file Check.png. Error: "Check.png (The system cannot find the file specified)"
+dec. 17, 2017 9:26:00 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file BtnUp.png. Error: "BtnUp.png (The system cannot find the file specified)"
+dec. 17, 2017 9:26:00 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.models.implementations.ScreenModel.<init>(ScreenModel.java:20)
+	at zyx.engine.components.screen.Image.resourceLoaded(Image.java:34)
+	at zyx.engine.components.screen.Image.resourceLoaded(Image.java:8)
+	at zyx.game.controls.textures.TextureRequest.resourceLoaded(TextureRequest.java:46)
+	at zyx.game.controls.textures.TextureRequest.resourceLoaded(TextureRequest.java:12)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:98)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:41)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:15)
+	at zyx.Main.update(Main.java:128)
+	at zyx.Main.main(Main.java:61)
+
+dec. 17, 2017 9:26:00 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file tile.png. Error: "tile.png (The system cannot find the file specified)"
+dec. 17, 2017 9:27:56 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file assets/images/sample.png. Error: "assets\images\sample.png (The system cannot find the path specified)"
+dec. 17, 2017 9:27:56 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file BtnHover.png. Error: "BtnHover.png (The system cannot find the file specified)"
+dec. 17, 2017 9:27:56 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file BtnDown.png. Error: "BtnDown.png (The system cannot find the file specified)"
+dec. 17, 2017 9:27:56 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file BtnUp.png. Error: "BtnUp.png (The system cannot find the file specified)"
+dec. 17, 2017 9:27:56 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file tile.png. Error: "tile.png (The system cannot find the file specified)"
+dec. 17, 2017 9:27:56 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file Check.png. Error: "Check.png (The system cannot find the file specified)"
+dec. 17, 2017 9:27:56 PM zyx.utils.exceptions.Msg error
+SEVERE: Failed to load texture
+java.lang.IllegalArgumentException: Buffer size <= 0
+	at java.io.BufferedInputStream.<init>(BufferedInputStream.java:201)
+	at org.newdawn.slick.opengl.CompositeImageData.loadImage(CompositeImageData.java:53)
+	at org.newdawn.slick.opengl.CompositeImageData.loadImage(CompositeImageData.java:43)
+	at org.newdawn.slick.opengl.InternalTextureLoader.getTexture(InternalTextureLoader.java:277)
+	at org.newdawn.slick.opengl.InternalTextureLoader.getTexture(InternalTextureLoader.java:231)
+	at org.newdawn.slick.opengl.InternalTextureLoader.getTexture(InternalTextureLoader.java:184)
+	at org.newdawn.slick.opengl.TextureLoader.getTexture(TextureLoader.java:64)
+	at org.newdawn.slick.opengl.TextureLoader.getTexture(TextureLoader.java:50)
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:17)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:34)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:24)
+	at zyx.game.controls.textures.TextureRequest.resourceLoaded(TextureRequest.java:42)
+	at zyx.game.controls.textures.TextureRequest.resourceLoaded(TextureRequest.java:12)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:98)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:41)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:15)
+	at zyx.Main.update(Main.java:128)
+	at zyx.Main.main(Main.java:61)
+
+dec. 17, 2017 9:27:56 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: java.lang.IllegalArgumentException: Buffer size <= 0
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:22)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:34)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:24)
+	at zyx.game.controls.textures.TextureRequest.resourceLoaded(TextureRequest.java:42)
+	at zyx.game.controls.textures.TextureRequest.resourceLoaded(TextureRequest.java:12)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:98)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:41)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:15)
+	at zyx.Main.update(Main.java:128)
+	at zyx.Main.main(Main.java:61)
+Caused by: java.lang.IllegalArgumentException: Buffer size <= 0
+	at java.io.BufferedInputStream.<init>(BufferedInputStream.java:201)
+	at org.newdawn.slick.opengl.CompositeImageData.loadImage(CompositeImageData.java:53)
+	at org.newdawn.slick.opengl.CompositeImageData.loadImage(CompositeImageData.java:43)
+	at org.newdawn.slick.opengl.InternalTextureLoader.getTexture(InternalTextureLoader.java:277)
+	at org.newdawn.slick.opengl.InternalTextureLoader.getTexture(InternalTextureLoader.java:231)
+	at org.newdawn.slick.opengl.InternalTextureLoader.getTexture(InternalTextureLoader.java:184)
+	at org.newdawn.slick.opengl.TextureLoader.getTexture(TextureLoader.java:64)
+	at org.newdawn.slick.opengl.TextureLoader.getTexture(TextureLoader.java:50)
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:17)
+	... 10 more
+
+dec. 17, 2017 9:29:01 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file assets/images/sample.png. Error: "assets\images\sample.png (The system cannot find the path specified)"
+dec. 17, 2017 9:29:01 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file assets/images/BtnDown.png. Error: "assets\images\BtnDown.png (The system cannot find the path specified)"
+dec. 17, 2017 9:29:01 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file assets/images/BtnHover.png. Error: "assets\images\BtnHover.png (The system cannot find the path specified)"
+dec. 17, 2017 9:29:01 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file tile.png. Error: "tile.png (The system cannot find the file specified)"
+dec. 17, 2017 9:29:01 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file assets/images/BtnUp.png. Error: "assets\images\BtnUp.png (The system cannot find the path specified)"
+dec. 17, 2017 9:29:01 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file assets/images/Check.png. Error: "assets\images\Check.png (The system cannot find the path specified)"
+dec. 17, 2017 9:29:02 PM zyx.utils.exceptions.Msg error
+SEVERE: Failed to load texture
+java.lang.IllegalArgumentException: Buffer size <= 0
+	at java.io.BufferedInputStream.<init>(BufferedInputStream.java:201)
+	at org.newdawn.slick.opengl.CompositeImageData.loadImage(CompositeImageData.java:53)
+	at org.newdawn.slick.opengl.CompositeImageData.loadImage(CompositeImageData.java:43)
+	at org.newdawn.slick.opengl.InternalTextureLoader.getTexture(InternalTextureLoader.java:277)
+	at org.newdawn.slick.opengl.InternalTextureLoader.getTexture(InternalTextureLoader.java:231)
+	at org.newdawn.slick.opengl.InternalTextureLoader.getTexture(InternalTextureLoader.java:184)
+	at org.newdawn.slick.opengl.TextureLoader.getTexture(TextureLoader.java:64)
+	at org.newdawn.slick.opengl.TextureLoader.getTexture(TextureLoader.java:50)
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:17)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:34)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:24)
+	at zyx.game.controls.textures.TextureRequest.resourceLoaded(TextureRequest.java:42)
+	at zyx.game.controls.textures.TextureRequest.resourceLoaded(TextureRequest.java:12)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:98)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:41)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:15)
+	at zyx.Main.update(Main.java:128)
+	at zyx.Main.main(Main.java:61)
+
+dec. 17, 2017 9:29:02 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: java.lang.IllegalArgumentException: Buffer size <= 0
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:22)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:34)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:24)
+	at zyx.game.controls.textures.TextureRequest.resourceLoaded(TextureRequest.java:42)
+	at zyx.game.controls.textures.TextureRequest.resourceLoaded(TextureRequest.java:12)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:98)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:41)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:15)
+	at zyx.Main.update(Main.java:128)
+	at zyx.Main.main(Main.java:61)
+Caused by: java.lang.IllegalArgumentException: Buffer size <= 0
+	at java.io.BufferedInputStream.<init>(BufferedInputStream.java:201)
+	at org.newdawn.slick.opengl.CompositeImageData.loadImage(CompositeImageData.java:53)
+	at org.newdawn.slick.opengl.CompositeImageData.loadImage(CompositeImageData.java:43)
+	at org.newdawn.slick.opengl.InternalTextureLoader.getTexture(InternalTextureLoader.java:277)
+	at org.newdawn.slick.opengl.InternalTextureLoader.getTexture(InternalTextureLoader.java:231)
+	at org.newdawn.slick.opengl.InternalTextureLoader.getTexture(InternalTextureLoader.java:184)
+	at org.newdawn.slick.opengl.TextureLoader.getTexture(TextureLoader.java:64)
+	at org.newdawn.slick.opengl.TextureLoader.getTexture(TextureLoader.java:50)
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:17)
+	... 10 more
+
+dec. 17, 2017 9:29:46 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file tile.png. Error: "tile.png (The system cannot find the file specified)"
+dec. 17, 2017 9:29:46 PM zyx.utils.exceptions.Msg error
+SEVERE: Failed to load texture
+java.lang.IllegalArgumentException: Buffer size <= 0
+	at java.io.BufferedInputStream.<init>(BufferedInputStream.java:201)
+	at org.newdawn.slick.opengl.CompositeImageData.loadImage(CompositeImageData.java:53)
+	at org.newdawn.slick.opengl.CompositeImageData.loadImage(CompositeImageData.java:43)
+	at org.newdawn.slick.opengl.InternalTextureLoader.getTexture(InternalTextureLoader.java:277)
+	at org.newdawn.slick.opengl.InternalTextureLoader.getTexture(InternalTextureLoader.java:231)
+	at org.newdawn.slick.opengl.InternalTextureLoader.getTexture(InternalTextureLoader.java:184)
+	at org.newdawn.slick.opengl.TextureLoader.getTexture(TextureLoader.java:64)
+	at org.newdawn.slick.opengl.TextureLoader.getTexture(TextureLoader.java:50)
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:17)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:34)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:24)
+	at zyx.game.controls.textures.TextureRequest.resourceLoaded(TextureRequest.java:42)
+	at zyx.game.controls.textures.TextureRequest.resourceLoaded(TextureRequest.java:12)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:98)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:41)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:15)
+	at zyx.Main.update(Main.java:128)
+	at zyx.Main.main(Main.java:61)
+
+dec. 17, 2017 9:29:46 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: java.lang.IllegalArgumentException: Buffer size <= 0
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:22)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:34)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:24)
+	at zyx.game.controls.textures.TextureRequest.resourceLoaded(TextureRequest.java:42)
+	at zyx.game.controls.textures.TextureRequest.resourceLoaded(TextureRequest.java:12)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:98)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:41)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:15)
+	at zyx.Main.update(Main.java:128)
+	at zyx.Main.main(Main.java:61)
+Caused by: java.lang.IllegalArgumentException: Buffer size <= 0
+	at java.io.BufferedInputStream.<init>(BufferedInputStream.java:201)
+	at org.newdawn.slick.opengl.CompositeImageData.loadImage(CompositeImageData.java:53)
+	at org.newdawn.slick.opengl.CompositeImageData.loadImage(CompositeImageData.java:43)
+	at org.newdawn.slick.opengl.InternalTextureLoader.getTexture(InternalTextureLoader.java:277)
+	at org.newdawn.slick.opengl.InternalTextureLoader.getTexture(InternalTextureLoader.java:231)
+	at org.newdawn.slick.opengl.InternalTextureLoader.getTexture(InternalTextureLoader.java:184)
+	at org.newdawn.slick.opengl.TextureLoader.getTexture(TextureLoader.java:64)
+	at org.newdawn.slick.opengl.TextureLoader.getTexture(TextureLoader.java:50)
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:17)
+	... 10 more
+

@@ -87,7 +87,7 @@ public class Main
 			}
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_3))
 			{
-				SoundManager.getInstance().playSound("assets/sounds/Pacman.wav", mainKnight);
+				SoundManager.getInstance().playSound("assets/sounds/Pacman.wav", attachedKnight1);
 			}
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_4))
 			{
@@ -180,10 +180,12 @@ public class Main
 		platform.load("assets/models/platform.zaf");
 
 		DisplayObjectContainer container = new DisplayObjectContainer();
-		Image image = new Image("sample.png");
+		Image image = new Image();
+		image.load("assets/textures/sample.png");
 		image.position.x = 50;
 		image.position.y = 30;
-		Image image2 = new Image("sample.png");
+		Image image2 = new Image();
+		image2.load("assets/textures/sample.png");
 		image2.position.x = 530;
 		image2.position.y = 500;
 
@@ -200,39 +202,39 @@ public class Main
 //		container.rotation = 45;
 //		image.position.x = 10;
 
-		field = new Textfield(bmpFont);
-		field.scale.set(0.2f, 0.2f);
-		field.setText("Testing bitmap fonts");
-		field.position.x = GameConstants.GAME_WIDTH / 4;
-		field.position.y = GameConstants.GAME_HEIGHT / 4;
-
-		stage.addChild(field);
+//		field = new Textfield(bmpFont);
+//		field.scale.set(0.2f, 0.2f);
+//		field.setText("Testing bitmap fonts");
+//		field.position.x = GameConstants.GAME_WIDTH / 4;
+//		field.position.y = GameConstants.GAME_HEIGHT / 4;
+//
+//		stage.addChild(field);
 		stage.addChild(image2);
 		
-		Button btn = new Button("BtnUp.png", "BtnHover.png", "BtnDown.png");
+		Button btn = new Button("assets/textures/BtnUp.png", "assets/textures/BtnHover.png", "assets/textures/BtnDown.png");
 		btn.position.set(100, 200);
 		stage.addChild(btn);
 		
-		Checkbox checkbox = new Checkbox("BtnUp.png", "BtnHover.png", "BtnDown.png", "Check.png");
+		Checkbox checkbox = new Checkbox("assets/textures/BtnUp.png", "assets/textures/BtnHover.png", "assets/textures/BtnDown.png", "assets/textures/Check.png");
 		checkbox.position.set(125, 220);
 		stage.addChild(checkbox);
 	}
 
 	private static void loadFontLogic()
 	{
-		try
-		{
-			File file = new File("assets/fonts/font.zff");
-
-			BitmapFontGenerator gen = new BitmapFontGenerator(TextureManager.getFontTexture("font"));
-
-			gen.loadFromFnt(file);
-			bmpFont = gen.createBitmapFont();
-		}
-		catch (IOException ex)
-		{
-			throw new RuntimeException(ex);
-		}
+//		try
+//		{
+//			File file = new File("assets/fonts/font.zff");
+//
+//			BitmapFontGenerator gen = new BitmapFontGenerator(TextureManager.getFontTexture("font"));
+//
+//			gen.loadFromFnt(file);
+//			bmpFont = gen.createBitmapFont();
+//		}
+//		catch (IOException ex)
+//		{
+//			throw new RuntimeException(ex);
+//		}
 	}
 
 }

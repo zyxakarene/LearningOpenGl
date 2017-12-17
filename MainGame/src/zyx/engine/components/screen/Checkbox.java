@@ -10,7 +10,8 @@ public class Checkbox extends Button
 	{
 		super(upTexture, hoverTexture, downTexture);
 		
-		checkImg = new Image(checkIcon);
+		checkImg = new Image();
+		checkImg.load(checkIcon);
 		checkImg.position.x = (getWidth() / 2) - (checkImg.getWidth() / 2);
 		checkImg.position.y = (getHeight()/ 2) - (checkImg.getHeight() / 2);
 

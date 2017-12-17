@@ -1,33 +1,86 @@
 package zyx.game.controls.textures;
 
-import java.util.HashMap;
+import java.util.*;
+import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.opengl.textures.GameTexture;
-import zyx.utils.GameConstants;
+import zyx.utils.interfaces.IDisposeable;
 
-public class TextureManager
+public class TextureManager implements IDisposeable
 {
 
-	private static HashMap<String, GameTexture> MAP = new HashMap<>();
+	private static final TextureManager INSTANCE = new TextureManager();
 
-	public static GameTexture getTexture(String name)
+	private HashMap<String, TextureCacheEntry> cache;
+	private HashMap<String, TextureRequest> currentRequests;
+
+	private TextureManager()
 	{
-		String path = String.format("assets/textures/%s", name);
-		return getTextureInner(path);
+		cache = new HashMap<>();
+		currentRequests = new HashMap<>();
 	}
 
-	public static GameTexture getFontTexture(String name)
+	public static TextureManager getInstance()
 	{
-		String path = String.format("assets/fonts/%s.%s", name, GameConstants.TEXTURE_FORMAT);
-		return getTextureInner(path);
+		return INSTANCE;
 	}
 
-	private static GameTexture getTextureInner(String path)
+	public void loadTexture(String path, IResourceLoaded<GameTexture> callback)
 	{
-		if (MAP.containsKey(path) == false)
+		if (cache.containsKey(path))
 		{
-			MAP.put(path, new GameTexture(path));
+			TextureCacheEntry entry = cache.get(path);
+			entry.count += 1;
+			
+			callback.resourceLoaded(entry.texture);
 		}
+		else if (currentRequests.containsKey(path))
+		{
+			TextureRequest request = currentRequests.get(path);
+			request.addCallback(callback);
+		}
+		else
+		{
+			TextureRequest request = new TextureRequest(path, callback);
+			currentRequests.put(path, request);
+		}
+	}
 
-		return MAP.get(path);
+	void modelLoaded(String path, GameTexture model)
+	{
+		TextureCacheEntry cacheEntry = new TextureCacheEntry(model);
+		cache.put(path, cacheEntry);
+		
+		TextureRequest request = currentRequests.remove(path);
+		request.dispose();
+	}
+	
+	@Override
+	public void dispose()
+	{		
+		String key;
+		Iterator<String> keys;
+		TextureRequest requestEntry;
+		TextureCacheEntry cacheEntry;
+				
+		keys = currentRequests.keySet().iterator();
+		while (keys.hasNext())
+		{
+			key = keys.next();
+			requestEntry = currentRequests.get(key);
+			
+			requestEntry.dispose();
+		}
+		
+		keys = cache.keySet().iterator();
+		while (keys.hasNext())
+		{
+			key = keys.next();
+			cacheEntry = cache.get(key);
+			
+			cacheEntry.dispose();
+		}
+		
+		currentRequests.clear();
+		cache.clear();
 	}
 }

@@ -1,4 +1,4 @@
-package zyx.opengl.models.loading.bones;
+package zyx.opengl.models.loading;
 
 import java.io.DataInputStream;
 import java.io.IOException;

@@ -16,7 +16,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 
 	private final Matrix4f backupMatrix = new Matrix4f();
 
-	private Vector3f worldPosition;
+	protected Vector3f worldPosition;
 	
 	protected Vector3f position;
 	protected Vector3f rotation;
