@@ -2,11 +2,9 @@ package zyx.engine.components.screen;
 
 import zyx.engine.utils.ClickDispatcher;
 import zyx.engine.utils.callbacks.CustomCallback;
-import zyx.engine.utils.callbacks.ICallback;
-import zyx.utils.FloatMath;
 import zyx.utils.cheats.Print;
 
-public class Button extends InteractableContainer implements ICallback<InteractableContainer>
+public class Button extends InteractableContainer
 {
 
 	protected Image upImg;
@@ -22,7 +20,6 @@ public class Button extends InteractableContainer implements ICallback<Interacta
 		downImg = new Image(downTexture);
 
 		onButtonClicked = new CustomCallback<>();
-		onButtonClicked.addCallback(this);
 
 		addChild(upImg);
 		addChild(hoverImg);
@@ -36,24 +33,13 @@ public class Button extends InteractableContainer implements ICallback<Interacta
 	public void dispose()
 	{
 		super.dispose();
-		
+
 		onButtonClicked.dispose();
 
 		onButtonClicked = null;
 		upImg = null;
 		hoverImg = null;
 		downImg = null;
-	}
-
-	@Override
-	public void onCallback(InteractableContainer data)
-	{
-		rotation += 10;
-		position.x += 10;
-//		setWidth(50 + FloatMath.random() * -200f);
-//		setHeight(50 + FloatMath.random() * -200f);
-scale.x = 1;
-scale.y = -1;
 	}
 
 	@Override

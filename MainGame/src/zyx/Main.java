@@ -4,18 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.*;
 import zyx.engine.components.screen.*;
 import zyx.game.components.GameObject;
 import zyx.engine.components.world.World3D;
-import zyx.engine.utils.RayPicker;
-import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.KeyboardControl;
 import zyx.game.controls.MegaManager;
-import zyx.game.controls.input.InputManager;
-import zyx.game.controls.input.MouseData;
 import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.textures.TextureManager;
 import zyx.opengl.GLUtils;
@@ -26,9 +21,7 @@ import zyx.opengl.textures.bitmapfont.BitmapFont;
 import zyx.opengl.textures.bitmapfont.BitmapFontGenerator;
 import zyx.utils.DeltaTime;
 import zyx.utils.FPSCounter;
-import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
-import zyx.utils.cheats.Print;
 
 public class Main
 {
@@ -163,6 +156,7 @@ public class Main
 		stage.drawStage();
 		GLUtils.enableCulling();
 		GLUtils.enableDepthTest();
+		
 	}
 
 	private static void load()
