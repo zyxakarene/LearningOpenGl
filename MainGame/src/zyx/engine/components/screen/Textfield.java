@@ -38,11 +38,21 @@ public class Textfield extends DisplayObject
 	}
 
 	@Override
-	protected void draw()
+	void onDraw()
 	{
 		transform();
 		shader.upload();
 		glText.draw();
+	}
+
+	@Override
+	public void setWidth(float value)
+	{
+	}
+
+	@Override
+	public void setHeight(float value)
+	{
 	}
 
 }

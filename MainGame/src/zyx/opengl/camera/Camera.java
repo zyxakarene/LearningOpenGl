@@ -1,5 +1,6 @@
 package zyx.opengl.camera;
 
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.shaders.implementations.ScreenShader;
 import zyx.opengl.shaders.implementations.WorldShader;
@@ -51,5 +52,15 @@ public class Camera implements IPositionable
 	public Vector3f getRotation()
 	{
 		return rotation;
+	}
+	
+	public void getProjectionMatrix(Matrix4f out)
+	{
+		out.load(ScreenShader.MATRIX_PROJECTION);
+	}
+	
+	public void getViewMatrix(Matrix4f out)
+	{
+		out.load(ScreenShader.MATRIX_VIEW);
 	}
 }

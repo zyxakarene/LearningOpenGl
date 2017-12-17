@@ -36,6 +36,16 @@ public class GLUtils
 		GL11.glDisable(GL11.GL_DEPTH_TEST);
 	}
 
+	public static void enableCulling()
+	{
+		GL11.glEnable(GL11.GL_CULL_FACE);
+	}
+
+	public static void disableCulling()
+	{
+		GL11.glDisable(GL11.GL_CULL_FACE);
+	}
+
 	public static void enableGLSettings()
 	{
 		GL11.glEnable(GL11.GL_CULL_FACE);

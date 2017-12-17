@@ -19,28 +19,37 @@ public class ScreenModel extends AbstractModel
 		GameTexture t = texture;
 		float vertexData[] =
 		{
-			//Position			Texcoords
-			0, 0,				t.x, t.y, // Top-left
-			100, 0,				t.u, t.y, // Top-right
-			100, -100,			t.u, t.v, // Bottom-right
-			0, -100,			t.x, t.v  // Bottom-left
+			//x				y					Texcoords
+			0,				0,					t.x, t.y, // Top-left
+			texture.width,	0,					t.u, t.y, // Top-right
+			texture.width,	-texture.height,	t.u, t.v, // Bottom-right
+			0,				-texture.height,	t.x, t.v  // Bottom-left
 		};
 
 		int elementData[] =
 		{
-			0, 1, 2,
-			2, 3, 0
+			2, 1, 0,
+			0, 3, 2
 		};
 
 		setVertexData(vertexData, elementData);
 		setTexture(texture);
 	}
-
+	
+	public float getWidth()
+	{
+		return getTexture().width;
+	}
+	
+	public float getHeight()
+	{
+		return getTexture().height;
+	}
+	
 	@Override
 	protected void setupAttributes()
 	{
 		addAttribute("position", 2, 4, 0);
 		addAttribute("texcoord", 2, 4, 2);
 	}
-
 }

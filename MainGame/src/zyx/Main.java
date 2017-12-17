@@ -4,17 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.*;
+import zyx.engine.components.screen.*;
 import zyx.game.components.GameObject;
-import zyx.engine.components.screen.DisplayObjectContainer;
-import zyx.engine.components.screen.Image;
-import zyx.engine.components.screen.Stage;
-import zyx.engine.components.screen.Textfield;
 import zyx.engine.components.world.World3D;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.KeyboardControl;
-import zyx.game.controls.MouseControl;
+import zyx.game.controls.MegaManager;
 import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.textures.TextureManager;
 import zyx.opengl.GLUtils;
@@ -25,9 +21,7 @@ import zyx.opengl.textures.bitmapfont.BitmapFont;
 import zyx.opengl.textures.bitmapfont.BitmapFontGenerator;
 import zyx.utils.DeltaTime;
 import zyx.utils.FPSCounter;
-import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
-import zyx.utils.cheats.Print;
 
 public class Main
 {
@@ -63,8 +57,6 @@ public class Main
 			Display.update();
 			Display.sync(GameConstants.FPS);
 
-			ResourceLoader.getInstance().handleResourceReplies();
-
 			update();
 			draw();
 
@@ -76,8 +68,6 @@ public class Main
 			{
 				mainKnight = new GameObject();
 				attachedKnight1 = new GameObject();
-
-				platform.setX(-100);
 				
 				platform.addChild(mainKnight);
 				
@@ -127,19 +117,16 @@ public class Main
 	
 	private static void update()
 	{
-		KeyboardControl.checkKeys();
-		MouseControl.check();
-
 		DeltaTime.update();
-
-		int elapsed = DeltaTime.getElapsedTime();
 		long timestamp = DeltaTime.getTimestamp();
+		int elapsed = DeltaTime.getElapsedTime();
 		
-		Print.out("Time:", timestamp);
+		MegaManager.update(timestamp, elapsed);
+
 		platform.setRotZ(platform.getRotZ() + (elapsed * 0.05f));
-		platform.setY(FloatMath.sin(timestamp * 0.001f) * 100);
 
 		camera.update(timestamp, elapsed);
+//		Print.out(RayPicker.getInstance().getRay());
 //		if (mainKnight != null)
 //		{
 //			mainKnight.update(timestamp, elapsed);
@@ -160,15 +147,16 @@ public class Main
 		
 		world.drawScene();
 		
-//		platform.drawA();
-		
 //		platform.draw();
 //		dummyObject.draw();
 //		object3.draw();
 
 		GLUtils.disableDepthTest();
+		GLUtils.disableCulling();
 		stage.drawStage();
+		GLUtils.enableCulling();
 		GLUtils.enableDepthTest();
+		
 	}
 
 	private static void load()
@@ -189,6 +177,11 @@ public class Main
 
 		DisplayObjectContainer container = new DisplayObjectContainer();
 		Image image = new Image("sample.png");
+		image.position.x = 50;
+		image.position.y = 30;
+		Image image2 = new Image("sample.png");
+		image2.position.x = 530;
+		image2.position.y = 500;
 
 		container.addChild(image);
 		stage = Stage.instance;
@@ -197,8 +190,9 @@ public class Main
 		world = World3D.instance;
 		world.addChild(platform);
 
-		container.position.x = 50;
+		container.position.x = 500;
 		container.position.y = 500;
+		container.rotation = 45;
 //		container.rotation = 45;
 //		image.position.x = 10;
 
@@ -209,6 +203,15 @@ public class Main
 		field.position.y = GameConstants.GAME_HEIGHT / 4;
 
 		stage.addChild(field);
+		stage.addChild(image2);
+		
+		Button btn = new Button("BtnUp.png", "BtnHover.png", "BtnDown.png");
+		btn.position.set(100, 200);
+		stage.addChild(btn);
+		
+		Checkbox checkbox = new Checkbox("BtnUp.png", "BtnHover.png", "BtnDown.png", "Check.png");
+		checkbox.position.set(125, 220);
+		stage.addChild(checkbox);
 	}
 
 	private static void loadFontLogic()

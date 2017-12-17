@@ -41,8 +41,6 @@ public class WorldShader extends AbstractShader
 
 	public void upload()
 	{
-		bind();
-
 		UniformUtils.setUniformMatrix(projectionMatrixTrans, MATRIX_PROJECTION);
 		UniformUtils.setUniformMatrix(viewMatrixTrans, MATRIX_VIEW);
 		UniformUtils.setUniformMatrix(modelMatrixTrans, MATRIX_MODEL);
@@ -55,8 +53,6 @@ public class WorldShader extends AbstractShader
 
 	public void uploadBones()
 	{
-		bind();
-
 		synchronized(BONES)
 		{
 			UniformUtils.setUniformMatrix(boneMatrixTrans, BONES);

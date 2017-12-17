@@ -9,29 +9,56 @@ public class Image extends DisplayObject
 
 	private ScreenModel model;
 	
+	private final float originalWidth;
+	private final float originalHeight;
+	
 	public Image(String texture)
 	{
 		GameTexture gameTexture = TextureManager.getTexture(texture);
 		model = new ScreenModel(gameTexture);
+		
+		originalWidth = getWidth();
+		originalHeight = getHeight();
 	}
 	
 	@Override
 	public float getWidth()
 	{
-		return model.getTexture().width;
+		return model.getWidth() * scale.x;
 	}
 
 	@Override
 	public float getHeight()
 	{
-		return model.getTexture().height;
+		return model.getHeight() * scale.y;
+	}
+	
+	@Override
+	public void setWidth(float value)
+	{
+		scale.x = value / originalWidth;
+	}
+	
+	@Override
+	public void setHeight(float value)
+	{
+		scale.y = value / originalHeight;
 	}
 
 	@Override
-	protected final void draw()
+	void onDraw()
 	{
 		transform();
 		shader.upload();
 		model.draw();
+	}
+
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+		
+		model.dispose();
+		model = null;
 	}
 }

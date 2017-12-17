@@ -1,6 +1,5 @@
 package zyx.opengl.textures.bitmapfont;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 class TextGenerator
@@ -9,9 +8,6 @@ class TextGenerator
 	private final LinkedList<Float> vertexData;
 	private final LinkedList<Integer> elementData;
 	private final FontFile fontFile;
-
-	private final ArrayList<Float> tempVertex;
-	private final ArrayList<Integer> tempElement;
 
 	private char prevCharacter;
 
@@ -25,17 +21,11 @@ class TextGenerator
 		this.elementData = new LinkedList<>();
 		this.fontFile = fontFile;
 
-		this.tempVertex = new ArrayList<>(16);
-		this.tempElement = new ArrayList<>(6);
-
 		currentValueX = 0;
 	}
 
 	void addCharacter(char character)
 	{
-		tempVertex.clear();
-		tempElement.clear();
-
 		FontCharacter fontChar = fontFile.characterMap.get(character);
 		FontKerning fontKerning = fontFile.getKerning(prevCharacter, character);
 
@@ -58,38 +48,35 @@ class TextGenerator
 		float down = up - fontChar.height;
 
 		//Top left
-		tempVertex.add(left);
-		tempVertex.add(up);
-		tempVertex.add(fontChar.x);
-		tempVertex.add(fontChar.y);
+		vertexData.add(left);
+		vertexData.add(up);
+		vertexData.add(fontChar.x);
+		vertexData.add(fontChar.y);
 
 		//Top right
-		tempVertex.add(right);
-		tempVertex.add(up);
-		tempVertex.add(fontChar.x + fontChar.u);
-		tempVertex.add(fontChar.y);
+		vertexData.add(right);
+		vertexData.add(up);
+		vertexData.add(fontChar.x + fontChar.u);
+		vertexData.add(fontChar.y);
 
 		//Bottom right
-		tempVertex.add(right);
-		tempVertex.add(down);
-		tempVertex.add(fontChar.x + fontChar.u);
-		tempVertex.add(fontChar.y + fontChar.v);
+		vertexData.add(right);
+		vertexData.add(down);
+		vertexData.add(fontChar.x + fontChar.u);
+		vertexData.add(fontChar.y + fontChar.v);
 
 		//Bottom left
-		tempVertex.add(left);
-		tempVertex.add(down);
-		tempVertex.add(fontChar.x);
-		tempVertex.add(fontChar.y + fontChar.v);
+		vertexData.add(left);
+		vertexData.add(down);
+		vertexData.add(fontChar.x);
+		vertexData.add(fontChar.y + fontChar.v);
 
-		tempElement.add(currentElementCount + 2);
-		tempElement.add(currentElementCount + 1);
-		tempElement.add(currentElementCount + 0);
-		tempElement.add(currentElementCount + 0);
-		tempElement.add(currentElementCount + 3);
-		tempElement.add(currentElementCount + 2);
-
-		vertexData.addAll(tempVertex);
-		elementData.addAll(tempElement);
+		elementData.add(currentElementCount + 2);
+		elementData.add(currentElementCount + 1);
+		elementData.add(currentElementCount + 0);
+		elementData.add(currentElementCount + 0);
+		elementData.add(currentElementCount + 3);
+		elementData.add(currentElementCount + 2);
 
 		currentValueX += fontChar.xAdvance + fontKerning.amount;
 		currentElementCount += 4;

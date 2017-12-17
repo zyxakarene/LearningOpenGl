@@ -25,6 +25,11 @@ public class GameTexture implements IDisposeable
 	
 	public GameTexture(String path, Rectangle rect)
 	{
+		if (rect == null)
+		{
+			rect = SIMPLE_TEXTURE_MAPPING;
+		}
+		
 		texture = TextureUtils.createTexture(path);
 		
 		width = texture.getImageWidth();

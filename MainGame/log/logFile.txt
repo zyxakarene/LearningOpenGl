@@ -1078,3 +1078,87 @@ java.lang.NullPointerException
 	at zyx.Main.draw(Main.java:153)
 	at zyx.Main.main(Main.java:69)
 
+dec. 14, 2017 7:39:59 PM zyx.utils.exceptions.Msg error
+SEVERE: Failed to load texture
+java.lang.RuntimeException: Resource not found: assets/textures/BtnUp
+	at org.newdawn.slick.util.ResourceLoader.getResourceAsStream(ResourceLoader.java:69)
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:18)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:28)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:23)
+	at zyx.game.controls.textures.TextureManager.getTextureInner(TextureManager.java:28)
+	at zyx.game.controls.textures.TextureManager.getTexture(TextureManager.java:15)
+	at zyx.engine.components.screen.Image.<init>(Image.java:14)
+	at zyx.engine.components.screen.Button.<init>(Button.java:20)
+	at zyx.Main.load(Main.java:219)
+	at zyx.Main.main(Main.java:55)
+
+dec. 14, 2017 7:39:59 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: java.lang.RuntimeException: Resource not found: assets/textures/BtnUp
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:26)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:28)
+	at zyx.opengl.textures.GameTexture.<init>(GameTexture.java:23)
+	at zyx.game.controls.textures.TextureManager.getTextureInner(TextureManager.java:28)
+	at zyx.game.controls.textures.TextureManager.getTexture(TextureManager.java:15)
+	at zyx.engine.components.screen.Image.<init>(Image.java:14)
+	at zyx.engine.components.screen.Button.<init>(Button.java:20)
+	at zyx.Main.load(Main.java:219)
+	at zyx.Main.main(Main.java:55)
+Caused by: java.lang.RuntimeException: Resource not found: assets/textures/BtnUp
+	at org.newdawn.slick.util.ResourceLoader.getResourceAsStream(ResourceLoader.java:69)
+	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:18)
+	... 8 more
+
+dec. 16, 2017 12:16:02 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.UnsupportedOperationException: Not supported yet.
+	at zyx.game.controls.input.InputManager.checkKeyboard(InputManager.java:73)
+	at zyx.game.controls.input.InputManager.update(InputManager.java:47)
+	at zyx.Main.update(Main.java:135)
+	at zyx.Main.main(Main.java:67)
+
+dec. 16, 2017 2:04:58 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.ArrayIndexOutOfBoundsException: -1
+	at zyx.game.controls.input.MouseData.setClickData(MouseData.java:40)
+	at zyx.game.controls.input.InputManager.checkMouse(InputManager.java:61)
+	at zyx.game.controls.input.InputManager.update(InputManager.java:42)
+	at zyx.Main.update(Main.java:135)
+	at zyx.Main.main(Main.java:67)
+
+dec. 16, 2017 2:05:10 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.ArrayIndexOutOfBoundsException: -1
+	at zyx.game.controls.input.MouseData.setClickData(MouseData.java:40)
+	at zyx.game.controls.input.InputManager.checkMouse(InputManager.java:61)
+	at zyx.game.controls.input.InputManager.update(InputManager.java:42)
+	at zyx.Main.update(Main.java:135)
+	at zyx.Main.main(Main.java:67)
+
+dec. 17, 2017 11:10:47 AM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: No OpenGL context found in the current thread.
+	at org.lwjgl.opengl.GLContext.getCapabilities(GLContext.java:124)
+	at org.lwjgl.opengl.GL43.glDebugMessageCallback(GL43.java:591)
+	at zyx.opengl.SetupOpenGlCommand.setupLwjgl(SetupOpenGlCommand.java:44)
+	at zyx.opengl.SetupOpenGlCommand.execute(SetupOpenGlCommand.java:26)
+	at zyx.Main.main(Main.java:47)
+
+dec. 17, 2017 11:11:59 AM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+org.lwjgl.opengl.OpenGLException: Cannot use offsets when Element Array Buffer Object is disabled
+	at org.lwjgl.opengl.GLChecks.ensureElementVBOenabled(GLChecks.java:105)
+	at org.lwjgl.opengl.GL11.glDrawElements(GL11.java:1105)
+	at zyx.opengl.models.ModelUtils.drawElements(ModelUtils.java:94)
+	at zyx.opengl.models.AbstractModel.draw(AbstractModel.java:74)
+	at zyx.engine.components.screen.Image.onDraw(Image.java:53)
+	at zyx.engine.components.screen.DisplayObject.draw(DisplayObject.java:54)
+	at zyx.engine.components.screen.DisplayObjectContainer.onDraw(DisplayObjectContainer.java:119)
+	at zyx.engine.components.screen.InteractableContainer.onDraw(InteractableContainer.java:58)
+	at zyx.engine.components.screen.DisplayObject.draw(DisplayObject.java:54)
+	at zyx.engine.components.screen.DisplayObjectContainer.onDraw(DisplayObjectContainer.java:119)
+	at zyx.engine.components.screen.DisplayObject.draw(DisplayObject.java:54)
+	at zyx.engine.components.screen.Stage.drawStage(Stage.java:17)
+	at zyx.Main.draw(Main.java:162)
+	at zyx.Main.main(Main.java:67)
+
