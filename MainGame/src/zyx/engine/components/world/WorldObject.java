@@ -9,12 +9,15 @@ import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IPositionable;
+import zyx.utils.math.MatrixUtils;
 
 public abstract class WorldObject implements IPositionable, IDisposeable
 {
 
 	private final Matrix4f backupMatrix = new Matrix4f();
 
+	private Vector3f worldPosition;
+	
 	protected Vector3f position;
 	protected Vector3f rotation;
 	protected Vector3f scale;
@@ -26,10 +29,12 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 
 	public WorldObject()
 	{
+		worldPosition = SharedPools.VECTOR_POOL.getInstance();
 		position = SharedPools.VECTOR_POOL.getInstance();
 		rotation = SharedPools.VECTOR_POOL.getInstance();
 		scale = SharedPools.VECTOR_POOL.getInstance();
 		scale.set(1, 1, 1);
+		worldPosition.set(0, 0, 0);
 
 		children = new ArrayList<>();
 
@@ -88,6 +93,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 			shader.upload();
 			
 			child.draw();
+			MatrixUtils.getPositionFrom(WorldShader.MATRIX_MODEL, worldPosition);
 			
 			WorldShader.MATRIX_MODEL.load(backupMatrix);
 		}
@@ -107,10 +113,12 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 
 		children.clear();
 
+		SharedPools.VECTOR_POOL.releaseInstance(worldPosition);
 		SharedPools.VECTOR_POOL.releaseInstance(position);
 		SharedPools.VECTOR_POOL.releaseInstance(rotation);
 		SharedPools.VECTOR_POOL.releaseInstance(scale);
 
+		worldPosition = null;
 		position = null;
 		rotation = null;
 		scale = null;
@@ -127,6 +135,16 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	public Vector3f getRotation()
 	{
 		return rotation;
+	}
+	
+	@Override
+	public Vector3f getWorldPosition(Vector3f out)
+	{
+		out.x = worldPosition.x;
+		out.y = worldPosition.y;
+		out.z = worldPosition.z;
+		
+		return out;
 	}
 
 	abstract protected void onDraw();

@@ -13,7 +13,6 @@ Skybox
 
 =Core=
 UI overhaul
-UI Components (Buttons mainly)
 Clicking/hovering on items
 Ray picking
 Terrain physics

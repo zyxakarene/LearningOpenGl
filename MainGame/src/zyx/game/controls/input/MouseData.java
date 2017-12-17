@@ -1,8 +1,6 @@
 package zyx.game.controls.input;
 
-import java.util.Arrays;
-
-public final class MouseData
+public final class MouseData extends AbstractInputData
 {
 
 	static final int INDEX_LEFT = 0;
@@ -18,31 +16,20 @@ public final class MouseData
 	public int dX;
 	public int dY;
 
-	public boolean[] btnDown;
-	public boolean[] btnClicked;
-
 	private MouseData()
 	{
-		btnDown = new boolean[INDEX_NEXT];
-		btnClicked = new boolean[INDEX_NEXT];
+		super(5);
 	}
 
+	@Override
 	void reset()
 	{
+		super.reset();
+		
 		dX = 0;
 		dY = 0;
-
-		Arrays.fill(btnClicked, false);
 	}
 
-	void setClickData(int buttonId, boolean isDown)
-	{
-		boolean wasDown = btnDown[buttonId];
-
-		btnClicked[buttonId] = wasDown && !isDown;
-		btnDown[buttonId] = isDown;
-	}
-	
 	public boolean isLeftDown()
 	{
 		return btnDown[INDEX_LEFT];

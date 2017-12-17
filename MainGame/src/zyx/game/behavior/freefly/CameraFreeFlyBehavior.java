@@ -5,7 +5,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
-import zyx.game.controls.KeyboardControl;
+import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.input.MouseData;
 import zyx.utils.DeltaTime;
 import zyx.utils.FloatMath;
@@ -30,12 +30,7 @@ public class CameraFreeFlyBehavior extends Behavior
 
 	@Override
 	public void initialize()
-	{
-		KeyboardControl.listenForHolding(Keyboard.KEY_W);
-		KeyboardControl.listenForHolding(Keyboard.KEY_S);
-		KeyboardControl.listenForHolding(Keyboard.KEY_A);
-		KeyboardControl.listenForHolding(Keyboard.KEY_D);
-		
+	{		
 		cameraPosition = gameObject.getPosition();
 		cameraRotation = gameObject.getRotation();
 	}
@@ -43,7 +38,7 @@ public class CameraFreeFlyBehavior extends Behavior
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-		if (KeyboardControl.wasKeyPressed(Keyboard.KEY_Z))
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_Z))
 		{
 			Mouse.setGrabbed(!Mouse.isGrabbed());
 		}
@@ -55,20 +50,20 @@ public class CameraFreeFlyBehavior extends Behavior
 			rotate(-dy, 0, dx, elapsedTime);
 		}
 
-		if (KeyboardControl.isKeyDown(Keyboard.KEY_W))
+		if (KeyboardData.data.isDown(Keyboard.KEY_W))
 		{
 			move(FORWARD, elapsedTime);
 		}
-		if (KeyboardControl.isKeyDown(Keyboard.KEY_S))
+		if (KeyboardData.data.isDown(Keyboard.KEY_S))
 		{
 			move(BACKWARD, elapsedTime);
 		}
 
-		if (KeyboardControl.isKeyDown(Keyboard.KEY_D))
+		if (KeyboardData.data.isDown(Keyboard.KEY_D))
 		{
 			move(RIGHT, elapsedTime);
 		}
-		if (KeyboardControl.isKeyDown(Keyboard.KEY_A))
+		if (KeyboardData.data.isDown(Keyboard.KEY_A))
 		{
 			move(LEFT, elapsedTime);
 		}

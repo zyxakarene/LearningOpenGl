@@ -9,9 +9,10 @@ import zyx.engine.components.screen.*;
 import zyx.game.components.GameObject;
 import zyx.engine.components.world.World3D;
 import zyx.game.components.world.camera.CameraController;
-import zyx.game.controls.KeyboardControl;
 import zyx.game.controls.MegaManager;
+import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.resourceloader.ResourceLoader;
+import zyx.game.controls.sound.SoundManager;
 import zyx.game.controls.textures.TextureManager;
 import zyx.opengl.GLUtils;
 import zyx.opengl.SetupOpenGlCommand;
@@ -64,7 +65,7 @@ public class Main
 
 			GLUtils.errorCheck();
 
-			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_1) && mainKnight == null)
+			if (KeyboardData.data.wasPressed(Keyboard.KEY_1) && mainKnight == null)
 			{
 				mainKnight = new GameObject();
 				attachedKnight1 = new GameObject();
@@ -80,19 +81,22 @@ public class Main
 				
 //				world.addChild(mainKnight);
 			}
-			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_2))
+			if (KeyboardData.data.wasPressed(Keyboard.KEY_2))
 			{
 				dispose();
 			}
-			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_3))
+			if (KeyboardData.data.wasPressed(Keyboard.KEY_3))
 			{
+				SoundManager.getInstance().playSound("assets/sounds/Pacman.wav", mainKnight);
 			}
-			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_4))
+			if (KeyboardData.data.wasPressed(Keyboard.KEY_4))
 			{
 			}
 
-			if (KeyboardControl.wasKeyPressed(Keyboard.KEY_ESCAPE))
+			if (KeyboardData.data.wasPressed(Keyboard.KEY_ESCAPE))
 			{
+				SoundManager.getInstance().dispose();
+				
 				Display.destroy();
 				Keyboard.destroy();
 				Mouse.destroy();
@@ -123,7 +127,7 @@ public class Main
 		
 		MegaManager.update(timestamp, elapsed);
 
-		platform.setRotZ(platform.getRotZ() + (elapsed * 0.05f));
+//		platform.setRotZ(platform.getRotZ() + (elapsed * 0.05f));
 
 		camera.update(timestamp, elapsed);
 //		Print.out(RayPicker.getInstance().getRay());

@@ -1,11 +1,14 @@
 package zyx.game.controls.input;
 
-public final class KeyboardData
+import org.lwjgl.input.Keyboard;
+
+public final class KeyboardData extends AbstractInputData
 {
 
 	public final static KeyboardData data = new KeyboardData();
 
 	private KeyboardData()
 	{
+		super(Keyboard.getKeyCount());
 	}
 }

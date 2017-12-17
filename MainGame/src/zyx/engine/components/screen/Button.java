@@ -2,7 +2,6 @@ package zyx.engine.components.screen;
 
 import zyx.engine.utils.ClickDispatcher;
 import zyx.engine.utils.callbacks.CustomCallback;
-import zyx.utils.cheats.Print;
 
 public class Button extends InteractableContainer
 {
@@ -45,7 +44,6 @@ public class Button extends InteractableContainer
 	@Override
 	protected void onMouseEnter()
 	{
-		Print.out("onMouseEnter");
 		downImg.visible = false;
 		hoverImg.visible = true;
 		upImg.visible = false;
@@ -54,7 +52,6 @@ public class Button extends InteractableContainer
 	@Override
 	protected void onMouseExit()
 	{
-		Print.out("onMouseExit");
 		downImg.visible = false;
 		hoverImg.visible = false;
 		upImg.visible = true;
@@ -63,7 +60,6 @@ public class Button extends InteractableContainer
 	@Override
 	protected void onMouseDown()
 	{
-		Print.out("onMouseDown");
 		downImg.visible = true;
 		hoverImg.visible = false;
 		upImg.visible = false;
@@ -72,7 +68,6 @@ public class Button extends InteractableContainer
 	@Override
 	protected void onMouseClick()
 	{
-		Print.out("onMouseClick");
 		downImg.visible = false;
 		hoverImg.visible = true;
 		upImg.visible = false;

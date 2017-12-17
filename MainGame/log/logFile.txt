@@ -1162,3 +1162,13 @@ org.lwjgl.opengl.OpenGLException: Cannot use offsets when Element Array Buffer O
 	at zyx.Main.draw(Main.java:162)
 	at zyx.Main.main(Main.java:67)
 
+dec. 17, 2017 2:40:23 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.engine.components.world.WorldObject.getWorldPosition(WorldObject.java:143)
+	at zyx.game.controls.sound.Sound.update(Sound.java:59)
+	at zyx.game.controls.sound.SoundManager.update(SoundManager.java:64)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:20)
+	at zyx.Main.update(Main.java:128)
+	at zyx.Main.main(Main.java:61)
+

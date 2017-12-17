@@ -1,7 +1,8 @@
 package zyx.utils;
 
 import org.lwjgl.input.Keyboard;
-import zyx.game.controls.KeyboardControl;
+import zyx.game.controls.input.KeyboardData;
+
 
 public class DeltaTime
 {
@@ -16,7 +17,7 @@ public class DeltaTime
 
 	public static void update()
 	{
-//		if (KeyboardControl.wasKeyPressed(Keyboard.KEY_2))
+//		if (KeyboardData.data.wasPressed(Keyboard.KEY_2))
 //		{
 //			long newTimestamp = lastTimestamp + 16;
 //

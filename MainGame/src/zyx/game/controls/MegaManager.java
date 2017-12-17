@@ -5,6 +5,7 @@ import zyx.engine.utils.RayPicker;
 import zyx.game.controls.input.InputManager;
 import zyx.game.controls.input.MouseData;
 import zyx.game.controls.resourceloader.ResourceLoader;
+import zyx.game.controls.sound.SoundManager;
 
 public class MegaManager
 {
@@ -13,9 +14,10 @@ public class MegaManager
 	{
 		ResourceLoader.getInstance().handleResourceReplies();
 
-		KeyboardControl.checkKeys();
 		InputManager.getInstance().update(timestamp, elapsed);
 		ClickDispatcher.getInstance().dispatchEvents();
+		
+		SoundManager.getInstance().update(timestamp, elapsed);
 
 		RayPicker.getInstance().updateMousePos(MouseData.instance.x, MouseData.instance.y);
 	}

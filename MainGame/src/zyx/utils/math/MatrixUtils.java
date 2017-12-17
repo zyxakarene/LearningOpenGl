@@ -37,4 +37,11 @@ public class MatrixUtils
 		out.m23 = 0f;
 		out.m33 = 1f;
 	}
+
+	public static void getPositionFrom(Matrix4f matrix, Vector3f out)
+	{
+		out.x = matrix.m30;
+		out.y = matrix.m31;
+		out.z = matrix.m32;
+	}
 }

@@ -1,8 +1,10 @@
 package zyx.game.controls.input;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import zyx.engine.utils.callbacks.CustomCallback;
 import zyx.utils.GameConstants;
+import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IUpdateable;
 
 public class InputManager implements IUpdateable
@@ -38,6 +40,7 @@ public class InputManager implements IUpdateable
 	public void update(long timestamp, int elapsedTime)
 	{
 		mouseData.reset();
+		keyboardData.reset();
 
 		checkMouse();
 		checkKeyboard();
@@ -67,5 +70,12 @@ public class InputManager implements IUpdateable
 
 	private void checkKeyboard()
 	{
+		while (Keyboard.next())
+		{			
+			int key = Keyboard.getEventKey();
+			boolean isDown = Keyboard.getEventKeyState();
+			
+			keyboardData.setClickData(key, isDown);
+		}
 	}
 }

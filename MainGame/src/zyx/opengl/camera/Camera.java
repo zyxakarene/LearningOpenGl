@@ -63,4 +63,14 @@ public class Camera implements IPositionable
 	{
 		out.load(ScreenShader.MATRIX_VIEW);
 	}
+
+	@Override
+	public Vector3f getWorldPosition(Vector3f out)
+	{
+		out.x = position.x;
+		out.y = position.y;
+		out.z = position.z;
+		
+		return out;
+	}
 }
