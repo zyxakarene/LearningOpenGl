@@ -5,7 +5,6 @@ import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.opengl.shaders.implementations.Shader;
-import zyx.game.controls.textures.TextureManager;
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
 import zyx.opengl.models.implementations.bones.attachments.Attachment;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
@@ -34,7 +33,7 @@ public class WorldModel extends AbstractModel
 
 		skeleton = vo.skeleton;
 		setVertexData(vo.vertexData, vo.elementData);
-		setTexture(TextureManager.getTexture(vo.texture));
+		setTexture(vo.gameTexture);
 	}
 
 	public Joint getAttatchment(String name)

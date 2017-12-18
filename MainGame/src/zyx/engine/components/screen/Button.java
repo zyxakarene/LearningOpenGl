@@ -14,9 +14,13 @@ public class Button extends InteractableContainer
 
 	public Button(String upTexture, String hoverTexture, String downTexture)
 	{
-		upImg = new Image(upTexture);
-		hoverImg = new Image(hoverTexture);
-		downImg = new Image(downTexture);
+		upImg = new Image();
+		hoverImg = new Image();
+		downImg = new Image();
+		
+		upImg.load(upTexture);
+		hoverImg.load(hoverTexture);
+		downImg.load(downTexture);
 
 		onButtonClicked = new CustomCallback<>();
 

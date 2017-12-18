@@ -13,8 +13,10 @@ import zyx.opengl.models.implementations.bones.animation.AnimationController;
 import zyx.opengl.models.implementations.bones.attachments.Attachment;
 import zyx.opengl.models.implementations.bones.attachments.AttachmentRequest;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
+import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IUpdateable;
+import zyx.utils.math.MatrixUtils;
 
 public class GameObject extends WorldObject implements IUpdateable, IResourceLoaded<WorldModel>
 {
@@ -87,8 +89,11 @@ public class GameObject extends WorldObject implements IUpdateable, IResourceLoa
 			model.setAnimation(animationController);
 			model.draw();
 
-			for (Attachment attachment : attachments)
+			Attachment attachment;
+			int len = attachments.size();
+			for (int i = 0; i < len; i++)
 			{
+				attachment = attachments.get(i);
 				attachment.child.drawAsAttachment(attachment);
 			}
 		}
@@ -101,9 +106,14 @@ public class GameObject extends WorldObject implements IUpdateable, IResourceLoa
 			model.setAnimation(animationController);
 			model.drawAsAttachment(attachment);
 
-			for (Attachment attachment2 : attachments)
+			MatrixUtils.getPositionFrom(WorldShader.MATRIX_MODEL, worldPosition);
+
+			Attachment subAttachment;
+			int len = attachments.size();
+			for (int i = 0; i < len; i++)
 			{
-				attachment2.child.drawAsAttachment(attachment2);
+				subAttachment = attachments.get(i);
+				subAttachment.child.drawAsAttachment(subAttachment);
 			}
 		}
 	}

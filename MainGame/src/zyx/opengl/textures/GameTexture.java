@@ -1,5 +1,6 @@
 package zyx.opengl.textures;
 
+import java.io.InputStream;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 import zyx.utils.geometry.Rectangle;
@@ -18,19 +19,19 @@ public class GameTexture implements IDisposeable
 
 	private Texture texture;
 
-	public GameTexture(String path)
+	public GameTexture(InputStream stream)
 	{
-		this(path, SIMPLE_TEXTURE_MAPPING);
+		this(stream, SIMPLE_TEXTURE_MAPPING);
 	}
 	
-	public GameTexture(String path, Rectangle rect)
+	public GameTexture(InputStream stream, Rectangle rect)
 	{
 		if (rect == null)
 		{
 			rect = SIMPLE_TEXTURE_MAPPING;
 		}
 		
-		texture = TextureUtils.createTexture(path);
+		texture = TextureUtils.createTexture(stream);
 		
 		width = texture.getImageWidth();
 		height = texture.getImageHeight();

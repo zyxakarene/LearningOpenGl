@@ -1,48 +1,87 @@
 package zyx.engine.components.screen;
 
+import zyx.engine.utils.callbacks.CustomCallback;
+import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.opengl.models.implementations.ScreenModel;
 import zyx.opengl.textures.GameTexture;
 import zyx.game.controls.textures.TextureManager;
 
-public class Image extends DisplayObject
+public class Image extends DisplayObject implements IResourceLoaded<GameTexture>
 {
 
+	private String path;
 	private ScreenModel model;
-	
-	private final float originalWidth;
-	private final float originalHeight;
-	
-	public Image(String texture)
+	public boolean loaded;
+
+	private float originalWidth;
+	private float originalHeight;
+
+	public CustomCallback<Image> onLoaded;
+
+	public Image()
 	{
-		GameTexture gameTexture = TextureManager.getTexture(texture);
-		model = new ScreenModel(gameTexture);
-		
+		originalWidth = 0;
+		originalHeight = 0;
+		loaded = false;
+		onLoaded = new CustomCallback<>(true);
+	}
+
+	public void load(String path)
+	{
+		this.path = path;
+		TextureManager.getInstance().loadTexture(path, this);
+	}
+
+	@Override
+	public void resourceLoaded(GameTexture texture)
+	{
+		model = new ScreenModel(texture);
+
 		originalWidth = getWidth();
 		originalHeight = getHeight();
+		loaded = true;
+		
+		onLoaded.dispatch(this);
 	}
-	
+
 	@Override
 	public float getWidth()
 	{
-		return model.getWidth() * scale.x;
+		if (loaded)
+		{
+			return model.getWidth() * scale.x;
+		}
+
+		return 0;
 	}
 
 	@Override
 	public float getHeight()
 	{
-		return model.getHeight() * scale.y;
+		if (loaded)
+		{
+			return model.getHeight() * scale.y;
+		}
+
+		return 0;
 	}
-	
+
 	@Override
 	public void setWidth(float value)
 	{
-		scale.x = value / originalWidth;
+		if (loaded)
+		{
+			scale.x = value / originalWidth;
+		}
 	}
-	
+
 	@Override
 	public void setHeight(float value)
 	{
-		scale.y = value / originalHeight;
+		if (loaded)
+		{
+			scale.y = value / originalHeight;
+		}
 	}
 
 	@Override
@@ -50,15 +89,28 @@ public class Image extends DisplayObject
 	{
 		transform();
 		shader.upload();
-		model.draw();
+
+		if (loaded)
+		{
+			model.draw();
+		}
 	}
 
 	@Override
 	public void dispose()
 	{
 		super.dispose();
-		
-		model.dispose();
-		model = null;
+
+		if (loaded)
+		{
+			model.dispose();
+			model = null;
+		}
+	}
+
+	@Override
+	public String toString()
+	{
+		return String.format("Image{%s}", path);
 	}
 }

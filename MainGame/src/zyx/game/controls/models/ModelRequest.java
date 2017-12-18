@@ -6,15 +6,20 @@ import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.game.controls.resourceloader.requests.ResourceRequest;
 import zyx.game.controls.resourceloader.requests.ResourceRequestDataInput;
+import zyx.opengl.models.implementations.LoadableValueObject;
 import zyx.opengl.models.implementations.WorldModel;
-import zyx.opengl.models.loading.bones.ZafLoader;
+import zyx.opengl.models.loading.ZafLoader;
+import zyx.opengl.textures.GameTexture;
 import zyx.utils.interfaces.IDisposeable;
 
-class ModelRequest implements IResourceLoaded<DataInputStream>, IDisposeable
+class ModelRequest implements IResourceLoaded<DataInputStream>, IDisposeable, IModelTextureLoaded
 {
 
 	private String path;
 	private ArrayList<IResourceLoaded<WorldModel>> callbacks;
+	
+	private LoadableValueObject loadedVo;
+	private ModelTextureLoader textureLoader;
 
 	ModelRequest(String path, IResourceLoaded<WorldModel> callback)
 	{
@@ -40,13 +45,21 @@ class ModelRequest implements IResourceLoaded<DataInputStream>, IDisposeable
 	@Override
 	public void resourceLoaded(DataInputStream data)
 	{
-		WorldModel model = ZafLoader.loadFromZaf(data);
-		
+		loadedVo = ZafLoader.loadFromZaf(data);
+		textureLoader = new ModelTextureLoader(loadedVo.getTexture(), this);
+	}
+	
+	@Override
+	public void onModelTextureLoaded(GameTexture texture)
+	{
+		loadedVo.setGameTexture(texture);
+		WorldModel model = new WorldModel(loadedVo);
+
 		for (IResourceLoaded<WorldModel> callback : callbacks)
 		{
 			callback.resourceLoaded(model);
 		}
-		
+
 		ModelManager.getInstance().modelLoaded(path, model);
 	}
 
@@ -55,8 +68,10 @@ class ModelRequest implements IResourceLoaded<DataInputStream>, IDisposeable
 	{
 		callbacks.clear();
 		
+		textureLoader = null;
 		path = null;
 		callbacks = null;
+		loadedVo = null;
 	}
 
 }

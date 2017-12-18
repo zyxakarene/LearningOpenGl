@@ -6,10 +6,17 @@ import zyx.utils.interfaces.IDisposeable;
 public class CustomCallback<T> implements IDisposeable
 {
 	private ArrayList<ICallback<T>> callbacks;
+	private final boolean autoClear;
 
 	public CustomCallback()
 	{
-		callbacks = new ArrayList<>();
+		this(false);
+	}
+	
+	public CustomCallback(boolean autoClear)
+	{
+		this.autoClear = autoClear;
+		this.callbacks = new ArrayList<>();
 	}
 	
 	public void addCallback(ICallback<T> callback)
@@ -39,6 +46,11 @@ public class CustomCallback<T> implements IDisposeable
 		{
 			callback = callbacks.get(i);
 			callback.onCallback(data);
+		}
+		
+		if (autoClear)
+		{
+			callbacks.clear();
 		}
 	}
 

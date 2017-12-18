@@ -1,5 +1,5 @@
 =Gameplay=
-3D Sound
+
 
 =Engine=
 Difuse lighting
