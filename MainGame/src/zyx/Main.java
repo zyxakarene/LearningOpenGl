@@ -6,6 +6,8 @@ import org.lwjgl.opengl.*;
 import zyx.engine.components.screen.*;
 import zyx.game.components.GameObject;
 import zyx.engine.components.world.World3D;
+import zyx.engine.curser.CursorManager;
+import zyx.engine.curser.GameCursor;
 import zyx.game.components.screen.AddBitmapFontButton;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.MegaManager;
@@ -84,6 +86,11 @@ public class Main
 			}
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_4))
 			{
+				CursorManager.getInstance().setCursor(GameCursor.HAND);
+			}
+			if (KeyboardData.data.wasPressed(Keyboard.KEY_5))
+			{
+				CursorManager.getInstance().setCursor(GameCursor.POINTER);
 			}
 
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_ESCAPE))
@@ -139,6 +146,7 @@ public class Main
 
 	private static void load()
 	{
+		CursorManager.getInstance().initialize();
 		Camera.getInstance().initialize();
 
 		camera = new CameraController();

@@ -1,5 +1,7 @@
 package zyx.engine.components.screen;
 
+import zyx.engine.curser.CursorManager;
+import zyx.engine.curser.GameCursor;
 import zyx.engine.utils.ClickDispatcher;
 import zyx.engine.utils.callbacks.CustomCallback;
 
@@ -48,6 +50,8 @@ public class Button extends InteractableContainer
 	@Override
 	protected void onMouseEnter()
 	{
+		CursorManager.getInstance().setCursor(GameCursor.HAND);
+		
 		downImg.visible = false;
 		hoverImg.visible = true;
 		upImg.visible = false;
@@ -56,6 +60,8 @@ public class Button extends InteractableContainer
 	@Override
 	protected void onMouseExit()
 	{
+		CursorManager.getInstance().setCursor(GameCursor.POINTER);
+		
 		downImg.visible = false;
 		hoverImg.visible = false;
 		upImg.visible = true;

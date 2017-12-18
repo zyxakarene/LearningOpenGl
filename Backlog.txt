@@ -7,8 +7,6 @@ Direct lighting
 Bump mapping
 Shadows
 Terrain/Displacements
-async texture loading
-Load required textures with zaf model
 Skybox
 
 =Core=
@@ -17,3 +15,8 @@ Clicking/hovering on items
 Ray picking
 Terrain physics
 Cursor icons
+
+=Done=
+3D sound
+async texture loading
+Load required textures with zaf model
