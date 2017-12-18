@@ -1372,3 +1372,33 @@ Caused by: java.lang.IllegalArgumentException: Buffer size <= 0
 	at zyx.opengl.textures.TextureUtils.createTexture(TextureUtils.java:17)
 	... 10 more
 
+dec. 17, 2017 9:57:58 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.engine.components.world.WorldObject.getWorldPosition(WorldObject.java:143)
+	at zyx.game.controls.sound.Sound.update(Sound.java:61)
+	at zyx.game.controls.sound.SoundManager.update(SoundManager.java:66)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:20)
+	at zyx.Main.update(Main.java:121)
+	at zyx.Main.main(Main.java:54)
+
+dec. 17, 2017 10:01:41 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.controls.sound.AudioWrapper.updatePosition(AudioWrapper.java:116)
+	at zyx.game.controls.sound.Sound.update(Sound.java:82)
+	at zyx.game.controls.sound.SoundManager.update(SoundManager.java:66)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:20)
+	at zyx.Main.update(Main.java:121)
+	at zyx.Main.main(Main.java:54)
+
+dec. 17, 2017 10:02:11 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.controls.sound.AudioWrapper.updatePosition(AudioWrapper.java:118)
+	at zyx.game.controls.sound.Sound.update(Sound.java:82)
+	at zyx.game.controls.sound.SoundManager.update(SoundManager.java:66)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:20)
+	at zyx.Main.update(Main.java:121)
+	at zyx.Main.main(Main.java:54)
+

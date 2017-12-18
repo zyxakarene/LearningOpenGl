@@ -1,6 +1,7 @@
 package zyx.game.controls.resourceloader.requests.vo;
 
 import java.io.ByteArrayInputStream;
+import java.util.Arrays;
 
 public class ResourceByteArray extends ByteArrayInputStream
 {
@@ -24,5 +25,13 @@ public class ResourceByteArray extends ByteArrayInputStream
 	public int length()
 	{
 		return count;
-	}	
+	}
+	
+	@Override
+	public String toString()
+	{
+		return Arrays.toString(buf);
+	}
+	
+	
 }

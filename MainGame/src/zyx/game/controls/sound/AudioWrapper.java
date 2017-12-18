@@ -17,7 +17,7 @@ class AudioWrapper implements IResourceLoaded<ResourceByteArray>
 	private Audio audio;
 	private String path;
 	private float volume;
-	private Vector4f pos;
+	private Vector4f savedPosition;
 
 	AudioWrapper(String audioPath)
 	{
@@ -48,9 +48,9 @@ class AudioWrapper implements IResourceLoaded<ResourceByteArray>
 		{
 			audio = AudioLoader.getAudio("WAV", data);
 
-			if (pos != null)
+			if (savedPosition != null)
 			{
-				playAsSoundEffect(volume, pos);
+				playAsSoundEffect(volume, savedPosition);
 			}
 		}
 		catch (IOException ex)
@@ -75,7 +75,6 @@ class AudioWrapper implements IResourceLoaded<ResourceByteArray>
 		{
 			return audio.getPosition();
 		}
-
 		return 0;
 	}
 
@@ -89,14 +88,15 @@ class AudioWrapper implements IResourceLoaded<ResourceByteArray>
 
 	void playAsSoundEffect(float volume, Vector4f pos)
 	{
+		this.volume = volume;
+
 		if (audio != null)
 		{
 			audio.playAsSoundEffect(1, volume, false, pos.x, pos.y, pos.z);
 		}
 		else
 		{
-			this.pos = pos;
-			this.volume = volume;
+			this.savedPosition = pos;
 		}
 	}
 
@@ -111,10 +111,12 @@ class AudioWrapper implements IResourceLoaded<ResourceByteArray>
 	void updatePosition(Vector4f position)
 	{
 		float time = getPosition();
-		
-		audio.stop();
-		audio.playAsSoundEffect(1, volume, false, pos.x, pos.y, pos.z);
-		audio.setPosition(time);
 
+		if (audio != null)
+		{
+			audio.stop();
+			audio.playAsSoundEffect(1, volume, false, position.x, position.y, position.z);
+			audio.setPosition(time);
+		}
 	}
 }

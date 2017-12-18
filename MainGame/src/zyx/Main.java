@@ -1,7 +1,5 @@
 package zyx;
 
-import java.io.File;
-import java.io.IOException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.*;
@@ -14,13 +12,10 @@ import zyx.game.controls.MegaManager;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.sound.SoundManager;
-import zyx.game.controls.textures.TextureManager;
 import zyx.opengl.GLUtils;
 import zyx.opengl.SetupOpenGlCommand;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.shaders.ShaderManager;
-import zyx.opengl.textures.bitmapfont.BitmapFont;
-import zyx.opengl.textures.bitmapfont.BitmapFontGenerator;
 import zyx.utils.DeltaTime;
 import zyx.utils.FPSCounter;
 import zyx.utils.GameConstants;
@@ -35,8 +30,6 @@ public class Main
 
 	private static Stage stage;
 	private static World3D world;
-	private static BitmapFont bmpFont;
-	private static Textfield field;
 
 	public static void main(String[] args)
 	{
@@ -49,7 +42,6 @@ public class Main
 
 		ResourceLoader.getInstance().addThreads(3);
 
-		loadFontLogic();
 		load();
 
 		GLUtils.errorCheck();
@@ -88,7 +80,7 @@ public class Main
 			}
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_3))
 			{
-				SoundManager.getInstance().playSound("assets/sounds/Pacman.wav", attachedKnight1);
+				SoundManager.getInstance().playSound("assets/sounds/Pacman.wav", mainKnight);
 			}
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_4))
 			{
@@ -128,34 +120,15 @@ public class Main
 		
 		MegaManager.update(timestamp, elapsed);
 
-//		platform.setRotZ(platform.getRotZ() + (elapsed * 0.05f));
-
 		camera.update(timestamp, elapsed);
-//		Print.out(RayPicker.getInstance().getRay());
-//		if (mainKnight != null)
-//		{
-//			mainKnight.update(timestamp, elapsed);
-//		}
-//		platform.update(timestamp, elapsed);
-//		dummyObject.update(timestamp, elapsed);
-//		object3.update(timestamp, elapsed);
 	}
 
 	private static void draw()
 	{
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-
-//		if (mainKnight != null)
-//		{
-//			mainKnight.draw();
-//		}
 		
 		world.drawScene();
 		
-//		platform.draw();
-//		dummyObject.draw();
-//		object3.draw();
-
 		GLUtils.disableDepthTest();
 		GLUtils.disableCulling();
 		stage.drawStage();
@@ -169,13 +142,6 @@ public class Main
 		Camera.getInstance().initialize();
 
 		camera = new CameraController();
-//		mainKnight = new GameObject("invalid");
-//		attachedKnight1 = new GameObject("invalid");
-//
-//		mainKnight.load("assets/models/knight.zaf");
-//		attachedKnight1.load("assets/models/knight.zaf");
-//		mainKnight.setAnimation("attack");
-//		attachedKnight1.setAnimation("attack");
 
 		platform = new GameObject();
 		platform.load("assets/models/platform.zaf");
@@ -203,13 +169,6 @@ public class Main
 //		container.rotation = 45;
 //		image.position.x = 10;
 
-//		field = new Textfield(bmpFont);
-//		field.scale.set(0.2f, 0.2f);
-//		field.setText("Testing bitmap fonts");
-//		field.position.x = GameConstants.GAME_WIDTH / 4;
-//		field.position.y = GameConstants.GAME_HEIGHT / 4;
-//
-//		stage.addChild(field);
 		stage.addChild(image2);
 		
 		AddBitmapFontButton btn = new AddBitmapFontButton("assets/textures/BtnUp.png", "assets/textures/BtnHover.png", "assets/textures/BtnDown.png");
@@ -219,23 +178,6 @@ public class Main
 		Checkbox checkbox = new Checkbox("assets/textures/BtnUp.png", "assets/textures/BtnHover.png", "assets/textures/BtnDown.png", "assets/textures/Check.png");
 		checkbox.position.set(125, 220);
 		stage.addChild(checkbox);
-	}
-
-	private static void loadFontLogic()
-	{
-//		try
-//		{
-//			File file = new File("assets/fonts/font.zff");
-//
-//			BitmapFontGenerator gen = new BitmapFontGenerator(TextureManager.getFontTexture("font"));
-//
-//			gen.loadFromFnt(file);
-//			bmpFont = gen.createBitmapFont();
-//		}
-//		catch (IOException ex)
-//		{
-//			throw new RuntimeException(ex);
-//		}
 	}
 
 }

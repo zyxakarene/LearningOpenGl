@@ -2,9 +2,9 @@ package zyx.game.controls.sound;
 
 import java.util.LinkedList;
 import org.newdawn.slick.openal.SoundStore;
+import zyx.game.components.GameObject;
 import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IDisposeable;
-import zyx.utils.interfaces.IPositionable;
 import zyx.utils.interfaces.IUpdateable;
 
 public class SoundManager implements IUpdateable, IDisposeable
@@ -32,7 +32,7 @@ public class SoundManager implements IUpdateable, IDisposeable
 		return instance;
 	}
 
-	public void playSound(String source, IPositionable emitter)
+	public void playSound(String source, GameObject emitter)
 	{
 		if (availibleSounds.isEmpty())
 		{
@@ -43,7 +43,7 @@ public class SoundManager implements IUpdateable, IDisposeable
 		Sound sound = availibleSounds.removeLast();
 		AudioWrapper audio = new AudioWrapper(source);
 
-		sound.set(1, true, audio, emitter);
+		sound.set(10, false, audio, emitter);
 		playingSounds[sound.soundId] = sound;
 	}
 

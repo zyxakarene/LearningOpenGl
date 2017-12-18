@@ -107,7 +107,7 @@ public class GameObject extends WorldObject implements IUpdateable, IResourceLoa
 			model.drawAsAttachment(attachment);
 
 			MatrixUtils.getPositionFrom(WorldShader.MATRIX_MODEL, worldPosition);
-			
+
 			Attachment subAttachment;
 			int len = attachments.size();
 			for (int i = 0; i < len; i++)

@@ -13,6 +13,7 @@ import zyx.utils.math.MatrixUtils;
 
 public abstract class WorldObject implements IPositionable, IDisposeable
 {
+	public boolean disposed;
 
 	private final Matrix4f backupMatrix = new Matrix4f();
 
@@ -39,6 +40,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		children = new ArrayList<>();
 
 		shader = (WorldShader) ShaderManager.INSTANCE.get(Shader.WORLD);
+		disposed = false;
 	}
 
 	public void addChild(WorldObject child)
@@ -104,6 +106,11 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	@Override
 	public void dispose()
 	{
+		if (disposed)
+		{
+			return;
+		}
+		disposed = true;
 		removeFromParent(false);
 
 		for (WorldObject child : children)
