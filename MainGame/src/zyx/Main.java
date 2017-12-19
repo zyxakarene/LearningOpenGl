@@ -70,7 +70,7 @@ public class Main
 				mainKnight.load("assets/models/knight/knight.zaf");
 				attachedKnight1.load("assets/models/knight/knight.zaf");
 				mainKnight.setAnimation("attack");
-				attachedKnight1.setAnimation("walk");
+				attachedKnight1.setAnimation("attack");
 				
 				mainKnight.addAttachment(attachedKnight1, "Skeleton_Hand_R");
 				
@@ -128,6 +128,11 @@ public class Main
 		MegaManager.update(timestamp, elapsed);
 
 		camera.update(timestamp, elapsed);
+		
+		if (mainKnight != null)
+		{
+//			mainKnight.setRotZ(mainKnight.getRotZ() + 1f);
+		}
 	}
 
 	private static void draw()

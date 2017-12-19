@@ -7,11 +7,15 @@ abstract class AbstractInputData
 
 	public boolean[] btnDown;
 	public boolean[] btnClicked;
+	
+	private final int maxId;
 
 	protected AbstractInputData(int count)
 	{
 		btnDown = new boolean[count];
 		btnClicked = new boolean[count];
+		
+		maxId = count - 1;
 	}
 
 	void reset()
@@ -21,6 +25,11 @@ abstract class AbstractInputData
 
 	void setClickData(int id, boolean isDown)
 	{
+		if (id > maxId)
+		{
+			return;
+		}
+		
 		boolean wasDown = btnDown[id];
 
 		btnClicked[id] = wasDown && !isDown;

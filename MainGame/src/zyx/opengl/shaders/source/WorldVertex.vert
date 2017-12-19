@@ -11,6 +11,7 @@ layout(location = 3) in vec2 indexes;
 layout(location = 4) in vec2 weights;
 
 out vec2 Texcoord;
+out vec3 Normal;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -21,6 +22,10 @@ uniform mat4 bones[MAX_JOINTS];
 void main()
 {
 	vec4 totalLocalPos = vec4(0.0);
+	mat4 normalMatrix = model;
+
+	int a = int(indexes[0]);
+	int b = int(indexes[1]);
 
 	for(int i=0;i<MAX_WEIGHTS;i++)
 	{
@@ -28,12 +33,11 @@ void main()
 		mat4 jointTransform = bones[intIndex];
 		vec4 posePosition = jointTransform * vec4(position, 1.0);
 		totalLocalPos += posePosition * weights[i];
+
+		normalMatrix *= jointTransform;
 	}
 
-	//mat4 BoneTransform = weights.x * bones[int(indexes.x)];
-    //BoneTransform += weights.y * bones[int(indexes.y)];
-	//vec4 newVertex = BoneTransform * vec4(position, 1.0);
-
 	Texcoord = texcoord;
+	Normal = mat3(transpose(inverse(normalMatrix))) * normals;  
     gl_Position = projection * view * model * totalLocalPos;
 }

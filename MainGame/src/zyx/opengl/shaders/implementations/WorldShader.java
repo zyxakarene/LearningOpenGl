@@ -62,13 +62,13 @@ public class WorldShader extends AbstractShader
 	@Override
 	protected String getVertexName()
 	{
-		return "WorldVertex.shader";
+		return "WorldVertex.vert";
 	}
 
 	@Override
 	protected String getFragmentName()
 	{
-		return "WorldFragment.shader";
+		return "WorldFragment.frag";
 	}
 
 }

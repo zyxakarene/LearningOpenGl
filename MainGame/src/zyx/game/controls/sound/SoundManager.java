@@ -34,6 +34,12 @@ public class SoundManager implements IUpdateable, IDisposeable
 
 	public void playSound(String source, GameObject emitter)
 	{
+		if (emitter == null)
+		{
+			Print.out("Emitter playing sound", source, "is null. Not playing sound.");
+			return;
+		}
+		
 		if (availibleSounds.isEmpty())
 		{
 			Print.out("No availible sounds!");

@@ -1402,3 +1402,22 @@ java.lang.NullPointerException
 	at zyx.Main.update(Main.java:121)
 	at zyx.Main.main(Main.java:54)
 
+dec. 19, 2017 5:41:32 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.controls.sound.Sound.update(Sound.java:60)
+	at zyx.game.controls.sound.SoundManager.update(SoundManager.java:66)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:20)
+	at zyx.Main.update(Main.java:128)
+	at zyx.Main.main(Main.java:56)
+
+dec. 19, 2017 6:13:23 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.ArrayIndexOutOfBoundsException: 183
+	at zyx.game.controls.input.AbstractInputData.setClickData(AbstractInputData.java:24)
+	at zyx.game.controls.input.InputManager.checkKeyboard(InputManager.java:78)
+	at zyx.game.controls.input.InputManager.update(InputManager.java:46)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:17)
+	at zyx.Main.update(Main.java:128)
+	at zyx.Main.main(Main.java:56)
+
