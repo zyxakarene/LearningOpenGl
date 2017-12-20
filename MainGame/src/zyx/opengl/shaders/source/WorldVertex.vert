@@ -21,23 +21,31 @@ uniform mat4 bones[MAX_JOINTS];
 
 void main()
 {
-	vec4 totalLocalPos = vec4(0.0);
-	mat4 normalMatrix = model;
+    vec4 totalLocalPos = vec4(0);
+    vec4 totalLocalNorm = vec4(0);
+    mat4 normalMatrix = model;
 
-	int a = int(indexes[0]);
-	int b = int(indexes[1]);
+    int a = int(indexes[0]);
+    int b = int(indexes[1]);
 
-	for(int i=0;i<MAX_WEIGHTS;i++)
-	{
-		int intIndex = int(indexes[i]);
-		mat4 jointTransform = bones[intIndex];
-		vec4 posePosition = jointTransform * vec4(position, 1.0);
-		totalLocalPos += posePosition * weights[i];
+    for(int i=0;i<MAX_WEIGHTS;i++)
+    {
+        int intIndex = int(indexes[i]);
+        mat4 jointTransform = bones[intIndex];
+        mat4 inverseTransform = transpose(inverse(jointTransform));
 
-		normalMatrix *= jointTransform;
-	}
+        vec4 posePosition = jointTransform * vec4(position, 1.0);
+        vec4 normPosition = inverseTransform * vec4(normals, 1.0);
 
-	Texcoord = texcoord;
-	Normal = mat3(transpose(inverse(normalMatrix))) * normals;  
+        totalLocalPos += posePosition * weights[i];
+        totalLocalNorm += normPosition * weights[i];
+
+        normalMatrix *= jointTransform;
+    }
+
+    totalLocalNorm = normalize(totalLocalNorm);
+
+    Texcoord = texcoord;
+    Normal = mat3(transpose(inverse(model))) * vec3(totalLocalNorm);  
     gl_Position = projection * view * model * totalLocalPos;
 }
