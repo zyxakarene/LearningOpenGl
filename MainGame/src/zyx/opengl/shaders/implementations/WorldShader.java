@@ -1,8 +1,10 @@
 package zyx.opengl.shaders.implementations;
 
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.shaders.AbstractShader;
+import zyx.utils.cheats.Print;
 
 public class WorldShader extends AbstractShader
 {
@@ -17,6 +19,7 @@ public class WorldShader extends AbstractShader
 	private int viewMatrixTrans;
 	private int modelMatrixTrans;
 	private int boneMatrixTrans;
+	private int lightDirection;
 
 	public WorldShader(Object lock)
 	{
@@ -37,6 +40,8 @@ public class WorldShader extends AbstractShader
 		viewMatrixTrans = UniformUtils.createUniform(program, "view");
 		modelMatrixTrans = UniformUtils.createUniform(program, "model");
 		boneMatrixTrans = UniformUtils.createUniform(program, "bones");
+		
+		lightDirection = UniformUtils.createUniform(program, "lightDir");
 	}
 
 	public void upload()
@@ -49,6 +54,12 @@ public class WorldShader extends AbstractShader
 		{
 			UniformUtils.setUniformMatrix(boneMatrixTrans, BONES);
 		}
+	}
+	
+	public void uploadLightDirection(Vector3f direction)
+	{
+		bind();
+		UniformUtils.setUniform3F(lightDirection, direction.x, direction.y, direction.z);
 	}
 
 	public void uploadBones()

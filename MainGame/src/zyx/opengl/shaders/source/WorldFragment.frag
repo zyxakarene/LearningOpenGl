@@ -6,12 +6,12 @@ in vec3 Normal;
 out vec4 outColor;
 
 uniform sampler2D tex;
+uniform vec3 lightDir;
 
 void main()
 {
-	vec3 light = vec3(-1, -1, 1);
     vec3 normVertex = normalize(Normal);
-	float cosTheta = clamp(dot(normVertex, light), 0, 1);
+	float cosTheta = clamp(dot(normVertex, lightDir), 0, 1);
 
 	vec3 color = vec3(0.75) * cosTheta;
 

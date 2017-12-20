@@ -72,7 +72,7 @@ public class Main
 				mainKnight.setAnimation("attack");
 				attachedKnight1.setAnimation("attack");
 				
-				mainKnight.addAttachment(attachedKnight1, "Skeleton_Hand_R");
+//				mainKnight.addAttachment(attachedKnight1, "Skeleton_Hand_R");
 				
 //				world.addChild(mainKnight);
 			}
@@ -131,7 +131,7 @@ public class Main
 		
 		if (mainKnight != null)
 		{
-//			mainKnight.setRotZ(mainKnight.getRotZ() + 1f);
+//			mainKnight.setRotZ(mainKnight.getRotZ() + 0.5f);
 		}
 	}
 

@@ -1,6 +1,7 @@
 package zyx.game.components.world.camera;
 
 import org.lwjgl.util.vector.Vector3f;
+import zyx.game.behavior.camera.CameraUpdateLightbehavior;
 import zyx.game.behavior.camera.CameraUpdateViewBehavior;
 import zyx.game.behavior.freefly.CameraFreeFlyBehavior;
 import zyx.game.components.GameObject;
@@ -17,6 +18,7 @@ public class CameraController extends GameObject
 
 		addBehavior(new CameraFreeFlyBehavior());
 		addBehavior(new CameraUpdateViewBehavior());
+		addBehavior(new CameraUpdateLightbehavior());
 	}
 
 	@Override

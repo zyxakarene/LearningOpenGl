@@ -1,5 +1,6 @@
 package zyx.game.behavior;
 
+import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.WorldObject;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IUpdateable;
@@ -7,6 +8,8 @@ import zyx.utils.interfaces.IUpdateable;
 public abstract class Behavior implements IUpdateable, IDisposeable
 {
 
+	protected final static Vector3f HELPER_DIR = new Vector3f();
+	
 	BehaviorType type;
 	boolean active;
 	
