@@ -1,30 +1,28 @@
 #version 420
 
+const float AMBIENT_LIGHT = 0.25;//The default light everything is receiving
+const float DIRECT_LIGHT = 1.0 - AMBIENT_LIGHT;//The light recieved when facing the light
+
 in vec2 Texcoord;
 in vec3 Normal;
 
 out vec4 outColor;
 
 uniform sampler2D tex;
-uniform vec3 lightDir;
+uniform vec3 lightDir = vec3(0, -1, 1);
 
 void main()
 {
     vec3 normVertex = normalize(Normal);
 	float cosTheta = clamp(dot(normVertex, lightDir), 0, 1);
 
-	vec3 color = vec3(0.75) * cosTheta;
+	vec4 color = vec4(DIRECT_LIGHT) * cosTheta;
+	color.a = 1;
 
     vec4 materialColor =  texture(tex, vec2(Texcoord.x, -Texcoord.y));
 
-	//View normals
-	//normVertex.x = abs(normVertex.x); 
-	//normVertex.y = abs(normVertex.y); 
-	//normVertex.z = abs(normVertex.z); 
-	//materialColor = vec4(normVertex, 1);
-
-    outColor = materialColor * vec4(color, 1) + vec4(0.25) * materialColor;
+    outColor = materialColor * color + vec4(AMBIENT_LIGHT) * materialColor;
 
 	//View normals
-    //outColor = materialColor;
+    //outColor = vec4(0.5 + 0.5 * normVertex, 1);
 }

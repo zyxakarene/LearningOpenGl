@@ -42,7 +42,7 @@ public class Main
 
 		ShaderManager.INSTANCE.initialize();
 
-		ResourceLoader.getInstance().addThreads(3);
+		ResourceLoader.getInstance().addThreads(1);
 
 		load();
 
@@ -72,7 +72,7 @@ public class Main
 				mainKnight.setAnimation("attack");
 				attachedKnight1.setAnimation("attack");
 				
-//				mainKnight.addAttachment(attachedKnight1, "Skeleton_Hand_R");
+				mainKnight.addAttachment(attachedKnight1, "Skeleton_Hand_R");
 				
 //				world.addChild(mainKnight);
 			}
@@ -131,7 +131,7 @@ public class Main
 		
 		if (mainKnight != null)
 		{
-//			mainKnight.setRotZ(mainKnight.getRotZ() + 0.5f);
+			mainKnight.setRotZ(mainKnight.getRotZ() + 0.5f);
 		}
 	}
 
@@ -166,7 +166,7 @@ public class Main
 		image.position.y = 30;
 		Image image2 = new Image();
 		image2.load("assets/textures/sample.png");
-		image2.position.x = 530;
+		image2.position.x = 80;
 		image2.position.y = 500;
 
 		container.addChild(image);
@@ -176,7 +176,7 @@ public class Main
 		world = World3D.instance;
 		world.addChild(platform);
 
-		container.position.x = 500;
+		container.position.x = 50;
 		container.position.y = 500;
 		container.rotation = 45;
 //		container.rotation = 45;

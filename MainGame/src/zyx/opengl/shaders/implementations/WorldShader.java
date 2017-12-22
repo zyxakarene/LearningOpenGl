@@ -4,7 +4,6 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.shaders.AbstractShader;
-import zyx.utils.cheats.Print;
 
 public class WorldShader extends AbstractShader
 {
@@ -12,14 +11,19 @@ public class WorldShader extends AbstractShader
 	public static final Matrix4f MATRIX_PROJECTION = new Matrix4f();
 	public static final Matrix4f MATRIX_VIEW = new Matrix4f();
 	public static final Matrix4f MATRIX_MODEL = new Matrix4f();
+	public static final Matrix4f MATRIX_MODEL_INVERT_TRANSPOSE = new Matrix4f();
 	
 	public final Matrix4f[] BONES = new Matrix4f[20];
+	public final Matrix4f[] INVERT_BONES = new Matrix4f[20];
 
 	private int projectionMatrixTrans;
 	private int viewMatrixTrans;
 	private int modelMatrixTrans;
 	private int boneMatrixTrans;
 	private int lightDirection;
+	
+	private int modelMatrixTrans_InverseTranspose;
+	private int boneMatrixTrans_InverseTranspose;
 
 	public WorldShader(Object lock)
 	{
@@ -28,9 +32,10 @@ public class WorldShader extends AbstractShader
 		for (int i = 0; i < BONES.length; i++)
 		{
 			BONES[i] = new Matrix4f();
+			INVERT_BONES[i] = new Matrix4f();
 		}
 		
-		Joint.setBones(BONES);
+		Joint.setBones(BONES, INVERT_BONES);
 	}
 
 	@Override
@@ -41,6 +46,9 @@ public class WorldShader extends AbstractShader
 		modelMatrixTrans = UniformUtils.createUniform(program, "model");
 		boneMatrixTrans = UniformUtils.createUniform(program, "bones");
 		
+		boneMatrixTrans_InverseTranspose = UniformUtils.createUniform(program, "bonesInverseTranspose");
+		modelMatrixTrans_InverseTranspose = UniformUtils.createUniform(program, "modelInverseTranspose");
+		
 		lightDirection = UniformUtils.createUniform(program, "lightDir");
 	}
 
@@ -50,9 +58,14 @@ public class WorldShader extends AbstractShader
 		UniformUtils.setUniformMatrix(viewMatrixTrans, MATRIX_VIEW);
 		UniformUtils.setUniformMatrix(modelMatrixTrans, MATRIX_MODEL);
 		
+		MATRIX_MODEL_INVERT_TRANSPOSE.load(MATRIX_MODEL);
+		MATRIX_MODEL_INVERT_TRANSPOSE.invert().transpose();
+		UniformUtils.setUniformMatrix(modelMatrixTrans_InverseTranspose, MATRIX_MODEL_INVERT_TRANSPOSE);
+		
 		synchronized(BONES)
 		{
 			UniformUtils.setUniformMatrix(boneMatrixTrans, BONES);
+			UniformUtils.setUniformMatrix(boneMatrixTrans_InverseTranspose, INVERT_BONES);
 		}
 	}
 	
@@ -67,6 +80,7 @@ public class WorldShader extends AbstractShader
 		synchronized(BONES)
 		{
 			UniformUtils.setUniformMatrix(boneMatrixTrans, BONES);
+			UniformUtils.setUniformMatrix(boneMatrixTrans_InverseTranspose, INVERT_BONES);
 		}
 	}
 

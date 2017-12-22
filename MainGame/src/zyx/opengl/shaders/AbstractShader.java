@@ -27,7 +27,7 @@ public abstract class AbstractShader implements IUpdateable
 
 	public final void bind()
 	{
-		ShaderUtils.useShader(program);
+		ShaderBinder.bindShader(this);
 	}
 
 	final void load()

@@ -1421,3 +1421,31 @@ java.lang.ArrayIndexOutOfBoundsException: 183
 	at zyx.Main.update(Main.java:128)
 	at zyx.Main.main(Main.java:56)
 
+dec. 21, 2017 12:44:24 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.shaders.implementations.UniformUtils.setUniformMatrix(UniformUtils.java:64)
+	at zyx.opengl.shaders.implementations.WorldShader.upload(WorldShader.java:68)
+	at zyx.engine.components.world.WorldObject.draw(WorldObject.java:95)
+	at zyx.engine.components.world.World3D.drawScene(World3D.java:17)
+	at zyx.Main.draw(Main.java:142)
+	at zyx.Main.main(Main.java:57)
+
+dec. 21, 2017 12:58:39 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GLError: [Invalid enum]
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
+	at zyx.Main.main(Main.java:61)
+
+dec. 21, 2017 12:59:36 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GLError: [Invalid enum]
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
+	at zyx.Main.main(Main.java:61)
+
+dec. 21, 2017 1:00:10 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GLError: [Invalid enum]
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
+	at zyx.Main.main(Main.java:61)
+

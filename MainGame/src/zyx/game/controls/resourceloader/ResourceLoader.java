@@ -28,6 +28,7 @@ public class ResourceLoader implements IDisposeable
 		{
 			runner = new ResourceRunner();
 			loader = new Thread(runner);
+			loader.setName("ResourceLoaderRunner#" + (i + 1));
 			loader.setDaemon(true);
 
 			runners.add(runner);

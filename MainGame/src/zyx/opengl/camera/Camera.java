@@ -36,7 +36,9 @@ public class Camera implements IPositionable
 		
 		initialized = true;
 		Projection.createPerspective(70f, 0.001f, 2f, WorldShader.MATRIX_PROJECTION);
-		Projection.createOrthographic(1f, 2f, ScreenShader.MATRIX_PROJECTION);
+		Projection.createOrthographic(1f, 2f, ScreenShader.MATRIX_PROJECTION, 2);
+		
+//		Projection.createOrthographic(0.01f, 1000f, WorldShader.MATRIX_PROJECTION, 16);
 
 		position.set(-18, 11, -25);
 		rotation.set(-50, 0, 300);
