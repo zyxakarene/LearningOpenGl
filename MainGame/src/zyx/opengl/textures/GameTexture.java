@@ -4,44 +4,27 @@ import java.io.InputStream;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 import zyx.utils.geometry.Rectangle;
-import zyx.utils.interfaces.IDisposeable;
 
-public class GameTexture implements IDisposeable
+public class GameTexture extends AbstractTexture
 {
-	private static final Rectangle SIMPLE_TEXTURE_MAPPING = new Rectangle(0, 0, 1, 1);
 	
-	public float x, y, u, v;
-	
-	public final float width;
-	public final float height;
-	
-	private static Texture currentlyBoundTexture;
-
 	private Texture texture;
 
 	public GameTexture(InputStream stream)
 	{
-		this(stream, SIMPLE_TEXTURE_MAPPING);
+		this(stream, null);
 	}
 	
 	public GameTexture(InputStream stream, Rectangle rect)
 	{
-		if (rect == null)
-		{
-			rect = SIMPLE_TEXTURE_MAPPING;
-		}
+		super(rect);
 		
 		texture = TextureUtils.createTexture(stream);
 		
-		width = texture.getImageWidth();
-		height = texture.getImageHeight();
-		
-		x = rect.x;
-		y = rect.y;
-		u = rect.width;
-		v = rect.height;
+		setSizes(texture.getImageWidth(), texture.getImageHeight());
 	}
 
+	@Override
 	public void bind()
 	{
 		if (this != currentlyBoundTexture)

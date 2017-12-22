@@ -6,6 +6,7 @@ import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.game.controls.resourceloader.requests.ResourceRequest;
 import zyx.game.controls.resourceloader.requests.ResourceRequestDataInput;
+import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.GameTexture;
 import zyx.utils.interfaces.IDisposeable;
 
@@ -13,9 +14,9 @@ class TextureRequest implements IResourceLoaded<DataInputStream>, IDisposeable
 {
 
 	private String path;
-	private ArrayList<IResourceLoaded<GameTexture>> callbacks;
+	private ArrayList<IResourceLoaded<AbstractTexture>> callbacks;
 
-	TextureRequest(String path, IResourceLoaded<GameTexture> callback)
+	TextureRequest(String path, IResourceLoaded<AbstractTexture> callback)
 	{
 		this.path = path;
 		this.callbacks = new ArrayList<>();
@@ -25,7 +26,7 @@ class TextureRequest implements IResourceLoaded<DataInputStream>, IDisposeable
 		loadModel();
 	}
 
-	void addCallback(IResourceLoaded<GameTexture> callback)
+	void addCallback(IResourceLoaded<AbstractTexture> callback)
 	{
 		callbacks.add(callback);
 	}
@@ -39,9 +40,9 @@ class TextureRequest implements IResourceLoaded<DataInputStream>, IDisposeable
 	@Override
 	public void resourceLoaded(DataInputStream data)
 	{
-		GameTexture texture = new GameTexture(data);
+		AbstractTexture texture = new GameTexture(data);
 		
-		for (IResourceLoaded<GameTexture> callback : callbacks)
+		for (IResourceLoaded<AbstractTexture> callback : callbacks)
 		{
 			callback.resourceLoaded(texture);
 		}

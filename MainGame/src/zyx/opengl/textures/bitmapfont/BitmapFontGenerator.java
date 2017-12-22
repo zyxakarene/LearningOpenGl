@@ -1,15 +1,15 @@
 package zyx.opengl.textures.bitmapfont;
 
 import java.io.*;
-import zyx.opengl.textures.GameTexture;
+import zyx.opengl.textures.AbstractTexture;
 
 public class BitmapFontGenerator
 {
 
 	private final FontFile fontFile;
-	private final GameTexture mainTexture;
+	private final AbstractTexture mainTexture;
 
-	public BitmapFontGenerator(GameTexture mainTexture)
+	public BitmapFontGenerator(AbstractTexture mainTexture)
 	{
 		this.fontFile = new FontFile();
 		this.mainTexture = mainTexture;

@@ -3,10 +3,10 @@ package zyx.engine.components.screen;
 import zyx.engine.utils.callbacks.CustomCallback;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.opengl.models.implementations.ScreenModel;
-import zyx.opengl.textures.GameTexture;
 import zyx.game.controls.textures.TextureManager;
+import zyx.opengl.textures.AbstractTexture;
 
-public class Image extends DisplayObject implements IResourceLoaded<GameTexture>
+public class Image extends DisplayObject implements IResourceLoaded<AbstractTexture>
 {
 
 	private String path;
@@ -33,7 +33,7 @@ public class Image extends DisplayObject implements IResourceLoaded<GameTexture>
 	}
 
 	@Override
-	public void resourceLoaded(GameTexture texture)
+	public void resourceLoaded(AbstractTexture texture)
 	{
 		model = new ScreenModel(texture);
 
