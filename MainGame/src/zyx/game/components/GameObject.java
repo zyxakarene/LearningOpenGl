@@ -14,6 +14,8 @@ import zyx.opengl.models.implementations.bones.attachments.Attachment;
 import zyx.opengl.models.implementations.bones.attachments.AttachmentRequest;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.shaders.implementations.WorldShader;
+import zyx.opengl.textures.AbstractTexture;
+import zyx.opengl.textures.RenderTexture;
 import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IUpdateable;
 import zyx.utils.math.MatrixUtils;
@@ -203,5 +205,24 @@ public class GameObject extends WorldObject implements IUpdateable, IResourceLoa
 	public String toString()
 	{
 		return String.format("WorldObject{%s, playing animation: %s}", path, animationController);
+	}
+
+	public void setTexture(AbstractTexture tex)
+	{
+		model.setTextureTest(tex);
+	}
+
+	public AbstractTexture getTexture()
+	{
+		return model.getTexture();
+	}
+
+	public void paint()
+	{
+		shader.bind();
+		WorldShader.MATRIX_MODEL.setIdentity();
+		
+		draw();
+
 	}
 }

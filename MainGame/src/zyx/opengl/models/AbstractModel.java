@@ -51,6 +51,11 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 		this.elementCount = elementData.length;
 	}
 
+	public void setTextureTest(AbstractTexture texture)
+	{
+		this.texture = texture;
+	}
+	
 	protected void setTexture(AbstractTexture texture)
 	{
 		this.texture = texture;

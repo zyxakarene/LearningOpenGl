@@ -8,7 +8,6 @@ public abstract class AbstractTexture implements IDisposeable
 {
 
 	private static final Rectangle SIMPLE_TEXTURE_MAPPING = new Rectangle(0, 0, 1, 1);
-	protected static Texture currentlyBoundTexture;
 
 	public final float x, y, u, v;
 
@@ -49,8 +48,20 @@ public abstract class AbstractTexture implements IDisposeable
 	{
 		return height;
 	}
-	
-	
 
-	public abstract void bind();
+	public final void bind()
+	{
+		TextureBinder.bind(this);
+	}
+	
+	@Override
+	public final void dispose()
+	{
+		TextureBinder.dispose(this);
+		
+		onDispose();
+	}
+
+	abstract protected void onBind();
+	abstract protected void onDispose();
 }

@@ -6,7 +6,7 @@ const float DIRECT_LIGHT = 1.0 - AMBIENT_LIGHT;//The light recieved when facing 
 in vec2 Texcoord;
 in vec3 Normal;
 
-out vec4 outColor;
+layout(location = 0) out vec4 outColor;
 
 uniform sampler2D tex;
 uniform vec3 lightDir = vec3(0, -1, 1);

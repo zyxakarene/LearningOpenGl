@@ -1449,3 +1449,19 @@ java.lang.RuntimeException: GLError: [Invalid enum]
 	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
 	at zyx.Main.main(Main.java:61)
 
+dec. 22, 2017 11:37:59 AM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+org.lwjgl.opengl.OpenGLException: Cannot use offsets when Pixel Unpack Buffer Object is disabled
+	at org.lwjgl.opengl.GLChecks.ensureUnpackPBOenabled(GLChecks.java:141)
+	at org.lwjgl.opengl.GL11.glTexImage2D(GL11.java:2855)
+	at zyx.opengl.textures.RenderTexture.setupRenderTexture(RenderTexture.java:47)
+	at zyx.opengl.textures.RenderTexture.<init>(RenderTexture.java:25)
+	at zyx.Main.renderTextures(Main.java:203)
+	at zyx.Main.main(Main.java:50)
+
+dec. 22, 2017 12:19:05 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GLError: [Invalid operation]
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
+	at zyx.Main.main(Main.java:53)
+
