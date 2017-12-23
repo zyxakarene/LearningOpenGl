@@ -48,5 +48,10 @@ public class CursorManager
 	void cursorLoaded(GameCursor gameCursor, Cursor cursor)
 	{
 		cursorMap.put(gameCursor, cursor);
+		
+		if (gameCursor == GameCursor.POINTER)
+		{
+			setCursor(gameCursor);
+		}
 	}
 }

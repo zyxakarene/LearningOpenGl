@@ -3,27 +3,29 @@ package zyx.opengl.models.implementations;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.ScreenShader;
-import zyx.opengl.textures.GameTexture;
+import zyx.opengl.textures.AbstractTexture;
 
 public class ScreenModel extends AbstractModel
 {
 
 	public final ScreenShader shader;
 
-	public ScreenModel(GameTexture texture)
+	public ScreenModel(AbstractTexture texture)
 	{
 		super(Shader.SCREEN);
 
 		shader = (ScreenShader) meshShader;
 
-		GameTexture t = texture;
+		AbstractTexture t = texture;
+		float w = t.getWidth();
+		float h = t.getHeight();
 		float vertexData[] =
 		{
-			//x				y					Texcoords
-			0,				0,					t.x, t.y, // Top-left
-			texture.width,	0,					t.u, t.y, // Top-right
-			texture.width,	-texture.height,	t.u, t.v, // Bottom-right
-			0,				-texture.height,	t.x, t.v  // Bottom-left
+			//x		y		Texcoords
+			0,		0,		t.x, t.y, // Top-left
+			w,		0,		t.u, t.y, // Top-right
+			w,		-h,		t.u, t.v, // Bottom-right
+			0,		-h,		t.x, t.v  // Bottom-left
 		};
 
 		int elementData[] =
@@ -38,12 +40,12 @@ public class ScreenModel extends AbstractModel
 	
 	public float getWidth()
 	{
-		return getTexture().width;
+		return getTexture().getWidth();
 	}
 	
 	public float getHeight()
 	{
-		return getTexture().height;
+		return getTexture().getHeight();
 	}
 	
 	@Override

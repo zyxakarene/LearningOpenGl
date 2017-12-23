@@ -2,7 +2,7 @@ package zyx.opengl.textures.bitmapfont;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import zyx.opengl.textures.GameTexture;
+import zyx.opengl.textures.AbstractTexture;
 
 class FontCharacter
 {
@@ -17,10 +17,10 @@ class FontCharacter
 	public float yOffset;
 	public float xAdvance;
 
-	FontCharacter(GameTexture mainTexture, DataInputStream in) throws IOException
+	FontCharacter(AbstractTexture mainTexture, DataInputStream in) throws IOException
 	{
-		float w = mainTexture.width;
-		float h = mainTexture.height;
+		float w = mainTexture.getWidth();
+		float h = mainTexture.getHeight();
 		
 		id = in.readChar();
 		x = in.readShort();

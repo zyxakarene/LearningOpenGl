@@ -9,7 +9,7 @@ import zyx.game.controls.resourceloader.requests.ResourceRequestDataInput;
 import zyx.opengl.models.implementations.LoadableValueObject;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.loading.ZafLoader;
-import zyx.opengl.textures.GameTexture;
+import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.interfaces.IDisposeable;
 
 class ModelRequest implements IResourceLoaded<DataInputStream>, IDisposeable, IModelTextureLoaded
@@ -50,7 +50,7 @@ class ModelRequest implements IResourceLoaded<DataInputStream>, IDisposeable, IM
 	}
 	
 	@Override
-	public void onModelTextureLoaded(GameTexture texture)
+	public void onModelTextureLoaded(AbstractTexture texture)
 	{
 		loadedVo.setGameTexture(texture);
 		WorldModel model = new WorldModel(loadedVo);

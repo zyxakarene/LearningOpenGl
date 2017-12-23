@@ -1,14 +1,14 @@
 package zyx.game.controls.textures;
 
-import zyx.opengl.textures.GameTexture;
+import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.interfaces.IDisposeable;
 
 class TextureCacheEntry implements IDisposeable
 {
-	GameTexture texture;
+	AbstractTexture texture;
 	int count;
 
-	public TextureCacheEntry(GameTexture model)
+	public TextureCacheEntry(AbstractTexture model)
 	{
 		this.texture = model;
 		count = 1;

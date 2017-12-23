@@ -2,7 +2,7 @@ package zyx.game.controls.textures;
 
 import java.util.*;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
-import zyx.opengl.textures.GameTexture;
+import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.interfaces.IDisposeable;
 
 public class TextureManager implements IDisposeable
@@ -24,7 +24,7 @@ public class TextureManager implements IDisposeable
 		return INSTANCE;
 	}
 
-	public void loadTexture(String path, IResourceLoaded<GameTexture> callback)
+	public void loadTexture(String path, IResourceLoaded<AbstractTexture> callback)
 	{
 		if (cache.containsKey(path))
 		{
@@ -45,7 +45,7 @@ public class TextureManager implements IDisposeable
 		}
 	}
 
-	void modelLoaded(String path, GameTexture model)
+	void modelLoaded(String path, AbstractTexture model)
 	{
 		TextureCacheEntry cacheEntry = new TextureCacheEntry(model);
 		cache.put(path, cacheEntry);

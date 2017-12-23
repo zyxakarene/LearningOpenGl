@@ -83,7 +83,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		}
 	}
 
-	final void draw()
+	public final void draw()
 	{
 		onTransform();
 		onDraw();
@@ -171,6 +171,38 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		rotation.x = x;
 		rotation.y = y;
 		rotation.z = z;
+	}
+	
+	public void setPosition(Vector3f rotation)
+	{
+		position.x = rotation.x;
+		position.y = rotation.y;
+		position.z = rotation.z;
+	}
+
+	public void setRotation(Vector3f position)
+	{
+		rotation.x = position.x;
+		rotation.y = position.y;
+		rotation.z = position.z;
+	}
+	
+	public Vector3f getPosition(Vector3f out)
+	{
+		out.x = position.x;
+		out.y = position.y;
+		out.z = position.z;
+		
+		return out;
+	}
+
+	public Vector3f getRotation(Vector3f out)
+	{
+		out.x = rotation.x;
+		out.y = rotation.y;
+		out.z = rotation.z;
+		
+		return out;
 	}
 
 	public void setX(float x)

@@ -1,13 +1,13 @@
 package zyx.opengl.textures.bitmapfont;
 
-import zyx.opengl.textures.GameTexture;
+import zyx.opengl.textures.AbstractTexture;
 
 public class BitmapFont
 {
-	final GameTexture texture;
+	final AbstractTexture texture;
 	final FontFile fontFile;
 
-	BitmapFont(GameTexture texture, FontFile fontFile)
+	BitmapFont(AbstractTexture texture, FontFile fontFile)
 	{
 		this.texture = texture;
 		this.fontFile = fontFile;

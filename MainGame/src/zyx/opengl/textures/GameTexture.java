@@ -2,67 +2,48 @@ package zyx.opengl.textures;
 
 import java.io.InputStream;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureImpl;
 import zyx.utils.geometry.Rectangle;
-import zyx.utils.interfaces.IDisposeable;
 
-public class GameTexture implements IDisposeable
+public class GameTexture extends AbstractTexture
 {
-	private static final Rectangle SIMPLE_TEXTURE_MAPPING = new Rectangle(0, 0, 1, 1);
-	
-	public float x, y, u, v;
-	
-	public final float width;
-	public final float height;
-	
-	private static Texture currentlyBoundTexture;
 
+	private static final int BUFFER_ID = 0;
+	
 	private Texture texture;
 
 	public GameTexture(InputStream stream)
 	{
-		this(stream, SIMPLE_TEXTURE_MAPPING);
-	}
-	
-	public GameTexture(InputStream stream, Rectangle rect)
-	{
-		if (rect == null)
-		{
-			rect = SIMPLE_TEXTURE_MAPPING;
-		}
-		
-		texture = TextureUtils.createTexture(stream);
-		
-		width = texture.getImageWidth();
-		height = texture.getImageHeight();
-		
-		x = rect.x;
-		y = rect.y;
-		u = rect.width;
-		v = rect.height;
+		this(stream, null);
 	}
 
-	public void bind()
+	public GameTexture(InputStream stream, Rectangle rect)
 	{
-		if (this != currentlyBoundTexture)
-		{
-			texture.bind();
-			currentlyBoundTexture = texture;
-			
-			//Swallow some error in Slick-Utils
-			//Or maybe I suck at this, who knows!
-			GL11.glGetError();
-		}
+		super(rect);
+
+		texture = TextureUtils.createTexture(stream);
+
+		setSizes(texture.getImageWidth(), texture.getImageHeight());
 	}
 
 	@Override
-	public void dispose()
+	protected void onBind()
 	{
-		if (texture == currentlyBoundTexture)
-		{
-			currentlyBoundTexture = null;
-		}
+		BufferBinder.bindBuffer(BUFFER_ID);
+		glActiveTexture(GL13.GL_TEXTURE0);
+		texture.bind();
 
+		//Swallow some error in Slick-Utils
+		//Or maybe I suck at this, who knows!
+		GL11.glGetError();
+	}
+
+	@Override
+	protected void onDispose()
+	{
 		if (texture != null)
 		{
 			texture.release();

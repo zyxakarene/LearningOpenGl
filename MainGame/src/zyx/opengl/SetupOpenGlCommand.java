@@ -13,7 +13,7 @@ import zyx.utils.interfaces.ICommand;
 public class SetupOpenGlCommand implements ICommand
 {
 
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 
 	@Override
 	public void execute()

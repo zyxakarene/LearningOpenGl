@@ -2,9 +2,9 @@ package zyx.game.controls.models;
 
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.game.controls.textures.TextureManager;
-import zyx.opengl.textures.GameTexture;
+import zyx.opengl.textures.AbstractTexture;
 
-class ModelTextureLoader implements IResourceLoaded<GameTexture>
+class ModelTextureLoader implements IResourceLoaded<AbstractTexture>
 {
 
 	private final IModelTextureLoaded modelRequest;
@@ -17,7 +17,7 @@ class ModelTextureLoader implements IResourceLoaded<GameTexture>
 	}
 
 	@Override
-	public void resourceLoaded(GameTexture data)
+	public void resourceLoaded(AbstractTexture data)
 	{
 		modelRequest.onModelTextureLoaded(data);
 	}

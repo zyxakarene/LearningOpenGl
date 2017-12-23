@@ -1,7 +1,7 @@
 package zyx.opengl.models.implementations;
 
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
-import zyx.opengl.textures.GameTexture;
+import zyx.opengl.textures.AbstractTexture;
 
 public class LoadableValueObject
 {
@@ -11,7 +11,7 @@ public class LoadableValueObject
 	Skeleton skeleton;
 	String texture;
 	
-	GameTexture gameTexture;
+	AbstractTexture gameTexture;
 
 	public LoadableValueObject(float[] vertexData, int[] elementData, Skeleton skeleton, String texture)
 	{
@@ -26,7 +26,7 @@ public class LoadableValueObject
 		return texture;
 	}
 
-	public void setGameTexture(GameTexture gameTexture)
+	public void setGameTexture(AbstractTexture gameTexture)
 	{
 		this.gameTexture = gameTexture;
 	}

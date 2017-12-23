@@ -11,12 +11,12 @@ Skybox
 
 =Core=
 UI overhaul
-Clicking/hovering on items
 Ray picking
 Terrain physics
-Cursor icons
 
 =Done=
+Clicking/hovering on items
 3D sound
 async texture loading
 Load required textures with zaf model
+Cursor icons

@@ -31,12 +31,12 @@ class Projection
 		return out;
 	}
 
-	static Matrix4f createOrthographic(float near, float far, Matrix4f out)
+	static Matrix4f createOrthographic(float near, float far, Matrix4f out, float scale)
 	{
-		float left = -WIDTH / 2;
-		float right = WIDTH / 2;
-		float top = HEIGHT / 2;
-		float bottom = -HEIGHT / 2;
+		float left = -WIDTH / scale;
+		float right = WIDTH / scale;
+		float top = HEIGHT / scale;
+		float bottom = -HEIGHT / scale;
 
 		out.setIdentity();
 

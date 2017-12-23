@@ -9,11 +9,11 @@ import zyx.engine.components.screen.Textfield;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.game.controls.textures.TextureManager;
-import zyx.opengl.textures.GameTexture;
+import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.bitmapfont.BitmapFont;
 import zyx.opengl.textures.bitmapfont.BitmapFontGenerator;
 
-public class AddBitmapFontButton extends Button implements ICallback<InteractableContainer>, IResourceLoaded<GameTexture>
+public class AddBitmapFontButton extends Button implements ICallback<InteractableContainer>, IResourceLoaded<AbstractTexture>
 {
 
 	public AddBitmapFontButton(String upTexture, String hoverTexture, String downTexture)
@@ -30,7 +30,7 @@ public class AddBitmapFontButton extends Button implements ICallback<Interactabl
 	}
 
 	@Override
-	public void resourceLoaded(GameTexture texture)
+	public void resourceLoaded(AbstractTexture texture)
 	{
 		try
 		{

@@ -11,6 +11,7 @@ public class Joint implements IDisposeable
 {
 
 	private static Matrix4f[] shaderBones;
+	private static Matrix4f[] inverseTransposeShaderBones;
 
 	public final int id;
 	public final String name;
@@ -23,6 +24,7 @@ public class Joint implements IDisposeable
 
 	private Matrix4f localBindTransform;
 
+	private Matrix4f outTransformInverseTranspose;
 	private Matrix4f outTransform;
 	private Matrix4f lastFinalTransform;
 
@@ -32,6 +34,7 @@ public class Joint implements IDisposeable
 		this.name = name;
 
 		outTransform = shaderBones[id];
+		outTransformInverseTranspose = inverseTransposeShaderBones[id];
 
 		children = new ArrayList<>();
 		animatedTransform = SharedPools.MATRIX_POOL.getInstance();
@@ -85,6 +88,8 @@ public class Joint implements IDisposeable
 
 		Matrix4f.mul(outTransform, inverseBindTransform, outTransform);
 
+		outTransformInverseTranspose.load(outTransform);
+		outTransformInverseTranspose.invert().transpose();
 	}
 
 	public Matrix4f getInverse()
@@ -102,9 +107,10 @@ public class Joint implements IDisposeable
 		}
 	}
 
-	public static void setBones(Matrix4f[] bones)
+	public static void setBones(Matrix4f[] bones, Matrix4f[] inverseTransposeBones)
 	{
 		shaderBones = bones;
+		inverseTransposeShaderBones = inverseTransposeBones;
 	}
 
 	public void setTPose()

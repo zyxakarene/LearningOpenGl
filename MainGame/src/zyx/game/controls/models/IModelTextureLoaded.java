@@ -1,9 +1,9 @@
 package zyx.game.controls.models;
 
-import zyx.opengl.textures.GameTexture;
+import zyx.opengl.textures.AbstractTexture;
 
 interface IModelTextureLoaded
 {
 
-	public void onModelTextureLoaded(GameTexture texture);
+	public void onModelTextureLoaded(AbstractTexture texture);
 }

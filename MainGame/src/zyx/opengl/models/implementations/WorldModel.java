@@ -15,7 +15,8 @@ import zyx.utils.GeometryUtils;
 
 public class WorldModel extends AbstractModel
 {
-	private static final Vector3f ATTACHMENT_INVERT_VECTOR = new Vector3f();
+	private static final Vector3f ATTACHMENT_INVERT_POS = new Vector3f();
+	private static final Vector3f ATTACHMENT_INVERT_ROT = new Vector3f();
 	
 	protected static final Vector3f SHARED_ROTATION = new Vector3f(0, 0, 0);
 	protected static final Vector3f SHARED_POSITION = new Vector3f(0, 0, 0);
@@ -85,13 +86,17 @@ public class WorldModel extends AbstractModel
 		Matrix4f bonePosCopy = new Matrix4f(attachment.joint.getFinalTransform());
 		Matrix4f.mul(MODEL_MATRIX, bonePosCopy, bonePosCopy);
 
-		attachment.parent.getPosition().negate(ATTACHMENT_INVERT_VECTOR);
+		attachment.parent.getPosition().negate(ATTACHMENT_INVERT_POS);
+		attachment.parent.getRotation().negate(ATTACHMENT_INVERT_ROT);
 
 		skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
 
 		MODEL_MATRIX.setIdentity();
 		Matrix4f.mul(MODEL_MATRIX, bonePosCopy, MODEL_MATRIX);
-		MODEL_MATRIX.translate(ATTACHMENT_INVERT_VECTOR);
+		MODEL_MATRIX.rotate(FloatMath.toRadians(ATTACHMENT_INVERT_ROT.x), GeometryUtils.ROTATION_X);
+		MODEL_MATRIX.rotate(FloatMath.toRadians(ATTACHMENT_INVERT_ROT.y), GeometryUtils.ROTATION_Y);
+		MODEL_MATRIX.rotate(FloatMath.toRadians(ATTACHMENT_INVERT_ROT.z), GeometryUtils.ROTATION_Z);
+		MODEL_MATRIX.translate(ATTACHMENT_INVERT_POS);
 
 		transform();
 		super.draw();

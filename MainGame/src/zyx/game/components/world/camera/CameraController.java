@@ -1,6 +1,7 @@
 package zyx.game.components.world.camera;
 
 import org.lwjgl.util.vector.Vector3f;
+import zyx.game.behavior.camera.CameraUpdateLightbehavior;
 import zyx.game.behavior.camera.CameraUpdateViewBehavior;
 import zyx.game.behavior.freefly.CameraFreeFlyBehavior;
 import zyx.game.components.GameObject;
@@ -17,6 +18,7 @@ public class CameraController extends GameObject
 
 		addBehavior(new CameraFreeFlyBehavior());
 		addBehavior(new CameraUpdateViewBehavior());
+		addBehavior(new CameraUpdateLightbehavior());
 	}
 
 	@Override
@@ -30,6 +32,33 @@ public class CameraController extends GameObject
 	{
 		return camera.getRotation();
 	}
+
+	@Override
+	public Vector3f getRotation(Vector3f out)
+	{
+		return out.set(camera.getRotation());
+	}
+
+	@Override
+	public Vector3f getPosition(Vector3f out)
+	{
+		return out.set(camera.getPosition());
+	}
+
+	@Override
+	public void setPosition(Vector3f rotation)
+	{
+		camera.getPosition().set(rotation);
+	}
+
+	@Override
+	public void setRotation(Vector3f position)
+	{
+		camera.getRotation().set(position);
+	}
+	
+	
+	
 
 	
 }

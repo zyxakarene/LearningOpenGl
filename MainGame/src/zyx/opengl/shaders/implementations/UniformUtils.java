@@ -72,4 +72,9 @@ class UniformUtils
     {
         GL20.glUniform2f(uniform, x, y);
     }
+	
+	static void setUniform3F(int uniform, float x, float y, float z)
+    {
+        GL20.glUniform3f(uniform, x, y, z);
+    }
 }

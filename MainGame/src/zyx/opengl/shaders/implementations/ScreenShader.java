@@ -45,13 +45,13 @@ public class ScreenShader extends AbstractShader
 	@Override
 	protected String getVertexName()
 	{
-		return "ScreenVertex.shader";
+		return "ScreenVertex.vert";
 	}
 
 	@Override
 	protected String getFragmentName()
 	{
-		return "ScreenFragment.shader";
+		return "ScreenFragment.frag";
 	}
 
 }
