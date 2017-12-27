@@ -19,5 +19,15 @@ public class QcFile
 		return "QcFile{" + "meshFile=" + meshFile + ", textureFile=" + textureFile + ", animations=" + animations + ", outModel=" + outModel + ", outTexture=" + outTexture + '}';
 	}
 	
+	public String getTextureName()
+	{
+		if (textureFile != null)
+		{
+			return textureFile.getName();
+		}
+		
+		return "";
+	}
+	
 	
 }

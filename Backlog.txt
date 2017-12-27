@@ -12,7 +12,7 @@ Skybox
 =Core=
 UI overhaul
 Ray picking
-Terrain physics
+Physics
 
 =Done=
 Clicking/hovering on items
@@ -20,3 +20,7 @@ Clicking/hovering on items
 async texture loading
 Load required textures with zaf model
 Cursor icons
+
+=Notes=
+Physics: When two colliders intersect, push them away from each others center until they no longer overlap.
+Heavy objects move less. Static object don't move at all

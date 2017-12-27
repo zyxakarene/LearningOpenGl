@@ -9,10 +9,12 @@ import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.screen.*;
 import zyx.game.components.GameObject;
 import zyx.engine.components.world.World3D;
+import zyx.engine.components.world.physics.BoxCollider;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.components.screen.AddBitmapFontButton;
+import zyx.game.components.world.Player;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.MegaManager;
 import zyx.game.controls.input.KeyboardData;
@@ -31,7 +33,13 @@ import zyx.utils.cheats.Print;
 public class Main
 {
 
+	private static RenderTexture ren;
+
+	private static Player player;
+
 	private static CameraController camera;
+	private static GameObject ground;
+	private static GameObject boxTv;
 	private static GameObject platform;
 	private static GameObject mainKnight;
 	private static GameObject attachedKnight1;
@@ -55,7 +63,6 @@ public class Main
 		ResourceLoader.getInstance().addThreads(1);
 
 		load();
-		renderTextures();
 
 		GLUtils.errorCheck();
 
@@ -73,12 +80,12 @@ public class Main
 			{
 				camera.getPosition(cameraPosOrig);
 				camera.getRotation(cameraRotOrig);
-				
+
 				camera.setPosition(cameraPos);
 				camera.setRotation(cameraRot);
 				camera.getBehaviorById(BehaviorType.CAMERA_UPDATE_VIEW).update(0, 0);
 				mainKnight.paint();
-				
+
 				camera.setPosition(cameraPosOrig);
 				camera.setRotation(cameraRotOrig);
 				camera.getBehaviorById(BehaviorType.CAMERA_UPDATE_VIEW).update(0, 0);
@@ -98,7 +105,7 @@ public class Main
 				attachedKnight1 = new GameObject();
 
 				platform.addChild(mainKnight);
-				platform.setTexture(ren);
+				boxTv.setTexture(ren);
 
 				mainKnight.load("assets/models/knight/knight.zaf");
 				attachedKnight1.load("assets/models/knight/knight.zaf");
@@ -111,7 +118,8 @@ public class Main
 			}
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_2))
 			{
-				dispose();
+				boxTv.setCollider(new BoxCollider(40, 40, 40));
+//				dispose();
 			}
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_3))
 			{
@@ -161,6 +169,9 @@ public class Main
 		MegaManager.update(timestamp, elapsed);
 
 		camera.update(timestamp, elapsed);
+		player.update(timestamp, elapsed);
+
+		world.physics.update(timestamp, elapsed);
 
 		if (mainKnight != null)
 		{
@@ -184,13 +195,29 @@ public class Main
 
 	private static void load()
 	{
+		ren = new RenderTexture(512, 512);
+
 		CursorManager.getInstance().initialize();
 		Camera.getInstance().initialize();
 
 		camera = new CameraController();
 
+		player = new Player();
+		player.setCollider(new BoxCollider(40, 40, 40));
+
 		platform = new GameObject();
 		platform.load("assets/models/platform.zaf");
+
+		ground = new GameObject();
+		ground.setX(-100);
+		ground.setZ(-100);
+		ground.load("assets/models/box.zaf");
+		ground.setScale(10, 10, 1);
+		ground.setCollider(new BoxCollider(400, 400, 40, true));
+
+		boxTv = new GameObject();
+		boxTv.setX(-100);
+		boxTv.load("assets/models/box.zaf");
 
 		DisplayObjectContainer container = new DisplayObjectContainer();
 		Image image = new Image();
@@ -208,6 +235,9 @@ public class Main
 
 		world = World3D.instance;
 		world.addChild(platform);
+		world.addChild(boxTv);
+		world.addChild(ground);
+		world.addChild(player);
 
 		container.position.x = 50;
 		container.position.y = 500;
@@ -225,12 +255,4 @@ public class Main
 		checkbox.position.set(125, 220);
 		stage.addChild(checkbox);
 	}
-
-	private static RenderTexture ren;
-
-	private static void renderTextures()
-	{
-		ren = new RenderTexture(512, 512);
-	}
-
 }

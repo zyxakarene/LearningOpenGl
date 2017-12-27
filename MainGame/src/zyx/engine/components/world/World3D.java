@@ -6,9 +6,12 @@ public final class World3D extends WorldObject
 {
 
 	public static final World3D instance = new World3D();
+	
+	public final Physics physics;
 
 	private World3D()
 	{
+		physics = new Physics();
 	}
 
 	public void drawScene()
