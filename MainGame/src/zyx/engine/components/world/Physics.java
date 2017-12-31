@@ -7,46 +7,55 @@ import zyx.utils.interfaces.IUpdateable;
 public final class Physics implements IUpdateable
 {
 
-	private ArrayList<Collider> colliders;
-	
+	private ArrayList<Collider> physicsColliders;
+	private ArrayList<Collider> staticColliders;
+
 	Physics()
 	{
-		colliders = new ArrayList<>();
+		staticColliders = new ArrayList<>();
+		physicsColliders = new ArrayList<>();
 	}
-	
+
 	void addCollider(Collider collider)
 	{
-		if (colliders.contains(collider) == false)
+		ArrayList<Collider> list = collider.isStatic ? staticColliders : physicsColliders;
+
+		if (list.contains(collider) == false)
 		{
-			colliders.add(collider);
+			list.add(collider);
 		}
 	}
-	
+
 	void removeCollider(Collider collider)
 	{
-		colliders.remove(collider);
+		ArrayList<Collider> list = collider.isStatic ? staticColliders : physicsColliders;
+
+		list.remove(collider);
 	}
 
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-		int len = colliders.size();
-		for (int i = 0; i < len; i++)
-		{
-			colliders.get(i).velocity.z -= 1;
-			colliders.get(i).update(timestamp, elapsedTime);
-		}
+		int physLen = physicsColliders.size();
+		int staticLen = staticColliders.size();
 		
-		Collider a;
-		Collider b;
-		for (int i = 0; i < len; i++)
+		for (int i = 0; i < physLen; i++)
 		{
-			for (int j = 0; j < len; j++)
+			physicsColliders.get(i).velocity.z -= 1;
+			physicsColliders.get(i).update(timestamp, elapsedTime);
+		}
+
+		Collider staticCollider;
+		Collider physCollider;
+		for (int i = 0; i < physLen; i++)
+		{
+			physCollider = physicsColliders.get(i);
+			
+			for (int j = 0; j < staticLen; j++)
 			{
-				a = colliders.get(i);
-				b = colliders.get(j);
-				
-				CollisionChecker.check(a, b);
+				staticCollider = staticColliders.get(j);
+
+				CollisionChecker.check(staticCollider, physCollider);
 			}
 		}
 	}

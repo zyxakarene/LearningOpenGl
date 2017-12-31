@@ -35,27 +35,30 @@ class PlayerMovementBehavior extends Behavior
 			return;
 		}
 		
+		collider.velocity.x *= 0.8f;
+		collider.velocity.y *= 0.8f;
+		
 		if (keyboard.isDown(Keyboard.KEY_UP))
 		{
-			collider.velocity.x -= 10;
+			collider.velocity.x = -20;
 		}
 		else if (keyboard.isDown(Keyboard.KEY_DOWN))
 		{
-			collider.velocity.x += 10;
+			collider.velocity.x = 20;
 		}
 		
 		if (keyboard.isDown(Keyboard.KEY_RIGHT))
 		{
-			collider.velocity.y += 10;
+			collider.velocity.y = 20;
 		}
 		else if (keyboard.isDown(Keyboard.KEY_LEFT))
 		{
-			collider.velocity.y -= 10;
+			collider.velocity.y = -20;
 		}
 		
 		if (keyboard.wasPressed(Keyboard.KEY_SPACE))
 		{
-			collider.velocity.z += 100;
+			collider.velocity.z = 50;
 		}
 	}
 

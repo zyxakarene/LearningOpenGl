@@ -27,6 +27,7 @@ import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.textures.RenderTexture;
 import zyx.utils.DeltaTime;
 import zyx.utils.FPSCounter;
+import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
 import zyx.utils.cheats.Print;
 
@@ -118,7 +119,7 @@ public class Main
 			}
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_2))
 			{
-				boxTv.setCollider(new BoxCollider(40, 40, 40));
+				boxTv.setCollider(new BoxCollider(40, 40, 40, true));
 //				dispose();
 			}
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_3))
@@ -203,9 +204,9 @@ public class Main
 		camera = new CameraController();
 
 		player = new Player();
-		player.setCollider(new BoxCollider(40, 40, 40));
 
 		platform = new GameObject();
+		platform.setY(100);
 		platform.load("assets/models/platform.zaf");
 
 		ground = new GameObject();
@@ -213,10 +214,11 @@ public class Main
 		ground.setZ(-100);
 		ground.load("assets/models/box.zaf");
 		ground.setScale(10, 10, 1);
-		ground.setCollider(new BoxCollider(400, 400, 40, true));
+		ground.setCollider(new BoxCollider(400, 400, 40));
 
 		boxTv = new GameObject();
 		boxTv.setX(-100);
+		boxTv.setZ(-60);
 		boxTv.load("assets/models/box.zaf");
 
 		DisplayObjectContainer container = new DisplayObjectContainer();
@@ -239,6 +241,8 @@ public class Main
 		world.addChild(ground);
 		world.addChild(player);
 
+		addRandomBoxes();
+
 		container.position.x = 50;
 		container.position.y = 500;
 		container.rotation = 45;
@@ -254,5 +258,25 @@ public class Main
 		Checkbox checkbox = new Checkbox("assets/textures/BtnUp.png", "assets/textures/BtnHover.png", "assets/textures/BtnDown.png", "assets/textures/Check.png");
 		checkbox.position.set(125, 220);
 		stage.addChild(checkbox);
+	}
+
+	private static void addRandomBoxes()
+	{
+		for (int i = 0; i < 20; i++)
+		{
+			float scaleX = FloatMath.random() * 3;
+			float scaleY = FloatMath.random() * 3;
+			float scaleZ = FloatMath.random() * 3;
+			
+			GameObject box = new GameObject();
+			box.setX(FloatMath.random() * -200f);
+			box.setY(FloatMath.random() * -200f);
+			box.setZ(FloatMath.random() * -200f);
+			box.setScale(scaleX, scaleY, scaleZ);
+			box.load("assets/models/box.zaf");
+			box.setCollider(new BoxCollider(40 * scaleX, 40 * scaleY, 40 * scaleZ));
+			
+			world.addChild(box);
+		}
 	}
 }

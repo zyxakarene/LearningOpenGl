@@ -20,7 +20,7 @@ public abstract class Collider implements IUpdateable, IDisposeable
 		velocity = SharedPools.VECTOR_POOL.getInstance();
 		World3D.instance.physics.addCollider(this);
 	}
-
+	
 	@Override
 	public final void update(long timestamp, int elapsedTime)
 	{

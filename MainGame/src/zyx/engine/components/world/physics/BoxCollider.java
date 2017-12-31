@@ -1,11 +1,10 @@
 package zyx.engine.components.world.physics;
 
 import org.lwjgl.util.vector.Vector3f;
-import zyx.engine.components.world.Collider;
 import zyx.game.controls.SharedPools;
 import zyx.utils.geometry.Box;
 
-public class BoxCollider extends Collider
+public class BoxCollider extends ParentMovingCollider
 {
 
 	//			6
@@ -24,6 +23,7 @@ public class BoxCollider extends Collider
 	public BoxCollider(float width, float debth, float height, boolean isStatic)
 	{
 		super(isStatic);
+
 		this.width = width;
 		this.debth = debth;
 		this.height = height;
@@ -45,12 +45,13 @@ public class BoxCollider extends Collider
 		verticies[6].set(wH, dH, height);
 		verticies[7].set(-wH, dH, height);
 
-		boundingBox = new Box(0, 0, 0, 0, 0, 0);
+		boundingBox = new Box(width, debth, height);
+
 	}
 
 	public BoxCollider(float width, float debth, float height)
 	{
-		this(width, debth, height, false);
+		this(width, debth, height, true);
 	}
 
 	@Override
