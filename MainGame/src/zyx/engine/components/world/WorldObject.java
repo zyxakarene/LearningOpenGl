@@ -13,12 +13,13 @@ import zyx.utils.math.MatrixUtils;
 
 public abstract class WorldObject implements IPositionable, IDisposeable
 {
+
 	public boolean disposed;
 
 	private final Matrix4f backupMatrix = new Matrix4f();
 
 	protected Vector3f worldPosition;
-	
+
 	protected Vector3f position;
 	protected Vector3f rotation;
 	protected Vector3f scale;
@@ -27,6 +28,8 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	private ArrayList<WorldObject> children;
 
 	protected final WorldShader shader;
+
+	private Collider collider;
 
 	public WorldObject()
 	{
@@ -43,6 +46,26 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		disposed = false;
 	}
 
+	public void setCollider(Collider newCollider)
+	{
+		if (collider != null)
+		{
+			collider.setParent(null);
+		}
+		
+		collider = newCollider;
+		
+		if(collider != null)
+		{
+			collider.setParent(this);
+		}
+	}
+
+	public Collider getCollider()
+	{
+		return collider;
+	}
+
 	public void addChild(WorldObject child)
 	{
 		if (child.parent != this)
@@ -51,7 +74,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 			{
 				child.removeFromParent(false);
 			}
-			
+
 			child.parent = this;
 			children.add(child);
 		}
@@ -87,20 +110,19 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	{
 		onTransform();
 		onDraw();
-	
+
 		backupMatrix.load(WorldShader.MATRIX_MODEL);
 
 		for (WorldObject child : children)
 		{
 			shader.upload();
-			
+
 			child.draw();
 			MatrixUtils.getPositionFrom(WorldShader.MATRIX_MODEL, worldPosition);
-			
+
 			WorldShader.MATRIX_MODEL.load(backupMatrix);
 		}
 
-		
 	}
 
 	@Override
@@ -143,20 +165,26 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	{
 		return rotation;
 	}
-	
+
 	@Override
 	public Vector3f getWorldPosition(Vector3f out)
 	{
 		out.x = worldPosition.x;
 		out.y = worldPosition.y;
 		out.z = worldPosition.z;
-		
+
 		return out;
 	}
 
-	abstract protected void onDraw();
+	protected void onDraw()
+	{
 
-	abstract protected void onTransform();
+	}
+
+	protected void onTransform()
+	{
+
+	}
 
 	//<editor-fold defaultstate="collapsed" desc="Getter & Setter">
 	public void setPosition(float x, float y, float z)
@@ -172,6 +200,13 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		rotation.y = y;
 		rotation.z = z;
 	}
+
+	public void setScale(float x, float y, float z)
+	{
+		scale.x = x;
+		scale.y = y;
+		scale.z = z;
+	}
 	
 	public void setPosition(Vector3f rotation)
 	{
@@ -186,13 +221,13 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		rotation.y = position.y;
 		rotation.z = position.z;
 	}
-	
+
 	public Vector3f getPosition(Vector3f out)
 	{
 		out.x = position.x;
 		out.y = position.y;
 		out.z = position.z;
-		
+
 		return out;
 	}
 
@@ -201,7 +236,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		out.x = rotation.x;
 		out.y = rotation.y;
 		out.z = rotation.z;
-		
+
 		return out;
 	}
 

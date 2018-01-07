@@ -33,7 +33,7 @@ public class SmdParser
 		importer.importAnimations(animations);
 		
 		SmdObject smd = importer.getSmd();
-		smd.setTexturePath(qc.textureFile.getName());
+		smd.setTexturePath(qc.getTextureName());
 		
 		if (output.exists() == false)
 		{
