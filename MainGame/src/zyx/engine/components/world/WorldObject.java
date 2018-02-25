@@ -106,7 +106,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		}
 	}
 
-	public final void draw()
+	protected final void draw()
 	{
 		onTransform();
 		onDraw();

@@ -2654,3 +2654,44 @@ java.lang.StackOverflowError
 	at zyx.engine.components.world.physics.CollisionChecker.fixBoxCollisions(CollisionChecker.java:85)
 	at zyx.engine.components.world.physics.CollisionChecker.fixBoxCollisions(CollisionChecker.java:85)
 
+jan. 07, 2018 9:16:48 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.models.implementations.ScreenModel.getWidth(ScreenModel.java:43)
+	at zyx.engine.components.screen.Image.getWidth(Image.java:52)
+	at zyx.engine.components.screen.DisplayObjectContainer.getWidth(DisplayObjectContainer.java:50)
+	at zyx.engine.components.screen.Checkbox.onCallback(Checkbox.java:35)
+	at zyx.engine.components.screen.Checkbox.onCallback(Checkbox.java:5)
+	at zyx.engine.utils.callbacks.CustomCallback.dispatch(CustomCallback.java:48)
+	at zyx.engine.components.screen.Image.resourceLoaded(Image.java:44)
+	at zyx.engine.components.screen.Image.resourceLoaded(Image.java:9)
+	at zyx.game.controls.textures.TextureRequest.resourceLoaded(TextureRequest.java:47)
+	at zyx.game.controls.textures.TextureRequest.resourceLoaded(TextureRequest.java:13)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:98)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:42)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:15)
+	at zyx.Main.update(Main.java:171)
+	at zyx.Main.main(Main.java:76)
+
+feb. 24, 2018 10:06:38 PM zyx.utils.exceptions.Msg error
+SEVERE: Error at receiving data
+java.net.PortUnreachableException: ICMP Port Unreachable
+	at java.net.DualStackPlainDatagramSocketImpl.socketReceiveOrPeekData(Native Method)
+	at java.net.DualStackPlainDatagramSocketImpl.receive0(DualStackPlainDatagramSocketImpl.java:120)
+	at java.net.AbstractPlainDatagramSocketImpl.receive(AbstractPlainDatagramSocketImpl.java:144)
+	at java.net.DatagramSocket.receive(DatagramSocket.java:812)
+	at zyx.net.io.PersistentConnection.receive(PersistentConnection.java:62)
+	at zyx.net.io.ConnectionResponseRunner.run(ConnectionResponseRunner.java:21)
+	at java.lang.Thread.run(Thread.java:745)
+
+feb. 24, 2018 10:11:15 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'ConnectionResponseRunner'
+java.nio.BufferUnderflowException
+	at java.nio.Buffer.nextGetIndex(Buffer.java:506)
+	at java.nio.HeapByteBuffer.getInt(HeapByteBuffer.java:361)
+	at zyx.net.io.PersistentConnection.toInt(PersistentConnection.java:79)
+	at zyx.net.io.PersistentConnection.receive(PersistentConnection.java:64)
+	at zyx.net.io.ConnectionResponseRunner.run(ConnectionResponseRunner.java:21)
+	at java.lang.Thread.run(Thread.java:745)
+

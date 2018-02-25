@@ -41,7 +41,7 @@ public final class Physics implements IUpdateable
 		
 		for (int i = 0; i < physLen; i++)
 		{
-			physicsColliders.get(i).velocity.z -= 1;
+			physicsColliders.get(i).velocity.z -= 16;
 			physicsColliders.get(i).update(timestamp, elapsedTime);
 		}
 

@@ -34,6 +34,7 @@ public class GameObject extends WorldObject implements IUpdateable, IResourceLoa
 	private LinkedList<AttachmentRequest> attachmentRequests;
 
 	private BehaviorBundle behaviors;
+	private AbstractTexture overwriteTexture;
 
 	public GameObject()
 	{
@@ -88,8 +89,16 @@ public class GameObject extends WorldObject implements IUpdateable, IResourceLoa
 	{
 		if (loaded)
 		{
+			if (overwriteTexture != null)
+			{
+				model.setOverwriteTexture(overwriteTexture);
+			}
+
+			
 			model.setAnimation(animationController);
 			model.draw();
+			
+			model.setOverwriteTexture(null);
 
 			Attachment attachment;
 			int len = attachments.size();
@@ -209,7 +218,7 @@ public class GameObject extends WorldObject implements IUpdateable, IResourceLoa
 
 	public void setTexture(AbstractTexture tex)
 	{
-		model.setTextureTest(tex);
+		overwriteTexture = tex;
 	}
 
 	public AbstractTexture getTexture()

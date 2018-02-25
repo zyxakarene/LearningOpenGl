@@ -6,6 +6,7 @@ import zyx.game.controls.input.InputManager;
 import zyx.game.controls.input.MouseData;
 import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.sound.SoundManager;
+import zyx.net.io.ConnectionLoader;
 
 public class MegaManager
 {
@@ -13,6 +14,7 @@ public class MegaManager
 	public static void update(long timestamp, int elapsed)
 	{
 		ResourceLoader.getInstance().handleResourceReplies();
+		ConnectionLoader.getInstance().handleConnectionResponses();
 
 		InputManager.getInstance().update(timestamp, elapsed);
 		ClickDispatcher.getInstance().dispatchEvents();

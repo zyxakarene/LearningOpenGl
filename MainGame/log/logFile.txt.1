@@ -10,3 +10,23 @@ java.lang.RuntimeException: GLError: [Invalid framebuffer operation]
 	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
 	at zyx.Main.main(Main.java:64)
 
+jan. 07, 2018 9:16:41 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.models.implementations.ScreenModel.getWidth(ScreenModel.java:43)
+	at zyx.engine.components.screen.Image.getWidth(Image.java:52)
+	at zyx.engine.components.screen.DisplayObjectContainer.getWidth(DisplayObjectContainer.java:50)
+	at zyx.engine.components.screen.Checkbox.onCallback(Checkbox.java:35)
+	at zyx.engine.components.screen.Checkbox.onCallback(Checkbox.java:5)
+	at zyx.engine.utils.callbacks.CustomCallback.dispatch(CustomCallback.java:48)
+	at zyx.engine.components.screen.Image.resourceLoaded(Image.java:44)
+	at zyx.engine.components.screen.Image.resourceLoaded(Image.java:9)
+	at zyx.game.controls.textures.TextureRequest.resourceLoaded(TextureRequest.java:47)
+	at zyx.game.controls.textures.TextureRequest.resourceLoaded(TextureRequest.java:13)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:98)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:42)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:15)
+	at zyx.Main.update(Main.java:171)
+	at zyx.Main.main(Main.java:76)
+

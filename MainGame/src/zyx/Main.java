@@ -1,5 +1,6 @@
 package zyx;
 
+import zyx.game.components.world.camera.FirstPersonBehavior;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -11,15 +12,15 @@ import zyx.game.components.GameObject;
 import zyx.engine.components.world.World3D;
 import zyx.engine.components.world.physics.BoxCollider;
 import zyx.engine.curser.CursorManager;
-import zyx.engine.curser.GameCursor;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.components.screen.AddBitmapFontButton;
-import zyx.game.components.world.Player;
+import zyx.game.components.world.player.Player;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.MegaManager;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.sound.SoundManager;
+import zyx.net.io.ConnectionLoader;
 import zyx.opengl.GLUtils;
 import zyx.opengl.SetupOpenGlCommand;
 import zyx.opengl.camera.Camera;
@@ -29,7 +30,6 @@ import zyx.utils.DeltaTime;
 import zyx.utils.FPSCounter;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
-import zyx.utils.cheats.Print;
 
 public class Main
 {
@@ -62,6 +62,8 @@ public class Main
 		ShaderManager.INSTANCE.initialize();
 
 		ResourceLoader.getInstance().addThreads(1);
+		ConnectionLoader.getInstance().connect("localhost", 8888);
+		ConnectionLoader.getInstance().startThreads();
 
 		load();
 
@@ -85,7 +87,7 @@ public class Main
 				camera.setPosition(cameraPos);
 				camera.setRotation(cameraRot);
 				camera.getBehaviorById(BehaviorType.CAMERA_UPDATE_VIEW).update(0, 0);
-				mainKnight.paint();
+				world.drawScene();
 
 				camera.setPosition(cameraPosOrig);
 				camera.setRotation(cameraRotOrig);
@@ -201,12 +203,15 @@ public class Main
 		CursorManager.getInstance().initialize();
 		Camera.getInstance().initialize();
 
-		camera = new CameraController();
-
 		player = new Player();
+		
+		camera = new CameraController();
+		camera.addBehavior(new FirstPersonBehavior(player));
+
 
 		platform = new GameObject();
 		platform.setY(100);
+		platform.setZ(-50);
 		platform.load("assets/models/platform.zaf");
 
 		ground = new GameObject();
@@ -220,6 +225,8 @@ public class Main
 		boxTv.setX(-100);
 		boxTv.setZ(-60);
 		boxTv.load("assets/models/box.zaf");
+						boxTv.setCollider(new BoxCollider(40, 40, 40, true));
+
 
 		DisplayObjectContainer container = new DisplayObjectContainer();
 		Image image = new Image();

@@ -19,6 +19,7 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 	private int elementCount;
 
 	private AbstractTexture texture;
+	private AbstractTexture overwriteTexture;
 
 	public AbstractModel(Shader shader)
 	{
@@ -51,9 +52,9 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 		this.elementCount = elementData.length;
 	}
 
-	public void setTextureTest(AbstractTexture texture)
+	public void setOverwriteTexture(AbstractTexture texture)
 	{
-		this.texture = texture;
+		this.overwriteTexture = texture;
 	}
 	
 	protected void setTexture(AbstractTexture texture)
@@ -71,7 +72,11 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 	{
 		meshShader.bind();
 
-		if (texture != null)
+		if (overwriteTexture != null)
+		{
+			overwriteTexture.bind();
+		}
+		else if (texture != null)
 		{
 			texture.bind();
 		}

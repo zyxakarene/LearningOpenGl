@@ -69,6 +69,11 @@ public class CollisionChecker
 		float leastY = distIntoYCeil < distIntoYGround ? distIntoYCeil : distIntoYGround;
 		float leastZ = distIntoZCeil < distIntoZGround ? distIntoZCeil : distIntoZGround;
 		
+		if(leastZ <= 10 && distIntoZGround < distIntoZCeil)
+		{
+			leastZ = 0;
+		}
+		
 		if (leastX < leastY && leastX < leastZ)
 		{
 			//X is least

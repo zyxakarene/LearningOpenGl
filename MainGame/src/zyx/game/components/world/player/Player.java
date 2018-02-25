@@ -1,4 +1,4 @@
-package zyx.game.components.world;
+package zyx.game.components.world.player;
 
 import zyx.engine.components.world.physics.BoxCollider;
 import zyx.game.components.GameObject;

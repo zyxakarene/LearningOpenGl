@@ -8,7 +8,11 @@ import zyx.engine.components.screen.Stage;
 import zyx.engine.components.screen.Textfield;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
-import zyx.game.controls.textures.TextureManager;
+import zyx.net.data.WriteableDataObject;
+import zyx.net.io.ConnectionLoader;
+import zyx.net.io.requests.ConnectionRequest;
+import zyx.net.io.responses.ResponseDispatcher;
+import zyx.net.io.responses.ResponseManager;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.bitmapfont.BitmapFont;
 import zyx.opengl.textures.bitmapfont.BitmapFontGenerator;
@@ -21,12 +25,22 @@ public class AddBitmapFontButton extends Button implements ICallback<Interactabl
 		super(upTexture, hoverTexture, downTexture);
 
 		onButtonClicked.addCallback(this);
+		
+		ResponseDispatcher serverDispatcher = new ResponseDispatcher();
+		serverDispatcher.addResponseCallback("login", new LoginResponse());
+
+		ResponseManager.getInstance().registerDispatcher(serverDispatcher);
 	}
 
 	@Override
 	public void onCallback(InteractableContainer ref)
 	{
-		TextureManager.getInstance().loadTexture("assets/fonts/font.png", this);
+		WriteableDataObject data = new WriteableDataObject();
+		data.addString("name", "Zyx");
+		ConnectionRequest request = new ConnectionRequest("auth", data);
+		
+		ConnectionLoader.getInstance().addRequest(request);
+//		TextureManager.getInstance().loadTexture("assets/fonts/font.png", this);
 	}
 
 	@Override
