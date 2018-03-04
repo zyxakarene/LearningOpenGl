@@ -2695,3 +2695,19 @@ java.nio.BufferUnderflowException
 	at zyx.net.io.ConnectionResponseRunner.run(ConnectionResponseRunner.java:21)
 	at java.lang.Thread.run(Thread.java:745)
 
+feb. 28, 2018 6:33:18 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.ExceptionInInitializerError
+	at zyx.net.data.WriteableDataObject.<init>(WriteableDataObject.java:18)
+	at zyx.game.components.screen.AddBitmapFontButton.onCallback(AddBitmapFontButton.java:38)
+	at zyx.game.components.screen.AddBitmapFontButton.onCallback(AddBitmapFontButton.java:20)
+	at zyx.engine.utils.callbacks.CustomCallback.dispatch(CustomCallback.java:48)
+	at zyx.engine.utils.ClickDispatcher.dispatchEvents(ClickDispatcher.java:34)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:20)
+	at zyx.Main.update(Main.java:172)
+	at zyx.Main.main(Main.java:77)
+Caused by: java.lang.ArrayIndexOutOfBoundsException: 11
+	at zyx.net.writers.Serializers.<init>(Serializers.java:57)
+	at zyx.net.writers.Serializers.<clinit>(Serializers.java:36)
+	... 8 more
+

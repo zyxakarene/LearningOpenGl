@@ -75,4 +75,9 @@ public class ReadableDataObject
 	{
 		return (ReadableDataArray) dataMap.get(name);
 	}
+
+	public ByteArrayObject getByteArray(String name)
+	{
+		return (ByteArrayObject) dataMap.get(name);
+	}
 }

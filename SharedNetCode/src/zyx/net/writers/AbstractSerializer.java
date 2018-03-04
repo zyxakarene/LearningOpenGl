@@ -6,6 +6,11 @@ import java.io.ObjectOutputStream;
 
 public abstract class AbstractSerializer
 {
+
+	AbstractSerializer()
+	{
+	}
+	
 	public final void write(Object obj, String name, ObjectOutputStream out) throws IOException
 	{
 		out.writeUTF(name);

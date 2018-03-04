@@ -34,7 +34,14 @@ class PersistentConnection
 			throw new IllegalArgumentException("Packet size too big! " + data.getLength());
 		}
 		
-		socket.send(data);
+		if (socket.isConnected())
+		{
+			socket.send(data);
+		}
+		else
+		{
+			System.out.println("Attempted to send data to a closed socket");
+		}
 	}
 	
 	DatagramPacket receive() throws IOException
