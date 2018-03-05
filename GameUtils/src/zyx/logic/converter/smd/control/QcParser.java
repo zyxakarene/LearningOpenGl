@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class QcParser
 {
 	private static final String MESH_START = "$mesh";
+	private static final String PHYS_START = "$phys";
 	private static final String TEXTURE_START = "$texture";
 	private static final String ANIMATION_START = "$animation";
 	private static final String OUT_MODEL_START = "$out_model";
@@ -25,16 +26,16 @@ public class QcParser
 	{
 		reader.setRoot(input.getParentFile());
 		
-		Scanner scan = new Scanner(input);
-		
-		while (scan.hasNextLine())
+		try (Scanner scan = new Scanner(input))
 		{
-			String line = scan.nextLine();
-			handleLine(line);			
+			while (scan.hasNextLine())
+			{			
+				String line = scan.nextLine();
+				handleLine(line);
+			}
+			
+			return qc;
 		}
-		
-		scan.close();
-		return qc;
 	}
 
 	private void handleLine(String line)
@@ -42,6 +43,10 @@ public class QcParser
 		if (line.startsWith(MESH_START))
 		{
 			reader.readMesh(line, qc);
+		}
+		else if (line.startsWith(PHYS_START))
+		{
+			reader.readPhys(line, qc);
 		}
 		else if (line.startsWith(TEXTURE_START))
 		{

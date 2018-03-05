@@ -23,6 +23,12 @@ class QcLineReader
 		String[] split = line.split(REGEX);
 		qc.meshFile = new File(root.getAbsolutePath() + File.separator + split[1]);
 	}
+	
+	void readPhys(String line, QcFile qc)
+	{
+		String[] split = line.split(REGEX);
+		qc.physFile = new File(root.getAbsolutePath() + File.separator + split[1]);
+	}
 
 	void readTexture(String line, QcFile qc)
 	{
