@@ -59,7 +59,6 @@ public class PhysBoxValidator
 			if (vec != null)
 			{
 				float dot = Vector3f.dot(vec, normal);
-				System.out.println(dot);
 				if (dot > BIAS)
 				{
 					valid = false;

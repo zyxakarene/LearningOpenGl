@@ -21,6 +21,20 @@ public class GLUtils
 		GL11.glCullFace(GL11.GL_BACK);
 	}
 
+	public static void setWireframe(boolean value)
+	{
+		if (value)
+		{
+			GL11.glLineWidth(3);
+			GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
+		}
+		else
+		{
+			GL11.glLineWidth(1);
+			GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
+		}
+	}
+
 	public static void cullFront()
 	{
 		GL11.glCullFace(GL11.GL_FRONT);
@@ -51,6 +65,6 @@ public class GLUtils
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA,GL11.GL_ONE_MINUS_SRC_ALPHA); 
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	}
 }

@@ -44,6 +44,7 @@ public class Main
 	private static GameObject platform;
 	private static GameObject mainKnight;
 	private static GameObject attachedKnight1;
+	private static GameObject teapot;
 
 	private static Stage stage;
 	private static World3D world;
@@ -265,6 +266,13 @@ public class Main
 		Checkbox checkbox = new Checkbox("assets/textures/BtnUp.png", "assets/textures/BtnHover.png", "assets/textures/BtnDown.png", "assets/textures/Check.png");
 		checkbox.position.set(125, 220);
 		stage.addChild(checkbox);
+		
+		teapot = new GameObject();
+		teapot.setX(100);
+		teapot.setY(100);
+		teapot.setZ(-60);
+		teapot.load("assets/models/teapot.zaf");
+		world.addChild(teapot);
 	}
 
 	private static void addRandomBoxes()
@@ -280,7 +288,7 @@ public class Main
 			box.setY(FloatMath.random() * -200f);
 			box.setZ(FloatMath.random() * -200f);
 			box.setScale(scaleX, scaleY, scaleZ);
-			box.load("assets/models/box.zaf");
+			box.load("assets/models/teapot.zaf");
 			box.setCollider(new BoxCollider(40 * scaleX, 40 * scaleY, 40 * scaleZ));
 			
 			world.addChild(box);

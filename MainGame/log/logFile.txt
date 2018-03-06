@@ -2711,3 +2711,100 @@ Caused by: java.lang.ArrayIndexOutOfBoundsException: 11
 	at zyx.net.writers.Serializers.<clinit>(Serializers.java:36)
 	... 8 more
 
+mar. 05, 2018 7:41:45 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.OutOfMemoryError: Java heap space
+	at zyx.opengl.models.loading.SmdPhysbox.read(SmdPhysbox.java:17)
+	at zyx.opengl.models.loading.SmdObject.read(SmdObject.java:53)
+	at zyx.opengl.models.loading.ZafLoader.loadFromZaf(ZafLoader.java:30)
+	at zyx.game.controls.models.ModelRequest.resourceLoaded(ModelRequest.java:48)
+	at zyx.game.controls.models.ModelRequest.resourceLoaded(ModelRequest.java:15)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:98)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:42)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:16)
+	at zyx.Main.update(Main.java:172)
+	at zyx.Main.main(Main.java:77)
+
+mar. 05, 2018 9:31:25 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.ArrayIndexOutOfBoundsException: 288
+	at zyx.opengl.models.loading.SmdObject.read(SmdObject.java:44)
+	at zyx.opengl.models.loading.ZafLoader.loadFromZaf(ZafLoader.java:31)
+	at zyx.game.controls.models.ModelRequest.resourceLoaded(ModelRequest.java:48)
+	at zyx.game.controls.models.ModelRequest.resourceLoaded(ModelRequest.java:15)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:98)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:42)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:16)
+	at zyx.Main.update(Main.java:173)
+	at zyx.Main.main(Main.java:78)
+
+mar. 05, 2018 10:41:11 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GLError: [Invalid enum]
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
+	at zyx.opengl.textures.impl.SolidColorTexture.<init>(SolidColorTexture.java:42)
+	at zyx.opengl.textures.ColorTexture.<init>(ColorTexture.java:18)
+	at zyx.opengl.models.implementations.physics.DebugPhysDrawing.createModel(DebugPhysDrawing.java:39)
+	at zyx.opengl.models.implementations.physics.DebugPhysDrawing.getModelFor(DebugPhysDrawing.java:21)
+	at zyx.opengl.models.implementations.physics.PhysBox.draw(PhysBox.java:39)
+	at zyx.opengl.models.implementations.WorldModel.draw(WorldModel.java:77)
+	at zyx.game.components.GameObject.onDraw(GameObject.java:99)
+	at zyx.engine.components.world.WorldObject.draw(WorldObject.java:112)
+	at zyx.engine.components.world.WorldObject.draw(WorldObject.java:120)
+	at zyx.engine.components.world.World3D.drawScene(World3D.java:20)
+	at zyx.Main.draw(Main.java:190)
+	at zyx.Main.main(Main.java:100)
+
+mar. 05, 2018 10:43:27 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GLError: [Invalid enum]
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
+	at zyx.opengl.textures.impl.SolidColorTexture.<init>(SolidColorTexture.java:54)
+	at zyx.opengl.textures.ColorTexture.<init>(ColorTexture.java:18)
+	at zyx.opengl.models.implementations.physics.DebugPhysDrawing.createModel(DebugPhysDrawing.java:39)
+	at zyx.opengl.models.implementations.physics.DebugPhysDrawing.getModelFor(DebugPhysDrawing.java:21)
+	at zyx.opengl.models.implementations.physics.PhysBox.draw(PhysBox.java:39)
+	at zyx.opengl.models.implementations.WorldModel.draw(WorldModel.java:77)
+	at zyx.game.components.GameObject.onDraw(GameObject.java:99)
+	at zyx.engine.components.world.WorldObject.draw(WorldObject.java:112)
+	at zyx.engine.components.world.WorldObject.draw(WorldObject.java:120)
+	at zyx.engine.components.world.World3D.drawScene(World3D.java:20)
+	at zyx.Main.draw(Main.java:190)
+	at zyx.Main.main(Main.java:100)
+
+mar. 05, 2018 10:43:54 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GLError: [Invalid enum]
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
+	at zyx.opengl.textures.impl.SolidColorTexture.<init>(SolidColorTexture.java:52)
+	at zyx.opengl.textures.ColorTexture.<init>(ColorTexture.java:18)
+	at zyx.opengl.models.implementations.physics.DebugPhysDrawing.createModel(DebugPhysDrawing.java:39)
+	at zyx.opengl.models.implementations.physics.DebugPhysDrawing.getModelFor(DebugPhysDrawing.java:21)
+	at zyx.opengl.models.implementations.physics.PhysBox.draw(PhysBox.java:39)
+	at zyx.opengl.models.implementations.WorldModel.draw(WorldModel.java:77)
+	at zyx.game.components.GameObject.onDraw(GameObject.java:99)
+	at zyx.engine.components.world.WorldObject.draw(WorldObject.java:112)
+	at zyx.engine.components.world.WorldObject.draw(WorldObject.java:120)
+	at zyx.engine.components.world.World3D.drawScene(World3D.java:20)
+	at zyx.Main.draw(Main.java:190)
+	at zyx.Main.main(Main.java:100)
+
+mar. 05, 2018 10:44:07 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GLError: [Invalid enum]
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
+	at zyx.opengl.textures.impl.SolidColorTexture.<init>(SolidColorTexture.java:31)
+	at zyx.opengl.textures.ColorTexture.<init>(ColorTexture.java:18)
+	at zyx.opengl.models.implementations.physics.DebugPhysDrawing.createModel(DebugPhysDrawing.java:39)
+	at zyx.opengl.models.implementations.physics.DebugPhysDrawing.getModelFor(DebugPhysDrawing.java:21)
+	at zyx.opengl.models.implementations.physics.PhysBox.draw(PhysBox.java:39)
+	at zyx.opengl.models.implementations.WorldModel.draw(WorldModel.java:77)
+	at zyx.game.components.GameObject.onDraw(GameObject.java:99)
+	at zyx.engine.components.world.WorldObject.draw(WorldObject.java:112)
+	at zyx.engine.components.world.WorldObject.draw(WorldObject.java:120)
+	at zyx.engine.components.world.World3D.drawScene(World3D.java:20)
+	at zyx.Main.draw(Main.java:190)
+	at zyx.Main.main(Main.java:100)
+

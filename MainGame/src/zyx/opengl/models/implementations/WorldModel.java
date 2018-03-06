@@ -9,6 +9,7 @@ import zyx.opengl.models.implementations.bones.animation.AnimationController;
 import zyx.opengl.models.implementations.bones.attachments.Attachment;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
+import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.utils.DeltaTime;
 import zyx.utils.FloatMath;
 import zyx.utils.GeometryUtils;
@@ -26,6 +27,8 @@ public class WorldModel extends AbstractModel
 
 	private WorldShader shader;
 	private Skeleton skeleton;
+	
+	private PhysBox physBox;
 
 	public WorldModel(LoadableValueObject vo)
 	{
@@ -33,6 +36,7 @@ public class WorldModel extends AbstractModel
 		this.shader = (WorldShader) meshShader;
 
 		skeleton = vo.skeleton;
+		physBox = vo.physBox;
 		setVertexData(vo.vertexData, vo.elementData);
 		setTexture(vo.gameTexture);
 	}
@@ -67,6 +71,11 @@ public class WorldModel extends AbstractModel
 		skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
 		shader.uploadBones();
 		super.draw();
+		
+		if (physBox != null)
+		{
+			physBox.draw();
+		}
 	}
 
 	private void transform()
