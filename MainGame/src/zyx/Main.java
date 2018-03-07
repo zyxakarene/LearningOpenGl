@@ -12,12 +12,17 @@ import zyx.game.components.GameObject;
 import zyx.engine.components.world.World3D;
 import zyx.engine.components.world.physics.BoxCollider;
 import zyx.engine.curser.CursorManager;
+import zyx.engine.curser.GameCursor;
+import zyx.engine.utils.PhysPicker;
+import zyx.engine.utils.PhysPlanePicker;
+import zyx.engine.utils.RayPicker;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.components.screen.AddBitmapFontButton;
 import zyx.game.components.world.player.Player;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.MegaManager;
 import zyx.game.controls.input.KeyboardData;
+import zyx.game.controls.input.MouseData;
 import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.sound.SoundManager;
 import zyx.net.io.ConnectionLoader;
@@ -25,11 +30,15 @@ import zyx.opengl.GLUtils;
 import zyx.opengl.SetupOpenGlCommand;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.shaders.ShaderManager;
+import zyx.opengl.textures.ColorTexture;
 import zyx.opengl.textures.RenderTexture;
 import zyx.utils.DeltaTime;
 import zyx.utils.FPSCounter;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
+import zyx.utils.cheats.DebugContainer;
+import zyx.utils.cheats.DebugPhysics;
+import zyx.utils.cheats.DebugPoint;
 
 public class Main
 {
@@ -37,6 +46,7 @@ public class Main
 	private static RenderTexture ren;
 
 	private static Player player;
+	private static DebugContainer debugContainer;
 
 	private static CameraController camera;
 	private static GameObject ground;
@@ -136,6 +146,8 @@ public class Main
 			}
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_5))
 			{
+				Vector3f pos = camera.getPosition();
+				DebugPoint.addToScene(-pos.x, -pos.y, -pos.z, 10000);
 			}
 
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_ESCAPE))
@@ -174,12 +186,42 @@ public class Main
 
 		camera.update(timestamp, elapsed);
 		player.update(timestamp, elapsed);
+		debugContainer.update(timestamp, elapsed);
+		
 
 		world.physics.update(timestamp, elapsed);
 
 		if (mainKnight != null)
 		{
 			mainKnight.setRotZ(mainKnight.getRotZ() + 0.5f);
+		}
+		
+		if (MouseData.instance.isLeftDown())
+		{
+			Vector3f ray = RayPicker.getInstance().getRay();
+			Vector3f out = new Vector3f();
+			Vector3f pos = new Vector3f();
+			camera.getPosition(pos);
+			pos.scale(-1);
+			
+			boolean collided = PhysPicker.collided(pos, ray, teapot.getPhysbox(), out);
+			System.out.println(collided);
+			if (collided)
+			{
+				CursorManager.getInstance().setCursor(GameCursor.HAND);
+				teapot.setTexture(new ColorTexture((int) (0xFFFFFF * FloatMath.random())));
+			}
+			else
+			{
+				CursorManager.getInstance().setCursor(GameCursor.POINTER);
+				
+			}
+//			out.set(pos);
+//			out.x += ray.x * 100;
+//			out.y += ray.y * 100;
+//			out.z += ray.z * 100;
+//			DebugPoint.addToScene(pos.x, pos.y, pos.z, 10000);
+//			DebugPoint.addToScene(out.x, out.y, out.z, 10000);
 		}
 	}
 
@@ -243,7 +285,10 @@ public class Main
 		stage = Stage.instance;
 		stage.addChild(container);
 
+		debugContainer = new DebugContainer();
+		
 		world = World3D.instance;
+		world.addChild(debugContainer);
 		world.addChild(platform);
 		world.addChild(boxTv);
 		world.addChild(ground);
@@ -268,9 +313,6 @@ public class Main
 		stage.addChild(checkbox);
 		
 		teapot = new GameObject();
-		teapot.setX(100);
-		teapot.setY(100);
-		teapot.setZ(-60);
 		teapot.load("assets/models/teapot.zaf");
 		world.addChild(teapot);
 	}

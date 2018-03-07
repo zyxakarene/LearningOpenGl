@@ -13,6 +13,7 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureImpl;
 import zyx.opengl.GLUtils;
@@ -33,16 +34,17 @@ public class SolidColorTexture implements Texture
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-		float r = (byte) (color & 0x000000FF);
-		float g = (byte) ((color & 0x0000FF00) >> 8);
-		float b = (byte) ((color & 0x00FF0000) >> 16);
+		Color colorObj = new Color(color);
+		
+		float r = colorObj.r;
+		float g = colorObj.g;
+		float b = colorObj.b;
 
 		// Black/white checkerboard
 		float pixels[] =
 		{
-			1, 0, 0, 1, 0, 0,
-			1, 0, 0, 1, 0, 0
+			r, g, b, r, g, b,
+			r, g, b, r, g, b
 		};
 
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(pixels.length);

@@ -71,13 +71,13 @@ public class WorldModel extends AbstractModel
 		skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
 		shader.uploadBones();
 		super.draw();
-		
-		if (physBox != null)
-		{
-			physBox.draw();
-		}
 	}
 
+	public PhysBox getPhysBox()
+	{
+		return physBox;
+	}
+	
 	private void transform()
 	{
 		MODEL_MATRIX.translate(SHARED_POSITION);

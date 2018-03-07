@@ -33,6 +33,9 @@ public class RayPicker
 		camera = Camera.getInstance();
 		camera.getProjectionMatrix(inverseProjection);
 		camera.getViewMatrix(inverseView);
+		
+		inverseProjection.invert();
+		inverseView.invert();
 	}
 
 	public static RayPicker getInstance()
@@ -50,6 +53,9 @@ public class RayPicker
 		int diffX = Math.abs(x - lastPosX);
 		int diffY = Math.abs(y - lastPosY);
 
+		camera.getViewMatrix(inverseView);
+		inverseView.invert();
+		
 		if (diffX >= 1 || diffY >= 1)
 		{
 			lastPosX = x;
@@ -85,8 +91,8 @@ public class RayPicker
 
 	private Vector2f getNormalisedDeviceCoordinates(int mouseX, int mouseY)
 	{
-		float x = (2.0f * mouseX) / GameConstants.GAME_HEIGHT - 1f;
-		float y = (2.0f * mouseY) / GameConstants.GAME_WIDTH - 1f;
+		float x = (2.0f * mouseX) / GameConstants.GAME_WIDTH - 1f;
+		float y = 1f - (2.0f * mouseY) / GameConstants.GAME_HEIGHT ;
 		return new Vector2f(x, y);
 	}
 

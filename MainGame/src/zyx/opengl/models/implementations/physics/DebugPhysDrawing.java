@@ -9,7 +9,6 @@ import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.textures.ColorTexture;
-import zyx.utils.FloatMath;
 
 public class DebugPhysDrawing
 {

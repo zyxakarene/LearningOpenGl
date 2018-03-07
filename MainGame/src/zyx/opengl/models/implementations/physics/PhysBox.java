@@ -1,8 +1,6 @@
 package zyx.opengl.models.implementations.physics;
 
 import org.lwjgl.util.vector.Vector3f;
-import zyx.opengl.GLUtils;
-import zyx.opengl.models.implementations.WorldModel;
 import zyx.utils.geometry.Box;
 
 
@@ -12,8 +10,6 @@ public class PhysBox
 	private final PhysTriangle[] triangles;
 
 	private int trianglesAdded;
-	
-	private WorldModel model;
 	
 	public PhysBox(int triangleCount)
 	{
@@ -31,20 +27,8 @@ public class PhysBox
 		triangles[trianglesAdded] = new PhysTriangle(vertex1, vertex2, vertex3);
 		trianglesAdded++;
 	}
-
-	public void draw()
-	{
-		if (model == null)
-		{
-			model = DebugPhysDrawing.getModelFor(this);
-		}
-		
-		GLUtils.setWireframe(true);
-		model.draw();
-		GLUtils.setWireframe(false);
-	}
 	
-	PhysTriangle[] getTriangles()
+	public PhysTriangle[] getTriangles()
 	{
 		return triangles;
 	}

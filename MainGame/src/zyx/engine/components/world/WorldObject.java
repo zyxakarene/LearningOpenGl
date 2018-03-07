@@ -166,6 +166,11 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		return rotation;
 	}
 
+	public Vector3f getScale()
+	{
+		return scale;
+	}
+
 	@Override
 	public Vector3f getWorldPosition(Vector3f out)
 	{

@@ -58,12 +58,12 @@ public class Camera implements IPositionable
 	
 	public void getProjectionMatrix(Matrix4f out)
 	{
-		out.load(ScreenShader.MATRIX_PROJECTION);
+		out.load(WorldShader.MATRIX_PROJECTION);
 	}
 	
 	public void getViewMatrix(Matrix4f out)
 	{
-		out.load(ScreenShader.MATRIX_VIEW);
+		out.load(WorldShader.MATRIX_VIEW);
 	}
 
 	@Override

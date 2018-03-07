@@ -13,9 +13,11 @@ import zyx.opengl.models.implementations.bones.animation.AnimationController;
 import zyx.opengl.models.implementations.bones.attachments.Attachment;
 import zyx.opengl.models.implementations.bones.attachments.AttachmentRequest;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
+import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.RenderTexture;
+import zyx.utils.cheats.DebugPhysics;
 import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IUpdateable;
 import zyx.utils.math.MatrixUtils;
@@ -35,6 +37,8 @@ public class GameObject extends WorldObject implements IUpdateable, IResourceLoa
 
 	private BehaviorBundle behaviors;
 	private AbstractTexture overwriteTexture;
+	
+	private PhysBox physbox;
 
 	public GameObject()
 	{
@@ -55,6 +59,7 @@ public class GameObject extends WorldObject implements IUpdateable, IResourceLoa
 	@Override
 	public void resourceLoaded(WorldModel data)
 	{
+		physbox = data.getPhysBox();
 		model = data;
 		loaded = true;
 
@@ -67,6 +72,8 @@ public class GameObject extends WorldObject implements IUpdateable, IResourceLoa
 				addAttachment(request.child, request.attachmentPoint);
 			}
 		}
+		
+		DebugPhysics.getInstance().registerPhysbox(this);
 	}
 
 	public void setAnimation(String name)
@@ -97,6 +104,8 @@ public class GameObject extends WorldObject implements IUpdateable, IResourceLoa
 			
 			model.setAnimation(animationController);
 			model.draw();
+			
+			DebugPhysics.getInstance().draw(this);
 			
 			model.setOverwriteTexture(null);
 
@@ -162,7 +171,7 @@ public class GameObject extends WorldObject implements IUpdateable, IResourceLoa
 	}
 
 	@Override
-	public void update(long timestamp, int elapsedTime)
+	public final void update(long timestamp, int elapsedTime)
 	{
 		behaviors.update(timestamp, elapsedTime);
 
@@ -170,6 +179,12 @@ public class GameObject extends WorldObject implements IUpdateable, IResourceLoa
 		{
 			attachment.update(timestamp, elapsedTime);
 		}
+		
+		onUpdate(timestamp, elapsedTime);
+	}
+	
+	protected void onUpdate(long timestamp, int elapsedTime)
+	{
 	}
 
 	public final void addBehavior(Behavior behavior)
@@ -233,5 +248,10 @@ public class GameObject extends WorldObject implements IUpdateable, IResourceLoa
 		
 		draw();
 
+	}
+
+	public PhysBox getPhysbox()
+	{
+		return physbox;
 	}
 }
