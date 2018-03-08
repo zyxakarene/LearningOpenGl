@@ -43,18 +43,6 @@ public class Camera implements IPositionable
 		position.set(-18, 11, -25);
 		rotation.set(-50, 0, 300);
 	}
-
-	@Override
-	public Vector3f getPosition()
-	{
-		return position;
-	}
-
-	@Override
-	public Vector3f getRotation()
-	{
-		return rotation;
-	}
 	
 	public void getProjectionMatrix(Matrix4f out)
 	{
@@ -67,12 +55,62 @@ public class Camera implements IPositionable
 	}
 
 	@Override
-	public Vector3f getWorldPosition(Vector3f out)
+	public Vector3f getPosition(boolean local, Vector3f out)
 	{
-		out.x = position.x;
-		out.y = position.y;
-		out.z = position.z;
+		if (out == null)
+		{
+			out = new Vector3f();
+		}
+		out.set(position);
 		
 		return out;
+	}
+
+	@Override
+	public Vector3f getRotation(boolean local, Vector3f out)
+	{
+		if (out == null)
+		{
+			out = new Vector3f();
+		}
+		out.set(rotation);
+		
+		return out;
+	}
+
+	@Override
+	public void setPosition(Vector3f pos)
+	{
+		position.set(pos);
+	}
+
+	@Override
+	public void setRotation(Vector3f rot)
+	{
+		rotation.set(rot);
+	}
+	
+	@Override
+	public Vector3f getScale(boolean local, Vector3f out)
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public Vector3f getDir(boolean local, Vector3f out)
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public void setDir(Vector3f dir)
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public void setScale(Vector3f scale)
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 }

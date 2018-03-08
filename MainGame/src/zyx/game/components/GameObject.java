@@ -3,6 +3,8 @@ package zyx.game.components;
 import zyx.engine.components.world.WorldObject;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorBundle;
 import zyx.game.behavior.BehaviorType;
@@ -16,15 +18,17 @@ import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.opengl.textures.AbstractTexture;
-import zyx.opengl.textures.RenderTexture;
 import zyx.utils.cheats.DebugPhysics;
 import zyx.utils.cheats.Print;
+import zyx.utils.interfaces.IPhysbox;
 import zyx.utils.interfaces.IUpdateable;
-import zyx.utils.math.MatrixUtils;
 
-public class GameObject extends WorldObject implements IUpdateable, IResourceLoaded<WorldModel>
+public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IResourceLoaded<WorldModel>
 {
-
+	private static Vector3f HELPER_POS = new Vector3f();
+	private static Vector3f HELPER_ROT = new Vector3f();
+	private static Vector3f HELPER_SCALE = new Vector3f();
+	
 	private String path;
 
 	private boolean loaded;
@@ -59,7 +63,7 @@ public class GameObject extends WorldObject implements IUpdateable, IResourceLoa
 	@Override
 	public void resourceLoaded(WorldModel data)
 	{
-		physbox = data.getPhysBox();
+		physbox = data.getPhysbox();
 		model = data;
 		loaded = true;
 
@@ -86,11 +90,29 @@ public class GameObject extends WorldObject implements IUpdateable, IResourceLoa
 	{
 		if (loaded)
 		{
+			getPosition(true, HELPER_POS);
+			getRotation(true, HELPER_ROT);
+			getScale(true, HELPER_SCALE);
+			
 			model.setAnimation(animationController);
-			model.transform(position, rotation, scale);
+			model.transform(HELPER_POS, HELPER_ROT, HELPER_SCALE);
 		}
 	}
 
+	@Override
+	protected void updateWorldMatrix()
+	{
+		super.updateWorldMatrix();
+		
+		if (loaded)
+		{
+			for (GameObject attachedObject : attachedObjects)
+			{
+				attachedObject.updateWorldMatrix();
+			}
+		}
+	}
+	
 	@Override
 	protected void onDraw()
 	{
@@ -121,12 +143,15 @@ public class GameObject extends WorldObject implements IUpdateable, IResourceLoa
 
 	private void drawAsAttachment(Attachment attachment)
 	{
+		WorldShader.MATRIX_MODEL.load(attachment.parent.worldMatrix);
+		shader.upload();
+		
 		if (loaded)
 		{
+			onTransform();
+			
 			model.setAnimation(animationController);
 			model.drawAsAttachment(attachment);
-
-			MatrixUtils.getPositionFrom(WorldShader.MATRIX_MODEL, worldPosition);
 
 			Attachment subAttachment;
 			int len = attachments.size();
@@ -250,8 +275,17 @@ public class GameObject extends WorldObject implements IUpdateable, IResourceLoa
 
 	}
 
+	@Override
 	public PhysBox getPhysbox()
 	{
 		return physbox;
 	}
+
+	@Override
+	public Matrix4f getMatrix()
+	{
+		return worldMatrix;
+	}
+	
+	
 }

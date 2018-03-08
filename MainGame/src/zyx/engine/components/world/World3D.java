@@ -83,4 +83,8 @@ public final class World3D extends WorldObject
 	}
 	//</editor-fold>
 
+	public final void updateMatrix()
+	{
+		updateWorldMatrix();
+	}
 }

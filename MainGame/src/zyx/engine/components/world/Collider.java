@@ -14,6 +14,8 @@ public abstract class Collider implements IUpdateable, IDisposeable
 	
 	protected WorldObject parent;
 	
+	private static final Vector3f HELPER_POS = new Vector3f();
+	
 	public Collider(boolean isStatic)
 	{
 		this.isStatic = isStatic;
@@ -27,9 +29,12 @@ public abstract class Collider implements IUpdateable, IDisposeable
 		if (!isStatic && parent != null)
 		{
 			float delta = elapsedTime * 0.001f;
-			parent.position.x += velocity.x * delta;
-			parent.position.y += velocity.y * delta;
-			parent.position.z += velocity.z * delta;
+			parent.getPosition(false, HELPER_POS);
+			
+			HELPER_POS.x += velocity.x * delta;
+			HELPER_POS.y += velocity.y * delta;
+			HELPER_POS.z += velocity.z * delta;
+			parent.setPosition(HELPER_POS);
 		}
 		
 		onUpdate(timestamp, elapsedTime);
@@ -64,9 +69,7 @@ public abstract class Collider implements IUpdateable, IDisposeable
 	{
 		if (parent != null)
 		{
-			out.x = parent.position.x;
-			out.y = parent.position.y;
-			out.z = parent.position.z;
+			parent.getPosition(false, out);
 		}
 		else
 		{

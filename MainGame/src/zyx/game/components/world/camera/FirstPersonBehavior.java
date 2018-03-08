@@ -18,25 +18,35 @@ public class FirstPersonBehavior extends Behavior
 	
 	private final Vector3f playerPosition;
 	private final Vector3f playerRotation;
+	private final Player player;
 
 	public FirstPersonBehavior(Player player)
 	{
 		super(BehaviorType.CAMERA_FIRST_PERSON);
 				
-		playerPosition = player.getPosition();
-		playerRotation = player.getRotation();
+		playerPosition = new Vector3f();
+		playerRotation = new Vector3f();
+		
+		cameraPosition = new Vector3f();
+		cameraRotation = new Vector3f();
+		
+		this.player = player;
 	}
 
 	@Override
 	public void initialize()
 	{
-		cameraPosition = gameObject.getPosition();
-		cameraRotation = gameObject.getRotation();
 	}
 
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
+		player.getPosition(false, playerPosition);
+		player.getRotation(true, playerRotation);
+		
+		gameObject.getPosition(false, cameraPosition);
+		gameObject.getRotation(false, cameraRotation);
+		
 		float playerX = playerPosition.x;
 		float playerY = playerPosition.y;
 		float playerZ = playerPosition.z + 30;
@@ -54,6 +64,9 @@ public class FirstPersonBehavior extends Behavior
 			int dy = (int) (MouseData.instance.dY * DeltaTime.getDeltaVariant());
 			rotate(-dy, 0, dx, elapsedTime);
 		}
+		
+		gameObject.setPosition(cameraPosition);
+		gameObject.setRotation(cameraRotation);
 	}
 	
 	private void rotate(int x, int y, int z, int elapsedTime)

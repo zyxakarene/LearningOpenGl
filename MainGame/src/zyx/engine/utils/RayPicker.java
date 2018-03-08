@@ -50,19 +50,13 @@ public class RayPicker
 	
 	public void updateMousePos(int x, int y)
 	{
-		int diffX = Math.abs(x - lastPosX);
-		int diffY = Math.abs(y - lastPosY);
-
 		camera.getViewMatrix(inverseView);
 		inverseView.invert();
 		
-		if (diffX >= 1 || diffY >= 1)
-		{
-			lastPosX = x;
-			lastPosY = y;
+		lastPosX = x;
+		lastPosY = y;
 
-			calculateMouseRay();
-		}
+		calculateMouseRay();
 	}
 
 	private void calculateMouseRay()

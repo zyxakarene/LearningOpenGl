@@ -15,6 +15,7 @@ public final class MouseData extends AbstractInputData
 	public int y;
 	public int dX;
 	public int dY;
+	public boolean grabbed;
 
 	private MouseData()
 	{

@@ -1,22 +1,32 @@
 package zyx.engine.utils;
 
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.models.implementations.physics.PhysTriangle;
+import zyx.utils.interfaces.IPhysbox;
 
 public class PhysPicker
 {
 
 	private static final float EPSILON = 0.0000001f;
 
-	public static boolean collided(Vector3f pos, Vector3f dir, PhysBox physbox, Vector3f intersectPoint)
+	public static boolean collided(Vector3f pos, Vector3f dir, IPhysbox physContainer, Vector3f intersectPoint)
 	{
-		PhysTriangle[] triangles = physbox.getTriangles();
+		PhysBox phys = physContainer.getPhysbox();
+		Matrix4f mat = physContainer.getMatrix();
+		if (phys == null)
+		{
+			return false;
+		}
+		
+		PhysTriangle[] triangles = phys.getTriangles();
 		boolean collided;
 
 		for (PhysTriangle triangle : triangles)
 		{
-			collided = testTriangle(pos, dir, triangle, intersectPoint);
+			collided = testTriangle(pos, dir, triangle, mat, intersectPoint);
 
 			if (collided)
 			{
@@ -27,6 +37,8 @@ public class PhysPicker
 		return false;
 	}
 
+	private static Vector4f vertexHelper = new Vector4f();
+	
 	private static Vector3f vertex0 = new Vector3f();
 	private static Vector3f vertex1 = new Vector3f();
 	private static Vector3f vertex2 = new Vector3f();
@@ -38,12 +50,16 @@ public class PhysPicker
 	private static Vector3f s = new Vector3f();
 	private static Vector3f q = new Vector3f();
 
-	private static boolean testTriangle(Vector3f pos, Vector3f dir, PhysTriangle triangle, Vector3f intersectPoint)
+	private static boolean testTriangle(Vector3f pos, Vector3f dir, PhysTriangle triangle, Matrix4f mat, Vector3f intersectPoint)
 	{
 		triangle.getVertex1(0, vertex0);
 		triangle.getVertex1(1, vertex1);
 		triangle.getVertex1(2, vertex2);
 
+		convert(vertex0, mat);
+		convert(vertex1, mat);
+		convert(vertex2, mat);
+		
 		Vector3f.sub(vertex1, vertex0, edge1);
 		Vector3f.sub(vertex2, vertex0, edge2);
 
@@ -85,5 +101,19 @@ public class PhysPicker
 		{
 			return false;
 		}
+	}
+
+	private static void convert(Vector3f vertex, Matrix4f mat)
+	{
+		vertexHelper.x = vertex.x;
+		vertexHelper.y = vertex.y;
+		vertexHelper.z = vertex.z;
+		vertexHelper.w = 1;
+		
+		Matrix4f.transform(mat, vertexHelper, vertexHelper);
+		
+		vertex.x = vertexHelper.x;
+		vertex.y = vertexHelper.y;
+		vertex.z = vertexHelper.z;
 	}
 }

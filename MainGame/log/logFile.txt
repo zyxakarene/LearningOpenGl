@@ -2808,3 +2808,72 @@ java.lang.RuntimeException: GLError: [Invalid enum]
 	at zyx.Main.draw(Main.java:190)
 	at zyx.Main.main(Main.java:100)
 
+mar. 08, 2018 12:05:54 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.world.camera.FirstPersonBehavior.update(FirstPersonBehavior.java:45)
+	at zyx.game.behavior.BehaviorBundle.update(BehaviorBundle.java:43)
+	at zyx.game.components.GameObject.update(GameObject.java:176)
+	at zyx.Main.update(Main.java:189)
+	at zyx.Main.main(Main.java:90)
+
+mar. 08, 2018 12:08:07 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.world.camera.FirstPersonBehavior.update(FirstPersonBehavior.java:51)
+	at zyx.game.behavior.BehaviorBundle.update(BehaviorBundle.java:43)
+	at zyx.game.components.GameObject.update(GameObject.java:176)
+	at zyx.Main.update(Main.java:189)
+	at zyx.Main.main(Main.java:90)
+
+mar. 08, 2018 1:12:18 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.shaders.implementations.WorldShader.upload(WorldShader.java:62)
+	at zyx.opengl.models.implementations.WorldModel.transform(WorldModel.java:90)
+	at zyx.opengl.models.implementations.WorldModel.transform(WorldModel.java:55)
+	at zyx.game.components.GameObject.onTransform(GameObject.java:98)
+	at zyx.engine.components.world.WorldObject.updateWorldMatrix(WorldObject.java:112)
+	at zyx.engine.components.world.WorldObject.setPosition(WorldObject.java:262)
+	at zyx.engine.components.world.WorldObject.setPosition(WorldObject.java:286)
+	at zyx.engine.components.world.Collider.update(Collider.java:37)
+	at zyx.engine.components.world.Physics.update(Physics.java:45)
+	at zyx.Main.update(Main.java:193)
+	at zyx.Main.main(Main.java:88)
+
+mar. 08, 2018 1:13:28 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.shaders.implementations.WorldShader.upload(WorldShader.java:62)
+	at zyx.opengl.models.implementations.WorldModel.transform(WorldModel.java:90)
+	at zyx.opengl.models.implementations.WorldModel.transform(WorldModel.java:55)
+	at zyx.game.components.GameObject.onTransform(GameObject.java:98)
+	at zyx.engine.components.world.WorldObject.updateWorldMatrix(WorldObject.java:114)
+	at zyx.engine.components.world.WorldObject.setPosition(WorldObject.java:257)
+	at zyx.engine.components.world.WorldObject.setPosition(WorldObject.java:281)
+	at zyx.engine.components.world.Collider.update(Collider.java:37)
+	at zyx.engine.components.world.Physics.update(Physics.java:45)
+	at zyx.Main.update(Main.java:193)
+	at zyx.Main.main(Main.java:88)
+
+mar. 08, 2018 11:30:44 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.GameObject.onTransform(GameObject.java:101)
+	at zyx.engine.components.world.WorldObject.updateWorldMatrix(WorldObject.java:112)
+	at zyx.engine.components.world.WorldObject.<init>(WorldObject.java:45)
+	at zyx.game.components.GameObject.<init>(GameObject.java:48)
+	at zyx.game.components.world.player.Player.<init>(Player.java:10)
+	at zyx.Main.load(Main.java:249)
+	at zyx.Main.main(Main.java:79)
+
+mar. 08, 2018 11:32:08 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.GameObject.updateWorldMatrix(GameObject.java:107)
+	at zyx.engine.components.world.WorldObject.<init>(WorldObject.java:45)
+	at zyx.game.components.GameObject.<init>(GameObject.java:48)
+	at zyx.game.components.world.player.Player.<init>(Player.java:10)
+	at zyx.Main.load(Main.java:249)
+	at zyx.Main.main(Main.java:79)
+

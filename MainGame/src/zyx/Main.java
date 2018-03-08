@@ -86,14 +86,15 @@ public class Main
 			Display.sync(GameConstants.FPS);
 
 			update();
-
+			world.updateMatrix();
+			
 			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, ren.bufferId);
 			GL11.glViewport(0, 0, (int) ren.getWidth(), (int) ren.getHeight());
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 			if (mainKnight != null)
 			{
-				camera.getPosition(cameraPosOrig);
-				camera.getRotation(cameraRotOrig);
+				camera.getPosition(true, cameraPosOrig);
+				camera.getRotation(true, cameraRotOrig);
 
 				camera.setPosition(cameraPos);
 				camera.setRotation(cameraRot);
@@ -141,12 +142,12 @@ public class Main
 			}
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_4))
 			{
-				camera.getPosition(cameraPos);
-				camera.getRotation(cameraRot);
+				camera.getPosition(true, cameraPos);
+				camera.getRotation(true, cameraRot);
 			}
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_5))
 			{
-				Vector3f pos = camera.getPosition();
+				Vector3f pos = camera.getPosition(true, null);
 				DebugPoint.addToScene(-pos.x, -pos.y, -pos.z, 10000);
 			}
 
@@ -201,10 +202,10 @@ public class Main
 			Vector3f ray = RayPicker.getInstance().getRay();
 			Vector3f out = new Vector3f();
 			Vector3f pos = new Vector3f();
-			camera.getPosition(pos);
+			camera.getPosition(false, pos);
 			pos.scale(-1);
 			
-			boolean collided = PhysPicker.collided(pos, ray, teapot.getPhysbox(), out);
+			boolean collided = PhysPicker.collided(pos, ray, teapot, out);
 			System.out.println(collided);
 			if (collided)
 			{
@@ -216,12 +217,11 @@ public class Main
 				CursorManager.getInstance().setCursor(GameCursor.POINTER);
 				
 			}
-//			out.set(pos);
-//			out.x += ray.x * 100;
-//			out.y += ray.y * 100;
-//			out.z += ray.z * 100;
-//			DebugPoint.addToScene(pos.x, pos.y, pos.z, 10000);
-//			DebugPoint.addToScene(out.x, out.y, out.z, 10000);
+			out.set(pos);
+			out.x += ray.x * 100;
+			out.y += ray.y * 100;
+			out.z += ray.z * 100;
+			DebugPoint.addToScene(out.x, out.y, out.z, 10000);
 		}
 	}
 
@@ -267,7 +267,7 @@ public class Main
 		boxTv = new GameObject();
 		boxTv.setX(-100);
 		boxTv.setZ(-60);
-		boxTv.load("assets/models/box.zaf");
+		boxTv.load("assets/models/tv.zaf");
 						boxTv.setCollider(new BoxCollider(40, 40, 40, true));
 
 
@@ -313,13 +313,14 @@ public class Main
 		stage.addChild(checkbox);
 		
 		teapot = new GameObject();
+		teapot.setZ(-50);
 		teapot.load("assets/models/teapot.zaf");
 		world.addChild(teapot);
 	}
 
 	private static void addRandomBoxes()
 	{
-		for (int i = 0; i < 20; i++)
+		for (int i = 0; i < 20 * 0; i++)
 		{
 			float scaleX = FloatMath.random() * 3;
 			float scaleY = FloatMath.random() * 3;

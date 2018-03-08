@@ -4,7 +4,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import zyx.engine.utils.callbacks.CustomCallback;
 import zyx.utils.GameConstants;
-import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IUpdateable;
 
 public class InputManager implements IUpdateable
@@ -48,11 +47,21 @@ public class InputManager implements IUpdateable
 
 	private void checkMouse()
 	{
+		mouseData.grabbed = Mouse.isGrabbed();
+		
 		while (Mouse.next())
 		{
 			//Position
-			mouseData.x = Mouse.getX();
-			mouseData.y = GameConstants.GAME_HEIGHT - Mouse.getY();
+			if (mouseData.grabbed)
+			{
+				mouseData.x = GameConstants.GAME_WIDTH / 2;
+				mouseData.y = GameConstants.GAME_HEIGHT / 2;
+			}
+			else
+			{
+				mouseData.x = Mouse.getX();
+				mouseData.y = GameConstants.GAME_HEIGHT - Mouse.getY();
+			}
 
 			//Movements
 			mouseData.dX = Mouse.getEventDX();

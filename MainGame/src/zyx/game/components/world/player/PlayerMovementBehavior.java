@@ -32,7 +32,7 @@ class PlayerMovementBehavior extends Behavior
 	public void initialize()
 	{
 		collider = gameObject.getCollider();
-		cameraRotation = Camera.getInstance().getRotation();
+		cameraRotation = new Vector3f();
 		keyboard = KeyboardData.data;
 	}
 
@@ -48,6 +48,8 @@ class PlayerMovementBehavior extends Behavior
 		collider.velocity.x = 0;
 		collider.velocity.y = 0;
 
+		Camera.getInstance().getRotation(true, cameraRotation);
+		
 		if (KeyboardData.data.isDown(Keyboard.KEY_W))
 		{
 			move(FORWARD, elapsedTime);
