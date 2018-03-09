@@ -25,10 +25,14 @@ public class RayPicker
 		currentRay = new Vector3f();
 
 		camera = Camera.getInstance();
-		camera.getProjectionMatrix(inverseProjection);
-		inverseProjection.invert();
 	}
 
+	public void setProjectionMatrix(Matrix4f matrix)
+	{
+		inverseProjection.load(matrix);
+		inverseProjection.invert();
+	}
+	
 	public static RayPicker getInstance()
 	{
 		return INSTANCE;

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.utils.callbacks.CustomCallback;
+import zyx.engine.utils.callbacks.ICallback;
+import zyx.engine.utils.worldpicker.ClickedInfo;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorBundle;
 import zyx.game.behavior.BehaviorType;
@@ -44,6 +47,8 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	private AbstractTexture overwriteTexture;
 	
 	private PhysBox physbox;
+	
+	private CustomCallback<ClickedInfo> onObjectClicked;
 
 	public GameObject()
 	{
@@ -81,6 +86,24 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 		DebugPhysics.getInstance().registerPhysbox(this);
 	}
 
+	public void registerClick(ICallback<ClickedInfo> callback)
+	{
+		if(onObjectClicked == null)
+		{
+			onObjectClicked = new CustomCallback<>(false);
+		}
+		
+		onObjectClicked.addCallback(callback);
+	}
+	
+	public void click(ClickedInfo clickInfo)
+	{
+		if (onObjectClicked != null && onObjectClicked.hasEntries())
+		{
+			onObjectClicked.dispatch(clickInfo);
+		}
+	}
+	
 	public void setAnimation(String name)
 	{
 		animationController.setAnimation(name);

@@ -2,6 +2,7 @@ package zyx.opengl.camera;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.utils.worldpicker.calculating.RayPicker;
 import zyx.opengl.shaders.implementations.ScreenShader;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.utils.interfaces.IPositionable;
@@ -40,8 +41,9 @@ public class Camera implements IPositionable
 		
 //		Projection.createOrthographic(0.01f, 1000f, WorldShader.MATRIX_PROJECTION, 16);
 
-		position.set(18, -11, 25);
-		rotation.set(-50, 0, 300);
+		rotation.set(-90, 0, 300);
+		
+		RayPicker.getInstance().setProjectionMatrix(WorldShader.MATRIX_PROJECTION);
 	}
 	
 	public void getProjectionMatrix(Matrix4f out)

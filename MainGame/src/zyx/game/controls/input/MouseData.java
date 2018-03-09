@@ -40,4 +40,14 @@ public final class MouseData extends AbstractInputData
 	{
 		return btnClicked[INDEX_LEFT];
 	}
+
+	public boolean isRightDown()
+	{
+		return btnDown[INDEX_RIGHT];
+	}
+	
+	public boolean isRightClicked()
+	{
+		return btnClicked[INDEX_RIGHT];
+	}
 }

@@ -13,6 +13,7 @@ import zyx.engine.components.world.World3D;
 import zyx.engine.components.world.physics.BoxCollider;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;
+import zyx.engine.utils.worldpicker.WorldPicker;
 import zyx.engine.utils.worldpicker.calculating.PhysPicker;
 import zyx.engine.utils.worldpicker.calculating.PhysPlanePicker;
 import zyx.engine.utils.worldpicker.calculating.RayPicker;
@@ -43,6 +44,7 @@ import zyx.utils.cheats.DebugPoint;
 public class Main
 {
 
+	private static WorldPicker picker;
 	private static RenderTexture ren;
 
 	private static Player player;
@@ -76,7 +78,9 @@ public class Main
 		ConnectionLoader.getInstance().connect("localhost", 8888);
 		ConnectionLoader.getInstance().startThreads();
 
+		picker = new WorldPicker();
 		load();
+
 
 		GLUtils.errorCheck();
 
@@ -85,9 +89,11 @@ public class Main
 			Display.update();
 			Display.sync(GameConstants.FPS);
 
+			CursorManager.getInstance().setCursor(GameCursor.POINTER);
 			update();
+			CursorManager.getInstance().update();
 			world.updateMatrix();
-			
+
 			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, ren.bufferId);
 			GL11.glViewport(0, 0, (int) ren.getWidth(), (int) ren.getHeight());
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
@@ -124,7 +130,7 @@ public class Main
 				attachedKnight1.load("assets/models/knight/knight.zaf");
 				mainKnight.setAnimation("attack");
 				attachedKnight1.setAnimation("attack");
-				
+
 				mainKnight.addAttachment(attachedKnight1, "Skeleton_Hand_R");
 
 //				world.addChild(mainKnight);
@@ -182,11 +188,12 @@ public class Main
 		int elapsed = DeltaTime.getElapsedTime();
 
 		MegaManager.update(timestamp, elapsed);
+		picker.update();
 
 		camera.update(timestamp, elapsed);
 		player.update(timestamp, elapsed);
 		debugContainer.update(timestamp, elapsed);
-		
+
 		FPSCounter.updateFPS();
 
 		world.physics.update(timestamp, elapsed);
@@ -194,6 +201,20 @@ public class Main
 		if (mainKnight != null)
 		{
 			mainKnight.setRotZ(mainKnight.getRotZ() + 0.5f);
+		}
+		if (teapot != null && MouseData.instance.isRightDown())
+		{
+			Vector3f rot = teapot.getRotation(true, null);
+			rot.x += 0.5f;
+			rot.y += 0.5f;
+			rot.z += 0.5f;
+			teapot.setRotation(rot);
+			
+			Vector3f scale = teapot.getScale(true, null);
+			scale.x = FloatMath.abs(FloatMath.sin(timestamp * 0.001f));
+			scale.y = FloatMath.abs(FloatMath.cos(timestamp * 0.001f));
+			scale.z = FloatMath.abs(FloatMath.tan(timestamp * 0.001f));
+			teapot.setScale(scale);
 		}
 		
 		if (MouseData.instance.isLeftDown())
@@ -203,18 +224,6 @@ public class Main
 			Vector3f pos = new Vector3f();
 			camera.getPosition(false, pos);
 			
-			boolean collided = PhysPicker.collided(pos, ray, teapot, out);
-
-			if (collided)
-			{
-				CursorManager.getInstance().setCursor(GameCursor.HAND);
-				teapot.setTexture(new ColorTexture((int) (0xFFFFFF * FloatMath.random())));
-			}
-			else
-			{
-				CursorManager.getInstance().setCursor(GameCursor.POINTER);
-				
-			}
 			out.set(pos);
 			out.x += ray.x * 100;
 			out.y += ray.y * 100;
@@ -246,10 +255,9 @@ public class Main
 
 		player = new Player();
 		player.setPosition(0, 0, 0);
-		
+
 		camera = new CameraController();
 		camera.addBehavior(new FirstPersonBehavior(player));
-
 
 		platform = new GameObject();
 		platform.setY(100);
@@ -267,8 +275,7 @@ public class Main
 		boxTv.setX(-100);
 		boxTv.setZ(-60);
 		boxTv.load("assets/models/tv.zaf");
-						boxTv.setCollider(new BoxCollider(40, 40, 40, true));
-
+		boxTv.setCollider(new BoxCollider(40, 40, 40, true));
 
 		DisplayObjectContainer container = new DisplayObjectContainer();
 		Image image = new Image();
@@ -285,7 +292,7 @@ public class Main
 		stage.addChild(container);
 
 		debugContainer = new DebugContainer();
-		
+
 		world = World3D.instance;
 		world.addChild(debugContainer);
 		world.addChild(platform);
@@ -310,11 +317,14 @@ public class Main
 		Checkbox checkbox = new Checkbox("assets/textures/BtnUp.png", "assets/textures/BtnHover.png", "assets/textures/BtnDown.png", "assets/textures/Check.png");
 		checkbox.position.set(125, 220);
 		stage.addChild(checkbox);
-		
+
 		teapot = new GameObject();
-		teapot.setZ(-50);
+//		teapot.setZ(-50);
 		teapot.load("assets/models/teapot.zaf");
+		teapot.registerClick(new OnTeaPotClicked());
 		world.addChild(teapot);
+		
+		picker.addObject(teapot);
 	}
 
 	private static void addRandomBoxes()
@@ -324,7 +334,7 @@ public class Main
 			float scaleX = FloatMath.random() * 3;
 			float scaleY = FloatMath.random() * 3;
 			float scaleZ = FloatMath.random() * 3;
-			
+
 			GameObject box = new GameObject();
 			box.setX(FloatMath.random() * -200f);
 			box.setY(FloatMath.random() * -200f);
@@ -332,7 +342,7 @@ public class Main
 			box.setScale(scaleX, scaleY, scaleZ);
 			box.load("assets/models/teapot.zaf");
 			box.setCollider(new BoxCollider(40 * scaleX, 40 * scaleY, 40 * scaleZ));
-			
+
 			world.addChild(box);
 		}
 	}

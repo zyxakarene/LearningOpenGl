@@ -2961,3 +2961,39 @@ java.lang.RuntimeException: GLError: [Invalid operation]
 	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
 	at zyx.Main.main(Main.java:81)
 
+mar. 09, 2018 11:38:09 AM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.Main.load(Main.java:323)
+	at zyx.Main.main(Main.java:81)
+
+mar. 09, 2018 11:38:49 AM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.UnsupportedOperationException: Not supported yet.
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:16)
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:6)
+	at zyx.engine.utils.callbacks.CustomCallback.dispatch(CustomCallback.java:48)
+	at zyx.game.components.GameObject.click(GameObject.java:103)
+	at zyx.engine.utils.worldpicker.WorldPicker.handleCollisions(WorldPicker.java:108)
+	at zyx.engine.utils.worldpicker.WorldPicker.update(WorldPicker.java:72)
+	at zyx.Main.update(Main.java:189)
+	at zyx.Main.main(Main.java:92)
+
+mar. 09, 2018 11:55:34 AM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.engine.utils.worldpicker.WorldPicker.addObject(WorldPicker.java:42)
+	at zyx.Main.load(Main.java:311)
+	at zyx.Main.main(Main.java:82)
+
+mar. 09, 2018 12:07:22 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.shaders.implementations.WorldShader.upload(WorldShader.java:62)
+	at zyx.game.components.GameObject.onTransform(GameObject.java:127)
+	at zyx.engine.components.world.WorldObject.updateWorldMatrix(WorldObject.java:112)
+	at zyx.game.components.GameObject.updateWorldMatrix(GameObject.java:133)
+	at zyx.engine.components.world.WorldObject.setScale(WorldObject.java:224)
+	at zyx.Main.update(Main.java:215)
+	at zyx.Main.main(Main.java:92)
+
