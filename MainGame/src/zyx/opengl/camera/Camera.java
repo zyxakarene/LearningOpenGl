@@ -40,7 +40,7 @@ public class Camera implements IPositionable
 		
 //		Projection.createOrthographic(0.01f, 1000f, WorldShader.MATRIX_PROJECTION, 16);
 
-		position.set(-18, 11, -25);
+		position.set(18, -11, 25);
 		rotation.set(-50, 0, 300);
 	}
 	

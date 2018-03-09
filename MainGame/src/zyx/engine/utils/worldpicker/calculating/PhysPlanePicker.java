@@ -1,4 +1,4 @@
-package zyx.engine.utils;
+package zyx.engine.utils.worldpicker.calculating;
 
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.models.implementations.physics.PhysBox;

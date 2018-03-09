@@ -109,12 +109,11 @@ public class DebugPhysDrawing
 		Vector3f.cross(ab, ac, normal);
 	}
 
-	private static Vector3f toVector(PhysVertex v1, PhysVertex v2)
+	private static Vector3f toVector(Vector3f v1, Vector3f v2)
 	{
 		Vector3f vec = new Vector3f();
-		vec.x = v1.x - v2.x;
-		vec.y = v1.y - v2.y;
-		vec.z = v1.z - v2.z;
+		Vector3f.sub(v1, v2, vec);
+		
 		if (vec.length() == 0)
 		{
 			return null;

@@ -3,6 +3,7 @@ package zyx.opengl.models.implementations;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.models.AbstractModel;
+import zyx.opengl.models.SharedWorldModelTransformation;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
@@ -11,14 +12,12 @@ import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.utils.DeltaTime;
-import zyx.utils.FloatMath;
-import zyx.utils.GeometryUtils;
 
 public class WorldModel extends AbstractModel
 {
-	protected static final Vector3f SHARED_ROTATION = new Vector3f(0, 0, 0);
-	protected static final Vector3f SHARED_POSITION = new Vector3f(0, 0, 0);
-	protected static final Vector3f SHARED_SCALE = new Vector3f(1, 1, 1);
+	private static final Vector3f ATTACHMENT_POSITION = new Vector3f(0, 0, 0);
+	private static final Vector3f ATTACHMENT_ROTATION = new Vector3f(0, 0, 0);
+	private static final Vector3f ATTACHMENT_SCALE = new Vector3f(1, 1, 1);
 
 	private static final Matrix4f MODEL_MATRIX = WorldShader.MATRIX_MODEL;
 
@@ -42,24 +41,10 @@ public class WorldModel extends AbstractModel
 	{
 		return skeleton.getBoneByName(name);
 	}
-	
-	public void transform(Vector3f position, Vector3f rotation, Vector3f scale)
-	{
-		SHARED_POSITION.set(position);
-		SHARED_ROTATION.set(rotation);
-		SHARED_SCALE.set(scale);
-		
-		transform();
-	}
 
 	public void setAnimation(AnimationController controller)
 	{
 		skeleton.setCurrentAnimation(controller);
-	}
-
-	public void setScale(float newScale)
-	{
-		SHARED_SCALE.set(newScale, newScale, newScale);
 	}
 
 	@Override
@@ -74,27 +59,20 @@ public class WorldModel extends AbstractModel
 	{
 		return physBox;
 	}
-	
-	private void transform()
-	{
-		MODEL_MATRIX.translate(SHARED_POSITION);
-		MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.x), GeometryUtils.ROTATION_X);
-		MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.y), GeometryUtils.ROTATION_Y);
-		MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.z), GeometryUtils.ROTATION_Z);
-
-		MODEL_MATRIX.scale(SHARED_SCALE);
-
-		shader.upload();
-	}
-	
+		
 	public void drawAsAttachment(Attachment attachment)
 	{
+		skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
 		Matrix4f bonePosCopy = new Matrix4f(attachment.joint.getFinalTransform());
 		Matrix4f.mul(MODEL_MATRIX, bonePosCopy, MODEL_MATRIX);
-		
-		skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
 
-		transform();
+		attachment.child.getPosition(true, ATTACHMENT_POSITION);
+		attachment.child.getRotation(true, ATTACHMENT_ROTATION);
+		attachment.child.getScale(true, ATTACHMENT_SCALE);
+		
+		SharedWorldModelTransformation.transform(ATTACHMENT_POSITION, ATTACHMENT_ROTATION, ATTACHMENT_SCALE);
+		
+		shader.upload();
 		super.draw();
 	}
 

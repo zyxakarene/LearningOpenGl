@@ -51,7 +51,7 @@ public class FirstPersonBehavior extends Behavior
 		float playerY = playerPosition.y;
 		float playerZ = playerPosition.z + 30;
 		
-		cameraPosition.set(-playerX, -playerY, -playerZ);
+		cameraPosition.set(playerX, playerY, playerZ);
 		
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_Z))
 		{

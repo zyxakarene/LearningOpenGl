@@ -51,6 +51,7 @@ public class CameraUpdateViewBehavior extends Behavior
 		viewMatrix.rotate(cameraRotationRad.y, GeometryUtils.ROTATION_Y);
 		viewMatrix.rotate(cameraRotationRad.z, GeometryUtils.ROTATION_Z);
 
+		cameraPosition.negate();
 		viewMatrix.translate(cameraPosition);
 
 		float dX = FloatMath.sin(cameraRotationRad.z) * FloatMath.cos(cameraRotationRad.w) * 0.1f;

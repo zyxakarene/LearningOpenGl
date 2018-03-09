@@ -2877,3 +2877,87 @@ java.lang.NullPointerException
 	at zyx.Main.load(Main.java:249)
 	at zyx.Main.main(Main.java:79)
 
+mar. 09, 2018 9:54:06 AM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.world.camera.CameraController.getPosition(CameraController.java:27)
+	at zyx.game.components.GameObject.onTransform(GameObject.java:92)
+	at zyx.engine.components.world.WorldObject.updateWorldMatrix(WorldObject.java:112)
+	at zyx.game.components.GameObject.updateWorldMatrix(GameObject.java:107)
+	at zyx.engine.components.world.WorldObject.<init>(WorldObject.java:45)
+	at zyx.game.components.GameObject.<init>(GameObject.java:49)
+	at zyx.game.components.world.camera.CameraController.<init>(CameraController.java:16)
+	at zyx.Main.load(Main.java:252)
+	at zyx.Main.main(Main.java:79)
+
+mar. 09, 2018 9:55:05 AM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.world.camera.CameraController.getPosition(CameraController.java:27)
+	at zyx.game.components.GameObject.onTransform(GameObject.java:92)
+	at zyx.engine.components.world.WorldObject.updateWorldMatrix(WorldObject.java:112)
+	at zyx.game.components.GameObject.updateWorldMatrix(GameObject.java:107)
+	at zyx.engine.components.world.WorldObject.<init>(WorldObject.java:45)
+	at zyx.game.components.GameObject.<init>(GameObject.java:49)
+	at zyx.game.components.world.camera.CameraController.<init>(CameraController.java:16)
+	at zyx.Main.load(Main.java:252)
+	at zyx.Main.main(Main.java:79)
+
+mar. 09, 2018 9:59:00 AM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.components.world.camera.CameraController.getPosition(CameraController.java:27)
+	at zyx.game.components.GameObject.onTransform(GameObject.java:92)
+	at zyx.engine.components.world.WorldObject.updateWorldMatrix(WorldObject.java:112)
+	at zyx.game.components.GameObject.updateWorldMatrix(GameObject.java:107)
+	at zyx.engine.components.world.WorldObject.<init>(WorldObject.java:45)
+	at zyx.game.components.GameObject.<init>(GameObject.java:49)
+	at zyx.game.components.world.camera.CameraController.<init>(CameraController.java:16)
+	at zyx.Main.load(Main.java:252)
+	at zyx.Main.main(Main.java:79)
+
+mar. 09, 2018 10:08:17 AM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GLError: [Invalid operation]
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
+	at zyx.Main.main(Main.java:81)
+
+mar. 09, 2018 10:14:56 AM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.shaders.implementations.WorldShader.upload(WorldShader.java:62)
+	at zyx.opengl.models.implementations.WorldModel.drawAsAttachment(WorldModel.java:76)
+	at zyx.game.components.GameObject.drawAsAttachment(GameObject.java:159)
+	at zyx.game.components.GameObject.onDraw(GameObject.java:144)
+	at zyx.engine.components.world.WorldObject.draw(WorldObject.java:128)
+	at zyx.engine.components.world.WorldObject.draw(WorldObject.java:132)
+	at zyx.engine.components.world.WorldObject.draw(WorldObject.java:132)
+	at zyx.engine.components.world.World3D.drawScene(World3D.java:20)
+	at zyx.Main.main(Main.java:102)
+
+mar. 09, 2018 10:15:04 AM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.opengl.shaders.implementations.WorldShader.upload(WorldShader.java:62)
+	at zyx.opengl.models.implementations.WorldModel.drawAsAttachment(WorldModel.java:76)
+	at zyx.game.components.GameObject.drawAsAttachment(GameObject.java:159)
+	at zyx.game.components.GameObject.onDraw(GameObject.java:144)
+	at zyx.engine.components.world.WorldObject.draw(WorldObject.java:128)
+	at zyx.engine.components.world.WorldObject.draw(WorldObject.java:132)
+	at zyx.engine.components.world.WorldObject.draw(WorldObject.java:132)
+	at zyx.engine.components.world.World3D.drawScene(World3D.java:20)
+	at zyx.Main.main(Main.java:102)
+
+mar. 09, 2018 10:47:45 AM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.ArithmeticException: / by zero
+	at zyx.utils.FPSCounter.updateFPS(FPSCounter.java:34)
+	at zyx.Main.update(Main.java:190)
+	at zyx.Main.main(Main.java:88)
+
+mar. 09, 2018 11:08:40 AM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: GLError: [Invalid operation]
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
+	at zyx.Main.main(Main.java:81)
+

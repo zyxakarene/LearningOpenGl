@@ -1,15 +1,14 @@
 package zyx.opengl.models.implementations.physics;
 
 import org.lwjgl.util.vector.Vector3f;
-import zyx.opengl.shaders.implementations.WorldShader;
 
 public class PhysTriangle
 {
-	final PhysVertex v1;
-	final PhysVertex v2;
-	final PhysVertex v3;
+	final Vector3f v1;
+	final Vector3f v2;
+	final Vector3f v3;
 
-	public PhysTriangle(PhysVertex v1, PhysVertex v2, PhysVertex v3)
+	public PhysTriangle(Vector3f v1, Vector3f v2, Vector3f v3)
 	{
 		this.v1 = v1;
 		this.v2 = v2;
@@ -18,7 +17,7 @@ public class PhysTriangle
 
 	public void getVertex1(int index, Vector3f out)
 	{
-		PhysVertex vertex = null;
+		Vector3f vertex = null;
 		switch(index)
 		{
 			case(0):{vertex = v1; break;}

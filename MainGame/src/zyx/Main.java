@@ -13,9 +13,9 @@ import zyx.engine.components.world.World3D;
 import zyx.engine.components.world.physics.BoxCollider;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;
-import zyx.engine.utils.PhysPicker;
-import zyx.engine.utils.PhysPlanePicker;
-import zyx.engine.utils.RayPicker;
+import zyx.engine.utils.worldpicker.calculating.PhysPicker;
+import zyx.engine.utils.worldpicker.calculating.PhysPlanePicker;
+import zyx.engine.utils.worldpicker.calculating.RayPicker;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.components.screen.AddBitmapFontButton;
 import zyx.game.components.world.player.Player;
@@ -110,8 +110,6 @@ public class Main
 			GL11.glViewport(0, 0, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
 			draw();
 
-			FPSCounter.updateFPS();
-
 			GLUtils.errorCheck();
 
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_1) && mainKnight == null)
@@ -126,7 +124,7 @@ public class Main
 				attachedKnight1.load("assets/models/knight/knight.zaf");
 				mainKnight.setAnimation("attack");
 				attachedKnight1.setAnimation("attack");
-
+				
 				mainKnight.addAttachment(attachedKnight1, "Skeleton_Hand_R");
 
 //				world.addChild(mainKnight);
@@ -189,6 +187,7 @@ public class Main
 		player.update(timestamp, elapsed);
 		debugContainer.update(timestamp, elapsed);
 		
+		FPSCounter.updateFPS();
 
 		world.physics.update(timestamp, elapsed);
 
@@ -203,10 +202,9 @@ public class Main
 			Vector3f out = new Vector3f();
 			Vector3f pos = new Vector3f();
 			camera.getPosition(false, pos);
-			pos.scale(-1);
 			
 			boolean collided = PhysPicker.collided(pos, ray, teapot, out);
-			System.out.println(collided);
+
 			if (collided)
 			{
 				CursorManager.getInstance().setCursor(GameCursor.HAND);
@@ -247,6 +245,7 @@ public class Main
 		Camera.getInstance().initialize();
 
 		player = new Player();
+		player.setPosition(0, 0, 0);
 		
 		camera = new CameraController();
 		camera.addBehavior(new FirstPersonBehavior(player));

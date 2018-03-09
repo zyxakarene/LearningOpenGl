@@ -10,6 +10,7 @@ import zyx.game.behavior.BehaviorBundle;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.controls.models.ModelManager;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
+import zyx.opengl.models.SharedWorldModelTransformation;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
 import zyx.opengl.models.implementations.bones.attachments.Attachment;
@@ -88,15 +89,19 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	@Override
 	protected void onTransform()
 	{
+		getPosition(true, HELPER_POS);
+		getRotation(true, HELPER_ROT);
+		getScale(true, HELPER_SCALE);
+		
 		if (loaded)
 		{
-			getPosition(true, HELPER_POS);
-			getRotation(true, HELPER_ROT);
-			getScale(true, HELPER_SCALE);
-			
 			model.setAnimation(animationController);
-			model.transform(HELPER_POS, HELPER_ROT, HELPER_SCALE);
 		}
+		
+		SharedWorldModelTransformation.transform(HELPER_POS, HELPER_ROT, HELPER_SCALE);
+		
+		shader.bind();
+		shader.upload();
 	}
 
 	@Override
@@ -266,15 +271,6 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 		return model.getTexture();
 	}
 
-	public void paint()
-	{
-		shader.bind();
-		WorldShader.MATRIX_MODEL.setIdentity();
-		
-		draw();
-
-	}
-
 	@Override
 	public PhysBox getPhysbox()
 	{
@@ -286,6 +282,4 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	{
 		return worldMatrix;
 	}
-	
-	
 }
