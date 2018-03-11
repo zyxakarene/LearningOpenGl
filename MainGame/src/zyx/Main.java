@@ -319,7 +319,7 @@ public class Main
 		stage.addChild(checkbox);
 
 		teapot = new GameObject();
-//		teapot.setZ(-50);
+		teapot.setZ(-50);
 		teapot.load("assets/models/teapot.zaf");
 		teapot.registerClick(new OnTeaPotClicked());
 		world.addChild(teapot);
