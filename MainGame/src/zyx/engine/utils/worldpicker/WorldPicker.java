@@ -3,8 +3,7 @@ package zyx.engine.utils.worldpicker;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.engine.utils.worldpicker.calculating.PhysPicker;
-import zyx.engine.utils.worldpicker.calculating.RayPicker;
+import zyx.engine.utils.worldpicker.calculating.*;
 import zyx.game.components.GameObject;
 import zyx.opengl.camera.Camera;
 import zyx.utils.FloatMath;
@@ -23,6 +22,8 @@ public class WorldPicker
 	private LinkedList<PoolableVector3f> collidedPositions;
 	private LinkedList<GameObject> collidedObjects;
 	private Vector3f outPosition;
+	
+	private AbstractPicker pickerImpl;
 
 	public WorldPicker()
 	{
@@ -35,6 +36,8 @@ public class WorldPicker
 		collidedPositions = new LinkedList<>();
 		collidedObjects = new LinkedList<>();
 		outPosition = new Vector3f();
+		
+		pickerImpl = new PhysPicker();
 	}
 	
 	public void addObject(GameObject obj)
@@ -55,7 +58,7 @@ public class WorldPicker
 		
 		for (GameObject pickable : pickables)
 		{
-			collided = PhysPicker.collided(currentPos, currentRay, pickable, outPosition);
+			collided = pickerImpl.collided(currentPos, currentRay, pickable, outPosition);
 			
 			if (collided)
 			{

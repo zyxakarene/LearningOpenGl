@@ -228,7 +228,7 @@ public class Main
 			out.x += ray.x * 100;
 			out.y += ray.y * 100;
 			out.z += ray.z * 100;
-			DebugPoint.addToScene(out.x, out.y, out.z, 10000);
+//			DebugPoint.addToScene(out.x, out.y, out.z, 10000);
 		}
 	}
 
@@ -338,11 +338,13 @@ public class Main
 			GameObject box = new GameObject();
 			box.setX(FloatMath.random() * -200f);
 			box.setY(FloatMath.random() * -200f);
-			box.setZ(FloatMath.random() * -200f);
+			box.setZ((FloatMath.random() * 200f) - 50);
 			box.setScale(scaleX, scaleY, scaleZ);
-			box.load("assets/models/teapot.zaf");
+			box.load("assets/models/box.zaf");
 			box.setCollider(new BoxCollider(40 * scaleX, 40 * scaleY, 40 * scaleZ));
-
+			box.registerClick(new OnTeaPotClicked());
+			picker.addObject(box);
+			
 			world.addChild(box);
 		}
 	}

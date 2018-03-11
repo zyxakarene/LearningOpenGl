@@ -2997,3 +2997,9 @@ java.lang.NullPointerException
 	at zyx.Main.update(Main.java:215)
 	at zyx.Main.main(Main.java:92)
 
+mar. 10, 2018 10:55:50 AM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.IllegalArgumentException: This method is invalid
+	at zyx.engine.components.world.World3D.setRotZ(World3D.java:82)
+	at zyx.Main.main(Main.java:108)
+

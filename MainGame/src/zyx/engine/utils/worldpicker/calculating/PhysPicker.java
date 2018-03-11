@@ -2,17 +2,28 @@ package zyx.engine.utils.worldpicker.calculating;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.models.implementations.physics.PhysTriangle;
 import zyx.utils.interfaces.IPhysbox;
 
-public class PhysPicker
+public class PhysPicker extends AbstractPicker
 {
 
 	private static final float EPSILON = 0.0000001f;
 
-	public static boolean collided(Vector3f pos, Vector3f dir, IPhysbox physContainer, Vector3f intersectPoint)
+	private static final Vector3f VERTEX_0 = new Vector3f();
+	private static final Vector3f VERTEX_1 = new Vector3f();
+	private static final Vector3f VERTEX_2 = new Vector3f();
+
+	private static final Vector3f EDGE_1 = new Vector3f();
+	private static final Vector3f EDGE_2 = new Vector3f();
+
+	private static final Vector3f H = new Vector3f();
+	private static final Vector3f S = new Vector3f();
+	private static final Vector3f Q = new Vector3f();
+
+	@Override
+	public boolean collided(Vector3f pos, Vector3f dir, IPhysbox physContainer, Vector3f intersectPoint)
 	{
 		PhysBox phys = physContainer.getPhysbox();
 		Matrix4f mat = physContainer.getMatrix();
@@ -20,7 +31,7 @@ public class PhysPicker
 		{
 			return false;
 		}
-		
+
 		PhysTriangle[] triangles = phys.getTriangles();
 		boolean collided;
 
@@ -37,34 +48,21 @@ public class PhysPicker
 		return false;
 	}
 
-	private static Vector4f vertexHelper = new Vector4f();
-	
-	private static Vector3f vertex0 = new Vector3f();
-	private static Vector3f vertex1 = new Vector3f();
-	private static Vector3f vertex2 = new Vector3f();
-
-	private static Vector3f edge1 = new Vector3f();
-	private static Vector3f edge2 = new Vector3f();
-
-	private static Vector3f h = new Vector3f();
-	private static Vector3f s = new Vector3f();
-	private static Vector3f q = new Vector3f();
-
-	private static boolean testTriangle(Vector3f pos, Vector3f dir, PhysTriangle triangle, Matrix4f mat, Vector3f intersectPoint)
+	private boolean testTriangle(Vector3f pos, Vector3f dir, PhysTriangle triangle, Matrix4f mat, Vector3f intersectPoint)
 	{
-		triangle.getVertex1(0, vertex0);
-		triangle.getVertex1(1, vertex1);
-		triangle.getVertex1(2, vertex2);
+		triangle.getVertex1(0, VERTEX_0);
+		triangle.getVertex1(1, VERTEX_1);
+		triangle.getVertex1(2, VERTEX_2);
 
-		convert(vertex0, mat);
-		convert(vertex1, mat);
-		convert(vertex2, mat);
-		
-		Vector3f.sub(vertex1, vertex0, edge1);
-		Vector3f.sub(vertex2, vertex0, edge2);
+		transformVertex(VERTEX_0, mat);
+		transformVertex(VERTEX_1, mat);
+		transformVertex(VERTEX_2, mat);
 
-		Vector3f.cross(dir, edge2, h);
-		float a = Vector3f.dot(edge1, h);
+		Vector3f.sub(VERTEX_1, VERTEX_0, EDGE_1);
+		Vector3f.sub(VERTEX_2, VERTEX_0, EDGE_2);
+
+		Vector3f.cross(dir, EDGE_2, H);
+		float a = Vector3f.dot(EDGE_1, H);
 
 		if (a > -EPSILON && a < EPSILON)
 		{
@@ -73,22 +71,22 @@ public class PhysPicker
 
 		float f = 1 / a;
 
-		Vector3f.sub(pos, vertex0, s);
-		float u = f * Vector3f.dot(s, h);
+		Vector3f.sub(pos, VERTEX_0, S);
+		float u = f * Vector3f.dot(S, H);
 		if (u < 0 || u > 1)
 		{
 			return false;
 		}
 
-		Vector3f.cross(s, edge1, q);
-		float v = f * Vector3f.dot(dir, q);
+		Vector3f.cross(S, EDGE_1, Q);
+		float v = f * Vector3f.dot(dir, Q);
 		if (v < 0 || u + v > 1)
 		{
 			return false;
 		}
 
 		// At this stage we can compute t to find out where the intersection point is on the line.
-		float t = f * Vector3f.dot(edge2, q);
+		float t = f * Vector3f.dot(EDGE_2, Q);
 		if (t > EPSILON) // ray intersection
 		{
 			intersectPoint.set(pos);
@@ -101,19 +99,5 @@ public class PhysPicker
 		{
 			return false;
 		}
-	}
-
-	private static void convert(Vector3f vertex, Matrix4f mat)
-	{
-		vertexHelper.x = vertex.x;
-		vertexHelper.y = vertex.y;
-		vertexHelper.z = vertex.z;
-		vertexHelper.w = 1;
-		
-		Matrix4f.transform(mat, vertexHelper, vertexHelper);
-		
-		vertex.x = vertexHelper.x;
-		vertex.y = vertexHelper.y;
-		vertex.z = vertexHelper.z;
 	}
 }
