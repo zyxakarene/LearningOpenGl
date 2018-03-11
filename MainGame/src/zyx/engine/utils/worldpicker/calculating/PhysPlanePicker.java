@@ -10,14 +10,6 @@ import zyx.utils.interfaces.IPhysbox;
 public class PhysPlanePicker extends AbstractPicker
 {
 
-	private static final Vector3f VERTEX_0 = new Vector3f();
-	private static final Vector3f VERTEX_1 = new Vector3f();
-	private static final Vector3f VERTEX_2 = new Vector3f();
-
-	private static final Vector3f AB = new Vector3f();
-	private static final Vector3f AC = new Vector3f();
-	private static final Vector3f TRIANGLE_NORMAL = new Vector3f();
-
 	@Override
 	public boolean collided(Vector3f pos, Vector3f dir, IPhysbox physContainer, Vector3f intersectPoint)
 	{
@@ -59,24 +51,18 @@ public class PhysPlanePicker extends AbstractPicker
 
 	private boolean testTriangle(Vector3f startPos, Vector3f endPos, PhysTriangle triangle, Matrix4f matrix)
 	{
-		triangle.getVertex1(0, VERTEX_0);
-		triangle.getVertex1(1, VERTEX_1);
-		triangle.getVertex1(2, VERTEX_2);
+		VERTEX_1.set(triangle.v1);
+		VERTEX_2.set(triangle.v2);
+		VERTEX_3.set(triangle.v3);
+		NORMAL.set(triangle.normal);
 
-		transformVertex(VERTEX_0, matrix);
 		transformVertex(VERTEX_1, matrix);
 		transformVertex(VERTEX_2, matrix);
+		transformVertex(VERTEX_3, matrix);
+		transformVertex(NORMAL, matrix);
 
-		Vector3f.sub(VERTEX_0, VERTEX_1, AB);
-		Vector3f.sub(VERTEX_0, VERTEX_2, AC);
-		AB.normalise();
-		AC.normalise();
-
-		Vector3f.cross(AB, AC, TRIANGLE_NORMAL);
-		TRIANGLE_NORMAL.normalise();
-
-		float dotStart = Vector3f.dot(startPos, TRIANGLE_NORMAL);
-		float dotEnd = Vector3f.dot(endPos, TRIANGLE_NORMAL);
+		float dotStart = Vector3f.dot(startPos, NORMAL);
+		float dotEnd = Vector3f.dot(endPos, NORMAL);
 
 		if ((dotStart > 0 && dotEnd < 0) || (dotStart < 0 && dotEnd > 0))
 		{

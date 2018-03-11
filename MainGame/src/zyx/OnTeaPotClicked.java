@@ -7,6 +7,7 @@ import zyx.engine.utils.worldpicker.ClickedInfo;
 import zyx.game.controls.input.MouseData;
 import zyx.opengl.textures.ColorTexture;
 import zyx.utils.FloatMath;
+import zyx.utils.cheats.DebugPoint;
 
 class OnTeaPotClicked implements ICallback<ClickedInfo>
 {
@@ -23,6 +24,11 @@ class OnTeaPotClicked implements ICallback<ClickedInfo>
 		if (MouseData.instance.isLeftDown())
 		{
 			data.target.setTexture(new ColorTexture((int) (0xFFFFFF * FloatMath.random())));
+		}
+		
+		if (MouseData.instance.isLeftClicked())
+		{
+			DebugPoint.addToScene(data.position, 10000);
 		}
 	}
 

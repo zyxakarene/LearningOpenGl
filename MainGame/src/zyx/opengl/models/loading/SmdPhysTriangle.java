@@ -9,6 +9,7 @@ class SmdPhysTriangle
 	Vector3f v1; 
 	Vector3f v2; 
 	Vector3f v3; 
+	Vector3f normal; 
 	
 	SmdPhysTriangle()
 	{
@@ -30,6 +31,12 @@ class SmdPhysTriangle
 		y = in.readFloat();
 		z = in.readFloat();
 		v3 = new Vector3f(x, y, z);
+		
+		x = in.readFloat();
+		y = in.readFloat();
+		z = in.readFloat();
+		
+		normal = new Vector3f(x, y, z);
 	}
 	
 }

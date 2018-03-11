@@ -108,7 +108,7 @@ public class ZafLoader
 		{
 			for (SmdPhysTriangle triangle : physBox.triangles)
 			{
-				box.addTriangle(triangle.v1, triangle.v2, triangle.v3);
+				box.addTriangle(triangle.v1, triangle.v2, triangle.v3, triangle.normal);
 			}
 		}
 		

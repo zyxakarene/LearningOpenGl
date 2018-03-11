@@ -5,6 +5,7 @@
  */
 package zyx.utils.cheats;
 
+import org.lwjgl.util.vector.Vector3f;
 import zyx.game.components.GameObject;
 
 /**
@@ -24,8 +25,8 @@ public class DebugPoint extends GameObject
 		this.hasLife = lifespan > 0;
 		this.alive = true;
 		
-		load("assets/models/box.zaf");
-		setPosition(x, y, z - 2.5f);
+		load("assets/models/debug.zaf");
+		setPosition(x, y, z);
 		setScale(0.1f, 0.1f, 0.1f);
 	}
 
@@ -47,10 +48,17 @@ public class DebugPoint extends GameObject
 		return alive;
 	}
 	
-	public static void addToScene(float x, float y, float z, int lifespan)
+	public static DebugPoint addToScene(float x, float y, float z, int lifespan)
 	{
 		DebugPoint point = new DebugPoint(x, y, z, lifespan);
 		DebugContainer.instance.addPoint(point);
+		
+		return point;
+	}
+	
+	public static DebugPoint addToScene(Vector3f pos, int lifespan)
+	{
+		return addToScene(pos.x, pos.y, pos.z, lifespan);
 	}
 	
 }
