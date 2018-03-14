@@ -11,7 +11,7 @@ public class DebugPhysics
 
 	private static final DebugPhysics INSTANCE = new DebugPhysics();
 
-	private HashMap<GameObject, WorldModel> entryMap;
+	private HashMap<GameObject, WorldModel[]> entryMap;
 
 	public DebugPhysics()
 	{
@@ -25,8 +25,9 @@ public class DebugPhysics
 
 	public void registerPhysbox(GameObject obj)
 	{
-		WorldModel model = DebugPhysDrawing.getModelFor(obj.getPhysbox());
-		entryMap.put(obj, model);
+		WorldModel[] models = DebugPhysDrawing.getModelFor(obj.getPhysbox());
+		
+		entryMap.put(obj, models);
 	}
 
 	public void unregisterPhysbox(GameObject obj)
@@ -39,8 +40,17 @@ public class DebugPhysics
 		if (entryMap.containsKey(parent))
 		{
 			GLUtils.setWireframe(true);
-			entryMap.get(parent).draw();
+			WorldModel[] models = entryMap.get(parent);
+			for (WorldModel model : models)
+			{
+				model.draw();
+			}
 			GLUtils.setWireframe(false);
 		}
+	}
+	
+	private static class DebugPhysEntry
+	{
+		
 	}
 }

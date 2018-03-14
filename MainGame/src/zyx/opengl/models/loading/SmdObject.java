@@ -10,7 +10,7 @@ class SmdObject
 	float[] vertexData;
 	int[] elementData;
 	SmdAnimation[] animations;
-	SmdPhysbox[] physboxes;
+	SmdPhysInfo physInformation;
 	String texture;
 	
 	public void read(DataInputStream in) throws IOException
@@ -22,8 +22,8 @@ class SmdObject
 
 		int vertexCount = in.readInt();
 		vertexData = new float[vertexCount * 12];
-		Print.out(vertexCount, " verticies");
-		Print.out(vertexData.length, " floats");
+		Print.out("↳", vertexCount, "verticies");
+		Print.out("↳", vertexData.length, "floats");
 		for (int i = 0; i < vertexData.length; i++)
 		{
 			vertexData[i] = in.readFloat();
@@ -31,7 +31,7 @@ class SmdObject
 		
 		int elementCount = in.readInt();
 		elementData = new int[elementCount];
-		Print.out(elementData.length, " elements");
+		Print.out("↳", elementData.length, "elements");
 		for (int i = 0; i < elementData.length; i++)
 		{
 			elementData[i] = in.readShort();
@@ -39,21 +39,17 @@ class SmdObject
 		
 		int animationLength = in.readInt();
 		animations = new SmdAnimation[animationLength];
-		Print.out(elementData.length, " animations");
+		Print.out("↳", elementData.length, "animations");
 		for (int i = 0; i < animationLength; i++)
 		{
 			animations[i] = new SmdAnimation();
 			animations[i].read(in);
 		}
 		
-		int physBoxLength = in.readInt();
-		physboxes = new SmdPhysbox[physBoxLength];
-		Print.out(physboxes.length, " physboxes");
-		for (int i = 0; i < physBoxLength; i++)
-		{
-			physboxes[i] = new SmdPhysbox();
-			physboxes[i].read(in);
-		}
+		physInformation = new SmdPhysInfo();
+		physInformation.read(in);
+		
+		Print.out("↳", physInformation.physBoxes.length, "physboxes\n");
 		
 		texture = in.readUTF();
 	}

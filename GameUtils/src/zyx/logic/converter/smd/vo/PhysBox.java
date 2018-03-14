@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class PhysBox
-{
+{	
 	public ArrayList<PhysTriangle> triangles = new ArrayList<>();
 	
 	public void save(DataOutputStream out) throws IOException
@@ -15,5 +15,10 @@ public class PhysBox
 		{
 			triangle.save(out);
 		}
+	}
+	
+	public void addTriangle(PhysTriangle triangle)
+	{
+		triangles.add(triangle);
 	}
 }

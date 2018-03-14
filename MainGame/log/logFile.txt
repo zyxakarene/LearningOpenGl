@@ -3003,3 +3003,123 @@ java.lang.IllegalArgumentException: This method is invalid
 	at zyx.engine.components.world.World3D.setRotZ(World3D.java:82)
 	at zyx.Main.main(Main.java:108)
 
+mar. 13, 2018 7:04:55 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: Oh no! Test exception
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:33)
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:12)
+	at zyx.engine.utils.callbacks.CustomCallback.dispatch(CustomCallback.java:48)
+	at zyx.game.components.GameObject.click(GameObject.java:103)
+	at zyx.engine.utils.worldpicker.WorldPicker.handleCollisions(WorldPicker.java:111)
+	at zyx.engine.utils.worldpicker.WorldPicker.update(WorldPicker.java:75)
+	at zyx.Main.update(Main.java:191)
+	at zyx.Main.main(Main.java:93)
+
+mar. 13, 2018 7:05:41 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: Oh no! Test exception
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:33)
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:12)
+	at zyx.engine.utils.callbacks.CustomCallback.dispatch(CustomCallback.java:48)
+	at zyx.game.components.GameObject.click(GameObject.java:103)
+	at zyx.engine.utils.worldpicker.WorldPicker.handleCollisions(WorldPicker.java:111)
+	at zyx.engine.utils.worldpicker.WorldPicker.update(WorldPicker.java:75)
+	at zyx.Main.update(Main.java:191)
+	at zyx.Main.main(Main.java:93)
+
+mar. 13, 2018 7:07:25 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: Oh no! Test exception
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:33)
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:12)
+	at zyx.engine.utils.callbacks.CustomCallback.dispatch(CustomCallback.java:48)
+	at zyx.game.components.GameObject.click(GameObject.java:103)
+	at zyx.engine.utils.worldpicker.WorldPicker.handleCollisions(WorldPicker.java:111)
+	at zyx.engine.utils.worldpicker.WorldPicker.update(WorldPicker.java:75)
+	at zyx.Main.update(Main.java:191)
+	at zyx.Main.main(Main.java:93)
+
+mar. 13, 2018 7:08:05 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: Oh no! Test exception
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:33)
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:12)
+	at zyx.engine.utils.callbacks.CustomCallback.dispatch(CustomCallback.java:48)
+	at zyx.game.components.GameObject.click(GameObject.java:103)
+	at zyx.engine.utils.worldpicker.WorldPicker.handleCollisions(WorldPicker.java:111)
+	at zyx.engine.utils.worldpicker.WorldPicker.update(WorldPicker.java:75)
+	at zyx.Main.update(Main.java:191)
+	at zyx.Main.main(Main.java:93)
+
+mar. 13, 2018 7:09:15 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: Oh no! Test exception
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:33)
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:12)
+	at zyx.engine.utils.callbacks.CustomCallback.dispatch(CustomCallback.java:48)
+	at zyx.game.components.GameObject.click(GameObject.java:103)
+	at zyx.engine.utils.worldpicker.WorldPicker.handleCollisions(WorldPicker.java:111)
+	at zyx.engine.utils.worldpicker.WorldPicker.update(WorldPicker.java:75)
+	at zyx.Main.update(Main.java:191)
+	at zyx.Main.main(Main.java:93)
+
+mar. 13, 2018 7:10:12 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: Oh no! Test exception
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:33)
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:12)
+	at zyx.engine.utils.callbacks.CustomCallback.dispatch(CustomCallback.java:48)
+	at zyx.game.components.GameObject.click(GameObject.java:103)
+	at zyx.engine.utils.worldpicker.WorldPicker.handleCollisions(WorldPicker.java:111)
+	at zyx.engine.utils.worldpicker.WorldPicker.update(WorldPicker.java:75)
+	at zyx.Main.update(Main.java:191)
+	at zyx.Main.main(Main.java:93)
+
+mar. 13, 2018 7:12:12 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: Oh no! Test exception
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:33)
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:12)
+	at zyx.engine.utils.callbacks.CustomCallback.dispatch(CustomCallback.java:48)
+	at zyx.game.components.GameObject.click(GameObject.java:103)
+	at zyx.engine.utils.worldpicker.WorldPicker.handleCollisions(WorldPicker.java:111)
+	at zyx.engine.utils.worldpicker.WorldPicker.update(WorldPicker.java:75)
+	at zyx.Main.update(Main.java:191)
+	at zyx.Main.main(Main.java:93)
+
+mar. 13, 2018 7:13:00 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: Oh no! Test exception
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:33)
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:12)
+	at zyx.engine.utils.callbacks.CustomCallback.dispatch(CustomCallback.java:48)
+	at zyx.game.components.GameObject.click(GameObject.java:103)
+	at zyx.engine.utils.worldpicker.WorldPicker.handleCollisions(WorldPicker.java:111)
+	at zyx.engine.utils.worldpicker.WorldPicker.update(WorldPicker.java:75)
+	at zyx.Main.update(Main.java:191)
+	at zyx.Main.main(Main.java:93)
+
+mar. 13, 2018 7:14:47 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: Oh no! Test exception
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:33)
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:12)
+	at zyx.engine.utils.callbacks.CustomCallback.dispatch(CustomCallback.java:48)
+	at zyx.game.components.GameObject.click(GameObject.java:103)
+	at zyx.engine.utils.worldpicker.WorldPicker.handleCollisions(WorldPicker.java:111)
+	at zyx.engine.utils.worldpicker.WorldPicker.update(WorldPicker.java:75)
+	at zyx.Main.update(Main.java:191)
+	at zyx.Main.main(Main.java:93)
+
+mar. 13, 2018 7:15:31 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.RuntimeException: Oh no! Test exception
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:33)
+	at zyx.OnTeaPotClicked.onCallback(OnTeaPotClicked.java:12)
+	at zyx.engine.utils.callbacks.CustomCallback.dispatch(CustomCallback.java:48)
+	at zyx.game.components.GameObject.click(GameObject.java:103)
+	at zyx.engine.utils.worldpicker.WorldPicker.handleCollisions(WorldPicker.java:111)
+	at zyx.engine.utils.worldpicker.WorldPicker.update(WorldPicker.java:75)
+	at zyx.Main.update(Main.java:191)
+	at zyx.Main.main(Main.java:93)
+

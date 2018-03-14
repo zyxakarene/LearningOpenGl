@@ -44,4 +44,15 @@ public class MatrixUtils
 		out.y = matrix.m31;
 		out.z = matrix.m32;
 	}
+
+	public static void getScaleFrom(Matrix4f mat, Vector3f out)
+	{
+		Vector3f x = new Vector3f(mat.m00, mat.m01, mat.m02);
+		Vector3f y = new Vector3f(mat.m10, mat.m11, mat.m12);
+		Vector3f z = new Vector3f(mat.m20, mat.m21, mat.m22);
+		
+		out.x = x.length();
+		out.y = y.length();
+		out.z = z.length();
+	}
 }

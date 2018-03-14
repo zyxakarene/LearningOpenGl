@@ -11,6 +11,7 @@ import zyx.opengl.models.implementations.bones.attachments.Attachment;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.implementations.physics.PhysBox;
+import zyx.opengl.textures.MissingTexture;
 import zyx.utils.DeltaTime;
 
 public class WorldModel extends AbstractModel

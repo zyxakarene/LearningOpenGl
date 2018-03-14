@@ -10,7 +10,7 @@ public class SmdObject
 	private Bone rootBone;
 	private ArrayList<Vertex> verticies;
 	private ArrayList<Animation> animations = new ArrayList<>();
-	private ArrayList<PhysBox> physBoxes = new ArrayList<>();
+	private PhysInformation phys = new PhysInformation();
 	private ArrayList<Integer> elements;
 	private String texturePath;
 
@@ -42,7 +42,7 @@ public class SmdObject
 
 	public void setPhysBoxes(ArrayList<PhysBox> physBoxes)
 	{
-		this.physBoxes = physBoxes;
+		this.phys.setBoxes(physBoxes);
 	}
 	
 	public void save(DataOutputStream out) throws IOException
@@ -67,11 +67,7 @@ public class SmdObject
 			animation.save(out);
 		}
 		
-		out.writeInt(physBoxes.size());
-		for (PhysBox physBox : physBoxes)
-		{
-			physBox.save(out);
-		}
+		phys.save(out);
 		
 		out.writeUTF(texturePath);
 	}

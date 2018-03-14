@@ -1,6 +1,7 @@
 package zyx.utils.cheats;
 
 import java.io.PrintStream;
+import zyx.utils.DeltaTime;
 
 public class Print
 {
@@ -20,6 +21,9 @@ public class Print
 	public static void print(PrintStream stream, Object... args)
 	{
 		StringBuilder builder = new StringBuilder();
+		
+		builder.append(DeltaTime.getTimestamp());
+		builder.append(" - ");
 		
 		int len = args.length;
 		for (int i = 0; i < len; i++)

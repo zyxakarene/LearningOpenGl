@@ -36,7 +36,7 @@ public class ZafLoader
 			Skeleton skeleton = new Skeleton(rootJoint, meshJoint);
 			addAnimationsTo(skeleton, smd.animations);
 			
-			PhysBox phys = createPhysBox(smd.physboxes);
+			PhysBox phys = createPhysBox(smd.physInformation);
 			
 			return new LoadableValueObject(smd.vertexData, smd.elementData, skeleton, phys, smd.texture);
 		}
@@ -99,12 +99,13 @@ public class ZafLoader
 		return new Joint(id, name, matrix);
 	}
 
-	private static PhysBox createPhysBox(SmdPhysbox[] physboxes)
+	private static PhysBox createPhysBox(SmdPhysInfo physInfo)
 	{
-		int triangleCount = getTriangleCount(physboxes);
+		SmdPhysbox[] boxes = physInfo.physBoxes;
+		int triangleCount = getTriangleCount(boxes);
 		
-		PhysBox box = new PhysBox(triangleCount);
-		for (SmdPhysbox physBox : physboxes)
+		PhysBox box = new PhysBox(triangleCount, physInfo.boundingBox);
+		for (SmdPhysbox physBox : boxes)
 		{
 			for (SmdPhysTriangle triangle : physBox.triangles)
 			{

@@ -40,6 +40,7 @@ import zyx.utils.GameConstants;
 import zyx.utils.cheats.DebugContainer;
 import zyx.utils.cheats.DebugPhysics;
 import zyx.utils.cheats.DebugPoint;
+import zyx.utils.cheats.Print;
 
 public class Main
 {
@@ -209,12 +210,14 @@ public class Main
 			rot.y += 0.5f;
 			rot.z += 0.5f;
 			teapot.setRotation(rot);
+//			teapotNormal.setRotation(rot);
 			
 			Vector3f scale = teapot.getScale(true, null);
 			scale.x = FloatMath.abs(FloatMath.sin(timestamp * 0.001f));
 			scale.y = FloatMath.abs(FloatMath.cos(timestamp * 0.001f));
 			scale.z = FloatMath.abs(FloatMath.tan(timestamp * 0.001f));
 			teapot.setScale(scale);
+//			teapotNormal.setScale(1.5f, 2, 0.5f);
 		}
 		
 		if (MouseData.instance.isLeftDown())

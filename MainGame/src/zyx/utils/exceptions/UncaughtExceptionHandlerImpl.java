@@ -23,5 +23,10 @@ public class UncaughtExceptionHandlerImpl implements Thread.UncaughtExceptionHan
     {
         String msg = String.format("An uncaught exception was thrown by thread '%s'", thread.getName());
         LOG.log(Level.SEVERE, msg, exception);
+		
+		if (GameConstants.DEBUG == false)
+		{
+			new UncaughtExceptionGui(exception).setVisible(true);
+		}
     }
 }

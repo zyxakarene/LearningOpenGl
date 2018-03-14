@@ -11,11 +11,11 @@ public class PhysBox
 
 	private int trianglesAdded;
 	
-	public PhysBox(int triangleCount)
+	public PhysBox(int triangleCount, Box boundingBox)
 	{
 		trianglesAdded = 0;
 		triangles = new PhysTriangle[triangleCount];
-		boundingBox = new Box(-10, 10, 1-0, 10, -10, 10);
+		this.boundingBox = boundingBox;
 	}
 
 	public void addTriangle(Vector3f v1, Vector3f v2, Vector3f v3, Vector3f n)
@@ -32,5 +32,10 @@ public class PhysBox
 	public PhysTriangle[] getTriangles()
 	{
 		return triangles;
+	}
+	
+	public Box getBoundingBox()
+	{
+		return boundingBox;
 	}
 }

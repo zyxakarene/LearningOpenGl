@@ -35,7 +35,7 @@ public class SmdPhysTriangleHandler implements ISmdHandler
 			}
 
 			currentTriangle = new PhysTriangle();
-			currentBox.triangles.add(currentTriangle);
+			currentBox.addTriangle(currentTriangle);
 
 			return;
 		}

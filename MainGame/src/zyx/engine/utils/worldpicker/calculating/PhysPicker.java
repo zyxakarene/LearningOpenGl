@@ -6,6 +6,7 @@ import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.models.implementations.physics.PhysTriangle;
 import zyx.utils.FloatMath;
+import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IPhysbox;
 
 public class PhysPicker extends AbstractPicker
@@ -34,15 +35,21 @@ public class PhysPicker extends AbstractPicker
 			return false;
 		}
 
-		PhysTriangle[] triangles = phys.getTriangles();
-		boolean collided;
+		boolean hitOBB = RayOBB.hit(phys.getBoundingBox(), mat, pos, dir);
+		if (!hitOBB)
+		{
+			return false;
+		}
 
+		Print.out("Testing triangles!");
 		Matrix4f.load(mat, INVERT_TRANSPOSE);
 		Matrix4f.invert(INVERT_TRANSPOSE, INVERT_TRANSPOSE);
 		Matrix4f.transpose(INVERT_TRANSPOSE, INVERT_TRANSPOSE);
 
 		positions.clear();
-		
+
+		PhysTriangle[] triangles = phys.getTriangles();
+		boolean collided;
 		for (PhysTriangle triangle : triangles)
 		{
 			collided = testTriangle(pos, dir, triangle, mat, intersectPoint);
@@ -67,9 +74,9 @@ public class PhysPicker extends AbstractPicker
 			float currentDistance;
 			Vector3f closestPos = new Vector3f(intersectPoint);
 			Vector3f currentPos;
-			
+
 			while (positions.isEmpty() == false)
-			{				
+			{
 				currentPos = positions.remove();
 				currentDistance = FloatMath.distance(currentPos, pos);
 				if (currentDistance < closestDistance)
@@ -78,7 +85,7 @@ public class PhysPicker extends AbstractPicker
 					closestPos = currentPos;
 				}
 			}
-			
+
 			intersectPoint.set(closestPos);
 			return true;
 		}
@@ -89,7 +96,7 @@ public class PhysPicker extends AbstractPicker
 		NORMAL.set(triangle.normal);
 
 		transformVertex(NORMAL, INVERT_TRANSPOSE);
-		
+
 		float diff = Vector3f.dot(NORMAL, dir);
 		if (diff > 0)
 		{
@@ -102,7 +109,7 @@ public class PhysPicker extends AbstractPicker
 		transformVertex(VERTEX_1, mat);
 		transformVertex(VERTEX_2, mat);
 		transformVertex(VERTEX_3, mat);
-		
+
 		Vector3f.sub(VERTEX_2, VERTEX_1, EDGE_1);
 		Vector3f.sub(VERTEX_3, VERTEX_1, EDGE_2);
 
