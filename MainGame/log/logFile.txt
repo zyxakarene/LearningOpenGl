@@ -3123,3 +3123,66 @@ java.lang.RuntimeException: Oh no! Test exception
 	at zyx.Main.update(Main.java:191)
 	at zyx.Main.main(Main.java:93)
 
+mar. 15, 2018 9:39:47 PM zyx.opengl.models.loading.ZafLoader loadFromZaf
+SEVERE: Error at loading a zaf data
+java.io.EOFException
+	at java.io.DataInputStream.readInt(DataInputStream.java:392)
+	at java.io.DataInputStream.readFloat(DataInputStream.java:446)
+	at zyx.opengl.models.loading.SmdPhysTriangle.read(SmdPhysTriangle.java:22)
+	at zyx.opengl.models.loading.SmdPhysbox.read(SmdPhysbox.java:25)
+	at zyx.opengl.models.loading.SmdPhysInfo.read(SmdPhysInfo.java:37)
+	at zyx.opengl.models.loading.SmdObject.read(SmdObject.java:50)
+	at zyx.opengl.models.loading.ZafLoader.loadFromZaf(ZafLoader.java:31)
+	at zyx.game.controls.models.ModelRequest.resourceLoaded(ModelRequest.java:48)
+	at zyx.game.controls.models.ModelRequest.resourceLoaded(ModelRequest.java:15)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:98)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:42)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:16)
+	at zyx.Main.update(Main.java:191)
+	at zyx.Main.main(Main.java:94)
+
+mar. 15, 2018 9:39:47 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at zyx.game.controls.models.ModelRequest.resourceLoaded(ModelRequest.java:49)
+	at zyx.game.controls.models.ModelRequest.resourceLoaded(ModelRequest.java:15)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:98)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:42)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:16)
+	at zyx.Main.update(Main.java:191)
+	at zyx.Main.main(Main.java:94)
+
+mar. 15, 2018 10:22:02 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.ArrayIndexOutOfBoundsException: -1
+	at zyx.opengl.models.implementations.bones.skeleton.Joint.<init>(Joint.java:36)
+	at zyx.opengl.models.implementations.physics.DebugPhysDrawing.getMeshJoint(DebugPhysDrawing.java:82)
+	at zyx.opengl.models.implementations.physics.DebugPhysDrawing.getMeshModel(DebugPhysDrawing.java:71)
+	at zyx.opengl.models.implementations.physics.DebugPhysDrawing.createModel(DebugPhysDrawing.java:42)
+	at zyx.opengl.models.implementations.physics.DebugPhysDrawing.getModelFor(DebugPhysDrawing.java:27)
+	at zyx.utils.cheats.DebugPhysics.registerPhysbox(DebugPhysics.java:28)
+	at zyx.game.components.GameObject.resourceLoaded(GameObject.java:86)
+	at zyx.game.components.GameObject.resourceLoaded(GameObject.java:30)
+	at zyx.game.controls.models.ModelRequest.onModelTextureLoaded(ModelRequest.java:60)
+	at zyx.game.controls.models.ModelTextureLoader.resourceLoaded(ModelTextureLoader.java:22)
+	at zyx.game.controls.models.ModelTextureLoader.resourceLoaded(ModelTextureLoader.java:7)
+	at zyx.game.controls.textures.TextureRequest.resourceLoaded(TextureRequest.java:47)
+	at zyx.game.controls.textures.TextureRequest.resourceLoaded(TextureRequest.java:13)
+	at zyx.game.controls.resourceloader.requests.ResourceRequest.complete(ResourceRequest.java:58)
+	at zyx.game.controls.resourceloader.ResourceExchange.sendReplies(ResourceExchange.java:98)
+	at zyx.game.controls.resourceloader.ResourceLoader.handleResourceReplies(ResourceLoader.java:42)
+	at zyx.game.controls.MegaManager.update(MegaManager.java:16)
+	at zyx.Main.update(Main.java:192)
+	at zyx.Main.main(Main.java:95)
+
+mar. 16, 2018 5:06:37 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.NullPointerException
+	at org.lwjgl.util.vector.Matrix4f.load(Matrix4f.java:158)
+	at zyx.engine.utils.worldpicker.calculating.PhysPicker.collided(PhysPicker.java:55)
+	at zyx.engine.utils.worldpicker.WorldPicker.update(WorldPicker.java:61)
+	at zyx.Main.update(Main.java:193)
+	at zyx.Main.main(Main.java:95)
+

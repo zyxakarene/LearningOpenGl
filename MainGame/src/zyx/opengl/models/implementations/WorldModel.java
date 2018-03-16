@@ -64,7 +64,7 @@ public class WorldModel extends AbstractModel
 	public void drawAsAttachment(Attachment attachment)
 	{
 		skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
-		Matrix4f bonePosCopy = new Matrix4f(attachment.joint.getFinalTransform());
+		Matrix4f bonePosCopy = new Matrix4f(attachment.joint.getAttachmentTransform());
 		Matrix4f.mul(MODEL_MATRIX, bonePosCopy, MODEL_MATRIX);
 
 		attachment.child.getPosition(true, ATTACHMENT_POSITION);
@@ -90,6 +90,11 @@ public class WorldModel extends AbstractModel
 	public Joint getBoneByName(String boneName)
 	{
 		return skeleton.getBoneByName(boneName);
+	}
+
+	public Joint getBoneById(int boneId)
+	{
+		return skeleton.getBoneById(boneId);
 	}
 
 	@Override

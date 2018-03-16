@@ -26,7 +26,7 @@ public class InputManager implements IUpdateable
 		OnMouseUpClicked = new CustomCallback<>();
 		OnMouseClicked = new CustomCallback<>();
 
-		mouseData = MouseData.instance;
+		mouseData = MouseData.data;
 		keyboardData = KeyboardData.data;
 	}
 

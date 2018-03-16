@@ -149,6 +149,10 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
 		{
 			Logger.getLogger(UtilsGui.class.getName()).log(Level.SEVERE, null, ex);
 		}
+		catch (RuntimeException ex)
+		{
+			UtilsLogger.log("[FATAL] runtime exception", ex);
+		}
     }//GEN-LAST:event_smdCompileButtonActionPerformed
 
 

@@ -15,7 +15,8 @@ public class Skeleton implements IUpdateable, IDisposeable
 	
 	private Joint rootJoint;
 	private Joint dummyJoint;
-	private HashMap<String, Joint> jointMap;
+	private HashMap<Integer, Joint> jointIdMap;
+	private HashMap<String, Joint> jointNameMap;
 	private HashMap<String, Animation> animations;
 	private Animator animator;
 	
@@ -24,21 +25,22 @@ public class Skeleton implements IUpdateable, IDisposeable
 	public Skeleton(Joint root, Joint meshJoint)
 	{
 		rootJoint = root;
-		jointMap = new HashMap<>();
+		jointNameMap = new HashMap<>();
+		jointIdMap = new HashMap<>();
 		animations = new HashMap<>();
 		animationList = new LinkedList<>();
 		
 		
 		rootJoint.calcInverseBindTransform(DUMMY_MATRIX);
-		rootJoint.addToMap(jointMap);
+		rootJoint.addToMap(jointNameMap, jointIdMap);
 		
 		dummyJoint = meshJoint;
-		if (jointMap.size() > 1)
+		if (jointNameMap.size() > 1)
 		{
-			jointMap.put(dummyJoint.name, dummyJoint);
+			jointNameMap.put(dummyJoint.name, dummyJoint);
 		}
 		
-		animator = new Animator(jointMap, animations);
+		animator = new Animator(jointNameMap, animations);
 	}
 	
 	public void addAnimation(String name, Animation animation)
@@ -61,9 +63,14 @@ public class Skeleton implements IUpdateable, IDisposeable
 	
 	public Joint getBoneByName(String name)
 	{
-		return jointMap.get(name);
+		return jointNameMap.get(name);
 	}
 
+	public Joint getBoneById(int boneId)
+	{
+		return jointIdMap.get(boneId);
+	}
+	
 	@Override
 	public void dispose()
 	{
@@ -76,12 +83,12 @@ public class Skeleton implements IUpdateable, IDisposeable
 			animationList.remove().dispose();
 		}
 		
-		jointMap.clear();
+		jointNameMap.clear();
 		animations.clear();
 		animationList.clear();
 		
 		rootJoint = null;
-		jointMap = null;
+		jointNameMap = null;
 		animations = null;
 		animator = null;
 		animationList = null;

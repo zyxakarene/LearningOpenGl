@@ -6,18 +6,30 @@ import zyx.utils.geometry.Box;
 
 public class PhysBox
 {
+	private final PhysObject[] objects;
 	private final Box boundingBox;
-	private final PhysTriangle[] triangles;
+	private final PhysTriangle[] allTriangles;
 
 	private int trianglesAdded;
+	private int objectsAdded;
 	
-	public PhysBox(int triangleCount, Box boundingBox)
+	public PhysBox(int triangleCount, Box boundingBox, int objectCount)
 	{
 		trianglesAdded = 0;
-		triangles = new PhysTriangle[triangleCount];
+		objectsAdded = -1;
+		
+		allTriangles = new PhysTriangle[triangleCount];
+		objects = new PhysObject[objectCount];
+		
 		this.boundingBox = boundingBox;
 	}
 
+	public void addObject(int triangleCount, short boneId)
+	{
+		objectsAdded++;
+		objects[objectsAdded] = new PhysObject(triangleCount, boneId);
+	}
+	
 	public void addTriangle(Vector3f v1, Vector3f v2, Vector3f v3, Vector3f n)
 	{
 		Vector3f vertex1 = new Vector3f(v1.x, v1.y, v1.z);
@@ -25,13 +37,22 @@ public class PhysBox
 		Vector3f vertex3 = new Vector3f(v3.x, v3.y, v3.z);
 		Vector3f normal = new Vector3f(n.x, n.y, n.z);
 		
-		triangles[trianglesAdded] = new PhysTriangle(vertex1, vertex2, vertex3, normal);
+		PhysTriangle triangle = new PhysTriangle(vertex1, vertex2, vertex3, normal);
+		
+		allTriangles[trianglesAdded] = triangle;
 		trianglesAdded++;
+		
+		objects[objectsAdded].addTriangle(triangle);
+	}
+
+	public PhysObject[] getObjects()
+	{
+		return objects;
 	}
 	
 	public PhysTriangle[] getTriangles()
 	{
-		return triangles;
+		return allTriangles;
 	}
 	
 	public Box getBoundingBox()

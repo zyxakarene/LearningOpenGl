@@ -10,6 +10,7 @@ import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.textures.ColorTexture;
 import zyx.utils.geometry.Box;
+import zyx.utils.interfaces.IPhysbox;
 
 public class DebugPhysDrawing
 {
@@ -17,8 +18,10 @@ public class DebugPhysDrawing
 	private static final HashMap<PhysBox, WorldModel> MESH_MAP = new HashMap<>();
 	private static final HashMap<PhysBox, WorldModel> BOUNDING_BOX_MAP = new HashMap<>();
 	
-	public static WorldModel[] getModelFor(PhysBox box)
+	public static WorldModel[] getModelFor(IPhysbox physBox)
 	{
+		PhysBox box = physBox.getPhysbox();
+		
 		if (MESH_MAP.containsKey(box) == false)
 		{
 			createModel(box);
@@ -33,26 +36,39 @@ public class DebugPhysDrawing
 
 	private static void createModel(PhysBox box)
 	{
-		PhysTriangle[] triangles = box.getTriangles();
+		PhysObject[] objects = box.getObjects();
 		Box boundingBox = box.getBoundingBox();
 
-		WorldModel mesh = getMeshModel(triangles);
+		WorldModel mesh = getMeshModel(box.getTriangles().length, objects);
 		WorldModel bounding = getBoundingModel(boundingBox);
 
 		MESH_MAP.put(box, mesh);
 		BOUNDING_BOX_MAP.put(box, bounding);
 	}
 
-	private static WorldModel getMeshModel(PhysTriangle[] triangles)
+	private static WorldModel getMeshModel(int totalTriangleCount, PhysObject[] objects)
 	{
-		int vertexCount = (triangles.length * 3 * 12);
+		int vertexCount = (totalTriangleCount * 3 * 12);
 		float[] vertexData = new float[vertexCount];
 
-		int elementCount = (triangles.length * 3);
+		int elementCount = (totalTriangleCount * 3);
 		int[] elementData = new int[elementCount];
 
-		fillData(triangles, vertexData, elementData);
-		Skeleton skeleton = new Skeleton(getMeshJoint("root", 1), getMeshJoint("dummy", 0));
+		int index = 0;
+		for (PhysObject object : objects)
+		{
+			PhysTriangle[] triangles = object.getTriangles();
+			int boneId = object.getBoneId();
+			
+			index = fillData(triangles, vertexData, boneId, index);
+		}
+		
+		for (int i = 0; i < elementData.length; i++)
+		{
+			elementData[i] = i;
+		}
+		
+		Skeleton skeleton = new Skeleton(getMeshJoint("root", 0), getMeshJoint("dummy", 0));
 		LoadableValueObject vo = new LoadableValueObject(vertexData, elementData, skeleton, null, "");
 		vo.setGameTexture(new ColorTexture(0xFF0000));
 		WorldModel model = new WorldModel(vo);
@@ -66,10 +82,9 @@ public class DebugPhysDrawing
 		return new Joint(id, name, matrix);
 	}
 
-	private static void fillData(PhysTriangle[] triangles, float[] vertexData, int[] elementData)
+	private static int fillData(PhysTriangle[] triangles, float[] vertexData, int boneId, int index)
 	{
 		Vector3f normal = new Vector3f();
-		int index = 0;
 		for (PhysTriangle triangle : triangles)
 		{
 			calculateNormal(normal, triangle);
@@ -83,10 +98,10 @@ public class DebugPhysDrawing
 			vertexData[index++] = normal.z;
 			vertexData[index++] = 0;
 			vertexData[index++] = 0;
+			vertexData[index++] = boneId;
+			vertexData[index++] = 0;
 			vertexData[index++] = 1;
-			vertexData[index++] = 1;
-			vertexData[index++] = 1;
-			vertexData[index++] = 1;
+			vertexData[index++] = 0;
 			vertexData[index++] = triangle.v2.x;
 			vertexData[index++] = triangle.v2.y;
 			vertexData[index++] = triangle.v2.z;
@@ -95,10 +110,10 @@ public class DebugPhysDrawing
 			vertexData[index++] = normal.z;
 			vertexData[index++] = 0;
 			vertexData[index++] = 0;
+			vertexData[index++] = boneId;
+			vertexData[index++] = 0;
 			vertexData[index++] = 1;
-			vertexData[index++] = 1;
-			vertexData[index++] = 1;
-			vertexData[index++] = 1;
+			vertexData[index++] = 0;
 			vertexData[index++] = triangle.v3.x;
 			vertexData[index++] = triangle.v3.y;
 			vertexData[index++] = triangle.v3.z;
@@ -107,16 +122,13 @@ public class DebugPhysDrawing
 			vertexData[index++] = normal.z;
 			vertexData[index++] = 0;
 			vertexData[index++] = 0;
+			vertexData[index++] = boneId;
+			vertexData[index++] = 0;
 			vertexData[index++] = 1;
-			vertexData[index++] = 1;
-			vertexData[index++] = 1;
-			vertexData[index++] = 1;
+			vertexData[index++] = 0;
 		}
-
-		for (int i = 0; i < elementData.length; i++)
-		{
-			elementData[i] = i;
-		}
+		
+		return index;
 	}
 
 	private static void calculateNormal(Vector3f normal, PhysTriangle triangle)

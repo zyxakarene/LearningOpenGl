@@ -22,7 +22,7 @@ public class UtilsLogger
 		
 		if (ex != null)
 		{
-			output.append(ex.getMessage());
+			output.append(" - " + ex.getMessage());
 		}
 		
 		output.append("\n");

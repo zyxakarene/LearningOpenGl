@@ -6,6 +6,7 @@ import java.io.IOException;
 class SmdPhysbox
 {
 	SmdPhysTriangle[] triangles;
+	short boneId;
 	
 	SmdPhysbox()
 	{
@@ -13,6 +14,8 @@ class SmdPhysbox
 
 	void read(DataInputStream in) throws IOException
 	{
+		boneId = in.readShort();
+		
 		int length = in.readInt();
 		triangles = new SmdPhysTriangle[length];
 		

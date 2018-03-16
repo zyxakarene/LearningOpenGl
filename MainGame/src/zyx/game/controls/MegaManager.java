@@ -21,6 +21,6 @@ public class MegaManager
 		
 		SoundManager.getInstance().update(timestamp, elapsed);
 
-		RayPicker.getInstance().updateMousePos(MouseData.instance.x, MouseData.instance.y);
+		RayPicker.getInstance().updateMousePos(MouseData.data.x, MouseData.data.y);
 	}
 }

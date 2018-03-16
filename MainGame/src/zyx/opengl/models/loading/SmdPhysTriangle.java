@@ -34,8 +34,7 @@ class SmdPhysTriangle
 		
 		x = in.readFloat();
 		y = in.readFloat();
-		z = in.readFloat();
-		
+		z = in.readFloat();		
 		normal = new Vector3f(x, y, z);
 	}
 	

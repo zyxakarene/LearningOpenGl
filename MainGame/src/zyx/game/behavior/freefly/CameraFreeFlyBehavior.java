@@ -48,8 +48,8 @@ public class CameraFreeFlyBehavior extends Behavior
 
 		if (Mouse.isGrabbed())
 		{
-			int dx = (int) (MouseData.instance.dX * DeltaTime.getDeltaVariant());
-			int dy = (int) (MouseData.instance.dY * DeltaTime.getDeltaVariant());
+			int dx = (int) (MouseData.data.dX * DeltaTime.getDeltaVariant());
+			int dy = (int) (MouseData.data.dY * DeltaTime.getDeltaVariant());
 			rotate(-dy, 0, dx, elapsedTime);
 		}
 

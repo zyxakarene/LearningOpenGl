@@ -25,7 +25,7 @@ public class DebugPhysics
 
 	public void registerPhysbox(GameObject obj)
 	{
-		WorldModel[] models = DebugPhysDrawing.getModelFor(obj.getPhysbox());
+		WorldModel[] models = DebugPhysDrawing.getModelFor(obj);
 		
 		entryMap.put(obj, models);
 	}

@@ -17,7 +17,6 @@ public class Joint implements IDisposeable
 	public final String name;
 
 	private List<Joint> children;
-	private boolean isAttachmentPoint;
 
 	private Matrix4f animatedTransform;
 	private Matrix4f inverseBindTransform;
@@ -26,7 +25,9 @@ public class Joint implements IDisposeable
 
 	private Matrix4f outTransformInverseTranspose;
 	private Matrix4f outTransform;
-	private Matrix4f lastFinalTransform;
+	
+	private Matrix4f attachmentTransform;
+	private Matrix4f physTransform;
 
 	public Joint(int id, String name, Matrix4f localTransform)
 	{
@@ -40,12 +41,6 @@ public class Joint implements IDisposeable
 		animatedTransform = SharedPools.MATRIX_POOL.getInstance();
 		inverseBindTransform = SharedPools.MATRIX_POOL.getInstance();
 		localBindTransform = localTransform;
-
-		isAttachmentPoint = name.equals("Skeleton_Hand_R");
-		if (isAttachmentPoint)
-		{
-			lastFinalTransform = SharedPools.MATRIX_POOL.getInstance();
-		}
 	}
 
 	public Matrix4f getLocalBindTransform()
@@ -81,13 +76,18 @@ public class Joint implements IDisposeable
 			childJoint.calcAnimationTransform(outTransform);
 		}
 
-		if (isAttachmentPoint)
+		if(attachmentTransform != null)
 		{
-			lastFinalTransform.load(outTransform);
+			attachmentTransform.load(outTransform);
 		}
 
 		Matrix4f.mul(outTransform, inverseBindTransform, outTransform);
 
+		if(physTransform != null)
+		{
+			physTransform.load(outTransform);
+		}
+		
 		outTransformInverseTranspose.load(outTransform);
 		outTransformInverseTranspose.invert().transpose();
 	}
@@ -97,13 +97,14 @@ public class Joint implements IDisposeable
 		return inverseBindTransform;
 	}
 
-	public void addToMap(HashMap<String, Joint> map)
+	public void addToMap(HashMap<String, Joint> nameMap, HashMap<Integer, Joint> idMap)
 	{
-		map.put(name, this);
+		nameMap.put(name, this);
+		idMap.put(id, this);
 
 		for (Joint child : children)
 		{
-			child.addToMap(map);
+			child.addToMap(nameMap, idMap);
 		}
 	}
 
@@ -118,9 +119,24 @@ public class Joint implements IDisposeable
 		animatedTransform.load(localBindTransform);
 	}
 
-	public Matrix4f getFinalTransform()
+	public Matrix4f getPhysTransform()
 	{
-		return lastFinalTransform;
+		if(physTransform == null)
+		{
+			physTransform = SharedPools.MATRIX_POOL.getInstance();
+		}
+		
+		return physTransform;
+	}
+	
+	public Matrix4f getAttachmentTransform()
+	{
+		if(attachmentTransform == null)
+		{
+			attachmentTransform = SharedPools.MATRIX_POOL.getInstance();
+		}
+		
+		return attachmentTransform;
 	}
 
 	@Override
@@ -133,15 +149,22 @@ public class Joint implements IDisposeable
 
 		children.clear();
 
-		if (isAttachmentPoint)
+		if(physTransform != null)
 		{
-			SharedPools.MATRIX_POOL.releaseInstance(lastFinalTransform);
+			SharedPools.MATRIX_POOL.releaseInstance(physTransform);
 		}
+		
+		if(attachmentTransform != null)
+		{
+			SharedPools.MATRIX_POOL.releaseInstance(attachmentTransform);
+		}
+		
 		SharedPools.MATRIX_POOL.releaseInstance(animatedTransform);
 		SharedPools.MATRIX_POOL.releaseInstance(inverseBindTransform);
 		SharedPools.MATRIX_POOL.releaseInstance(localBindTransform);
 
-		lastFinalTransform = null;
+		physTransform = null;
+		attachmentTransform = null;
 		outTransform = null;
 		animatedTransform = null;
 		inverseBindTransform = null;

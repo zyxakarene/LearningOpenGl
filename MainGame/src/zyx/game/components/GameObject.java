@@ -305,4 +305,10 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	{
 		return worldMatrix;
 	}
+
+	@Override
+	public Matrix4f getBoneMatrix(int boneId)
+	{
+		return model.getBoneById(boneId).getPhysTransform();
+	}
 }

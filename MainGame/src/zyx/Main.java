@@ -58,6 +58,7 @@ public class Main
 	private static GameObject mainKnight;
 	private static GameObject attachedKnight1;
 	private static GameObject teapot;
+	private static GameObject worm;
 
 	private static Stage stage;
 	private static World3D world;
@@ -203,24 +204,22 @@ public class Main
 		{
 			mainKnight.setRotZ(mainKnight.getRotZ() + 0.5f);
 		}
-		if (teapot != null && MouseData.instance.isRightDown())
+		if (teapot != null && MouseData.data.isRightDown())
 		{
-			Vector3f rot = teapot.getRotation(true, null);
-			rot.x += 0.5f;
-			rot.y += 0.5f;
-			rot.z += 0.5f;
-			teapot.setRotation(rot);
-//			teapotNormal.setRotation(rot);
-			
-			Vector3f scale = teapot.getScale(true, null);
-			scale.x = FloatMath.abs(FloatMath.sin(timestamp * 0.001f));
-			scale.y = FloatMath.abs(FloatMath.cos(timestamp * 0.001f));
-			scale.z = FloatMath.abs(FloatMath.tan(timestamp * 0.001f));
-			teapot.setScale(scale);
-//			teapotNormal.setScale(1.5f, 2, 0.5f);
+//			Vector3f rot = teapot.getRotation(true, null);
+//			rot.x += 0.5f;
+//			rot.y += 0.5f;
+//			rot.z += 0.5f;
+//			teapot.setRotation(rot);
+//			
+//			Vector3f scale = teapot.getScale(true, null);
+//			scale.x = FloatMath.abs(FloatMath.sin(timestamp * 0.001f));
+//			scale.y = FloatMath.abs(FloatMath.cos(timestamp * 0.001f));
+//			scale.z = FloatMath.abs(FloatMath.tan(timestamp * 0.001f));
+//			teapot.setScale(scale);
 		}
 		
-		if (MouseData.instance.isLeftDown())
+		if (MouseData.data.isLeftDown())
 		{
 			Vector3f ray = RayPicker.getInstance().getRay();
 			Vector3f out = new Vector3f();
@@ -325,9 +324,18 @@ public class Main
 		teapot.setZ(-50);
 		teapot.load("assets/models/teapot.zaf");
 		teapot.registerClick(new OnTeaPotClicked());
-		world.addChild(teapot);
+//		world.addChild(teapot);
 		
-		picker.addObject(teapot);
+		worm = new GameObject();
+		worm.load("assets/models/worm/worm.zaf");
+		worm.setAnimation("wiggle");
+		worm.setZ(-50);
+		worm.setX(-50);
+		worm.registerClick(new OnTeaPotClicked());
+		world.addChild(worm);
+		
+//		picker.addObject(teapot);
+		picker.addObject(worm);
 	}
 
 	private static void addRandomBoxes()

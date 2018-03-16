@@ -1,11 +1,16 @@
 package zyx.engine.utils.worldpicker.calculating;
 
 import java.util.LinkedList;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.game.controls.input.KeyboardData;
+import zyx.game.controls.input.MouseData;
 import zyx.opengl.models.implementations.physics.PhysBox;
+import zyx.opengl.models.implementations.physics.PhysObject;
 import zyx.opengl.models.implementations.physics.PhysTriangle;
 import zyx.utils.FloatMath;
+import zyx.utils.cheats.DebugPoint;
 import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IPhysbox;
 
@@ -15,6 +20,7 @@ public class PhysPicker extends AbstractPicker
 	private final float EPSILON = 0.0000001f;
 
 	private final Matrix4f INVERT_TRANSPOSE = new Matrix4f();
+	private final Matrix4f BONE_TRANSFORM = new Matrix4f();
 
 	private final Vector3f EDGE_1 = new Vector3f();
 	private final Vector3f EDGE_2 = new Vector3f();
@@ -41,23 +47,33 @@ public class PhysPicker extends AbstractPicker
 			return false;
 		}
 
-		Print.out("Testing triangles!");
-		Matrix4f.load(mat, INVERT_TRANSPOSE);
-		Matrix4f.invert(INVERT_TRANSPOSE, INVERT_TRANSPOSE);
-		Matrix4f.transpose(INVERT_TRANSPOSE, INVERT_TRANSPOSE);
-
 		positions.clear();
 
-		PhysTriangle[] triangles = phys.getTriangles();
-		boolean collided;
-		for (PhysTriangle triangle : triangles)
-		{
-			collided = testTriangle(pos, dir, triangle, mat, intersectPoint);
+		PhysObject[] objects = phys.getObjects();
 
-			if (collided)
+		for (PhysObject object : objects)
+		{
+			short boneId = object.getBoneId();
+			PhysTriangle[] triangles = object.getTriangles();
+			Matrix4f boneMatrix = physContainer.getBoneMatrix(boneId);
+						
+			Matrix4f.mul(mat, boneMatrix, BONE_TRANSFORM);
+
+			Matrix4f.load(BONE_TRANSFORM, INVERT_TRANSPOSE);
+			Matrix4f.invert(INVERT_TRANSPOSE, INVERT_TRANSPOSE);
+			Matrix4f.transpose(INVERT_TRANSPOSE, INVERT_TRANSPOSE);
+			
+			boolean collided;
+			for (PhysTriangle triangle : triangles)
 			{
-				positions.add(new Vector3f(intersectPoint));
+				collided = testTriangle(pos, dir, triangle, BONE_TRANSFORM, intersectPoint);
+
+				if (collided)
+				{
+					positions.add(new Vector3f(intersectPoint));
+				}
 			}
+
 		}
 
 		if (positions.isEmpty())
@@ -109,6 +125,13 @@ public class PhysPicker extends AbstractPicker
 		transformVertex(VERTEX_1, mat);
 		transformVertex(VERTEX_2, mat);
 		transformVertex(VERTEX_3, mat);
+		
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_P))
+		{
+			DebugPoint.addToScene(VERTEX_1, 1000);
+			DebugPoint.addToScene(VERTEX_2, 1000);
+			DebugPoint.addToScene(VERTEX_3, 1000);
+		}
 
 		Vector3f.sub(VERTEX_2, VERTEX_1, EDGE_1);
 		Vector3f.sub(VERTEX_3, VERTEX_1, EDGE_2);

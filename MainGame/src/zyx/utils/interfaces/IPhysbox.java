@@ -7,4 +7,5 @@ public interface IPhysbox
 {
 	public PhysBox getPhysbox();
 	public Matrix4f getMatrix();
+	public Matrix4f getBoneMatrix(int boneId);
 }

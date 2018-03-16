@@ -48,8 +48,29 @@ public class SmdPhysTriangleHandler implements ISmdHandler
 		float normY = Float.parseFloat(split[5]);
 		float normZ = Float.parseFloat(split[6]);
 		
+		short boneId;
+		
+		if (split.length <= 9)
+		{
+			//No bones, so default to index 0
+			boneId = 0;
+		}
+		else
+		{
+			int boneCount = Integer.parseInt(split[9]);
+			if (boneCount == 1)
+			{
+				boneId = Short.parseShort(split[10]);
+			}
+			else
+			{
+				throw new RuntimeException("Vertex has more than one bone assigned!");
+			}
+		}
+		
 		PhysVertex vertex = new PhysVertex(x, y, z, normX, normY, normZ);
 		currentTriangle.addVertex(vertex);
+		currentBox.setBoneId(boneId);
 	}
 
 	@Override

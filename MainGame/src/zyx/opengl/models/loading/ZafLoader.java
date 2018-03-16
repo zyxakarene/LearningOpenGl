@@ -104,9 +104,11 @@ public class ZafLoader
 		SmdPhysbox[] boxes = physInfo.physBoxes;
 		int triangleCount = getTriangleCount(boxes);
 		
-		PhysBox box = new PhysBox(triangleCount, physInfo.boundingBox);
+		PhysBox box = new PhysBox(triangleCount, physInfo.boundingBox, boxes.length);
 		for (SmdPhysbox physBox : boxes)
 		{
+			box.addObject(physBox.triangles.length, physBox.boneId);
+			
 			for (SmdPhysTriangle triangle : physBox.triangles)
 			{
 				box.addTriangle(triangle.v1, triangle.v2, triangle.v3, triangle.normal);

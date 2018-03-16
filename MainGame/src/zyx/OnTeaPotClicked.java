@@ -21,12 +21,12 @@ class OnTeaPotClicked implements ICallback<ClickedInfo>
 	{
 		CursorManager.getInstance().setCursor(GameCursor.HAND);
 		
-		if (MouseData.instance.isLeftDown())
+		if (MouseData.data.isLeftDown())
 		{
 			data.target.setTexture(new ColorTexture((int) (0xFFFFFF * FloatMath.random())));
 		}
 		
-		if (MouseData.instance.isLeftClicked())
+		if (MouseData.data.isLeftClicked())
 		{
 			DebugPoint.addToScene(data.position, 10000);
 		}

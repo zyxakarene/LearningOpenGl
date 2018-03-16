@@ -2,7 +2,6 @@ package zyx.engine.components.world;
 
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.controls.SharedPools;
-import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IUpdateable;
 

@@ -76,7 +76,7 @@ public class PhysConvexPicker extends AbstractPicker
 
 				if (dotLeft <= dotRight)
 				{
-					if (MouseData.instance.isLeftClicked())
+					if (MouseData.data.isLeftClicked())
 					{
 						DebugPoint.addToScene(pos.x, pos.y, pos.z, 10000);
 					}

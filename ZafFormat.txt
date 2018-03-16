@@ -26,15 +26,16 @@ SmdPhysInformation
 
 SmdPhysbox
 {
+	short							boneId
 	int								triangleCount
 	SmdPhysTriangle[triangleCount]	triangles
 }
 
 SmdPhysTriangle
 {
-	Vector3F	v1
-	Vector3F	v2
-	Vector3F	v3
+	Vector3F	v1	
+	Vector3F	v2	
+	Vector3F	v3	
 	Vector3F	normal
 }
 
