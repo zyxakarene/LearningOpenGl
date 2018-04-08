@@ -1,5 +1,6 @@
 package zyx.utils.exceptions;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -13,6 +14,12 @@ public class UncaughtExceptionHandlerImpl implements Thread.UncaughtExceptionHan
 
     public UncaughtExceptionHandlerImpl() throws IOException
     {
+		File logFolder = new File("log");
+		if (logFolder.exists() == false)
+		{
+			logFolder.mkdir();
+		}
+		
         FileHandler handler = new FileHandler("log/logFile.txt", true);
         handler.setFormatter(new SimpleFormatter());
         LOG.addHandler(handler);
