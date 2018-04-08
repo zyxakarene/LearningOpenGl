@@ -2,6 +2,7 @@ package zyx.logic.converter.smd.reader;
 
 import java.util.HashMap;
 import java.util.Map;
+import zyx.logic.UtilsLogger;
 import zyx.logic.converter.smd.vo.Bone;
 
 public class SmdNodeHandler implements ISmdHandler
@@ -39,7 +40,7 @@ public class SmdNodeHandler implements ISmdHandler
 		nodes.put(nodeId, bone);
 		parentIds.put(bone, parentId);
 		
-		System.out.println("Created node: " + nodeId + " " + name + " " + parentId);
+		UtilsLogger.log("Created node: " + nodeId + " " + name + " " + parentId);
 	}
 
 	@Override
@@ -56,7 +57,7 @@ public class SmdNodeHandler implements ISmdHandler
 			Bone bone = entry.getKey();
 			Byte parentId = entry.getValue();
 
-			System.out.println("Matching " + bone + " with " + parentId);
+			UtilsLogger.log("Matching " + bone + " with " + parentId);
 			
 			Bone parent = nodes.get(parentId);
 			

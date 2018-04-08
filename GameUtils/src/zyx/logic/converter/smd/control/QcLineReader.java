@@ -36,6 +36,12 @@ class QcLineReader
 		qc.textureFile = new File(root.getAbsolutePath() + File.separator +  split[1]);
 	}
 
+	void readBoundingBox(String line, QcFile qc)
+	{
+		String[] split = line.split(REGEX);
+		qc.boundingFile = new File(root.getAbsolutePath() + File.separator +  split[1]);
+	}
+
 	void readAnimation(String line, QcFile qc)
 	{
 		String[] split = line.split(REGEX);
@@ -43,7 +49,7 @@ class QcLineReader
 		
 		qc.animations.add(animation);
 	}
-
+	
 	void readOutModel(String line, QcFile qc)
 	{
 		String[] split = line.split(REGEX);

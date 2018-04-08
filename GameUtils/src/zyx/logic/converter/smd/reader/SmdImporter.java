@@ -15,6 +15,7 @@ public class SmdImporter
 	private static final int FILE_TYPE_REF = 0;
 	private static final int FILE_TYPE_ANIMATION = 1;
 	private static final int FILE_TYPE_PHYS = 2;
+	private static final int FILE_TYPE_BOUNDING = 3;
 
 	private static final int TOKEN_NONE = 0;
 	private static final int TOKEN_NODES = 1;
@@ -94,6 +95,16 @@ public class SmdImporter
 		importFile(file);
 	}
 
+	public void importBounding(File file) throws FileNotFoundException
+	{
+		currentFileType = FILE_TYPE_BOUNDING;
+		currentToken = TOKEN_NONE;
+		lineHandler = null;
+		fileName = null;
+		
+		importFile(file);
+	}
+
 	public void importAnimations(File[] animations) throws FileNotFoundException
 	{
 		currentFileType = FILE_TYPE_ANIMATION;
@@ -143,13 +154,17 @@ public class SmdImporter
 			case ("triangles"):
 			{
 				currentToken = TOKEN_TRIANGLES;
-				if (currentFileType == FILE_TYPE_PHYS)
+				switch (currentFileType)
 				{
-					lineHandler = new SmdPhysTriangleHandler();
-				}
-				else
-				{
-					lineHandler = new SmdTriangleHandler();
+					case FILE_TYPE_PHYS:
+						lineHandler = new SmdPhysTriangleHandler();
+						break;
+					case FILE_TYPE_BOUNDING:
+						lineHandler = new SmdBoundsTriangleHandler();
+						break;
+					case FILE_TYPE_REF:
+						lineHandler = new SmdTriangleHandler();
+						break;
 				}
 				break;
 			}
@@ -192,6 +207,11 @@ public class SmdImporter
 					{
 						ArrayList<PhysBox> response = (ArrayList<PhysBox>) lineHandler.getResult();
 						smd.setPhysBoxes(response);
+					}
+					else if (currentFileType == FILE_TYPE_BOUNDING)
+					{
+						SmdBoundsTriangleHandler.Response response = (SmdBoundsTriangleHandler.Response) lineHandler.getResult();
+						smd.setBoundingBox(response.min, response.max);
 					}
 					break;
 				}

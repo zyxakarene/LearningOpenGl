@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.logic.UtilsLogger;
 
 public class Bone
 {
@@ -43,7 +44,7 @@ public class Bone
 
 		if (map.containsKey(MESH_BONE.id) == false)
 		{
-			System.out.println("No boneId zero. Adding it manually!");
+			UtilsLogger.log("No boneId zero. Adding it manually!");
 			map.put(MESH_BONE.id, MESH_BONE);
 		}
 		

@@ -10,6 +10,7 @@ public class SmdParser
 
 	private File ref;
 	private File phys;
+	private File bounding;
 	private File[] animations;
 
 	private File output;
@@ -21,6 +22,7 @@ public class SmdParser
 		
 		ref = parsedQc.meshFile;
 		phys = parsedQc.physFile;
+		bounding = parsedQc.boundingFile;
 		output = parsedQc.outModel;
 		
 		animations = new File[parsedQc.animations.size()];
@@ -32,6 +34,7 @@ public class SmdParser
 		SmdImporter importer = new SmdImporter();
 		importer.importModel(ref);
 		importer.importPhys(phys);
+		importer.importBounding(bounding);
 		importer.importAnimations(animations);
 		
 		SmdObject smd = importer.getSmd();

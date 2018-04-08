@@ -8,6 +8,8 @@ import org.lwjgl.util.vector.Vector3f;
 public class PhysInformation
 {
 
+	private boolean hasCustomBoundingBox = false;
+	
 	private Vector3f minSize = new Vector3f();
 	private Vector3f maxSize = new Vector3f();
 
@@ -34,15 +36,28 @@ public class PhysInformation
 	{
 		physBoxes.addAll(boxes);
 		
-		for (PhysBox physBox : physBoxes)
+		if(hasCustomBoundingBox == false)
 		{
-			for (PhysTriangle triangle : physBox.triangles)
+			minSize = new Vector3f();
+			maxSize = new Vector3f();
+			
+			for (PhysBox physBox : physBoxes)
 			{
-				testVertex(triangle.v1);
-				testVertex(triangle.v2);
-				testVertex(triangle.v3);
+				for (PhysTriangle triangle : physBox.triangles)
+				{
+					testVertex(triangle.v1);
+					testVertex(triangle.v2);
+					testVertex(triangle.v3);
+				}
 			}
 		}
+	}
+	
+	void setBoundingBox(Vector3f min, Vector3f max)
+	{
+		hasCustomBoundingBox = true;
+		minSize.set(min);
+		maxSize.set(max);
 	}
 	
 	private void testVertex(PhysVertex vertex)

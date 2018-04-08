@@ -10,6 +10,7 @@ public class QcParser
 	private static final String PHYS_START = "$phys";
 	private static final String TEXTURE_START = "$texture";
 	private static final String ANIMATION_START = "$animation";
+	private static final String BOUNDING_START = "$bounding";
 	private static final String OUT_MODEL_START = "$out_model";
 	private static final String OUT_TEXTURE_START = "$out_texture";
 	
@@ -63,6 +64,10 @@ public class QcParser
 		else if (line.startsWith(OUT_TEXTURE_START))
 		{
 			reader.readOutTexture(line, qc);
+		}
+		else if (line.startsWith(BOUNDING_START))
+		{
+			reader.readBoundingBox(line, qc);
 		}
 	}
 }

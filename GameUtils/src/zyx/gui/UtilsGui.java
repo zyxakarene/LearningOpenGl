@@ -63,6 +63,7 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         logArea.setColumns(20);
+        logArea.setFont(new java.awt.Font("Consolas", 0, 13)); // NOI18N
         logArea.setRows(5);
         jScrollPane1.setViewportView(logArea);
 
@@ -131,7 +132,7 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -141,6 +142,8 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
     {//GEN-HEADEREND:event_smdCompileButtonActionPerformed
 		try
 		{
+			logArea.setText("");
+			
 			File inputQc = qcCombo.getSelectedItem();
 			QcFile parsedQc = new QcParser().parseFile(inputQc);
 			new SmdParser(parsedQc).parseFiles();
