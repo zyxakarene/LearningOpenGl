@@ -324,7 +324,7 @@ public class Main
 		teapot.setZ(-50);
 		teapot.load("assets/models/teapot.zaf");
 		teapot.registerClick(new OnTeaPotClicked());
-//		world.addChild(teapot);
+		world.addChild(teapot);
 		
 		worm = new GameObject();
 		worm.load("assets/models/worm/worm.zaf");
@@ -334,7 +334,7 @@ public class Main
 		worm.registerClick(new OnTeaPotClicked());
 		world.addChild(worm);
 		
-//		picker.addObject(teapot);
+		picker.addObject(teapot);
 		picker.addObject(worm);
 	}
 

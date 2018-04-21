@@ -4,6 +4,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.controls.input.MouseData;
 import zyx.opengl.models.implementations.physics.PhysBox;
+import zyx.opengl.models.implementations.physics.PhysObject;
 import zyx.opengl.models.implementations.physics.PhysTriangle;
 import zyx.utils.cheats.DebugPoint;
 import zyx.utils.cheats.Print;
@@ -22,12 +23,30 @@ public class PhysConvexPicker extends AbstractPicker
 			return false;
 		}
 
-		PhysTriangle[] triangles = phys.getTriangles();
+		boolean hitOBB = RayOBB.hit(phys.getBoundingBox(), mat, pos, dir);
+		if (!hitOBB)
+		{
+			return false;
+		}
+		
+		PhysObject[] objects = phys.getObjects();
+		
+		for (PhysObject object : objects)
+		{
+			PhysTriangle[] triangles = object.getTriangles();
+			short boneId = object.getBoneId();
+			Matrix4f boneMatrix = physContainer.getBoneMatrix(boneId);
+			
+			boolean collided = testTriangle(pos, dir, triangles, boneMatrix);
+			if (collided)
+			{
+				return true;
+			}
+		}
 
-		boolean collided = testTriangle(pos, dir, triangles, mat);
 
-		intersectPoint.set(pos);
-		return collided;
+//		intersectPoint.set(pos);
+		return false;
 	}
 
 	private float intersectPlane(Vector3f planeNormal, Vector3f vertexPos, Vector3f startPos, Vector3f rayDir)
@@ -49,7 +68,29 @@ public class PhysConvexPicker extends AbstractPicker
 
 	private boolean testTriangle(Vector3f startPos, Vector3f rayDir, PhysTriangle[] triangles, Matrix4f matrix)
 	{
-
+		PhysTriangle triangle0 = triangles[5];
+		
+		Vector3f N = triangle0.normal;
+		Vector3f p0 = startPos;
+		Vector3f v = rayDir;
+		float D = Vector3f.dot(N, triangle0.v1);
+		//D = (N.dot.C) / (a1^2 + b1^2 + c1^2)
+		D = Vector3f.dot(N, triangle0.v3) / ((N.x * N.x) + (N.y * N.y) + (N.z * N.z));
+		
+		
+		float a = Vector3f.dot(N, p0);
+		float b = Vector3f.dot(N, v);
+		float t = (D - a) / (b);
+		Vector3f point = new Vector3f(p0);
+		point.x += t * v.x;
+		point.y += t * v.y;
+		point.z += t * v.z;
+		
+		if (MouseData.data.isLeftClicked())
+		{
+			DebugPoint.addToScene(point, 2000);
+		}
+		
 		int count = 0;
 		int pass = 0;
 		for (PhysTriangle triangle : triangles)
@@ -58,41 +99,20 @@ public class PhysConvexPicker extends AbstractPicker
 			VERTEX_2.set(triangle.v2);
 			VERTEX_3.set(triangle.v3);
 			NORMAL.set(triangle.normal);
-
-			float t = intersectPlane(NORMAL, VERTEX_1, startPos, rayDir);
-
-			count++;
-			if (t > 0)
+			
+			float dot = Vector3f.dot(point, NORMAL);
+			if (MouseData.data.isLeftDown())
 			{
-				pass++;
-
-				Vector3f pos = new Vector3f(startPos);
-				pos.x += rayDir.x * t;
-				pos.y += rayDir.y * t;
-				pos.z += rayDir.z * t;
-
-				float dotLeft = Vector3f.dot(NORMAL, pos);
-				float dotRight = Vector3f.dot(NORMAL, VERTEX_1);
-
-				if (dotLeft <= dotRight)
-				{
-					if (MouseData.data.isLeftClicked())
-					{
-						DebugPoint.addToScene(pos.x, pos.y, pos.z, 10000);
-					}
-
-					return true;
-				}
-
+				System.out.println(dot);
 			}
-			else
+		
+			if (dot <= 0)
 			{
 				return false;
 			}
+			
 		}
 
-		Print.out("Count:", count, "Pass:", pass);
-
-		return false;
+		return true;
 	}
 }
