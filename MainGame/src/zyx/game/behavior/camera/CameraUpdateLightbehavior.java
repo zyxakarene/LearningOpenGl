@@ -19,6 +19,8 @@ public class CameraUpdateLightbehavior extends Behavior
 {
 
 	private WorldShader worldShader;
+	private Vector3f cameraRot;
+	private CameraController controller;
 
 	public CameraUpdateLightbehavior()
 	{
@@ -28,7 +30,9 @@ public class CameraUpdateLightbehavior extends Behavior
 	@Override
 	public void initialize()
 	{
+		cameraRot = new Vector3f();
 		worldShader = (WorldShader) ShaderManager.INSTANCE.get(Shader.WORLD);
+		controller = (CameraController) gameObject;
 	}
 
 	@Override
@@ -36,25 +40,24 @@ public class CameraUpdateLightbehavior extends Behavior
 	{
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_E))
 		{
-			CameraController controller = (CameraController) gameObject;
-
-			float elevation = FloatMath.toRadians(controller.getRotation().z);
-			float heading = FloatMath.toRadians(controller.getRotation().x);
+			controller.getRotation(true, cameraRot);
+			
+			float elevation = FloatMath.toRadians(cameraRot.z);
+			float heading = FloatMath.toRadians(cameraRot.x);
 			HELPER_DIR.x = FloatMath.cos(elevation) * FloatMath.sin(heading);
 
-			elevation = FloatMath.toRadians(controller.getRotation().y);
-			heading = FloatMath.toRadians(controller.getRotation().x);
+			elevation = FloatMath.toRadians(cameraRot.y);
+			heading = FloatMath.toRadians(cameraRot.x);
 			HELPER_DIR.z = FloatMath.cos(elevation) * FloatMath.cos(heading);
 
-			elevation = FloatMath.toRadians(controller.getRotation().y);
-			heading = FloatMath.toRadians(controller.getRotation().x);
+			elevation = FloatMath.toRadians(cameraRot.y);
+			heading = FloatMath.toRadians(cameraRot.x);
 			HELPER_DIR.y = FloatMath.cos(elevation) * FloatMath.sin(elevation);
 			
-			
 			Matrix4f mat = new Matrix4f();
-			mat.rotate(FloatMath.toRadians(gameObject.getRotation().x), GeometryUtils.ROTATION_X);
-			mat.rotate(FloatMath.toRadians(gameObject.getRotation().y), GeometryUtils.ROTATION_Y);
-			mat.rotate(FloatMath.toRadians(gameObject.getRotation().z), GeometryUtils.ROTATION_Z);
+			mat.rotate(FloatMath.toRadians(cameraRot.x), GeometryUtils.ROTATION_X);
+			mat.rotate(FloatMath.toRadians(cameraRot.y), GeometryUtils.ROTATION_Y);
+			mat.rotate(FloatMath.toRadians(cameraRot.z), GeometryUtils.ROTATION_Z);
 			Print.out(mat);
 			
 			Vector3f a = new Vector3f(mat.m20, mat.m21, mat.m22); // Left-handed column oriented: get z row.
@@ -62,10 +65,6 @@ public class CameraUpdateLightbehavior extends Behavior
 			Vector3f c = new Vector3f(-mat.m20,-mat.m21,-mat.m22); // OpenGL style matrix (right-handed, column oriented), get the -z row.
 			Vector3f d = new Vector3f(mat.m02,mat.m12, mat.m22); // Right-handed row oriented: get -z column.
 
-			Print.out(a);
-			Print.out(b);
-			Print.out(c);
-			Print.out(d);
 			worldShader.uploadLightDirection(d);
 		}
 	}

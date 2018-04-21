@@ -23,11 +23,23 @@ class QcLineReader
 		String[] split = line.split(REGEX);
 		qc.meshFile = new File(root.getAbsolutePath() + File.separator + split[1]);
 	}
+	
+	void readPhys(String line, QcFile qc)
+	{
+		String[] split = line.split(REGEX);
+		qc.physFile = new File(root.getAbsolutePath() + File.separator + split[1]);
+	}
 
 	void readTexture(String line, QcFile qc)
 	{
 		String[] split = line.split(REGEX);
 		qc.textureFile = new File(root.getAbsolutePath() + File.separator +  split[1]);
+	}
+
+	void readBoundingBox(String line, QcFile qc)
+	{
+		String[] split = line.split(REGEX);
+		qc.boundingFile = new File(root.getAbsolutePath() + File.separator +  split[1]);
 	}
 
 	void readAnimation(String line, QcFile qc)
@@ -37,7 +49,7 @@ class QcLineReader
 		
 		qc.animations.add(animation);
 	}
-
+	
 	void readOutModel(String line, QcFile qc)
 	{
 		String[] split = line.split(REGEX);

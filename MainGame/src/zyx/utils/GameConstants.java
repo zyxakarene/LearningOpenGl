@@ -4,6 +4,8 @@ import java.util.logging.Logger;
 
 public class GameConstants
 {
+	public static final boolean DEBUG = true;
+	
 	public static final int FPS = 60;
 	public static final int MS_PER_FRAME = 1000 / FPS;
 

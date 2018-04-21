@@ -30,14 +30,17 @@ public class CameraUpdateViewBehavior extends Behavior
 	@Override
 	public void initialize()
 	{
-		cameraPosition = gameObject.getPosition();
-		cameraRotation = gameObject.getRotation();
+		cameraPosition = new Vector3f();
+		cameraRotation = new Vector3f();
 		cameraRotationRad = new Vector4f();
 	}
 
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
+		gameObject.getPosition(false, cameraPosition);
+		gameObject.getRotation(false, cameraRotation);
+		
 		cameraRotationRad.x = FloatMath.toRadians(cameraRotation.x);
 		cameraRotationRad.y = FloatMath.toRadians(cameraRotation.y);
 		cameraRotationRad.z = FloatMath.toRadians(cameraRotation.z);
@@ -48,6 +51,7 @@ public class CameraUpdateViewBehavior extends Behavior
 		viewMatrix.rotate(cameraRotationRad.y, GeometryUtils.ROTATION_Y);
 		viewMatrix.rotate(cameraRotationRad.z, GeometryUtils.ROTATION_Z);
 
+		cameraPosition.negate();
 		viewMatrix.translate(cameraPosition);
 
 		float dX = FloatMath.sin(cameraRotationRad.z) * FloatMath.cos(cameraRotationRad.w) * 0.1f;

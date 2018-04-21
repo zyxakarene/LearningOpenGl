@@ -12,6 +12,9 @@ public class CursorManager
 	private static final CursorManager instance = new CursorManager();
 
 	private HashMap<GameCursor, Cursor> cursorMap;
+	
+	private GameCursor currentCursor = GameCursor.POINTER;
+	private GameCursor oldCursor = null;
 
 	private CursorManager()
 	{
@@ -25,9 +28,20 @@ public class CursorManager
 
 	public void setCursor(GameCursor cursor)
 	{
+		currentCursor = cursor;
+	}
+
+	public void update()
+	{
+		if (oldCursor == currentCursor)
+		{
+			return;
+		}
+		
 		try
 		{
-			Cursor cursorToUse = cursorMap.get(cursor);
+			oldCursor = currentCursor;
+			Cursor cursorToUse = cursorMap.get(oldCursor);
 			Mouse.setNativeCursor(cursorToUse);
 		}
 		catch (LWJGLException ex)
@@ -35,7 +49,7 @@ public class CursorManager
 			Msg.error("Could not set cursor", ex);
 		}
 	}
-
+	
 	public void initialize()
 	{
 		GameCursor[] cursors = GameCursor.values();

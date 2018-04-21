@@ -2,6 +2,7 @@ package zyx.engine.components.world;
 
 import java.util.ArrayList;
 import zyx.engine.components.world.physics.CollisionChecker;
+import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IUpdateable;
 
 public final class Physics implements IUpdateable
@@ -36,6 +37,12 @@ public final class Physics implements IUpdateable
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
+		if (elapsedTime >= 200)
+		{
+			Print.out("High elapsedTime, setting to 16. Was", elapsedTime);
+			elapsedTime = 16;
+		}
+		
 		int physLen = physicsColliders.size();
 		int staticLen = staticColliders.size();
 		

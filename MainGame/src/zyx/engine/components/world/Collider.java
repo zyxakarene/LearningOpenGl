@@ -2,7 +2,6 @@ package zyx.engine.components.world;
 
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.controls.SharedPools;
-import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IUpdateable;
 
@@ -13,6 +12,8 @@ public abstract class Collider implements IUpdateable, IDisposeable
 	public boolean isStatic;
 	
 	protected WorldObject parent;
+	
+	private static final Vector3f HELPER_POS = new Vector3f();
 	
 	public Collider(boolean isStatic)
 	{
@@ -27,9 +28,12 @@ public abstract class Collider implements IUpdateable, IDisposeable
 		if (!isStatic && parent != null)
 		{
 			float delta = elapsedTime * 0.001f;
-			parent.position.x += velocity.x * delta;
-			parent.position.y += velocity.y * delta;
-			parent.position.z += velocity.z * delta;
+			parent.getPosition(false, HELPER_POS);
+			
+			HELPER_POS.x += velocity.x * delta;
+			HELPER_POS.y += velocity.y * delta;
+			HELPER_POS.z += velocity.z * delta;
+			parent.setPosition(HELPER_POS);
 		}
 		
 		onUpdate(timestamp, elapsedTime);
@@ -64,9 +68,7 @@ public abstract class Collider implements IUpdateable, IDisposeable
 	{
 		if (parent != null)
 		{
-			out.x = parent.position.x;
-			out.y = parent.position.y;
-			out.z = parent.position.z;
+			parent.getPosition(false, out);
 		}
 		else
 		{

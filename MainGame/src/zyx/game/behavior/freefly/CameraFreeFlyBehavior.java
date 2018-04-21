@@ -31,13 +31,16 @@ public class CameraFreeFlyBehavior extends Behavior
 	@Override
 	public void initialize()
 	{		
-		cameraPosition = gameObject.getPosition();
-		cameraRotation = gameObject.getRotation();
+		cameraPosition = new Vector3f();
+		cameraRotation = new Vector3f();
 	}
 
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
+		gameObject.getPosition(false, cameraPosition);
+		gameObject.getRotation(false, cameraRotation);
+		
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_Z))
 		{
 			Mouse.setGrabbed(!Mouse.isGrabbed());
@@ -45,8 +48,8 @@ public class CameraFreeFlyBehavior extends Behavior
 
 		if (Mouse.isGrabbed())
 		{
-			int dx = (int) (MouseData.instance.dX * DeltaTime.getDeltaVariant());
-			int dy = (int) (MouseData.instance.dY * DeltaTime.getDeltaVariant());
+			int dx = (int) (MouseData.data.dX * DeltaTime.getDeltaVariant());
+			int dy = (int) (MouseData.data.dY * DeltaTime.getDeltaVariant());
 			rotate(-dy, 0, dx, elapsedTime);
 		}
 

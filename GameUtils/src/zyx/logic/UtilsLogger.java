@@ -11,6 +11,11 @@ public class UtilsLogger
 		UtilsLogger.output = output;
 	}
 	
+	public static void log(Object obj)
+	{
+		log(obj.toString());
+	}
+	
 	public static void log(String line)
 	{
 		log(line, null);
@@ -22,7 +27,8 @@ public class UtilsLogger
 		
 		if (ex != null)
 		{
-			output.append(ex.getMessage());
+			output.append(" - " + ex.getMessage());
+			ex.printStackTrace();
 		}
 		
 		output.append("\n");

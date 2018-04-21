@@ -13,6 +13,7 @@ import zyx.opengl.models.implementations.bones.animation.AnimationFrame;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.implementations.bones.transform.JointTransform;
+import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.utils.GameConstants;
 import zyx.utils.math.MatrixUtils;
 
@@ -35,7 +36,9 @@ public class ZafLoader
 			Skeleton skeleton = new Skeleton(rootJoint, meshJoint);
 			addAnimationsTo(skeleton, smd.animations);
 			
-			return new LoadableValueObject(smd.vertexData, smd.elementData, skeleton, smd.texture);
+			PhysBox phys = createPhysBox(smd.physInformation);
+			
+			return new LoadableValueObject(smd.vertexData, smd.elementData, skeleton, phys, smd.texture);
 		}
 		catch (IOException e)
 		{
@@ -94,5 +97,36 @@ public class ZafLoader
 		int id = 0;
 		
 		return new Joint(id, name, matrix);
+	}
+
+	private static PhysBox createPhysBox(SmdPhysInfo physInfo)
+	{
+		SmdPhysbox[] boxes = physInfo.physBoxes;
+		int triangleCount = getTriangleCount(boxes);
+		
+		PhysBox box = new PhysBox(triangleCount, physInfo.boundingBox, boxes.length);
+		for (SmdPhysbox physBox : boxes)
+		{
+			box.addObject(physBox.triangles.length, physBox.boneId);
+			
+			for (SmdPhysTriangle triangle : physBox.triangles)
+			{
+				box.addTriangle(triangle.v1, triangle.v2, triangle.v3, triangle.normal);
+			}
+		}
+		
+		return box;
+	}
+
+	private static int getTriangleCount(SmdPhysbox[] physboxes)
+	{
+		int count = 0;
+		
+		for (SmdPhysbox box : physboxes)
+		{
+			count += box.triangles.length;
+		}
+		
+		return count;
 	}
 }

@@ -3,6 +3,7 @@ package zyx.logic.converter.smd.vo;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import org.lwjgl.util.vector.Vector3f;
 import zyx.logic.converter.smd.reader.SmdTriangleHandler;
 
 public class SmdObject
@@ -10,6 +11,7 @@ public class SmdObject
 	private Bone rootBone;
 	private ArrayList<Vertex> verticies;
 	private ArrayList<Animation> animations = new ArrayList<>();
+	private PhysInformation phys = new PhysInformation();
 	private ArrayList<Integer> elements;
 	private String texturePath;
 
@@ -38,6 +40,16 @@ public class SmdObject
 	{
 		animations.add(animation);
 	}
+
+	public void setPhysBoxes(ArrayList<PhysBox> physBoxes)
+	{
+		this.phys.setBoxes(physBoxes);
+	}
+	
+	public void setBoundingBox(Vector3f min, Vector3f max)
+	{
+		this.phys.setBoundingBox(min, max);
+	}
 	
 	public void save(DataOutputStream out) throws IOException
 	{
@@ -60,6 +72,8 @@ public class SmdObject
 		{
 			animation.save(out);
 		}
+		
+		phys.save(out);
 		
 		out.writeUTF(texturePath);
 	}

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 public class QcFile
 {
 	public File meshFile;
+	public File physFile;
+	public File boundingFile;
 	public File textureFile;
 	
 	public ArrayList<File> animations = new ArrayList<>();

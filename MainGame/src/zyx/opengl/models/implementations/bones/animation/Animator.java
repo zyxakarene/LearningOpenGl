@@ -34,7 +34,7 @@ public class Animator implements IUpdateable, IDisposeable
 	public void update(long timestamp, int elapsedTime)
 	{
 		if (currentAnimation != null)
-		{
+		{			
 			float timeSinceStart = (int) (timestamp - animationStartedAt);
 
 			int animationLength = currentAnimation.length;

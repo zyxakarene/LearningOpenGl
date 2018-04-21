@@ -63,7 +63,7 @@ public class Sound implements IDisposeable, IUpdateable
 			return;
 		}
 
-		emitter.getWorldPosition(SHARED_VECTOR_3F);
+		emitter.getPosition(false, SHARED_VECTOR_3F);
 		SHARED_VECTOR_4F.x = SHARED_VECTOR_3F.x;
 		SHARED_VECTOR_4F.y = SHARED_VECTOR_3F.y;
 		SHARED_VECTOR_4F.z = SHARED_VECTOR_3F.z;

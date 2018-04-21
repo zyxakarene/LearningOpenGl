@@ -1,0 +1,88 @@
+zaf
+{
+	SmdBone							rootBone
+	
+	vertexCount						int
+	float[vertexCount * 12]			vertexData
+	
+	elementCount					int
+	short[elementCount]				elementData
+	
+	animationCount					int
+	SmdAnimation[animationCount]	animations
+	
+	physInformation					SmdPhysInformation
+	
+	UtfString						texture
+}
+
+SmdPhysInformation
+{
+	Vector3F						boundingBoxMin
+	Vector3F						boundingBoxMax
+	physBoxCount					int
+	SmdPhysBox[physBoxCount]		physBoxes
+}
+
+SmdPhysbox
+{
+	short							boneId
+	int								triangleCount
+	SmdPhysTriangle[triangleCount]	triangles
+}
+
+SmdPhysTriangle
+{
+	Vector3F	v1	
+	Vector3F	v2	
+	Vector3F	v3	
+	Vector3F	normal
+}
+
+SmdBone
+{
+	byte		id
+	UtfString	name
+	
+	Vector3F	restPos
+	Vector4F	restRot
+	
+	byte		childCount
+	SmdBone[childCount] childBones
+}
+
+SmdAnimation
+{
+	UtfString				name
+	animationCount			int
+	SmdAnimationFrame[]		frames
+}
+
+SmdAnimationFrame
+{
+	frame									int
+	transformLength							int
+	SmdAnimationTransform[transformLength]	transforms
+}
+
+SmdAnimationTransform
+{
+	UtfString	boneName
+	Vector3F	position
+	Vector4F	rotation
+}
+
+Vector3F
+{
+	float		x
+	float		y
+	float		z
+}
+
+Vector4F
+{
+	float		x
+	float		y
+	float		z
+	float		w
+}

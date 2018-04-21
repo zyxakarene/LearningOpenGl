@@ -82,7 +82,7 @@ public class BoxCollider extends ParentMovingCollider
 
 	private void updateBoundingBox()
 	{
-		Vector3f parentPos = parent.getPosition();
+		Vector3f parentPos = parent.getPosition(true, null);
 		float wH = width / 2;
 		float dH = debth / 2;
 

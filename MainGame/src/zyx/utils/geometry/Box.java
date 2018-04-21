@@ -17,4 +17,14 @@ public class Box
 		this.debth = debth;
 		this.height = height;
 	}
+
+	public Box(float minX, float maxX, float minY, float maxY, float minZ, float maxZ)
+	{
+		this.minX = minX;
+		this.maxX = maxX;
+		this.minY = minY;
+		this.maxY = maxY;
+		this.minZ = minZ;
+		this.maxZ = maxZ;
+	}
 }

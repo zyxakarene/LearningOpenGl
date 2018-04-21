@@ -12,12 +12,18 @@ import zyx.game.components.GameObject;
 import zyx.engine.components.world.World3D;
 import zyx.engine.components.world.physics.BoxCollider;
 import zyx.engine.curser.CursorManager;
+import zyx.engine.curser.GameCursor;
+import zyx.engine.utils.worldpicker.WorldPicker;
+import zyx.engine.utils.worldpicker.calculating.PhysPicker;
+import zyx.engine.utils.worldpicker.calculating.PhysPlanePicker;
+import zyx.engine.utils.worldpicker.calculating.RayPicker;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.components.screen.AddBitmapFontButton;
 import zyx.game.components.world.player.Player;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.MegaManager;
 import zyx.game.controls.input.KeyboardData;
+import zyx.game.controls.input.MouseData;
 import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.sound.SoundManager;
 import zyx.net.io.ConnectionLoader;
@@ -25,18 +31,25 @@ import zyx.opengl.GLUtils;
 import zyx.opengl.SetupOpenGlCommand;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.shaders.ShaderManager;
+import zyx.opengl.textures.ColorTexture;
 import zyx.opengl.textures.RenderTexture;
 import zyx.utils.DeltaTime;
 import zyx.utils.FPSCounter;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
+import zyx.utils.cheats.DebugContainer;
+import zyx.utils.cheats.DebugPhysics;
+import zyx.utils.cheats.DebugPoint;
+import zyx.utils.cheats.Print;
 
 public class Main
 {
 
+	private static WorldPicker picker;
 	private static RenderTexture ren;
 
 	private static Player player;
+	private static DebugContainer debugContainer;
 
 	private static CameraController camera;
 	private static GameObject ground;
@@ -44,6 +57,8 @@ public class Main
 	private static GameObject platform;
 	private static GameObject mainKnight;
 	private static GameObject attachedKnight1;
+	private static GameObject teapot;
+	private static GameObject worm;
 
 	private static Stage stage;
 	private static World3D world;
@@ -65,7 +80,9 @@ public class Main
 		ConnectionLoader.getInstance().connect("localhost", 8888);
 		ConnectionLoader.getInstance().startThreads();
 
+		picker = new WorldPicker();
 		load();
+
 
 		GLUtils.errorCheck();
 
@@ -74,15 +91,18 @@ public class Main
 			Display.update();
 			Display.sync(GameConstants.FPS);
 
+			CursorManager.getInstance().setCursor(GameCursor.POINTER);
 			update();
+			CursorManager.getInstance().update();
+			world.updateMatrix();
 
 			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, ren.bufferId);
 			GL11.glViewport(0, 0, (int) ren.getWidth(), (int) ren.getHeight());
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 			if (mainKnight != null)
 			{
-				camera.getPosition(cameraPosOrig);
-				camera.getRotation(cameraRotOrig);
+				camera.getPosition(true, cameraPosOrig);
+				camera.getRotation(true, cameraRotOrig);
 
 				camera.setPosition(cameraPos);
 				camera.setRotation(cameraRot);
@@ -97,8 +117,6 @@ public class Main
 			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 			GL11.glViewport(0, 0, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
 			draw();
-
-			FPSCounter.updateFPS();
 
 			GLUtils.errorCheck();
 
@@ -130,11 +148,13 @@ public class Main
 			}
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_4))
 			{
-				camera.getPosition(cameraPos);
-				camera.getRotation(cameraRot);
+				camera.getPosition(true, cameraPos);
+				camera.getRotation(true, cameraRot);
 			}
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_5))
 			{
+				Vector3f pos = camera.getPosition(true, null);
+				DebugPoint.addToScene(-pos.x, -pos.y, -pos.z, 10000);
 			}
 
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_ESCAPE))
@@ -170,15 +190,47 @@ public class Main
 		int elapsed = DeltaTime.getElapsedTime();
 
 		MegaManager.update(timestamp, elapsed);
+		picker.update();
 
 		camera.update(timestamp, elapsed);
 		player.update(timestamp, elapsed);
+		debugContainer.update(timestamp, elapsed);
+
+		FPSCounter.updateFPS();
 
 		world.physics.update(timestamp, elapsed);
 
 		if (mainKnight != null)
 		{
 			mainKnight.setRotZ(mainKnight.getRotZ() + 0.5f);
+		}
+		if (teapot != null && MouseData.data.isRightDown())
+		{
+//			Vector3f rot = teapot.getRotation(true, null);
+//			rot.x += 0.5f;
+//			rot.y += 0.5f;
+//			rot.z += 0.5f;
+//			teapot.setRotation(rot);
+//			
+//			Vector3f scale = teapot.getScale(true, null);
+//			scale.x = FloatMath.abs(FloatMath.sin(timestamp * 0.001f));
+//			scale.y = FloatMath.abs(FloatMath.cos(timestamp * 0.001f));
+//			scale.z = FloatMath.abs(FloatMath.tan(timestamp * 0.001f));
+//			teapot.setScale(scale);
+		}
+		
+		if (MouseData.data.isLeftDown())
+		{
+			Vector3f ray = RayPicker.getInstance().getRay();
+			Vector3f out = new Vector3f();
+			Vector3f pos = new Vector3f();
+			camera.getPosition(false, pos);
+			
+			out.set(pos);
+			out.x += ray.x * 100;
+			out.y += ray.y * 100;
+			out.z += ray.z * 100;
+//			DebugPoint.addToScene(out.x, out.y, out.z, 10000);
 		}
 	}
 
@@ -204,10 +256,10 @@ public class Main
 		Camera.getInstance().initialize();
 
 		player = new Player();
-		
+		player.setPosition(0, 0, 0);
+
 		camera = new CameraController();
 		camera.addBehavior(new FirstPersonBehavior(player));
-
 
 		platform = new GameObject();
 		platform.setY(100);
@@ -224,9 +276,8 @@ public class Main
 		boxTv = new GameObject();
 		boxTv.setX(-100);
 		boxTv.setZ(-60);
-		boxTv.load("assets/models/box.zaf");
-						boxTv.setCollider(new BoxCollider(40, 40, 40, true));
-
+		boxTv.load("assets/models/tv.zaf");
+		boxTv.setCollider(new BoxCollider(40, 40, 40, true));
 
 		DisplayObjectContainer container = new DisplayObjectContainer();
 		Image image = new Image();
@@ -242,7 +293,10 @@ public class Main
 		stage = Stage.instance;
 		stage.addChild(container);
 
+		debugContainer = new DebugContainer();
+
 		world = World3D.instance;
+		world.addChild(debugContainer);
 		world.addChild(platform);
 		world.addChild(boxTv);
 		world.addChild(ground);
@@ -265,23 +319,42 @@ public class Main
 		Checkbox checkbox = new Checkbox("assets/textures/BtnUp.png", "assets/textures/BtnHover.png", "assets/textures/BtnDown.png", "assets/textures/Check.png");
 		checkbox.position.set(125, 220);
 		stage.addChild(checkbox);
+
+		teapot = new GameObject();
+		teapot.setZ(-50);
+		teapot.load("assets/models/teapot.zaf");
+		teapot.registerClick(new OnTeaPotClicked());
+		world.addChild(teapot);
+		
+		worm = new GameObject();
+		worm.load("assets/models/worm/worm.zaf");
+		worm.setAnimation("wiggle");
+		worm.setZ(-50);
+		worm.setX(-50);
+		worm.registerClick(new OnTeaPotClicked());
+		world.addChild(worm);
+		
+		picker.addObject(teapot);
+		picker.addObject(worm);
 	}
 
 	private static void addRandomBoxes()
 	{
-		for (int i = 0; i < 20; i++)
+		for (int i = 0; i < 20 * 0; i++)
 		{
 			float scaleX = FloatMath.random() * 3;
 			float scaleY = FloatMath.random() * 3;
 			float scaleZ = FloatMath.random() * 3;
-			
+
 			GameObject box = new GameObject();
 			box.setX(FloatMath.random() * -200f);
 			box.setY(FloatMath.random() * -200f);
-			box.setZ(FloatMath.random() * -200f);
+			box.setZ((FloatMath.random() * 200f) - 50);
 			box.setScale(scaleX, scaleY, scaleZ);
 			box.load("assets/models/box.zaf");
 			box.setCollider(new BoxCollider(40 * scaleX, 40 * scaleY, 40 * scaleZ));
+			box.registerClick(new OnTeaPotClicked());
+			picker.addObject(box);
 			
 			world.addChild(box);
 		}

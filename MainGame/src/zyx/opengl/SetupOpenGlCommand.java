@@ -13,8 +13,6 @@ import zyx.utils.interfaces.ICommand;
 public class SetupOpenGlCommand implements ICommand
 {
 
-	private static final boolean DEBUG = true;
-
 	@Override
 	public void execute()
 	{
@@ -38,7 +36,7 @@ public class SetupOpenGlCommand implements ICommand
 	{
 		PixelFormat pixelFormat = new PixelFormat();
 		ContextAttribs contextAtrributes;
-		if (DEBUG)
+		if (GameConstants.DEBUG)
 		{
 			contextAtrributes = new ContextAttribs(4, 3);
 			contextAtrributes.withDebug(true);
@@ -53,7 +51,7 @@ public class SetupOpenGlCommand implements ICommand
 		Display.setDisplayMode(new DisplayMode(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT));
 		Display.create(pixelFormat, contextAtrributes);
 
-		if (DEBUG)
+		if (GameConstants.DEBUG)
 		{
 			KHRDebugCallback callback = new KHRDebugCallback();
 			GL43.glDebugMessageCallback(callback);

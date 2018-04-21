@@ -8,7 +8,7 @@ import zyx.utils.geometry.Rectangle;
 public class RenderTexture extends AbstractTexture
 {
 
-	private static final Rectangle RENDER_RECT = new Rectangle(1, 0, -1, 1);
+	private static final Rectangle RENDER_RECT = new Rectangle(0, 0, 0, 0);
 
 	public final int bufferId;
 	private final int textureId;

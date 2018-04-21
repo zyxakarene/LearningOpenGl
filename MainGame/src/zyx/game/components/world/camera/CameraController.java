@@ -22,43 +22,26 @@ public class CameraController extends GameObject
 	}
 
 	@Override
-	public Vector3f getPosition()
+	public Vector3f getPosition(boolean local, Vector3f out)
 	{
-		return camera.getPosition();
+		return Camera.getInstance().getPosition(local, out);
 	}
 
 	@Override
-	public Vector3f getRotation()
+	public Vector3f getRotation(boolean local, Vector3f out)
 	{
-		return camera.getRotation();
+		return Camera.getInstance().getRotation(local, out);
 	}
 
 	@Override
-	public Vector3f getRotation(Vector3f out)
+	public void setRotation(Vector3f rot)
 	{
-		return out.set(camera.getRotation());
+		Camera.getInstance().setRotation(rot);
 	}
 
 	@Override
-	public Vector3f getPosition(Vector3f out)
+	public void setPosition(Vector3f pos)
 	{
-		return out.set(camera.getPosition());
+		Camera.getInstance().setPosition(pos);
 	}
-
-	@Override
-	public void setPosition(Vector3f rotation)
-	{
-		camera.getPosition().set(rotation);
-	}
-
-	@Override
-	public void setRotation(Vector3f position)
-	{
-		camera.getRotation().set(position);
-	}
-	
-	
-	
-
-	
 }

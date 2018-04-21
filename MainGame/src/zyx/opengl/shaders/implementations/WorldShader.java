@@ -59,7 +59,8 @@ public class WorldShader extends AbstractShader
 		UniformUtils.setUniformMatrix(modelMatrixTrans, MATRIX_MODEL);
 		
 		MATRIX_MODEL_INVERT_TRANSPOSE.load(MATRIX_MODEL);
-		MATRIX_MODEL_INVERT_TRANSPOSE.invert().transpose();
+		MATRIX_MODEL_INVERT_TRANSPOSE.invert();
+		MATRIX_MODEL_INVERT_TRANSPOSE.transpose();
 		UniformUtils.setUniformMatrix(modelMatrixTrans_InverseTranspose, MATRIX_MODEL_INVERT_TRANSPOSE);
 		
 		synchronized(BONES)

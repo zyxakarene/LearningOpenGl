@@ -39,8 +39,8 @@ public abstract class InteractableContainer extends DisplayObjectContainer
 		}
 		else
 		{
-			MOUSE_POS_HELPER.x = MouseData.instance.x;
-			MOUSE_POS_HELPER.y = -MouseData.instance.y;
+			MOUSE_POS_HELPER.x = MouseData.data.x;
+			MOUSE_POS_HELPER.y = -MouseData.data.y;
 
 			Matrix4f.transform(invertedModel, MOUSE_POS_HELPER, MOUSE_POS_HELPER);
 
@@ -73,7 +73,7 @@ public abstract class InteractableContainer extends DisplayObjectContainer
 
 	private void updateButtonState(boolean mouseCollision)
 	{
-		boolean isLeftDown = MouseData.instance.isLeftDown();
+		boolean isLeftDown = MouseData.data.isLeftDown();
 
 		if (!wasMouseOver && isLeftDown)
 		{

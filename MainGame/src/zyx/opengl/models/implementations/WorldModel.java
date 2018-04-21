@@ -3,29 +3,29 @@ package zyx.opengl.models.implementations;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.models.AbstractModel;
+import zyx.opengl.models.SharedWorldModelTransformation;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
 import zyx.opengl.models.implementations.bones.attachments.Attachment;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
+import zyx.opengl.models.implementations.physics.PhysBox;
+import zyx.opengl.textures.MissingTexture;
 import zyx.utils.DeltaTime;
-import zyx.utils.FloatMath;
-import zyx.utils.GeometryUtils;
 
 public class WorldModel extends AbstractModel
 {
-	private static final Vector3f ATTACHMENT_INVERT_POS = new Vector3f();
-	private static final Vector3f ATTACHMENT_INVERT_ROT = new Vector3f();
-	
-	protected static final Vector3f SHARED_ROTATION = new Vector3f(0, 0, 0);
-	protected static final Vector3f SHARED_POSITION = new Vector3f(0, 0, 0);
-	protected static final Vector3f SHARED_SCALE = new Vector3f(1, 1, 1);
+	private static final Vector3f ATTACHMENT_POSITION = new Vector3f(0, 0, 0);
+	private static final Vector3f ATTACHMENT_ROTATION = new Vector3f(0, 0, 0);
+	private static final Vector3f ATTACHMENT_SCALE = new Vector3f(1, 1, 1);
 
 	private static final Matrix4f MODEL_MATRIX = WorldShader.MATRIX_MODEL;
 
 	private WorldShader shader;
 	private Skeleton skeleton;
+	
+	private PhysBox physBox;
 
 	public WorldModel(LoadableValueObject vo)
 	{
@@ -33,6 +33,7 @@ public class WorldModel extends AbstractModel
 		this.shader = (WorldShader) meshShader;
 
 		skeleton = vo.skeleton;
+		physBox = vo.physBox;
 		setVertexData(vo.vertexData, vo.elementData);
 		setTexture(vo.gameTexture);
 	}
@@ -41,24 +42,10 @@ public class WorldModel extends AbstractModel
 	{
 		return skeleton.getBoneByName(name);
 	}
-	
-	public void transform(Vector3f position, Vector3f rotation, Vector3f scale)
-	{
-		SHARED_POSITION.set(position);
-		SHARED_ROTATION.set(rotation);
-		SHARED_SCALE.set(scale);
-		
-		transform();
-	}
 
 	public void setAnimation(AnimationController controller)
 	{
 		skeleton.setCurrentAnimation(controller);
-	}
-
-	public void setScale(float newScale)
-	{
-		SHARED_SCALE.set(newScale, newScale, newScale);
 	}
 
 	@Override
@@ -69,36 +56,24 @@ public class WorldModel extends AbstractModel
 		super.draw();
 	}
 
-	private void transform()
+	public PhysBox getPhysbox()
 	{
-		MODEL_MATRIX.translate(SHARED_POSITION);
-		MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.x), GeometryUtils.ROTATION_X);
-		MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.y), GeometryUtils.ROTATION_Y);
-		MODEL_MATRIX.rotate(FloatMath.toRadians(SHARED_ROTATION.z), GeometryUtils.ROTATION_Z);
-
-		MODEL_MATRIX.scale(SHARED_SCALE);
-
-		shader.upload();
+		return physBox;
 	}
-	
+		
 	public void drawAsAttachment(Attachment attachment)
 	{
-		Matrix4f bonePosCopy = new Matrix4f(attachment.joint.getFinalTransform());
-		Matrix4f.mul(MODEL_MATRIX, bonePosCopy, bonePosCopy);
-
-		attachment.parent.getPosition().negate(ATTACHMENT_INVERT_POS);
-		attachment.parent.getRotation().negate(ATTACHMENT_INVERT_ROT);
-
 		skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
-
-		MODEL_MATRIX.setIdentity();
+		Matrix4f bonePosCopy = new Matrix4f(attachment.joint.getAttachmentTransform());
 		Matrix4f.mul(MODEL_MATRIX, bonePosCopy, MODEL_MATRIX);
-		MODEL_MATRIX.rotate(FloatMath.toRadians(ATTACHMENT_INVERT_ROT.x), GeometryUtils.ROTATION_X);
-		MODEL_MATRIX.rotate(FloatMath.toRadians(ATTACHMENT_INVERT_ROT.y), GeometryUtils.ROTATION_Y);
-		MODEL_MATRIX.rotate(FloatMath.toRadians(ATTACHMENT_INVERT_ROT.z), GeometryUtils.ROTATION_Z);
-		MODEL_MATRIX.translate(ATTACHMENT_INVERT_POS);
 
-		transform();
+		attachment.child.getPosition(true, ATTACHMENT_POSITION);
+		attachment.child.getRotation(true, ATTACHMENT_ROTATION);
+		attachment.child.getScale(true, ATTACHMENT_SCALE);
+		
+		SharedWorldModelTransformation.transform(ATTACHMENT_POSITION, ATTACHMENT_ROTATION, ATTACHMENT_SCALE);
+		
+		shader.upload();
 		super.draw();
 	}
 
@@ -115,6 +90,11 @@ public class WorldModel extends AbstractModel
 	public Joint getBoneByName(String boneName)
 	{
 		return skeleton.getBoneByName(boneName);
+	}
+
+	public Joint getBoneById(int boneId)
+	{
+		return skeleton.getBoneById(boneId);
 	}
 
 	@Override

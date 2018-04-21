@@ -2,6 +2,7 @@ package zyx.logic.converter.smd.reader;
 
 import java.util.HashMap;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.logic.UtilsLogger;
 import zyx.logic.converter.smd.vo.Bone;
 
 public class SmdBoneHandler implements ISmdHandler
@@ -41,7 +42,7 @@ public class SmdBoneHandler implements ISmdHandler
 			rot.set(rotX, rotY, rotZ);
 			
 			Bone bone = boneMap.get(nodeId);
-			System.out.println("NodeId " + nodeId + " gave bone " + bone);
+			UtilsLogger.log("NodeId " + nodeId + " gave bone " + bone);
 			bone.setRestData(pos, rot);
 		}
 	}

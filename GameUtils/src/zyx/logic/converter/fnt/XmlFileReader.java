@@ -13,6 +13,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import zyx.logic.UtilsLogger;
 
 class XmlFileReader
 {
@@ -51,8 +52,8 @@ class XmlFileReader
 			kernings.add(new FontKerning(attributes));
 		}
 		
-		System.out.println(characters);
-		System.out.println(kernings);
+		UtilsLogger.log(characters);
+		UtilsLogger.log(kernings);
 
 		try (DataOutputStream out = new DataOutputStream(new FileOutputStream(output)))
 		{
