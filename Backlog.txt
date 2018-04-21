@@ -11,7 +11,6 @@ Skybox
 
 =Core=
 UI overhaul
-Ray picking
 Physics
 
 =Done=
@@ -20,6 +19,7 @@ Clicking/hovering on items
 async texture loading
 Load required textures with zaf model
 Cursor icons
+Ray picking
 
 =Notes=
 Physics: When two colliders intersect, push them away from each others center until they no longer overlap.
