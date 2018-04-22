@@ -27,7 +27,7 @@ public class CheckerdColorTexture implements Texture
 
 	public CheckerdColorTexture(int colA, int colB)
 	{
-		TextureImpl.bindNone();
+		TextureImpl.unbind();
 
 		textureId = GL11.glGenTextures();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);

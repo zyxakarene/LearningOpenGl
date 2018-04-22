@@ -18,18 +18,11 @@ public class GameScene extends Scene
 	@Override
 	protected void onInitialize()
 	{
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			GameObject knight = new GameObject();
-			knight.load("assets/models/knight/knight.zaf");
-			if (i == 0)
-			{
-				knight.setAnimation("attack");
-			}
-			else
-			{
-				knight.setAnimation("walk");
-			}
+			knight.load("assets/models/worm/worm.zaf");
+			knight.setAnimation("wiggle");
 			knight.setX(FloatMath.random() * 300);
 			knight.setY(FloatMath.random() * 300);
 

@@ -5,7 +5,6 @@ import zyx.opengl.models.implementations.physics.PhysBox;
 
 public interface IPhysbox
 {
-	public boolean hasPhysbox();
 	public PhysBox getPhysbox();
 	public Matrix4f getMatrix();
 	public Matrix4f getBoneMatrix(int boneId);

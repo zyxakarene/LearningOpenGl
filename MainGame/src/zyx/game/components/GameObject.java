@@ -308,12 +308,6 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	{
 		return physbox;
 	}
-	
-	@Override
-	public boolean hasPhysbox()
-	{
-		return physbox != null && physbox.getObjects().length > 0;
-	}
 
 	@Override
 	public Matrix4f getMatrix()

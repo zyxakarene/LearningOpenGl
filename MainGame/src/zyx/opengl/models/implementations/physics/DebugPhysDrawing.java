@@ -20,11 +20,6 @@ public class DebugPhysDrawing
 	
 	public static WorldModel[] getModelFor(IPhysbox physBox)
 	{
-		if (physBox.hasPhysbox() == false)
-		{
-			return null;
-		}
-		
 		PhysBox box = physBox.getPhysbox();
 		
 		if (MESH_MAP.containsKey(box) == false)
@@ -35,7 +30,7 @@ public class DebugPhysDrawing
 		WorldModel[] models = new WorldModel[2];
 		models[0] = MESH_MAP.get(box);
 		models[1] = BOUNDING_BOX_MAP.get(box);
-		
+				
 		return models;
 	}
 
@@ -46,7 +41,6 @@ public class DebugPhysDrawing
 
 		WorldModel mesh = getMeshModel(box.getTriangles().length, objects);
 		WorldModel bounding = getBoundingModel(boundingBox);
-
 		MESH_MAP.put(box, mesh);
 		BOUNDING_BOX_MAP.put(box, bounding);
 	}
