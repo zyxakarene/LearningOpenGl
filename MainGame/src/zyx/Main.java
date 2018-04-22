@@ -70,7 +70,6 @@ public class Main
 	public static void main(String[] args)
 	{
 		new SetupOpenGlCommand().execute();
-		GL11.glClearColor(0.60f, 0.80f, 0.92f, 1);
 
 		GLUtils.enableGLSettings();
 
@@ -203,6 +202,15 @@ public class Main
 		if (mainKnight != null)
 		{
 			mainKnight.setRotZ(mainKnight.getRotZ() + 0.5f);
+			mainKnight.update(timestamp, elapsed);
+		}
+		if (teapot != null)
+		{
+			teapot.update(timestamp, elapsed);
+		}
+		if (worm != null)
+		{
+			worm.update(timestamp, elapsed);
 		}
 		if (teapot != null && MouseData.data.isRightDown())
 		{

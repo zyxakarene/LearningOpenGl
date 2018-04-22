@@ -71,6 +71,8 @@ public class CameraFreeFlyBehavior extends Behavior
 			move(LEFT, elapsedTime);
 		}
 
+		gameObject.setPosition(cameraPosition);
+		gameObject.setRotation(cameraRotation);
 	}
 
 	private void rotate(int x, int y, int z, int elapsedTime)
@@ -112,16 +114,16 @@ public class CameraFreeFlyBehavior extends Behavior
         {
             case (FORWARD):
             {
-                cameraPosition.x -= dX;
-                cameraPosition.y -= dY;
-                cameraPosition.z += dZ;
+                cameraPosition.x += dX;
+                cameraPosition.y += dY;
+                cameraPosition.z -= dZ;
                 break;
             }
             case (BACKWARD):
             {
-				cameraPosition.x += dX;
-                cameraPosition.y += dY;
-                cameraPosition.z -= dZ;
+				cameraPosition.x -= dX;
+                cameraPosition.y -= dY;
+                cameraPosition.z += dZ;
                 break;
             }
             case (RIGHT):
@@ -129,8 +131,8 @@ public class CameraFreeFlyBehavior extends Behavior
                 dX = FloatMath.sin(FloatMath.toRadians(cameraRotation.z + 90)) * MOVE_SPEED * multiplier;
                 dY = FloatMath.cos(FloatMath.toRadians(cameraRotation.z + 90)) * MOVE_SPEED * multiplier;
 
-				cameraPosition.x -= dX;
-                cameraPosition.y -= dY;
+				cameraPosition.x += dX;
+                cameraPosition.y += dY;
                 break;
             }
             case (LEFT):
@@ -138,8 +140,8 @@ public class CameraFreeFlyBehavior extends Behavior
                 dX = FloatMath.sin(FloatMath.toRadians(cameraRotation.z - 90)) * MOVE_SPEED * multiplier;
                 dY = FloatMath.cos(FloatMath.toRadians(cameraRotation.z - 90)) * MOVE_SPEED * multiplier;
 
-				cameraPosition.x -= dX;
-                cameraPosition.y -= dY;
+				cameraPosition.x += dX;
+                cameraPosition.y += dY;
                 break;
             }
         }

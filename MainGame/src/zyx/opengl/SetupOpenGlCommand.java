@@ -51,6 +51,8 @@ public class SetupOpenGlCommand implements ICommand
 		Display.setDisplayMode(new DisplayMode(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT));
 		Display.create(pixelFormat, contextAtrributes);
 
+		GL11.glClearColor(0.60f, 0.80f, 0.92f, 1);
+		
 		if (GameConstants.DEBUG)
 		{
 			KHRDebugCallback callback = new KHRDebugCallback();

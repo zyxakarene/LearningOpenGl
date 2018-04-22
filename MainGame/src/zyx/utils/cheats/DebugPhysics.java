@@ -27,7 +27,10 @@ public class DebugPhysics
 	{
 		WorldModel[] models = DebugPhysDrawing.getModelFor(obj);
 		
-		entryMap.put(obj, models);
+		if(models != null)
+		{
+			entryMap.put(obj, models);
+		}
 	}
 
 	public void unregisterPhysbox(GameObject obj)
@@ -45,12 +48,8 @@ public class DebugPhysics
 			{
 				model.draw();
 			}
+			
 			GLUtils.setWireframe(false);
 		}
-	}
-	
-	private static class DebugPhysEntry
-	{
-		
 	}
 }

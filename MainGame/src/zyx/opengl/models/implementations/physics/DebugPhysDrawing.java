@@ -20,6 +20,11 @@ public class DebugPhysDrawing
 	
 	public static WorldModel[] getModelFor(IPhysbox physBox)
 	{
+		if (physBox.hasPhysbox() == false)
+		{
+			return null;
+		}
+		
 		PhysBox box = physBox.getPhysbox();
 		
 		if (MESH_MAP.containsKey(box) == false)

@@ -16,7 +16,7 @@ public class CameraController extends GameObject
 	{
 		camera = Camera.getInstance();
 
-//		addBehavior(new CameraFreeFlyBehavior());
+		addBehavior(new CameraFreeFlyBehavior());
 		addBehavior(new CameraUpdateViewBehavior());
 		addBehavior(new CameraUpdateLightbehavior());
 	}
