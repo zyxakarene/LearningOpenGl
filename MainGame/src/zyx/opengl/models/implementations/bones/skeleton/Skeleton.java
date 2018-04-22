@@ -9,7 +9,7 @@ import zyx.opengl.models.implementations.bones.animation.AnimationController;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IUpdateable;
 
-public class Skeleton implements IUpdateable, IDisposeable
+public class Skeleton implements IDisposeable
 {	
 	private static final Matrix4f DUMMY_MATRIX = new Matrix4f();
 	
@@ -54,10 +54,9 @@ public class Skeleton implements IUpdateable, IDisposeable
 		animator.setCurrentAnimation(controller);
 	}
 	
-	@Override
-	public void update(long timestamp, int elapsedTime)
+	public void update()
 	{
-		animator.update(timestamp, elapsedTime);
+		animator.update();
 		rootJoint.calcAnimationTransform(DUMMY_MATRIX);
 	}
 	

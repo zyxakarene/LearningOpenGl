@@ -51,7 +51,7 @@ public class WorldModel extends AbstractModel
 	@Override
 	public void draw()
 	{
-		skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
+		skeleton.update();
 		shader.uploadBones();
 		super.draw();
 	}
@@ -63,7 +63,7 @@ public class WorldModel extends AbstractModel
 		
 	public void drawAsAttachment(Attachment attachment)
 	{
-		skeleton.update(DeltaTime.getTimestamp(), DeltaTime.getElapsedTime());
+		skeleton.update();
 		Matrix4f bonePosCopy = new Matrix4f(attachment.joint.getAttachmentTransform());
 		Matrix4f.mul(MODEL_MATRIX, bonePosCopy, MODEL_MATRIX);
 

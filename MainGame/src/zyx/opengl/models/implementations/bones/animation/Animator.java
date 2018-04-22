@@ -6,36 +6,33 @@ import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
 import zyx.utils.interfaces.IDisposeable;
-import zyx.utils.interfaces.IUpdateable;
 
-public class Animator implements IUpdateable, IDisposeable
+public class Animator implements IDisposeable
 {
 
-	private long animationStartedAt;
 	private Animation currentAnimation;
 
 	private HashMap<String, Joint> joints;
 	private HashMap<String, Animation> animations;
+	private long timeSinceStarted;
 
 	public Animator(HashMap<String, Joint> joints, HashMap<String, Animation> animations)
 	{
 		this.joints = joints;
 		this.animations = animations;
-		this.animationStartedAt = 0;
 	}
 
 	public void setCurrentAnimation(AnimationController controller)
 	{
 		currentAnimation = animations.get(controller.animation);
-		animationStartedAt = controller.animationStartedAt;
+		timeSinceStarted = controller.timeSinceStarted;
 	}
 
-	@Override
-	public void update(long timestamp, int elapsedTime)
+	public void update()
 	{
 		if (currentAnimation != null)
 		{			
-			float timeSinceStart = (int) (timestamp - animationStartedAt);
+			float timeSinceStart = timeSinceStarted;
 
 			int animationLength = currentAnimation.length;
 

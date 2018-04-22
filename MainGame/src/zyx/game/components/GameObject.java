@@ -104,6 +104,11 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 		}
 	}
 	
+	public String getAnimation()
+	{
+		return animationController.getAnimation();
+	}
+	
 	public void setAnimation(String name)
 	{
 		animationController.setAnimation(name);
@@ -233,6 +238,8 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 			attachment.update(timestamp, elapsedTime);
 		}
 		
+		animationController.update(timestamp, elapsedTime);
+		
 		onUpdate(timestamp, elapsedTime);
 	}
 	
@@ -255,6 +262,8 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	{
 		super.dispose();
 
+		DebugPhysics.getInstance().unregisterPhysbox(this);
+		
 		for (GameObject attachedObject : attachedObjects)
 		{
 			attachedObject.dispose();
@@ -281,7 +290,7 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	@Override
 	public String toString()
 	{
-		return String.format("WorldObject{%s, playing animation: %s}", path, animationController);
+		return String.format("%s{%s, playing animation: %s}", getClass().getSimpleName(), path, animationController);
 	}
 
 	public void setTexture(AbstractTexture tex)

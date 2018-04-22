@@ -19,6 +19,12 @@ public final class World3D extends WorldObject
 		shader.bind();
 		draw();
 	}
+	
+	@Override
+	public void dispose()
+	{
+		throw new IllegalArgumentException(INVALID_METHOD_CALL);
+	}
 
 	@Override
 	protected void onDraw()
@@ -31,6 +37,12 @@ public final class World3D extends WorldObject
 		WorldShader.MATRIX_MODEL.setIdentity();
 	}
 
+	@Override
+	public String toString()
+	{
+		return "World3D";
+	}	
+	
 	//<editor-fold defaultstate="collapsed" desc="Getter & Setter">
 	private static final String INVALID_METHOD_CALL = "This method is invalid";
 

@@ -93,12 +93,26 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 			throw new RuntimeException(msg);
 		}
 	}
+	
+	public void removeChildren(boolean dispose)
+	{
+		for (WorldObject child : children)
+		{
+			removeChild(child);
+			
+			if (dispose)
+			{
+				child.dispose();
+			}
+		}
+	}
 
 	public void removeFromParent(boolean dispose)
 	{
 		if (parent != null)
 		{
 			parent.removeChild(this);
+			parent = null;
 		}
 
 		if (dispose)
@@ -160,6 +174,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		rotation = null;
 		scale = null;
 		children = null;
+		worldMatrix = null;
 	}
 
 	@Override
