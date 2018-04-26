@@ -44,6 +44,8 @@ public class Scene
 		world.updateMatrix();
 		world.drawScene();
 		
+		onDraw();
+		
 		GLUtils.disableDepthTest();
 		GLUtils.disableCulling();
 		stage.drawStage();
@@ -54,6 +56,10 @@ public class Scene
 	}
 	
 	protected void onUpdate(long timestamp, int elapsedTime)
+	{
+	}
+	
+	protected void onDraw()
 	{
 	}
 	
@@ -75,6 +81,4 @@ public class Scene
 		world = null;
 		camera = null;
 	}
-
-
 }

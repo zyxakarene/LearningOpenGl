@@ -3,12 +3,14 @@ package zyx.game.scene;
 import zyx.engine.scene.Scene;
 import zyx.game.scene.gamescene.GameScene;
 import zyx.game.scene.gamescene.TestScene;
+import zyx.game.scene.particle.ParticleScene;
 
 public enum SceneType
 {
 	
 	GAME(GameScene.class),
-	TEST(TestScene.class);
+	TEST(TestScene.class),
+	PARTICLE(ParticleScene.class);
 	
 	public final Class<? extends Scene> sceneClass;
 	

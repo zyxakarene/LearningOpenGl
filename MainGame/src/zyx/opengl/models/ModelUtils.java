@@ -2,10 +2,7 @@ package zyx.opengl.models;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.*;
 
 class ModelUtils
 {
@@ -100,6 +97,15 @@ class ModelUtils
 		
 		GL20.glEnableVertexAttribArray(positionAttrib);
 		GL20.glVertexAttribPointer(positionAttrib, components, GL11.GL_FLOAT, false, Float.BYTES * stride, Float.BYTES * offset);
+	}
+
+	static void addInstanceAttribute(int shaderProgram, String attributeName, int components, int stride, int offset)
+	{
+		int positionAttrib = GL20.glGetAttribLocation(shaderProgram, attributeName);
+		
+		addAttribute(shaderProgram, attributeName, components, stride, offset);
+		
+		GL33.glVertexAttribDivisor(positionAttrib, 1);
 	}
 
 	static void disposeModel(int vao, int vbo, int ebo)
