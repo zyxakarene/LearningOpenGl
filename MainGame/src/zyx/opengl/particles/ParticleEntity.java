@@ -9,8 +9,7 @@ import zyx.utils.interfaces.IUpdateable;
 public class ParticleEntity implements IUpdateable
 {
 
-	private static final Matrix4f MODEL_MATRIX = ParticleShader.MATRIX_MODEL;
-	private static final Vector3f HELPER_VEC = new Vector3f();
+	private static final Vector3f POS_VECTOR = ParticleShader.VECTOR_POS;
 
 	protected float x;
 	protected float y;
@@ -26,16 +25,13 @@ public class ParticleEntity implements IUpdateable
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-		x += (FloatMath.random() > 0.5f) ? 0.1f : -0.1f;
-		y += (FloatMath.random() > 0.5f) ? 0.1f : -0.1f;
+//		x += (FloatMath.random() > 0.5f) ? 0.1f : -0.1f;
+//		y += (FloatMath.random() > 0.5f) ? 0.1f : -0.1f;
 		z = FloatMath.sin(timestamp * 0.01f);
 	}
 
 	void transform()
 	{
-		MODEL_MATRIX.setIdentity();
-		
-		HELPER_VEC.set(x, y, z);
-		MODEL_MATRIX.translate(HELPER_VEC);
+		POS_VECTOR.set(x, y, z);
 	}
 }

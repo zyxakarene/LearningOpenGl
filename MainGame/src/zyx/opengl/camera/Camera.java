@@ -115,4 +115,16 @@ public class Camera implements IPositionable
 	{
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
+
+	@Override
+	public Vector3f getUp(boolean local, Vector3f out)
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public Vector3f getRight(boolean local, Vector3f out)
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 }

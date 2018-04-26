@@ -13,4 +13,6 @@ public interface IPositionable
 	public Vector3f getRotation(boolean local, Vector3f out);
 	public Vector3f getScale(boolean local, Vector3f out);
 	public Vector3f getDir(boolean local, Vector3f out);
+	public Vector3f getUp(boolean local, Vector3f out);
+	public Vector3f getRight(boolean local, Vector3f out);
 }

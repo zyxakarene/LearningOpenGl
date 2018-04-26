@@ -1,6 +1,5 @@
 package zyx.opengl.models.implementations;
 
-import org.lwjgl.util.vector.Matrix4f;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.ParticleShader;
@@ -8,8 +7,6 @@ import zyx.opengl.textures.ColorTexture;
 
 public class ParticleModel extends AbstractModel
 {
-	private static final Matrix4f MODEL_MATRIX = ParticleShader.MATRIX_MODEL;
-
 	private ParticleShader shader;
 
 	public ParticleModel()

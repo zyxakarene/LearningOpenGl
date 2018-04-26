@@ -227,8 +227,53 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		{
 			out = new Vector3f();
 		}
-		out.set(0, 0, 0);
-		
+		if (local)
+		{
+			throw new RuntimeException();
+		}
+		else
+		{
+			MatrixUtils.getDirFrom(worldMatrix, out);
+		}
+
+		return out;
+	}
+
+	@Override
+	public Vector3f getRight(boolean local, Vector3f out)
+	{
+		if (out == null)
+		{
+			out = new Vector3f();
+		}
+		if (local)
+		{
+			throw new RuntimeException();
+		}
+		else
+		{
+			MatrixUtils.getRightFrom(worldMatrix, out);
+		}
+
+		return out;
+	}
+
+	@Override
+	public Vector3f getUp(boolean local, Vector3f out)
+	{
+		if (out == null)
+		{
+			out = new Vector3f();
+		}
+		if (local)
+		{
+			throw new RuntimeException();
+		}
+		else
+		{
+			MatrixUtils.getUpFrom(worldMatrix, out);
+		}
+
 		return out;
 	}
 

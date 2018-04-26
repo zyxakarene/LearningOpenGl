@@ -38,6 +38,34 @@ public class MatrixUtils
 		out.m33 = 1f;
 	}
 
+	/*
+		[RT.x] [UP.x] [BK.x] [POS.x]
+		[RT.y] [UP.y] [BK.y] [POS.y]
+		[RT.z] [UP.z] [BK.z] [POS.Z]
+		[    ] [    ] [    ] [US   ]
+	*/
+	
+	public static void getRightFrom(Matrix4f matrix, Vector3f out)
+	{
+		out.x = matrix.m00;
+		out.y = matrix.m01;
+		out.z = matrix.m02;
+	}
+	
+	public static void getUpFrom(Matrix4f matrix, Vector3f out)
+	{
+		out.x = matrix.m10;
+		out.y = matrix.m11;
+		out.z = matrix.m12;
+	}
+
+	public static void getDirFrom(Matrix4f matrix, Vector3f out)
+	{
+		out.x = matrix.m20;
+		out.y = matrix.m21;
+		out.z = matrix.m22;
+	}
+
 	public static void getPositionFrom(Matrix4f matrix, Vector3f out)
 	{
 		out.x = matrix.m30;
