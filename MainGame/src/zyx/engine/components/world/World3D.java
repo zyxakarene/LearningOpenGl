@@ -97,6 +97,6 @@ public final class World3D extends WorldObject
 
 	public final void updateMatrix()
 	{
-		updateWorldMatrix();
+		updateTransforms();
 	}
 }

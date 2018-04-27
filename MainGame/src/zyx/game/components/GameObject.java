@@ -133,15 +133,15 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	}
 
 	@Override
-	protected void updateWorldMatrix()
+	protected void updateTransforms()
 	{
-		super.updateWorldMatrix();
+		super.updateTransforms();
 		
 		if (loaded)
 		{
 			for (GameObject attachedObject : attachedObjects)
 			{
-				attachedObject.updateWorldMatrix();
+				attachedObject.updateTransforms();
 			}
 		}
 	}
@@ -176,7 +176,7 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 
 	private void drawAsAttachment(Attachment attachment)
 	{
-		WorldShader.MATRIX_MODEL.load(attachment.parent.worldMatrix);
+		WorldShader.MATRIX_MODEL.load(attachment.parent.worldMatrix());
 		shader.upload();
 		
 		if (loaded)
@@ -312,7 +312,7 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	@Override
 	public Matrix4f getMatrix()
 	{
-		return worldMatrix;
+		return worldMatrix();
 	}
 
 	@Override
