@@ -84,4 +84,28 @@ public class MatrixUtils
 		out.y = y.length();
 		out.z = z.length();
 	}
+	
+	public static DecomposeResult decompose(Matrix4f mat)
+	{
+		Matrix4f copy = new Matrix4f(mat);
+		DecomposeResult result = new DecomposeResult();
+		
+		getPositionFrom(mat, result.pos);
+		getScaleFrom(mat, result.scale);
+		
+		copy.translate(result.pos.negate(null));
+		copy.scale(new Vector3f(1/result.scale.x, 1/result.scale.y, 1/result.scale.z));
+		
+		result.rot.setFromMatrix(copy);
+		result.rot.negate();
+		
+		return result;
+	}
+	
+	public static class DecomposeResult
+	{
+		public Vector3f pos = new Vector3f();
+		public Quaternion rot = new Quaternion();
+		public Vector3f scale = new Vector3f();
+	}
 }

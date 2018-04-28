@@ -3852,3 +3852,30 @@ java.lang.RuntimeException: GLError: [Invalid enum]
 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
 
+apr. 28, 2018 8:25:14 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'AWT-EventQueue-0'
+java.lang.RuntimeException: Uncompilable source code - cannot find symbol
+  symbol:   variable position
+  location: class zyx.engine.components.world.WorldObject
+	at zyx.engine.components.world.WorldObject.setX(WorldObject.java:380)
+	at zyx.game.scene.particle.ParticleScene.onInitialize(ParticleScene.java:27)
+	at zyx.engine.scene.Scene.initialize(Scene.java:27)
+	at zyx.engine.scene.SceneManager.update(SceneManager.java:38)
+	at zyx.engine.GameEngine.beginGameLoop(GameEngine.java:72)
+	at zyx.engine.GameEngine.startWith(GameEngine.java:41)
+	at zyx.engine.GameStarter.run(GameStarter.java:22)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:80)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+
