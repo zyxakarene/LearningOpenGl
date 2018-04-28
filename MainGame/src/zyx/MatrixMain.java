@@ -12,7 +12,9 @@ import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.utils.FloatMath;
 import zyx.utils.GeometryUtils;
+import zyx.utils.math.DecomposedMatrix;
 import zyx.utils.math.MatrixUtils;
+import zyx.utils.math.QuaternionUtils;
 
 /**
  *
@@ -59,6 +61,10 @@ public class MatrixMain
 	
 	public static void main(String[] args)
 	{
+		Quaternion quat = QuaternionUtils.toQuat(new Vector3f(0.2834f, 0.1827341f, 1.2734f), null);
+		Vector3f rads = QuaternionUtils.toRad(quat, null);
+		System.out.println(rads);
+		
 		Matrix4f mat = new Matrix4f();
 		
 		SHARED_POSITION.set(25, 30, 90);
@@ -66,16 +72,20 @@ public class MatrixMain
 		SHARED_SCALE.set(1, 2, 3);
 		transform(SHARED_ROTATION, SHARED_QUAT);
 		System.out.println("input pos: " + SHARED_POSITION);
-		System.out.println("input rot:      " + SHARED_QUAT);
+		System.out.println("input rot:      " + SHARED_ROTATION);
 		System.out.println("input scale: " + SHARED_SCALE);
 		
 		System.out.println("--");
 		transform(mat);
+		System.out.println(mat);
 		
-		MatrixUtils.DecomposeResult result = MatrixUtils.decompose(mat);
-		System.out.println("Decomposed pos: " + result.pos);
-		System.out.println("Decomposed rot: " + result.rot);
+		DecomposedMatrix result = MatrixUtils.decompose(mat);
+		System.out.println("Decomposed pos: " + result.position);
+		System.out.println("Decomposed rot: " + result.rotation);
 		System.out.println("Decomposed scale: " + result.scale);
+		
+		result.recompose();
+		System.out.println(mat);
 	}
 	
 }

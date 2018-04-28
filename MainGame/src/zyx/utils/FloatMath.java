@@ -6,6 +6,23 @@ public class FloatMath
 {
     public static final float PI = (float) Math.PI;
 
+	public  static final float RAD_TO_DEG = 180.0f / PI;
+	
+	public static float clamp(float val, float minimum, float maximum)
+	{
+		return max(minimum, min(maximum, val));
+	}
+	
+	public static float max(float a, float b)
+	{
+		return a > b ? a : b;
+	}
+	
+	public static float min(float a, float b)
+	{
+		return a < b ? a : b;
+	}
+	
 	public static int floor(float value)
 	{
 		return (int) value;
