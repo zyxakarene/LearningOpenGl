@@ -103,12 +103,12 @@ public class Main
 				camera.getRotation(true, cameraRotOrig);
 
 				camera.setPosition(true, cameraPos);
-				camera.setRotation(true, cameraRot);
+				camera.setRotation(cameraRot);
 				camera.getBehaviorById(BehaviorType.CAMERA_UPDATE_VIEW).update(0, 0);
 				world.drawScene();
 
 				camera.setPosition(true, cameraPosOrig);
-				camera.setRotation(true, cameraRotOrig);
+				camera.setRotation(cameraRotOrig);
 				camera.getBehaviorById(BehaviorType.CAMERA_UPDATE_VIEW).update(0, 0);
 			}
 

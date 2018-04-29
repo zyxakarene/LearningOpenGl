@@ -19,12 +19,6 @@ public final class World3D extends WorldObject
 		shader.bind();
 		draw();
 	}
-	
-	@Override
-	public void dispose()
-	{
-		throw new IllegalArgumentException(INVALID_METHOD_CALL);
-	}
 
 	@Override
 	protected void onDraw()
@@ -53,7 +47,7 @@ public final class World3D extends WorldObject
 	}
 
 	@Override
-	public void setRotation(boolean local, float x, float y, float z)
+	public void setRotation(float x, float y, float z)
 	{
 		throw new IllegalArgumentException(INVALID_METHOD_CALL);
 	}

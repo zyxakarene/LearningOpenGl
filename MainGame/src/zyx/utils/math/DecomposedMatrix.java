@@ -49,9 +49,9 @@ public class DecomposedMatrix
 		
 		QuaternionUtils.toRad(HELPER_QUAT, rotation);
 		
-		rotation.x *= FloatMath.RAD_TO_DEG;
-		rotation.y *= FloatMath.RAD_TO_DEG;
 		rotation.z *= FloatMath.RAD_TO_DEG;
+		rotation.y *= FloatMath.RAD_TO_DEG;
+		rotation.x *= FloatMath.RAD_TO_DEG;
 	}
 	
 	public Matrix4f recompose()

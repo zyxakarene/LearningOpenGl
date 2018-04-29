@@ -244,10 +244,8 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	}
 
 	@Override
-	public void dispose()
+	protected void onDispose()
 	{
-		super.dispose();
-
 		DebugPhysics.getInstance().unregisterPhysbox(this);
 		
 		for (GameObject attachedObject : attachedObjects)

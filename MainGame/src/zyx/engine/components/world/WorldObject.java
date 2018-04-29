@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
-import zyx.game.components.world.player.Player;
 import zyx.game.controls.SharedPools;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
@@ -56,18 +55,14 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	{
 		if (dirty)
 		{
-			if ((this instanceof Player) == false)
-			{
-				localMatrix = localMatrix;
-			}
-			
 			Matrix4f.load(localMatrix, _worldMatrix);
 			if (parent != null)
 			{
-				Matrix4f.mul(_worldMatrix, parent.worldMatrix(), _worldMatrix);
+				Matrix4f.mul(parent.worldMatrix(), _worldMatrix, _worldMatrix);
 			}
 
 			dirty = false;
+			dirtyInv = true;
 		}
 
 		return _worldMatrix;
@@ -194,18 +189,21 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	}
 
 	@Override
-	public void dispose()
+	public final void dispose()
 	{
 		if (disposed)
 		{
 			return;
 		}
+		onDispose();
+		
 		disposed = true;
 		removeFromParent(false);
 
-		for (WorldObject child : children)
+		int len = children.size();
+		for (int i = len - 1; i >= 0; i--)
 		{
-			child.dispose();
+			children.get(i).dispose();
 		}
 
 		children.clear();
@@ -242,6 +240,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		{
 			out = new Vector3f();
 		}
+		
 		MatrixUtils.getPositionFrom(local ? localMatrix : worldMatrix(), out);
 
 		return out;
@@ -254,7 +253,9 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		{
 			out = new Vector3f();
 		}
-//		out.set(rotation);
+		
+		DecomposedMatrix decomposed = new DecomposedMatrix(local ? localMatrix : worldMatrix());
+		out.set(decomposed.rotation);
 
 		return out;
 	}
@@ -266,7 +267,8 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		{
 			out = new Vector3f();
 		}
-//		out.set(scale);
+
+		MatrixUtils.getScaleFrom(local ? localMatrix : worldMatrix(), out);
 
 		return out;
 	}
@@ -313,8 +315,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	@Override
 	public void setScale(boolean local, Vector3f scale)
 	{
-//		this.scale.set(scale);
-		updateTransforms(true);
+		setScale(local, scale.x, scale.y, scale.z);
 	}
 
 	protected void onDraw()
@@ -325,6 +326,11 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	protected void onTransform()
 	{
 
+	}
+	
+	protected void onDispose()
+	{
+		
 	}
 
 	protected void transform()
@@ -358,9 +364,9 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		updateTransforms(true);
 	}
 
-	public void setRotation(boolean local, float x, float y, float z)
+	public void setRotation(float x, float y, float z)
 	{
-		DecomposedMatrix decomposed = new DecomposedMatrix(local ? localMatrix : worldMatrix());
+		DecomposedMatrix decomposed = new DecomposedMatrix(localMatrix);
 		decomposed.rotation.set(x, y, z);
 		decomposed.recompose();
 
@@ -383,9 +389,9 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	}
 
 	@Override
-	public void setRotation(boolean local, Vector3f rot)
+	public void setRotation(Vector3f rot)
 	{
-		setRotation(local, rot.x, rot.y, rot.z);
+		setRotation(rot.x, rot.y, rot.z);
 	}
 
 	public void setX(float x)

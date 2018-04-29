@@ -72,7 +72,7 @@ public class CameraFreeFlyBehavior extends Behavior
 		}
 
 		gameObject.setPosition(true, cameraPosition);
-		gameObject.setRotation(true, cameraRotation);
+		gameObject.setRotation(cameraRotation);
 	}
 
 	private void rotate(int x, int y, int z, int elapsedTime)

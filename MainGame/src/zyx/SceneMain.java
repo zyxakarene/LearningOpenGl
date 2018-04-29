@@ -8,7 +8,7 @@ public class SceneMain
 
 	public static void main(String[] args)
 	{
-		java.awt.EventQueue.invokeLater(new GameStarter(SceneType.PARTICLE));
+		java.awt.EventQueue.invokeLater(new GameStarter(SceneType.STACK));
 	}
 
 }

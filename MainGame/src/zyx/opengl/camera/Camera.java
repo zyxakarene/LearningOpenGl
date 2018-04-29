@@ -87,7 +87,7 @@ public class Camera implements IPositionable
 	}
 
 	@Override
-	public void setRotation(boolean local, Vector3f rot)
+	public void setRotation(Vector3f rot)
 	{
 		rotation.set(rot);
 	}

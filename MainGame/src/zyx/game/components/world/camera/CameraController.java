@@ -16,7 +16,7 @@ public class CameraController extends GameObject
 	{
 		camera = Camera.getInstance();
 
-		//addBehavior(new CameraFreeFlyBehavior());
+		addBehavior(new CameraFreeFlyBehavior());
 		addBehavior(new CameraUpdateViewBehavior());
 		addBehavior(new CameraUpdateLightbehavior());
 	}
@@ -34,9 +34,9 @@ public class CameraController extends GameObject
 	}
 
 	@Override
-	public void setRotation(boolean local, Vector3f rot)
+	public void setRotation(Vector3f rot)
 	{
-		Camera.getInstance().setRotation(local, rot);
+		Camera.getInstance().setRotation(rot);
 	}
 
 	@Override
