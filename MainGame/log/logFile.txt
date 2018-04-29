@@ -3879,3 +3879,23 @@ java.lang.RuntimeException: Uncompilable source code - cannot find symbol
 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
 
+apr. 29, 2018 11:12:57 AM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.IllegalStateException: Zero length vector
+	at org.lwjgl.util.vector.Vector.normalise(Vector.java:91)
+	at zyx.engine.utils.worldpicker.calculating.RayOBB.hit(RayOBB.java:31)
+	at zyx.engine.utils.worldpicker.calculating.PhysPicker.collided(PhysPicker.java:44)
+	at zyx.engine.utils.worldpicker.WorldPicker.update(WorldPicker.java:61)
+	at zyx.Main.update(Main.java:191)
+	at zyx.Main.main(Main.java:94)
+
+apr. 29, 2018 11:13:52 AM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'main'
+java.lang.IllegalStateException: Zero length vector
+	at org.lwjgl.util.vector.Vector.normalise(Vector.java:91)
+	at zyx.engine.utils.worldpicker.calculating.RayOBB.hit(RayOBB.java:31)
+	at zyx.engine.utils.worldpicker.calculating.PhysPicker.collided(PhysPicker.java:44)
+	at zyx.engine.utils.worldpicker.WorldPicker.update(WorldPicker.java:61)
+	at zyx.Main.update(Main.java:191)
+	at zyx.Main.main(Main.java:94)
+

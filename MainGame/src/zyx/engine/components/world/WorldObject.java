@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import zyx.game.components.world.player.Player;
 import zyx.game.controls.SharedPools;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IPositionable;
+import zyx.utils.math.DecomposedMatrix;
 import zyx.utils.math.MatrixUtils;
 
 public abstract class WorldObject implements IPositionable, IDisposeable
@@ -25,6 +27,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	protected Matrix4f _invWorldMatrix;
 	protected Matrix4f _worldMatrix;
 	protected Matrix4f localMatrix;
+	public Vector3f position;
 
 	private WorldObject parent;
 	private ArrayList<WorldObject> children;
@@ -32,29 +35,36 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	protected final WorldShader shader;
 
 	private Collider collider;
+	public boolean drawable = true;
 
 	public WorldObject()
 	{
 		_invWorldMatrix = SharedPools.MATRIX_POOL.getInstance();
 		_worldMatrix = SharedPools.MATRIX_POOL.getInstance();
 		localMatrix = SharedPools.MATRIX_POOL.getInstance();
+		position = SharedPools.VECTOR_POOL.getInstance();
 
 		children = new ArrayList<>();
 
 		shader = (WorldShader) ShaderManager.INSTANCE.get(Shader.WORLD);
 		disposed = false;
 
-		updateTransforms(true);
+		dirty = false;
 	}
 
 	public Matrix4f worldMatrix()
 	{
 		if (dirty)
 		{
+			if ((this instanceof Player) == false)
+			{
+				localMatrix = localMatrix;
+			}
+			
 			Matrix4f.load(localMatrix, _worldMatrix);
 			if (parent != null)
 			{
-				Matrix4f.add(_worldMatrix, parent.worldMatrix(), _worldMatrix);
+				Matrix4f.mul(_worldMatrix, parent.worldMatrix(), _worldMatrix);
 			}
 
 			dirty = false;
@@ -162,20 +172,15 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 			}
 		}
 		dirty = true;
-
-//		onTransform();
-//		
-//		worldMatrix.load(WorldShader.MATRIX_MODEL);
-//		
-//		for (WorldObject child : children)
-//		{
-//			WorldShader.MATRIX_MODEL.load(worldMatrix);
-//			child.updateTransforms();
-//		}
 	}
 
 	protected final void draw()
 	{
+		if (!drawable)
+		{
+			return;
+		}
+		
 		WorldShader.MATRIX_MODEL.load(worldMatrix());
 		shader.upload();
 
@@ -208,8 +213,10 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		SharedPools.MATRIX_POOL.releaseInstance(_invWorldMatrix);
 		SharedPools.MATRIX_POOL.releaseInstance(_worldMatrix);
 		SharedPools.MATRIX_POOL.releaseInstance(localMatrix);
+		SharedPools.VECTOR_POOL.releaseInstance(position);
 
 		children = null;
+		position = null;
 		_worldMatrix = null;
 		_invWorldMatrix = null;
 	}
@@ -224,6 +231,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		HELPER_VEC4.set(point.x, point.y, point.z, 0);
 		Matrix4f.transform(invWorldMatrix(), HELPER_VEC4, HELPER_VEC4);
 
+		out.set(HELPER_VEC4.x, HELPER_VEC4.y, HELPER_VEC4.z);
 		return out;
 	}
 
@@ -303,7 +311,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	}
 
 	@Override
-	public void setScale(Vector3f scale)
+	public void setScale(boolean local, Vector3f scale)
 	{
 //		this.scale.set(scale);
 		updateTransforms(true);
@@ -328,13 +336,18 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	}
 
 	//<editor-fold defaultstate="collapsed" desc="Getter & Setter">
-	public void setPosition(float x, float y, float z, boolean local)
+	public void setPosition(boolean local, float x, float y, float z)
 	{
 		HELPER_VEC3.set(x, y, z);
 
 		if (!local && parent != null)
 		{
 			parent.globalToLocal(HELPER_VEC3, HELPER_VEC3);
+		}
+		
+		if (local)
+		{
+			position.set(x, y, z);
 		}
 		
 		localMatrix.m30 = HELPER_VEC3.x;
@@ -345,52 +358,49 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		updateTransforms(true);
 	}
 
-	public void setRotation(float x, float y, float z)
+	public void setRotation(boolean local, float x, float y, float z)
 	{
-		rotation.x = x;
-		rotation.y = y;
-		rotation.z = z;
+		DecomposedMatrix decomposed = new DecomposedMatrix(local ? localMatrix : worldMatrix());
+		decomposed.rotation.set(x, y, z);
+		decomposed.recompose();
 
 		updateTransforms(true);
 	}
 
-	public void setScale(float x, float y, float z)
+	public void setScale(boolean local, float x, float y, float z)
 	{
-		scale.x = x;
-		scale.y = y;
-		scale.z = z;
+		DecomposedMatrix decomposed = new DecomposedMatrix(local ? localMatrix : worldMatrix());
+		decomposed.scale.set(x, y, z);
+		decomposed.recompose();
 
 		updateTransforms(true);
 	}
 
 	@Override
-	public void setPosition(Vector3f pos)
+	public void setPosition(boolean local, Vector3f pos)
 	{
-		setPosition(pos.x, pos.y, pos.z);
+		setPosition(local, pos.x, pos.y, pos.z);
 	}
 
 	@Override
-	public void setRotation(Vector3f rot)
+	public void setRotation(boolean local, Vector3f rot)
 	{
-		setRotation(rot.x, rot.y, rot.z);
+		setRotation(local, rot.x, rot.y, rot.z);
 	}
 
 	public void setX(float x)
 	{
-		position.x = x;
-		updateTransforms();
+		setPosition(true, x, position.y, position.z);
 	}
 
 	public void setY(float y)
 	{
-		position.y = y;
-		updateTransforms();
+		setPosition(true, position.x, y, position.z);
 	}
 
 	public void setZ(float z)
 	{
-		position.z = z;
-		updateTransforms();
+		setPosition(true, position.x, position.y, z);
 	}
 
 	public float getX()
@@ -410,40 +420,52 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 
 	public void setRotX(float x)
 	{
-		rotation.x = x;
-		updateTransforms();
+		DecomposedMatrix decomposed = new DecomposedMatrix(localMatrix);
+		decomposed.rotation.x = x;
+		decomposed.recompose();
+
+		updateTransforms(true);
 	}
 
 	public void setRotY(float y)
 	{
-		rotation.y = y;
-		updateTransforms();
+		DecomposedMatrix decomposed = new DecomposedMatrix(localMatrix);
+		decomposed.rotation.y = y;
+		decomposed.recompose();
+
+		updateTransforms(true);
 	}
 
 	public void setRotZ(float z)
 	{
-		rotation.z = z;
-		updateTransforms();
+		DecomposedMatrix decomposed = new DecomposedMatrix(localMatrix);
+		decomposed.rotation.z = z;
+		decomposed.recompose();
+		
+		updateTransforms(true);
 	}
 
 	public float getRotX()
 	{
-		return rotation.x;
+		DecomposedMatrix decomposed = new DecomposedMatrix(localMatrix);
+		return decomposed.rotation.x;
 	}
 
 	public float getRotY()
 	{
-		return rotation.y;
+		DecomposedMatrix decomposed = new DecomposedMatrix(localMatrix);
+		return decomposed.rotation.y;
 	}
 
 	public float getRotZ()
 	{
-		return rotation.z;
+		DecomposedMatrix decomposed = new DecomposedMatrix(localMatrix);
+		return decomposed.rotation.z;
 	}
 	//</editor-fold>
 
 	@Override
-	public void setDir(Vector3f dir)
+	public void setDir(boolean local, Vector3f dir)
 	{
 		throw new UnsupportedOperationException("Not supported yet.");
 	}

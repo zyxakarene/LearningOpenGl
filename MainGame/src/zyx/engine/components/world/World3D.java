@@ -47,13 +47,13 @@ public final class World3D extends WorldObject
 	private static final String INVALID_METHOD_CALL = "This method is invalid";
 
 	@Override
-	public void setPosition(float x, float y, float z)
+	public void setPosition(boolean local, float x, float y, float z)
 	{
 		throw new IllegalArgumentException(INVALID_METHOD_CALL);
 	}
 
 	@Override
-	public void setRotation(float x, float y, float z)
+	public void setRotation(boolean local, float x, float y, float z)
 	{
 		throw new IllegalArgumentException(INVALID_METHOD_CALL);
 	}
@@ -94,9 +94,4 @@ public final class World3D extends WorldObject
 		throw new IllegalArgumentException(INVALID_METHOD_CALL);
 	}
 	//</editor-fold>
-
-	public final void updateMatrix()
-	{
-		updateTransforms();
-	}
 }

@@ -38,8 +38,8 @@ public class CameraFreeFlyBehavior extends Behavior
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-		gameObject.getPosition(false, cameraPosition);
-		gameObject.getRotation(false, cameraRotation);
+		gameObject.getPosition(true, cameraPosition);
+		gameObject.getRotation(true, cameraRotation);
 		
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_Z))
 		{
@@ -71,8 +71,8 @@ public class CameraFreeFlyBehavior extends Behavior
 			move(LEFT, elapsedTime);
 		}
 
-		gameObject.setPosition(cameraPosition);
-		gameObject.setRotation(cameraRotation);
+		gameObject.setPosition(true, cameraPosition);
+		gameObject.setRotation(true, cameraRotation);
 	}
 
 	private void rotate(int x, int y, int z, int elapsedTime)

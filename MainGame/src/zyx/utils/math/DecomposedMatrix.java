@@ -58,12 +58,13 @@ public class DecomposedMatrix
 	{
 		source.setIdentity();
 		
-		source.translate(position);
 
+		source.translate(position);
+		
 		source.rotate(FloatMath.toRadians(rotation.z), GeometryUtils.ROTATION_Z);
 		source.rotate(FloatMath.toRadians(rotation.y), GeometryUtils.ROTATION_Y);
 		source.rotate(FloatMath.toRadians(rotation.x), GeometryUtils.ROTATION_X);
-
+		
 		source.scale(scale);
 		
 		return source;

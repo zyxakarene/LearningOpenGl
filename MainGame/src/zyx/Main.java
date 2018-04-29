@@ -93,7 +93,6 @@ public class Main
 			CursorManager.getInstance().setCursor(GameCursor.POINTER);
 			update();
 			CursorManager.getInstance().update();
-			world.updateMatrix();
 
 			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, ren.bufferId);
 			GL11.glViewport(0, 0, (int) ren.getWidth(), (int) ren.getHeight());
@@ -103,13 +102,13 @@ public class Main
 				camera.getPosition(true, cameraPosOrig);
 				camera.getRotation(true, cameraRotOrig);
 
-				camera.setPosition(cameraPos);
-				camera.setRotation(cameraRot);
+				camera.setPosition(true, cameraPos);
+				camera.setRotation(true, cameraRot);
 				camera.getBehaviorById(BehaviorType.CAMERA_UPDATE_VIEW).update(0, 0);
 				world.drawScene();
 
-				camera.setPosition(cameraPosOrig);
-				camera.setRotation(cameraRotOrig);
+				camera.setPosition(true, cameraPosOrig);
+				camera.setRotation(true, cameraRotOrig);
 				camera.getBehaviorById(BehaviorType.CAMERA_UPDATE_VIEW).update(0, 0);
 			}
 
@@ -264,7 +263,7 @@ public class Main
 		Camera.getInstance().initialize();
 
 		player = new Player();
-		player.setPosition(0, 0, 0);
+		player.setPosition(true, 0, 0, 0);
 
 		camera = new CameraController();
 		camera.addBehavior(new FirstPersonBehavior(player));
@@ -278,7 +277,7 @@ public class Main
 		ground.setX(-100);
 		ground.setZ(-100);
 		ground.load("assets/models/box.zaf");
-		ground.setScale(10, 10, 1);
+		ground.setScale(true, 10, 10, 1);
 		ground.setCollider(new BoxCollider(400, 400, 40));
 
 		boxTv = new GameObject();
@@ -358,7 +357,7 @@ public class Main
 			box.setX(FloatMath.random() * -200f);
 			box.setY(FloatMath.random() * -200f);
 			box.setZ((FloatMath.random() * 200f) - 50);
-			box.setScale(scaleX, scaleY, scaleZ);
+			box.setScale(true, scaleX, scaleY, scaleZ);
 			box.load("assets/models/box.zaf");
 			box.setCollider(new BoxCollider(40 * scaleX, 40 * scaleY, 40 * scaleZ));
 			box.registerClick(new OnTeaPotClicked());

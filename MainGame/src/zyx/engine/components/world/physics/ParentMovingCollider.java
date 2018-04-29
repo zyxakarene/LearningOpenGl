@@ -14,7 +14,7 @@ abstract class ParentMovingCollider extends Collider
 	{
 		if (parent != null)
 		{
-			parent.setPosition(x, y, z);
+			parent.setPosition(true, x, y, z);
 		}
 	}
 

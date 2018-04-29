@@ -49,7 +49,7 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	private PhysBox physbox;
 	
 	private CustomCallback<ClickedInfo> onObjectClicked;
-
+	
 	public GameObject()
 	{
 		behaviors = new BehaviorBundle(this);
@@ -130,20 +130,6 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 		
 		shader.bind();
 		shader.upload();
-	}
-
-	@Override
-	protected void updateTransforms()
-	{
-		super.updateTransforms();
-		
-		if (loaded)
-		{
-			for (GameObject attachedObject : attachedObjects)
-			{
-				attachedObject.updateTransforms();
-			}
-		}
 	}
 	
 	@Override

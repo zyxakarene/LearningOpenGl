@@ -26,7 +26,7 @@ public class ParticleScene extends Scene
 			model.load("assets/models/box.zaf");
 			model.setX(FloatMath.random() * 10);
 			model.setY(FloatMath.random() * 10);
-			model.setScale(0.1f, 0.1f, 0.1f);
+			model.setScale(true, 0.1f, 0.1f, 0.1f);
 
 			world.addChild(model);
 			objects.add(model);
@@ -51,6 +51,14 @@ public class ParticleScene extends Scene
 	protected void onDispose()
 	{
 		ParticleManager.getInstance().dispose();
+		
+		for (GameObject object : objects)
+		{
+			object.dispose();
+		}
+		
+		objects.clear();
+		objects = null;
 	}
 
 }

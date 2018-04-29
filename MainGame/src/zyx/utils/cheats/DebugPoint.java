@@ -26,8 +26,8 @@ public class DebugPoint extends GameObject
 		this.alive = true;
 		
 		load("assets/models/debug.zaf");
-		setPosition(x, y, z);
-		setScale(0.1f, 0.1f, 0.1f);
+		setPosition(true, x, y, z);
+		setScale(true, 0.1f, 0.1f, 0.1f);
 	}
 
 	@Override

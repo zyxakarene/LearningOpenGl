@@ -14,12 +14,12 @@ public class QuaternionUtils
 			out = new Quaternion();
 		}
 
-		float c = (float) Math.cos(radians.x / 2f);
-		float d = (float) Math.cos(radians.y / 2f);
-		float e = (float) Math.cos(radians.z / 2f);
-		float f = (float) Math.sin(radians.x / 2f);
-		float g = (float) Math.sin(radians.y / 2f);
-		float h = (float) Math.sin(radians.z / 2f);
+		float c = FloatMath.cos(radians.x / 2f);
+		float d = FloatMath.cos(radians.y / 2f);
+		float e = FloatMath.cos(radians.z / 2f);
+		float f = FloatMath.sin(radians.x / 2f);
+		float g = FloatMath.sin(radians.y / 2f);
+		float h = FloatMath.sin(radians.z / 2f);
 
 		out.x = f * d * e - c * g * h;
 		out.y = c * g * e + f * d * h;
@@ -39,10 +39,8 @@ public class QuaternionUtils
 		float[] mat = toRotationMatrix(quat);
 		float a = mat[0];
 		float f = mat[4];
-		float g = mat[8];
 		float h = mat[1];
 		float k = mat[5];
-		float l = mat[9];
 		float m = mat[2];
 		float n = mat[6];
 		float e = mat[10];
@@ -84,22 +82,23 @@ public class QuaternionUtils
 		f = f * k;
 
 		float[] mat = new float[16];
-		mat[0] = 1 - (m + e);
-		mat[4] = l - f;
-		mat[8] = c + h;
-		mat[1] = l + f;
-		mat[5] = 1 - (a + e);
-		mat[9] = d - g;
-		mat[2] = c - h;
-		mat[6] = d + g;
-		mat[10] = 1 - (a + m);
-		mat[3] = 0;
-		mat[7] = 0;
-		mat[11] = 0;
-		mat[12] = 0;
-		mat[13] = 0;
-		mat[14] = 0;
-		mat[15] = 1;
+			mat[0] = 1 - (m + e);
+			mat[4] = l - f;
+			mat[1] = l + f;
+			mat[5] = 1 - (a + e);
+			mat[2] = c - h;
+			mat[6] = d + g;
+			mat[10] = 1 - (a + m);
+//		mat[9] = d - g;
+//		mat[8] = c + h;
+//		
+//		mat[3] = 0;
+//		mat[7] = 0;
+//		mat[11] = 0;
+//		mat[12] = 0;
+//		mat[13] = 0;
+//		mat[14] = 0;
+//		mat[15] = 1;
 
 		return mat;
 	}

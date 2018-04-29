@@ -81,13 +81,13 @@ public class Camera implements IPositionable
 	}
 
 	@Override
-	public void setPosition(Vector3f pos)
+	public void setPosition(boolean local, Vector3f pos)
 	{
 		position.set(pos);
 	}
 
 	@Override
-	public void setRotation(Vector3f rot)
+	public void setRotation(boolean local, Vector3f rot)
 	{
 		rotation.set(rot);
 	}
@@ -105,13 +105,13 @@ public class Camera implements IPositionable
 	}
 
 	@Override
-	public void setDir(Vector3f dir)
+	public void setDir(boolean local, Vector3f dir)
 	{
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
-	public void setScale(Vector3f scale)
+	public void setScale(boolean local, Vector3f scale)
 	{
 		throw new UnsupportedOperationException("Not supported yet.");
 	}

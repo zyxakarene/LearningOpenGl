@@ -41,7 +41,6 @@ public class Scene
 
 	final void draw()
 	{
-		world.updateMatrix();
 		world.drawScene();
 		
 		onDraw();

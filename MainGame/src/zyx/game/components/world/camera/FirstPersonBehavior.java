@@ -44,8 +44,8 @@ public class FirstPersonBehavior extends Behavior
 		player.getPosition(false, playerPosition);
 		player.getRotation(true, playerRotation);
 		
-		gameObject.getPosition(false, cameraPosition);
-		gameObject.getRotation(false, cameraRotation);
+		gameObject.getPosition(true, cameraPosition);
+		gameObject.getRotation(true, cameraRotation);
 		
 		float playerX = playerPosition.x;
 		float playerY = playerPosition.y;
@@ -65,8 +65,8 @@ public class FirstPersonBehavior extends Behavior
 			rotate(-dy, 0, dx, elapsedTime);
 		}
 		
-		gameObject.setPosition(cameraPosition);
-		gameObject.setRotation(cameraRotation);
+		gameObject.setPosition(true, cameraPosition);
+		gameObject.setRotation(true, cameraRotation);
 	}
 	
 	private void rotate(int x, int y, int z, int elapsedTime)
