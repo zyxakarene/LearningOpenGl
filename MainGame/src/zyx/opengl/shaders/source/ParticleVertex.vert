@@ -14,6 +14,7 @@ uniform vec2 BillboardSize; // Size of the billboard, in world units (probably m
 
 uniform mat4 view;
 uniform mat4 projection;
+uniform mat4 model;
 
 void main(void)
 {
@@ -24,9 +25,14 @@ void main(void)
 		+ CameraRight_worldspace * position.x * BillboardSize.x
 		+ CameraUp_worldspace * position.y * BillboardSize.y;
 
+	Texcoord = vec2(position.x + 0.5, position.y + 0.5);
+	Texcoord = texcoord;
+	gl_Position = projection 
+		  * (view * model * vec4(0.0, 0.0, 0.0, 1.0) 
+		  + vec4(position.x, position.y, 0.0, 0.0));
 
 	// Output position of the vertex
-	gl_Position = view * projection * vec4(vertexPosition_worldspace, 1.0f);
+	//gl_Position = view * projection * vec4(vertexPosition_worldspace, 1.0f);
 
 	//gl_Position = projection * view * vec4(position, 0.0, 1.0);
 }

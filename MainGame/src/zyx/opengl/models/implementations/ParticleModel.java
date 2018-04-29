@@ -4,6 +4,7 @@ import zyx.opengl.models.AbstractModel;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.ParticleShader;
 import zyx.opengl.textures.ColorTexture;
+import zyx.opengl.textures.MissingTexture;
 
 public class ParticleModel extends AbstractModel
 {
@@ -29,7 +30,7 @@ public class ParticleModel extends AbstractModel
 		};
 		
 		setVertexData(vertexData, elementData);
-		setTexture(new ColorTexture(0xFFFF00));
+		setTexture(MissingTexture.getInstance());
 	}
 
 	@Override

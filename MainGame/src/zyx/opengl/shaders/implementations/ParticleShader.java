@@ -11,6 +11,7 @@ public class ParticleShader extends AbstractShader
 
 	public static final Matrix4f MATRIX_PROJECTION = WorldShader.MATRIX_PROJECTION;
 	public static final Matrix4f MATRIX_VIEW = WorldShader.MATRIX_VIEW;
+	public static final Matrix4f MATRIX_MODEL = new Matrix4f();
 	public static final Vector3f VECTOR_POS = new Vector3f();
 	
 	private static final Vector3f HELPER_RIGHT = new Vector3f();
@@ -18,6 +19,7 @@ public class ParticleShader extends AbstractShader
 
 	private int projectionMatrixTrans;
 	private int viewMatrixTrans;
+	private int modelMatrixTrans;
 	private int cameraRightTrans;
 	private int cameraUpTrans;
 	private int positionTrans;
@@ -33,6 +35,7 @@ public class ParticleShader extends AbstractShader
 	{
 		projectionMatrixTrans = UniformUtils.createUniform(program, "projection");
 		viewMatrixTrans = UniformUtils.createUniform(program, "view");
+		modelMatrixTrans = UniformUtils.createUniform(program, "model");
 		
 		cameraRightTrans = UniformUtils.createUniform(program, "CameraRight_worldspace");
 		cameraUpTrans = UniformUtils.createUniform(program, "CameraUp_worldspace");
@@ -42,19 +45,18 @@ public class ParticleShader extends AbstractShader
 
 	public void upload()
 	{
+		MATRIX_MODEL.setIdentity();
+		MATRIX_MODEL.translate(VECTOR_POS);
+		
 		UniformUtils.setUniformMatrix(projectionMatrixTrans, MATRIX_PROJECTION);
 		UniformUtils.setUniformMatrix(viewMatrixTrans, MATRIX_VIEW);
+		UniformUtils.setUniformMatrix(modelMatrixTrans, MATRIX_MODEL);
 		
-//		Camera.getInstance().controller.getRight(false, HELPER_VEC1);
-//		Camera.getInstance().controller.getUp(false, HELPER_VEC2);
-		
-HELPER_UP.x = 1;
-HELPER_UP.y = 0;
-HELPER_UP.z = 0;
-		
-HELPER_RIGHT.x = 0;
-HELPER_RIGHT.y = -1;
-HELPER_RIGHT.z = 0;
+		Camera.getInstance().getRight(false, HELPER_RIGHT);
+		Camera.getInstance().getUp(false, HELPER_UP);
+		HELPER_UP.negate();
+		HELPER_RIGHT.negate();
+		System.out.println(HELPER_RIGHT);
 
 		UniformUtils.setUniform3F(cameraRightTrans, HELPER_RIGHT.x, HELPER_RIGHT.y, HELPER_RIGHT.z);
 		UniformUtils.setUniform3F(cameraUpTrans, HELPER_UP.x, HELPER_UP.y, HELPER_UP.z);

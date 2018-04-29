@@ -25,8 +25,8 @@ public class ParticleEntity implements IUpdateable
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-//		x += (FloatMath.random() > 0.5f) ? 0.1f : -0.1f;
-//		y += (FloatMath.random() > 0.5f) ? 0.1f : -0.1f;
+		x = FloatMath.cos(timestamp * 0.01f);
+//		y = FloatMath.tan(timestamp * 0.01f);
 		z = FloatMath.sin(timestamp * 0.01f);
 	}
 

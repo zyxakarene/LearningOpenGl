@@ -1,8 +1,12 @@
 #version 420
 
-out vec4 out_colour;
+in vec2 Texcoord;
+
+layout(location = 0) out vec4 outColor;
+
+uniform sampler2D tex;
 
 void main(void)
 {
-	out_colour = vec4(1.0);
+	outColor = texture(tex, Texcoord);
 }
