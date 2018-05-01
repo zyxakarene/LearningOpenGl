@@ -1,38 +1,24 @@
 #version 420
 
 layout(location = 0) in vec2 position;
-layout(location = 2) in vec2 texcoord;
+layout(location = 1) in vec2 texcoord;
+layout(location = 2) in vec3 offset; //Per instance
+layout(location = 3) in float speed; //Per instance
 
 out vec2 Texcoord;
-
-// Values that stay constant for the whole mesh.
-uniform vec3 CameraRight_worldspace;
-uniform vec3 CameraUp_worldspace;
-
-uniform vec3 BillboardPos; // Position of the center of the billboard
-uniform vec2 BillboardSize; // Size of the billboard, in world units (probably meters)
 
 uniform mat4 view;
 uniform mat4 projection;
 uniform mat4 model;
 
+uniform int time;
+
 void main(void)
 {
-	vec3 particleCenter_wordspace = BillboardPos;
-	
-	vec3 vertexPosition_worldspace = 
-		particleCenter_wordspace
-		+ CameraRight_worldspace * position.x * BillboardSize.x
-		+ CameraUp_worldspace * position.y * BillboardSize.y;
+	mat4 translateMatrix = mat4(1);
+	translateMatrix[3].xyz = vec3(offset.x, offset.y, offset.z + (time * 0.001 * speed));
 
 	Texcoord = vec2(position.x + 0.5, position.y + 0.5);
 	Texcoord = texcoord;
-	gl_Position = projection 
-		  * (view * model * vec4(0.0, 0.0, 0.0, 1.0) 
-		  + vec4(position.x, position.y, 0.0, 0.0));
-
-	// Output position of the vertex
-	//gl_Position = view * projection * vec4(vertexPosition_worldspace, 1.0f);
-
-	//gl_Position = projection * view * vec4(position, 0.0, 1.0);
+	gl_Position = projection * (view * translateMatrix * vec4(0, 0, 0, 1) + vec4(position.x, position.y, 0, 0));
 }

@@ -12,19 +12,26 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 
 	protected final AbstractShader meshShader;
 
-	private final int vao;
-	private final int vbo;
-	private final int ebo;
+	protected int vao;
+	protected int vbo;
+	protected int ebo;
 
-	private int elementCount;
+	protected int elementCount;
 
-	private AbstractTexture texture;
-	private AbstractTexture overwriteTexture;
+	protected AbstractTexture texture;
+	protected AbstractTexture overwriteTexture;
 
 	public AbstractModel(Shader shader)
 	{
 		meshShader = ShaderManager.INSTANCE.get(shader);
 
+		createObjects();
+		
+		setupAttributes();
+	}
+
+	protected void createObjects()
+	{
 		vao = ModelUtils.generateVertexArray();
 		ModelUtils.bindVertexArray(vao);
 
@@ -33,10 +40,8 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 
 		ebo = ModelUtils.generateBufferObject();
 		ModelUtils.bindBufferObject_Element(ebo);
-
-		setupAttributes();
 	}
-
+	
 	protected void bindVao()
 	{
 		ModelUtils.bindVertexArray(vao);
@@ -46,6 +51,8 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 
 	protected void setVertexData(float[] vertexData, int[] elementData)
 	{
+		ModelUtils.bindBufferObject_Array(vbo);
+		
 		ModelUtils.fillVBO_Static(vertexData);
 		ModelUtils.fillEBO_Static(elementData);
 
@@ -86,6 +93,7 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 
 	protected final void addAttribute(String attributeName, int components, int stride, int offset)
 	{
+		ModelUtils.bindBufferObject_Array(vbo);
 		ModelUtils.addAttribute(meshShader.program, attributeName, components, stride, offset);
 	}
 
@@ -99,4 +107,5 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 		texture.dispose();
 		texture = null;
 	}
+
 }

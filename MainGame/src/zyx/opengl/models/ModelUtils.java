@@ -39,6 +39,17 @@ class ModelUtils
 	}
 
 	/**
+	 * Uploads the data to the currently bound VBO
+	 *
+	 * @param data The vertex data to upload
+	 */
+	static void fillVBO_Dynamic(float[] data)
+	{
+		FloatBuffer buffer = BufferWrapper.toBuffer(data);
+		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_DYNAMIC_DRAW);
+	}
+
+	/**
 	 * Binds an EBO to be active
 	 *
 	 * @param ebo The EBO to bind
@@ -91,6 +102,19 @@ class ModelUtils
 		GL11.glDrawElements(GL11.GL_TRIANGLES, elementCount, GL11.GL_UNSIGNED_INT, 0);
 	}
 
+	/**
+	 * Draws what the vao parameter contains with the amount of elements given
+	 *
+	 * @param vao The VAO to draw
+	 * @param elementCount How many elements the VAO contains
+	 * @param instanceCount How many instances to draw
+	 */
+	static void drawInstancedElements(int vao, int elementCount, int instanceCount)
+	{
+		GL30.glBindVertexArray(vao);
+		GL31.glDrawElementsInstanced(GL11.GL_TRIANGLES, elementCount, GL11.GL_UNSIGNED_INT, 0, instanceCount);
+	}
+
 	static void addAttribute(int shaderProgram, String attributeName, int components, int stride, int offset)
 	{
 		int positionAttrib = GL20.glGetAttribLocation(shaderProgram, attributeName);
@@ -113,5 +137,11 @@ class ModelUtils
 		GL15.glDeleteBuffers(vbo);
 		GL15.glDeleteBuffers(ebo);
 		GL30.glDeleteVertexArrays(vao);
+	}
+
+	static void disposeInstancedModel(int vao, int vbo, int ebo, int instanceVbo)
+	{
+		disposeModel(vao, vbo, ebo);
+		GL15.glDeleteBuffers(instanceVbo);
 	}
 }

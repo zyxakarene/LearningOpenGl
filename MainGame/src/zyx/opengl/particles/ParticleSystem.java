@@ -31,7 +31,6 @@ public class ParticleSystem implements IUpdateable, IDrawable, IDisposeable
 	@Override
 	public void draw()
 	{
-		entity.transform();
 		model.draw();
 	}
 

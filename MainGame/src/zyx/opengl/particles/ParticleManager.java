@@ -2,6 +2,7 @@ package zyx.opengl.particles;
 
 import java.util.ArrayList;
 import zyx.opengl.GLUtils;
+import zyx.opengl.shaders.implementations.ParticleShader;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IDrawable;
 import zyx.utils.interfaces.IUpdateable;
@@ -41,6 +42,8 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
+		ParticleShader.elapsedTime += elapsedTime;
+		
 		for (ParticleSystem system : systems)
 		{
 			system.update(timestamp, elapsedTime);
@@ -56,5 +59,7 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 		}
 		
 		systems.clear();
+		
+		ParticleShader.elapsedTime = 0;
 	}
 }
