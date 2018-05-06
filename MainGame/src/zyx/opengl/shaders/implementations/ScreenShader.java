@@ -54,4 +54,9 @@ public class ScreenShader extends AbstractShader
 		return "ScreenFragment.frag";
 	}
 
+	@Override
+	public String getName()
+	{
+		return "ScreenShader";
+	}
 }

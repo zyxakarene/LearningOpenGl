@@ -3,6 +3,9 @@ package zyx.opengl.models;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import org.lwjgl.opengl.*;
+import zyx.opengl.GLUtils;
+import zyx.opengl.shaders.ShaderManager;
+import zyx.utils.cheats.Print;
 
 class ModelUtils
 {
@@ -115,21 +118,32 @@ class ModelUtils
 		GL31.glDrawElementsInstanced(GL11.GL_TRIANGLES, elementCount, GL11.GL_UNSIGNED_INT, 0, instanceCount);
 	}
 
-	static void addAttribute(int shaderProgram, String attributeName, int components, int stride, int offset)
+	static int addAttribute(int shaderProgram, String attributeName, int components, int stride, int offset)
 	{
 		int positionAttrib = GL20.glGetAttribLocation(shaderProgram, attributeName);
 		
-		GL20.glEnableVertexAttribArray(positionAttrib);
-		GL20.glVertexAttribPointer(positionAttrib, components, GL11.GL_FLOAT, false, Float.BYTES * stride, Float.BYTES * offset);
+		if (positionAttrib >= 0)
+		{
+			GL20.glEnableVertexAttribArray(positionAttrib);
+			GL20.glVertexAttribPointer(positionAttrib, components, GL11.GL_FLOAT, false, Float.BYTES * stride, Float.BYTES * offset);
+		}
+		else
+		{
+			String msg = "[Warning] Vertex attribute \"%s\" was not found in %s - (It might be unused)";
+			String shader = ShaderManager.INSTANCE.getNameFromProgram(shaderProgram);
+			Print.out(String.format(msg, attributeName, shader));
+		}
+		
+		return positionAttrib;
 	}
 
 	static void addInstanceAttribute(int shaderProgram, String attributeName, int components, int stride, int offset)
 	{
-		int positionAttrib = GL20.glGetAttribLocation(shaderProgram, attributeName);
-		
-		addAttribute(shaderProgram, attributeName, components, stride, offset);
-		
-		GL33.glVertexAttribDivisor(positionAttrib, 1);
+		int positionAttrib = addAttribute(shaderProgram, attributeName, components, stride, offset);
+		if (positionAttrib >= 0)
+		{
+			GL33.glVertexAttribDivisor(positionAttrib, 1);
+		}
 	}
 
 	static void disposeModel(int vao, int vbo, int ebo)

@@ -42,6 +42,8 @@ public abstract class AbstractShader implements IUpdateable
 
 		postLoading();
 	}
+	
+	public abstract String getName();
 
 	protected abstract void postLoading();
 

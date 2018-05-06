@@ -42,7 +42,7 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-		ParticleShader.elapsedTime += elapsedTime;
+		ParticleShader.elapsedTime += (elapsedTime * 1);
 		
 		for (ParticleSystem system : systems)
 		{

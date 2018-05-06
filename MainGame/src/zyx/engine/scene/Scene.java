@@ -29,6 +29,8 @@ public class Scene
 	
 	final void update(long timestamp, int elapsedTime)
 	{
+		GLUtils.errorCheck();
+		
 		CursorManager.getInstance().setCursor(GameCursor.POINTER);
 		
 		MegaManager.update(timestamp, elapsedTime);
@@ -36,6 +38,7 @@ public class Scene
 		onUpdate(timestamp, elapsedTime);
 		
 		CursorManager.getInstance().update();
+		
 		GLUtils.errorCheck();
 	}
 

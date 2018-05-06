@@ -1,5 +1,6 @@
 package zyx.opengl.models;
 
+import zyx.opengl.GLUtils;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
@@ -24,9 +25,7 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 	public AbstractModel(Shader shader)
 	{
 		meshShader = ShaderManager.INSTANCE.get(shader);
-
 		createObjects();
-		
 		setupAttributes();
 	}
 

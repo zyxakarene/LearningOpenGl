@@ -3,6 +3,7 @@ package zyx.game.scene.particle;
 import java.util.ArrayList;
 import zyx.engine.scene.Scene;
 import zyx.game.components.GameObject;
+import zyx.opengl.GLUtils;
 import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.particles.ParticleSystem;
 import zyx.utils.FloatMath;
@@ -31,8 +32,9 @@ public class ParticleScene extends Scene
 			world.addChild(model);
 			objects.add(model);
 		}
-		
+
 		ParticleManager.getInstance().add(new ParticleSystem());
+		GLUtils.errorCheck();
 	}
 
 	@Override

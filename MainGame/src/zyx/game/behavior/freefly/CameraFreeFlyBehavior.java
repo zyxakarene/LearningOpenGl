@@ -87,9 +87,9 @@ public class CameraFreeFlyBehavior extends Behavior
         {
             cameraRotation.x = 0;
         }
-        else if (cameraRotation.x < -180)
+        else if (cameraRotation.x < -179.99f)
         {
-            cameraRotation.x = -180;
+            cameraRotation.x = -179.99f;
         }
 
         if (cameraRotation.z > 360)

@@ -1,11 +1,7 @@
 package zyx.opengl.shaders.implementations;
 
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
-import zyx.opengl.camera.Camera;
-import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.shaders.AbstractShader;
-import zyx.utils.DeltaTime;
 
 public class ParticleShader extends AbstractShader
 {
@@ -13,7 +9,7 @@ public class ParticleShader extends AbstractShader
 	public static final Matrix4f MATRIX_PROJECTION = WorldShader.MATRIX_PROJECTION;
 	public static final Matrix4f MATRIX_VIEW = WorldShader.MATRIX_VIEW;
 
-	public static int elapsedTime = 0;
+	public static float elapsedTime = 0;
 	
 	private int projectionMatrixTrans;
 	private int viewMatrixTrans;
@@ -37,7 +33,7 @@ public class ParticleShader extends AbstractShader
 	{
 		UniformUtils.setUniformMatrix(projectionMatrixTrans, MATRIX_PROJECTION);
 		UniformUtils.setUniformMatrix(viewMatrixTrans, MATRIX_VIEW);
-		UniformUtils.setUniformInt(timeTrans, elapsedTime);
+		UniformUtils.setUniformFloat(timeTrans, elapsedTime);
 	}
 
 	@Override
@@ -50,6 +46,12 @@ public class ParticleShader extends AbstractShader
 	protected String getFragmentName()
 	{
 		return "ParticleFragment.frag";
+	}
+
+	@Override
+	public String getName()
+	{
+		return "ParticleShader";
 	}
 
 }

@@ -96,5 +96,11 @@ public class WorldShader extends AbstractShader
 	{
 		return "WorldFragment.frag";
 	}
+	
+	@Override
+	public String getName()
+	{
+		return "WorldShader";
+	}
 
 }
