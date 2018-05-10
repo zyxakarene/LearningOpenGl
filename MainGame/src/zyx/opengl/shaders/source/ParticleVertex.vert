@@ -12,23 +12,17 @@ uniform mat4 projection;
 uniform mat4 model;
 uniform mat4 rotationMatrix;
 
-uniform float instances = 20;
+uniform float instances = 200;
 
 uniform float time;
-uniform float gravityX = 0;
-uniform float gravityY = 0;
-uniform float gravityZ = 0;
+uniform vec3 gravity = vec3(0, 0, 0); //xyz
 
-uniform vec2 areaX = vec2(0, 0); //min, max
-uniform vec2 areaY = vec2(0, 0); //min, max
+uniform vec2 areaX = vec2(-1, 1); //min, max
+uniform vec2 areaY = vec2(-1, 1); //min, max
 uniform vec2 areaZ = vec2(0, 0); //min, max
 
-uniform float speedX = 0;
-uniform float speedY = 0;
-uniform float speedZ = -2;
-uniform float speedVarianceX = 0;
-uniform float speedVarianceY = 0;
-uniform float speedVarianceZ = 0;
+uniform vec3 speed = vec3(0, 0, -2); //xyz
+uniform vec3 speedVariance = vec3(0.2, 0.2, 0.2); //xyz
 
 uniform vec4 startColor = vec4(0.2, 0.2, 0.2, 1); //RGBA
 uniform vec4 endColor = vec4(0.2, 0.2, 0.2, 1); //RGBA
@@ -78,17 +72,23 @@ void main(void)
 	float y = applyArea(areaY, random.y);
 	float z = applyArea(areaZ, random.z);
 
-	//Applying gravity
-	x += applyGravity(localTime, 1.5, gravityX);
-	y += applyGravity(localTime, 1.5, gravityY);
-	z += applyGravity(localTime, 1.5, gravityZ);
+	vec4 posVec = rotationMatrix * vec4(x, y, z, 0);
+	x = posVec.x;
+	y = posVec.y;
+	z = posVec.z;
 
-	vec4 speedVec = rotationMatrix * vec4(speedX, speedY, speedZ, 0);
+	//Applying gravity
+	vec4 gravityVec = rotationMatrix * vec4(gravity, 0);
+	x += applyGravity(localTime, 1.5, gravityVec.x);
+	y += applyGravity(localTime, 1.5, gravityVec.y);
+	z += applyGravity(localTime, 1.5, gravityVec.z);
 
 	//Applying Speed
-	x += applySpeed(speedVec.x, speedVarianceX, random.x, localTime);
-	y += applySpeed(speedVec.y, speedVarianceY, random.y, localTime);
-	z += applySpeed(speedVec.z, speedVarianceZ, random.z, localTime);
+	vec4 speedVec = rotationMatrix * vec4(speed, 0);
+	vec4 speedVarianceVec = rotationMatrix * vec4(speedVariance, 0);
+	x += applySpeed(speedVec.x, speedVarianceVec.x, random.x, localTime);
+	y += applySpeed(speedVec.y, speedVarianceVec.y, random.y, localTime);
+	z += applySpeed(speedVec.z, speedVarianceVec.z, random.z, localTime);
 
 	float scale = mix(startScale, endScale, localTime / actualLifespan) + (scaleVariance * random.z);
 

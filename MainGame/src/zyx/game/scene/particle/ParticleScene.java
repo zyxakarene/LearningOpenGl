@@ -44,7 +44,7 @@ public class ParticleScene extends Scene
 			
 			model.addChild(new ParticleSystem());
 			
-//			model.addBehavior(new RotateBehavior());
+			model.addBehavior(new RotateBehavior());
 		}
 		
 		GLUtils.errorCheck();

@@ -32,7 +32,7 @@ public class ParticleModel extends AbstractInstancedModel implements IResourceLo
 			2, 3, 0
 		};
 		
-		int count = 20;
+		int count = 200;
 		float[] instanceData = new float[count * 4];
 		for (int i = 0; i < instanceData.length; i += 4)
 		{
