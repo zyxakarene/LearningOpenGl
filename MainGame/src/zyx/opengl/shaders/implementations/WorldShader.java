@@ -4,14 +4,15 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.shaders.AbstractShader;
+import zyx.opengl.shaders.SharedShaderObjects;
 
 public class WorldShader extends AbstractShader
 {
 
-	public static final Matrix4f MATRIX_PROJECTION = new Matrix4f();
-	public static final Matrix4f MATRIX_VIEW = new Matrix4f();
-	public static final Matrix4f MATRIX_MODEL = new Matrix4f();
-	public static final Matrix4f MATRIX_MODEL_INVERT_TRANSPOSE = new Matrix4f();
+	private static final Matrix4f MATRIX_PROJECTION = SharedShaderObjects.SHARED_PROJECTION_TRANSFORM;
+	private static final Matrix4f MATRIX_VIEW = SharedShaderObjects.SHARED_VIEW_TRANSFORM;
+	private static final Matrix4f MATRIX_MODEL = SharedShaderObjects.SHARED_MODEL_TRANSFORM;
+	private static final Matrix4f MATRIX_MODEL_INVERT_TRANSPOSE = new Matrix4f();
 	
 	public final Matrix4f[] BONES = new Matrix4f[20];
 	public final Matrix4f[] INVERT_BONES = new Matrix4f[20];
@@ -52,6 +53,7 @@ public class WorldShader extends AbstractShader
 		lightDirection = UniformUtils.createUniform(program, "lightDir");
 	}
 
+	@Override
 	public void upload()
 	{
 		UniformUtils.setUniformMatrix(projectionMatrixTrans, MATRIX_PROJECTION);

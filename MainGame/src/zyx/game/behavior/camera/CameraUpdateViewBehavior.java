@@ -5,7 +5,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
-import zyx.opengl.shaders.implementations.WorldShader;
+import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.FloatMath;
 import zyx.utils.GeometryUtils;
 
@@ -23,7 +23,7 @@ public class CameraUpdateViewBehavior extends Behavior
 	{
 		super(BehaviorType.CAMERA_UPDATE_VIEW);
 		
-		viewMatrix = WorldShader.MATRIX_VIEW;
+		viewMatrix = SharedShaderObjects.SHARED_VIEW_TRANSFORM;
 		tempMovement = new Vector3f();
 	}
 

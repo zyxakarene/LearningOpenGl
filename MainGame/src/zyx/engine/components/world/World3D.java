@@ -1,6 +1,7 @@
 package zyx.engine.components.world;
 
-import zyx.opengl.shaders.implementations.WorldShader;
+import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.opengl.shaders.implementations.Shader;
 
 public final class World3D extends WorldObject
 {
@@ -11,6 +12,7 @@ public final class World3D extends WorldObject
 
 	private World3D()
 	{
+		super(Shader.WORLD);
 		physics = new Physics();
 	}
 
@@ -28,7 +30,7 @@ public final class World3D extends WorldObject
 	@Override
 	protected void onTransform()
 	{
-		WorldShader.MATRIX_MODEL.setIdentity();
+		SharedShaderObjects.SHARED_MODEL_TRANSFORM.setIdentity();
 	}
 
 	@Override

@@ -20,7 +20,8 @@ import zyx.opengl.models.implementations.bones.attachments.Attachment;
 import zyx.opengl.models.implementations.bones.attachments.AttachmentRequest;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.physics.PhysBox;
-import zyx.opengl.shaders.implementations.WorldShader;
+import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.cheats.DebugPhysics;
 import zyx.utils.cheats.Print;
@@ -52,6 +53,7 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	
 	public GameObject()
 	{
+		super(Shader.WORLD);
 		behaviors = new BehaviorBundle(this);
 
 		animationController = new AnimationController();
@@ -162,7 +164,7 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 
 	private void drawAsAttachment(Attachment attachment)
 	{
-		WorldShader.MATRIX_MODEL.load(attachment.parent.worldMatrix());
+		SharedShaderObjects.SHARED_MODEL_TRANSFORM.load(attachment.parent.worldMatrix());
 		shader.upload();
 		
 		if (loaded)

@@ -10,6 +10,7 @@ out vec4 Color;
 uniform mat4 view;
 uniform mat4 projection;
 uniform mat4 model;
+uniform mat4 rotationMatrix;
 
 uniform float instances = 20;
 
@@ -18,8 +19,6 @@ uniform float gravityX = 0;
 uniform float gravityY = 0;
 uniform float gravityZ = 0;
 
-uniform vec3 pos = vec3(0, 0, 0); //xyz
-
 uniform vec2 areaX = vec2(0, 0); //min, max
 uniform vec2 areaY = vec2(0, 0); //min, max
 uniform vec2 areaZ = vec2(0, 0); //min, max
@@ -27,12 +26,12 @@ uniform vec2 areaZ = vec2(0, 0); //min, max
 uniform float speedX = 0;
 uniform float speedY = 0;
 uniform float speedZ = -2;
-uniform float speedVarianceX = 0.1;
-uniform float speedVarianceY = 0.1;
+uniform float speedVarianceX = 0;
+uniform float speedVarianceY = 0;
 uniform float speedVarianceZ = 0;
 
-uniform vec4 startColor = vec4(1, 0, 0, 1); //RGBA
-uniform vec4 endColor = vec4(1, 1, 1, 1); //RGBA
+uniform vec4 startColor = vec4(0.2, 0.2, 0.2, 1); //RGBA
+uniform vec4 endColor = vec4(0.2, 0.2, 0.2, 1); //RGBA
 
 uniform float startScale = 1;
 uniform float endScale = 0.1;
@@ -74,25 +73,22 @@ void main(void)
 	float actualLifespan = lifespan + (random.w * lifespanVariance) - lifespanVariance;
 	float localTime = mod(time + startFrac, actualLifespan);
 
-	//Setting start position
-	float x = pos.x;
-	float y = pos.y;
-	float z = pos.z;
-
-	//Applying area
-	x += applyArea(areaX, random.x);
-	y += applyArea(areaY, random.y);
-	z += applyArea(areaZ, random.z);
+	//Setting the start area
+	float x = applyArea(areaX, random.x);
+	float y = applyArea(areaY, random.y);
+	float z = applyArea(areaZ, random.z);
 
 	//Applying gravity
 	x += applyGravity(localTime, 1.5, gravityX);
 	y += applyGravity(localTime, 1.5, gravityY);
 	z += applyGravity(localTime, 1.5, gravityZ);
 
+	vec4 speedVec = rotationMatrix * vec4(speedX, speedY, speedZ, 0);
+
 	//Applying Speed
-	x += applySpeed(speedX, speedVarianceX, random.x, localTime);
-	y += applySpeed(speedY, speedVarianceY, random.y, localTime);
-	z += applySpeed(speedZ, speedVarianceZ, random.z, localTime);
+	x += applySpeed(speedVec.x, speedVarianceX, random.x, localTime);
+	y += applySpeed(speedVec.y, speedVarianceY, random.y, localTime);
+	z += applySpeed(speedVec.z, speedVarianceZ, random.z, localTime);
 
 	float scale = mix(startScale, endScale, localTime / actualLifespan) + (scaleVariance * random.z);
 
@@ -101,7 +97,7 @@ void main(void)
 
 	Color = getColor(localTime / actualLifespan, startColor, endColor);
 	Texcoord = texcoord;
-	gl_Position = projection * (view * translateMatrix * vec4(0, 0, 0, 1) + vec4(position.x * scale, position.y * scale, 0, 0));
+	gl_Position = projection * (view * translateMatrix * model * vec4(0, 0, 0, 1) + vec4(position.x * scale, position.y * scale, 0, 0));
 }
 
 /*

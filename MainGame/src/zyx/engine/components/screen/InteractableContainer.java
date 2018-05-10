@@ -4,7 +4,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.game.controls.SharedPools;
 import zyx.game.controls.input.MouseData;
-import zyx.opengl.shaders.implementations.ScreenShader;
+import zyx.opengl.shaders.SharedShaderObjects;
 
 public abstract class InteractableContainer extends DisplayObjectContainer
 {
@@ -56,7 +56,7 @@ public abstract class InteractableContainer extends DisplayObjectContainer
 	void onDraw()
 	{
 		super.onDraw();
-		Matrix4f.invert(ScreenShader.MATRIX_MODEL, invertedModel);
+		Matrix4f.invert(SharedShaderObjects.SHARED_MODEL_TRANSFORM, invertedModel);
 	}
 
 	protected abstract void onMouseEnter();

@@ -3,8 +3,8 @@ package zyx.opengl.camera;
 import org.lwjgl.util.vector.Matrix4f;
 import zyx.engine.components.world.WorldObject;
 import zyx.engine.utils.worldpicker.calculating.RayPicker;
-import zyx.opengl.shaders.implementations.ScreenShader;
-import zyx.opengl.shaders.implementations.WorldShader;
+import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.opengl.shaders.implementations.Shader;
 
 public class Camera extends WorldObject
 {
@@ -20,6 +20,7 @@ public class Camera extends WorldObject
 
 	private Camera()
 	{
+		super(Shader.WORLD);
 		initialized = false;
 	}
 
@@ -31,21 +32,21 @@ public class Camera extends WorldObject
 		}
 		
 		initialized = true;
-		Projection.createPerspective(70f, 0.001f, 2f, WorldShader.MATRIX_PROJECTION);
-		Projection.createOrthographic(1f, 2f, ScreenShader.MATRIX_PROJECTION, 2);
+		Projection.createPerspective(70f, 0.001f, 2f, SharedShaderObjects.SHARED_PROJECTION_TRANSFORM);
+		Projection.createOrthographic(1f, 2f, SharedShaderObjects.SHARED_ORTHOGRAPHIC_TRANSFORM, 2);
 		
 //		Projection.createOrthographic(0.01f, 1000f, WorldShader.MATRIX_PROJECTION, 16);
 		
-		RayPicker.getInstance().setProjectionMatrix(WorldShader.MATRIX_PROJECTION);
+		RayPicker.getInstance().setProjectionMatrix(SharedShaderObjects.SHARED_PROJECTION_TRANSFORM);
 	}
 	
 	public void getProjectionMatrix(Matrix4f out)
 	{
-		out.load(WorldShader.MATRIX_PROJECTION);
+		out.load(SharedShaderObjects.SHARED_PROJECTION_TRANSFORM);
 	}
 	
 	public void getViewMatrix(Matrix4f out)
 	{
-		out.load(WorldShader.MATRIX_VIEW);
+		out.load(SharedShaderObjects.SHARED_VIEW_TRANSFORM);
 	}
 }

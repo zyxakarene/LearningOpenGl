@@ -2,8 +2,7 @@ package zyx.engine.components.screen;
 
 import java.util.ArrayList;
 import org.lwjgl.util.vector.Matrix4f;
-import zyx.opengl.shaders.implementations.ScreenShader;
-import zyx.utils.cheats.Print;
+import zyx.opengl.shaders.SharedShaderObjects;
 
 public class DisplayObjectContainer extends DisplayObject
 {
@@ -107,7 +106,7 @@ public class DisplayObjectContainer extends DisplayObject
 	void onDraw()
 	{
 		transform();
-		HELPER_MATRIX.load(ScreenShader.MATRIX_MODEL);
+		HELPER_MATRIX.load(SharedShaderObjects.SHARED_MODEL_TRANSFORM);
 
 		DisplayObject loopHelper;
 		for (int i = 0; i < numChildren; i++)
@@ -118,7 +117,7 @@ public class DisplayObjectContainer extends DisplayObject
 
 			loopHelper.draw();
 
-			ScreenShader.MATRIX_MODEL.load(HELPER_MATRIX);
+			SharedShaderObjects.SHARED_MODEL_TRANSFORM.load(HELPER_MATRIX);
 		}
 	}
 

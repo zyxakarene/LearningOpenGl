@@ -5,9 +5,10 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.game.controls.SharedPools;
+import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.ShaderManager;
+import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.Shader;
-import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IPositionable;
 import zyx.utils.math.DecomposedMatrix;
@@ -31,12 +32,12 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	private WorldObject parent;
 	private ArrayList<WorldObject> children;
 
-	protected final WorldShader shader;
+	protected final AbstractShader shader;
 
 	private Collider collider;
 	public boolean drawable = true;
 
-	public WorldObject()
+	public WorldObject(Shader type)
 	{
 		_invWorldMatrix = SharedPools.MATRIX_POOL.getInstance();
 		_worldMatrix = SharedPools.MATRIX_POOL.getInstance();
@@ -45,7 +46,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 
 		children = new ArrayList<>();
 
-		shader = (WorldShader) ShaderManager.INSTANCE.get(Shader.WORLD);
+		shader = ShaderManager.INSTANCE.get(type);
 		disposed = false;
 
 		dirty = false;
@@ -176,7 +177,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 			return;
 		}
 		
-		WorldShader.MATRIX_MODEL.load(worldMatrix());
+		SharedShaderObjects.SHARED_MODEL_TRANSFORM.load(worldMatrix());
 		shader.upload();
 
 		onDraw();

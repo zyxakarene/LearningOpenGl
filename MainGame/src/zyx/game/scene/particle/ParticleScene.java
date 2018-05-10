@@ -25,15 +25,28 @@ public class ParticleScene extends Scene
 		{
 			GameObject model = new GameObject();
 			model.load("assets/models/box.zaf");
-			model.setX(FloatMath.random() * 10);
-			model.setY(FloatMath.random() * 10);
-			model.setScale(true, 0.1f, 0.1f, 0.1f);
+			model.setX(FloatMath.random() * 50);
+			model.setY(FloatMath.random() * 50);
+			model.setZ(FloatMath.random() * 50);
+			model.setRotation(0, 90, 0);
 
-			world.addChild(model);
+			if (i == 0)
+			{
+				world.addChild(model);
+				model.setScale(true, 0.1f, 0.1f, 0.1f);
+			}
+			else
+			{
+				objects.get(i-1).addChild(model);
+			}
+			
 			objects.add(model);
+			
+			model.addChild(new ParticleSystem());
+			
+//			model.addBehavior(new RotateBehavior());
 		}
-
-		ParticleManager.getInstance().add(new ParticleSystem());
+		
 		GLUtils.errorCheck();
 	}
 
@@ -41,6 +54,11 @@ public class ParticleScene extends Scene
 	protected void onUpdate(long timestamp, int elapsedTime)
 	{
 		ParticleManager.getInstance().update(timestamp, elapsedTime);
+		
+		for (GameObject object : objects)
+		{
+			object.update(timestamp, elapsedTime);
+		}
 	}
 
 	@Override

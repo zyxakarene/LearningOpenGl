@@ -36,7 +36,8 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 		GLUtils.disableDepthWrite();
 		for (ParticleSystem system : systems)
 		{
-			system.draw();
+			ParticleShader.elapsedTime = system.elapsedTime;
+			system.drawParticle();
 		}
 		GLUtils.enableDepthWrite();
 		GLUtils.enableCulling();
@@ -46,11 +47,9 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-		ParticleShader.elapsedTime += (elapsedTime * 1);
-		
 		for (ParticleSystem system : systems)
 		{
-			system.update(timestamp, elapsedTime);
+			system.elapsedTime += elapsedTime;
 		}
 	}
 

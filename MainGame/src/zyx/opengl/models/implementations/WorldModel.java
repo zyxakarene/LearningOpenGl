@@ -11,8 +11,7 @@ import zyx.opengl.models.implementations.bones.attachments.Attachment;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.implementations.physics.PhysBox;
-import zyx.opengl.textures.MissingTexture;
-import zyx.utils.DeltaTime;
+import zyx.opengl.shaders.SharedShaderObjects;
 
 public class WorldModel extends AbstractModel
 {
@@ -20,7 +19,7 @@ public class WorldModel extends AbstractModel
 	private static final Vector3f ATTACHMENT_ROTATION = new Vector3f(0, 0, 0);
 	private static final Vector3f ATTACHMENT_SCALE = new Vector3f(1, 1, 1);
 
-	private static final Matrix4f MODEL_MATRIX = WorldShader.MATRIX_MODEL;
+	private static final Matrix4f MODEL_MATRIX = SharedShaderObjects.SHARED_MODEL_TRANSFORM;
 
 	private WorldShader shader;
 	private Skeleton skeleton;
