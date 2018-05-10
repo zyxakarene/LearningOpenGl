@@ -1,12 +1,14 @@
 package zyx.opengl.models.implementations;
 
+import zyx.game.controls.resourceloader.requests.IResourceLoaded;
+import zyx.game.controls.textures.TextureManager;
 import zyx.opengl.models.AbstractInstancedModel;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.ParticleShader;
-import zyx.opengl.textures.MissingTexture;
+import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.FloatMath;
 
-public class ParticleModel extends AbstractInstancedModel
+public class ParticleModel extends AbstractInstancedModel implements IResourceLoaded<AbstractTexture>
 {
 	private ParticleShader shader;
 
@@ -30,7 +32,7 @@ public class ParticleModel extends AbstractInstancedModel
 			2, 3, 0
 		};
 		
-		int count = 500;
+		int count = 20;
 		float[] instanceData = new float[count * 4];
 		for (int i = 0; i < instanceData.length; i += 4)
 		{
@@ -41,7 +43,8 @@ public class ParticleModel extends AbstractInstancedModel
 		}
 		setInstanceData(instanceData, instanceData.length/4);
 		setVertexData(vertexData, elementData);
-		setTexture(MissingTexture.getInstance());
+		
+		TextureManager.getInstance().loadTexture("assets/textures/particle.png", this);
 	}
 
 	@Override
@@ -67,5 +70,11 @@ public class ParticleModel extends AbstractInstancedModel
 		super.dispose();
 
 		shader = null;
+	}
+
+	@Override
+	public void resourceLoaded(AbstractTexture data)
+	{
+		setTexture(data);
 	}
 }

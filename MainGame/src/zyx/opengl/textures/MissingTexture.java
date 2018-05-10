@@ -29,7 +29,7 @@ public class MissingTexture extends AbstractTexture
 
 	private MissingTexture()
 	{
-		GL11.glGetError();
+		super("MissingTexture");
 
 		texture = new CheckerdColorTexture(0xFF00FF, 0x000000);
 		setSizes(texture.getImageWidth(), texture.getImageHeight());

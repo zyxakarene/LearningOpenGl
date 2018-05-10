@@ -4,7 +4,7 @@ import java.util.HashMap;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.controls.SharedPools;
-import zyx.opengl.models.implementations.LoadableValueObject;
+import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
@@ -68,7 +68,7 @@ public class DebugPhysDrawing
 		}
 		
 		Skeleton skeleton = new Skeleton(getMeshJoint("root", 0), getMeshJoint("dummy", 0));
-		LoadableValueObject vo = new LoadableValueObject(vertexData, elementData, skeleton, null, "");
+		LoadableWorldModelVO vo = new LoadableWorldModelVO(vertexData, elementData, skeleton, null, "");
 		vo.setGameTexture(new ColorTexture(0xFF0000));
 		WorldModel model = new WorldModel(vo);
 
@@ -166,7 +166,7 @@ public class DebugPhysDrawing
 
 		fillData(boundingBox, vertexData, elementData);
 		Skeleton skeleton = new Skeleton(getMeshJoint("root", 1), getMeshJoint("dummy", 0));
-		LoadableValueObject vo = new LoadableValueObject(vertexData, elementData, skeleton, null, "");
+		LoadableWorldModelVO vo = new LoadableWorldModelVO(vertexData, elementData, skeleton, null, "");
 		vo.setGameTexture(new ColorTexture(0x00FF00));
 		WorldModel model = new WorldModel(vo);
 

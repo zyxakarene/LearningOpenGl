@@ -1,6 +1,8 @@
 package zyx.opengl.textures;
 
 import org.newdawn.slick.opengl.Texture;
+import zyx.game.controls.textures.TextureManager;
+import zyx.opengl.GLUtils;
 import zyx.utils.geometry.Rectangle;
 import zyx.utils.interfaces.IDisposeable;
 
@@ -14,19 +16,22 @@ public abstract class AbstractTexture implements IDisposeable
 	private float width;
 	private float height;
 
+	protected final String name;
 
-	AbstractTexture()
+	AbstractTexture(String name)
 	{
-		this(null);
+		this(null, name);
 	}
 	
-	AbstractTexture(Rectangle rect)
+	AbstractTexture(Rectangle rect, String name)
 	{
 		if (rect == null)
 		{
 			rect = SIMPLE_TEXTURE_MAPPING;
 		}
 
+		this.name = name;
+		
 		x = rect.x;
 		y = rect.y;
 		u = rect.width;
@@ -60,6 +65,8 @@ public abstract class AbstractTexture implements IDisposeable
 		TextureBinder.dispose(this);
 		
 		onDispose();
+		
+		TextureManager.getInstance().removeTexture(name);
 	}
 
 	abstract protected void onBind();

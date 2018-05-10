@@ -6,7 +6,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.controls.SharedPools;
-import zyx.opengl.models.implementations.LoadableValueObject;
+import zyx.opengl.models.implementations.LoadableWorldModelVO;
 
 import zyx.opengl.models.implementations.bones.animation.Animation;
 import zyx.opengl.models.implementations.bones.animation.AnimationFrame;
@@ -23,7 +23,7 @@ public class ZafLoader
 	private static final Quaternion ROTATION = new Quaternion();
 	private static final Vector3f POSITION = new Vector3f();
 	
-	public static LoadableValueObject loadFromZaf(DataInputStream in)
+	public static LoadableWorldModelVO loadFromZaf(DataInputStream in)
 	{
 		try
 		{			
@@ -38,7 +38,7 @@ public class ZafLoader
 			
 			PhysBox phys = createPhysBox(smd.physInformation);
 			
-			return new LoadableValueObject(smd.vertexData, smd.elementData, skeleton, phys, smd.texture);
+			return new LoadableWorldModelVO(smd.vertexData, smd.elementData, skeleton, phys, smd.texture);
 		}
 		catch (IOException e)
 		{

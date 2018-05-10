@@ -31,14 +31,21 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 
 	protected void createObjects()
 	{
+		GLUtils.errorCheck();
 		vao = ModelUtils.generateVertexArray();
+		GLUtils.errorCheck();
 		ModelUtils.bindVertexArray(vao);
 
+		GLUtils.errorCheck();
 		vbo = ModelUtils.generateBufferObject();
+		GLUtils.errorCheck();
 		ModelUtils.bindBufferObject_Array(vbo);
 
+		GLUtils.errorCheck();
 		ebo = ModelUtils.generateBufferObject();
+		GLUtils.errorCheck();
 		ModelUtils.bindBufferObject_Element(ebo);
+		GLUtils.errorCheck();
 	}
 	
 	protected void bindVao()
@@ -101,7 +108,9 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 	@Override
 	public void dispose()
 	{
-		ModelUtils.disposeModel(vao, vbo, ebo);
+		ModelUtils.disposeBuffer(vbo);
+		ModelUtils.disposeBuffer(ebo);
+		ModelUtils.disposeVertexArray(vao);
 		
 		texture.dispose();
 		texture = null;

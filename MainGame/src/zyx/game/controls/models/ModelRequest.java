@@ -6,7 +6,7 @@ import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.game.controls.resourceloader.requests.ResourceRequest;
 import zyx.game.controls.resourceloader.requests.ResourceRequestDataInput;
-import zyx.opengl.models.implementations.LoadableValueObject;
+import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.loading.ZafLoader;
 import zyx.opengl.textures.AbstractTexture;
@@ -18,7 +18,7 @@ class ModelRequest implements IResourceLoaded<DataInputStream>, IDisposeable, IM
 	private String path;
 	private ArrayList<IResourceLoaded<WorldModel>> callbacks;
 	
-	private LoadableValueObject loadedVo;
+	private LoadableWorldModelVO loadedVo;
 	private ModelTextureLoader textureLoader;
 
 	ModelRequest(String path, IResourceLoaded<WorldModel> callback)

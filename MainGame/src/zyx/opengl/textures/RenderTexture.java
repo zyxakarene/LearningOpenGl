@@ -16,7 +16,7 @@ public class RenderTexture extends AbstractTexture
 
 	public RenderTexture(float width, float height)
 	{
-		super(RENDER_RECT);
+		super(RENDER_RECT, "RenderToTexture");
 		bufferId = GL30.glGenFramebuffers();
 
 		textureId = GL11.glGenTextures();

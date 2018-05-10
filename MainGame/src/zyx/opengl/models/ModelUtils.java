@@ -146,16 +146,20 @@ class ModelUtils
 		}
 	}
 
-	static void disposeModel(int vao, int vbo, int ebo)
+//	static void disposeModel(int vao, int vbo, int ebo)
+//	{
+//		GL15.glDeleteBuffers(vbo);
+//		GL15.glDeleteBuffers(ebo);
+//		GL30.glDeleteVertexArrays(vao);
+//	}
+
+	static void disposeBuffer(int buffer)
 	{
-		GL15.glDeleteBuffers(vbo);
-		GL15.glDeleteBuffers(ebo);
-		GL30.glDeleteVertexArrays(vao);
+		GL15.glDeleteBuffers(buffer);
 	}
 
-	static void disposeInstancedModel(int vao, int vbo, int ebo, int instanceVbo)
+	static void disposeVertexArray(int vao)
 	{
-		disposeModel(vao, vbo, ebo);
-		GL15.glDeleteBuffers(instanceVbo);
+		GL15.glDeleteBuffers(vao);
 	}
 }

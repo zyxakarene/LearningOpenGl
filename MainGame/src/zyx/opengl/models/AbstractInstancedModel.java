@@ -1,5 +1,6 @@
 package zyx.opengl.models;
 
+import zyx.opengl.GLUtils;
 import zyx.opengl.shaders.implementations.Shader;
 
 public abstract class AbstractInstancedModel extends AbstractModel
@@ -42,9 +43,15 @@ public abstract class AbstractInstancedModel extends AbstractModel
 		if (texture != null)
 		{
 			texture.bind();
+			ModelUtils.drawInstancedElements(vao, elementCount, instanceCount);
 		}
+	}
 
-		ModelUtils.drawInstancedElements(vao, elementCount, instanceCount);
+	@Override
+	public void dispose()
+	{
+		ModelUtils.disposeBuffer(instanceVbo);
+		super.dispose();
 	}
 
 }

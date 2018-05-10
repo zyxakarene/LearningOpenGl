@@ -9,18 +9,15 @@ public class ParticleSystem implements IUpdateable, IDrawable, IDisposeable
 {
 	
 	private ParticleModel model;
-	private ParticleEntity entity;
 
 	public ParticleSystem()
 	{
 		model = new ParticleModel();
-		entity = new ParticleEntity();
 	}
 
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-		entity.update(timestamp, elapsedTime);
 	}
 
 	@Override
@@ -35,7 +32,5 @@ public class ParticleSystem implements IUpdateable, IDrawable, IDisposeable
 		model.dispose();
 
 		model = null;
-		entity = null;
 	}
-	
 }

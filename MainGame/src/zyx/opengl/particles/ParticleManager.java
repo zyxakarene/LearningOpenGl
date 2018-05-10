@@ -31,12 +31,16 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 	@Override
 	public void draw()
 	{
+		GLUtils.setBlendAdditive();
 		GLUtils.disableCulling();
+		GLUtils.disableDepthWrite();
 		for (ParticleSystem system : systems)
 		{
 			system.draw();
 		}
+		GLUtils.enableDepthWrite();
 		GLUtils.enableCulling();
+		GLUtils.setBlendAlpha();
 	}
 
 	@Override

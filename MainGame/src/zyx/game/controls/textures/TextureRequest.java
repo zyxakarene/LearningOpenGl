@@ -23,7 +23,7 @@ class TextureRequest implements IResourceLoaded<DataInputStream>, IDisposeable
 
 		callbacks.add(callback);
 
-		loadModel();
+		loadTexture();
 	}
 
 	void addCallback(IResourceLoaded<AbstractTexture> callback)
@@ -31,7 +31,7 @@ class TextureRequest implements IResourceLoaded<DataInputStream>, IDisposeable
 		callbacks.add(callback);
 	}
 
-	private void loadModel()
+	private void loadTexture()
 	{
 		ResourceRequest request = new ResourceRequestDataInput(path, this);
 		ResourceLoader.getInstance().addRequest(request);
@@ -40,14 +40,14 @@ class TextureRequest implements IResourceLoaded<DataInputStream>, IDisposeable
 	@Override
 	public void resourceLoaded(DataInputStream data)
 	{
-		AbstractTexture texture = new GameTexture(data);
+		AbstractTexture texture = new GameTexture(data, path);
 		
 		for (IResourceLoaded<AbstractTexture> callback : callbacks)
 		{
 			callback.resourceLoaded(texture);
 		}
 		
-		TextureManager.getInstance().modelLoaded(path, texture);
+		TextureManager.getInstance().textureLoaded(path, texture);
 	}
 
 	@Override

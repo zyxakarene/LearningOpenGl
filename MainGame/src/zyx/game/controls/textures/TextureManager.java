@@ -45,9 +45,14 @@ public class TextureManager implements IDisposeable
 		}
 	}
 
-	void modelLoaded(String path, AbstractTexture model)
+	public void removeTexture(String name)
 	{
-		TextureCacheEntry cacheEntry = new TextureCacheEntry(model);
+		cache.remove(name);
+	}
+
+	void textureLoaded(String path, AbstractTexture texture)
+	{
+		TextureCacheEntry cacheEntry = new TextureCacheEntry(texture);
 		cache.put(path, cacheEntry);
 		
 		TextureRequest request = currentRequests.remove(path);

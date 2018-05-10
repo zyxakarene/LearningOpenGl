@@ -27,7 +27,7 @@ public class WorldModel extends AbstractModel
 	
 	private PhysBox physBox;
 
-	public WorldModel(LoadableValueObject vo)
+	public WorldModel(LoadableWorldModelVO vo)
 	{
 		super(Shader.WORLD);
 		this.shader = (WorldShader) meshShader;

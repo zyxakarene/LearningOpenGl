@@ -16,7 +16,7 @@ public class RenderTextureDebth extends AbstractTexture
 
 	public RenderTextureDebth(float width, float height)
 	{
-		super(RENDER_RECT);
+		super(RENDER_RECT, "RenderToTextureDebth");
 		bufferId = GL30.glGenFramebuffers();
 
 		textureId = GL11.glGenTextures();
