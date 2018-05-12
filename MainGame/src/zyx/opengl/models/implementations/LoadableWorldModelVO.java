@@ -4,7 +4,7 @@ import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.textures.AbstractTexture;
 
-public class LoadableWorldModelVO
+public class LoadableWorldModelVO implements ILoadableVO
 {
 
 	float vertexData[];
@@ -24,11 +24,13 @@ public class LoadableWorldModelVO
 		this.physBox = physBox;
 	}
 
+	@Override
 	public String getTexture()
 	{
 		return texture;
 	}
 
+	@Override
 	public void setGameTexture(AbstractTexture gameTexture)
 	{
 		this.gameTexture = gameTexture;

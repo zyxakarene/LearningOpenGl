@@ -178,6 +178,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		}
 		
 		SharedShaderObjects.SHARED_MODEL_TRANSFORM.load(worldMatrix());
+		shader.bind();
 		shader.upload();
 
 		onDraw();

@@ -3,6 +3,7 @@ package zyx.opengl.models;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import org.lwjgl.opengl.*;
+import zyx.engine.GameEngine;
 import zyx.opengl.GLUtils;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.utils.cheats.Print;
@@ -103,6 +104,8 @@ class ModelUtils
 	{
 		GL30.glBindVertexArray(vao);
 		GL11.glDrawElements(GL11.GL_TRIANGLES, elementCount, GL11.GL_UNSIGNED_INT, 0);
+		
+		GameEngine.drawCalls++;
 	}
 
 	/**
@@ -116,6 +119,8 @@ class ModelUtils
 	{
 		GL30.glBindVertexArray(vao);
 		GL31.glDrawElementsInstanced(GL11.GL_TRIANGLES, elementCount, GL11.GL_UNSIGNED_INT, 0, instanceCount);
+		
+		GameEngine.drawCalls++;
 	}
 
 	static int addAttribute(int shaderProgram, String attributeName, int components, int stride, int offset)

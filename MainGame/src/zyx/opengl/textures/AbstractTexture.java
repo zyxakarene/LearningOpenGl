@@ -1,8 +1,5 @@
 package zyx.opengl.textures;
 
-import org.newdawn.slick.opengl.Texture;
-import zyx.game.controls.textures.TextureManager;
-import zyx.opengl.GLUtils;
 import zyx.utils.geometry.Rectangle;
 import zyx.utils.interfaces.IDisposeable;
 
@@ -65,8 +62,6 @@ public abstract class AbstractTexture implements IDisposeable
 		TextureBinder.dispose(this);
 		
 		onDispose();
-		
-		TextureManager.getInstance().removeTexture(name);
 	}
 
 	abstract protected void onBind();

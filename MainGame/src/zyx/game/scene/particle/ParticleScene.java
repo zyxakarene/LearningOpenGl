@@ -25,10 +25,13 @@ public class ParticleScene extends Scene
 		{
 			GameObject model = new GameObject();
 			model.load("assets/models/box.zaf");
-			model.setX(FloatMath.random() * 50);
-			model.setY(FloatMath.random() * 50);
-			model.setZ(FloatMath.random() * 50);
-			model.setRotation(0, 90, 0);
+			if (i > 0)
+			{
+				model.setX(FloatMath.random() * 50);
+				model.setY(FloatMath.random() * 50);
+				model.setZ(FloatMath.random() * 50);
+				model.setRotation(0, 90, 0);
+			}
 
 			if (i == 0)
 			{
@@ -41,8 +44,9 @@ public class ParticleScene extends Scene
 			}
 			
 			objects.add(model);
-			
-			model.addChild(new ParticleSystem());
+			ParticleSystem system = new ParticleSystem();
+			system.load("assets/effects/particle.txt");
+			model.addChild(system);
 			
 			model.addBehavior(new RotateBehavior());
 		}

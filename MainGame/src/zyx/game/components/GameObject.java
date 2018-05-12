@@ -11,7 +11,7 @@ import zyx.engine.utils.worldpicker.ClickedInfo;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorBundle;
 import zyx.game.behavior.BehaviorType;
-import zyx.game.controls.models.ModelManager;
+import zyx.game.controls.loading.worldmodel.WorldModelLoader;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.opengl.models.SharedWorldModelTransformation;
 import zyx.opengl.models.implementations.WorldModel;
@@ -65,7 +65,7 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	public void load(String path)
 	{
 		this.path = path;
-		ModelManager.getInstance().loadModel(path, this);
+		WorldModelLoader.getInstance().load(path, this);
 	}
 
 	@Override
