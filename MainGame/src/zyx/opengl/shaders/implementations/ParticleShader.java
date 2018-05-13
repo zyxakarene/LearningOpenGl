@@ -1,6 +1,8 @@
 package zyx.opengl.shaders.implementations;
 
 import org.lwjgl.util.vector.Matrix4f;
+import zyx.opengl.GLUtils;
+import zyx.opengl.models.implementations.LoadableParticleVO;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.SharedShaderObjects;
 
@@ -35,6 +37,24 @@ public class ParticleShader extends AbstractShader
 	private int lifespanUniform;
 	private int lifespanVarianceUniform;
 
+	public void uploadFromVo(LoadableParticleVO vo)
+	{
+		UniformUtils.setUniformFloat(instancesUniform, vo.instanceCount);
+		UniformUtils.setUniform3F(gravityUniform, vo.gravity.x, vo.gravity.y, vo.gravity.z);
+		UniformUtils.setUniform2F(areaXUniform, vo.areaX.x, vo.areaX.y);
+		UniformUtils.setUniform2F(areaYUniform, vo.areaY.x, vo.areaY.y);
+		UniformUtils.setUniform2F(areaZUniform, vo.areaZ.x, vo.areaZ.y);
+		UniformUtils.setUniform3F(speedUniform, vo.speed.x, vo.speed.y, vo.speed.z);
+		UniformUtils.setUniform3F(speedVarianceUniform, vo.speedVariance.x, vo.speedVariance.y, vo.speedVariance.z);
+		UniformUtils.setUniform4F(startColorUniform, vo.startColor.x, vo.startColor.y, vo.startColor.z, vo.startColor.w);
+		UniformUtils.setUniform4F(endColorUniform, vo.endColor.x, vo.endColor.y, vo.endColor.z, vo.endColor.w);
+		UniformUtils.setUniformFloat(startScaleUniform, vo.startScale);
+		UniformUtils.setUniformFloat(endScaleUniform, vo.endScale);
+		UniformUtils.setUniformFloat(scaleVarianceUniform, vo.scaleVariance);
+		UniformUtils.setUniformFloat(lifespanUniform, vo.lifespan);
+		UniformUtils.setUniformFloat(lifespanVarianceUniform, vo.lifespanVariance);
+	}
+	
 	public ParticleShader(Object lock)
 	{
 		super(lock);
@@ -93,5 +113,4 @@ public class ParticleShader extends AbstractShader
 	{
 		return "ParticleShader";
 	}
-
 }

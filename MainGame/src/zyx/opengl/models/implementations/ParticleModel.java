@@ -8,11 +8,13 @@ import zyx.utils.FloatMath;
 public class ParticleModel extends AbstractInstancedModel
 {
 	private ParticleShader shader;
+	private LoadableParticleVO vo;
 
 	public ParticleModel(LoadableParticleVO vo)
 	{
 		super(Shader.PARTICLE);
 
+		this.vo = vo;
 		this.shader = (ParticleShader) meshShader;
 
 		float[] vertexData =
@@ -29,7 +31,7 @@ public class ParticleModel extends AbstractInstancedModel
 			2, 3, 0
 		};
 		
-		int count = 200;
+		int count = vo.instanceCount;
 		float[] instanceData = new float[count * 4];
 		for (int i = 0; i < instanceData.length; i += 4)
 		{
@@ -47,6 +49,7 @@ public class ParticleModel extends AbstractInstancedModel
 	public void draw()
 	{
 		shader.bind();
+		shader.uploadFromVo(vo);
 		shader.upload();
 		super.draw();
 	}

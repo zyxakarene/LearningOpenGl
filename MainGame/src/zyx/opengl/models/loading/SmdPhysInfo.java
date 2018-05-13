@@ -3,7 +3,6 @@ package zyx.opengl.models.loading;
 import java.io.DataInputStream;
 import java.io.IOException;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.utils.cheats.Print;
 import zyx.utils.geometry.Box;
 
 class SmdPhysInfo

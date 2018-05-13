@@ -1,13 +1,14 @@
 package zyx.game.controls.loading.particle;
 
-import java.io.DataInputStream;
 import zyx.game.controls.loading.AbstractLoader;
 import zyx.game.controls.loading.AbstractRequest;
 import zyx.game.controls.loading.IModelTextureLoaded;
 import zyx.game.controls.loading.TextureLoadWrapper;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
+import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.LoadableParticleVO;
 import zyx.opengl.models.implementations.ParticleModel;
+import zyx.opengl.particles.loading.ZpfLoader;
 import zyx.opengl.textures.AbstractTexture;
 
 public class ParticleModelRequest extends AbstractRequest<ParticleModel> implements IModelTextureLoaded
@@ -23,9 +24,9 @@ public class ParticleModelRequest extends AbstractRequest<ParticleModel> impleme
 	}
 
 	@Override
-	public void resourceLoaded(DataInputStream data)
+	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		loadedVo = new LoadableParticleVO("particle.png");
+		loadedVo = ZpfLoader.loadFromZaf(data);
 		textureLoader = new TextureLoadWrapper(loadedVo.getTexture(), this);
 	}
 	

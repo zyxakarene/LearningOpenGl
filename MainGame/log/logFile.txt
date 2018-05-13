@@ -4803,3 +4803,95 @@ java.lang.NullPointerException
 	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
 	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
 
+maj 12, 2018 7:14:16 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file assets/effects/particle.txt. Error: "assets\effects\particle.txt (The system cannot find the file specified)"
+maj 12, 2018 7:14:40 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file assets/effects/particle.txt. Error: "assets\effects\particle.txt (The system cannot find the file specified)"
+maj 12, 2018 7:19:50 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file assets/effects/particle.txt. Error: "assets\effects\particle.txt (The system cannot find the file specified)"
+maj 12, 2018 7:20:16 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file assets/effects/particle.txt. Error: "assets\effects\particle.txt (The system cannot find the file specified)"
+maj 12, 2018 7:21:25 PM zyx.game.controls.resourceloader.FileLoader handleIOException
+SEVERE: Error while loading file assets/effects/particle.txt. Error: "assets\effects\particle.txt (The system cannot find the file specified)"
+maj 12, 2018 8:06:49 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'AWT-EventQueue-0'
+java.lang.RuntimeException: GLError: [Invalid operation]
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
+	at zyx.engine.scene.Scene.draw(Scene.java:57)
+	at zyx.engine.scene.SceneManager.update(SceneManager.java:48)
+	at zyx.engine.GameEngine.beginGameLoop(GameEngine.java:73)
+	at zyx.engine.GameEngine.startWith(GameEngine.java:40)
+	at zyx.engine.GameStarter.run(GameStarter.java:22)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+
+maj 12, 2018 8:08:54 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'AWT-EventQueue-0'
+java.lang.RuntimeException: GLError: [Invalid operation]
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
+	at zyx.opengl.shaders.implementations.ParticleShader.uploadFromVo(ParticleShader.java:54)
+	at zyx.opengl.models.implementations.ParticleModel.draw(ParticleModel.java:52)
+	at zyx.opengl.particles.ParticleSystem.drawParticle(ParticleSystem.java:75)
+	at zyx.opengl.particles.ParticleManager.draw(ParticleManager.java:40)
+	at zyx.game.scene.particle.ParticleScene.onDraw(ParticleScene.java:71)
+	at zyx.engine.scene.Scene.draw(Scene.java:49)
+	at zyx.engine.scene.SceneManager.update(SceneManager.java:48)
+	at zyx.engine.GameEngine.beginGameLoop(GameEngine.java:73)
+	at zyx.engine.GameEngine.startWith(GameEngine.java:40)
+	at zyx.engine.GameStarter.run(GameStarter.java:22)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+
+maj 12, 2018 8:09:06 PM zyx.utils.exceptions.UncaughtExceptionHandlerImpl uncaughtException
+SEVERE: An uncaught exception was thrown by thread 'AWT-EventQueue-0'
+java.lang.RuntimeException: GLError: [Invalid operation]
+	at zyx.opengl.GLUtils.errorCheck(GLUtils.java:15)
+	at zyx.opengl.shaders.implementations.ParticleShader.uploadFromVo(ParticleShader.java:54)
+	at zyx.opengl.models.implementations.ParticleModel.draw(ParticleModel.java:52)
+	at zyx.opengl.particles.ParticleSystem.drawParticle(ParticleSystem.java:75)
+	at zyx.opengl.particles.ParticleManager.draw(ParticleManager.java:40)
+	at zyx.game.scene.particle.ParticleScene.onDraw(ParticleScene.java:71)
+	at zyx.engine.scene.Scene.draw(Scene.java:49)
+	at zyx.engine.scene.SceneManager.update(SceneManager.java:48)
+	at zyx.engine.GameEngine.beginGameLoop(GameEngine.java:73)
+	at zyx.engine.GameEngine.startWith(GameEngine.java:40)
+	at zyx.engine.GameStarter.run(GameStarter.java:22)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:726)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+

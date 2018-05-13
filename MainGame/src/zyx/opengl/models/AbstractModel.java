@@ -1,6 +1,5 @@
 package zyx.opengl.models;
 
-import zyx.opengl.GLUtils;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
@@ -76,18 +75,21 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 	@Override
 	public void draw()
 	{
-		meshShader.bind();
-
-		if (overwriteTexture != null)
+		if (elementCount > 0)
 		{
-			overwriteTexture.bind();
-		}
-		else if (texture != null)
-		{
-			texture.bind();
-		}
+			meshShader.bind();
 
-		ModelUtils.drawElements(vao, elementCount);
+			if (overwriteTexture != null)
+			{
+				overwriteTexture.bind();
+			}
+			else if (texture != null)
+			{
+				texture.bind();
+			}
+			
+			ModelUtils.drawElements(vao, elementCount);
+		}
 	}
 
 	protected final void addAttribute(String attributeName, int components, int stride, int offset)

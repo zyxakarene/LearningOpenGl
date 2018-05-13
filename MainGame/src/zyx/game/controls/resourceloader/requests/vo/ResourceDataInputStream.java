@@ -8,11 +8,25 @@ import zyx.utils.exceptions.Msg;
 public class ResourceDataInputStream extends DataInputStream
 {
 
+	private byte[] bytes;
+	
 	public ResourceDataInputStream(byte[] bytes)
 	{
 		super(new ByteArrayInputStream(bytes));
+		
+		this.bytes = bytes;
 	}
 
+	public int getLength()
+	{
+		return bytes.length;
+	}
+
+	public byte[] getData()
+	{
+		return bytes;
+	}
+	
 	@Override
 	public synchronized void reset()
 	{
@@ -26,6 +40,4 @@ public class ResourceDataInputStream extends DataInputStream
 			Msg.error("IOException where it should never happen??", ex);
 		}
 	}
-
-	
 }

@@ -1,9 +1,9 @@
 package zyx.game.controls.loading.texture;
 
-import java.io.DataInputStream;
 import zyx.game.controls.loading.AbstractLoader;
 import zyx.game.controls.loading.AbstractRequest;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
+import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.textures.AbstractTexture;
 
 public class TextureRequest extends AbstractRequest<AbstractTexture>
@@ -17,7 +17,7 @@ public class TextureRequest extends AbstractRequest<AbstractTexture>
 	}
 
 	@Override
-	public void resourceLoaded(DataInputStream data)
+	public void resourceLoaded(ResourceDataInputStream data)
 	{
 		PARAMS[0] = data;
 		PARAMS[1] = path;

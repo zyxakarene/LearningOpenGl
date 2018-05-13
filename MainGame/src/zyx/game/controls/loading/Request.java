@@ -1,17 +1,17 @@
 package zyx.game.controls.loading;
 
-import java.io.DataInputStream;
 import java.util.ArrayList;
 import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.game.controls.resourceloader.requests.ResourceRequest;
 import zyx.game.controls.resourceloader.requests.ResourceRequestDataInput;
+import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.ILoadableVO;
 import zyx.opengl.models.loading.ZafLoader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.interfaces.IDisposeable;
 
-class Request<T extends IDisposeable> implements IResourceLoaded<DataInputStream>, IDisposeable, IModelTextureLoaded
+class Request<T extends IDisposeable> implements IResourceLoaded<ResourceDataInputStream>, IDisposeable, IModelTextureLoaded
 {
 
 	private AbstractLoader<T> loader;
@@ -44,7 +44,7 @@ class Request<T extends IDisposeable> implements IResourceLoaded<DataInputStream
 	}
 
 	@Override
-	public void resourceLoaded(DataInputStream data)
+	public void resourceLoaded(ResourceDataInputStream data)
 	{
 		loadedVo = ZafLoader.loadFromZaf(data);
 		textureLoader = new TextureLoadWrapper(loadedVo.getTexture(), this);

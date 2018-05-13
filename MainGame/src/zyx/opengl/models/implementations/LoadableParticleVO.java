@@ -8,33 +8,32 @@ import zyx.opengl.textures.AbstractTexture;
 public class LoadableParticleVO implements ILoadableVO
 {
 
-	int instanceCount = 10;
+	public int instanceCount = 10;
 	
-	Vector3f gravity = new Vector3f(0, 0, 0);
+	public Vector3f gravity = new Vector3f(0, 0, 0);
 	
-	Vector2f areaX = new Vector2f(0, 0);
-	Vector2f areaY = new Vector2f(0, 0);
-	Vector2f areaZ = new Vector2f(0, 0);
+	public Vector2f areaX = new Vector2f(0, 0);
+	public Vector2f areaY = new Vector2f(0, 0);
+	public Vector2f areaZ = new Vector2f(0, 0);
 	
-	float speed = 0;
-	float speedVariance = 0;
+	public Vector3f speed = new Vector3f(0, 0, 0);
+	public Vector3f speedVariance = new Vector3f(0, 0, 0);
 	
-	Vector4f startColor = new Vector4f(1, 1, 1, 1);
-	Vector4f endColor = new Vector4f(1, 1, 1, 1);
+	public Vector4f startColor = new Vector4f(1, 1, 1, 1);
+	public Vector4f endColor = new Vector4f(1, 1, 1, 1);
 	
-	float startScale = 1;
-	float endScale = 1;
-	float scaleVariance = 0;
+	public float startScale = 1;
+	public float endScale = 1;
+	public float scaleVariance = 0;
 	
-	float lifespan = 1000;
-	float lifespanVariance = 0;
+	public float lifespan = 1000;
+	public float lifespanVariance = 0;
 	
-	String texture;
+	String texture = "particle.png";
 	AbstractTexture gameTexture;
 
-	public LoadableParticleVO(String tex)
+	public LoadableParticleVO()
 	{
-		texture = tex;
 	}
 
 	@Override

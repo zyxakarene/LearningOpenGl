@@ -7,12 +7,14 @@ public abstract class ResourceRequest implements IDisposeable
 {
 	public String path;
 	public ArrayList<IResourceLoaded> callbacks;
+	public boolean requestCompleted;
 
 	public ResourceRequest(String path, IResourceLoaded callback)
 	{
 		this.path = path;
 		this.callbacks = new ArrayList<>();
 		this.callbacks.add(callback);
+		this.requestCompleted = true;
 	}
 
 	@Override
@@ -32,6 +34,11 @@ public abstract class ResourceRequest implements IDisposeable
 	public int hashCode()
 	{
 		return path.hashCode();
+	}
+	
+	public void setFailed()
+	{
+		requestCompleted = false;
 	}
 	
 	public abstract void setData(byte[] data);

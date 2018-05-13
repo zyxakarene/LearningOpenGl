@@ -1,0 +1,15 @@
+instanceCount=20
+gravity=0,0,0
+areaX=0.1,0.1
+areaY=0.1,0.1
+areaZ=0,0
+speed=0,0,-2
+speedVariance=0.2,0.2,0.2
+startColor=0.2,0.2,0.2,1
+endColor=0.2,0.2,0.2,1
+startScale=1
+endScale=0.1
+scaleVariance=0.2
+lifespan=3000
+lifespanVariance=0
+texture=particle.png

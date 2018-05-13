@@ -25,8 +25,12 @@ public class DebugPhysics
 
 	public void registerPhysbox(GameObject obj)
 	{
-		WorldModel[] models = DebugPhysDrawing.getModelFor(obj);
-		entryMap.put(obj, models);
+		int count = obj.getPhysbox().getTriangles().length;
+		if (count > 0)
+		{
+			WorldModel[] models = DebugPhysDrawing.getModelFor(obj);
+			entryMap.put(obj, models);
+		}
 	}
 
 	public void unregisterPhysbox(GameObject obj)

@@ -8,6 +8,7 @@ Bump mapping
 Shadows
 Terrain/Displacements
 Skybox
+Particles
 
 =Core=
 UI overhaul

@@ -45,7 +45,14 @@ public class ParticleScene extends Scene
 			
 			objects.add(model);
 			ParticleSystem system = new ParticleSystem();
-			system.load("assets/effects/particle.txt");
+			if (i % 2 == 0)
+			{
+				system.load("assets/effects/particle.zpf");
+			}
+			else
+			{
+				system.load("assets/effects/particle2.zpf");
+			}
 			model.addChild(system);
 			
 			model.addBehavior(new RotateBehavior());

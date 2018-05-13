@@ -1,14 +1,14 @@
 package zyx.game.controls.loading;
 
-import java.io.DataInputStream;
 import java.util.ArrayList;
 import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.game.controls.resourceloader.requests.ResourceRequest;
 import zyx.game.controls.resourceloader.requests.ResourceRequestDataInput;
+import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.utils.interfaces.IDisposeable;
 
-public abstract class AbstractRequest<T extends IDisposeable> implements IResourceLoaded<DataInputStream>, IDisposeable
+public abstract class AbstractRequest<T extends IDisposeable> implements IResourceLoaded<ResourceDataInputStream>, IDisposeable
 {
 
 	protected AbstractLoader<T> loader;
@@ -37,7 +37,7 @@ public abstract class AbstractRequest<T extends IDisposeable> implements IResour
 	}
 	
 	@Override
-	public abstract void resourceLoaded(DataInputStream data);
+	public abstract void resourceLoaded(ResourceDataInputStream data);
 	
 	protected final void onLoadComplete(Object[] params)
 	{
