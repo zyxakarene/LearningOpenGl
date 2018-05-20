@@ -21,7 +21,7 @@ public class ParticleScene extends Scene
 	@Override
 	protected void onInitialize()
 	{
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			GameObject model = new GameObject();
 			model.load("assets/models/box.zaf");
@@ -45,17 +45,10 @@ public class ParticleScene extends Scene
 			
 			objects.add(model);
 			ParticleSystem system = new ParticleSystem();
-			if (i % 2 == 0)
-			{
-				system.load("assets/effects/particle.zpf");
-			}
-			else
-			{
-				system.load("assets/effects/particle2.zpf");
-			}
+			system.load("assets/effects/particle.zpf");
 			model.addChild(system);
 			
-			model.addBehavior(new RotateBehavior());
+//			model.addBehavior(new RotateBehavior());
 		}
 		
 		GLUtils.errorCheck();

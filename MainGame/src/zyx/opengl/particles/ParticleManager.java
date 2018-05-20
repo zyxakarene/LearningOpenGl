@@ -49,7 +49,7 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 	{
 		for (ParticleSystem system : systems)
 		{
-			system.elapsedTime += elapsedTime;
+			system.elapsedTime += (elapsedTime * 1f);
 		}
 	}
 

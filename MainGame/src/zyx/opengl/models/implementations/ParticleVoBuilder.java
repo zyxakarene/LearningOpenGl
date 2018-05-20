@@ -105,6 +105,16 @@ public class ParticleVoBuilder
 		vo.lifespanVariance = value;
 	}
 
+	public void rotation(float value)
+	{
+		vo.rotation = value;
+	}
+
+	public void rotationVariance(float value)
+	{
+		vo.rotationVariance = value;
+	}
+
 	public void texture(String value)
 	{
 		vo.texture = value;

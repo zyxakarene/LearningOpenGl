@@ -38,6 +38,8 @@ public class Camera extends WorldObject
 //		Projection.createOrthographic(0.01f, 1000f, WorldShader.MATRIX_PROJECTION, 16);
 		
 		RayPicker.getInstance().setProjectionMatrix(SharedShaderObjects.SHARED_PROJECTION_TRANSFORM);
+		
+		setRotation(-90, 0, 0);
 	}
 	
 	public void getProjectionMatrix(Matrix4f out)

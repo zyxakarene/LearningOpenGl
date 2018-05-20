@@ -21,6 +21,8 @@ public class ZpfLoader
 	private static final String KEY_SCALE_VARIANCE = "scaleVariance";
 	private static final String KEY_LIFESPAN = "lifespan";
 	private static final String KEY_LIFESPAN_VARIANCE = "lifespanVariance";
+	private static final String KEY_ROTATION = "rotation";
+	private static final String KEY_ROTATION_VARIANCE = "rotationVariance";
 	private static final String KEY_TEXTURE = "texture";
 	
 	public static LoadableParticleVO loadFromZaf(ResourceDataInputStream in)
@@ -156,6 +158,18 @@ public class ZpfLoader
 			{
 				float lifespanVariance = Float.parseFloat(value);
 				builder.lifespanVariance(lifespanVariance);
+				break;
+			}
+			case KEY_ROTATION:
+			{
+				float rotation = Float.parseFloat(value);
+				builder.rotation(rotation);
+				break;
+			}
+			case KEY_ROTATION_VARIANCE:
+			{
+				float rotationVariance = Float.parseFloat(value);
+				builder.rotationVariance(rotationVariance);
 				break;
 			}
 			case KEY_TEXTURE:

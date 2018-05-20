@@ -36,6 +36,8 @@ public class ParticleShader extends AbstractShader
 	private int scaleVarianceUniform;
 	private int lifespanUniform;
 	private int lifespanVarianceUniform;
+	private int rotationUniform;
+	private int rotationVarianceUniform;
 
 	public void uploadFromVo(LoadableParticleVO vo)
 	{
@@ -53,6 +55,8 @@ public class ParticleShader extends AbstractShader
 		UniformUtils.setUniformFloat(scaleVarianceUniform, vo.scaleVariance);
 		UniformUtils.setUniformFloat(lifespanUniform, vo.lifespan);
 		UniformUtils.setUniformFloat(lifespanVarianceUniform, vo.lifespanVariance);
+		UniformUtils.setUniformFloat(rotationUniform, vo.rotation);
+		UniformUtils.setUniformFloat(rotationVarianceUniform, vo.rotationVariance);
 	}
 	
 	public ParticleShader(Object lock)
@@ -83,6 +87,8 @@ public class ParticleShader extends AbstractShader
 		scaleVarianceUniform = UniformUtils.createUniform(program, "scaleVariance");
 		lifespanUniform = UniformUtils.createUniform(program, "lifespan");
 		lifespanVarianceUniform = UniformUtils.createUniform(program, "lifespanVariance");
+		rotationUniform = UniformUtils.createUniform(program, "rotation");
+		rotationVarianceUniform = UniformUtils.createUniform(program, "rotationVariance");
 	}
 
 	@Override

@@ -12,4 +12,6 @@ endScale=0.1
 scaleVariance=0.2
 lifespan=3000
 lifespanVariance=0
+rotation=0
+rotationVariance=0
 texture=particle.png

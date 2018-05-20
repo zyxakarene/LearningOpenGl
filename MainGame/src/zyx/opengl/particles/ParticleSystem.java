@@ -18,7 +18,7 @@ public class ParticleSystem extends WorldObject implements IResourceLoaded<Parti
 	private static Matrix4f ROTATION_Z = new Matrix4f();
 	private static Matrix4f ROTATION = SharedShaderObjects.SHARED_ROTATION_MATRIX;
 	
-	long elapsedTime;
+	float elapsedTime;
 	
 	private boolean loaded;
 	private ParticleModel model;

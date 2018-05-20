@@ -29,6 +29,9 @@ public class LoadableParticleVO implements ILoadableVO
 	public float lifespan = 1000;
 	public float lifespanVariance = 0;
 	
+	public float rotation = 1000;
+	public float rotationVariance = 0;
+	
 	String texture = "particle.png";
 	AbstractTexture gameTexture;
 

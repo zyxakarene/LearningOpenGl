@@ -34,6 +34,20 @@ uniform float scaleVariance = 0.5;
 uniform float lifespan = 300;
 uniform float lifespanVariance = 0;
 
+uniform float rotation = 0;
+uniform float rotationVariance = 0;
+
+mat4 getRotMatrix(float angle)
+{
+    float s = sin(angle);
+    float c = cos(angle);
+    float oc = 1.0 - c;
+    return mat4(c,	-s,		0,			0,
+				s,	c,		0,			0,
+				0,	0,		oc + c,		0,
+				0,	0,		0,			1);
+}
+
 float applyArea(in vec2 area, in float random)
 {
 	return area.x + ((area.y - area.x) * random);
@@ -95,9 +109,14 @@ void main(void)
 	mat4 translateMatrix = mat4(1);
 	translateMatrix[3].xyz = vec3(x, y, z);
 
+	float piTwo = 3.14159265358 * 2;
+	float percentDone = localTime / actualLifespan;
+	float currentRotation = rotation + (random.w * rotationVariance) - rotationVariance;
+	mat4 R = getRotMatrix(percentDone * currentRotation * piTwo);
+
 	Color = getColor(localTime / actualLifespan, startColor, endColor);
 	Texcoord = texcoord;
-	gl_Position = projection * (view * translateMatrix * model * vec4(0, 0, 0, 1) + vec4(position.x * scale, position.y * scale, 0, 0));
+	gl_Position = projection * (view * translateMatrix * model * vec4(0, 0, 0, 1) + vec4(position.x * scale, position.y * scale, 0, 0) * R);
 }
 
 /*
