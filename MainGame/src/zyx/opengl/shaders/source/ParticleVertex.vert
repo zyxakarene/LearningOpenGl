@@ -1,8 +1,13 @@
 #version 420
 
-layout(location = 0) in vec2 position;
-layout(location = 1) in vec2 texcoord;
-layout(location = 2) in vec4 random; //Per instance
+in vec2 position;
+in vec2 texcoord;
+
+in float lifespanRandom;
+in vec3 areaRandom;
+in vec3 speedRandom;
+in float scaleRandom;
+in float rotRandom;
 
 out vec2 Texcoord;
 out vec4 Color;
@@ -60,7 +65,7 @@ float applySpeed(in float speed, in float variance, in float random, in float lo
 
 float applyGravity(in float localTime, in float power, in float gravity)
 {
-	return (pow(localTime, power) * 0.001) * gravity;
+	return pow(localTime, power) * 0.001 * gravity;
 }
 
 vec4 getColor(in float fraction, in vec4 startColor, in vec4 endColor)
@@ -78,13 +83,13 @@ void main(void)
 {
 	float startFrac = (float(gl_InstanceID) / instances) * lifespan;
 
-	float actualLifespan = lifespan + (random.w * lifespanVariance) - lifespanVariance;
+	float actualLifespan = lifespan + (lifespanRandom * lifespanVariance) - lifespanVariance;
 	float localTime = mod(time + startFrac, actualLifespan);
 
 	//Setting the start area
-	float x = applyArea(areaX, random.x);
-	float y = applyArea(areaY, random.y);
-	float z = applyArea(areaZ, random.z);
+	float x = applyArea(areaX, areaRandom.x);
+	float y = applyArea(areaY, areaRandom.y);
+	float z = applyArea(areaZ, areaRandom.z);
 
 	vec4 posVec = rotationMatrix * vec4(x, y, z, 0);
 	x = posVec.x;
@@ -100,18 +105,18 @@ void main(void)
 	//Applying Speed
 	vec4 speedVec = rotationMatrix * vec4(speed, 0);
 	vec4 speedVarianceVec = rotationMatrix * vec4(speedVariance, 0);
-	x += applySpeed(speedVec.x, speedVarianceVec.x, random.x, localTime);
-	y += applySpeed(speedVec.y, speedVarianceVec.y, random.y, localTime);
-	z += applySpeed(speedVec.z, speedVarianceVec.z, random.z, localTime);
+	x += applySpeed(speedVec.x, speedVarianceVec.x, speedRandom.x, localTime);
+	y += applySpeed(speedVec.y, speedVarianceVec.y, speedRandom.y, localTime);
+	z += applySpeed(speedVec.z, speedVarianceVec.z, speedRandom.z, localTime);
 
-	float scale = mix(startScale, endScale, localTime / actualLifespan) + (scaleVariance * random.z);
+	float scale = mix(startScale, endScale, localTime / actualLifespan) + (scaleVariance * scaleRandom);
 
 	mat4 translateMatrix = mat4(1);
 	translateMatrix[3].xyz = vec3(x, y, z);
 
 	float piTwo = 3.14159265358 * 2;
 	float percentDone = localTime / actualLifespan;
-	float currentRotation = rotation + (random.w * rotationVariance) - rotationVariance;
+	float currentRotation = rotation + (rotRandom * rotationVariance) - rotationVariance;
 	mat4 R = getRotMatrix(percentDone * currentRotation * piTwo);
 
 	Color = getColor(localTime / actualLifespan, startColor, endColor);

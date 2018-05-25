@@ -31,16 +31,17 @@ public class ParticleModel extends AbstractInstancedModel
 			2, 3, 0
 		};
 		
+		int instanceDataAmount = 9;
 		int count = vo.instanceCount;
-		float[] instanceData = new float[count * 4];
-		for (int i = 0; i < instanceData.length; i += 4)
+		float[] instanceData = new float[count * instanceDataAmount];
+		for (int i = 0; i < instanceData.length; i += instanceDataAmount)
 		{
-			instanceData[i + 0] = FloatMath.random();
-			instanceData[i + 1] = FloatMath.random();
-			instanceData[i + 2] = FloatMath.random();
-			instanceData[i + 3] = FloatMath.random();
+			for (int j = 0; j < instanceDataAmount; j++)
+			{
+				instanceData[i + j] = FloatMath.random();
+			}
 		}
-		setInstanceData(instanceData, instanceData.length/4);
+		setInstanceData(instanceData, instanceData.length / instanceDataAmount);
 		setVertexData(vertexData, elementData);
 		setTexture(vo.gameTexture);
 	}
@@ -60,7 +61,11 @@ public class ParticleModel extends AbstractInstancedModel
 		addAttribute("position", 2, 4, 0);
 		addAttribute("texcoord", 2, 4, 2);
 		
-		addInstanceAttribute("random", 4, 4, 0);
+		addInstanceAttribute("lifespanRandom", 1, 9, 0);
+		addInstanceAttribute("areaRandom", 3, 9, 1);
+		addInstanceAttribute("speedRandom", 3, 9, 4);
+		addInstanceAttribute("scaleRandom", 1, 9, 7);
+		addInstanceAttribute("rotRandom", 1, 9, 8);
 	}
 
 	@Override
