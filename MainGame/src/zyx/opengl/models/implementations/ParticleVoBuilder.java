@@ -119,4 +119,9 @@ public class ParticleVoBuilder
 	{
 		vo.texture = value;
 	}
+
+	public void worldParticle(boolean worldParticle)
+	{
+		vo.worldParticle = worldParticle;
+	}
 }

@@ -1,10 +1,7 @@
 package zyx.opengl.shaders;
 
 import java.util.HashMap;
-import zyx.opengl.shaders.implementations.ParticleShader;
-import zyx.opengl.shaders.implementations.WorldShader;
-import zyx.opengl.shaders.implementations.Shader;
-import zyx.opengl.shaders.implementations.ScreenShader;
+import zyx.opengl.shaders.implementations.*;
 import zyx.utils.interfaces.IUpdateable;
 
 public class ShaderManager implements IUpdateable
@@ -29,6 +26,7 @@ public class ShaderManager implements IUpdateable
 		shaderMap.put(Shader.WORLD, new WorldShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.SCREEN, new ScreenShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.PARTICLE, new ParticleShader(AbstractShader.LOCK));
+		shaderMap.put(Shader.WORLD_PARTICLE, new WorldParticleShader(AbstractShader.LOCK));
 		
 		AbstractShader shader;
 		int length = shaders.length;

@@ -23,9 +23,9 @@ class RotateBehavior extends Behavior
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-		x += elapsedTime * 0.005f;
-		y += elapsedTime * 0.008f;
-		z += elapsedTime * -0.003f;
+		x += elapsedTime * 0.025f;
+		y += elapsedTime * 0.04f;
+		z += elapsedTime * -0.015f;
 
 		gameObject.setRotation(x, y, z);
 	}

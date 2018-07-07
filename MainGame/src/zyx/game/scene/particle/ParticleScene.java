@@ -6,6 +6,7 @@ import zyx.game.components.GameObject;
 import zyx.opengl.GLUtils;
 import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.particles.ParticleSystem;
+import zyx.opengl.particles.WorldParticleSystem;
 import zyx.utils.FloatMath;
 
 public class ParticleScene extends Scene
@@ -46,9 +47,15 @@ public class ParticleScene extends Scene
 			objects.add(model);
 			ParticleSystem system = new ParticleSystem();
 			system.load("assets/effects/particle.zpf");
+			system.setX(10);
 			model.addChild(system);
 			
-//			model.addBehavior(new RotateBehavior());
+			WorldParticleSystem worldSystem = new WorldParticleSystem();
+			worldSystem.load("assets/effects/world.zpf");
+			worldSystem.setX(-10);
+			model.addChild(worldSystem);
+			
+			model.addBehavior(new RotateBehavior());
 		}
 		
 		GLUtils.errorCheck();

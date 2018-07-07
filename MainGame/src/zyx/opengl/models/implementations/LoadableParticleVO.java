@@ -32,6 +32,8 @@ public class LoadableParticleVO implements ILoadableVO
 	public float rotation = 1000;
 	public float rotationVariance = 0;
 	
+	public boolean worldParticle = false;
+	
 	String texture = "particle.png";
 	AbstractTexture gameTexture;
 

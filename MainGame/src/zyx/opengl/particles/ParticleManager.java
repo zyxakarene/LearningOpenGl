@@ -3,6 +3,7 @@ package zyx.opengl.particles;
 import java.util.ArrayList;
 import zyx.opengl.GLUtils;
 import zyx.opengl.shaders.implementations.ParticleShader;
+import zyx.opengl.shaders.implementations.WorldParticleShader;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IDrawable;
 import zyx.utils.interfaces.IUpdateable;
@@ -11,7 +12,7 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 {
 	private static ParticleManager instance = new ParticleManager();
 
-	private ArrayList<ParticleSystem> systems;
+	private ArrayList<AbstractParticleSystem> systems;
 	
 	public static ParticleManager getInstance()
 	{
@@ -23,7 +24,7 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 		systems = new ArrayList<>();
 	}
 
-	public void add(ParticleSystem system)
+	public void add(AbstractParticleSystem system)
 	{
 		systems.add(system);
 	}
@@ -34,9 +35,10 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 		GLUtils.setBlendAdditive();
 		GLUtils.disableCulling();
 		GLUtils.disableDepthWrite();
-		for (ParticleSystem system : systems)
+		for (AbstractParticleSystem system : systems)
 		{
-			ParticleShader.elapsedTime = system.elapsedTime;
+			ParticleShader.elapsedTime = system.particleTime;
+			WorldParticleShader.elapsedTime = system.particleTime;
 			system.drawParticle();
 		}
 		GLUtils.enableDepthWrite();
@@ -47,16 +49,16 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-		for (ParticleSystem system : systems)
+		for (AbstractParticleSystem system : systems)
 		{
-			system.elapsedTime += (elapsedTime * 1f);
+			system.update(timestamp, elapsedTime);
 		}
 	}
 
 	@Override
 	public void dispose()
 	{
-		for (ParticleSystem system : systems)
+		for (AbstractParticleSystem system : systems)
 		{
 			system.dispose();
 		}
@@ -64,5 +66,6 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 		systems.clear();
 		
 		ParticleShader.elapsedTime = 0;
+		WorldParticleShader.elapsedTime = 0;
 	}
 }

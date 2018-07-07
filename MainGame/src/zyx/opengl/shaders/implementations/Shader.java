@@ -5,4 +5,5 @@ public enum Shader
 	WORLD,
 	SCREEN,
 	PARTICLE,
+	WORLD_PARTICLE,
 }

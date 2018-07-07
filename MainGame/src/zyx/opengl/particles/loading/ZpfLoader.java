@@ -7,6 +7,7 @@ import zyx.opengl.models.implementations.ParticleVoBuilder;
 
 public class ZpfLoader
 {
+	private static final String KEY_WORLD_PARTICLE = "worldParticle";
 	private static final String KEY_INSTANCE_COUNT = "instanceCount";
 	private static final String KEY_GRAVITY = "gravity";
 	private static final String KEY_AREA_X = "areaX";
@@ -53,6 +54,12 @@ public class ZpfLoader
 	{
 		switch(key)
 		{
+			case KEY_WORLD_PARTICLE:
+			{
+				boolean worldParticle = Boolean.parseBoolean(value);
+				builder.worldParticle(worldParticle);
+				break;
+			}
 			case KEY_INSTANCE_COUNT:
 			{
 				int instanceCount = Integer.parseInt(value);
