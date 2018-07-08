@@ -16,7 +16,6 @@ public class WorldParticleShader extends AbstractShader
 	
 	private int projectionMatrixTrans;
 	private int viewMatrixTrans;
-	private int modelMatrixTrans;
 	
 	private int timeUniform;
 	private int instancesUniform;
@@ -56,7 +55,6 @@ public class WorldParticleShader extends AbstractShader
 	{
 		projectionMatrixTrans = UniformUtils.createUniform(program, "projection");
 		viewMatrixTrans = UniformUtils.createUniform(program, "view");
-		modelMatrixTrans = UniformUtils.createUniform(program, "model");
 		
 		timeUniform = UniformUtils.createUniform(program, "time");
 		instancesUniform = UniformUtils.createUniform(program, "instances");
@@ -77,7 +75,6 @@ public class WorldParticleShader extends AbstractShader
 	{
 		UniformUtils.setUniformMatrix(projectionMatrixTrans, MATRIX_PROJECTION);
 		UniformUtils.setUniformMatrix(viewMatrixTrans, MATRIX_VIEW);
-		UniformUtils.setUniformMatrix(modelMatrixTrans, MATRIX_MODEL);
 		
 		UniformUtils.setUniformFloat(timeUniform, elapsedTime);
 	}

@@ -11,13 +11,21 @@ class RotateBehavior extends Behavior
 	private float y;
 	private float z;
 
+	private float px;
+	private float py;
+	private float pz;
+
 	public RotateBehavior()
 	{
 		super(BehaviorType.ROTATER);
 
-		x = FloatMath.random() * 360 * 1;
-		y = FloatMath.random() * 360 * 1;
-		z = FloatMath.random() * 360 * 1;
+		x = FloatMath.random() * 360 * 0;
+		y = FloatMath.random() * 360 * 0;
+		z = FloatMath.random() * 360 * 0;
+		
+		px = 0;
+		py = 0;
+		pz = 0;
 	}
 
 	@Override
@@ -27,7 +35,14 @@ class RotateBehavior extends Behavior
 		y += elapsedTime * 0.04f;
 		z += elapsedTime * -0.015f;
 
+		double d = timestamp;
+		
+//		px = (float) Math.sin(d * 0.001) * 2;
+//		py = (float) Math.cos(d * 0.01) * 2;
+//		pz = (float) Math.cos(d * 0.01);
+		
 		gameObject.setRotation(x, y, z);
+		gameObject.setPosition(true, px, py, pz);
 	}
 
 }

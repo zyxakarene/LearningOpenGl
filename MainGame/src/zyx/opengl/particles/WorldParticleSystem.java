@@ -2,6 +2,7 @@ package zyx.opengl.particles;
 
 import zyx.opengl.models.AbstractInstancedModel;
 import zyx.opengl.models.implementations.WorldParticleModel;
+import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.Shader;
 
 public class WorldParticleSystem extends AbstractParticleSystem

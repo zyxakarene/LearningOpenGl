@@ -18,7 +18,6 @@ out vec4 Color;
 
 uniform mat4 view;
 uniform mat4 projection;
-uniform mat4 model;
 
 uniform float instances = 200;
 
@@ -47,11 +46,6 @@ mat4 getRotMatrix(float angle)
 				s,	c,		0,			0,
 				0,	0,		oc + c,		0,
 				0,	0,		0,			1);
-}
-
-float applyArea(in vec2 area, in float random)
-{
-	return area.x + ((area.y - area.x) * random);
 }
 
 float applySpeed(in float speed, in float variance, in float random, in float localTime)

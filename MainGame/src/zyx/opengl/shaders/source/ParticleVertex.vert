@@ -15,7 +15,6 @@ out vec4 Color;
 uniform mat4 view;
 uniform mat4 projection;
 uniform mat4 model;
-uniform mat4 rotationMatrix;
 
 uniform float instances = 200;
 
@@ -91,20 +90,20 @@ void main(void)
 	float y = applyArea(areaY, areaRandom.y);
 	float z = applyArea(areaZ, areaRandom.z);
 
-	vec4 posVec = rotationMatrix * vec4(x, y, z, 0);
+	vec4 posVec = model * vec4(x, y, z, 0);
 	x = posVec.x;
 	y = posVec.y;
 	z = posVec.z;
 
 	//Applying gravity
-	vec4 gravityVec = rotationMatrix * vec4(gravity, 0);
+	vec4 gravityVec = model * vec4(gravity, 0);
 	x += applyGravity(localTime, 1.5, gravityVec.x);
 	y += applyGravity(localTime, 1.5, gravityVec.y);
 	z += applyGravity(localTime, 1.5, gravityVec.z);
 
 	//Applying Speed
-	vec4 speedVec = rotationMatrix * vec4(speed, 0);
-	vec4 speedVarianceVec = rotationMatrix * vec4(speedVariance, 0);
+	vec4 speedVec = model * vec4(speed, 0);
+	vec4 speedVarianceVec = model * vec4(speedVariance, 0);
 	x += applySpeed(speedVec.x, speedVarianceVec.x, speedRandom.x, localTime);
 	y += applySpeed(speedVec.y, speedVarianceVec.y, speedRandom.y, localTime);
 	z += applySpeed(speedVec.z, speedVarianceVec.z, speedRandom.z, localTime);

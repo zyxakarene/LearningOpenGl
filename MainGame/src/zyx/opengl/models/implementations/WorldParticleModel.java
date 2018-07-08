@@ -4,7 +4,6 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.WorldObject;
 import zyx.opengl.models.AbstractInstancedModel;
-import zyx.opengl.particles.WorldParticleSystem;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.WorldParticleShader;
 import zyx.utils.FloatMath;
@@ -51,31 +50,7 @@ public class WorldParticleModel extends AbstractInstancedModel
 		{
 			particleAge[i] = (int) (i * -(vo.lifespan / vo.instanceCount) + vo.lifespan);
 		}
-		
-		for (int i = 0; i < instanceData.length; i += INSTANCE_DATA_COUNT)
-		{
-			int j = 0;
-			instanceData[i + (j++)] = 0;
-			instanceData[i + (j++)] = 0;
-			instanceData[i + (j++)] = 0;
-			
-			instanceData[i + (j++)] = 0;
-			instanceData[i + (j++)] = 0;
-			instanceData[i + (j++)] = 0;
-			instanceData[i + (j++)] = 0;
-			instanceData[i + (j++)] = 0;
-			instanceData[i + (j++)] = 0;
-			instanceData[i + (j++)] = 0;
-			instanceData[i + (j++)] = 0;
-			instanceData[i + (j++)] = 0;
-			
-			instanceData[i + (j++)] = 0;
-			instanceData[i + (j++)] = 0;
-			instanceData[i + (j++)] = 0;
-			instanceData[i + (j++)] = 0;
-			instanceData[i + (j++)] = 0;
-		}
-		setInstanceData(instanceData, instanceData.length / INSTANCE_DATA_COUNT);
+
 		setVertexData(vertexData, elementData);
 		setTexture(vo.gameTexture);
 	}
@@ -86,8 +61,7 @@ public class WorldParticleModel extends AbstractInstancedModel
 		
 		for (int i = 0; i < particleAge.length; i++)
 		{
-			int age = particleAge[i] + elapsedTime;
-		
+			int age = particleAge[i];
 			if (age >= vo.lifespan)
 			{
 				if(!preloaded)
@@ -97,10 +71,10 @@ public class WorldParticleModel extends AbstractInstancedModel
 				}
 				
 				age = (int) (age - vo.lifespan);
-				resetParticle(i, timestamp);
-			}
+				resetParticle(i);
+			}		
 			
-			particleAge[i] = age;
+			particleAge[i] = age + elapsedTime;
 		}
 		
 		if (preloaded)
@@ -109,7 +83,7 @@ public class WorldParticleModel extends AbstractInstancedModel
 		}
 	}
 	
-	private void resetParticle(int particleID, long time)
+	private void resetParticle(int particleID)
 	{
 		int dataIndex = particleID * INSTANCE_DATA_COUNT;
 		instanceData[dataIndex + 0] = PARENT_POS.x;
@@ -128,7 +102,7 @@ public class WorldParticleModel extends AbstractInstancedModel
 		instanceData[dataIndex + 10] = PARENT_ROTATION.m21;
 		instanceData[dataIndex + 11] = PARENT_ROTATION.m22;
 		
-		instanceData[dataIndex + 12] = time;
+		instanceData[dataIndex + 12] = WorldParticleShader.elapsedTime;
 		instanceData[dataIndex + 13] = vo.lifespan;
 		
 		instanceData[dataIndex + 14] = FloatMath.random();
