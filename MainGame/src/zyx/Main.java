@@ -277,7 +277,7 @@ public class Main
 		ground.setX(-100);
 		ground.setZ(-100);
 		ground.load("assets/models/box.zaf");
-		ground.setScale(true, 10, 10, 1);
+		ground.setScale(10, 10, 1);
 		ground.setCollider(new BoxCollider(400, 400, 40));
 
 		boxTv = new GameObject();
@@ -357,7 +357,7 @@ public class Main
 			box.setX(FloatMath.random() * -200f);
 			box.setY(FloatMath.random() * -200f);
 			box.setZ((FloatMath.random() * 200f) - 50);
-			box.setScale(true, scaleX, scaleY, scaleZ);
+			box.setScale(scaleX, scaleY, scaleZ);
 			box.load("assets/models/box.zaf");
 			box.setCollider(new BoxCollider(40 * scaleX, 40 * scaleY, 40 * scaleZ));
 			box.registerClick(new OnTeaPotClicked());

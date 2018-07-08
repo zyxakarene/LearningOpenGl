@@ -6,12 +6,12 @@ import zyx.game.controls.loading.IModelTextureLoaded;
 import zyx.game.controls.loading.TextureLoadWrapper;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
-import zyx.opengl.models.AbstractInstancedModel;
+import zyx.opengl.models.implementations.IParticleModel;
 import zyx.opengl.models.implementations.LoadableParticleVO;
 import zyx.opengl.particles.loading.ZpfLoader;
 import zyx.opengl.textures.AbstractTexture;
 
-public class ParticleModelRequest extends AbstractRequest<AbstractInstancedModel> implements IModelTextureLoaded
+public class ParticleModelRequest extends AbstractRequest<IParticleModel> implements IModelTextureLoaded
 {
 	private static Object[] PARAMS = new Object[1];
 	

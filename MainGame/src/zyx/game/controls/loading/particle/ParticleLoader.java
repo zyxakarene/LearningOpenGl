@@ -3,12 +3,12 @@ package zyx.game.controls.loading.particle;
 import zyx.game.controls.loading.AbstractLoader;
 import zyx.game.controls.loading.AbstractRequest;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
-import zyx.opengl.models.AbstractInstancedModel;
+import zyx.opengl.models.implementations.IParticleModel;
 import zyx.opengl.models.implementations.LoadableParticleVO;
 import zyx.opengl.models.implementations.ParticleModel;
 import zyx.opengl.models.implementations.WorldParticleModel;
 
-public class ParticleLoader extends AbstractLoader<AbstractInstancedModel>
+public class ParticleLoader extends AbstractLoader<IParticleModel>
 {
 	private static ParticleLoader INSTANCE = new ParticleLoader();
 	
@@ -22,7 +22,7 @@ public class ParticleLoader extends AbstractLoader<AbstractInstancedModel>
 	}
 	
 	@Override
-	protected AbstractInstancedModel createNewInstance(Object[] params)
+	protected IParticleModel createNewInstance(Object[] params)
 	{
 		LoadableParticleVO vo = (LoadableParticleVO) params[0];
 		if (vo.worldParticle)
@@ -36,10 +36,10 @@ public class ParticleLoader extends AbstractLoader<AbstractInstancedModel>
 	}
 
 	@Override
-	protected AbstractRequest<AbstractInstancedModel> createRequest(
+	protected AbstractRequest<IParticleModel> createRequest(
 			String path, 
-			IResourceLoaded<AbstractInstancedModel> callback,
-			AbstractLoader<AbstractInstancedModel> loader)
+			IResourceLoaded<IParticleModel> callback,
+			AbstractLoader<IParticleModel> loader)
 	{
 		return new ParticleModelRequest(path, callback, this);
 	}

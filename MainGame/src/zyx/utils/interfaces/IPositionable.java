@@ -6,8 +6,8 @@ public interface IPositionable
 {
 	public void setPosition(boolean local, Vector3f pos);
 	public void setDir(boolean local, Vector3f dir);
-	public void setScale(boolean local, Vector3f scale);
 	
+	public void setScale(Vector3f scale);
 	public void setRotation(Vector3f rot);
 	
 	public Vector3f getPosition(boolean local, Vector3f out);

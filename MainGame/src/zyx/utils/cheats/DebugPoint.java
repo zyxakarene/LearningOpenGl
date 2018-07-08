@@ -27,7 +27,7 @@ public class DebugPoint extends GameObject
 		
 		load("assets/models/debug.zaf");
 		setPosition(true, x, y, z);
-		setScale(true, 0.1f, 0.1f, 0.1f);
+		setScale(0.1f, 0.1f, 0.1f);
 	}
 
 	@Override

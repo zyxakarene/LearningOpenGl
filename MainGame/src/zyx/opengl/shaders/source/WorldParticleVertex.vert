@@ -30,6 +30,8 @@ uniform vec3 speedVariance = vec3(0.2, 0.2, 0.2); //xyz
 uniform vec4 startColor = vec4(0.2, 0.2, 0.2, 1); //RGBA
 uniform vec4 endColor = vec4(0.2, 0.2, 0.2, 1); //RGBA
 
+uniform float parentScale = 0.1;
+
 uniform float startScale = 1;
 uniform float endScale = 0.1;
 uniform float scaleVariance = 0.5;
@@ -89,7 +91,7 @@ void main(void)
 	z += applyGravity(localTime, 1.5, gravity.z);
 
 	//Applying Speed
-	vec4 speedVec = worldRot * vec4(speed, 0);
+	vec4 speedVec = worldRot * vec4(speed * parentScale, 0);
 	vec4 speedVarianceVec = worldRot * vec4(speedVariance, 0);
 	x += applySpeed(speedVec.x, speedVarianceVec.x, speedRandom.x, localTime);
 	y += applySpeed(speedVec.y, speedVarianceVec.y, speedRandom.y, localTime);
@@ -98,6 +100,7 @@ void main(void)
 	float percentDone = localTime / lifespan;
 
 	float scale = mix(startScale, endScale, percentDone) + (scaleVariance * scaleRandom);
+	scale = scale * parentScale;
 
 	mat4 translateMatrix = mat4(1);
 	translateMatrix[3].xyz = vec3(x, y, z);

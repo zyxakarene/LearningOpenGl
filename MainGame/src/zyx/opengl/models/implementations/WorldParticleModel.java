@@ -8,7 +8,7 @@ import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.WorldParticleShader;
 import zyx.utils.FloatMath;
 
-public class WorldParticleModel extends AbstractInstancedModel
+public class WorldParticleModel extends AbstractInstancedModel implements IParticleModel
 {
 	private static final int INSTANCE_DATA_COUNT = 19;
 	private static final Vector3f PARENT_POS = new Vector3f();
@@ -51,10 +51,18 @@ public class WorldParticleModel extends AbstractInstancedModel
 			particleAge[i] = (int) (i * -(vo.lifespan / vo.instanceCount) + vo.lifespan);
 		}
 
+		setInstanceData(instanceData, instanceData.length / INSTANCE_DATA_COUNT);
 		setVertexData(vertexData, elementData);
 		setTexture(vo.gameTexture);
 	}
 
+	@Override
+	public IParticleModel cloneParticle()
+	{
+		return new WorldParticleModel(vo);
+	}
+	
+	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
 		boolean preloaded = false;
@@ -146,6 +154,7 @@ public class WorldParticleModel extends AbstractInstancedModel
 		shader = null;
 	}
 
+	@Override
 	public void setParent(WorldObject parent)
 	{
 		this.parent = parent;
@@ -155,5 +164,11 @@ public class WorldParticleModel extends AbstractInstancedModel
 	{
 		parent.getPosition(false, PARENT_POS);
 		PARENT_ROTATION.load(parent.worldMatrix());
+	}
+
+	@Override
+	public boolean isWorldParticle()
+	{
+		return true;
 	}
 }

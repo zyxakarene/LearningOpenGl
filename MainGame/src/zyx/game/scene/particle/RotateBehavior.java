@@ -14,6 +14,8 @@ class RotateBehavior extends Behavior
 	private float px;
 	private float py;
 	private float pz;
+	
+	private float scale;
 
 	public RotateBehavior()
 	{
@@ -26,6 +28,8 @@ class RotateBehavior extends Behavior
 		px = 0;
 		py = 0;
 		pz = 0;
+		
+		scale = 0.1f;
 	}
 
 	@Override
@@ -37,10 +41,10 @@ class RotateBehavior extends Behavior
 
 		double d = timestamp;
 		
-//		px = (float) Math.sin(d * 0.001) * 2;
-//		py = (float) Math.cos(d * 0.01) * 2;
-//		pz = (float) Math.cos(d * 0.01);
-		
+		px = (float) Math.sin(d * 0.001) * 2;
+		py = (float) Math.cos(d * 0.01) * 2;
+		pz = (float) Math.cos(d * 0.01);
+				
 		gameObject.setRotation(x, y, z);
 		gameObject.setPosition(true, px, py, pz);
 	}

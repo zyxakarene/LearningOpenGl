@@ -1,11 +1,12 @@
 package zyx.opengl.models.implementations;
 
+import zyx.engine.components.world.WorldObject;
 import zyx.opengl.models.AbstractInstancedModel;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.ParticleShader;
 import zyx.utils.FloatMath;
 
-public class ParticleModel extends AbstractInstancedModel
+public class ParticleModel extends AbstractInstancedModel implements IParticleModel
 {
 	private ParticleShader shader;
 	private LoadableParticleVO vo;
@@ -74,5 +75,27 @@ public class ParticleModel extends AbstractInstancedModel
 		super.dispose();
 
 		shader = null;
+	}
+
+	@Override
+	public boolean isWorldParticle()
+	{
+		return false;
+	}
+	
+	@Override
+	public void setParent(WorldObject parent)
+	{
+	}
+
+	@Override
+	public void update(long timestamp, int elapsedTime)
+	{
+	}
+
+	@Override
+	public IParticleModel cloneParticle()
+	{
+		return new ParticleModel(vo);
 	}
 }

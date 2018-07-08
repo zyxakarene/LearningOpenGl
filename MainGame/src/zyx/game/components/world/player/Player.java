@@ -10,7 +10,7 @@ public class Player extends GameObject
 	{
 		load("assets/models/box.zaf");
 
-		setScale(true, 0.25f, 0.25f, 1);
+		setScale(0.25f, 0.25f, 1);
 		setCollider(new BoxCollider(10, 10, 40, false));
 
 		addBehavior(new PlayerMovementBehavior());

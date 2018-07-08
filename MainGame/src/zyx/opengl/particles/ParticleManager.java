@@ -12,7 +12,7 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 {
 	private static ParticleManager instance = new ParticleManager();
 
-	private ArrayList<AbstractParticleSystem> systems;
+	private ArrayList<ParticleSystem> systems;
 	
 	public static ParticleManager getInstance()
 	{
@@ -24,7 +24,7 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 		systems = new ArrayList<>();
 	}
 
-	public void add(AbstractParticleSystem system)
+	public void add(ParticleSystem system)
 	{
 		systems.add(system);
 	}
@@ -35,10 +35,12 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 		GLUtils.setBlendAdditive();
 		GLUtils.disableCulling();
 		GLUtils.disableDepthWrite();
-		for (AbstractParticleSystem system : systems)
+		for (ParticleSystem system : systems)
 		{
 			ParticleShader.elapsedTime = system.particleTime;
 			WorldParticleShader.elapsedTime = system.particleTime;
+			ParticleShader.parentScale = system.parentScale;
+			WorldParticleShader.parentScale = system.parentScale;
 			system.drawParticle();
 		}
 		GLUtils.enableDepthWrite();
@@ -49,7 +51,7 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-		for (AbstractParticleSystem system : systems)
+		for (ParticleSystem system : systems)
 		{
 			system.update(timestamp, elapsedTime);
 		}
@@ -58,7 +60,7 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 	@Override
 	public void dispose()
 	{
-		for (AbstractParticleSystem system : systems)
+		for (ParticleSystem system : systems)
 		{
 			system.dispose();
 		}

@@ -13,10 +13,13 @@ public class ParticleShader extends AbstractShader
 	private static final Matrix4f MATRIX_MODEL = SharedShaderObjects.SHARED_MODEL_TRANSFORM;
 
 	public static float elapsedTime = 0;
+	public static float parentScale = 1;
 	
 	private int projectionMatrixTrans;
 	private int viewMatrixTrans;
 	private int modelMatrixTrans;
+	
+	private int parentScaleUniform;
 	
 	private int timeUniform;
 	private int instancesUniform;
@@ -69,6 +72,7 @@ public class ParticleShader extends AbstractShader
 		modelMatrixTrans = UniformUtils.createUniform(program, "model");
 		
 		timeUniform = UniformUtils.createUniform(program, "time");
+		parentScaleUniform = UniformUtils.createUniform(program, "parentScale");
 		instancesUniform = UniformUtils.createUniform(program, "instances");
 		gravityUniform = UniformUtils.createUniform(program, "gravity");
 		areaXUniform = UniformUtils.createUniform(program, "areaX");
@@ -95,6 +99,7 @@ public class ParticleShader extends AbstractShader
 		UniformUtils.setUniformMatrix(modelMatrixTrans, MATRIX_MODEL);
 		
 		UniformUtils.setUniformFloat(timeUniform, elapsedTime);
+		UniformUtils.setUniformFloat(parentScaleUniform, parentScale);
 	}
 
 	@Override

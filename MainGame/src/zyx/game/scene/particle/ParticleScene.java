@@ -6,7 +6,6 @@ import zyx.game.components.GameObject;
 import zyx.opengl.GLUtils;
 import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.particles.ParticleSystem;
-import zyx.opengl.particles.WorldParticleSystem;
 import zyx.utils.FloatMath;
 
 public class ParticleScene extends Scene
@@ -37,7 +36,7 @@ public class ParticleScene extends Scene
 			if (i == 0)
 			{
 				world.addChild(model);
-				model.setScale(true, 0.1f, 0.1f, 0.1f);
+				model.setScale(0.1f, 0.1f, 0.1f);
 			}
 			else
 			{
@@ -45,15 +44,25 @@ public class ParticleScene extends Scene
 			}
 			
 			objects.add(model);
-			ParticleSystem system = new ParticleSystem();
-			system.load("assets/effects/particle.zpf");
-			system.setX(10);
-			model.addChild(system);
+			ParticleSystem localSystem1 = new ParticleSystem();
+			localSystem1.load("assets/effects/particle.zpf");
+			localSystem1.setX(10);
+			model.addChild(localSystem1);
 			
-			WorldParticleSystem worldSystem = new WorldParticleSystem();
-			worldSystem.load("assets/effects/world.zpf");
-			worldSystem.setX(-10);
-			model.addChild(worldSystem);
+			ParticleSystem localSystem2 = new ParticleSystem();
+			localSystem2.load("assets/effects/particle.zpf");
+			localSystem2.setX(20);
+			model.addChild(localSystem2);
+			
+			ParticleSystem worldSystem1 = new ParticleSystem();
+			worldSystem1.load("assets/effects/world.zpf");
+			worldSystem1.setX(-10);
+			model.addChild(worldSystem1);
+			
+			ParticleSystem worldSystem2 = new ParticleSystem();
+			worldSystem2.load("assets/effects/world.zpf");
+			worldSystem2.setX(-20);
+			model.addChild(worldSystem2);
 			
 			model.addBehavior(new RotateBehavior());
 		}

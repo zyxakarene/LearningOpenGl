@@ -10,14 +10,15 @@ public class WorldParticleShader extends AbstractShader
 
 	private static final Matrix4f MATRIX_PROJECTION = SharedShaderObjects.SHARED_PROJECTION_TRANSFORM;
 	private static final Matrix4f MATRIX_VIEW = SharedShaderObjects.SHARED_VIEW_TRANSFORM;
-	private static final Matrix4f MATRIX_MODEL = SharedShaderObjects.SHARED_MODEL_TRANSFORM;
 
 	public static float elapsedTime = 0;
+	public static float parentScale = 0;
 	
 	private int projectionMatrixTrans;
 	private int viewMatrixTrans;
 	
 	private int timeUniform;
+	private int parentScaleUniform;
 	private int instancesUniform;
 	private int gravityUniform;
 	private int speedUniform;
@@ -57,6 +58,7 @@ public class WorldParticleShader extends AbstractShader
 		viewMatrixTrans = UniformUtils.createUniform(program, "view");
 		
 		timeUniform = UniformUtils.createUniform(program, "time");
+		parentScaleUniform = UniformUtils.createUniform(program, "parentScale");
 		instancesUniform = UniformUtils.createUniform(program, "instances");
 		gravityUniform = UniformUtils.createUniform(program, "gravity");
 		speedUniform = UniformUtils.createUniform(program, "speed");
@@ -77,6 +79,7 @@ public class WorldParticleShader extends AbstractShader
 		UniformUtils.setUniformMatrix(viewMatrixTrans, MATRIX_VIEW);
 		
 		UniformUtils.setUniformFloat(timeUniform, elapsedTime);
+		UniformUtils.setUniformFloat(parentScaleUniform, parentScale);
 	}
 
 	@Override

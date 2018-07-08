@@ -315,9 +315,9 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	}
 
 	@Override
-	public void setScale(boolean local, Vector3f scale)
+	public void setScale(Vector3f scale)
 	{
-		setScale(local, scale.x, scale.y, scale.z);
+		setScale(scale.x, scale.y, scale.z);
 	}
 
 	protected void onDraw()
@@ -375,9 +375,9 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		updateTransforms(true);
 	}
 
-	public void setScale(boolean local, float x, float y, float z)
+	public void setScale(float x, float y, float z)
 	{
-		DecomposedMatrix decomposed = new DecomposedMatrix(local ? localMatrix : worldMatrix());
+		DecomposedMatrix decomposed = new DecomposedMatrix(localMatrix);
 		decomposed.scale.set(x, y, z);
 		decomposed.recompose();
 
