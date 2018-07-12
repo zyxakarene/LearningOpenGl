@@ -1,6 +1,7 @@
 package zyx.game.scene.particle;
 
 import java.util.ArrayList;
+import zyx.engine.resources.ResourceManager;
 import zyx.engine.scene.Scene;
 import zyx.game.components.GameObject;
 import zyx.opengl.GLUtils;
@@ -21,6 +22,8 @@ public class ParticleScene extends Scene
 	@Override
 	protected void onInitialize()
 	{
+		ResourceManager.getInstance().getResource("mesh.box");
+		
 		for (int i = 0; i < 1; i++)
 		{
 			GameObject model = new GameObject();
