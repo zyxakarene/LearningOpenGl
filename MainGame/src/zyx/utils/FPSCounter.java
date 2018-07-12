@@ -2,6 +2,7 @@ package zyx.utils;
 
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
+import zyx.engine.GameEngine;
 
 public class FPSCounter
 {
@@ -23,7 +24,7 @@ public class FPSCounter
     {
         if (getTime() - lastFPS > 1000)
         {
-            Display.setTitle(FPS + fps);
+            Display.setTitle(FPS + fps + " - Drawcalls: " + GameEngine.drawCalls);
             fps = 0;
             lastFPS += 1000;
         }

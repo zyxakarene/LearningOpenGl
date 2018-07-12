@@ -29,6 +29,8 @@ public class Scene
 	
 	final void update(long timestamp, int elapsedTime)
 	{
+		GLUtils.errorCheck();
+		
 		CursorManager.getInstance().setCursor(GameCursor.POINTER);
 		
 		MegaManager.update(timestamp, elapsedTime);
@@ -36,13 +38,15 @@ public class Scene
 		onUpdate(timestamp, elapsedTime);
 		
 		CursorManager.getInstance().update();
+		
 		GLUtils.errorCheck();
 	}
 
 	final void draw()
 	{
-		world.updateMatrix();
 		world.drawScene();
+		
+		onDraw();
 		
 		GLUtils.disableDepthTest();
 		GLUtils.disableCulling();
@@ -54,6 +58,10 @@ public class Scene
 	}
 	
 	protected void onUpdate(long timestamp, int elapsedTime)
+	{
+	}
+	
+	protected void onDraw()
 	{
 	}
 	
@@ -75,6 +83,4 @@ public class Scene
 		world = null;
 		camera = null;
 	}
-
-
 }

@@ -93,7 +93,6 @@ public class Main
 			CursorManager.getInstance().setCursor(GameCursor.POINTER);
 			update();
 			CursorManager.getInstance().update();
-			world.updateMatrix();
 
 			GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, ren.bufferId);
 			GL11.glViewport(0, 0, (int) ren.getWidth(), (int) ren.getHeight());
@@ -103,12 +102,12 @@ public class Main
 				camera.getPosition(true, cameraPosOrig);
 				camera.getRotation(true, cameraRotOrig);
 
-				camera.setPosition(cameraPos);
+				camera.setPosition(true, cameraPos);
 				camera.setRotation(cameraRot);
 				camera.getBehaviorById(BehaviorType.CAMERA_UPDATE_VIEW).update(0, 0);
 				world.drawScene();
 
-				camera.setPosition(cameraPosOrig);
+				camera.setPosition(true, cameraPosOrig);
 				camera.setRotation(cameraRotOrig);
 				camera.getBehaviorById(BehaviorType.CAMERA_UPDATE_VIEW).update(0, 0);
 			}
@@ -264,7 +263,7 @@ public class Main
 		Camera.getInstance().initialize();
 
 		player = new Player();
-		player.setPosition(0, 0, 0);
+		player.setPosition(true, 0, 0, 0);
 
 		camera = new CameraController();
 		camera.addBehavior(new FirstPersonBehavior(player));

@@ -5,7 +5,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureImpl;
 import zyx.utils.geometry.Rectangle;
 
 public class GameTexture extends AbstractTexture
@@ -15,14 +14,14 @@ public class GameTexture extends AbstractTexture
 	
 	private Texture texture;
 
-	public GameTexture(InputStream stream)
+	public GameTexture(InputStream stream, String name)
 	{
-		this(stream, null);
+		this(stream, null, name);
 	}
 
-	public GameTexture(InputStream stream, Rectangle rect)
+	public GameTexture(InputStream stream, Rectangle rect, String name)
 	{
-		super(rect);
+		super(rect, name);
 
 		texture = TextureUtils.createTexture(stream);
 
@@ -48,6 +47,10 @@ public class GameTexture extends AbstractTexture
 		{
 			texture.release();
 			texture = null;
+			
+			//Swallow some error in Slick-Utils
+			//Or maybe I suck at this, who knows!
+			GL11.glGetError();
 		}
 	}
 }

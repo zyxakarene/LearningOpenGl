@@ -33,7 +33,7 @@ public abstract class Collider implements IUpdateable, IDisposeable
 			HELPER_POS.x += velocity.x * delta;
 			HELPER_POS.y += velocity.y * delta;
 			HELPER_POS.z += velocity.z * delta;
-			parent.setPosition(HELPER_POS);
+			parent.setPosition(true, HELPER_POS);
 		}
 		
 		onUpdate(timestamp, elapsedTime);

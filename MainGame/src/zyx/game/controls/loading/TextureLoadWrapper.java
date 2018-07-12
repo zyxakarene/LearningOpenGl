@@ -1,19 +1,19 @@
-package zyx.game.controls.models;
+package zyx.game.controls.loading;
 
+import zyx.game.controls.loading.texture.TextureLoader;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
-import zyx.game.controls.textures.TextureManager;
 import zyx.opengl.textures.AbstractTexture;
 
-class ModelTextureLoader implements IResourceLoaded<AbstractTexture>
+public class TextureLoadWrapper implements IResourceLoaded<AbstractTexture>
 {
 
 	private final IModelTextureLoaded modelRequest;
 
-	ModelTextureLoader(String path, IModelTextureLoaded modelRequest)
+	public TextureLoadWrapper(String path, IModelTextureLoaded modelRequest)
 	{
 		this.modelRequest = modelRequest;
 		
-		TextureManager.getInstance().loadTexture("assets/textures/" + path, this);
+		TextureLoader.getInstance().load("assets/textures/" + path, this);
 	}
 
 	@Override

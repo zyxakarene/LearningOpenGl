@@ -52,6 +52,7 @@ public class SetupOpenGlCommand implements ICommand
 		Display.create(pixelFormat, contextAtrributes);
 
 		GL11.glClearColor(0.60f, 0.80f, 0.92f, 1);
+		GL11.glClearColor(0.1f, 0.1f, 0.1f, 1);
 		
 		if (GameConstants.DEBUG)
 		{

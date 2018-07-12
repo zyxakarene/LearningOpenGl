@@ -1,37 +1,38 @@
-package zyx.game.controls.models;
+package zyx.game.controls.loading;
 
-import java.io.DataInputStream;
 import java.util.ArrayList;
 import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.game.controls.resourceloader.requests.ResourceRequest;
 import zyx.game.controls.resourceloader.requests.ResourceRequestDataInput;
-import zyx.opengl.models.implementations.LoadableValueObject;
-import zyx.opengl.models.implementations.WorldModel;
+import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
+import zyx.opengl.models.implementations.ILoadableVO;
 import zyx.opengl.models.loading.ZafLoader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.interfaces.IDisposeable;
 
-class ModelRequest implements IResourceLoaded<DataInputStream>, IDisposeable, IModelTextureLoaded
+class Request<T extends IDisposeable> implements IResourceLoaded<ResourceDataInputStream>, IDisposeable, IModelTextureLoaded
 {
 
+	private AbstractLoader<T> loader;
 	private String path;
-	private ArrayList<IResourceLoaded<WorldModel>> callbacks;
+	private ArrayList<IResourceLoaded<T>> callbacks;
 	
-	private LoadableValueObject loadedVo;
-	private ModelTextureLoader textureLoader;
+	private ILoadableVO loadedVo;
+	private TextureLoadWrapper textureLoader;
 
-	ModelRequest(String path, IResourceLoaded<WorldModel> callback)
+	Request(String path, IResourceLoaded<T>callback, AbstractLoader<T> factory)
 	{
 		this.path = path;
 		this.callbacks = new ArrayList<>();
-
+		this.loader = factory;
+		
 		callbacks.add(callback);
 
 		loadModel();
 	}
 
-	void addCallback(IResourceLoaded<WorldModel> callback)
+	void addCallback(IResourceLoaded<T> callback)
 	{
 		callbacks.add(callback);
 	}
@@ -43,24 +44,24 @@ class ModelRequest implements IResourceLoaded<DataInputStream>, IDisposeable, IM
 	}
 
 	@Override
-	public void resourceLoaded(DataInputStream data)
+	public void resourceLoaded(ResourceDataInputStream data)
 	{
 		loadedVo = ZafLoader.loadFromZaf(data);
-		textureLoader = new ModelTextureLoader(loadedVo.getTexture(), this);
+		textureLoader = new TextureLoadWrapper(loadedVo.getTexture(), this);
 	}
 	
 	@Override
 	public void onModelTextureLoaded(AbstractTexture texture)
 	{
 		loadedVo.setGameTexture(texture);
-		WorldModel model = new WorldModel(loadedVo);
+		T model = loader.createNewInstance(new Object[]{loadedVo});
 
-		for (IResourceLoaded<WorldModel> callback : callbacks)
+		for (IResourceLoaded<T> callback : callbacks)
 		{
 			callback.resourceLoaded(model);
 		}
 
-		ModelManager.getInstance().modelLoaded(path, model);
+		loader.loadComplete(path, model);
 	}
 
 	@Override

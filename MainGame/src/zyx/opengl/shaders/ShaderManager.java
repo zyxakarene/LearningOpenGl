@@ -1,9 +1,7 @@
 package zyx.opengl.shaders;
 
 import java.util.HashMap;
-import zyx.opengl.shaders.implementations.WorldShader;
-import zyx.opengl.shaders.implementations.Shader;
-import zyx.opengl.shaders.implementations.ScreenShader;
+import zyx.opengl.shaders.implementations.*;
 import zyx.utils.interfaces.IUpdateable;
 
 public class ShaderManager implements IUpdateable
@@ -27,12 +25,31 @@ public class ShaderManager implements IUpdateable
 	{
 		shaderMap.put(Shader.WORLD, new WorldShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.SCREEN, new ScreenShader(AbstractShader.LOCK));
+		shaderMap.put(Shader.PARTICLE, new ParticleShader(AbstractShader.LOCK));
+		shaderMap.put(Shader.WORLD_PARTICLE, new WorldParticleShader(AbstractShader.LOCK));
 		
+		AbstractShader shader;
 		int length = shaders.length;
 		for (int i = 0; i < length; i++)
 		{
-			shaderMap.get(shaders[i]).load();
+			shader = shaderMap.get(shaders[i]);
+			shader.load();
+			
+			shaderArray[i] = shader;
 		}
+	}
+	
+	public String getNameFromProgram(int program)
+	{
+		for (AbstractShader shader : shaderArray)
+		{
+			if (shader.program == program)
+			{
+				return shader.getName();
+			}
+		}
+		
+		return "N/A";
 	}
 	
 	public void bind(Shader shader)

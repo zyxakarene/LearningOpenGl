@@ -1,6 +1,5 @@
 package zyx.game.controls.resourceloader.requests;
 
-import java.io.DataInputStream;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 
 public class ResourceRequestDataInput extends ResourceRequest
@@ -8,7 +7,7 @@ public class ResourceRequestDataInput extends ResourceRequest
 
 	private ResourceDataInputStream data;
 
-	public ResourceRequestDataInput(String path, IResourceLoaded<DataInputStream> callback)
+	public ResourceRequestDataInput(String path, IResourceLoaded<ResourceDataInputStream> callback)
 	{
 		super(path, callback);
 	}

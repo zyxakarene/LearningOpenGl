@@ -95,7 +95,10 @@ class ResourceExchange
 			while (!COMPLETED_LOADS.isEmpty())
 			{
 				request = COMPLETED_LOADS.removeFirst();
-				request.complete(request.getData());
+				if (request.requestCompleted)
+				{
+					request.complete(request.getData());
+				}
 
 				request.dispose();
 			}

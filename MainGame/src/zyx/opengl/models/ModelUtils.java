@@ -2,10 +2,10 @@ package zyx.opengl.models;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.*;
+import zyx.engine.GameEngine;
+import zyx.opengl.shaders.ShaderManager;
+import zyx.utils.cheats.Print;
 
 class ModelUtils
 {
@@ -39,6 +39,17 @@ class ModelUtils
 	{
 		FloatBuffer buffer = BufferWrapper.toBuffer(data);
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
+	}
+
+	/**
+	 * Uploads the data to the currently bound VBO
+	 *
+	 * @param data The vertex data to upload
+	 */
+	static void fillVBO_Dynamic(float[] data)
+	{
+		FloatBuffer buffer = BufferWrapper.toBuffer(data);
+		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_DYNAMIC_DRAW);
 	}
 
 	/**
@@ -92,20 +103,67 @@ class ModelUtils
 	{
 		GL30.glBindVertexArray(vao);
 		GL11.glDrawElements(GL11.GL_TRIANGLES, elementCount, GL11.GL_UNSIGNED_INT, 0);
+		
+		GameEngine.drawCalls++;
 	}
 
-	static void addAttribute(int shaderProgram, String attributeName, int components, int stride, int offset)
+	/**
+	 * Draws what the vao parameter contains with the amount of elements given
+	 *
+	 * @param vao The VAO to draw
+	 * @param elementCount How many elements the VAO contains
+	 * @param instanceCount How many instances to draw
+	 */
+	static void drawInstancedElements(int vao, int elementCount, int instanceCount)
+	{
+		GL30.glBindVertexArray(vao);
+		GL31.glDrawElementsInstanced(GL11.GL_TRIANGLES, elementCount, GL11.GL_UNSIGNED_INT, 0, instanceCount);
+		
+		GameEngine.drawCalls++;
+	}
+
+	static int addAttribute(int shaderProgram, String attributeName, int components, int stride, int offset)
 	{
 		int positionAttrib = GL20.glGetAttribLocation(shaderProgram, attributeName);
 		
-		GL20.glEnableVertexAttribArray(positionAttrib);
-		GL20.glVertexAttribPointer(positionAttrib, components, GL11.GL_FLOAT, false, Float.BYTES * stride, Float.BYTES * offset);
+		if (positionAttrib >= 0)
+		{
+			GL20.glEnableVertexAttribArray(positionAttrib);
+			GL20.glVertexAttribPointer(positionAttrib, components, GL11.GL_FLOAT, false, Float.BYTES * stride, Float.BYTES * offset);
+		}
+		else
+		{
+			String msg = "[Warning] Vertex attribute \"%s\" was not found in %s - (It might be unused)";
+			String shader = ShaderManager.INSTANCE.getNameFromProgram(shaderProgram);
+			Print.out(String.format(msg, attributeName, shader));
+		}
+		
+		return positionAttrib;
 	}
 
-	static void disposeModel(int vao, int vbo, int ebo)
+	static void addInstanceAttribute(int shaderProgram, String attributeName, int components, int stride, int offset)
 	{
-		GL15.glDeleteBuffers(vbo);
-		GL15.glDeleteBuffers(ebo);
-		GL30.glDeleteVertexArrays(vao);
+		int positionAttrib = addAttribute(shaderProgram, attributeName, components, stride, offset);
+		if (positionAttrib >= 0)
+		{
+			GL33.glVertexAttribDivisor(positionAttrib, 1);
+		}
+	}
+
+//	static void disposeModel(int vao, int vbo, int ebo)
+//	{
+//		GL15.glDeleteBuffers(vbo);
+//		GL15.glDeleteBuffers(ebo);
+//		GL30.glDeleteVertexArrays(vao);
+//	}
+
+	static void disposeBuffer(int buffer)
+	{
+		GL15.glDeleteBuffers(buffer);
+	}
+
+	static void disposeVertexArray(int vao)
+	{
+		GL15.glDeleteBuffers(vao);
 	}
 }

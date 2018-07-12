@@ -3,14 +3,15 @@ package zyx.opengl.shaders.implementations;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import zyx.opengl.shaders.AbstractShader;
+import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.GameConstants;
 
 public class ScreenShader extends AbstractShader
 {
 
-	public static final Matrix4f MATRIX_MODEL = new Matrix4f();
-	public static final Matrix4f MATRIX_VIEW = new Matrix4f();
-	public static final Matrix4f MATRIX_PROJECTION = new Matrix4f();
+	private static final Matrix4f MATRIX_PROJECTION = SharedShaderObjects.SHARED_ORTHOGRAPHIC_TRANSFORM;
+	private static final Matrix4f MATRIX_VIEW = SharedShaderObjects.SHARED_VIEW_TRANSFORM;
+	private static final Matrix4f MATRIX_MODEL = SharedShaderObjects.SHARED_MODEL_TRANSFORM;
 
 	private int modelMatrixTrans;
 	private int viewMatrixTrans;
@@ -33,6 +34,7 @@ public class ScreenShader extends AbstractShader
 		
 	}
 
+	@Override
 	public void upload()
 	{
 		MATRIX_MODEL.m22 = 1f;
@@ -54,4 +56,9 @@ public class ScreenShader extends AbstractShader
 		return "ScreenFragment.frag";
 	}
 
+	@Override
+	public String getName()
+	{
+		return "ScreenShader";
+	}
 }

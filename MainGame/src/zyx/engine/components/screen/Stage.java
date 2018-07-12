@@ -1,6 +1,6 @@
 package zyx.engine.components.screen;
 
-import zyx.opengl.shaders.implementations.ScreenShader;
+import zyx.opengl.shaders.SharedShaderObjects;
 
 public final class Stage extends DisplayObjectContainer
 {
@@ -22,7 +22,7 @@ public final class Stage extends DisplayObjectContainer
 	@Override
 	public void transform()
 	{
-		ScreenShader.MATRIX_MODEL.setIdentity();
+		SharedShaderObjects.SHARED_MODEL_TRANSFORM.setIdentity();
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.controls.SharedPools;
 import zyx.opengl.shaders.ShaderManager;
+import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.ScreenShader;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.utils.FloatMath;
@@ -15,7 +16,7 @@ import zyx.utils.interfaces.IPositionable2D;
 public abstract class DisplayObject implements IPositionable2D, IDisposeable
 {
 
-	protected final Matrix4f MATRIX_MODEL = ScreenShader.MATRIX_MODEL;
+	protected final Matrix4f MATRIX_MODEL = SharedShaderObjects.SHARED_MODEL_TRANSFORM;
 	
 	public Vector2f position;
 	public float rotation;

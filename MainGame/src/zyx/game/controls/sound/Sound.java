@@ -4,7 +4,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.game.components.GameObject;
-import zyx.opengl.shaders.implementations.WorldShader;
+import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IUpdateable;
 
@@ -69,7 +69,7 @@ public class Sound implements IDisposeable, IUpdateable
 		SHARED_VECTOR_4F.z = SHARED_VECTOR_3F.z;
 		SHARED_VECTOR_4F.w = 1;
 
-		Matrix4f.transform(WorldShader.MATRIX_VIEW, SHARED_VECTOR_4F, SHARED_VECTOR_4F);
+		Matrix4f.transform(SharedShaderObjects.SHARED_VIEW_TRANSFORM, SHARED_VECTOR_4F, SHARED_VECTOR_4F);
 		float time = audio.getPosition();
 		
 		if (!loop && time <= 0 && time < prevPosition)

@@ -1,6 +1,7 @@
 package zyx.engine.scene;
 
 import zyx.game.scene.SceneType;
+import zyx.opengl.GLUtils;
 import zyx.utils.interfaces.IUpdateable;
 
 public class SceneManager implements IUpdateable
@@ -36,6 +37,7 @@ public class SceneManager implements IUpdateable
 
 			currentScene = requestedScene.createScene();
 			currentScene.initialize();
+			GLUtils.errorCheck();
 			
 			requestedScene = null;
 		}

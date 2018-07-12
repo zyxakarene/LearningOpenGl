@@ -42,7 +42,11 @@ public abstract class AbstractShader implements IUpdateable
 
 		postLoading();
 	}
-
+	
+	public abstract String getName();
+	
+	public abstract void upload();
+	
 	protected abstract void postLoading();
 
 	protected abstract String getVertexName();

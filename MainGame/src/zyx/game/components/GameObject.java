@@ -11,7 +11,7 @@ import zyx.engine.utils.worldpicker.ClickedInfo;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorBundle;
 import zyx.game.behavior.BehaviorType;
-import zyx.game.controls.models.ModelManager;
+import zyx.game.controls.loading.worldmodel.WorldModelLoader;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.opengl.models.SharedWorldModelTransformation;
 import zyx.opengl.models.implementations.WorldModel;
@@ -20,7 +20,8 @@ import zyx.opengl.models.implementations.bones.attachments.Attachment;
 import zyx.opengl.models.implementations.bones.attachments.AttachmentRequest;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.physics.PhysBox;
-import zyx.opengl.shaders.implementations.WorldShader;
+import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.cheats.DebugPhysics;
 import zyx.utils.cheats.Print;
@@ -49,9 +50,10 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	private PhysBox physbox;
 	
 	private CustomCallback<ClickedInfo> onObjectClicked;
-
+	
 	public GameObject()
 	{
+		super(Shader.WORLD);
 		behaviors = new BehaviorBundle(this);
 
 		animationController = new AnimationController();
@@ -63,7 +65,7 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	public void load(String path)
 	{
 		this.path = path;
-		ModelManager.getInstance().loadModel(path, this);
+		WorldModelLoader.getInstance().load(path, this);
 	}
 
 	@Override
@@ -131,20 +133,6 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 		shader.bind();
 		shader.upload();
 	}
-
-	@Override
-	protected void updateWorldMatrix()
-	{
-		super.updateWorldMatrix();
-		
-		if (loaded)
-		{
-			for (GameObject attachedObject : attachedObjects)
-			{
-				attachedObject.updateWorldMatrix();
-			}
-		}
-	}
 	
 	@Override
 	protected void onDraw()
@@ -176,7 +164,7 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 
 	private void drawAsAttachment(Attachment attachment)
 	{
-		WorldShader.MATRIX_MODEL.load(attachment.parent.worldMatrix);
+		SharedShaderObjects.SHARED_MODEL_TRANSFORM.load(attachment.parent.worldMatrix());
 		shader.upload();
 		
 		if (loaded)
@@ -258,10 +246,8 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	}
 
 	@Override
-	public void dispose()
+	protected void onDispose()
 	{
-		super.dispose();
-
 		DebugPhysics.getInstance().unregisterPhysbox(this);
 		
 		for (GameObject attachedObject : attachedObjects)
@@ -312,7 +298,7 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	@Override
 	public Matrix4f getMatrix()
 	{
-		return worldMatrix;
+		return worldMatrix();
 	}
 
 	@Override

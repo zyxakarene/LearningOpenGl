@@ -40,8 +40,8 @@ public class CameraController extends GameObject
 	}
 
 	@Override
-	public void setPosition(Vector3f pos)
+	public void setPosition(boolean local, Vector3f pos)
 	{
-		Camera.getInstance().setPosition(pos);
+		Camera.getInstance().setPosition(local, pos);
 	}
 }

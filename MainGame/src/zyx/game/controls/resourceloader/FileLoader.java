@@ -64,5 +64,6 @@ class FileLoader
 		GameConstants.LOGGER.log(Level.SEVERE, msg);
 
 		request.setData(EMPTY_DATA);
+		request.setFailed();
 	}
 }

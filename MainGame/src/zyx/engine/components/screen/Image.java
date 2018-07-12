@@ -1,9 +1,9 @@
 package zyx.engine.components.screen;
 
 import zyx.engine.utils.callbacks.CustomCallback;
+import zyx.game.controls.loading.texture.TextureLoader;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.opengl.models.implementations.ScreenModel;
-import zyx.game.controls.textures.TextureManager;
 import zyx.opengl.textures.AbstractTexture;
 
 public class Image extends DisplayObject implements IResourceLoaded<AbstractTexture>
@@ -29,7 +29,7 @@ public class Image extends DisplayObject implements IResourceLoaded<AbstractText
 	public void load(String path)
 	{
 		this.path = path;
-		TextureManager.getInstance().loadTexture(path, this);
+		TextureLoader.getInstance().load(path, this);
 	}
 
 	@Override

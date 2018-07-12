@@ -3,6 +3,7 @@ package zyx.utils.math;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 public class MatrixUtils
 {
@@ -38,6 +39,34 @@ public class MatrixUtils
 		out.m33 = 1f;
 	}
 
+	/*
+		[RT.x] [UP.x] [BK.x] [POS.x]
+		[RT.y] [UP.y] [BK.y] [POS.y]
+		[RT.z] [UP.z] [BK.z] [POS.Z]
+		[    ] [    ] [    ] [US   ]
+	*/
+	
+	public static void getRightFrom(Matrix4f matrix, Vector3f out)
+	{
+		out.x = matrix.m00;
+		out.y = matrix.m01;
+		out.z = matrix.m02;
+	}
+	
+	public static void getUpFrom(Matrix4f matrix, Vector3f out)
+	{
+		out.x = matrix.m10;
+		out.y = matrix.m11;
+		out.z = matrix.m12;
+	}
+
+	public static void getDirFrom(Matrix4f matrix, Vector3f out)
+	{
+		out.x = matrix.m20;
+		out.y = matrix.m21;
+		out.z = matrix.m22;
+	}
+
 	public static void getPositionFrom(Matrix4f matrix, Vector3f out)
 	{
 		out.x = matrix.m30;
@@ -55,4 +84,30 @@ public class MatrixUtils
 		out.y = y.length();
 		out.z = z.length();
 	}
+	
+	public static DecomposedMatrix decompose(Matrix4f mat)
+	{
+		return new DecomposedMatrix(mat);
+//		Matrix4f copy = new Matrix4f(mat);
+//		DecomposedMatrix result = new DecomposedMatrix();
+//		
+//		
+//		getPositionFrom(mat, result.position);
+//		getScaleFrom(mat, result.scale);
+//		
+//		copy.translate(result.pos.negate(null));
+//		copy.scale(new Vector3f(1/result.scale.x, 1/result.scale.y, 1/result.scale.z));
+//		
+//		result.rot.setFromMatrix(copy);
+//		result.rot.negate();
+//		
+//		return result;
+	}
+//	
+//	public static class DecomposeResult
+//	{
+//		public Vector3f pos = new Vector3f();
+//		public Quaternion rot = new Quaternion();
+//		public Vector3f scale = new Vector3f();
+//	}
 }

@@ -1,6 +1,7 @@
 package zyx.engine.components.world;
 
-import zyx.opengl.shaders.implementations.WorldShader;
+import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.opengl.shaders.implementations.Shader;
 
 public final class World3D extends WorldObject
 {
@@ -11,6 +12,7 @@ public final class World3D extends WorldObject
 
 	private World3D()
 	{
+		super(Shader.WORLD);
 		physics = new Physics();
 	}
 
@@ -18,12 +20,6 @@ public final class World3D extends WorldObject
 	{
 		shader.bind();
 		draw();
-	}
-	
-	@Override
-	public void dispose()
-	{
-		throw new IllegalArgumentException(INVALID_METHOD_CALL);
 	}
 
 	@Override
@@ -34,7 +30,7 @@ public final class World3D extends WorldObject
 	@Override
 	protected void onTransform()
 	{
-		WorldShader.MATRIX_MODEL.setIdentity();
+		SharedShaderObjects.SHARED_MODEL_TRANSFORM.setIdentity();
 	}
 
 	@Override
@@ -47,7 +43,7 @@ public final class World3D extends WorldObject
 	private static final String INVALID_METHOD_CALL = "This method is invalid";
 
 	@Override
-	public void setPosition(float x, float y, float z)
+	public void setPosition(boolean local, float x, float y, float z)
 	{
 		throw new IllegalArgumentException(INVALID_METHOD_CALL);
 	}
@@ -94,9 +90,4 @@ public final class World3D extends WorldObject
 		throw new IllegalArgumentException(INVALID_METHOD_CALL);
 	}
 	//</editor-fold>
-
-	public final void updateMatrix()
-	{
-		updateWorldMatrix();
-	}
 }

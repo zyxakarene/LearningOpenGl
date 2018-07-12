@@ -16,8 +16,8 @@ public class ColorTexture extends AbstractTexture
 
 	public ColorTexture(int color)
 	{
-		GL11.glGetError();
-
+		super("ColorTexture_0x" + Integer.toString(color, 16));
+		
 		texture = new SolidColorTexture(color);
 		setSizes(texture.getImageWidth(), texture.getImageHeight());
 	}

@@ -1,85 +1,83 @@
-package zyx.game.controls.models;
+package zyx.game.controls.loading;
 
 import java.util.*;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
-import zyx.opengl.models.implementations.WorldModel;
 import zyx.utils.interfaces.IDisposeable;
 
-public class ModelManager implements IDisposeable
+public abstract class AbstractLoader<T extends IDisposeable> implements IDisposeable
 {
 
-	private static final ModelManager INSTANCE = new ModelManager();
+	private HashMap<String, CacheEntry<T>> cache;
+	private HashMap<String, AbstractRequest<T>> currentRequests;
 
-	private HashMap<String, ModelCacheEntry> cache;
-	private HashMap<String, ModelRequest> currentRequests;
-
-	private ModelManager()
+	protected AbstractLoader()
 	{
 		cache = new HashMap<>();
 		currentRequests = new HashMap<>();
 	}
 
-	public static ModelManager getInstance()
-	{
-		return INSTANCE;
-	}
-
-	public void loadModel(String path, IResourceLoaded<WorldModel> callback)
+	public void load(String path, IResourceLoaded<T> callback)
 	{
 		if (cache.containsKey(path))
 		{
-			ModelCacheEntry entry = cache.get(path);
+			CacheEntry<T> entry = cache.get(path);
 			entry.count += 1;
-			
+
 			callback.resourceLoaded(entry.model);
 		}
 		else if (currentRequests.containsKey(path))
 		{
-			ModelRequest request = currentRequests.get(path);
+			AbstractRequest<T> request = currentRequests.get(path);
 			request.addCallback(callback);
 		}
 		else
 		{
-			ModelRequest request = new ModelRequest(path, callback);
+			AbstractRequest<T> request = createRequest(path, callback, this);
 			currentRequests.put(path, request);
+
+			request.beginLoad();
 		}
 	}
 
-	void modelLoaded(String path, WorldModel model)
+	void loadComplete(String path, T model)
 	{
-		ModelCacheEntry cacheEntry = new ModelCacheEntry(model);
+		CacheEntry<T> cacheEntry = new CacheEntry(model);
 		cache.put(path, cacheEntry);
-		
-		ModelRequest request = currentRequests.remove(path);
+
+		AbstractRequest<T> request = currentRequests.remove(path);
 		request.dispose();
 	}
-	
+
+	protected abstract T createNewInstance(Object[] params);
+
+	protected abstract AbstractRequest<T> createRequest(String path, IResourceLoaded<T> callback, AbstractLoader<T> loader);
+
 	@Override
 	public void dispose()
-	{		
+	{
 		String key;
 		Iterator<String> keys;
-		ModelRequest requestEntry;
-		ModelCacheEntry cacheEntry;
-				
+		AbstractRequest<T> requestEntry;
+		CacheEntry<T> cacheEntry;
+
 		keys = currentRequests.keySet().iterator();
 		while (keys.hasNext())
 		{
 			key = keys.next();
 			requestEntry = currentRequests.get(key);
-			
+
 			requestEntry.dispose();
 		}
-		
+
 		keys = cache.keySet().iterator();
 		while (keys.hasNext())
 		{
 			key = keys.next();
 			cacheEntry = cache.get(key);
-			
+
 			cacheEntry.dispose();
 		}
-		
+
 		currentRequests.clear();
 		cache.clear();
 	}
