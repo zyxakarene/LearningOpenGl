@@ -40,4 +40,10 @@ public class SoundResource extends Resource
 		onContentLoaded(audio);
 	}
 
+	@Override
+	void onDispose()
+	{
+		audio = null;
+	}
+
 }

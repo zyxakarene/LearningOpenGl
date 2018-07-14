@@ -60,7 +60,7 @@ class FileLoader
 
 	private void handleIOException(IOException ex)
 	{
-		String msg = String.format("Error while loading file %s. Error: \"%s\"", request.path, ex.getMessage());
+		String msg = String.format("[FileLoader] Error while loading file %s. Error: \"%s\"", request.path, ex.getMessage());
 		GameConstants.LOGGER.log(Level.SEVERE, msg);
 
 		request.setData(EMPTY_DATA);

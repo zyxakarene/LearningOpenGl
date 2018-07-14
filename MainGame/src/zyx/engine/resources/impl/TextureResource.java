@@ -30,6 +30,10 @@ public class TextureResource extends Resource
 	@Override
 	void onDispose()
 	{
-		texture.dispose();
+		if(texture != null)
+		{
+			texture.dispose();
+			texture = null;
+		}
 	}
 }

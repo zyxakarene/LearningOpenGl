@@ -25,7 +25,7 @@ public class DebugPoint extends GameObject
 		this.hasLife = lifespan > 0;
 		this.alive = true;
 		
-		load("assets/models/debug.zaf");
+		load("mesh.debug");
 		setPosition(true, x, y, z);
 		setScale(0.1f, 0.1f, 0.1f);
 	}

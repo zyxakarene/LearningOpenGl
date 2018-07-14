@@ -33,6 +33,10 @@ class ResourceMapper
 		{
 			return new TextureResource(path);
 		}
+		else if (resourceClass == ParticleResource.class)
+		{
+			return new ParticleResource(path);
+		}
 		
 		return new GenericResource(path);
 	}

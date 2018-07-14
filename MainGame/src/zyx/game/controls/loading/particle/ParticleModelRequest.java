@@ -26,7 +26,7 @@ public class ParticleModelRequest extends AbstractRequest<IParticleModel> implem
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		loadedVo = ZpfLoader.loadFromZaf(data);
+		loadedVo = ZpfLoader.loadFromZpf(data);
 		textureLoader = new TextureLoadWrapper(loadedVo.getTexture(), this);
 	}
 	

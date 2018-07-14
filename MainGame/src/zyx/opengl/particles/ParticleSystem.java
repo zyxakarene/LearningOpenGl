@@ -2,14 +2,16 @@ package zyx.opengl.particles;
 
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.WorldObject;
-import zyx.game.controls.loading.particle.ParticleLoader;
-import zyx.game.controls.resourceloader.requests.IResourceLoaded;
+import zyx.engine.resources.IResourceReady;
+import zyx.engine.resources.ResourceManager;
+import zyx.engine.resources.impl.ParticleResource;
+import zyx.engine.resources.impl.Resource;
 import zyx.opengl.models.implementations.IParticleModel;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.utils.FloatMath;
 
-public class ParticleSystem extends WorldObject implements IResourceLoaded<IParticleModel>
+public class ParticleSystem extends WorldObject implements IResourceReady<ParticleResource>
 {
 	private static final Vector3f HELPER_VECTOR = new Vector3f();
 
@@ -18,8 +20,9 @@ public class ParticleSystem extends WorldObject implements IResourceLoaded<IPart
 
 	protected boolean loaded;
 	protected String path;
-
 	protected IParticleModel model;
+	
+	private Resource particleResource;
 
 	public ParticleSystem()
 	{
@@ -27,7 +30,6 @@ public class ParticleSystem extends WorldObject implements IResourceLoaded<IPart
 
 		loaded = false;
 		ParticleManager.getInstance().add(this);
-		setZ(-3);
 	}
 
 	final void update(long timestamp, int elapsedTime)
@@ -43,15 +45,19 @@ public class ParticleSystem extends WorldObject implements IResourceLoaded<IPart
 		}
 	}
 
-	public void load(String path)
+	public void load(String resource)
 	{
-		this.path = path;
-		ParticleLoader.getInstance().load(path, this);
+		this.path = resource;
+		
+		particleResource = ResourceManager.getInstance().getResource(resource);
+		particleResource.registerAndLoad(this);
 	}
 
 	@Override
-	public void resourceLoaded(IParticleModel data)
+	public void onResourceReady(ParticleResource resource)
 	{
+		IParticleModel data = resource.getContent();
+		
 		if (data.isWorldParticle())
 		{
 			model = data.cloneParticle();
@@ -85,6 +91,12 @@ public class ParticleSystem extends WorldObject implements IResourceLoaded<IPart
 	protected void onDispose()
 	{
 		model = null;
+		
+		if (particleResource != null)
+		{
+			particleResource.unregister(this);
+			particleResource = null;
+		}
 	}
 
 	@Override

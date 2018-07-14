@@ -3,25 +3,27 @@ package zyx.engine.resources.impl;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
-import zyx.opengl.models.implementations.LoadableWorldModelVO;
-import zyx.opengl.models.implementations.WorldModel;
-import zyx.opengl.models.loading.ZafLoader;
+import zyx.opengl.models.implementations.IParticleModel;
+import zyx.opengl.models.implementations.LoadableParticleVO;
+import zyx.opengl.models.implementations.ParticleModel;
+import zyx.opengl.models.implementations.WorldParticleModel;
+import zyx.opengl.particles.loading.ZpfLoader;
 import zyx.opengl.textures.AbstractTexture;
 
-public class MeshResource extends Resource implements IResourceReady
+public class ParticleResource extends Resource implements IResourceReady
 {
 
-	private LoadableWorldModelVO loadedVo;
-	private WorldModel model;
+	private LoadableParticleVO loadedVo;
+	private IParticleModel model;
 	private Resource textureResource;
 
-	public MeshResource(String path)
+	public ParticleResource(String path)
 	{
 		super(path);
 	}
 
 	@Override
-	public WorldModel getContent()
+	public IParticleModel getContent()
 	{
 		return model;
 	}
@@ -45,7 +47,7 @@ public class MeshResource extends Resource implements IResourceReady
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		loadedVo = ZafLoader.loadFromZaf(data);
+		loadedVo = ZpfLoader.loadFromZpf(data);
 
 		textureResource = ResourceManager.getInstance().getResource(loadedVo.getTexture());
 		textureResource.registerAndLoad(this);
@@ -57,7 +59,14 @@ public class MeshResource extends Resource implements IResourceReady
 		AbstractTexture texture = (AbstractTexture) resource.content;
 		loadedVo.setGameTexture(texture);
 		
-		model = new WorldModel(loadedVo);
+		if (loadedVo.worldParticle)
+		{
+			model = new WorldParticleModel(loadedVo);
+		}
+		else
+		{
+			model = new ParticleModel(loadedVo);
+		}
 		
 		onContentLoaded(model);
 	}

@@ -21,7 +21,7 @@ public class GameScene extends Scene
 		for (int i = 0; i < 1; i++)
 		{
 			GameObject knight = new GameObject();
-			knight.load("assets/models/worm/worm.zaf");
+			knight.load("mesh.worm.worm");
 			knight.setAnimation("wiggle");
 			knight.setX(FloatMath.random() * 300);
 			knight.setY(FloatMath.random() * 300);

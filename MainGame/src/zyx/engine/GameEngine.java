@@ -5,6 +5,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import zyx.engine.curser.CursorManager;
+import zyx.engine.resources.ResourceManager;
 import zyx.engine.scene.SceneManager;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.sound.SoundManager;
@@ -73,6 +74,8 @@ public class GameEngine
 			sceneManager.update(timestamp, elapsed);
 			FPSCounter.updateFPS();
 
+			ResourceManager.getInstance().printData();
+			
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_ESCAPE))
 			{
 				SoundManager.getInstance().dispose();

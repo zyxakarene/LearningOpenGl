@@ -21,7 +21,7 @@ public class TestScene extends Scene
 		for (int i = 0; i < 10; i++)
 		{
 			GameObject model = new GameObject();
-			model.load("assets/models/box.zaf");
+			model.load("mesh.box");
 			model.setX(FloatMath.random() * 300);
 			model.setY(FloatMath.random() * 300);
 

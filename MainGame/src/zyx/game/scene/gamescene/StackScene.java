@@ -22,10 +22,10 @@ public class StackScene extends Scene
 		platform = new GameObject();
 		platform.setY(100);
 		platform.setZ(-50);
-		platform.load("assets/models/platform.zaf");
+		platform.load("mesh.platform");
 		
 		child = new GameObject();
-		child.load("assets/models/box.zaf");
+		child.load("mesh.box");
 		
 		world.addChild(platform);
 		platform.addChild(child);

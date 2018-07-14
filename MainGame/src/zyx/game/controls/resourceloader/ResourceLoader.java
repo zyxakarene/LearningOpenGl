@@ -47,6 +47,11 @@ public class ResourceLoader implements IDisposeable
 		ResourceExchange.addLoad(request);
 	}
 
+	public void cancelRequest(ResourceRequest request)
+	{
+		ResourceExchange.removeLoad(request);
+	}
+
 	@Override
 	public void dispose()
 	{

@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import zyx.engine.resources.IResourceReady;
 import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
-import zyx.game.controls.resourceloader.requests.ResourceRequest;
 import zyx.game.controls.resourceloader.requests.ResourceRequestDataInput;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
-import zyx.utils.cheats.Print;
 
 public abstract class Resource implements IResourceLoaded<ResourceDataInputStream>
 {
@@ -19,6 +17,8 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 	private ArrayList<IResourceReady> pointers;
 	private boolean loading;
 	private boolean loaded;
+
+	private ResourceRequestDataInput resourceRequest;
 
 	public Resource(String path)
 	{
@@ -39,14 +39,12 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 		{
 			callback.onResourceReady(this);
 		}
-		else
+		else if (!loading)
 		{
-			if (!loading)
-			{
-				loading = true;
-				ResourceRequest request = new ResourceRequestDataInput(path, this);
-				ResourceLoader.getInstance().addRequest(request);
-			}
+			loading = true;
+
+			resourceRequest = new ResourceRequestDataInput(path, this);
+			ResourceLoader.getInstance().addRequest(resourceRequest);
 		}
 	}
 
@@ -56,7 +54,7 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 		if (removed && pointers.isEmpty())
 		{
 			dispose();
-			
+
 			loaded = false;
 			loading = false;
 		}
@@ -80,18 +78,25 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 
 	private void dispose()
 	{
+		if (loading && !loaded && resourceRequest != null)
+		{
+			ResourceLoader.getInstance().cancelRequest(resourceRequest);
+			resourceRequest.dispose();
+			resourceRequest = null;
+		}
+
 		onDispose();
-		
+
 		if (pointers.isEmpty() == false)
 		{
 			throw new RuntimeException("Resource still has active pointers when disposed!");
 		}
-		
+
 		content = null;
 	}
-	
+
 	void onDispose()
 	{
-		
+
 	}
 }

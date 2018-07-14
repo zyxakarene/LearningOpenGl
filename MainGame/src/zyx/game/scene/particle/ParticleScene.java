@@ -1,18 +1,14 @@
 package zyx.game.scene.particle;
 
 import java.util.ArrayList;
-import zyx.engine.resources.IResourceReady;
-import zyx.engine.resources.ResourceManager;
-import zyx.engine.resources.impl.Resource;
 import zyx.engine.scene.Scene;
 import zyx.game.components.GameObject;
 import zyx.opengl.GLUtils;
-import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.particles.ParticleSystem;
 import zyx.utils.FloatMath;
 
-public class ParticleScene extends Scene implements IResourceReady
+public class ParticleScene extends Scene
 {
 
 	private ArrayList<GameObject> objects;
@@ -25,13 +21,10 @@ public class ParticleScene extends Scene implements IResourceReady
 	@Override
 	protected void onInitialize()
 	{
-		Resource resource = ResourceManager.getInstance().getResource("mesh.box_resource");
-		resource.registerAndLoad(this);
-		
 		for (int i = 0; i < 1; i++)
 		{
 			GameObject model = new GameObject();
-			model.load("assets/models/box.zaf");
+			model.load("mesh.box");
 			if (i > 0)
 			{
 				model.setX(FloatMath.random() * 50);
@@ -52,22 +45,22 @@ public class ParticleScene extends Scene implements IResourceReady
 			
 			objects.add(model);
 			ParticleSystem localSystem1 = new ParticleSystem();
-			localSystem1.load("assets/effects/particle.zpf");
+			localSystem1.load("particles.particle");
 			localSystem1.setX(10);
 			model.addChild(localSystem1);
 			
 			ParticleSystem localSystem2 = new ParticleSystem();
-			localSystem2.load("assets/effects/particle.zpf");
+			localSystem2.load("particles.particle");
 			localSystem2.setX(20);
 			model.addChild(localSystem2);
 			
 			ParticleSystem worldSystem1 = new ParticleSystem();
-			worldSystem1.load("assets/effects/world.zpf");
+			worldSystem1.load("particles.world");
 			worldSystem1.setX(-10);
 			model.addChild(worldSystem1);
 			
 			ParticleSystem worldSystem2 = new ParticleSystem();
-			worldSystem2.load("assets/effects/world.zpf");
+			worldSystem2.load("particles.world");
 			worldSystem2.setX(-20);
 			model.addChild(worldSystem2);
 			
@@ -107,16 +100,4 @@ public class ParticleScene extends Scene implements IResourceReady
 		objects.clear();
 		objects = null;
 	}
-
-	@Override
-	public void onResourceReady(Resource resource)
-	{
-		WorldModel content = (WorldModel) resource.getContent();
-		
-		GameObject obj = new GameObject();
-		obj.resourceLoaded(content);
-		
-		world.addChild(obj);
-	}
-
 }

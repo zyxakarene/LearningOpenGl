@@ -5,14 +5,16 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.resources.IResourceReady;
+import zyx.engine.resources.ResourceManager;
+import zyx.engine.resources.impl.MeshResource;
+import zyx.engine.resources.impl.Resource;
 import zyx.engine.utils.callbacks.CustomCallback;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.engine.utils.worldpicker.ClickedInfo;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorBundle;
 import zyx.game.behavior.BehaviorType;
-import zyx.game.controls.loading.worldmodel.WorldModelLoader;
-import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.opengl.models.SharedWorldModelTransformation;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
@@ -28,13 +30,14 @@ import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IPhysbox;
 import zyx.utils.interfaces.IUpdateable;
 
-public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IResourceLoaded<WorldModel>
+public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IResourceReady<MeshResource>
 {
+
 	private static Vector3f HELPER_POS = new Vector3f();
 	private static Vector3f HELPER_ROT = new Vector3f();
 	private static Vector3f HELPER_SCALE = new Vector3f();
-	
-	private String path;
+
+	private String resource;
 
 	private boolean loaded;
 	private WorldModel model;
@@ -46,11 +49,12 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 
 	private BehaviorBundle behaviors;
 	private AbstractTexture overwriteTexture;
-	
+
 	private PhysBox physbox;
-	
+
 	private CustomCallback<ClickedInfo> onObjectClicked;
-	
+	private Resource modelResource;
+
 	public GameObject()
 	{
 		super(Shader.WORLD);
@@ -62,15 +66,19 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 		loaded = false;
 	}
 
-	public void load(String path)
+	public void load(String resource)
 	{
-		this.path = path;
-		WorldModelLoader.getInstance().load(path, this);
+		this.resource = resource;
+
+		modelResource = ResourceManager.getInstance().getResource(resource);
+		modelResource.registerAndLoad(this);
 	}
 
 	@Override
-	public void resourceLoaded(WorldModel data)
+	public void onResourceReady(MeshResource resource)
 	{
+		WorldModel data = resource.getContent();
+		
 		physbox = data.getPhysbox();
 		model = data;
 		loaded = true;
@@ -84,20 +92,20 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 				addAttachment(request.child, request.attachmentPoint);
 			}
 		}
-		
+
 		DebugPhysics.getInstance().registerPhysbox(this);
 	}
 
 	public void registerClick(ICallback<ClickedInfo> callback)
 	{
-		if(onObjectClicked == null)
+		if (onObjectClicked == null)
 		{
 			onObjectClicked = new CustomCallback<>(false);
 		}
-		
+
 		onObjectClicked.addCallback(callback);
 	}
-	
+
 	public void click(ClickedInfo clickInfo)
 	{
 		if (onObjectClicked != null && onObjectClicked.hasEntries())
@@ -105,12 +113,12 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 			onObjectClicked.dispatch(clickInfo);
 		}
 	}
-	
+
 	public String getAnimation()
 	{
 		return animationController.getAnimation();
 	}
-	
+
 	public void setAnimation(String name)
 	{
 		animationController.setAnimation(name);
@@ -122,18 +130,18 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 		getPosition(true, HELPER_POS);
 		getRotation(true, HELPER_ROT);
 		getScale(true, HELPER_SCALE);
-		
+
 		if (loaded)
 		{
 			model.setAnimation(animationController);
 		}
-		
+
 		SharedWorldModelTransformation.transform(HELPER_POS, HELPER_ROT, HELPER_SCALE);
-		
+
 		shader.bind();
 		shader.upload();
 	}
-	
+
 	@Override
 	protected void onDraw()
 	{
@@ -144,12 +152,11 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 				model.setOverwriteTexture(overwriteTexture);
 			}
 
-			
 			model.setAnimation(animationController);
 			model.draw();
-			
+
 			DebugPhysics.getInstance().draw(this);
-			
+
 			model.setOverwriteTexture(null);
 
 			Attachment attachment;
@@ -166,11 +173,11 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	{
 		SharedShaderObjects.SHARED_MODEL_TRANSFORM.load(attachment.parent.worldMatrix());
 		shader.upload();
-		
+
 		if (loaded)
 		{
 			onTransform();
-			
+
 			model.setAnimation(animationController);
 			model.drawAsAttachment(attachment);
 
@@ -225,12 +232,12 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 		{
 			attachment.update(timestamp, elapsedTime);
 		}
-		
+
 		animationController.update(timestamp, elapsedTime);
-		
+
 		onUpdate(timestamp, elapsedTime);
 	}
-	
+
 	protected void onUpdate(long timestamp, int elapsedTime)
 	{
 	}
@@ -249,6 +256,12 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	protected void onDispose()
 	{
 		DebugPhysics.getInstance().unregisterPhysbox(this);
+
+		if (modelResource != null)
+		{
+			modelResource.unregister(this);
+			modelResource = null;
+		}
 		
 		for (GameObject attachedObject : attachedObjects)
 		{
@@ -276,7 +289,7 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	@Override
 	public String toString()
 	{
-		return String.format("%s{%s, playing animation: %s}", getClass().getSimpleName(), path, animationController);
+		return String.format("%s{%s, playing animation: %s}", getClass().getSimpleName(), resource, animationController);
 	}
 
 	public void setTexture(AbstractTexture tex)

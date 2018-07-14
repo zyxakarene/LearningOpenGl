@@ -1,18 +1,16 @@
 package zyx.engine.resources.rules;
 
-import zyx.engine.resources.impl.MeshResource;
-import zyx.engine.resources.impl.Resource;
-import zyx.engine.resources.impl.SoundResource;
-import zyx.engine.resources.impl.TextureResource;
+import zyx.engine.resources.impl.*;
 
 public enum ResourceRule
 {
-	MESHES_0_FOLDERS("mesh.#", "assets/models/#.zaf", 2, MeshResource.class),
-	MESHES_1_FOLDERS("mesh.#.#", "assets/model/#/#.zaf", 3, MeshResource.class),
+	PARTICLE_BASE		("particles.#",			"assets/effects/#.zpf", 2, ParticleResource.class),
 	
-	TEXTURES_BASE("texture.#", "assets/textures/#.png", 2, TextureResource.class),
-	TEXTURES_MODELS("texture.model.#", "assets/textures/models/#.png", 3, TextureResource.class),
-	SOUNDS("sound.#", "assets/sounds/#.wav", 2, SoundResource.class);
+	MESHES_0_FOLDERS	("mesh.#",				"assets/models/#.zaf", 2, MeshResource.class),
+	MESHES_1_FOLDERS	("mesh.#.#",			"assets/models/#/#.zaf", 3, MeshResource.class),
+	
+	TEXTURES_BASE		("texture.#",			"assets/textures/#.png", 2, TextureResource.class),
+	SOUNDS				("sound.#",				"assets/sounds/#.wav", 2, SoundResource.class);
 	
 	public final String template;
 	public final String path;

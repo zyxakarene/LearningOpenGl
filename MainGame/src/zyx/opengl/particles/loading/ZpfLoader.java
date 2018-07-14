@@ -26,7 +26,7 @@ public class ZpfLoader
 	private static final String KEY_ROTATION_VARIANCE = "rotationVariance";
 	private static final String KEY_TEXTURE = "texture";
 	
-	public static LoadableParticleVO loadFromZaf(ResourceDataInputStream in)
+	public static LoadableParticleVO loadFromZpf(ResourceDataInputStream in)
 	{
 		ParticleVoBuilder builder = ParticleVoBuilder.createBuilder();
 		

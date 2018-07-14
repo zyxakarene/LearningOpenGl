@@ -126,8 +126,8 @@ public class Main
 				platform.addChild(mainKnight);
 				boxTv.setTexture(ren);
 
-				mainKnight.load("assets/models/knight/knight.zaf");
-				attachedKnight1.load("assets/models/knight/knight.zaf");
+				mainKnight.load("mesh.knight.knight");
+				attachedKnight1.load("mesh.knight.knight");
 				mainKnight.setAnimation("attack");
 				attachedKnight1.setAnimation("attack");
 
@@ -271,19 +271,19 @@ public class Main
 		platform = new GameObject();
 		platform.setY(100);
 		platform.setZ(-50);
-		platform.load("assets/models/platform.zaf");
+		platform.load("mesh.platform");
 
 		ground = new GameObject();
 		ground.setX(-100);
 		ground.setZ(-100);
-		ground.load("assets/models/box.zaf");
+		ground.load("mesh.box");
 		ground.setScale(10, 10, 1);
 		ground.setCollider(new BoxCollider(400, 400, 40));
 
 		boxTv = new GameObject();
 		boxTv.setX(-100);
 		boxTv.setZ(-60);
-		boxTv.load("assets/models/tv.zaf");
+		boxTv.load("mesh.tv");
 		boxTv.setCollider(new BoxCollider(40, 40, 40, true));
 
 		DisplayObjectContainer container = new DisplayObjectContainer();
@@ -329,12 +329,12 @@ public class Main
 
 		teapot = new GameObject();
 		teapot.setZ(-50);
-		teapot.load("assets/models/teapot.zaf");
+		teapot.load("mesh.teapot");
 		teapot.registerClick(new OnTeaPotClicked());
 		world.addChild(teapot);
 		
 		worm = new GameObject();
-		worm.load("assets/models/worm/worm.zaf");
+		worm.load("mesh.worm.worm");
 		worm.setAnimation("wiggle");
 		worm.setZ(-50);
 		worm.setX(-50);
@@ -358,7 +358,7 @@ public class Main
 			box.setY(FloatMath.random() * -200f);
 			box.setZ((FloatMath.random() * 200f) - 50);
 			box.setScale(scaleX, scaleY, scaleZ);
-			box.load("assets/models/box.zaf");
+			box.load("mesh.box");
 			box.setCollider(new BoxCollider(40 * scaleX, 40 * scaleY, 40 * scaleZ));
 			box.registerClick(new OnTeaPotClicked());
 			picker.addObject(box);

@@ -2,6 +2,7 @@ package zyx.engine.resources.rules;
 
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+import zyx.utils.cheats.Print;
 
 public class ResourceRulePart
 {
@@ -35,6 +36,11 @@ public class ResourceRulePart
 		String[] resourceSplit = DIVIDER_PATTERN.split(resource);
 		int index = getRuleIndex(resourceSplit);
 
+		if (index < 0)
+		{
+			Print.out("No resource rule given for", resource);
+		}
+		
 		String[] segments = ruleSegments.get(index);
 
 		String path = rulePaths.get(index);
