@@ -8,18 +8,22 @@ public class ResourceRuleParser
 	private static final char DIVIDER = '.';
 
 	private HashMap<Integer, ResourceRulePart> converterMap;
+	private ParsedResource response;
 
 	public ResourceRuleParser()
 	{
+		response = new ParsedResource();
 		converterMap = new HashMap<>();
 	}
 
-	public String parseResource(String resource)
+	public ParsedResource parseResource(String resource)
 	{
 		int segmentCount = getSegmentCount(resource);
 		ResourceRulePart converter = converterMap.get(segmentCount);
 		
-		return converter.parsePath(resource);
+		converter.parsePath(resource, response);
+		
+		return response;
 	}
 	
 	public void addRules()
@@ -34,7 +38,6 @@ public class ResourceRuleParser
 
 	private void addRule(ResourceRule rule)
 	{
-		
 		ResourceRulePart part = converterMap.get(rule.segments);
 		if(part == null)
 		{

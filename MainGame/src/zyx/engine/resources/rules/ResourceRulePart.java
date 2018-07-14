@@ -12,41 +12,29 @@ public class ResourceRulePart
 
 	private ArrayList<String[]> ruleSegments;
 	private ArrayList<String> rulePaths;
+	private ArrayList<ResourceRule> rules;
 
 	public ResourceRulePart()
 	{
 		ruleSegments = new ArrayList<>();
 		rulePaths = new ArrayList<>();
+		rules = new ArrayList<>();
 	}
-	
+
 	public void addRule(ResourceRule rule)
 	{
 		String[] parts = DIVIDER_PATTERN.split(rule.template);
 
 		ruleSegments.add(parts);
 		rulePaths.add(rule.path);
+		rules.add(rule);
 	}
 
-	private int getRuleIndex(String[] resourceSplit)
-	{
-		int len = ruleSegments.size();
-		for (int i = 0; i < len; i++)
-		{
-			String[] segments = ruleSegments.get(i);
-			if (validateParts(resourceSplit, segments))
-			{
-				return i;
-			}
-		}
-
-		return -1;
-	}
-
-	public String parsePath(String resource)
+	public void parsePath(String resource, ParsedResource out)
 	{
 		String[] resourceSplit = DIVIDER_PATTERN.split(resource);
 		int index = getRuleIndex(resourceSplit);
-		
+
 		String[] segments = ruleSegments.get(index);
 
 		String path = rulePaths.get(index);
@@ -66,7 +54,23 @@ public class ResourceRulePart
 			}
 		}
 
-		return path;
+		out.path = path;
+		out.rule = rules.get(index);
+	}
+
+	private int getRuleIndex(String[] resourceSplit)
+	{
+		int len = ruleSegments.size();
+		for (int i = 0; i < len; i++)
+		{
+			String[] segments = ruleSegments.get(i);
+			if (validateParts(resourceSplit, segments))
+			{
+				return i;
+			}
+		}
+
+		return -1;
 	}
 
 	private boolean validateParts(String[] resourceSplit, String[] segments)

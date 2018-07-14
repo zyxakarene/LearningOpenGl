@@ -1,15 +1,18 @@
 package zyx.game.scene.particle;
 
 import java.util.ArrayList;
+import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
+import zyx.engine.resources.impl.Resource;
 import zyx.engine.scene.Scene;
 import zyx.game.components.GameObject;
 import zyx.opengl.GLUtils;
+import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.particles.ParticleSystem;
 import zyx.utils.FloatMath;
 
-public class ParticleScene extends Scene
+public class ParticleScene extends Scene implements IResourceReady
 {
 
 	private ArrayList<GameObject> objects;
@@ -22,7 +25,8 @@ public class ParticleScene extends Scene
 	@Override
 	protected void onInitialize()
 	{
-		ResourceManager.getInstance().getResource("mesh.box");
+		Resource resource = ResourceManager.getInstance().getResource("mesh.box_resource");
+		resource.registerAndLoad(this);
 		
 		for (int i = 0; i < 1; i++)
 		{
@@ -102,6 +106,17 @@ public class ParticleScene extends Scene
 		
 		objects.clear();
 		objects = null;
+	}
+
+	@Override
+	public void onResourceReady(Resource resource)
+	{
+		WorldModel content = (WorldModel) resource.getContent();
+		
+		GameObject obj = new GameObject();
+		obj.resourceLoaded(content);
+		
+		world.addChild(obj);
 	}
 
 }

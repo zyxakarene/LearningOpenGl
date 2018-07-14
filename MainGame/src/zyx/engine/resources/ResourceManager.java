@@ -1,17 +1,19 @@
 package zyx.engine.resources;
 
-import zyx.engine.resources.rules.ResourceRuleParser;
+import zyx.engine.resources.impl.Resource;
+import java.util.HashMap;
 
 public class ResourceManager
 {
 	private static ResourceManager instance = new ResourceManager();
 	
-	private ResourceRuleParser resourceParser;
+	private ResourceMapper mapper;
+	private HashMap<String, Resource> resources;
 	
 	private ResourceManager()
 	{
-		resourceParser = new ResourceRuleParser();
-		resourceParser.addRules();
+		resources = new HashMap<>();
+		mapper = new ResourceMapper();
 	}
 
 	public static ResourceManager getInstance()
@@ -19,10 +21,16 @@ public class ResourceManager
 		return instance;
 	}
 
-	public void getResource(String resource)
+	public Resource getResource(String resource)
 	{
-		String path = resourceParser.parseResource(resource);
-		System.out.println(path);
+		Resource res = resources.get(resource);
+		if (res == null)
+		{
+			res = mapper.getFromResource(resource);
+			resources.put(resource, res);
+		}
+		
+		return res;
 	}
 	
 }
