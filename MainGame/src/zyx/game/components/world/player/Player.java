@@ -1,9 +1,9 @@
 package zyx.game.components.world.player;
 
 import zyx.engine.components.world.physics.BoxCollider;
-import zyx.game.components.GameObject;
+import zyx.game.components.MeshObject;
 
-public class Player extends GameObject
+public class Player extends MeshObject
 {
 
 	public Player()
@@ -14,16 +14,7 @@ public class Player extends GameObject
 		setCollider(new BoxCollider(10, 10, 40, false));
 
 		addBehavior(new PlayerMovementBehavior());
-		
+
 		drawable = false;
 	}
-
-	@Override
-	protected void onDraw()
-	{
-		super.onDraw(); //To change body of generated methods, choose Tools | Templates.
-	}
-	
-	
-
 }

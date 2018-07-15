@@ -122,6 +122,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	{
 		if (child.parent == this)
 		{
+			child.parent = null;
 			children.remove(child);
 		}
 		else
@@ -158,6 +159,11 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		}
 	}
 
+	public boolean hasParent()
+	{
+		return parent != null;
+	}
+	
 	protected void updateTransforms(boolean alsoChildren)
 	{
 		if (alsoChildren)
@@ -187,7 +193,6 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		{
 			child.draw();
 		}
-
 	}
 
 	@Override

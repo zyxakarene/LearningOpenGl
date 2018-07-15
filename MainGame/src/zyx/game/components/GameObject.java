@@ -1,127 +1,27 @@
 package zyx.game.components;
 
 import zyx.engine.components.world.WorldObject;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.engine.resources.IResourceReady;
-import zyx.engine.resources.ResourceManager;
-import zyx.engine.resources.impl.MeshResource;
-import zyx.engine.resources.impl.Resource;
-import zyx.engine.utils.callbacks.CustomCallback;
-import zyx.engine.utils.callbacks.ICallback;
-import zyx.engine.utils.worldpicker.ClickedInfo;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorBundle;
 import zyx.game.behavior.BehaviorType;
 import zyx.opengl.models.SharedWorldModelTransformation;
-import zyx.opengl.models.implementations.WorldModel;
-import zyx.opengl.models.implementations.bones.animation.AnimationController;
-import zyx.opengl.models.implementations.bones.attachments.Attachment;
-import zyx.opengl.models.implementations.bones.attachments.AttachmentRequest;
-import zyx.opengl.models.implementations.bones.skeleton.Joint;
-import zyx.opengl.models.implementations.physics.PhysBox;
-import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.Shader;
-import zyx.opengl.textures.AbstractTexture;
-import zyx.utils.cheats.DebugPhysics;
-import zyx.utils.cheats.Print;
-import zyx.utils.interfaces.IPhysbox;
 import zyx.utils.interfaces.IUpdateable;
 
-public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IResourceReady<MeshResource>
+public class GameObject extends WorldObject implements IUpdateable
 {
 
 	private static Vector3f HELPER_POS = new Vector3f();
 	private static Vector3f HELPER_ROT = new Vector3f();
 	private static Vector3f HELPER_SCALE = new Vector3f();
 
-	private String resource;
-
-	private boolean loaded;
-	private WorldModel model;
-	private AnimationController animationController;
-
-	private ArrayList<GameObject> attachedObjects;
-	private ArrayList<Attachment> attachments;
-	private LinkedList<AttachmentRequest> attachmentRequests;
-
 	private BehaviorBundle behaviors;
-	private AbstractTexture overwriteTexture;
-
-	private PhysBox physbox;
-
-	private CustomCallback<ClickedInfo> onObjectClicked;
-	private Resource modelResource;
 
 	public GameObject()
 	{
 		super(Shader.WORLD);
 		behaviors = new BehaviorBundle(this);
-
-		animationController = new AnimationController();
-		attachedObjects = new ArrayList<>();
-		attachments = new ArrayList<>();
-		loaded = false;
-	}
-
-	public void load(String resource)
-	{
-		this.resource = resource;
-
-		modelResource = ResourceManager.getInstance().getResource(resource);
-		modelResource.registerAndLoad(this);
-	}
-
-	@Override
-	public void onResourceReady(MeshResource resource)
-	{
-		WorldModel data = resource.getContent();
-		
-		physbox = data.getPhysbox();
-		model = data;
-		loaded = true;
-
-		if (attachmentRequests != null)
-		{
-			AttachmentRequest request;
-			while (attachmentRequests.isEmpty() == false)
-			{
-				request = attachmentRequests.remove();
-				addAttachment(request.child, request.attachmentPoint);
-			}
-		}
-
-		DebugPhysics.getInstance().registerPhysbox(this);
-	}
-
-	public void registerClick(ICallback<ClickedInfo> callback)
-	{
-		if (onObjectClicked == null)
-		{
-			onObjectClicked = new CustomCallback<>(false);
-		}
-
-		onObjectClicked.addCallback(callback);
-	}
-
-	public void click(ClickedInfo clickInfo)
-	{
-		if (onObjectClicked != null && onObjectClicked.hasEntries())
-		{
-			onObjectClicked.dispatch(clickInfo);
-		}
-	}
-
-	public String getAnimation()
-	{
-		return animationController.getAnimation();
-	}
-
-	public void setAnimation(String name)
-	{
-		animationController.setAnimation(name);
 	}
 
 	@Override
@@ -131,11 +31,6 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 		getRotation(true, HELPER_ROT);
 		getScale(true, HELPER_SCALE);
 
-		if (loaded)
-		{
-			model.setAnimation(animationController);
-		}
-
 		SharedWorldModelTransformation.transform(HELPER_POS, HELPER_ROT, HELPER_SCALE);
 
 		shader.bind();
@@ -143,98 +38,9 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	}
 
 	@Override
-	protected void onDraw()
-	{
-		if (loaded)
-		{
-			if (overwriteTexture != null)
-			{
-				model.setOverwriteTexture(overwriteTexture);
-			}
-
-			model.setAnimation(animationController);
-			model.draw();
-
-			DebugPhysics.getInstance().draw(this);
-
-			model.setOverwriteTexture(null);
-
-			Attachment attachment;
-			int len = attachments.size();
-			for (int i = 0; i < len; i++)
-			{
-				attachment = attachments.get(i);
-				attachment.child.drawAsAttachment(attachment);
-			}
-		}
-	}
-
-	private void drawAsAttachment(Attachment attachment)
-	{
-		SharedShaderObjects.SHARED_MODEL_TRANSFORM.load(attachment.parent.worldMatrix());
-		shader.upload();
-
-		if (loaded)
-		{
-			onTransform();
-
-			model.setAnimation(animationController);
-			model.drawAsAttachment(attachment);
-
-			Attachment subAttachment;
-			int len = attachments.size();
-			for (int i = 0; i < len; i++)
-			{
-				subAttachment = attachments.get(i);
-				subAttachment.child.drawAsAttachment(subAttachment);
-			}
-		}
-	}
-
-	public void addAttachment(GameObject child, String attachmentPoint)
-	{
-		if (loaded)
-		{
-			Joint attachJoint = model.getBoneByName(attachmentPoint);
-			if (attachJoint == null)
-			{
-				Print.out("Warning: No such bone", attachmentPoint, "on", this);
-			}
-			else
-			{
-				Attachment attachment = new Attachment();
-				attachment.child = child;
-				attachment.parent = this;
-				attachment.joint = attachJoint;
-
-				attachments.add(attachment);
-				attachedObjects.add(child);
-			}
-		}
-		else
-		{
-			if (attachmentRequests == null)
-			{
-				attachmentRequests = new LinkedList<>();
-			}
-
-			AttachmentRequest request = new AttachmentRequest(child, attachmentPoint);
-			attachmentRequests.add(request);
-		}
-	}
-
-	@Override
 	public final void update(long timestamp, int elapsedTime)
 	{
 		behaviors.update(timestamp, elapsedTime);
-
-		for (GameObject attachment : attachedObjects)
-		{
-			attachment.update(timestamp, elapsedTime);
-		}
-
-		animationController.update(timestamp, elapsedTime);
-
 		onUpdate(timestamp, elapsedTime);
 	}
 
@@ -255,68 +61,7 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 	@Override
 	protected void onDispose()
 	{
-		DebugPhysics.getInstance().unregisterPhysbox(this);
-
-		if (modelResource != null)
-		{
-			modelResource.unregister(this);
-			modelResource = null;
-		}
-		
-		for (GameObject attachedObject : attachedObjects)
-		{
-			attachedObject.dispose();
-		}
-
-		attachments.clear();
-		attachedObjects.clear();
-
-		if (attachmentRequests != null)
-		{
-			attachmentRequests.clear();
-		}
-
 		behaviors.dispose();
-
-		animationController = null;
-		model = null;
-		attachments = null;
-		attachedObjects = null;
-		attachmentRequests = null;
 		behaviors = null;
-	}
-
-	@Override
-	public String toString()
-	{
-		return String.format("%s{%s, playing animation: %s}", getClass().getSimpleName(), resource, animationController);
-	}
-
-	public void setTexture(AbstractTexture tex)
-	{
-		overwriteTexture = tex;
-	}
-
-	public AbstractTexture getTexture()
-	{
-		return model.getTexture();
-	}
-
-	@Override
-	public PhysBox getPhysbox()
-	{
-		return physbox;
-	}
-
-	@Override
-	public Matrix4f getMatrix()
-	{
-		return worldMatrix();
-	}
-
-	@Override
-	public Matrix4f getBoneMatrix(int boneId)
-	{
-		return model.getBoneById(boneId).getPhysTransform();
 	}
 }

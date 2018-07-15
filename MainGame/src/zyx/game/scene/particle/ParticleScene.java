@@ -2,7 +2,7 @@ package zyx.game.scene.particle;
 
 import java.util.ArrayList;
 import zyx.engine.scene.Scene;
-import zyx.game.components.GameObject;
+import zyx.game.components.MeshObject;
 import zyx.opengl.GLUtils;
 import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.particles.ParticleSystem;
@@ -11,7 +11,7 @@ import zyx.utils.FloatMath;
 public class ParticleScene extends Scene
 {
 
-	private ArrayList<GameObject> objects;
+	private ArrayList<MeshObject> objects;
 
 	public ParticleScene()
 	{
@@ -23,7 +23,7 @@ public class ParticleScene extends Scene
 	{
 		for (int i = 0; i < 1; i++)
 		{
-			GameObject model = new GameObject();
+			MeshObject model = new MeshObject();
 			model.load("mesh.box");
 			if (i > 0)
 			{
@@ -75,7 +75,7 @@ public class ParticleScene extends Scene
 	{
 		ParticleManager.getInstance().update(timestamp, elapsedTime);
 		
-		for (GameObject object : objects)
+		for (MeshObject object : objects)
 		{
 			object.update(timestamp, elapsedTime);
 		}
@@ -92,7 +92,7 @@ public class ParticleScene extends Scene
 	{
 		ParticleManager.getInstance().dispose();
 		
-		for (GameObject object : objects)
+		for (MeshObject object : objects)
 		{
 			object.dispose();
 		}

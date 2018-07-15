@@ -15,6 +15,9 @@ import zyx.utils.interfaces.IPhysbox;
 public class DebugPhysDrawing
 {
 
+	public static final int INDEX_MESH = 0;
+	public static final int INDEX_BOUNDING = 1;
+	
 	private static final HashMap<PhysBox, WorldModel> MESH_MAP = new HashMap<>();
 	private static final HashMap<PhysBox, WorldModel> BOUNDING_BOX_MAP = new HashMap<>();
 	
@@ -28,8 +31,8 @@ public class DebugPhysDrawing
 		}
 
 		WorldModel[] models = new WorldModel[2];
-		models[0] = MESH_MAP.get(box);
-		models[1] = BOUNDING_BOX_MAP.get(box);
+		models[INDEX_MESH] = MESH_MAP.get(box);
+		models[INDEX_BOUNDING] = BOUNDING_BOX_MAP.get(box);
 				
 		return models;
 	}
@@ -39,8 +42,8 @@ public class DebugPhysDrawing
 		PhysObject[] objects = box.getObjects();
 		Box boundingBox = box.getBoundingBox();
 
-		WorldModel mesh = getMeshModel(box.getTriangles().length, objects);
 		WorldModel bounding = getBoundingModel(boundingBox);
+		WorldModel mesh = getMeshModel(box.getTriangles().length, objects);
 		MESH_MAP.put(box, mesh);
 		BOUNDING_BOX_MAP.put(box, bounding);
 	}
@@ -156,16 +159,16 @@ public class DebugPhysDrawing
 
 	private static WorldModel getBoundingModel(Box boundingBox)
 	{
-		int triangleCount = 2 * 6;
+		int triangleCount = 12; //2 top, 2 btm, 2 left, 2 right, 2 front, 2 back
 
-		int vertexCount = triangleCount * 3 * 12;
+		int vertexCount = triangleCount * 3 * 12; //triangles * vertecies * vertexData
 		float[] vertexData = new float[vertexCount];
 
 		int elementCount = triangleCount * 3;
 		int[] elementData = new int[elementCount];
 
 		fillData(boundingBox, vertexData, elementData);
-		Skeleton skeleton = new Skeleton(getMeshJoint("root", 1), getMeshJoint("dummy", 0));
+		Skeleton skeleton = new Skeleton(getMeshJoint("root11", 0), getMeshJoint("dummy22", 0));
 		LoadableWorldModelVO vo = new LoadableWorldModelVO(vertexData, elementData, skeleton, null, "");
 		vo.setGameTexture(new ColorTexture(0x00FF00));
 		WorldModel model = new WorldModel(vo);
@@ -223,10 +226,10 @@ public class DebugPhysDrawing
 		vertexData[index++] = n.z;
 		vertexData[index++] = 0;
 		vertexData[index++] = 0;
+		vertexData[index++] = 0;
+		vertexData[index++] = 0;
 		vertexData[index++] = 1;
-		vertexData[index++] = 1;
-		vertexData[index++] = 1;
-		vertexData[index++] = 1;
+		vertexData[index++] = 0;
 		
 		vertexData[index++] = v2.x;
 		vertexData[index++] = v2.y;
@@ -236,10 +239,10 @@ public class DebugPhysDrawing
 		vertexData[index++] = n.z;
 		vertexData[index++] = 0;
 		vertexData[index++] = 0;
+		vertexData[index++] = 0;
+		vertexData[index++] = 0;
 		vertexData[index++] = 1;
-		vertexData[index++] = 1;
-		vertexData[index++] = 1;
-		vertexData[index++] = 1;
+		vertexData[index++] = 0;
 		
 		vertexData[index++] = v3.x;
 		vertexData[index++] = v3.y;
@@ -249,10 +252,10 @@ public class DebugPhysDrawing
 		vertexData[index++] = n.z;
 		vertexData[index++] = 0;
 		vertexData[index++] = 0;
+		vertexData[index++] = 0;
+		vertexData[index++] = 0;
 		vertexData[index++] = 1;
-		vertexData[index++] = 1;
-		vertexData[index++] = 1;
-		vertexData[index++] = 1;
+		vertexData[index++] = 0;
 		
 		return index;
 	}
