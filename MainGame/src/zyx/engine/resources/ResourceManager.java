@@ -2,8 +2,6 @@ package zyx.engine.resources;
 
 import zyx.engine.resources.impl.Resource;
 import java.util.HashMap;
-import java.util.Map;
-import zyx.utils.cheats.Print;
 
 public class ResourceManager
 {
@@ -34,24 +32,4 @@ public class ResourceManager
 		
 		return res;
 	}
-	
-	public void printData()
-	{
-		Print.out("Loaded resources:");
-		for (Map.Entry<String, Resource> entry : resources.entrySet())
-		{
-			String key = entry.getKey();
-			Resource value = entry.getValue();
-			
-			String resource = value.path;
-			Object content = value.getContent();
-			
-			if (content != null)
-			{
-				Print.out(resource);
-			}
-		}
-		Print.out("");
-	}
-	
 }

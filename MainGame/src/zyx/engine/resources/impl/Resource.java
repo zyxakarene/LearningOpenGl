@@ -30,6 +30,8 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 
 	public void registerAndLoad(IResourceReady callback)
 	{
+		DebugResourceList.addResource(this);
+		
 		if (pointers.contains(callback) == false)
 		{
 			pointers.add(callback);
@@ -93,6 +95,8 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 		}
 
 		content = null;
+		
+		DebugResourceList.removeResource(this);
 	}
 
 	void onDispose()

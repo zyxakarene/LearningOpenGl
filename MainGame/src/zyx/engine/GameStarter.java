@@ -1,6 +1,5 @@
 package zyx.engine;
 
-import zyx.engine.scene.Scene;
 import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.scene.SceneType;
 

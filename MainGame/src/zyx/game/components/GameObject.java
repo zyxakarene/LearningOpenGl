@@ -205,7 +205,7 @@ public class GameObject extends WorldObject implements IUpdateable, IPhysbox, IR
 				Attachment attachment = new Attachment();
 				attachment.child = child;
 				attachment.parent = this;
-				attachment.joint = model.getBoneByName(attachmentPoint);
+				attachment.joint = attachJoint;
 
 				attachments.add(attachment);
 				attachedObjects.add(child);

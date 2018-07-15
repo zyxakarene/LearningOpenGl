@@ -5,7 +5,6 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import zyx.engine.curser.CursorManager;
-import zyx.engine.resources.ResourceManager;
 import zyx.engine.scene.SceneManager;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.sound.SoundManager;
@@ -42,7 +41,7 @@ public class GameEngine
 	}
 
 	public static int drawCalls = 0;
-	
+
 	private void beginGameLoop()
 	{
 		while (!Display.isCloseRequested())
@@ -59,7 +58,7 @@ public class GameEngine
 			{
 				sceneManager.changeScene(SceneType.PARTICLE);
 			}
-			
+
 			Display.update();
 			Display.sync(GameConstants.FPS);
 
@@ -67,15 +66,12 @@ public class GameEngine
 			long timestamp = DeltaTime.getTimestamp();
 			int elapsed = DeltaTime.getElapsedTime();
 
-
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
 			drawCalls = 0;
 			sceneManager.update(timestamp, elapsed);
 			FPSCounter.updateFPS();
 
-			ResourceManager.getInstance().printData();
-			
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_ESCAPE))
 			{
 				SoundManager.getInstance().dispose();
