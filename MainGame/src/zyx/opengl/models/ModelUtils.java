@@ -4,13 +4,11 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import org.lwjgl.opengl.*;
 import zyx.engine.GameEngine;
-import zyx.opengl.GLUtils;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.utils.cheats.Print;
 
 class ModelUtils
 {
-
 	/**
 	 * Generates a new buffer object. For example a VBO or EBO
 	 *
@@ -165,6 +163,6 @@ class ModelUtils
 
 	static void disposeVertexArray(int vao)
 	{
-		GL15.glDeleteBuffers(vao);
+		GL30.glDeleteVertexArrays(vao);
 	}
 }
