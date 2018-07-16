@@ -29,40 +29,42 @@ public class GameScene extends Scene
 	{
 		for (int i = 0; i < 1; i++)
 		{
-			MeshObject knight = new MeshObject(true);
-			knight.load("mesh.worm.worm");
-			((AnimatedMesh) knight.mesh).setAnimation("wiggle");
-			knight.setX(FloatMath.random() * 300);
-			knight.setY(FloatMath.random() * 300);
+			MeshObject worm = new MeshObject(true);
+			worm.load("mesh.worm.worm");
+			((AnimatedMesh) worm.mesh).setAnimation("wiggle");
 
-			world.addChild(knight);
-			objects.add(knight);
+			world.addChild(worm);
+			objects.add(worm);
 
-			addPickedObject(knight, new OnTeaPotClicked());
+			addPickedObject(worm, new OnTeaPotClicked());
 		}
 	}
 
-	private SimpleMesh point;
+	private SimpleMesh box;
+	private SimpleMesh platform;
 
 	@Override
 	protected void onUpdate(long timestamp, int elapsedTime)
 	{
-		if (point != null && !point.hasParent())
+		if (box != null && KeyboardData.data.wasPressed(Keyboard.KEY_T))
 		{
-			point.dispose();
-			point = null;
-		}
-		
-		if (point != null && KeyboardData.data.wasPressed(Keyboard.KEY_T))
-		{
-			world.removeChild(point);
+			box.dispose();
+			box = null;
+			
+			platform.dispose();
+			platform = null;
 		}
 
-		if (point == null && KeyboardData.data.wasPressed(Keyboard.KEY_R))
+		if (box == null && KeyboardData.data.wasPressed(Keyboard.KEY_R))
 		{
-			point = new SimpleMesh();
-			point.load("mesh.box");
-			world.addChild(point);
+			box = new SimpleMesh();
+			box.load("mesh.box");
+			
+			platform = new SimpleMesh();
+			platform.load("mesh.platform");
+			
+			world.addChild(box);
+			world.addChild(platform);
 		}
 
 		for (MeshObject object : objects)
