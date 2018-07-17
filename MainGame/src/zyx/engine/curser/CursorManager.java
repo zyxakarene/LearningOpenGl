@@ -9,7 +9,7 @@ import zyx.utils.exceptions.Msg;
 public class CursorManager
 {
 
-	private static final CursorManager instance = new CursorManager();
+	private static final CursorManager INSTANCE = new CursorManager();
 
 	private HashMap<GameCursor, Cursor> cursorMap;
 	
@@ -23,7 +23,7 @@ public class CursorManager
 
 	public static CursorManager getInstance()
 	{
-		return instance;
+		return INSTANCE;
 	}
 
 	public void setCursor(GameCursor cursor)

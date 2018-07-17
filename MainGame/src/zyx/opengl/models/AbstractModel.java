@@ -104,13 +104,10 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 	@Override
 	public void dispose()
 	{
-		Print.out("Disposing model:", vbo, ebo, vao);
-		
 		ModelUtils.disposeBuffer(vbo);
 		ModelUtils.disposeBuffer(ebo);
 		ModelUtils.disposeVertexArray(vao);
 		
-		//texture.dispose();
 		texture = null;
 	}
 

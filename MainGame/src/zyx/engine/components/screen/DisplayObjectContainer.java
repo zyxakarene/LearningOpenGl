@@ -89,13 +89,13 @@ public class DisplayObjectContainer extends DisplayObject
 
 		return mostDown - mostUp;
 	}
-	
+
 	@Override
 	public void setWidth(float value)
 	{
 		scale.x = value / getWidth();
 	}
-	
+
 	@Override
 	public void setHeight(float value)
 	{
@@ -129,11 +129,13 @@ public class DisplayObjectContainer extends DisplayObject
 			loopHelper = children.get(i);
 			if (loopHelper instanceof InteractableContainer)
 			{
-				hasCollision = ((InteractableContainer) loopHelper).hasMouseCollision(hasCollision) || hasCollision;
+				InteractableContainer container = (InteractableContainer) loopHelper;
+				hasCollision = hasCollision || container.hasMouseCollision(hasCollision);
 			}
 			else if (loopHelper instanceof DisplayObjectContainer)
 			{
-				((DisplayObjectContainer) loopHelper).checkClicks(hasCollision);
+				DisplayObjectContainer container = (InteractableContainer) loopHelper;
+				container.checkClicks(hasCollision);
 			}
 		}
 	}

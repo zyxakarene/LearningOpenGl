@@ -3,7 +3,6 @@ package zyx.engine.scene;
 import zyx.engine.components.screen.Stage;
 import zyx.engine.components.world.World3D;
 import zyx.engine.curser.CursorManager;
-import zyx.engine.curser.GameCursor;
 import zyx.engine.utils.worldpicker.WorldPicker;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.MegaManager;
@@ -53,8 +52,8 @@ public class Scene
 	final void update(long timestamp, int elapsedTime)
 	{
 		GLUtils.errorCheck();
-
-		CursorManager.getInstance().setCursor(GameCursor.POINTER);
+		
+		stage.checkStageMouseInteractions();
 		
 		debugContainer.update(timestamp, elapsedTime);
 		picker.update();

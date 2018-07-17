@@ -1,12 +1,19 @@
 package zyx.game.scene.gamescene;
 
 import java.util.ArrayList;
+import zyx.engine.components.screen.Button;
+import zyx.engine.components.screen.Image;
+import zyx.engine.components.screen.InteractableContainer;
 import zyx.engine.scene.Scene;
+import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.components.MeshObject;
 import zyx.utils.FloatMath;
+import zyx.utils.cheats.Print;
 
-public class TestScene extends Scene
+public class TestScene extends Scene implements ICallback<InteractableContainer>
 {
+	
+	private Button button;
 	
 	private ArrayList<MeshObject> objects;
 
@@ -28,6 +35,11 @@ public class TestScene extends Scene
 			world.addChild(model);
 			objects.add(model);
 		}
+		
+		button = new Button("texture.BtnUp", "texture.BtnHover", "texture.BtnDown");
+		stage.addChild(button);
+		
+		button.onButtonClicked.addCallback(this);
 	}
 
 	@Override
@@ -47,8 +59,17 @@ public class TestScene extends Scene
 			object.dispose();
 		}
 		
+		button.dispose();
+		button = null;
+		
 		objects.clear();
 		objects = null;
+	}
+
+	@Override
+	public void onCallback(InteractableContainer data)
+	{
+		Print.out("Clicked me!");
 	}
 	
 }
