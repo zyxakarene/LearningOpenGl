@@ -25,8 +25,34 @@ public class DisplayObjectContainer extends DisplayObject
 
 	public void addChild(DisplayObject child)
 	{
+		DisplayObjectContainer prevParent = child.getParent();
+		if (prevParent != null)
+		{
+			prevParent.removeChild(child);
+		}
+		
+		child.setParent(this);
+		
 		children.add(child);
 		numChildren++;
+	}
+
+	public boolean removeChild(DisplayObject child)
+	{
+		if(child.getParent() == this)
+		{
+			children.remove(child);
+			numChildren--;
+			
+			child.setParent(null);
+			
+			return true;
+		}
+		else
+		{
+			String msg = String.format("Cannot remove child %s when its parent %s != this %s", child, child.getParent(), this);
+			throw new RuntimeException(msg);
+		}
 	}
 
 	public int numChilren()
