@@ -38,4 +38,10 @@ class FontCharacter
 		out.writeShort(yOffset);
 		out.writeShort(xAdvance);
 	}
+
+	@Override
+	public String toString()
+	{
+		return String.valueOf(id);
+	}
 }

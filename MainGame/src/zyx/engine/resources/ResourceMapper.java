@@ -37,6 +37,10 @@ class ResourceMapper
 		{
 			return new ParticleResource(path);
 		}
+		else if (resourceClass == FontResource.class)
+		{
+			return new FontResource(path);
+		}
 		
 		return new GenericResource(path);
 	}

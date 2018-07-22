@@ -1,19 +1,16 @@
 package zyx.engine.resources.impl;
 
-import zyx.engine.resources.IResourceReady;
-import zyx.engine.resources.ResourceManager;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.loading.ZafLoader;
 import zyx.opengl.textures.AbstractTexture;
 
-public class MeshResource extends Resource implements IResourceReady
+public class MeshResource extends BaseTextureRequiredResource
 {
 
 	private LoadableWorldModelVO loadedVo;
 	private WorldModel model;
-	private Resource textureResource;
 
 	public MeshResource(String path)
 	{
@@ -29,16 +26,12 @@ public class MeshResource extends Resource implements IResourceReady
 	@Override
 	void onDispose()
 	{
+		super.onDispose();
+		
 		if(model != null)
 		{
 			model.dispose();
 			model = null;
-		}
-	
-		if(textureResource != null)
-		{
-			textureResource.unregister(this);
-			textureResource = null;
 		}
 	}
 
@@ -47,14 +40,12 @@ public class MeshResource extends Resource implements IResourceReady
 	{
 		loadedVo = ZafLoader.loadFromZaf(data);
 
-		textureResource = ResourceManager.getInstance().getResource(loadedVo.getTexture());
-		textureResource.registerAndLoad(this);
+		loadTexture(loadedVo.getTexture());
 	}
-	
+
 	@Override
-	public void onResourceReady(Resource resource)
+	protected void onTextureLoaded(AbstractTexture texture)
 	{
-		AbstractTexture texture = (AbstractTexture) resource.content;
 		loadedVo.setGameTexture(texture);
 		
 		model = new WorldModel(loadedVo);

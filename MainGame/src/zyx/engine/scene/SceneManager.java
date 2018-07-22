@@ -38,7 +38,7 @@ public class SceneManager implements IUpdateable
 			currentScene = requestedScene.createScene();
 			currentScene.initialize();
 			GLUtils.errorCheck();
-			
+
 			requestedScene = null;
 		}
 

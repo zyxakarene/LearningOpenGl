@@ -171,7 +171,7 @@ public class DisplayObjectContainer extends DisplayObject
 	{
 		super.dispose();
 
-		for (int i = 0; i < numChildren; i++)
+		for (int i = numChildren - 1; i >= 0; i--)
 		{
 			children.get(i).dispose();
 		}

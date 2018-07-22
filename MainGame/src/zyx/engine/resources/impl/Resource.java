@@ -20,7 +20,7 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 
 	private ResourceRequestDataInput resourceRequest;
 
-	public Resource(String path)
+	Resource(String path)
 	{
 		this.path = path;
 		this.loaded = false;

@@ -7,6 +7,7 @@ import zyx.engine.components.screen.InteractableContainer;
 import zyx.engine.scene.Scene;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.components.MeshObject;
+import zyx.game.components.screen.AddBitmapFontButton;
 import zyx.utils.FloatMath;
 import zyx.utils.cheats.Print;
 
@@ -36,7 +37,7 @@ public class TestScene extends Scene implements ICallback<InteractableContainer>
 			objects.add(model);
 		}
 		
-		button = new Button("texture.BtnUp", "texture.BtnHover", "texture.BtnDown");
+		button = new AddBitmapFontButton("texture.BtnUp", "texture.BtnHover", "texture.BtnDown");
 		stage.addChild(button);
 		
 		button.onButtonClicked.addCallback(this);
@@ -69,7 +70,7 @@ public class TestScene extends Scene implements ICallback<InteractableContainer>
 	@Override
 	public void onCallback(InteractableContainer data)
 	{
-		Print.out("Clicked me!");
+		
 	}
 	
 }

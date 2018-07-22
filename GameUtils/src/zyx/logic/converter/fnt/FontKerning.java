@@ -24,4 +24,10 @@ public class FontKerning
 		out.writeShort(second);
 		out.writeByte(amount);
 	}
+	
+	@Override
+	public String toString()
+	{
+		return first + " + " + second;
+	}
 }

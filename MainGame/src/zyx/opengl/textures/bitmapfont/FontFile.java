@@ -54,4 +54,17 @@ class FontFile
 		
 		return NULL_KERNING;
 	}
+
+	void dispose()
+	{
+		characters.clear();
+		kernings.clear();
+		characterMap.clear();
+		kerningMap.clear();
+		
+		characters = null;
+		kernings = null;
+		characterMap = null;
+		kerningMap = null;
+	}
 }

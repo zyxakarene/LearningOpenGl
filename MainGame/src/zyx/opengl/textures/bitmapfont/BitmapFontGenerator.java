@@ -1,46 +1,51 @@
 package zyx.opengl.textures.bitmapfont;
 
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import zyx.opengl.textures.AbstractTexture;
 
 public class BitmapFontGenerator
 {
 
-	private final FontFile fontFile;
-	private final AbstractTexture mainTexture;
+	private FontFile fontFile;
+	
+	private AbstractTexture mainTexture;
+	private DataInputStream fontData;
 
-	public BitmapFontGenerator(AbstractTexture mainTexture)
+	public BitmapFontGenerator()
 	{
 		this.fontFile = new FontFile();
+	}
+
+	public void setMainTexture(AbstractTexture mainTexture)
+	{
 		this.mainTexture = mainTexture;
 	}
 
-	public void loadFromFnt(File file) throws IOException
+	public void setFontData(DataInputStream fontData)
 	{
-		byte[] buffer;
-		try (RandomAccessFile raf = new RandomAccessFile(file, "r"))
-		{
-			buffer = new byte[(int) raf.length()];
-			raf.read(buffer, 0, buffer.length);
-		}
+		this.fontData = fontData;
+	}
 
-		DataInputStream in = new DataInputStream(new ByteArrayInputStream(buffer));
-		
-		short lineHeight = in.readShort();
-		short characters = in.readShort();
-		short kernings = in.readShort();
+	private void buildBitmapFont() throws IOException
+	{
+		String resource = fontData.readUTF();
+		short lineHeight = fontData.readShort();
+		short characters = fontData.readShort();
+		short kernings = fontData.readShort();
 		
 		FontCharacter character;
 		FontKerning kerning;
 		for (int i = 0; i < characters; i++)
 		{
-			character = new FontCharacter(mainTexture, in);
+			character = new FontCharacter(mainTexture, fontData);
 			fontFile.characters.add(character);
 		}
 		
 		for (int i = 0; i < kernings; i++)
 		{
-			kerning = new FontKerning(in);
+			kerning = new FontKerning(fontData);
 			fontFile.kernings.add(kerning);
 		}
 		
@@ -51,6 +56,27 @@ public class BitmapFontGenerator
 
 	public BitmapFont createBitmapFont()
 	{
+		try
+		{
+			buildBitmapFont();
+		}
+		catch (IOException ex)
+		{
+			Logger.getLogger(BitmapFontGenerator.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		
 		return new BitmapFont(mainTexture, fontFile);
+	}
+
+	public void dispose()
+	{
+		mainTexture = null;
+		fontData = null;
+		
+		if(fontFile != null)
+		{
+			fontFile.dispose();
+			fontFile = null;
+		}
 	}
 }
