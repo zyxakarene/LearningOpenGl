@@ -1,10 +1,9 @@
 package zyx.utils.interfaces;
 
 import org.lwjgl.util.vector.Matrix4f;
-import zyx.engine.utils.worldpicker.ClickedInfo;
 import zyx.opengl.models.implementations.physics.PhysBox;
 
-public interface IPhysbox
+public interface IPhysbox extends IPositionable
 {
 	public PhysBox getPhysbox();
 	public Matrix4f getMatrix();

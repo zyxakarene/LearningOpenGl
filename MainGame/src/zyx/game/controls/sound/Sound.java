@@ -43,8 +43,8 @@ public class Sound implements IDisposeable, IUpdateable
 	@Override
 	public void dispose()
 	{
-		audio.stop();
-
+		audio.dispose();
+		
 		audio = null;
 		emitter = null;
 	}

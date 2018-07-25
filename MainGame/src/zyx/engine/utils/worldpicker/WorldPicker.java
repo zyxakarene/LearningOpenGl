@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.utils.worldpicker.calculating.*;
+import zyx.game.components.GameObject;
 import zyx.opengl.camera.Camera;
 import zyx.utils.FloatMath;
 import zyx.utils.interfaces.IPhysbox;
@@ -123,6 +124,14 @@ public class WorldPicker
 			ClickedInfo info = new ClickedInfo();
 			info.position = closestPos;
 			info.target = closestObject;
+			if (closestObject instanceof GameObject)
+			{
+				info.gameObject = (GameObject) closestObject;
+			}
+			else
+			{
+				info.gameObject = null;
+			}
 			
 			closestClick.onClicked(info);
 		}

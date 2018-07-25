@@ -57,8 +57,6 @@ public class DebugPoint extends GameObject
 	@Override
 	protected void onDispose()
 	{
-		System.out.println("Disposing DebugPoint");
-		
 		super.onDispose();
 		
 		alive = false;
