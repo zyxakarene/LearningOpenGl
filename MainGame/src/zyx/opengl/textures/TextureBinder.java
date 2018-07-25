@@ -1,5 +1,7 @@
 package zyx.opengl.textures;
 
+import org.newdawn.slick.opengl.TextureImpl;
+
 class TextureBinder
 {
 
@@ -18,6 +20,7 @@ class TextureBinder
 	{
 		if (currentlyBoundTexture == texture)
 		{
+			TextureImpl.unbind();
 			currentlyBoundTexture = null;
 		}
 	}

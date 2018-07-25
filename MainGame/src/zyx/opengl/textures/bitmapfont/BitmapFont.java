@@ -4,15 +4,18 @@ import zyx.opengl.textures.AbstractTexture;
 
 public class BitmapFont
 {
-	final AbstractTexture texture;
-	final FontFile fontFile;
+	AbstractTexture texture;
+	FontFile fontFile;
 
 	BitmapFont(AbstractTexture texture, FontFile fontFile)
 	{
 		this.texture = texture;
 		this.fontFile = fontFile;
 	}
-	
-	
 
+	public void dispose()
+	{
+		texture = null;
+		fontFile = null;
+	}
 }

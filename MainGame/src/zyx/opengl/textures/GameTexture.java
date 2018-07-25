@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import org.newdawn.slick.opengl.Texture;
+import zyx.opengl.GLUtils;
 import zyx.utils.geometry.Rectangle;
 
 public class GameTexture extends AbstractTexture
@@ -48,9 +49,7 @@ public class GameTexture extends AbstractTexture
 			texture.release();
 			texture = null;
 			
-			//Swallow some error in Slick-Utils
-			//Or maybe I suck at this, who knows!
-			GL11.glGetError();
+			GLUtils.errorCheck();
 		}
 	}
 }

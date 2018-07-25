@@ -15,15 +15,16 @@ import zyx.utils.interfaces.IPositionable2D;
 
 public abstract class DisplayObject implements IPositionable2D, IDisposeable
 {
+	private static final Vector3f SCALE_3F = new Vector3f(1, 1, 1);
 
-	protected final Matrix4f MATRIX_MODEL = SharedShaderObjects.SHARED_MODEL_TRANSFORM;
+	protected static final Matrix4f MATRIX_MODEL = SharedShaderObjects.SHARED_MODEL_TRANSFORM;
+	
+	private DisplayObjectContainer parent;
 	
 	public Vector2f position;
 	public float rotation;
 	public Vector2f scale;
 	public boolean visible;
-	
-	private static final Vector3f SCALE_3F = new Vector3f(1, 1, 1);
 	
 	protected final ScreenShader shader;
 
@@ -47,6 +48,34 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	public abstract void setWidth(float value);
 	public abstract void setHeight(float value);
 	abstract void onDraw();
+	
+	public boolean hasParent()
+	{
+		return parent != null;
+	}
+	
+	public DisplayObjectContainer getParent()
+	{
+		return parent;
+	}
+	
+	protected final void setParent(DisplayObjectContainer parent)
+	{
+		this.parent = parent;
+	}
+	
+	public void removeFromParent(boolean dispose)
+	{
+		if(parent != null)
+		{
+			parent.removeChild(this);
+			
+			if (dispose)
+			{
+				dispose();
+			}
+		}
+	}
 	
 	final void draw()
 	{
@@ -95,6 +124,8 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	@Override
 	public void dispose()
 	{
+		removeFromParent(false);
+		
 		SharedPools.VECTOR_POOL_2F.releaseInstance(position);
 		SharedPools.VECTOR_POOL_2F.releaseInstance(scale);
 		

@@ -18,10 +18,15 @@ import zyx.logic.UtilsLogger;
 class XmlFileReader
 {
 
-	private final Document doc;
+	private Document doc;
+	private String fileName;
 
 	XmlFileReader(File file) throws ParserConfigurationException, SAXException, IOException
 	{
+		fileName = file.getName();
+		int dotIndex = fileName.indexOf(".");
+		fileName = fileName.substring(0, dotIndex);
+		
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		doc = dBuilder.parse(file);
@@ -52,11 +57,13 @@ class XmlFileReader
 			kernings.add(new FontKerning(attributes));
 		}
 		
-		UtilsLogger.log(characters);
-		UtilsLogger.log(kernings);
+		UtilsLogger.log("Characters:" + characters);
+		UtilsLogger.log("Kernings:" + kernings);
 
 		try (DataOutputStream out = new DataOutputStream(new FileOutputStream(output)))
 		{
+			out.writeUTF("font.texture." + fileName);
+			
 			out.writeShort(lineHeight);
 			out.writeShort(characterList.getLength());
 			out.writeShort(kerningList.getLength());

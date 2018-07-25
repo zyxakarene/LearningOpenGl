@@ -4,6 +4,7 @@ import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.AbstractTexture;
+import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IDrawable;
 
@@ -107,7 +108,6 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 		ModelUtils.disposeBuffer(ebo);
 		ModelUtils.disposeVertexArray(vao);
 		
-		texture.dispose();
 		texture = null;
 	}
 

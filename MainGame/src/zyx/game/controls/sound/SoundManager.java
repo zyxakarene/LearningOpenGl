@@ -10,7 +10,7 @@ import zyx.utils.interfaces.IUpdateable;
 public class SoundManager implements IUpdateable, IDisposeable
 {
 
-	private static final SoundManager instance = new SoundManager();
+	private static final SoundManager INSTANCE = new SoundManager();
 
 	private LinkedList<Sound> availibleSounds;
 	private Sound[] playingSounds;
@@ -25,11 +25,13 @@ public class SoundManager implements IUpdateable, IDisposeable
 		{
 			availibleSounds.add(new Sound(i));
 		}
+		
+		SoundStore.get().init();
 	}
 
 	public static SoundManager getInstance()
 	{
-		return instance;
+		return INSTANCE;
 	}
 
 	public void playSound(String source, GameObject emitter)
@@ -55,6 +57,8 @@ public class SoundManager implements IUpdateable, IDisposeable
 
 	void onSoundDone(Sound sound)
 	{
+		sound.dispose();
+		
 		playingSounds[sound.soundId] = null;
 		availibleSounds.add(sound);
 	}
@@ -72,8 +76,6 @@ public class SoundManager implements IUpdateable, IDisposeable
 				playingSound.update(timestamp, elapsedTime);
 			}
 		}
-
-		SoundStore.get().poll(elapsedTime);
 	}
 
 	@Override

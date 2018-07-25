@@ -41,7 +41,7 @@ public class GameEngine
 	}
 
 	public static int drawCalls = 0;
-	
+
 	private void beginGameLoop()
 	{
 		while (!Display.isCloseRequested())
@@ -58,14 +58,13 @@ public class GameEngine
 			{
 				sceneManager.changeScene(SceneType.PARTICLE);
 			}
-			
+
 			Display.update();
 			Display.sync(GameConstants.FPS);
 
 			DeltaTime.update();
 			long timestamp = DeltaTime.getTimestamp();
 			int elapsed = DeltaTime.getElapsedTime();
-
 
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 

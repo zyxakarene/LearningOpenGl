@@ -1,15 +1,13 @@
 package zyx.game.scene.gamescene;
 
-import java.util.ArrayList;
 import zyx.engine.scene.Scene;
-import zyx.game.components.GameObject;
-import zyx.utils.FloatMath;
+import zyx.game.components.MeshObject;
 
 public class StackScene extends Scene
 {
 	
-	private GameObject platform;
-	private GameObject child;
+	private MeshObject platform;
+	private MeshObject child;
 
 	public StackScene()
 	{
@@ -19,13 +17,13 @@ public class StackScene extends Scene
 	@Override
 	protected void onInitialize()
 	{
-		platform = new GameObject();
+		platform = new MeshObject();
 		platform.setY(100);
 		platform.setZ(-50);
-		platform.load("assets/models/platform.zaf");
+		platform.load("mesh.platform");
 		
-		child = new GameObject();
-		child.load("assets/models/box.zaf");
+		child = new MeshObject();
+		child.load("mesh.box");
 		
 		world.addChild(platform);
 		platform.addChild(child);

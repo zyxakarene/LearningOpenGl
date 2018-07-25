@@ -18,6 +18,7 @@ import zyx.engine.utils.worldpicker.calculating.PhysPicker;
 import zyx.engine.utils.worldpicker.calculating.PhysPlanePicker;
 import zyx.engine.utils.worldpicker.calculating.RayPicker;
 import zyx.game.behavior.BehaviorType;
+import zyx.game.components.MeshObject;
 import zyx.game.components.screen.AddBitmapFontButton;
 import zyx.game.components.world.player.Player;
 import zyx.game.components.world.camera.CameraController;
@@ -52,13 +53,13 @@ public class Main
 	private static DebugContainer debugContainer;
 
 	private static CameraController camera;
-	private static GameObject ground;
-	private static GameObject boxTv;
-	private static GameObject platform;
-	private static GameObject mainKnight;
-	private static GameObject attachedKnight1;
-	private static GameObject teapot;
-	private static GameObject worm;
+	private static MeshObject ground;
+	private static MeshObject boxTv;
+	private static MeshObject platform;
+	private static MeshObject mainKnight;
+	private static MeshObject attachedKnight1;
+	private static MeshObject teapot;
+	private static MeshObject worm;
 
 	private static Stage stage;
 	private static World3D world;
@@ -120,18 +121,18 @@ public class Main
 
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_1) && mainKnight == null)
 			{
-				mainKnight = new GameObject();
-				attachedKnight1 = new GameObject();
+				mainKnight = new MeshObject(true);
+				attachedKnight1 = new MeshObject(true);
 
 				platform.addChild(mainKnight);
-				boxTv.setTexture(ren);
+//				boxTv.setTexture(ren);
 
-				mainKnight.load("assets/models/knight/knight.zaf");
-				attachedKnight1.load("assets/models/knight/knight.zaf");
-				mainKnight.setAnimation("attack");
-				attachedKnight1.setAnimation("attack");
-
-				mainKnight.addAttachment(attachedKnight1, "Skeleton_Hand_R");
+//				mainKnight.load("mesh.knight.knight");
+//				attachedKnight1.load("mesh.knight.knight");
+//				mainKnight.setAnimation("attack");
+//				attachedKnight1.setAnimation("attack");
+//
+//				mainKnight.addAttachment(attachedKnight1, "Skeleton_Hand_R");
 
 //				world.addChild(mainKnight);
 			}
@@ -268,22 +269,22 @@ public class Main
 		camera = new CameraController();
 		camera.addBehavior(new FirstPersonBehavior(player));
 
-		platform = new GameObject();
+		platform = new MeshObject();
 		platform.setY(100);
 		platform.setZ(-50);
-		platform.load("assets/models/platform.zaf");
+		platform.load("mesh.platform");
 
-		ground = new GameObject();
+		ground = new MeshObject();
 		ground.setX(-100);
 		ground.setZ(-100);
-		ground.load("assets/models/box.zaf");
+		ground.load("mesh.box");
 		ground.setScale(10, 10, 1);
 		ground.setCollider(new BoxCollider(400, 400, 40));
 
-		boxTv = new GameObject();
+		boxTv = new MeshObject();
 		boxTv.setX(-100);
 		boxTv.setZ(-60);
-		boxTv.load("assets/models/tv.zaf");
+		boxTv.load("mesh.tv");
 		boxTv.setCollider(new BoxCollider(40, 40, 40, true));
 
 		DisplayObjectContainer container = new DisplayObjectContainer();
@@ -327,22 +328,20 @@ public class Main
 		checkbox.position.set(125, 220);
 		stage.addChild(checkbox);
 
-		teapot = new GameObject();
+		teapot = new MeshObject();
 		teapot.setZ(-50);
-		teapot.load("assets/models/teapot.zaf");
-		teapot.registerClick(new OnTeaPotClicked());
+		teapot.load("mesh.teapot");
 		world.addChild(teapot);
 		
-		worm = new GameObject();
-		worm.load("assets/models/worm/worm.zaf");
-		worm.setAnimation("wiggle");
+		worm = new MeshObject();
+		worm.load("mesh.worm.worm");
+//		worm.setAnimation("wiggle");
 		worm.setZ(-50);
 		worm.setX(-50);
-		worm.registerClick(new OnTeaPotClicked());
 		world.addChild(worm);
 		
-		picker.addObject(teapot);
-		picker.addObject(worm);
+//		picker.addObject(teapot);
+//		picker.addObject(worm);
 	}
 
 	private static void addRandomBoxes()
@@ -353,15 +352,15 @@ public class Main
 			float scaleY = FloatMath.random() * 3;
 			float scaleZ = FloatMath.random() * 3;
 
-			GameObject box = new GameObject();
+			MeshObject box = new MeshObject();
 			box.setX(FloatMath.random() * -200f);
 			box.setY(FloatMath.random() * -200f);
 			box.setZ((FloatMath.random() * 200f) - 50);
 			box.setScale(scaleX, scaleY, scaleZ);
-			box.load("assets/models/box.zaf");
+			box.load("mesh.box");
 			box.setCollider(new BoxCollider(40 * scaleX, 40 * scaleY, 40 * scaleZ));
-			box.registerClick(new OnTeaPotClicked());
-			picker.addObject(box);
+//			box.registerClick(new OnTeaPotClicked());
+//			picker.addObject(box);
 			
 			world.addChild(box);
 		}

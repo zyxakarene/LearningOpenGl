@@ -1,19 +1,41 @@
 package zyx.engine.components.screen;
 
+import zyx.engine.resources.IResourceReady;
+import zyx.engine.resources.ResourceManager;
+import zyx.engine.resources.impl.FontResource;
+import zyx.engine.resources.impl.Resource;
 import zyx.opengl.textures.bitmapfont.BitmapFont;
 import zyx.opengl.textures.bitmapfont.Text;
 
-public class Textfield extends DisplayObject
+public class Textfield extends DisplayObject implements IResourceReady<FontResource>
 {
 
-	private final Text glText;
+	private Text glText;
 	private String text;
+	
+	private Resource resource;
 
-	public Textfield(BitmapFont font)
+	public Textfield(String font)
 	{
-		this.glText = new Text(font);
+		this(font, "");
 	}
 
+	public Textfield(String font, String text)
+	{
+		this.text = text;
+		
+		resource = ResourceManager.getInstance().getResource("font." + font);
+		resource.registerAndLoad(this);
+	}
+
+	@Override
+	public void onResourceReady(FontResource resource)
+	{
+		BitmapFont font = resource.getContent();
+		glText = new Text(font);
+		glText.setText(text);
+	}
+	
 	public void setText(String text)
 	{
 		this.text = text;
@@ -42,7 +64,10 @@ public class Textfield extends DisplayObject
 	{
 		transform();
 		shader.upload();
-		glText.draw();
+		if(glText != null)
+		{
+			glText.draw();
+		}
 	}
 
 	@Override
@@ -55,4 +80,21 @@ public class Textfield extends DisplayObject
 	{
 	}
 
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+		
+		if(resource != null)
+		{
+			resource.unregister(this);
+			resource = null;
+		}
+		
+		if(glText != null)
+		{
+			glText.dispose();
+			glText = null;
+		}
+	}
 }

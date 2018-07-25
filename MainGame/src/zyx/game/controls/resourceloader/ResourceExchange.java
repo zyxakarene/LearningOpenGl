@@ -42,6 +42,20 @@ class ResourceExchange
 		}
 	}
 
+	static void removeLoad(ResourceRequest request)
+	{
+		synchronized (LOCK)
+		{
+			LOAD_REQUESTS.remove(request);
+
+			if (REQUEST_MAP.containsKey(request.path))
+			{
+				ResourceRequest otherRequest = REQUEST_MAP.get(request.path);
+				otherRequest.unMergeFrom(request);
+			}
+		}
+	}
+
 	static void addCompleted(ResourceRequest request)
 	{
 		synchronized (LOCK)

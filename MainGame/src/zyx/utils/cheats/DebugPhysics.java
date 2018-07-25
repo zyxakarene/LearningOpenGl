@@ -1,17 +1,17 @@
 package zyx.utils.cheats;
 
 import java.util.HashMap;
-import zyx.game.components.GameObject;
 import zyx.opengl.GLUtils;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.physics.DebugPhysDrawing;
+import zyx.utils.interfaces.IPhysbox;
 
 public class DebugPhysics
 {
 
 	private static final DebugPhysics INSTANCE = new DebugPhysics();
 
-	private HashMap<GameObject, WorldModel[]> entryMap;
+	private HashMap<IPhysbox, WorldModel[]> entryMap;
 
 	public DebugPhysics()
 	{
@@ -23,7 +23,7 @@ public class DebugPhysics
 		return INSTANCE;
 	}
 
-	public void registerPhysbox(GameObject obj)
+	public void registerPhysbox(IPhysbox obj)
 	{
 		int count = obj.getPhysbox().getTriangles().length;
 		if (count > 0)
@@ -33,22 +33,21 @@ public class DebugPhysics
 		}
 	}
 
-	public void unregisterPhysbox(GameObject obj)
+	public void unregisterPhysbox(IPhysbox obj)
 	{
 		entryMap.remove(obj);
 	}
 
-	public void draw(GameObject parent)
+	public void draw(IPhysbox parent)
 	{
 		if (entryMap.containsKey(parent))
 		{
 			GLUtils.setWireframe(true);
 			GLUtils.disableCulling();
 			WorldModel[] models = entryMap.get(parent);
-			for (WorldModel model : models)
-			{
-				model.draw();
-			}
+			
+			models[DebugPhysDrawing.INDEX_BOUNDING].draw();
+			models[DebugPhysDrawing.INDEX_MESH].draw();
 			
 			GLUtils.enableCulling();
 			GLUtils.setWireframe(false);

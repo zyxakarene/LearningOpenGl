@@ -9,7 +9,6 @@ import zyx.utils.cheats.Print;
 
 class ModelUtils
 {
-
 	/**
 	 * Generates a new buffer object. For example a VBO or EBO
 	 *
@@ -150,13 +149,6 @@ class ModelUtils
 		}
 	}
 
-//	static void disposeModel(int vao, int vbo, int ebo)
-//	{
-//		GL15.glDeleteBuffers(vbo);
-//		GL15.glDeleteBuffers(ebo);
-//		GL30.glDeleteVertexArrays(vao);
-//	}
-
 	static void disposeBuffer(int buffer)
 	{
 		GL15.glDeleteBuffers(buffer);
@@ -164,6 +156,6 @@ class ModelUtils
 
 	static void disposeVertexArray(int vao)
 	{
-		GL15.glDeleteBuffers(vao);
+		GL30.glDeleteVertexArrays(vao);
 	}
 }

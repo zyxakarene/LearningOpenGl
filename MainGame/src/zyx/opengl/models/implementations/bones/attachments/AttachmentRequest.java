@@ -1,13 +1,13 @@
 package zyx.opengl.models.implementations.bones.attachments;
 
-import zyx.game.components.GameObject;
+import zyx.engine.components.world.WorldObject;
 
 public class AttachmentRequest
 {
-	public GameObject child;
+	public WorldObject child;
 	public String attachmentPoint;
 
-	public AttachmentRequest(GameObject child, String attachmentPoint)
+	public AttachmentRequest(WorldObject child, String attachmentPoint)
 	{
 		this.child = child;
 		this.attachmentPoint = attachmentPoint;

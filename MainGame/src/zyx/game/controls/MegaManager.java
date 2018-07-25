@@ -1,5 +1,6 @@
 package zyx.game.controls;
 
+import zyx.engine.components.animations.MeshAnimator;
 import zyx.engine.utils.ClickDispatcher;
 import zyx.engine.utils.worldpicker.calculating.RayPicker;
 import zyx.game.controls.input.InputManager;
@@ -16,6 +17,7 @@ public class MegaManager
 		ResourceLoader.getInstance().handleResourceReplies();
 		ConnectionLoader.getInstance().handleConnectionResponses();
 
+		MeshAnimator.getInstance().update(timestamp, elapsed);
 		InputManager.getInstance().update(timestamp, elapsed);
 		ClickDispatcher.getInstance().dispatchEvents();
 		

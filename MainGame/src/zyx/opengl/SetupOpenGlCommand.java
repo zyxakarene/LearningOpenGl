@@ -65,6 +65,6 @@ public class SetupOpenGlCommand implements ICommand
 
 	private void setupLogging() throws IOException
 	{
-		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandlerImpl());
+//		Thread.setDefaultUncsaughtExceptionHandler(new UncaughtExceptionHandlerImpl());
 	}
 }

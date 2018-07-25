@@ -48,8 +48,12 @@ public abstract class ResourceRequest implements IDisposeable
 	public void dispose()
 	{
 		path = null;
-		callbacks.clear();
-		callbacks = null;
+		
+		if(callbacks != null)
+		{
+			callbacks.clear();
+			callbacks = null;
+		}
 	}
 
 	public void mergeFrom(ResourceRequest request)
@@ -57,14 +61,22 @@ public abstract class ResourceRequest implements IDisposeable
 		callbacks.addAll(request.callbacks);
 	}
 
+	public void unMergeFrom(ResourceRequest request)
+	{
+		callbacks.removeAll(request.callbacks);
+	}
+	
 	public void complete(Object data)
 	{
-		int len = callbacks.size();
-		for (int i = 0; i < len; i++)
+		if(callbacks != null)
 		{
-			callbacks.get(i).resourceLoaded(data);
-			
-			onPostComplete();
+			int len = callbacks.size();
+			for (int i = 0; i < len; i++)
+			{
+				callbacks.get(i).resourceLoaded(data);
+
+				onPostComplete();
+			}
 		}
 	}
 

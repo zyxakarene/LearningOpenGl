@@ -1,51 +1,58 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package zyx.utils.cheats;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import zyx.engine.components.world.WorldObject;
 import zyx.game.components.GameObject;
+import zyx.opengl.shaders.implementations.Shader;
 
-/**
- *
- * @author Rene
- */
-public class DebugContainer extends GameObject
+public class DebugContainer extends WorldObject
 {
 
-	static DebugContainer instance;
+	private static final DebugContainer INSTANCE = new DebugContainer();
+
 	private ArrayList<DebugPoint> points;
+	private LinkedList<DebugPoint> removedPoints;
 
 	public DebugContainer()
 	{
-		instance = this;
+		super(Shader.WORLD);
 		points = new ArrayList<>();
+		removedPoints = new LinkedList<>();
 	}
-	
-	void addPoint(DebugPoint point)
+
+	public static DebugContainer getInstance()
+	{
+		return INSTANCE;
+	}
+
+	public void addPoint(DebugPoint point)
 	{
 		addChild(point);
 		points.add(point);
 	}
-	
-	@Override
-	public void onUpdate(long timestamp, int elapsedTime)
+
+	public void update(long timestamp, int elapsedTime)
 	{
 		DebugPoint point;
+		while (!removedPoints.isEmpty())
+		{
+			point = removedPoints.removeLast();
+			point.dispose();
+		}
+
 		for (int i = points.size() - 1; i >= 0; i--)
 		{
 			point = points.get(i);
 			point.update(timestamp, elapsedTime);
-			
+
 			if (point.isAlive() == false)
 			{
+				removedPoints.add(point);
 				points.remove(i);
-				point.dispose();
+
+				removeChild(point);
 			}
 		}
 	}
-
-	
 }

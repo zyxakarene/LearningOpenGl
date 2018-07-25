@@ -1,15 +1,18 @@
 package zyx.engine.components.screen;
 
+import zyx.engine.resources.IResourceReady;
+import zyx.engine.resources.ResourceManager;
+import zyx.engine.resources.impl.Resource;
+import zyx.engine.resources.impl.TextureResource;
 import zyx.engine.utils.callbacks.CustomCallback;
-import zyx.game.controls.loading.texture.TextureLoader;
-import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.opengl.models.implementations.ScreenModel;
-import zyx.opengl.textures.AbstractTexture;
+import zyx.opengl.textures.GameTexture;
 
-public class Image extends DisplayObject implements IResourceLoaded<AbstractTexture>
+public class Image extends DisplayObject implements IResourceReady<TextureResource>
 {
-
-	private String path;
+	private Resource textureResource;
+	
+	private String resource;
 	private ScreenModel model;
 	public boolean loaded;
 
@@ -26,15 +29,19 @@ public class Image extends DisplayObject implements IResourceLoaded<AbstractText
 		onLoaded = new CustomCallback<>(true);
 	}
 
-	public void load(String path)
+	public void load(String resource)
 	{
-		this.path = path;
-		TextureLoader.getInstance().load(path, this);
+		this.resource = resource;
+		
+		textureResource = ResourceManager.getInstance().getResource(resource);
+		textureResource.registerAndLoad(this);
 	}
 
 	@Override
-	public void resourceLoaded(AbstractTexture texture)
+	public void onResourceReady(TextureResource resource)
 	{
+		GameTexture texture = resource.getContent();
+		
 		model = new ScreenModel(texture);
 
 		originalWidth = getWidth();
@@ -106,11 +113,17 @@ public class Image extends DisplayObject implements IResourceLoaded<AbstractText
 			model.dispose();
 			model = null;
 		}
+		
+		if(textureResource != null)
+		{
+			textureResource.unregister(this);
+			textureResource = null;
+		}
 	}
 
 	@Override
 	public String toString()
 	{
-		return String.format("Image{%s}", path);
+		return String.format("Image{%s}", resource);
 	}
 }

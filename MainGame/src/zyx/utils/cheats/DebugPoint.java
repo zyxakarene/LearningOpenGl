@@ -7,6 +7,7 @@ package zyx.utils.cheats;
 
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.components.GameObject;
+import zyx.game.components.SimpleMesh;
 
 /**
  *
@@ -15,6 +16,8 @@ import zyx.game.components.GameObject;
 public class DebugPoint extends GameObject
 {
 
+	private SimpleMesh mesh;
+	
 	private boolean alive;
 	private boolean hasLife;
 	int lifeSpan;
@@ -25,7 +28,10 @@ public class DebugPoint extends GameObject
 		this.hasLife = lifespan > 0;
 		this.alive = true;
 		
-		load("assets/models/debug.zaf");
+		mesh = new SimpleMesh();
+		mesh.load("mesh.debug");
+		addChild(mesh);
+		
 		setPosition(true, x, y, z);
 		setScale(0.1f, 0.1f, 0.1f);
 	}
@@ -47,11 +53,22 @@ public class DebugPoint extends GameObject
 	{
 		return alive;
 	}
+
+	@Override
+	protected void onDispose()
+	{
+		super.onDispose();
+		
+		alive = false;
+		
+		mesh.dispose();
+		mesh = null;
+	}
 	
 	public static DebugPoint addToScene(float x, float y, float z, int lifespan)
 	{
 		DebugPoint point = new DebugPoint(x, y, z, lifespan);
-		DebugContainer.instance.addPoint(point);
+		DebugContainer.getInstance().addPoint(point);
 		
 		return point;
 	}

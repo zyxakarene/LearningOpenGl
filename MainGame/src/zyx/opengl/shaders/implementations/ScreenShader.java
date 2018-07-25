@@ -10,7 +10,7 @@ public class ScreenShader extends AbstractShader
 {
 
 	private static final Matrix4f MATRIX_PROJECTION = SharedShaderObjects.SHARED_ORTHOGRAPHIC_TRANSFORM;
-	private static final Matrix4f MATRIX_VIEW = SharedShaderObjects.SHARED_VIEW_TRANSFORM;
+	private static final Matrix4f MATRIX_VIEW = new Matrix4f();
 	private static final Matrix4f MATRIX_MODEL = SharedShaderObjects.SHARED_MODEL_TRANSFORM;
 
 	private int modelMatrixTrans;

@@ -25,8 +25,34 @@ public class DisplayObjectContainer extends DisplayObject
 
 	public void addChild(DisplayObject child)
 	{
+		DisplayObjectContainer prevParent = child.getParent();
+		if (prevParent != null)
+		{
+			prevParent.removeChild(child);
+		}
+		
+		child.setParent(this);
+		
 		children.add(child);
 		numChildren++;
+	}
+
+	public boolean removeChild(DisplayObject child)
+	{
+		if(child.getParent() == this)
+		{
+			children.remove(child);
+			numChildren--;
+			
+			child.setParent(null);
+			
+			return true;
+		}
+		else
+		{
+			String msg = String.format("Cannot remove child %s when its parent %s != this %s", child, child.getParent(), this);
+			throw new RuntimeException(msg);
+		}
 	}
 
 	public int numChilren()
@@ -89,13 +115,13 @@ public class DisplayObjectContainer extends DisplayObject
 
 		return mostDown - mostUp;
 	}
-	
+
 	@Override
 	public void setWidth(float value)
 	{
 		scale.x = value / getWidth();
 	}
-	
+
 	@Override
 	public void setHeight(float value)
 	{
@@ -129,11 +155,13 @@ public class DisplayObjectContainer extends DisplayObject
 			loopHelper = children.get(i);
 			if (loopHelper instanceof InteractableContainer)
 			{
-				hasCollision = ((InteractableContainer) loopHelper).hasMouseCollision(hasCollision) || hasCollision;
+				InteractableContainer container = (InteractableContainer) loopHelper;
+				hasCollision = hasCollision || container.hasMouseCollision(hasCollision);
 			}
 			else if (loopHelper instanceof DisplayObjectContainer)
 			{
-				((DisplayObjectContainer) loopHelper).checkClicks(hasCollision);
+				DisplayObjectContainer container = (InteractableContainer) loopHelper;
+				container.checkClicks(hasCollision);
 			}
 		}
 	}
@@ -143,7 +171,7 @@ public class DisplayObjectContainer extends DisplayObject
 	{
 		super.dispose();
 
-		for (int i = 0; i < numChildren; i++)
+		for (int i = numChildren - 1; i >= 0; i--)
 		{
 			children.get(i).dispose();
 		}

@@ -1,9 +1,10 @@
 package zyx.opengl.models.implementations.bones.animation;
 
+import zyx.engine.components.animations.IAnimateableMesh;
+import zyx.engine.components.animations.MeshAnimator;
 import zyx.utils.DeltaTime;
-import zyx.utils.interfaces.IUpdateable;
 
-public class AnimationController implements IUpdateable
+public class AnimationController implements IAnimateableMesh
 {
 	private static final String DEFAULT_ANIMATION = "idle";
 	
@@ -14,6 +15,8 @@ public class AnimationController implements IUpdateable
 	public AnimationController()
 	{
 		setAnimation(DEFAULT_ANIMATION);
+		
+		MeshAnimator.getInstance().addAnimatedMesh(this);
 	}
 	
 	public final void setAnimation(String name)
@@ -39,6 +42,10 @@ public class AnimationController implements IUpdateable
 	{
 		timeSinceStarted += elapsedTime;
 	}
-	
-	
+
+	@Override
+	public void dispose()
+	{
+		MeshAnimator.getInstance().removeAnimatedMesh(this);
+	}
 }

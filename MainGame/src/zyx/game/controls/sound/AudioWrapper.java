@@ -1,61 +1,36 @@
 package zyx.game.controls.sound;
 
-import java.io.IOException;
 import org.lwjgl.util.vector.Vector4f;
 import org.newdawn.slick.openal.Audio;
-import org.newdawn.slick.openal.AudioLoader;
-import zyx.game.controls.resourceloader.ResourceLoader;
-import zyx.game.controls.resourceloader.requests.IResourceLoaded;
-import zyx.game.controls.resourceloader.requests.ResourceRequest;
-import zyx.game.controls.resourceloader.requests.ResourceRequestByteArray;
-import zyx.game.controls.resourceloader.requests.vo.ResourceByteArray;
-import zyx.utils.exceptions.Msg;
+import zyx.engine.resources.IResourceReady;
+import zyx.engine.resources.ResourceManager;
+import zyx.engine.resources.impl.Resource;
+import zyx.engine.resources.impl.SoundResource;
+import zyx.utils.interfaces.IDisposeable;
 
-class AudioWrapper implements IResourceLoaded<ResourceByteArray>
+class AudioWrapper implements IResourceReady<SoundResource>, IDisposeable
 {
 
 	private Audio audio;
-	private String path;
 	private float volume;
 	private Vector4f savedPosition;
 
-	AudioWrapper(String audioPath)
-	{
-		this.path = audioPath;
+	private Resource soundResource;
 
-		ResourceByteArray data = AudioCache.getFromCache(path);
-		if (data == null)
-		{
-			ResourceRequest audioRequest = new ResourceRequestByteArray(path, this);
-			ResourceLoader.getInstance().addRequest(audioRequest);
-		}
-		else
-		{
-			createAudioFrom(data);
-		}
+	AudioWrapper(String resource)
+	{
+		soundResource = ResourceManager.getInstance().getResource(resource);
+		soundResource.registerAndLoad(this);
 	}
 
 	@Override
-	public void resourceLoaded(ResourceByteArray data)
+	public void onResourceReady(SoundResource resource)
 	{
-		AudioCache.addToCache(path, data);
-		createAudioFrom(data);
-	}
+		audio = resource.getContent();
 
-	private void createAudioFrom(ResourceByteArray data)
-	{
-		try
+		if (savedPosition != null)
 		{
-			audio = AudioLoader.getAudio("WAV", data);
-
-			if (savedPosition != null)
-			{
-				playAsSoundEffect(volume, savedPosition);
-			}
-		}
-		catch (IOException ex)
-		{
-			Msg.error("Could not play sound!", ex);
+			playAsSoundEffect(volume, savedPosition);
 		}
 	}
 
@@ -117,6 +92,18 @@ class AudioWrapper implements IResourceLoaded<ResourceByteArray>
 			audio.stop();
 			audio.playAsSoundEffect(1, volume, false, position.x, position.y, position.z);
 			audio.setPosition(time);
+		}
+	}
+
+	@Override
+	public void dispose()
+	{
+		stop();
+		
+		if(soundResource != null)
+		{
+			soundResource.unregister(this);
+			soundResource = null;
 		}
 	}
 }
