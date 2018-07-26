@@ -6,6 +6,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.scene.SceneManager;
+import zyx.engine.sound.SoundSystem;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.sound.SoundManager;
 import zyx.game.scene.SceneType;
@@ -36,6 +37,8 @@ public class GameEngine
 		CursorManager.getInstance().initialize();
 		Camera.getInstance().initialize();
 
+		SoundSystem.initialize();
+		
 		sceneManager.changeScene(startScene);
 		beginGameLoop();
 	}
@@ -79,6 +82,7 @@ public class GameEngine
 				Display.destroy();
 				Keyboard.destroy();
 				Mouse.destroy();
+				SoundSystem.dispose();
 				System.exit(0);
 			}
 		}

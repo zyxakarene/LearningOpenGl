@@ -1,22 +1,22 @@
 package zyx.game.controls.sound;
 
 import org.lwjgl.util.vector.Vector4f;
-import org.newdawn.slick.openal.Audio;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.Resource;
 import zyx.engine.resources.impl.SoundResource;
+import zyx.engine.sound.IAudio;
 import zyx.utils.interfaces.IDisposeable;
 
 class AudioWrapper implements IResourceReady<SoundResource>, IDisposeable
 {
 
-	private Audio audio;
+	private IAudio audio;
 	private float volume;
 	private Vector4f savedPosition;
 
 	private Resource soundResource;
-
+	
 	AudioWrapper(String resource)
 	{
 		soundResource = ResourceManager.getInstance().getResource(resource);
@@ -67,7 +67,7 @@ class AudioWrapper implements IResourceReady<SoundResource>, IDisposeable
 
 		if (audio != null)
 		{
-			audio.playAsSoundEffect(1, volume, false, pos.x, pos.y, pos.z);
+			audio.playAt(pos.x, pos.y, pos.z, volume, false);
 		}
 		else
 		{
@@ -85,13 +85,9 @@ class AudioWrapper implements IResourceReady<SoundResource>, IDisposeable
 
 	void updatePosition(Vector4f position)
 	{
-		float time = getPosition();
-
 		if (audio != null)
 		{
-			audio.stop();
-			audio.playAsSoundEffect(1, volume, false, position.x, position.y, position.z);
-			audio.setPosition(time);
+			audio.setListenerPosition(position.x, position.y, position.z);
 		}
 	}
 

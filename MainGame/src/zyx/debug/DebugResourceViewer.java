@@ -1,5 +1,6 @@
 package zyx.debug;
 
+import java.awt.Graphics;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -9,7 +10,8 @@ import zyx.engine.resources.impl.Resource;
 
 public class DebugResourceViewer extends javax.swing.JFrame implements Runnable
 {
-
+	private static final Object LOCK = new Object();
+	
 	private final Thread updater;
 	private boolean active;
 	private ArrayList<Resource> out;
@@ -42,6 +44,15 @@ public class DebugResourceViewer extends javax.swing.JFrame implements Runnable
 				updater.start();
 			}
 		});
+	}
+
+	@Override
+	public void paint(Graphics g)
+	{
+		synchronized(LOCK)
+		{
+			super.paint(g);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -81,25 +92,28 @@ public class DebugResourceViewer extends javax.swing.JFrame implements Runnable
 	{
 		while (active)
 		{
-			boolean changes = DebugResourceList.getActiveResources(out);
-			
-			if (changes)
+			synchronized(LOCK)
 			{
-				DefaultListModel<String> model = (DefaultListModel<String>) list.getModel();
-				model.removeAllElements();
+				boolean changes = DebugResourceList.getActiveResources(out);
 
-				for (Resource resource : out)
+				if (changes)
 				{
-					model.addElement(resource.path);
+					DefaultListModel<String> model = (DefaultListModel<String>) list.getModel();
+					model.removeAllElements();
+
+					for (Resource resource : out)
+					{
+						model.addElement(resource.path);
+					}
 				}
-			}
-			
-			try
-			{
-				Thread.sleep(100);
-			}
-			catch (InterruptedException ex)
-			{
+
+				try
+				{
+					Thread.sleep(100);
+				}
+				catch (InterruptedException ex)
+				{
+				}
 			}
 		}
 	}

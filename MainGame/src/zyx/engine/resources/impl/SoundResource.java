@@ -1,16 +1,13 @@
 package zyx.engine.resources.impl;
 
-import java.io.IOException;
-import org.newdawn.slick.openal.Audio;
-import org.newdawn.slick.openal.NullAudio;
-import org.newdawn.slick.openal.SoundStore;
+import zyx.engine.sound.IAudio;
+import zyx.engine.sound.SoundSystem;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
-import zyx.utils.cheats.Print;
 
 public class SoundResource extends Resource
 {
 
-	private Audio audio;
+	private IAudio audio;
 
 	public SoundResource(String path)
 	{
@@ -18,32 +15,26 @@ public class SoundResource extends Resource
 	}
 
 	@Override
-	public Audio getContent()
+	public IAudio getContent()
 	{
-		return audio;
+		return audio.createClone();
 	}
 
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		try
-		{
-			SoundStore soundStore = SoundStore.get();
-			audio = soundStore.getWAV(data);
-		}
-		catch (IOException ex)
-		{
-			Print.out(ex.getMessage());
-			audio = new NullAudio();
-		}
-		
+		audio = SoundSystem.createFromWav(data);
 		onContentLoaded(audio);
 	}
 
 	@Override
 	void onDispose()
 	{
-		audio = null;
+		if(audio != null)
+		{
+			audio.dispose();
+			audio = null;
+		}
 	}
 
 }
