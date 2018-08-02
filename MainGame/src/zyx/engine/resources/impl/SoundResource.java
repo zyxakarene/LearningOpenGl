@@ -23,7 +23,7 @@ public class SoundResource extends Resource
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		audio = SoundSystem.createFromWav(data);
+		audio = SoundSystem.createFromWav(data, path);
 		onContentLoaded(audio);
 	}
 

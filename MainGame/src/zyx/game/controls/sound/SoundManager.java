@@ -32,11 +32,11 @@ public class SoundManager implements IUpdateable, IDisposeable
 		return INSTANCE;
 	}
 
-	public void playSound(String source, GameObject emitter)
+	public void playSound(String resource, GameObject emitter)
 	{
 		if (emitter == null)
 		{
-			Print.out("Emitter playing sound", source, "is null. Not playing sound.");
+			Print.out("Emitter playing sound", resource, "is null. Not playing sound.");
 			return;
 		}
 		
@@ -47,8 +47,8 @@ public class SoundManager implements IUpdateable, IDisposeable
 		}
 
 		Sound sound = availibleSounds.removeFirst();
-		AudioWrapper audio = new AudioWrapper(source);
-		sound.set(10, false, audio, emitter);
+		sound.set(10, false, resource, emitter);
+		
 		playingSounds[sound.soundId] = sound;
 	}
 

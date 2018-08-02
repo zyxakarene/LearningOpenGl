@@ -1,6 +1,6 @@
 package zyx;
 
-import zyx.debug.DebugResourceViewer;
+import zyx.debug.DebugController;
 import zyx.engine.GameStarter;
 import zyx.game.scene.SceneType;
 
@@ -18,7 +18,7 @@ public class SceneMain
 
 			gameThread.start();
 
-			new DebugResourceViewer().setVisible(true);
+			DebugController.show();
 		}
 		else
 		{

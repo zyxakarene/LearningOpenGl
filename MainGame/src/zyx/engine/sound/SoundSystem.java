@@ -72,7 +72,7 @@ public class SoundSystem
 		AL10.alSource(source, AL10.AL_VELOCITY, listenerVelocity);
 
 		AL10.alSourcePlay(source);
-
+		
 		return sourceIndex;
 	}
 
@@ -109,11 +109,11 @@ public class SoundSystem
 		return pos;
 	}
 
-	public static IAudio createFromWav(InputStream in)
+	public static IAudio createFromWav(InputStream in, String path)
 	{
 		int bufferId = AudioCreator.createFromWav(in);
 
-		Audio audio = new Audio(bufferId);
+		Audio audio = new Audio(bufferId, path);
 		return audio;
 	}
 
