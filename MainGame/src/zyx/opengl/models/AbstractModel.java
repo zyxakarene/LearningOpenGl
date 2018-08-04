@@ -1,5 +1,6 @@
 package zyx.opengl.models;
 
+import java.nio.FloatBuffer;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
@@ -56,6 +57,12 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 		ModelUtils.fillEBO_Static(elementData);
 
 		this.elementCount = elementData.length;
+	}
+
+	protected void updateVertexSubData(FloatBuffer buffer, long offset)
+	{
+		ModelUtils.bindBufferObject_Array(vbo);
+		ModelUtils.setVBOSub(buffer, offset);
 	}
 
 	public void setOverwriteTexture(AbstractTexture texture)

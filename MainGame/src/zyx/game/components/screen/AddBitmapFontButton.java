@@ -2,13 +2,17 @@ package zyx.game.components.screen;
 
 import zyx.engine.components.screen.Button;
 import zyx.engine.components.screen.InteractableContainer;
+import zyx.engine.components.screen.Quad;
 import zyx.engine.components.screen.Textfield;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.net.io.responses.ResponseDispatcher;
 import zyx.net.io.responses.ResponseManager;
+import zyx.utils.FloatMath;
 
 public class AddBitmapFontButton extends Button implements ICallback<InteractableContainer>
 {
+
+	private Textfield field;
 
 	public AddBitmapFontButton(String upTexture, String hoverTexture, String downTexture)
 	{
@@ -23,6 +27,20 @@ public class AddBitmapFontButton extends Button implements ICallback<Interactabl
 	}
 
 	@Override
+	protected void onMouseDown()
+	{
+		super.onMouseDown();
+		
+		if(field != null)
+		{
+			field.setColor(FloatMath.random(), FloatMath.random(), FloatMath.random());
+		}
+		
+		setColor(FloatMath.random(), FloatMath.random(), FloatMath.random());
+		
+	}
+
+	@Override
 	public void onCallback(InteractableContainer ref)
 	{
 //		WriteableDataObject data = new WriteableDataObject();
@@ -30,10 +48,18 @@ public class AddBitmapFontButton extends Button implements ICallback<Interactabl
 //		ConnectionRequest request = new ConnectionRequest("auth", data);
 //
 //		ConnectionLoader.getInstance().addRequest(request);
-		Textfield field = new Textfield("console", "Lorem ipsum?");
-		field.scale.set(1f, 1f);
-		field.position.y = 600;
+		if (field == null)
+		{
+			field = new Textfield("console", "Lorem ipsum?");
+			field.scale.set(1, 1);
+			field.position.y = 600;
 
-		addChild(field);
+			addChild(field);
+		}
+		
+		Quad q = new Quad(100 * FloatMath.random(), 100 * FloatMath.random(), (int) (0xFFFFFF * FloatMath.random()));
+		q.position.x = 200 * FloatMath.random();
+		q.position.y = 200 * FloatMath.random();
+		addChild(q);
 	}
 }

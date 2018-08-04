@@ -32,6 +32,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	{
 		position = SharedPools.VECTOR_POOL_2F.getInstance();
 		scale = SharedPools.VECTOR_POOL_2F.getInstance();
+		
 		rotation = 0f;
 		visible = true;
 		

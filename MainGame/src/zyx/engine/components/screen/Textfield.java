@@ -1,5 +1,6 @@
 package zyx.engine.components.screen;
 
+import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.FontResource;
@@ -12,6 +13,8 @@ public class Textfield extends DisplayObject implements IResourceReady<FontResou
 
 	private Text glText;
 	private String text;
+	private Vector4f colors;
+	private boolean loaded;
 	
 	private Resource resource;
 
@@ -23,23 +26,46 @@ public class Textfield extends DisplayObject implements IResourceReady<FontResou
 	public Textfield(String font, String text)
 	{
 		this.text = text;
+		this.colors = new Vector4f(1, 1, 1, 1);
 		
 		resource = ResourceManager.getInstance().getResource("font." + font);
 		resource.registerAndLoad(this);
 	}
 
+	public void setColor(float r, float g, float b)
+	{
+		colors.set(r, g, b);
+		updateMesh();
+	}
+
+	public void setAlpha(float a)
+	{
+		colors.w = a;
+		updateMesh();
+	}
+	
+	private void updateMesh()
+	{
+		if(loaded)
+		{
+			glText.setColors(colors);
+		}
+	}
+	
 	@Override
 	public void onResourceReady(FontResource resource)
 	{
+		loaded = true;
+		
 		BitmapFont font = resource.getContent();
 		glText = new Text(font);
-		glText.setText(text);
+		glText.setText(text, colors);
 	}
 	
 	public void setText(String text)
 	{
 		this.text = text;
-		glText.setText(text);
+		glText.setText(text, colors);
 	}
 
 	public String getText()

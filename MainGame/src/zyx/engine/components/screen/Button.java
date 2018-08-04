@@ -1,5 +1,6 @@
 package zyx.engine.components.screen;
 
+import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;
 import zyx.engine.utils.ClickDispatcher;
@@ -11,11 +12,15 @@ public class Button extends InteractableContainer
 	protected Image upImg;
 	protected Image hoverImg;
 	protected Image downImg;
+	
+	private Vector4f colors;
 
 	public CustomCallback<InteractableContainer> onButtonClicked;
 
 	public Button(String upTexture, String hoverTexture, String downTexture)
 	{
+		colors = new Vector4f(1, 1, 1, 1);
+		
 		upImg = new Image();
 		hoverImg = new Image();
 		downImg = new Image();
@@ -34,19 +39,31 @@ public class Button extends InteractableContainer
 		downImg.visible = false;
 	}
 
-	@Override
-	public void dispose()
+	public void setColor(Vector4f color)
 	{
-		super.dispose();
-
-		onButtonClicked.dispose();
-
-		onButtonClicked = null;
-		upImg = null;
-		hoverImg = null;
-		downImg = null;
+		colors.set(color);
+		updateMesh();
+	}
+	
+	public void setColor(float r, float g, float b)
+	{
+		colors.set(r, g, b);
+		updateMesh();
 	}
 
+	public void setAlpha(float a)
+	{
+		colors.w = a;
+		updateMesh();
+	}
+	
+	private void updateMesh()
+	{
+		upImg.setColor(colors);
+		hoverImg.setColor(colors);
+		downImg.setColor(colors);
+	}
+	
 	@Override
 	protected void onMouseEnter()
 	{
@@ -98,5 +115,18 @@ public class Button extends InteractableContainer
 	protected float getQuadHeight()
 	{
 		return upImg.getHeight();
+	}
+	
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+
+		onButtonClicked.dispose();
+
+		onButtonClicked = null;
+		upImg = null;
+		hoverImg = null;
+		downImg = null;
 	}
 }

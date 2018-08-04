@@ -1,6 +1,7 @@
 package zyx.opengl.textures.bitmapfont;
 
 import java.util.LinkedList;
+import org.lwjgl.util.vector.Vector4f;
 
 class TextGenerator
 {
@@ -14,12 +15,14 @@ class TextGenerator
 	private int currentValueX;
 	private int currentValueY;
 	private int currentElementCount;
+	private Vector4f color;
 
-	TextGenerator(FontFile fontFile)
+	TextGenerator(FontFile fontFile, Vector4f color)
 	{
 		this.vertexData = new LinkedList<>();
 		this.elementData = new LinkedList<>();
 		this.fontFile = fontFile;
+		this.color = color;
 
 		currentValueX = 0;
 	}
@@ -52,24 +55,40 @@ class TextGenerator
 		vertexData.add(up);
 		vertexData.add(fontChar.x);
 		vertexData.add(fontChar.y);
+		vertexData.add(color.x);
+		vertexData.add(color.y);
+		vertexData.add(color.z);
+		vertexData.add(color.w);
 
 		//Top right
 		vertexData.add(right);
 		vertexData.add(up);
 		vertexData.add(fontChar.x + fontChar.u);
 		vertexData.add(fontChar.y);
+		vertexData.add(color.x);
+		vertexData.add(color.y);
+		vertexData.add(color.z);
+		vertexData.add(color.w);
 
 		//Bottom right
 		vertexData.add(right);
 		vertexData.add(down);
 		vertexData.add(fontChar.x + fontChar.u);
 		vertexData.add(fontChar.y + fontChar.v);
+		vertexData.add(color.x);
+		vertexData.add(color.y);
+		vertexData.add(color.z);
+		vertexData.add(color.w);
 
 		//Bottom left
 		vertexData.add(left);
 		vertexData.add(down);
 		vertexData.add(fontChar.x);
 		vertexData.add(fontChar.y + fontChar.v);
+		vertexData.add(color.x);
+		vertexData.add(color.y);
+		vertexData.add(color.z);
+		vertexData.add(color.w);
 
 		elementData.add(currentElementCount + 2);
 		elementData.add(currentElementCount + 1);
@@ -108,4 +127,8 @@ class TextGenerator
 		return FontUtils.toIntArray(elementData);
 	}
 
+	int getVertexCount()
+	{
+		return currentElementCount;
+	}
 }

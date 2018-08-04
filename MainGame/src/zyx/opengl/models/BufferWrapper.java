@@ -4,10 +4,10 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 
-class BufferWrapper
+public class BufferWrapper
 {
 
-	static FloatBuffer toBuffer(float[] array)
+	public static FloatBuffer toBuffer(float[] array)
 	{
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(array.length);
 		buffer.put(array);
@@ -16,7 +16,7 @@ class BufferWrapper
 		return buffer;
 	}
 
-	static IntBuffer toBuffer(int[] array)
+	public static IntBuffer toBuffer(int[] array)
 	{
 		IntBuffer buffer = BufferUtils.createIntBuffer(array.length);
 		buffer.put(array);

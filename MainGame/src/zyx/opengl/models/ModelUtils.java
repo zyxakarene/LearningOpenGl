@@ -39,6 +39,27 @@ class ModelUtils
 		FloatBuffer buffer = BufferWrapper.toBuffer(data);
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
 	}
+	
+	/**
+	 * Sets a subset of the vertex data to the specified data parameter
+	 * @param data The data to set
+	 * @param offset The offset in BYTES the data should be inserted
+	 */
+	static void setVBOSub(float[] data, long offset)
+	{
+		FloatBuffer buffer = BufferWrapper.toBuffer(data);
+		GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, offset, buffer);
+	}
+	
+	/**
+	 * Sets a subset of the vertex data to the specified data parameter
+	 * @param buffer The data to set
+	 * @param offset The offset in BYTES the data should be inserted
+	 */
+	static void setVBOSub(FloatBuffer buffer, long offset)
+	{
+		GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, offset, buffer);
+	}
 
 	/**
 	 * Uploads the data to the currently bound VBO
