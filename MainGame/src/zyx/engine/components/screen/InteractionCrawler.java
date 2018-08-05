@@ -6,20 +6,20 @@ import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;
 import zyx.game.controls.input.KeyboardData;
 
-public class InteractionCrawler
+class InteractionCrawler
 {
 	private LinkedList<DisplayObject> objects;
 	private DisplayObjectContainer parent;
 	
 	private DisplayObject hitTarget;
 	
-	public InteractionCrawler(DisplayObjectContainer container)
+	InteractionCrawler(DisplayObjectContainer container)
 	{
 		parent = container;
 		objects = new LinkedList<>();
 	}
 
-	public void interactionTest(int x, int y)
+	void interactionTest(int x, int y)
 	{
 		objects.clear();
 		

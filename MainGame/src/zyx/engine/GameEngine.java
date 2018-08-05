@@ -4,6 +4,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import zyx.debug.DebugController;
 import zyx.debug.views.DebugFrame;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.scene.SceneManager;
@@ -23,7 +24,7 @@ public class GameEngine
 {
 
 	private SceneManager sceneManager;
-
+	
 	public GameEngine()
 	{
 		sceneManager = SceneManager.getInstance();
@@ -39,7 +40,7 @@ public class GameEngine
 		Camera.getInstance().initialize();
 
 		SoundSystem.initialize();
-		
+
 		sceneManager.changeScene(startScene);
 		beginGameLoop();
 	}
@@ -48,8 +49,12 @@ public class GameEngine
 
 	private void beginGameLoop()
 	{
-		while (!Display.isCloseRequested())
+		boolean running = true;
+				
+		while (running)
 		{
+			running = !Display.isCloseRequested();
+			
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_1))
 			{
 				sceneManager.changeScene(SceneType.GAME);
@@ -77,17 +82,27 @@ public class GameEngine
 			FPSCounter.updateFPS();
 
 			DebugFrame.onFrame();
-			
+
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_ESCAPE))
 			{
-				SoundManager.getInstance().dispose();
-
-				Display.destroy();
-				Keyboard.destroy();
-				Mouse.destroy();
-				SoundSystem.dispose();
-				System.exit(0);
+				running = false;
 			}
 		}
+
+		close();
+	}
+
+	private void close()
+	{
+		SoundManager.getInstance().dispose();
+
+		Display.destroy();
+		Keyboard.destroy();
+		Mouse.destroy();
+		SoundSystem.dispose();
+		
+		DebugController.close();
+		
+		System.exit(0);
 	}
 }
