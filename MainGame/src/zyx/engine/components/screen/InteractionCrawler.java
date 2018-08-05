@@ -5,6 +5,7 @@ import org.lwjgl.input.Keyboard;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;
 import zyx.game.controls.input.KeyboardData;
+import zyx.game.controls.input.MouseData;
 
 class InteractionCrawler
 {
@@ -78,7 +79,7 @@ class InteractionCrawler
 	
 	private void onTargetHit(DisplayObject target)
 	{
-		if (hitTarget.buttonMode)
+		if (target.buttonMode)
 		{
 			CursorManager.getInstance().setCursor(GameCursor.HAND);
 		}
@@ -86,6 +87,11 @@ class InteractionCrawler
 		if (target instanceof InteractableContainer)
 		{
 			((InteractableContainer) target).updateButtonState(true);
+		}
+		
+		if (target.focusable && MouseData.data.isLeftDown())
+		{
+			Stage.instance.setFocusedObject(target);
 		}
 	}
 	

@@ -41,6 +41,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	public boolean visible;
 	public boolean buttonMode;
 	public boolean touchable;
+	public boolean focusable;
 
 	protected final ScreenShader shader;
 
@@ -54,6 +55,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		visible = true;
 		buttonMode = false;
 		touchable = true;
+		focusable = false;
 		
 		dirty = true;
 		dirtyInv = true;
@@ -306,6 +308,10 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		boolean collision = HELPER_VEC4.x >= 0 && HELPER_VEC4.y <= 0 && HELPER_VEC4.x <= getWidth() && HELPER_VEC4.y >= -getHeight();
 
 		return collision;
+	}
+
+	void keyDown(char charValue)
+	{
 	}
 
 }

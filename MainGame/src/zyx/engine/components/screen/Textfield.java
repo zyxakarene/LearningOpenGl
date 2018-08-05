@@ -8,7 +8,7 @@ import zyx.engine.resources.impl.Resource;
 import zyx.opengl.textures.bitmapfont.BitmapFont;
 import zyx.opengl.textures.bitmapfont.Text;
 
-public class Textfield extends DisplayObject implements IResourceReady<FontResource>
+public class Textfield extends InteractableContainer implements IResourceReady<FontResource>
 {
 
 	private Text glText;
@@ -29,6 +29,8 @@ public class Textfield extends DisplayObject implements IResourceReady<FontResou
 	{
 		this.text = text;
 		this.colors = new Vector4f(1, 1, 1, 1);
+		
+		focusable = true;
 		
 		resource = ResourceManager.getInstance().getResource("font." + font);
 		resource.registerAndLoad(this);
@@ -148,5 +150,35 @@ public class Textfield extends DisplayObject implements IResourceReady<FontResou
 			glText.dispose();
 			glText = null;
 		}
+	}
+
+	public boolean focus;
+	
+	@Override
+	protected void onMouseEnter()
+	{
+		focus = true;
+	}
+
+	@Override
+	protected void onMouseExit()
+	{
+		focus = false;
+	}
+
+	@Override
+	protected void onMouseDown()
+	{
+	}
+
+	@Override
+	protected void onMouseClick()
+	{
+	}
+	
+	@Override
+	void keyDown(char charValue)
+	{
+		setText(text + charValue);
 	}
 }

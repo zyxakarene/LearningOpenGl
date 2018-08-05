@@ -48,7 +48,7 @@ public class InputManager implements IUpdateable
 	private void checkMouse()
 	{
 		mouseData.grabbed = Mouse.isGrabbed();
-		
+
 		while (Mouse.next())
 		{
 			//Position
@@ -66,8 +66,8 @@ public class InputManager implements IUpdateable
 			//Movements
 			mouseData.dX = Mouse.getEventDX();
 			mouseData.dY = Mouse.getEventDY();
-			
-			if (mouseData.dX != 0 ||mouseData.dY != 0)
+
+			if (mouseData.dX != 0 || mouseData.dY != 0)
 			{
 				onMouseMoved.dispatch(mouseData);
 			}
@@ -79,7 +79,7 @@ public class InputManager implements IUpdateable
 				boolean wasDown = mouseData.isDown(button);
 				boolean isDown = Mouse.getEventButtonState();
 				mouseData.setClickData(button, isDown);
-				
+
 				if (!wasDown && isDown)
 				{
 					OnMouseDownClicked.dispatch(mouseData);
@@ -88,7 +88,7 @@ public class InputManager implements IUpdateable
 				{
 					OnMouseUpClicked.dispatch(mouseData);
 				}
-				
+
 				if (mouseData.wasPressed(button))
 				{
 					OnMouseClicked.dispatch(mouseData);
@@ -100,11 +100,28 @@ public class InputManager implements IUpdateable
 	private void checkKeyboard()
 	{
 		while (Keyboard.next())
-		{			
+		{
 			int key = Keyboard.getEventKey();
+			Character character = Keyboard.getEventCharacter();
 			boolean isDown = Keyboard.getEventKeyState();
-			
+
 			keyboardData.setClickData(key, isDown);
+
+			if (isDown)
+			{
+				boolean alphabetic = Character.isAlphabetic(character);
+//				if (alphabetic)
+				{
+					System.out.println("Added " + character);
+					keyboardData.downKeys.add(character);
+				}
+			}
+			else
+			{
+				System.out.println("Removed " + character);
+				keyboardData.downKeys.remove(character);
+			}
+
 		}
 	}
 }
