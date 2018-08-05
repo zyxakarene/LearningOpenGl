@@ -25,6 +25,10 @@ public class Button extends InteractableContainer
 		hoverImg = new Image();
 		downImg = new Image();
 		
+		upImg.touchable = false;
+		hoverImg.touchable = false;
+		downImg.touchable = false;
+		
 		upImg.load(upTexture);
 		hoverImg.load(hoverTexture);
 		downImg.load(downTexture);
@@ -37,6 +41,8 @@ public class Button extends InteractableContainer
 
 		hoverImg.visible = false;
 		downImg.visible = false;
+		
+		buttonMode = true;
 	}
 
 	public void setColor(Vector4f color)
@@ -103,18 +109,6 @@ public class Button extends InteractableContainer
 		{
 			ClickDispatcher.getInstance().addClick(onButtonClicked, this);
 		}
-	}
-
-	@Override
-	protected float getQuadWidth()
-	{
-		return upImg.getWidth();
-	}
-
-	@Override
-	protected float getQuadHeight()
-	{
-		return upImg.getHeight();
 	}
 	
 	@Override

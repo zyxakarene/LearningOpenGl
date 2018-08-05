@@ -6,6 +6,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.components.world.WorldObject;
 import zyx.game.controls.SharedPools;
+import zyx.game.controls.input.MouseData;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.ScreenShader;
@@ -38,6 +39,8 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	public Vector2f position;
 
 	public boolean visible;
+	public boolean buttonMode;
+	public boolean touchable;
 
 	protected final ScreenShader shader;
 
@@ -49,7 +52,9 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		position = SharedPools.VECTOR_POOL_2F.getInstance();
 
 		visible = true;
-
+		buttonMode = false;
+		touchable = true;
+		
 		dirty = true;
 		dirtyInv = true;
 
@@ -184,7 +189,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		{
 			position.set(x, y);
 		}
-		
+
 		localMatrix.m30 = HELPER_VEC2.x;
 		localMatrix.m31 = -HELPER_VEC2.y;
 		localMatrix.m32 = 0;
@@ -282,6 +287,25 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	public float getY()
 	{
 		return position.y;
+	}
+
+	public boolean hitTest(int x, int y)
+	{
+		if (!touchable || !visible)
+		{
+			return false;
+		}
+		
+		HELPER_VEC4.x = MouseData.data.x;
+		HELPER_VEC4.y = -MouseData.data.y;
+		HELPER_VEC4.z = -1;
+		HELPER_VEC4.w = 1;
+
+		Matrix4f.transform(invWorldMatrix(), HELPER_VEC4, HELPER_VEC4);
+
+		boolean collision = HELPER_VEC4.x >= 0 && HELPER_VEC4.y <= 0 && HELPER_VEC4.x <= getWidth() && HELPER_VEC4.y >= -getHeight();
+
+		return collision;
 	}
 
 }

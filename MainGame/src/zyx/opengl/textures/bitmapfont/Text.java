@@ -13,6 +13,9 @@ public class Text extends AbstractModel
 	private int characterCount;
 	private int vertexCount;
 
+	private float width;
+	private float height;
+	
 	public Text(BitmapFont font)
 	{
 		super(Shader.SCREEN);
@@ -37,7 +40,9 @@ public class Text extends AbstractModel
 		int[] elementData = generator.getElementData();
 
 		vertexCount = generator.getVertexCount();
-
+		width = generator.getWidth();
+		height = generator.getHeight();
+				
 		bindVao();
 		setVertexData(vertexData, elementData);
 	}
@@ -56,6 +61,16 @@ public class Text extends AbstractModel
 		super.dispose();
 
 		font = null;
+	}
+
+	public float getWidth()
+	{
+		return width;
+	}
+
+	public float getHeight()
+	{
+		return height;
 	}
 
 	public void setColors(Vector4f colors)

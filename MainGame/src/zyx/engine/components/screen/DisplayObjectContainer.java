@@ -1,12 +1,10 @@
 package zyx.engine.components.screen;
 
 import java.util.ArrayList;
-import org.lwjgl.util.vector.Matrix4f;
+import java.util.List;
 
 public class DisplayObjectContainer extends DisplayObject
 {
-
-	private final Matrix4f HELPER_MATRIX = new Matrix4f();
 
 	private ArrayList<DisplayObject> children;
 	private int numChildren;
@@ -36,6 +34,11 @@ public class DisplayObjectContainer extends DisplayObject
 		return children.get(index);
 	}
 
+	public void getChildren(List<DisplayObject> out)
+	{
+		out.addAll(children);
+	}
+	
 	public void addChild(DisplayObject child)
 	{
 		DisplayObjectContainer prevParent = child.getParent();
@@ -154,25 +157,6 @@ public class DisplayObjectContainer extends DisplayObject
 			loopHelper = children.get(i);
 
 			loopHelper.draw();
-		}
-	}
-
-	protected final void checkClicks(boolean hasCollision)
-	{
-		DisplayObject loopHelper;
-		for (int i = numChildren - 1; i >= 0; i--)
-		{
-			loopHelper = children.get(i);
-			if (loopHelper instanceof InteractableContainer)
-			{
-				InteractableContainer container = (InteractableContainer) loopHelper;
-				hasCollision = hasCollision || container.hasMouseCollision(hasCollision);
-			}
-			else if (loopHelper instanceof DisplayObjectContainer)
-			{
-				DisplayObjectContainer container = (DisplayObjectContainer) loopHelper;
-				container.checkClicks(hasCollision);
-			}
 		}
 	}
 

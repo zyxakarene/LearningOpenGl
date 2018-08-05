@@ -66,13 +66,33 @@ public class InputManager implements IUpdateable
 			//Movements
 			mouseData.dX = Mouse.getEventDX();
 			mouseData.dY = Mouse.getEventDY();
+			
+			if (mouseData.dX != 0 ||mouseData.dY != 0)
+			{
+				onMouseMoved.dispatch(mouseData);
+			}
 
 			//Clicking
 			int button = Mouse.getEventButton();
 			if (button != -1)
 			{
+				boolean wasDown = mouseData.isDown(button);
 				boolean isDown = Mouse.getEventButtonState();
 				mouseData.setClickData(button, isDown);
+				
+				if (!wasDown && isDown)
+				{
+					OnMouseDownClicked.dispatch(mouseData);
+				}
+				else if (wasDown && !isDown)
+				{
+					OnMouseUpClicked.dispatch(mouseData);
+				}
+				
+				if (mouseData.wasPressed(button))
+				{
+					OnMouseClicked.dispatch(mouseData);
+				}
 			}
 		}
 	}

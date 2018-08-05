@@ -131,4 +131,14 @@ class TextGenerator
 	{
 		return currentElementCount;
 	}
+
+	float getWidth()
+	{
+		return currentValueX;
+	}
+
+	float getHeight()
+	{
+		return currentValueY + fontFile.lineHeight;
+	}
 }

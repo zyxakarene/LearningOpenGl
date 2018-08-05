@@ -54,7 +54,7 @@ public class AddBitmapFontButton extends Button implements ICallback<Interactabl
 			field = new Textfield("console", "Lorem ipsum?");
 			field.setScale(1, 1);
 
-			addChild(field);
+			Stage.instance.addChild(field);
 		}
 		
 		Quad q = new Quad(100 * FloatMath.random(), 100 * FloatMath.random(), (int) (0xFFFFFF * FloatMath.random()));

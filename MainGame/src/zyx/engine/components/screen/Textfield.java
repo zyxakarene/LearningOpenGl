@@ -17,6 +17,8 @@ public class Textfield extends DisplayObject implements IResourceReady<FontResou
 	private boolean loaded;
 	
 	private Resource resource;
+	private float originalWidth;
+	private float originalHeight;
 
 	public Textfield(String font)
 	{
@@ -60,12 +62,18 @@ public class Textfield extends DisplayObject implements IResourceReady<FontResou
 		BitmapFont font = resource.getContent();
 		glText = new Text(font);
 		glText.setText(text, colors);
+		
+		originalWidth = glText.getWidth();
+		originalHeight = glText.getHeight();
 	}
 	
 	public void setText(String text)
 	{
 		this.text = text;
 		glText.setText(text, colors);
+		
+		originalWidth = glText.getWidth();
+		originalHeight = glText.getHeight();
 	}
 
 	public String getText()
@@ -76,13 +84,23 @@ public class Textfield extends DisplayObject implements IResourceReady<FontResou
 	@Override
 	public float getWidth()
 	{
-		return 0f;
+		if (loaded)
+		{
+			return originalWidth * getScale(true, HELPER_VEC2).x;
+		}
+		
+		return 0;
 	}
 
 	@Override
 	public float getHeight()
 	{
-		return 0f;
+		if (loaded)
+		{
+			return originalHeight * getScale(true, HELPER_VEC2).x;
+		}
+		
+		return 0;
 	}
 
 	@Override
@@ -97,11 +115,21 @@ public class Textfield extends DisplayObject implements IResourceReady<FontResou
 	@Override
 	public void setWidth(float value)
 	{
+		if (loaded)
+		{
+			getScale(true, HELPER_VEC2);
+			setScale(value / originalWidth, HELPER_VEC2.y);
+		}
 	}
 
 	@Override
 	public void setHeight(float value)
 	{
+		if (loaded)
+		{
+			getScale(true, HELPER_VEC2);
+			setScale(value / originalHeight, HELPER_VEC2.y);
+		}
 	}
 
 	@Override

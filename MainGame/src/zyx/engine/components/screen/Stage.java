@@ -5,8 +5,11 @@ public final class Stage extends DisplayObjectContainer
 
 	public static final Stage instance = new Stage();
 
+	private InteractionCrawler crawler;
+	
 	private Stage()
 	{
+		crawler = new InteractionCrawler(this);
 	}
 
 	public final void drawStage()
@@ -15,9 +18,9 @@ public final class Stage extends DisplayObjectContainer
 		draw();
 	}
 
-	public final void checkStageMouseInteractions()
+	public final void checkStageMouseInteractions(int x, int y)
 	{
-		checkClicks(false);
+		crawler.interactionTest(x, y);
 	}
 
 	@Override
