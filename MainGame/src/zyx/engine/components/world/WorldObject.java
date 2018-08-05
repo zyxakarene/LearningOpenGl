@@ -24,8 +24,8 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 
 	private boolean dirty;
 	private boolean dirtyInv;
-	protected Matrix4f _invWorldMatrix;
-	protected Matrix4f _worldMatrix;
+	protected Matrix4f invWorldMatrix;
+	protected Matrix4f worldMatrix;
 	protected Matrix4f localMatrix;
 	public Vector3f position;
 
@@ -39,8 +39,8 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 
 	public WorldObject(Shader type)
 	{
-		_invWorldMatrix = SharedPools.MATRIX_POOL.getInstance();
-		_worldMatrix = SharedPools.MATRIX_POOL.getInstance();
+		invWorldMatrix = SharedPools.MATRIX_POOL.getInstance();
+		worldMatrix = SharedPools.MATRIX_POOL.getInstance();
 		localMatrix = SharedPools.MATRIX_POOL.getInstance();
 		position = SharedPools.VECTOR_POOL.getInstance();
 
@@ -56,30 +56,30 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	{
 		if (dirty)
 		{
-			Matrix4f.load(localMatrix, _worldMatrix);
+			Matrix4f.load(localMatrix, worldMatrix);
 			if (parent != null)
 			{
-				Matrix4f.mul(parent.worldMatrix(), _worldMatrix, _worldMatrix);
+				Matrix4f.mul(parent.worldMatrix(), worldMatrix, worldMatrix);
 			}
 
 			dirty = false;
 			dirtyInv = true;
 		}
 
-		return _worldMatrix;
+		return worldMatrix;
 	}
 
 	public Matrix4f invWorldMatrix()
 	{
 		if (dirtyInv || dirty)
 		{
-			Matrix4f.load(worldMatrix(), _invWorldMatrix);
-			_invWorldMatrix.invert();
+			Matrix4f.load(worldMatrix(), invWorldMatrix);
+			invWorldMatrix.invert();
 
 			dirtyInv = false;
 		}
 
-		return _invWorldMatrix;
+		return invWorldMatrix;
 	}
 
 	public void setCollider(Collider newCollider)
@@ -215,15 +215,15 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 
 		children.clear();
 
-		SharedPools.MATRIX_POOL.releaseInstance(_invWorldMatrix);
-		SharedPools.MATRIX_POOL.releaseInstance(_worldMatrix);
+		SharedPools.MATRIX_POOL.releaseInstance(invWorldMatrix);
+		SharedPools.MATRIX_POOL.releaseInstance(worldMatrix);
 		SharedPools.MATRIX_POOL.releaseInstance(localMatrix);
 		SharedPools.VECTOR_POOL.releaseInstance(position);
 
 		children = null;
 		position = null;
-		_worldMatrix = null;
-		_invWorldMatrix = null;
+		worldMatrix = null;
+		invWorldMatrix = null;
 	}
 
 	public Vector3f globalToLocal(Vector3f point, Vector3f out)

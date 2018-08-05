@@ -89,7 +89,7 @@ public class Image extends DisplayObject implements IResourceReady<TextureResour
 	{
 		if (loaded)
 		{
-			return model.getWidth() * scale.x;
+			return model.getWidth() * getScale(true, HELPER_VEC2).x;
 		}
 
 		return 0;
@@ -100,7 +100,7 @@ public class Image extends DisplayObject implements IResourceReady<TextureResour
 	{
 		if (loaded)
 		{
-			return model.getHeight() * scale.y;
+			return model.getHeight() * getScale(true, HELPER_VEC2).y;
 		}
 
 		return 0;
@@ -111,7 +111,8 @@ public class Image extends DisplayObject implements IResourceReady<TextureResour
 	{
 		if (loaded)
 		{
-			scale.x = value / originalWidth;
+			getScale(true, HELPER_VEC2);
+			setScale(value / originalWidth, HELPER_VEC2.y);
 		}
 	}
 
@@ -120,16 +121,14 @@ public class Image extends DisplayObject implements IResourceReady<TextureResour
 	{
 		if (loaded)
 		{
-			scale.y = value / originalHeight;
+			getScale(true, HELPER_VEC2);
+			setScale(HELPER_VEC2.x, value / originalHeight);
 		}
 	}
 
 	@Override
 	void onDraw()
 	{
-		transform();
-		shader.upload();
-
 		if (loaded)
 		{
 			model.draw();

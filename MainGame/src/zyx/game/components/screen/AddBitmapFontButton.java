@@ -3,6 +3,7 @@ package zyx.game.components.screen;
 import zyx.engine.components.screen.Button;
 import zyx.engine.components.screen.InteractableContainer;
 import zyx.engine.components.screen.Quad;
+import zyx.engine.components.screen.Stage;
 import zyx.engine.components.screen.Textfield;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.net.io.responses.ResponseDispatcher;
@@ -51,15 +52,13 @@ public class AddBitmapFontButton extends Button implements ICallback<Interactabl
 		if (field == null)
 		{
 			field = new Textfield("console", "Lorem ipsum?");
-			field.scale.set(1, 1);
-			field.position.y = 600;
+			field.setScale(1, 1);
 
 			addChild(field);
 		}
 		
 		Quad q = new Quad(100 * FloatMath.random(), 100 * FloatMath.random(), (int) (0xFFFFFF * FloatMath.random()));
-		q.position.x = 200 * FloatMath.random();
-		q.position.y = 200 * FloatMath.random();
-		addChild(q);
+		q.setPosition(true, 200 * FloatMath.random(), 200 * FloatMath.random());
+		Stage.instance.addChild(q);
 	}
 }

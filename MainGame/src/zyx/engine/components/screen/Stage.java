@@ -1,7 +1,5 @@
 package zyx.engine.components.screen;
 
-import zyx.opengl.shaders.SharedShaderObjects;
-
 public final class Stage extends DisplayObjectContainer
 {
 
@@ -20,12 +18,6 @@ public final class Stage extends DisplayObjectContainer
 	public final void checkStageMouseInteractions()
 	{
 		checkClicks(false);
-	}
-
-	@Override
-	public void transform()
-	{
-		SharedShaderObjects.SHARED_MODEL_TRANSFORM.setIdentity();
 	}
 
 	@Override

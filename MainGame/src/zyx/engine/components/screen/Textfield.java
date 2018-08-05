@@ -88,8 +88,6 @@ public class Textfield extends DisplayObject implements IResourceReady<FontResou
 	@Override
 	void onDraw()
 	{
-		transform();
-		shader.upload();
 		if(glText != null)
 		{
 			glText.draw();

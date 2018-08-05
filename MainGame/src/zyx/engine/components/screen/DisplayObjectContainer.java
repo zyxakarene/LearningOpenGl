@@ -2,7 +2,6 @@ package zyx.engine.components.screen;
 
 import java.util.ArrayList;
 import org.lwjgl.util.vector.Matrix4f;
-import zyx.opengl.shaders.SharedShaderObjects;
 
 public class DisplayObjectContainer extends DisplayObject
 {
@@ -18,6 +17,20 @@ public class DisplayObjectContainer extends DisplayObject
 		numChildren = 0;
 	}
 
+	@Override
+	protected void updateTransforms(boolean alsoChildren)
+	{
+		super.updateTransforms(alsoChildren);
+		
+		if (alsoChildren)
+		{
+			for (DisplayObject child : children)
+			{
+				child.updateTransforms(alsoChildren);
+			}
+		}
+	}
+	
 	public DisplayObject getChildAt(int index)
 	{
 		return children.get(index);
@@ -119,31 +132,28 @@ public class DisplayObjectContainer extends DisplayObject
 	@Override
 	public void setWidth(float value)
 	{
-		scale.x = value / getWidth();
+		getScale(true, HELPER_VEC2);
+		
+		setScale(value / getWidth(), HELPER_VEC2.y);
 	}
 
 	@Override
 	public void setHeight(float value)
 	{
-		scale.y = value / getHeight();
+		getScale(true, HELPER_VEC2);
+		
+		setScale(HELPER_VEC2.x, value / getHeight());
 	}
 
 	@Override
 	void onDraw()
 	{
-		transform();
-		HELPER_MATRIX.load(SharedShaderObjects.SHARED_MODEL_TRANSFORM);
-
 		DisplayObject loopHelper;
 		for (int i = 0; i < numChildren; i++)
 		{
 			loopHelper = children.get(i);
 
-			shader.upload();
-
 			loopHelper.draw();
-
-			SharedShaderObjects.SHARED_MODEL_TRANSFORM.load(HELPER_MATRIX);
 		}
 	}
 
@@ -160,7 +170,7 @@ public class DisplayObjectContainer extends DisplayObject
 			}
 			else if (loopHelper instanceof DisplayObjectContainer)
 			{
-				DisplayObjectContainer container = (InteractableContainer) loopHelper;
+				DisplayObjectContainer container = (DisplayObjectContainer) loopHelper;
 				container.checkClicks(hasCollision);
 			}
 		}
