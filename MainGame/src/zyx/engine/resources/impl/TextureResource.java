@@ -26,6 +26,13 @@ public class TextureResource extends Resource
 
 		onContentLoaded(texture);
 	}
+	
+	protected void resourceCreated(GameTexture creation)
+	{
+		this.texture = creation;
+
+		onContentLoaded(texture);
+	}
 
 	@Override
 	void onDispose()

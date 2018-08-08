@@ -42,6 +42,8 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	public boolean buttonMode;
 	public boolean touchable;
 	public boolean focusable;
+	public boolean disposed;
+
 
 	protected final ScreenShader shader;
 
@@ -56,6 +58,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		buttonMode = false;
 		touchable = true;
 		focusable = false;
+		disposed = false;
 		
 		dirty = true;
 		dirtyInv = true;
@@ -152,6 +155,12 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	@Override
 	public void dispose()
 	{
+		if (disposed)
+		{
+			return;
+		}
+		disposed = true;
+		
 		removeFromParent(false);
 
 		SharedPools.MATRIX_POOL.releaseInstance(invWorldMatrix);

@@ -41,6 +41,18 @@ class ResourceMapper
 		{
 			return new FontResource(path);
 		}
+		else if (resourceClass == SpriteSheetResource.class)
+		{
+			return new SpriteSheetResource(path);
+		}
+		else if (resourceClass == JsonResource.class)
+		{
+			return new JsonResource(path);
+		}
+		else if (resourceClass == SpriteSheetJsonResource.class)
+		{
+			return new SpriteSheetJsonResource(path);
+		}
 		
 		return new GenericResource(path);
 	}

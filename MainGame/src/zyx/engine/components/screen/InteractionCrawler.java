@@ -62,7 +62,10 @@ class InteractionCrawler
 		
 		if (!hit && hitTarget != null)
 		{
-			onTargetHitRemoved(hitTarget);
+			if (!hitTarget.disposed)
+			{
+				onTargetHitRemoved(hitTarget);
+			}
 			hitTarget = null;
 		}
 	}

@@ -4,6 +4,10 @@ import zyx.engine.resources.impl.*;
 
 public enum ResourceRule
 {
+	SPRITE_SHEET_PNG	("sprite_sheet_png",	"assets/sprite_sheet.png", TextureResource.class),
+	SPRITE_SHEET_JSON	("sprite_sheet_json",	"assets/sprite_sheet.json", SpriteSheetJsonResource.class),
+	SPRITE_SHEET_ITEM	("#",					"#",				  SpriteSheetResource.class),
+	
 	FONT_BASE			("font.#",				"assets/fonts/#.zff", FontResource.class),
 	FONT_TEXTURE		("font.texture.#",		"assets/fonts/#.png", TextureResource.class),
 	
