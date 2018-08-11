@@ -4,15 +4,12 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
-import zyx.engine.components.world.WorldObject;
 import zyx.game.controls.SharedPools;
 import zyx.game.controls.input.MouseData;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.ScreenShader;
 import zyx.opengl.shaders.implementations.Shader;
-import zyx.utils.FloatMath;
-import zyx.utils.GeometryUtils;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IPositionable2D;
 import zyx.utils.math.DecomposedMatrix;
@@ -20,14 +17,11 @@ import zyx.utils.math.MatrixUtils;
 
 public abstract class DisplayObject implements IPositionable2D, IDisposeable
 {
-
+	protected static final DecomposedMatrix DECOMPOSED_MATRIX = new DecomposedMatrix();
+	
 	protected static final Vector2f HELPER_VEC2 = new Vector2f();
 	protected static final Vector3f HELPER_VEC3 = new Vector3f();
 	protected static final Vector4f HELPER_VEC4 = new Vector4f();
-
-	private static final Vector3f SCALE_3F = new Vector3f(1, 1, 1);
-
-	protected static final Matrix4f MATRIX_MODEL = SharedShaderObjects.SHARED_MODEL_TRANSFORM;
 
 	private DisplayObjectContainer parent;
 	private boolean dirty;
@@ -217,9 +211,9 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 
 	public void setScale(float x, float y)
 	{
-		DecomposedMatrix decomposed = new DecomposedMatrix(localMatrix);
-		decomposed.scale.set(x, y, 1);
-		decomposed.recompose();
+		DECOMPOSED_MATRIX.setSource(localMatrix);
+		DECOMPOSED_MATRIX.scale.set(x, y, 1);
+		DECOMPOSED_MATRIX.recompose();
 
 		updateTransforms(true);
 	}
@@ -233,9 +227,9 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	@Override
 	public void setRotation(float rotation)
 	{
-		DecomposedMatrix decomposed = new DecomposedMatrix(localMatrix);
-		decomposed.rotation.set(0, 0, rotation);
-		decomposed.recompose();
+		DECOMPOSED_MATRIX.setSource(localMatrix);
+		DECOMPOSED_MATRIX.rotation.set(0, 0, rotation);
+		DECOMPOSED_MATRIX.recompose();
 
 		updateTransforms(true);
 	}
@@ -259,9 +253,9 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	@Override
 	public float getRotation(boolean local)
 	{
-		DecomposedMatrix decomposed = new DecomposedMatrix(local ? localMatrix : worldMatrix());
+		DECOMPOSED_MATRIX.setSource(local ? localMatrix : worldMatrix());
 
-		return decomposed.rotation.z;
+		return DECOMPOSED_MATRIX.rotation.z;
 	}
 
 	@Override
@@ -318,9 +312,4 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 
 		return collision;
 	}
-
-	void keyDown(char charValue)
-	{
-	}
-
 }

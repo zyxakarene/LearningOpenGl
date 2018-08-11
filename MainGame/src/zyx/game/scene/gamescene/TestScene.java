@@ -1,6 +1,7 @@
 package zyx.game.scene.gamescene;
 
 import java.util.ArrayList;
+import org.lwjgl.input.Keyboard;
 import zyx.engine.components.screen.Button;
 import zyx.engine.components.screen.DisplayObjectContainer;
 import zyx.engine.components.screen.Image;
@@ -9,7 +10,9 @@ import zyx.engine.scene.Scene;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.components.MeshObject;
 import zyx.game.components.screen.AddBitmapFontButton;
+import zyx.game.controls.input.KeyboardData;
 import zyx.utils.FloatMath;
+import zyx.utils.cheats.Print;
 
 public class TestScene extends Scene implements ICallback<InteractableContainer>
 {
@@ -63,9 +66,29 @@ public class TestScene extends Scene implements ICallback<InteractableContainer>
 		image2.setRotation(45);
 	}
 
+	private float scaleX = 1;
+	private float scaleY = 1;
+	
 	@Override
 	protected void onUpdate(long timestamp, int elapsedTime)
 	{
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_ADD))
+		{
+			Print.out(image1.getWidth());
+			scaleX++;
+			image1.setScale(scaleX, scaleY);
+			image1.setWidth(image1.getWidth());
+			Print.out(image1.getWidth());
+			
+			
+			
+		}
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_SUBTRACT))
+		{
+			scaleX--;
+			image1.setScale(scaleX, scaleY);
+		}
+		
 		for (MeshObject object : objects)
 		{
 			object.update(timestamp, elapsedTime);

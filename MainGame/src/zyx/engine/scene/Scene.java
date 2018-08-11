@@ -57,7 +57,6 @@ public class Scene
 		
 		CursorManager.getInstance().setCursor(GameCursor.POINTER);
 		stage.checkStageMouseInteractions(MouseData.data.x, MouseData.data.y);
-		stage.update(timestamp, elapsedTime);
 		
 		debugContainer.update(timestamp, elapsedTime);
 		picker.update();

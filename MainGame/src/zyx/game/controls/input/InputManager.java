@@ -102,26 +102,9 @@ public class InputManager implements IUpdateable
 		while (Keyboard.next())
 		{
 			int key = Keyboard.getEventKey();
-			Character character = Keyboard.getEventCharacter();
 			boolean isDown = Keyboard.getEventKeyState();
 
 			keyboardData.setClickData(key, isDown);
-
-			if (isDown)
-			{
-				boolean alphabetic = Character.isAlphabetic(character);
-//				if (alphabetic)
-				{
-					System.out.println("Added " + character);
-					keyboardData.downKeys.add(character);
-				}
-			}
-			else
-			{
-				System.out.println("Removed " + character);
-				keyboardData.downKeys.remove(character);
-			}
-
 		}
 	}
 }

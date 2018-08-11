@@ -77,9 +77,9 @@ public class Image extends DisplayObject implements IResourceReady<TextureResour
 
 		model = new ScreenModel(texture, texture.getWidth(), texture.getHeight(), colors);
 
+		loaded = true;
 		originalWidth = getWidth();
 		originalHeight = getHeight();
-		loaded = true;
 
 		onLoaded.dispatch(this);
 	}

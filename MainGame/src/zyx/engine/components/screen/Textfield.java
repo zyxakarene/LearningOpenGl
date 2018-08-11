@@ -175,10 +175,4 @@ public class Textfield extends InteractableContainer implements IResourceReady<F
 	protected void onMouseClick()
 	{
 	}
-	
-	@Override
-	void keyDown(char charValue)
-	{
-		setText(text + charValue);
-	}
 }

@@ -79,7 +79,7 @@ public class MatrixMain
 		transform(mat);
 		System.out.println(mat);
 		
-		DecomposedMatrix result = MatrixUtils.decompose(mat);
+		DecomposedMatrix result = new DecomposedMatrix(mat);
 		System.out.println("Decomposed pos: " + result.position);
 		System.out.println("Decomposed rot: " + result.rotation);
 		System.out.println("Decomposed scale: " + result.scale);
