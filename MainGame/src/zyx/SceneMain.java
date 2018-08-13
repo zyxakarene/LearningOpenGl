@@ -13,7 +13,7 @@ public class SceneMain
 	{
 		if (SHOW_DEBUG_RESOURCES)
 		{
-			GameStarter starter = new GameStarter(SceneType.STACK);
+			GameStarter starter = new GameStarter(SceneType.MATRIX);
 			Thread gameThread = new Thread(starter);
 
 			gameThread.start();
@@ -22,7 +22,7 @@ public class SceneMain
 		}
 		else
 		{
-			java.awt.EventQueue.invokeLater(new GameStarter(SceneType.STACK));
+			java.awt.EventQueue.invokeLater(new GameStarter(SceneType.MATRIX));
 		}
 	}
 

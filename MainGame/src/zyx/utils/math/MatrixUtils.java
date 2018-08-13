@@ -7,9 +7,15 @@ import org.lwjgl.util.vector.Vector3f;
 public class MatrixUtils
 {
 
+	private static Vector3f HELPER_SCALE = new Vector3f();
+	private static Vector3f HELPER_X = new Vector3f();
+	private static Vector3f HELPER_Y = new Vector3f();
+	private static Vector3f HELPER_Z = new Vector3f();
+
 	/**
 	 * Transform the given matrix by the quarternion rotation and the Vector3f translation<br>
 	 * Copied from javax.vecmath.Matrix4f
+	 *
 	 * @param out The matrix to apply the transformation
 	 * @param rotation The rotational Quaternion to use
 	 * @param translation The translations to use
@@ -43,27 +49,51 @@ public class MatrixUtils
 		[RT.y] [UP.y] [BK.y] [POS.y]
 		[RT.z] [UP.z] [BK.z] [POS.Z]
 		[    ] [    ] [    ] [US   ]
-	*/
-	
+	 */
 	public static void getRightFrom(Matrix4f matrix, Vector3f out)
 	{
 		out.x = matrix.m00;
 		out.y = matrix.m01;
 		out.z = matrix.m02;
 	}
-	
+
 	public static void getUpFrom(Matrix4f matrix, Vector3f out)
+	{
+		out.x = matrix.m20;
+		out.y = matrix.m21;
+		out.z = matrix.m22;
+	}
+
+	public static void getDirFrom(Matrix4f matrix, Vector3f out)
 	{
 		out.x = matrix.m10;
 		out.y = matrix.m11;
 		out.z = matrix.m12;
 	}
 
-	public static void getDirFrom(Matrix4f matrix, Vector3f out)
+	public static void setDirTo(Matrix4f matrix, Vector3f dir, Vector3f up)
 	{
-		out.x = -matrix.m20;
-		out.y = -matrix.m21;
-		out.z = -matrix.m22;
+		HELPER_Z.set(dir);
+		
+		Vector3f.cross(HELPER_Z, up, HELPER_X);
+		HELPER_X.normalise();
+		
+		Vector3f.cross(HELPER_X, HELPER_Z, HELPER_Y);
+
+		getScaleFrom(matrix, HELPER_SCALE);
+
+		matrix.m00 = HELPER_X.x * HELPER_SCALE.x;
+		matrix.m01 = HELPER_X.y * HELPER_SCALE.x;
+		matrix.m02 = HELPER_X.z * HELPER_SCALE.x;
+
+		matrix.m10 = HELPER_Z.x * HELPER_SCALE.y;
+		matrix.m11 = HELPER_Z.y * HELPER_SCALE.y;
+		matrix.m12 = HELPER_Z.z * HELPER_SCALE.y;
+
+		matrix.m20 = HELPER_Y.x * HELPER_SCALE.z;
+		matrix.m21 = HELPER_Y.y * HELPER_SCALE.z;
+		matrix.m22 = HELPER_Y.z * HELPER_SCALE.z;
+		
 	}
 
 	public static void getPositionFrom(Matrix4f matrix, Vector3f out)
@@ -75,12 +105,12 @@ public class MatrixUtils
 
 	public static void getScaleFrom(Matrix4f mat, Vector3f out)
 	{
-		Vector3f x = new Vector3f(mat.m00, mat.m01, mat.m02);
-		Vector3f y = new Vector3f(mat.m10, mat.m11, mat.m12);
-		Vector3f z = new Vector3f(mat.m20, mat.m21, mat.m22);
-		
-		out.x = x.length();
-		out.y = y.length();
-		out.z = z.length();
+		HELPER_X.set(mat.m00, mat.m01, mat.m02);
+		HELPER_Y.set(mat.m10, mat.m11, mat.m12);
+		HELPER_Z.set(mat.m20, mat.m21, mat.m22);
+
+		out.x = HELPER_X.length();
+		out.y = HELPER_Y.length();
+		out.z = HELPER_Z.length();
 	}
 }

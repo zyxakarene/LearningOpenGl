@@ -67,6 +67,10 @@ public class GameEngine
 			{
 				sceneManager.changeScene(SceneType.PARTICLE);
 			}
+			else if (KeyboardData.data.wasPressed(Keyboard.KEY_4))
+			{
+				sceneManager.changeScene(SceneType.MATRIX);
+			}
 
 			Display.update();
 			Display.sync(GameConstants.FPS);

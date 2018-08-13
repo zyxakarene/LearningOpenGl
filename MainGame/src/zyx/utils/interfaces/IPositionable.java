@@ -4,9 +4,10 @@ import org.lwjgl.util.vector.Vector3f;
 
 public interface IPositionable
 {
-	public void setPosition(boolean local, Vector3f pos);
 	public void setDir(boolean local, Vector3f dir);
+	public void lookAt(float x, float y, float z);
 	
+	public void setPosition(boolean local, Vector3f pos);
 	public void setScale(Vector3f scale);
 	public void setRotation(Vector3f rot);
 	
