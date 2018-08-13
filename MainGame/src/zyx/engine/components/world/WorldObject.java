@@ -16,6 +16,7 @@ import zyx.utils.math.MatrixUtils;
 
 public abstract class WorldObject implements IPositionable, IDisposeable
 {
+	protected static final DecomposedMatrix DECOMPOSED_MATRIX = new DecomposedMatrix();
 
 	private static final Vector3f HELPER_VEC3 = new Vector3f();
 	private static final Vector4f HELPER_VEC4 = new Vector4f();
@@ -24,8 +25,8 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 
 	private boolean dirty;
 	private boolean dirtyInv;
-	protected Matrix4f _invWorldMatrix;
-	protected Matrix4f _worldMatrix;
+	protected Matrix4f invWorldMatrix;
+	protected Matrix4f worldMatrix;
 	protected Matrix4f localMatrix;
 	public Vector3f position;
 
@@ -39,8 +40,8 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 
 	public WorldObject(Shader type)
 	{
-		_invWorldMatrix = SharedPools.MATRIX_POOL.getInstance();
-		_worldMatrix = SharedPools.MATRIX_POOL.getInstance();
+		invWorldMatrix = SharedPools.MATRIX_POOL.getInstance();
+		worldMatrix = SharedPools.MATRIX_POOL.getInstance();
 		localMatrix = SharedPools.MATRIX_POOL.getInstance();
 		position = SharedPools.VECTOR_POOL.getInstance();
 
@@ -56,30 +57,30 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 	{
 		if (dirty)
 		{
-			Matrix4f.load(localMatrix, _worldMatrix);
+			Matrix4f.load(localMatrix, worldMatrix);
 			if (parent != null)
 			{
-				Matrix4f.mul(parent.worldMatrix(), _worldMatrix, _worldMatrix);
+				Matrix4f.mul(parent.worldMatrix(), worldMatrix, worldMatrix);
 			}
 
 			dirty = false;
 			dirtyInv = true;
 		}
 
-		return _worldMatrix;
+		return worldMatrix;
 	}
 
 	public Matrix4f invWorldMatrix()
 	{
 		if (dirtyInv || dirty)
 		{
-			Matrix4f.load(worldMatrix(), _invWorldMatrix);
-			_invWorldMatrix.invert();
+			Matrix4f.load(worldMatrix(), invWorldMatrix);
+			invWorldMatrix.invert();
 
 			dirtyInv = false;
 		}
 
-		return _invWorldMatrix;
+		return invWorldMatrix;
 	}
 
 	public void setCollider(Collider newCollider)
@@ -215,15 +216,15 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 
 		children.clear();
 
-		SharedPools.MATRIX_POOL.releaseInstance(_invWorldMatrix);
-		SharedPools.MATRIX_POOL.releaseInstance(_worldMatrix);
+		SharedPools.MATRIX_POOL.releaseInstance(invWorldMatrix);
+		SharedPools.MATRIX_POOL.releaseInstance(worldMatrix);
 		SharedPools.MATRIX_POOL.releaseInstance(localMatrix);
 		SharedPools.VECTOR_POOL.releaseInstance(position);
 
 		children = null;
 		position = null;
-		_worldMatrix = null;
-		_invWorldMatrix = null;
+		worldMatrix = null;
+		invWorldMatrix = null;
 	}
 
 	public Vector3f globalToLocal(Vector3f point, Vector3f out)
@@ -261,8 +262,8 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 			out = new Vector3f();
 		}
 		
-		DecomposedMatrix decomposed = new DecomposedMatrix(local ? localMatrix : worldMatrix());
-		out.set(decomposed.rotation);
+		DECOMPOSED_MATRIX.setSource(local ? localMatrix : worldMatrix());
+		out.set(DECOMPOSED_MATRIX.rotation);
 
 		return out;
 	}
@@ -373,18 +374,18 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 
 	public void setRotation(float x, float y, float z)
 	{
-		DecomposedMatrix decomposed = new DecomposedMatrix(localMatrix);
-		decomposed.rotation.set(x, y, z);
-		decomposed.recompose();
+		DECOMPOSED_MATRIX.setSource(localMatrix);
+		DECOMPOSED_MATRIX.rotation.set(x, y, z);
+		DECOMPOSED_MATRIX.recompose();
 
 		updateTransforms(true);
 	}
 
 	public void setScale(float x, float y, float z)
 	{
-		DecomposedMatrix decomposed = new DecomposedMatrix(localMatrix);
-		decomposed.scale.set(x, y, z);
-		decomposed.recompose();
+		DECOMPOSED_MATRIX.setSource(localMatrix);
+		DECOMPOSED_MATRIX.scale.set(x, y, z);
+		DECOMPOSED_MATRIX.recompose();
 
 		updateTransforms(true);
 	}
@@ -433,53 +434,52 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 
 	public void setRotX(float x)
 	{
-		DecomposedMatrix decomposed = new DecomposedMatrix(localMatrix);
-		decomposed.rotation.x = x;
-		decomposed.recompose();
+		DECOMPOSED_MATRIX.setSource(localMatrix);
+		DECOMPOSED_MATRIX.rotation.x = x;
+		DECOMPOSED_MATRIX.recompose();
 
 		updateTransforms(true);
 	}
 
 	public void setRotY(float y)
 	{
-		DecomposedMatrix decomposed = new DecomposedMatrix(localMatrix);
-		decomposed.rotation.y = y;
-		decomposed.recompose();
+		DECOMPOSED_MATRIX.setSource(localMatrix);
+		DECOMPOSED_MATRIX.rotation.y = y;
+		DECOMPOSED_MATRIX.recompose();
 
 		updateTransforms(true);
 	}
 
 	public void setRotZ(float z)
 	{
-		DecomposedMatrix decomposed = new DecomposedMatrix(localMatrix);
-		decomposed.rotation.z = z;
-		decomposed.recompose();
+		DECOMPOSED_MATRIX.setSource(localMatrix);
+		DECOMPOSED_MATRIX.rotation.z = z;
+		DECOMPOSED_MATRIX.recompose();
 		
 		updateTransforms(true);
 	}
 
 	public float getRotX()
 	{
-		DecomposedMatrix decomposed = new DecomposedMatrix(localMatrix);
-		return decomposed.rotation.x;
+		DECOMPOSED_MATRIX.setSource(localMatrix);
+		return DECOMPOSED_MATRIX.rotation.x;
 	}
 
 	public float getRotY()
 	{
-		DecomposedMatrix decomposed = new DecomposedMatrix(localMatrix);
-		return decomposed.rotation.y;
+		DECOMPOSED_MATRIX.setSource(localMatrix);
+		return DECOMPOSED_MATRIX.rotation.y;
 	}
 
 	public float getRotZ()
 	{
-		DecomposedMatrix decomposed = new DecomposedMatrix(localMatrix);
-		return decomposed.rotation.z;
+		DECOMPOSED_MATRIX.setSource(localMatrix);
+		return DECOMPOSED_MATRIX.rotation.z;
 	}
 	//</editor-fold>
 
 	@Override
 	public void setDir(boolean local, Vector3f dir)
 	{
-		throw new UnsupportedOperationException("Not supported yet.");
 	}
 }

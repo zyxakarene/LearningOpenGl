@@ -12,8 +12,16 @@ public class GameTexture extends AbstractTexture
 {
 
 	private static final int BUFFER_ID = 0;
-	
-	private Texture texture;
+
+	protected Texture texture;
+
+	protected GameTexture(Texture parent, Rectangle rect, String name)
+	{
+		super(rect, name);
+
+		texture = parent;
+		setSizes();
+	}
 
 	public GameTexture(InputStream stream, String name)
 	{
@@ -25,8 +33,15 @@ public class GameTexture extends AbstractTexture
 		super(rect, name);
 
 		texture = TextureUtils.createTexture(stream);
+		setSizes();
+	}
 
-		setSizes(texture.getImageWidth(), texture.getImageHeight());
+	protected void setSizes()
+	{
+		float w = u - x;
+		float h = v - y;
+
+		setSizes(texture.getImageWidth() * w, texture.getImageHeight() * h);
 	}
 
 	@Override
@@ -48,7 +63,7 @@ public class GameTexture extends AbstractTexture
 		{
 			texture.release();
 			texture = null;
-			
+
 			GLUtils.errorCheck();
 		}
 	}

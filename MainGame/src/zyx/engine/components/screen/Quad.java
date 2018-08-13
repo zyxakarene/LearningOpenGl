@@ -22,8 +22,7 @@ public class Quad extends DisplayObject
 		this.width = width;
 		this.height = height;
 		
-		this.scale.x = width;
-		this.scale.y = height;
+		setScale(width, height);
 		
 		ColorTexture texture = new ColorTexture(color);
 		model = new ScreenModel(texture, 1, 1, colors);
@@ -56,9 +55,6 @@ public class Quad extends DisplayObject
 	@Override
 	void onDraw()
 	{
-		transform();
-		shader.upload();
-
 		model.draw();
 	}
 

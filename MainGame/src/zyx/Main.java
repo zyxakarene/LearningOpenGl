@@ -314,7 +314,7 @@ public class Main
 
 		container.position.x = 50;
 		container.position.y = 500;
-		container.rotation = 45;
+		container.setRotation(45);
 //		container.rotation = 45;
 //		image.position.x = 10;
 

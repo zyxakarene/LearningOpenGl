@@ -1,14 +1,16 @@
 package zyx.engine.components.screen;
 
-import zyx.opengl.shaders.SharedShaderObjects;
-
 public final class Stage extends DisplayObjectContainer
 {
 
 	public static final Stage instance = new Stage();
 
+	private InteractionCrawler crawler;
+	private DisplayObject focusedTarget;
+	
 	private Stage()
 	{
+		crawler = new InteractionCrawler(this);
 	}
 
 	public final void drawStage()
@@ -17,21 +19,19 @@ public final class Stage extends DisplayObjectContainer
 		draw();
 	}
 
-	public final void checkStageMouseInteractions()
+	public final void checkStageMouseInteractions(int x, int y)
 	{
-		checkClicks(false);
+		crawler.interactionTest(x, y);
 	}
 
-	@Override
-	public void transform()
+	void setFocusedObject(DisplayObject target)
 	{
-		SharedShaderObjects.SHARED_MODEL_TRANSFORM.setIdentity();
+		focusedTarget = target;
 	}
-
+	
 	@Override
 	public void dispose()
 	{
 		throw new RuntimeException("Do not dispose the stage please");
 	}
-
 }

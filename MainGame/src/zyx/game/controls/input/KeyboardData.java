@@ -6,7 +6,7 @@ public final class KeyboardData extends AbstractInputData
 {
 
 	public final static KeyboardData data = new KeyboardData();
-
+	
 	private KeyboardData()
 	{
 		super(Keyboard.getKeyCount() * 5);

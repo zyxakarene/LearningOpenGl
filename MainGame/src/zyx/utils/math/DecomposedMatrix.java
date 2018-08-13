@@ -19,6 +19,10 @@ public class DecomposedMatrix
 	public Vector3f scale = new Vector3f();
 	public Vector3f rotation = new Vector3f();
 
+	public DecomposedMatrix()
+	{
+	}
+	
 	public DecomposedMatrix(Matrix4f source)
 	{
 		setSource(source);

@@ -32,4 +32,14 @@ public class ResourceManager
 		
 		return res;
 	}
+
+	public void disposeResource(String resource)
+	{
+		Resource res = resources.get(resource);
+		
+		if (res != null)
+		{
+			resources.remove(resource);
+		}
+	}
 }

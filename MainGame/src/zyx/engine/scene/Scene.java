@@ -3,12 +3,14 @@ package zyx.engine.scene;
 import zyx.engine.components.screen.Stage;
 import zyx.engine.components.world.World3D;
 import zyx.engine.curser.CursorManager;
+import zyx.engine.curser.GameCursor;
 import zyx.engine.utils.worldpicker.WorldPicker;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.MegaManager;
 import zyx.opengl.GLUtils;
 import zyx.utils.interfaces.IPhysbox;
 import zyx.engine.utils.worldpicker.IHoveredItem;
+import zyx.game.controls.input.MouseData;
 import zyx.utils.cheats.DebugContainer;
 
 public class Scene
@@ -53,7 +55,8 @@ public class Scene
 	{
 		GLUtils.errorCheck();
 		
-		stage.checkStageMouseInteractions();
+		CursorManager.getInstance().setCursor(GameCursor.POINTER);
+		stage.checkStageMouseInteractions(MouseData.data.x, MouseData.data.y);
 		
 		debugContainer.update(timestamp, elapsedTime);
 		picker.update();

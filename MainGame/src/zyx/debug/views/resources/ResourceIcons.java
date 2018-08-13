@@ -50,6 +50,18 @@ class ResourceIcons
 		{
 			return "assets/debug/resource/font.png";
 		}
+		else if (clazz == JsonResource.class)
+		{
+			return "assets/debug/resource/json.png";
+		}
+		else if (clazz == SpriteSheetJsonResource.class)
+		{
+			return "assets/debug/resource/json.png";
+		}
+		else if (clazz == SpriteSheetResource.class)
+		{
+			return "assets/debug/resource/spritesheet.png";
+		}
 		
 		return "assets/debug/resource/default.png";
 	}

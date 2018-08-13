@@ -2,6 +2,7 @@ package zyx.engine.resources.impl;
 
 import java.util.ArrayList;
 import zyx.engine.resources.IResourceReady;
+import zyx.engine.resources.ResourceManager;
 import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.game.controls.resourceloader.requests.ResourceRequestDataInput;
@@ -31,7 +32,7 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 	public void registerAndLoad(IResourceReady callback)
 	{
 		DebugResourceList.addResource(this);
-		
+
 		if (pointers.contains(callback) == false)
 		{
 			pointers.add(callback);
@@ -45,11 +46,16 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 		{
 			loading = true;
 
-			resourceRequest = new ResourceRequestDataInput(path, this);
-			ResourceLoader.getInstance().addRequest(resourceRequest);
+			beginLoad();
 		}
 	}
 
+	protected void beginLoad()
+	{
+		resourceRequest = new ResourceRequestDataInput(path, this);
+		ResourceLoader.getInstance().addRequest(resourceRequest);
+	}
+	
 	public void unregister(IResourceReady callback)
 	{
 		boolean removed = pointers.remove(callback);
@@ -95,8 +101,10 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 		}
 
 		content = null;
-		
+
 		DebugResourceList.removeResource(this);
+		
+		ResourceManager.getInstance().disposeResource(path);
 	}
 
 	void onDispose()

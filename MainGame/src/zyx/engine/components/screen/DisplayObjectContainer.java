@@ -1,13 +1,10 @@
 package zyx.engine.components.screen;
 
 import java.util.ArrayList;
-import org.lwjgl.util.vector.Matrix4f;
-import zyx.opengl.shaders.SharedShaderObjects;
+import java.util.List;
 
 public class DisplayObjectContainer extends DisplayObject
 {
-
-	private final Matrix4f HELPER_MATRIX = new Matrix4f();
 
 	private ArrayList<DisplayObject> children;
 	private int numChildren;
@@ -18,11 +15,30 @@ public class DisplayObjectContainer extends DisplayObject
 		numChildren = 0;
 	}
 
+	@Override
+	protected void updateTransforms(boolean alsoChildren)
+	{
+		super.updateTransforms(alsoChildren);
+		
+		if (alsoChildren)
+		{
+			for (DisplayObject child : children)
+			{
+				child.updateTransforms(alsoChildren);
+			}
+		}
+	}
+	
 	public DisplayObject getChildAt(int index)
 	{
 		return children.get(index);
 	}
 
+	public void getChildren(List<DisplayObject> out)
+	{
+		out.addAll(children);
+	}
+	
 	public void addChild(DisplayObject child)
 	{
 		DisplayObjectContainer prevParent = child.getParent();
@@ -119,50 +135,28 @@ public class DisplayObjectContainer extends DisplayObject
 	@Override
 	public void setWidth(float value)
 	{
-		scale.x = value / getWidth();
+		getScale(true, HELPER_VEC2);
+		
+		setScale(value / getWidth(), HELPER_VEC2.y);
 	}
 
 	@Override
 	public void setHeight(float value)
 	{
-		scale.y = value / getHeight();
+		getScale(true, HELPER_VEC2);
+		
+		setScale(HELPER_VEC2.x, value / getHeight());
 	}
 
 	@Override
 	void onDraw()
 	{
-		transform();
-		HELPER_MATRIX.load(SharedShaderObjects.SHARED_MODEL_TRANSFORM);
-
 		DisplayObject loopHelper;
 		for (int i = 0; i < numChildren; i++)
 		{
 			loopHelper = children.get(i);
 
-			shader.upload();
-
 			loopHelper.draw();
-
-			SharedShaderObjects.SHARED_MODEL_TRANSFORM.load(HELPER_MATRIX);
-		}
-	}
-
-	protected final void checkClicks(boolean hasCollision)
-	{
-		DisplayObject loopHelper;
-		for (int i = numChildren - 1; i >= 0; i--)
-		{
-			loopHelper = children.get(i);
-			if (loopHelper instanceof InteractableContainer)
-			{
-				InteractableContainer container = (InteractableContainer) loopHelper;
-				hasCollision = hasCollision || container.hasMouseCollision(hasCollision);
-			}
-			else if (loopHelper instanceof DisplayObjectContainer)
-			{
-				DisplayObjectContainer container = (InteractableContainer) loopHelper;
-				container.checkClicks(hasCollision);
-			}
 		}
 	}
 

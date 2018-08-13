@@ -48,7 +48,7 @@ public class InputManager implements IUpdateable
 	private void checkMouse()
 	{
 		mouseData.grabbed = Mouse.isGrabbed();
-		
+
 		while (Mouse.next())
 		{
 			//Position
@@ -67,12 +67,32 @@ public class InputManager implements IUpdateable
 			mouseData.dX = Mouse.getEventDX();
 			mouseData.dY = Mouse.getEventDY();
 
+			if (mouseData.dX != 0 || mouseData.dY != 0)
+			{
+				onMouseMoved.dispatch(mouseData);
+			}
+
 			//Clicking
 			int button = Mouse.getEventButton();
 			if (button != -1)
 			{
+				boolean wasDown = mouseData.isDown(button);
 				boolean isDown = Mouse.getEventButtonState();
 				mouseData.setClickData(button, isDown);
+
+				if (!wasDown && isDown)
+				{
+					OnMouseDownClicked.dispatch(mouseData);
+				}
+				else if (wasDown && !isDown)
+				{
+					OnMouseUpClicked.dispatch(mouseData);
+				}
+
+				if (mouseData.wasPressed(button))
+				{
+					OnMouseClicked.dispatch(mouseData);
+				}
 			}
 		}
 	}
@@ -80,10 +100,10 @@ public class InputManager implements IUpdateable
 	private void checkKeyboard()
 	{
 		while (Keyboard.next())
-		{			
+		{
 			int key = Keyboard.getEventKey();
 			boolean isDown = Keyboard.getEventKeyState();
-			
+
 			keyboardData.setClickData(key, isDown);
 		}
 	}
