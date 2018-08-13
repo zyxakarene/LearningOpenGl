@@ -11,6 +11,10 @@ public class MatrixUtils
 	private static Vector3f HELPER_X = new Vector3f();
 	private static Vector3f HELPER_Y = new Vector3f();
 	private static Vector3f HELPER_Z = new Vector3f();
+	
+	private static Vector3f HELPER_SCALE_X = new Vector3f();
+	private static Vector3f HELPER_SCALE_Y = new Vector3f();
+	private static Vector3f HELPER_SCALE_Z = new Vector3f();
 
 	/**
 	 * Transform the given matrix by the quarternion rotation and the Vector3f translation<br>
@@ -105,12 +109,12 @@ public class MatrixUtils
 
 	public static void getScaleFrom(Matrix4f mat, Vector3f out)
 	{
-		HELPER_X.set(mat.m00, mat.m01, mat.m02);
-		HELPER_Y.set(mat.m10, mat.m11, mat.m12);
-		HELPER_Z.set(mat.m20, mat.m21, mat.m22);
+		HELPER_SCALE_X.set(mat.m00, mat.m01, mat.m02);
+		HELPER_SCALE_Y.set(mat.m10, mat.m11, mat.m12);
+		HELPER_SCALE_Z.set(mat.m20, mat.m21, mat.m22);
 
-		out.x = HELPER_X.length();
-		out.y = HELPER_Y.length();
-		out.z = HELPER_Z.length();
+		out.x = HELPER_SCALE_X.length();
+		out.y = HELPER_SCALE_Y.length();
+		out.z = HELPER_SCALE_Z.length();
 	}
 }

@@ -24,9 +24,14 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 		systems = new ArrayList<>();
 	}
 
-	public void add(ParticleSystem system)
+	void add(ParticleSystem system)
 	{
 		systems.add(system);
+	}
+	
+	void remove(ParticleSystem system)
+	{
+		systems.remove(system);
 	}
 	
 	@Override
@@ -60,11 +65,6 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 	@Override
 	public void dispose()
 	{
-		for (ParticleSystem system : systems)
-		{
-			system.dispose();
-		}
-		
 		systems.clear();
 		
 		ParticleShader.elapsedTime = 0;

@@ -54,8 +54,6 @@ public class MatrixScene extends Scene
 		world.addChild(parent1);
 
 		rot = 0;
-		
-		DebugPoint.addToScene(0, 0, 0, 1000000);
 	}
 
 	@Override
@@ -108,7 +106,7 @@ public class MatrixScene extends Scene
 	@Override
 	protected void onDispose()
 	{
-		obj.dispose();
-		obj = null;
+		parent1.dispose();
+		parent1 = null;
 	}
 }

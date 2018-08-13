@@ -90,6 +90,8 @@ public class ParticleSystem extends WorldObject implements IResourceReady<Partic
 	@Override
 	protected void onDispose()
 	{
+		ParticleManager.getInstance().remove(this);
+		
 		model = null;
 		
 		if (particleResource != null)
