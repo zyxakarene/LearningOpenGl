@@ -323,8 +323,8 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 			return false;
 		}
 		
-		HELPER_VEC4.x = MouseData.data.x;
-		HELPER_VEC4.y = -MouseData.data.y;
+		HELPER_VEC4.x = x;
+		HELPER_VEC4.y = -y;
 		HELPER_VEC4.z = -1;
 		HELPER_VEC4.w = 1;
 

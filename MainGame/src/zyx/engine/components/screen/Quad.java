@@ -1,61 +1,36 @@
 package zyx.engine.components.screen;
 
-import org.lwjgl.util.vector.Vector4f;
 import zyx.opengl.models.implementations.ScreenModel;
 import zyx.opengl.textures.ColorTexture;
 import zyx.utils.Color;
 
-public class Quad extends DisplayObject
+public class Quad extends AbstractQuad
 {
-
-	private Vector4f colors;
-	private float width;
-	private float height;
-
-	private ScreenModel model;
 
 	public Quad(float width, float height, int color)
 	{
-		colors = Color.toVector(color);
-		colors.w = 1;
-
-		this.width = width;
-		this.height = height;
+		originalWidth = width;
+		originalHeight = height;
 		
-		setScale(width, height);
+		Color.toVector(color, colors);
 		
 		ColorTexture texture = new ColorTexture(color);
-		model = new ScreenModel(texture, 1, 1, colors);
+		model = new ScreenModel(texture, width, height, colors);
+		
+		loaded = true;
 	}
 
 	@Override
-	public float getWidth()
+	public void dispose()
 	{
-		return width;
+		super.dispose();
+		
+		if(model != null)
+		{
+			model.dispose();
+			model = null;
+		}
 	}
-
-	@Override
-	public float getHeight()
-	{
-		return height;
-	}
-
-	@Override
-	public void setWidth(float value)
-	{
-		width = value;
-	}
-
-	@Override
-	public void setHeight(float value)
-	{
-		height = value;
-	}
-
-	@Override
-	void onDraw()
-	{
-		model.draw();
-	}
-
+	
+	
 }

@@ -22,6 +22,7 @@ class InteractionCrawler
 	{
 		objects.clear();
 		
+		objects.add(parent);
 		parent.getChildren(objects);
 		
 		DisplayObject child;

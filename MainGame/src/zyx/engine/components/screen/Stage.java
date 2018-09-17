@@ -4,8 +4,9 @@ import java.awt.event.KeyEvent;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.controls.input.InputManager;
 import zyx.game.controls.input.KeyboardData;
+import zyx.utils.GameConstants;
 
-public final class Stage extends DisplayObjectContainer implements ICallback<Character>
+public final class Stage extends DisplayObjectContainer implements ICallback<Character>, IFocusable
 {
 
 	public static final Stage instance = new Stage();
@@ -48,6 +49,18 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 	}
 	
 	@Override
+	public float getWidth()
+	{
+		return GameConstants.GAME_WIDTH;
+	}
+
+	@Override
+	public float getHeight()
+	{
+		return GameConstants.GAME_HEIGHT;
+	}
+	
+	@Override
 	public void dispose()
 	{
 		throw new RuntimeException("Do not dispose the stage please");
@@ -64,5 +77,20 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 				focusedTarget.onKeyPressed(data);
 			}
 		}
+	}
+
+	@Override
+	public void onKeyPressed(char character)
+	{
+	}
+
+	@Override
+	public void onFocused()
+	{
+	}
+
+	@Override
+	public void onUnFocused()
+	{
 	}
 }

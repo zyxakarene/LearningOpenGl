@@ -10,7 +10,7 @@ import zyx.opengl.models.implementations.ScreenModel;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.textures.GameTexture;
 
-public class Image extends DisplayObject implements IResourceReady<TextureResource>
+public class Image extends AbstractQuad implements IResourceReady<TextureResource>
 {
 
 	protected static final Vector4f COLORS = SharedShaderObjects.SHARED_VECTOR_4F;
@@ -18,21 +18,13 @@ public class Image extends DisplayObject implements IResourceReady<TextureResour
 	private Resource textureResource;
 
 	private String resource;
-	private ScreenModel model;
-	public boolean loaded;
-
-	private float originalWidth;
-	private float originalHeight;
-	private Vector4f colors;
 
 	public CustomCallback<Image> onLoaded;
 
 	public Image()
 	{
-		colors = new Vector4f(1, 1, 1, 1);
-		originalWidth = 0;
-		originalHeight = 0;
-		loaded = false;
+		setColor(1, 1, 1);
+		
 		onLoaded = new CustomCallback<>(true);
 	}
 
@@ -42,32 +34,6 @@ public class Image extends DisplayObject implements IResourceReady<TextureResour
 
 		textureResource = ResourceManager.getInstance().getResource(resource);
 		textureResource.registerAndLoad(this);
-	}
-
-	public void setColor(Vector4f color)
-	{
-		colors.set(color);
-		updateMesh();
-	}
-	
-	public void setColor(float r, float g, float b)
-	{
-		colors.set(r, g, b);
-		updateMesh();
-	}
-
-	public void setAlpha(float a)
-	{
-		colors.w = a;
-		updateMesh();
-	}
-	
-	private void updateMesh()
-	{
-		if(loaded)
-		{
-			model.setColors(colors);
-		}
 	}
 	
 	@Override
@@ -82,57 +48,6 @@ public class Image extends DisplayObject implements IResourceReady<TextureResour
 		originalHeight = getHeight();
 
 		onLoaded.dispatch(this);
-	}
-
-	@Override
-	public float getWidth()
-	{
-		if (loaded)
-		{
-			return model.getWidth() * getScale(true, HELPER_VEC2).x;
-		}
-
-		return 0;
-	}
-
-	@Override
-	public float getHeight()
-	{
-		if (loaded)
-		{
-			return model.getHeight() * getScale(true, HELPER_VEC2).y;
-		}
-
-		return 0;
-	}
-
-	@Override
-	public void setWidth(float value)
-	{
-		if (loaded)
-		{
-			getScale(true, HELPER_VEC2);
-			setScale(value / originalWidth, HELPER_VEC2.y);
-		}
-	}
-
-	@Override
-	public void setHeight(float value)
-	{
-		if (loaded)
-		{
-			getScale(true, HELPER_VEC2);
-			setScale(HELPER_VEC2.x, value / originalHeight);
-		}
-	}
-
-	@Override
-	void onDraw()
-	{
-		if (loaded)
-		{
-			model.draw();
-		}
 	}
 
 	@Override

@@ -22,6 +22,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	private float originalWidth;
 	private float originalHeight;
 
+	private boolean hasFocus;
 	private int caretPos;
 	private Quad caret;
 
@@ -123,7 +124,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 			glText.draw();
 		}
 		
-		if (caret != null)
+		if (hasFocus && caret != null)
 		{
 			caret.visible = Math.random() > 0.5;
 		}
@@ -213,12 +214,15 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	@Override
 	public void onFocused()
 	{
+		hasFocus = true;
 		caret.visible = true;
+		caret.setPosition(true, originalWidth, 0);
 	}
 
 	@Override
 	public void onUnFocused()
 	{
+		hasFocus = false;
 		caret.visible = false;
 	}
 }
