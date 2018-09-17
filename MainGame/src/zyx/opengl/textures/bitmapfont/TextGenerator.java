@@ -1,5 +1,6 @@
 package zyx.opengl.textures.bitmapfont;
 
+import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 import org.lwjgl.util.vector.Vector4f;
 
@@ -32,13 +33,13 @@ class TextGenerator
 		FontCharacter fontChar = fontFile.characterMap.get(character);
 		FontKerning fontKerning = fontFile.getKerning(prevCharacter, character);
 
-		if (character == ' ')
+		if (character == KeyEvent.VK_SPACE)
 		{
 			//Don't add the space character. Just add some empty room
 			currentValueX += fontChar.xAdvance + fontKerning.amount;
 			return;
 		}
-		else if (character == '\n' || character == 13)
+		else if (character == '\r' || character == '\n')
 		{
 			currentValueX = 0;
 			currentValueY += fontFile.lineHeight;

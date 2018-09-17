@@ -1,5 +1,6 @@
 package zyx.game.controls.input;
 
+import java.awt.event.KeyEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import zyx.engine.utils.callbacks.CustomCallback;
@@ -18,6 +19,7 @@ public class InputManager implements IUpdateable
 	public final CustomCallback<MouseData> OnMouseDownClicked;
 	public final CustomCallback<MouseData> OnMouseUpClicked;
 	public final CustomCallback<MouseData> OnMouseClicked;
+	public final CustomCallback<Character> OnKeyPressed;
 
 	private InputManager()
 	{
@@ -25,6 +27,7 @@ public class InputManager implements IUpdateable
 		OnMouseDownClicked = new CustomCallback<>();
 		OnMouseUpClicked = new CustomCallback<>();
 		OnMouseClicked = new CustomCallback<>();
+		OnKeyPressed = new CustomCallback<>();
 
 		mouseData = MouseData.data;
 		keyboardData = KeyboardData.data;
@@ -105,6 +108,9 @@ public class InputManager implements IUpdateable
 			boolean isDown = Keyboard.getEventKeyState();
 
 			keyboardData.setClickData(key, isDown);
+
+			char character = Keyboard.getEventCharacter();
+			OnKeyPressed.dispatch(character);
 		}
 	}
 }

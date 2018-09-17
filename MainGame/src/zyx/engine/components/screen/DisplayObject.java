@@ -4,6 +4,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import zyx.engine.curser.GameCursor;
 import zyx.game.controls.SharedPools;
 import zyx.game.controls.input.MouseData;
 import zyx.opengl.shaders.ShaderManager;
@@ -38,8 +39,10 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	public boolean focusable;
 	public boolean disposed;
 
-
+	GameCursor hoverIcon;
+	
 	protected final ScreenShader shader;
+	protected Stage stage;
 
 	public DisplayObject()
 	{
@@ -117,6 +120,11 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 
 	protected final void setParent(DisplayObjectContainer parent)
 	{
+		if (parent != null && parent.stage != null)
+		{
+			stage = parent.stage;
+		}
+		
 		this.parent = parent;
 	}
 

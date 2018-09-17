@@ -1,10 +1,8 @@
 package zyx.engine.components.screen;
 
 import java.util.LinkedList;
-import org.lwjgl.input.Keyboard;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;
-import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.input.MouseData;
 
 class InteractionCrawler
@@ -32,11 +30,6 @@ class InteractionCrawler
 		while (objects.size() > 0)
 		{			
 			child = objects.removeLast();
-			
-			if (KeyboardData.data.wasPressed(Keyboard.KEY_0))
-			{
-				System.out.println("");
-			}
 			
 			if (child instanceof DisplayObjectContainer)
 			{
@@ -82,9 +75,9 @@ class InteractionCrawler
 	
 	private void onTargetHit(DisplayObject target)
 	{
-		if (target.buttonMode)
+		if (target.hoverIcon != null)
 		{
-			CursorManager.getInstance().setCursor(GameCursor.HAND);
+			CursorManager.getInstance().setCursor(target.hoverIcon);
 		}
 		
 		if (target instanceof InteractableContainer)
@@ -92,9 +85,9 @@ class InteractionCrawler
 			((InteractableContainer) target).updateButtonState(true);
 		}
 		
-		if (target.focusable && MouseData.data.isLeftDown())
+		if (target instanceof IFocusable && MouseData.data.isLeftClicked())
 		{
-			Stage.instance.setFocusedObject(target);
+			Stage.instance.setFocusedObject((IFocusable) target);
 		}
 	}
 	

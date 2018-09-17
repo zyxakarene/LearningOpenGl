@@ -1,6 +1,7 @@
 package zyx.engine.components.screen;
 
 import org.lwjgl.util.vector.Vector4f;
+import zyx.engine.curser.GameCursor;
 import zyx.engine.utils.ClickDispatcher;
 import zyx.engine.utils.callbacks.CustomCallback;
 
@@ -41,6 +42,7 @@ public class Button extends InteractableContainer
 		downImg.visible = false;
 		
 		buttonMode = true;
+		hoverIcon = GameCursor.HAND;
 	}
 
 	public void setColor(Vector4f color)

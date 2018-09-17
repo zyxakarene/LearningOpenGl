@@ -4,6 +4,7 @@ import java.util.HashMap;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Cursor;
 import org.lwjgl.input.Mouse;
+import zyx.utils.cheats.Print;
 import zyx.utils.exceptions.Msg;
 
 public class CursorManager
