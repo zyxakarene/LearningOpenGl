@@ -173,5 +173,4 @@ public class DisplayObjectContainer extends DisplayObject
 		children.clear();
 		children = null;
 	}
-
 }

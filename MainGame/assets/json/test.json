@@ -1,0 +1,33 @@
+{
+	"name":"test_container",
+	"type":"container",
+	"children":
+	[
+		{
+			"name":"test_image_1",
+			"type":"image",
+			"x":100,
+			"texture":"sample"
+		},
+		{
+			"name":"test_image_2",
+			"type":"image",
+			"x":200,
+			"texture":"BtnDown"
+		},
+		{
+			"name":"test_image_3",
+			"type":"image",
+			"x":100,
+			"y":50,
+			"texture":"BtnHover"
+		},
+		{
+			"name":"test_image_4",
+			"type":"image",
+			"x":50,
+			"y":100,
+			"texture":"BtnUp"
+		}
+	]
+}

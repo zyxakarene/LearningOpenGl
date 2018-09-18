@@ -10,6 +10,7 @@ import zyx.engine.scene.Scene;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.components.MeshObject;
 import zyx.game.components.screen.AddBitmapFontButton;
+import zyx.game.components.screen.hud.MainHud;
 import zyx.game.controls.input.KeyboardData;
 import zyx.utils.FloatMath;
 import zyx.utils.cheats.Print;
@@ -64,6 +65,8 @@ public class TestScene extends Scene implements ICallback<InteractableContainer>
 		image1.setPosition(true, 0, 0);
 		image2.setPosition(true, 50, 50);
 		image2.setRotation(45);
+		
+		stage.addChild(new MainHud());
 	}
 
 	private float scaleX = 1;

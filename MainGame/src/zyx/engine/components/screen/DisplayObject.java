@@ -39,6 +39,8 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	public boolean focusable;
 	public boolean disposed;
 
+	public String name;
+	
 	GameCursor hoverIcon;
 	
 	protected final ScreenShader shader;

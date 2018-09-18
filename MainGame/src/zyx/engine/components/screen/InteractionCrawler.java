@@ -36,6 +36,11 @@ class InteractionCrawler
 			{
 				childContainer = (DisplayObjectContainer) child;
 				childContainer.getChildren(objects);
+				
+				if (((DisplayObjectContainer) child).focusable == false)
+				{
+					continue;
+				}
 			}
 			
 			hit = child.hitTest(x, y);

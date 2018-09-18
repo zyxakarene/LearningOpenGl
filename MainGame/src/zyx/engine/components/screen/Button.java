@@ -42,6 +42,7 @@ public class Button extends InteractableContainer
 		downImg.visible = false;
 		
 		buttonMode = true;
+		focusable = true;
 		hoverIcon = GameCursor.HAND;
 	}
 
