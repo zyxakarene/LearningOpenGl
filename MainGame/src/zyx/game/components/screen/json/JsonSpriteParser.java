@@ -2,6 +2,7 @@ package zyx.game.components.screen.json;
 
 import org.json.simple.JSONObject;
 import zyx.engine.components.screen.Image;
+import zyx.engine.components.screen.Scale9Image;
 
 class JsonSpriteParser
 {
@@ -12,6 +13,7 @@ class JsonSpriteParser
 
 	private static final String TYPE_CONTAINER = "container";
 	private static final String TYPE_IMAGE = "image";
+	private static final String TYPE_SCALE_9_IMAGE = "scale9image";
 
 	static JsonSpriteParser getInstance()
 	{
@@ -39,6 +41,9 @@ class JsonSpriteParser
 			case TYPE_IMAGE:
 				createImage(parent, json);
 				break;
+			case TYPE_SCALE_9_IMAGE:
+				createScale9Image(parent, json);
+				break;
 			default:
 				throw new AssertionError();
 		}
@@ -56,5 +61,13 @@ class JsonSpriteParser
 		parent.addChild(image);
 		
 		new JsonImageConsumer().consume(image, json);
+	}
+
+	private void createScale9Image(JsonSprite parent, JSONObject json)
+	{
+		Scale9Image image = new Scale9Image();
+		parent.addChild(image);
+		
+		new JsonScale9ImageConsumer().consume(image, json);
 	}
 }

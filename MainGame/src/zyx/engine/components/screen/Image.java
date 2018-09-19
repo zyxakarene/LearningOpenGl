@@ -24,7 +24,7 @@ public class Image extends AbstractQuad implements IResourceReady<TextureResourc
 	public Image()
 	{
 		setColor(1, 1, 1);
-		
+
 		onLoaded = new CustomCallback<>(true);
 	}
 
@@ -35,18 +35,28 @@ public class Image extends AbstractQuad implements IResourceReady<TextureResourc
 		textureResource = ResourceManager.getInstance().getResource(resource);
 		textureResource.registerAndLoad(this);
 	}
-	
+
 	@Override
 	public void onResourceReady(TextureResource resource)
 	{
 		GameTexture texture = resource.getContent();
 
 		model = new ScreenModel(texture, texture.getWidth(), texture.getHeight(), colors);
+		onModelCreated();
 
-		loaded = true;
-		originalWidth = getWidth();
-		originalHeight = getHeight();
+		onLoaded.dispatch(this);
+	}
 
+	public void setTexture(GameTexture texture)
+	{
+		if (model != null)
+		{
+			model.dispose();
+		}
+
+		model = new ScreenModel(texture, texture.getWidth(), texture.getHeight(), colors);
+		onModelCreated();
+		
 		onLoaded.dispatch(this);
 	}
 

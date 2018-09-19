@@ -13,6 +13,8 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 	protected static final String CHILDREN = "children";
 	protected static final String X = "x";
 	protected static final String Y = "y";
+	protected static final String WIDTH = "width";
+	protected static final String HEIGHT = "height";
 
 	protected T currentDisplayObject;
 
@@ -32,6 +34,12 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 				break;
 			case Y:
 				currentDisplayObject.setY(toFloat(value));
+				break;
+			case WIDTH:
+				currentDisplayObject.setWidth(toFloat(value));
+				break;
+			case HEIGHT:
+				currentDisplayObject.setHeight(toFloat(value));
 				break;
 			case NAME:
 				currentDisplayObject.name = value.toString();

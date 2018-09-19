@@ -19,7 +19,7 @@ public abstract class AbstractTexture implements IDisposeable
 	{
 		this(null, name);
 	}
-	
+
 	AbstractTexture(Rectangle rect, String name)
 	{
 		if (rect == null)
@@ -28,13 +28,13 @@ public abstract class AbstractTexture implements IDisposeable
 		}
 
 		this.name = name;
-		
+
 		x = rect.x;
 		y = rect.y;
 		u = rect.width;
 		v = rect.height;
 	}
-	
+
 	protected final void setSizes(float w, float h)
 	{
 		width = w;
@@ -51,19 +51,32 @@ public abstract class AbstractTexture implements IDisposeable
 		return height;
 	}
 
+	public String getName()
+	{
+		return name;
+	}
+	
 	public final void bind()
 	{
 		TextureBinder.bind(this);
 	}
-	
+
 	@Override
 	public final void dispose()
 	{
 		TextureBinder.dispose(this);
-		
+
 		onDispose();
 	}
 
 	abstract protected void onBind();
+
 	abstract protected void onDispose();
+
+	@Override
+	public String toString()
+	{
+		return String.format("Texture{%s}", name);
+	}
+
 }

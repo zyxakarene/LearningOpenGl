@@ -6,6 +6,10 @@ public class Rectangle
 	public float x, y;
 	public float width, height;
 
+	public Rectangle()
+	{
+	}
+	
 	public Rectangle(float x, float y, float width, float height)
 	{
 		this.x = x;
