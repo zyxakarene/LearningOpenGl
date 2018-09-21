@@ -1,10 +1,10 @@
-package zyx.opengl.textures.bitmapfont;
+package zyx.utils;
 
 import java.util.*;
 
-class FontUtils
+public class ListUtils
 {
-	static float[] toFloatArray(List<Float> list)
+	public static float[] toFloatArray(List<Float> list)
 	{
 		int len = list.size();
 		float[] result = new float[len];
@@ -28,7 +28,7 @@ class FontUtils
 		return result;
 	}
 	
-	static int[] toIntArray(List<Integer> list)
+	public static int[] toIntArray(List<Integer> list)
 	{
 		int len = list.size();
 		int[] result = new int[len];

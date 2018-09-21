@@ -3,8 +3,6 @@ package zyx.opengl.textures;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
-import org.newdawn.slick.opengl.Texture;
-import zyx.opengl.GLUtils;
 import zyx.opengl.textures.impl.SolidColorTexture;
 
 public class ColorTexture extends AbstractTexture
@@ -16,10 +14,15 @@ public class ColorTexture extends AbstractTexture
 
 	public ColorTexture(int color)
 	{
+		this(color, 2, 2);
+	}
+	
+	public ColorTexture(int color, float width, float height)
+	{
 		super("ColorTexture_0x" + Integer.toString(color, 16));
 		
 		texture = new SolidColorTexture(color);
-		setSizes(texture.getImageWidth(), texture.getImageHeight());
+		setSizes(width, height);
 	}
 
 	@Override

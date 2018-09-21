@@ -5,11 +5,11 @@
 	[
 		{
 			"name":"test_image_1",
-			"type":"image",
+			"type":"scale9image",
 			"x":100,
 			"y":100,
-			"width":160,
-			"height":160,
+			"width":500,
+			"height":500,
 			"texture":"flat_bg"
 		}
 	]

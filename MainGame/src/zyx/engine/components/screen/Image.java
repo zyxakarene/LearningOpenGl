@@ -41,7 +41,10 @@ public class Image extends AbstractQuad implements IResourceReady<TextureResourc
 	{
 		GameTexture texture = resource.getContent();
 
-		model = new ScreenModel(texture, texture.getWidth(), texture.getHeight(), colors);
+		model = new ScreenModel(texture, colors);
+		model.addVertexData(0, 0, texture);
+		model.buildModel();
+		
 		onModelCreated();
 
 		onLoaded.dispatch(this);
@@ -54,7 +57,10 @@ public class Image extends AbstractQuad implements IResourceReady<TextureResourc
 			model.dispose();
 		}
 
-		model = new ScreenModel(texture, texture.getWidth(), texture.getHeight(), colors);
+		model = new ScreenModel(texture, colors);
+		model.addVertexData(0, 0, texture);
+		model.buildModel();
+		
 		onModelCreated();
 		
 		onLoaded.dispatch(this);
