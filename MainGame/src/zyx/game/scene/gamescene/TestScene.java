@@ -17,13 +17,16 @@ import zyx.utils.cheats.Print;
 
 public class TestScene extends Scene implements ICallback<InteractableContainer>
 {
-	
+
 	private Image image1;
 	private Image image2;
 	private DisplayObjectContainer container;
-	
+
 	private Button button;
-	
+
+	private float scaleX = 1;
+	private float scaleY = 1;
+
 	private ArrayList<MeshObject> objects;
 
 	public TestScene()
@@ -44,34 +47,35 @@ public class TestScene extends Scene implements ICallback<InteractableContainer>
 			world.addChild(model);
 			objects.add(model);
 		}
-		
+
 		button = new AddBitmapFontButton("BtnUp", "BtnHover", "BtnDown");
 		stage.addChild(button);
-		
+
 		button.onButtonClicked.addCallback(this);
-		
+
 		container = new DisplayObjectContainer();
 		image1 = new Image();
 		image2 = new Image();
-		
+
 		image1.load("sample");
 		image2.load("sample");
-		
+
 		stage.addChild(container);
 		container.addChild(image1);
 		container.addChild(image2);
-		
+
 		container.setPosition(true, 200, 200);
 		image1.setPosition(true, 0, 0);
 		image2.setPosition(true, 50, 50);
 		image2.setRotation(45);
-		
-		stage.addChild(new MainHud());
 	}
 
-	private float scaleX = 1;
-	private float scaleY = 1;
-	
+	@Override
+	protected MainHud createHud()
+	{
+		return new MainHud();
+	}
+
 	@Override
 	protected void onUpdate(long timestamp, int elapsedTime)
 	{
@@ -82,16 +86,14 @@ public class TestScene extends Scene implements ICallback<InteractableContainer>
 			image1.setScale(scaleX, scaleY);
 			image1.setWidth(image1.getWidth());
 			Print.out(image1.getWidth());
-			
-			
-			
+
 		}
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_SUBTRACT))
 		{
 			scaleX--;
 			image1.setScale(scaleX, scaleY);
 		}
-		
+
 		for (MeshObject object : objects)
 		{
 			object.update(timestamp, elapsedTime);
@@ -105,16 +107,16 @@ public class TestScene extends Scene implements ICallback<InteractableContainer>
 		{
 			object.dispose();
 		}
-		
+
 		button.dispose();
 		button = null;
-		
+
 		objects.clear();
 		objects = null;
-		
+
 		image1.dispose();
 		image1 = null;
-		
+
 		image2.dispose();
 		image2 = null;
 	}
@@ -122,7 +124,7 @@ public class TestScene extends Scene implements ICallback<InteractableContainer>
 	@Override
 	public void onCallback(InteractableContainer data)
 	{
-		
+
 	}
-	
+
 }

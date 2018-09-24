@@ -53,6 +53,12 @@ public class DisplayObjectContainer extends DisplayObject
 		numChildren++;
 	}
 
+	public boolean removeChild(int index)
+	{
+		DisplayObject child = children.get(index);
+		return removeChild(child);
+	}
+
 	public boolean removeChild(DisplayObject child)
 	{
 		if(child.getParent() == this)
@@ -69,6 +75,19 @@ public class DisplayObjectContainer extends DisplayObject
 			String msg = String.format("Cannot remove child %s when its parent %s != this %s", child, child.getParent(), this);
 			throw new RuntimeException(msg);
 		}
+	}
+	
+	public void removeChildren(boolean dispose)
+	{
+		int len = children.size();
+		DisplayObject child;
+		for (int i = 0; i < len; i++)
+		{
+			child = children.get(i);
+			removeChild(child);
+		}
+		
+		children.clear();
 	}
 
 	public int numChilren()

@@ -1,7 +1,6 @@
 package zyx.game.components.screen.json;
 
 import java.util.function.BiConsumer;
-import static jdk.nashorn.internal.runtime.JSType.toNumber;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import zyx.engine.components.screen.DisplayObject;
@@ -15,6 +14,7 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 	protected static final String Y = "y";
 	protected static final String WIDTH = "width";
 	protected static final String HEIGHT = "height";
+	protected static final String ROTATION = "rotation";
 
 	protected T currentDisplayObject;
 
@@ -43,6 +43,9 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 				break;
 			case NAME:
 				currentDisplayObject.name = value.toString();
+				break;
+			case ROTATION:
+				currentDisplayObject.setRotation(toFloat(value));
 				break;
 			case CHILDREN:
 				JsonSprite container = (JsonSprite) currentDisplayObject;

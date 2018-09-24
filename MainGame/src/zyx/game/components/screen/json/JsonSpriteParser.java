@@ -1,6 +1,7 @@
 package zyx.game.components.screen.json;
 
 import org.json.simple.JSONObject;
+import zyx.engine.components.screen.AbstractQuad;
 import zyx.engine.components.screen.Image;
 import zyx.engine.components.screen.Scale9Image;
 
@@ -39,10 +40,10 @@ class JsonSpriteParser
 				getOrCreateContainer(parent, json);
 				break;
 			case TYPE_IMAGE:
-				createImage(parent, json);
+				createImage(parent, json, false);
 				break;
 			case TYPE_SCALE_9_IMAGE:
-				createScale9Image(parent, json);
+				createImage(parent, json, true);
 				break;
 			default:
 				throw new AssertionError();
@@ -55,19 +56,20 @@ class JsonSpriteParser
 		new JsonContainerConsumer().consume(child, json);
 	}
 
-	private void createImage(JsonSprite parent, JSONObject json)
+	private void createImage(JsonSprite parent, JSONObject json, boolean scale9)
 	{
-		Image image = new Image();
+		AbstractQuad image;
+		if (scale9)
+		{
+			image = new Scale9Image();
+		}
+		else
+		{
+			image = new Image();
+		}
+
 		parent.addChild(image);
 		
 		new JsonImageConsumer().consume(image, json);
-	}
-
-	private void createScale9Image(JsonSprite parent, JSONObject json)
-	{
-		Scale9Image image = new Scale9Image();
-		parent.addChild(image);
-		
-		new JsonScale9ImageConsumer().consume(image, json);
 	}
 }

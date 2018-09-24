@@ -6,7 +6,6 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.curser.GameCursor;
 import zyx.game.controls.SharedPools;
-import zyx.game.controls.input.MouseData;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.ScreenShader;
@@ -125,6 +124,10 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		if (parent != null && parent.stage != null)
 		{
 			stage = parent.stage;
+		}
+		else
+		{
+			stage = null;
 		}
 		
 		this.parent = parent;

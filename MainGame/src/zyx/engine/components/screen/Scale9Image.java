@@ -6,14 +6,13 @@ import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.Resource;
 import zyx.engine.resources.impl.TextureResource;
-import zyx.opengl.GLUtils;
 import zyx.opengl.models.implementations.ScreenModel;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.GameTexture;
 import zyx.utils.geometry.Rectangle;
 import zyx.utils.math.Scale9Texture;
 
-public class Scale9Image extends AbstractQuad implements IResourceReady<TextureResource>
+public class Scale9Image extends AbstractQuad implements IResourceReady<TextureResource>, ILoadable
 {
 
 	private Resource textureResource;
@@ -27,6 +26,7 @@ public class Scale9Image extends AbstractQuad implements IResourceReady<TextureR
 		scaleY = 1;
 	}
 
+	@Override
 	public void load(String resource)
 	{
 		textureResource = ResourceManager.getInstance().getResource(resource);
@@ -99,10 +99,10 @@ public class Scale9Image extends AbstractQuad implements IResourceReady<TextureR
 		GameTexture lowRightTexture = textureMap.get(Scale9Texture.LOWER_RIGHT);
 		
 		float colLeftWidth = topLeftTexture.getWidth();
-		float colMidWidth = topMidTexture.getWidth();
+		float colMidWidth;
 		float colRightWidth = topRightTexture.getWidth();
 		float rowTopHeight = topLeftTexture.getHeight();
-		float rowMidHeight = midLeftTexture.getHeight();
+		float rowMidHeight;
 		float rowLowHeight = lowLeftTexture.getHeight();
 
 		if(colLeftWidth + colRightWidth > width)
@@ -142,8 +142,6 @@ public class Scale9Image extends AbstractQuad implements IResourceReady<TextureR
 		model.addVertexData(0, rowTopHeight + rowMidHeight, colLeftWidth, rowLowHeight, lowLeftTexture);
 		model.addVertexData(colLeftWidth, rowTopHeight + rowMidHeight, colMidWidth, rowLowHeight, lowMidTexture);
 		model.addVertexData(colLeftWidth + colMidWidth, rowTopHeight + rowMidHeight, colRightWidth, rowLowHeight, lowRightTexture);
-
-		GLUtils.errorCheck();
 		
 		model.buildModel();
 	}

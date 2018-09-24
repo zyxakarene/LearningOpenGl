@@ -10,7 +10,7 @@ import zyx.opengl.models.implementations.ScreenModel;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.textures.GameTexture;
 
-public class Image extends AbstractQuad implements IResourceReady<TextureResource>
+public class Image extends AbstractQuad implements IResourceReady<TextureResource>, ILoadable
 {
 
 	protected static final Vector4f COLORS = SharedShaderObjects.SHARED_VECTOR_4F;
@@ -28,6 +28,7 @@ public class Image extends AbstractQuad implements IResourceReady<TextureResourc
 		onLoaded = new CustomCallback<>(true);
 	}
 
+	@Override
 	public void load(String resource)
 	{
 		this.resource = resource;

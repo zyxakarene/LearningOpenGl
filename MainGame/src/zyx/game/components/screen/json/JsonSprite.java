@@ -5,12 +5,11 @@ import zyx.engine.components.screen.DisplayObjectContainer;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.JsonResource;
+import zyx.utils.interfaces.IUpdateable;
 
-public class JsonSprite extends DisplayObjectContainer implements IResourceReady<JsonResource>
+public class JsonSprite extends DisplayObjectContainer implements IResourceReady<JsonResource>, IUpdateable
 {
 	private JsonResource resource;
-	
-	public String name;
 	
 	public JsonSprite()
 	{
@@ -34,6 +33,11 @@ public class JsonSprite extends DisplayObjectContainer implements IResourceReady
 		JsonSpriteParser.getInstance().createSpriteFrom(this, content);
 	}
 
+	@Override
+	public void update(long timestamp, int elapsedTime)
+	{
+	}
+	
 	@Override
 	public final void dispose()
 	{

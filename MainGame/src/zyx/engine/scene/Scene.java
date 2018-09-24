@@ -10,6 +10,7 @@ import zyx.game.controls.MegaManager;
 import zyx.opengl.GLUtils;
 import zyx.utils.interfaces.IPhysbox;
 import zyx.engine.utils.worldpicker.IHoveredItem;
+import zyx.game.components.screen.hud.MainHud;
 import zyx.game.controls.input.MouseData;
 import zyx.utils.cheats.DebugContainer;
 
@@ -22,6 +23,8 @@ public class Scene
 	protected Stage stage;
 	protected World3D world;
 	protected CameraController camera;
+	
+	protected MainHud hud;
 
 	public Scene()
 	{
@@ -47,6 +50,11 @@ public class Scene
 	final void initialize()
 	{
 		world.addChild(debugContainer);
+		hud = createHud();
+		if (hud != null)
+		{
+			stage.addChild(hud);
+		}
 		
 		onInitialize();
 	}
@@ -61,6 +69,11 @@ public class Scene
 		debugContainer.update(timestamp, elapsedTime);
 		picker.update();
 
+		if (hud != null)
+		{
+			hud.update(timestamp, elapsedTime);
+		}
+		
 		MegaManager.update(timestamp, elapsedTime);
 		camera.update(timestamp, elapsedTime);
 		onUpdate(timestamp, elapsedTime);
@@ -88,7 +101,12 @@ public class Scene
 	protected void onUpdate(long timestamp, int elapsedTime)
 	{
 	}
-
+	
+	protected MainHud createHud()
+	{
+		return null;
+	}
+	
 	protected void onDraw()
 	{
 	}
@@ -107,6 +125,12 @@ public class Scene
 
 		onDispose();
 
+		if (hud != null)
+		{
+			hud.dispose();
+			hud = null;
+		}
+		
 		stage = null;
 		world = null;
 		camera = null;
