@@ -3,6 +3,7 @@ package zyx.opengl.models.implementations;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.models.AbstractModel;
+import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.models.SharedWorldModelTransformation;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.opengl.shaders.implementations.Shader;
@@ -37,6 +38,12 @@ public class WorldModel extends AbstractModel
 		setTexture(vo.gameTexture);
 	}
 
+	@Override
+	protected boolean canDraw()
+	{
+		return DebugDrawCalls.canDrawWorld();
+	}
+	
 	public Joint getAttatchment(String name)
 	{
 		return skeleton.getBoneByName(name);

@@ -85,18 +85,21 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 	{
 		if (elementCount > 0)
 		{
-			meshShader.bind();
+			if (canDraw())
+			{
+				meshShader.bind();
 
-			if (overwriteTexture != null)
-			{
-				overwriteTexture.bind();
+				if (overwriteTexture != null)
+				{
+					overwriteTexture.bind();
+				}
+				else if (texture != null)
+				{
+					texture.bind();
+				}
+
+				ModelUtils.drawElements(vao, elementCount);
 			}
-			else if (texture != null)
-			{
-				texture.bind();
-			}
-			
-			ModelUtils.drawElements(vao, elementCount);
 		}
 	}
 
@@ -116,6 +119,11 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 		ModelUtils.disposeVertexArray(vao);
 		
 		texture = null;
+	}
+
+	protected boolean canDraw()
+	{
+		return true;
 	}
 
 }

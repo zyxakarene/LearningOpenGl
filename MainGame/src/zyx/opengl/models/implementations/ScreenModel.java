@@ -6,6 +6,7 @@ import org.lwjgl.util.vector.Vector4f;
 import zyx.game.controls.SharedPools;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.models.BufferWrapper;
+import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.ScreenShader;
 import zyx.opengl.textures.AbstractTexture;
@@ -34,6 +35,12 @@ public class ScreenModel extends AbstractModel
 		colors.set(color);
 
 		setTexture(texture);
+	}
+	
+	@Override
+	protected boolean canDraw()
+	{
+		return DebugDrawCalls.canDrawUi();
 	}
 	
 	public void buildModel()
