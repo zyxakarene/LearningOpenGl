@@ -68,8 +68,8 @@ class JsonSpriteParser
 			image = new Image();
 		}
 
-		parent.addChild(image);
-		
 		new JsonImageConsumer().consume(image, json);
+		
+		parent.addChild(image);
 	}
 }

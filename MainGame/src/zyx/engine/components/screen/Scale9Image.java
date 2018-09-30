@@ -145,4 +145,22 @@ public class Scale9Image extends AbstractQuad implements IResourceReady<TextureR
 		
 		model.buildModel();
 	}
+
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+		
+		if (textureResource != null)
+		{
+			textureResource.unregister(this);
+			textureResource = null;
+		}
+	}
+	
+	@Override
+	public String toString()
+	{
+		return String.format("Scale9Image{%s}", textureResource);
+	}
 }

@@ -21,6 +21,13 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 	final void consume(T container, JSONObject json)
 	{
 		currentDisplayObject = container;
+		
+		if (json.containsKey(NAME))
+		{
+			String name = json.get(NAME).toString();
+			currentDisplayObject.name = name;
+		}
+		
 		json.forEach(this);
 	}
 	
@@ -40,9 +47,6 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 				break;
 			case HEIGHT:
 				currentDisplayObject.setHeight(toFloat(value));
-				break;
-			case NAME:
-				currentDisplayObject.name = value.toString();
 				break;
 			case ROTATION:
 				currentDisplayObject.setRotation(toFloat(value));

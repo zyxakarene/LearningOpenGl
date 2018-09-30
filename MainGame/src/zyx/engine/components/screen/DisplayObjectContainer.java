@@ -51,6 +51,8 @@ public class DisplayObjectContainer extends DisplayObject
 		
 		children.add(child);
 		numChildren++;
+		
+		childAdded(child);
 	}
 
 	public boolean removeChild(int index)
@@ -67,6 +69,8 @@ public class DisplayObjectContainer extends DisplayObject
 			numChildren--;
 			
 			child.setParent(null);
+			
+			childRemoved(child);
 			
 			return true;
 		}
@@ -191,5 +195,37 @@ public class DisplayObjectContainer extends DisplayObject
 
 		children.clear();
 		children = null;
+	}
+	
+	protected final void childAdded(DisplayObject child)
+	{
+		DisplayObjectContainer parent = getParent();
+		if (parent != null)
+		{
+			parent.childAdded(child);
+		}
+		
+		onChildAdded(child);
+	}
+	
+	protected final void childRemoved(DisplayObject child)
+	{
+		DisplayObjectContainer parent = getParent();
+		if (parent != null)
+		{
+			parent.childRemoved(child);
+		}
+		
+		onChildRemoved(child);
+	}
+	
+	protected void onChildAdded(DisplayObject child)
+	{
+		
+	}
+	
+	protected void onChildRemoved(DisplayObject child)
+	{
+		
 	}
 }
