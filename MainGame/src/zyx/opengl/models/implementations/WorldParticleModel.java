@@ -6,6 +6,7 @@ import zyx.engine.components.world.WorldObject;
 import zyx.opengl.models.AbstractInstancedModel;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.WorldParticleShader;
+import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.FloatMath;
 
 public class WorldParticleModel extends AbstractInstancedModel implements IParticleModel
@@ -28,12 +29,14 @@ public class WorldParticleModel extends AbstractInstancedModel implements IParti
 		this.vo = vo;
 		this.shader = (WorldParticleShader) meshShader;
 
+		AbstractTexture t = vo.gameTexture;
+		
 		float[] vertexData =
 		{
-		   -0.5f,  0.5f, 0, 1, // Top-left
-			0.5f,  0.5f, 1, 1, // Top-right
-			0.5f, -0.5f, 1, 0, // Bottom-right
-		   -0.5f, -0.5f, 0, 0  // Bottom-left
+		   -0.5f,  0.5f, t.x, t.y, // Top-left
+			0.5f,  0.5f, t.u, t.y, // Top-right
+			0.5f, -0.5f, t.u, t.v, // Bottom-right
+		   -0.5f, -0.5f, t.x, t.v  // Bottom-left
 		};
 		
 		int[] elementData = 
