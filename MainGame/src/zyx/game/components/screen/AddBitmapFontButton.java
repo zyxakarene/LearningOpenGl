@@ -10,16 +10,23 @@ import zyx.net.io.responses.ResponseDispatcher;
 import zyx.net.io.responses.ResponseManager;
 import zyx.utils.FloatMath;
 
-public class AddBitmapFontButton extends Button implements ICallback<InteractableContainer>
+public class AddBitmapFontButton extends Button
 {
 
 	private Textfield field;
+	
+	private ICallback<InteractableContainer> btnClick;
 
-	public AddBitmapFontButton(String upTexture, String hoverTexture, String downTexture)
+	public AddBitmapFontButton()
 	{
-		super(upTexture, hoverTexture, downTexture);
+		super(false);
 
-		onButtonClicked.addCallback(this);
+		btnClick = (InteractableContainer data) ->
+		{
+			onBtnClicked();
+		};
+		
+		onButtonClicked.addCallback(btnClick);
 
 		ResponseDispatcher serverDispatcher = new ResponseDispatcher();
 		serverDispatcher.addResponseCallback("login", new LoginResponse());
@@ -41,8 +48,7 @@ public class AddBitmapFontButton extends Button implements ICallback<Interactabl
 		
 	}
 
-	@Override
-	public void onCallback(InteractableContainer ref)
+	private void onBtnClicked()
 	{
 //		WriteableDataObject data = new WriteableDataObject();
 //		data.addString("name", "Zyx");

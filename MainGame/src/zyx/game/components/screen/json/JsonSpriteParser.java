@@ -1,7 +1,10 @@
 package zyx.game.components.screen.json;
 
 import org.json.simple.JSONObject;
-import zyx.engine.components.screen.AbstractQuad;
+import zyx.engine.components.screen.AbstractImage;
+import zyx.engine.components.screen.Button;
+import zyx.engine.components.screen.Checkbox;
+import zyx.engine.components.screen.DisplayObject;
 import zyx.engine.components.screen.Image;
 import zyx.engine.components.screen.Scale9Image;
 
@@ -15,6 +18,10 @@ class JsonSpriteParser
 	private static final String TYPE_CONTAINER = "container";
 	private static final String TYPE_IMAGE = "image";
 	private static final String TYPE_SCALE_9_IMAGE = "scale9image";
+	private static final String TYPE_BUTTON = "button";
+	private static final String TYPE_SCALE_9_BUTTON = "scale9button";
+	private static final String TYPE_CHECKBOX = "checkbox";
+	private static final String TYPE_SCALE_9_CHECKBOX = "scale9checkbox";
 
 	static JsonSpriteParser getInstance()
 	{
@@ -45,8 +52,20 @@ class JsonSpriteParser
 			case TYPE_SCALE_9_IMAGE:
 				createImage(parent, json, true);
 				break;
+			case TYPE_BUTTON:
+				createButton(parent, json, false);
+				break;
+			case TYPE_SCALE_9_BUTTON:
+				createButton(parent, json, true);
+				break;
+			case TYPE_CHECKBOX:
+				createCheckbox(parent, json, false);
+				break;
+			case TYPE_SCALE_9_CHECKBOX:
+				createCheckbox(parent, json, true);
+				break;
 			default:
-				throw new AssertionError();
+				throw new AssertionError("Unknown type:" + type);
 		}
 	}
 
@@ -58,7 +77,7 @@ class JsonSpriteParser
 
 	private void createImage(JsonSprite parent, JSONObject json, boolean scale9)
 	{
-		AbstractQuad image;
+		AbstractImage image;
 		if (scale9)
 		{
 			image = new Scale9Image();
@@ -71,5 +90,23 @@ class JsonSpriteParser
 		new JsonImageConsumer().consume(image, json);
 		
 		parent.addChild(image);
+	}
+
+	private void createButton(JsonSprite parent, JSONObject json, boolean scale9)
+	{
+		Button button = new Button(scale9);
+
+		new JsonButtonConsumer().consume(button, json);
+		
+		parent.addChild(button);
+	}
+
+	private void createCheckbox(JsonSprite parent, JSONObject json, boolean scale9)
+	{
+		Checkbox checkbox = new Checkbox(scale9);
+
+		new JsonCheckboxConsumer().consume(checkbox, json);
+		
+		parent.addChild(checkbox);
 	}
 }

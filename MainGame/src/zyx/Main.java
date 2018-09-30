@@ -320,11 +320,11 @@ public class Main
 
 		stage.addChild(image2);
 
-		AddBitmapFontButton btn = new AddBitmapFontButton("assets/textures/BtnUp.png", "assets/textures/BtnHover.png", "assets/textures/BtnDown.png");
+		AddBitmapFontButton btn = new AddBitmapFontButton();
 		btn.position.set(100, 200);
 		stage.addChild(btn);
 
-		Checkbox checkbox = new Checkbox("assets/textures/BtnUp.png", "assets/textures/BtnHover.png", "assets/textures/BtnDown.png", "assets/textures/Check.png");
+		Checkbox checkbox = new Checkbox(false);
 		checkbox.position.set(125, 220);
 		stage.addChild(checkbox);
 

@@ -1,13 +1,12 @@
 package zyx.game.components.screen.hud;
 
-import zyx.engine.components.screen.Scale9Image;
+import zyx.engine.components.screen.AbstractImage;
 import zyx.game.components.screen.json.JsonSprite;
-import zyx.utils.FloatMath;
 
 public class MainHud extends JsonSprite
 {
 
-	private Scale9Image image;
+	private AbstractImage image;
 	private float startX;
 
 	@Override
@@ -19,7 +18,7 @@ public class MainHud extends JsonSprite
 	@Override
 	protected void onInitialized()
 	{
-		 image = this.<Scale9Image>getComponentByName("test_image_1");
+		 image = this.<AbstractImage>getComponentByName("test_image_1");
 		 
 		 startX = image.getX();
 	}
@@ -29,7 +28,7 @@ public class MainHud extends JsonSprite
 	{
 		if (image != null)
 		{
-			image.setX(startX + (FloatMath.sin(timestamp / 100f) * 100));
+//			image.setX(startX + (FloatMath.sin(timestamp / 100f) * 100));
 		}
 	}
 

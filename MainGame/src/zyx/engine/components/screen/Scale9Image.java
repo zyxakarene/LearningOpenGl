@@ -3,22 +3,19 @@ package zyx.engine.components.screen;
 import java.util.HashMap;
 import org.lwjgl.util.vector.Vector2f;
 import zyx.engine.resources.IResourceReady;
-import zyx.engine.resources.ResourceManager;
-import zyx.engine.resources.impl.Resource;
 import zyx.engine.resources.impl.TextureResource;
 import zyx.opengl.models.implementations.ScreenModel;
-import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.GameTexture;
 import zyx.utils.geometry.Rectangle;
 import zyx.utils.math.Scale9Texture;
 
-public class Scale9Image extends AbstractQuad implements IResourceReady<TextureResource>, ILoadable
+public class Scale9Image extends AbstractImage implements IResourceReady<TextureResource>
 {
 
-	private Resource textureResource;
-	
 	private float scaleX;
 	private float scaleY;
+	
+	private GameTexture gameTexture;
 
 	public Scale9Image()
 	{
@@ -27,16 +24,9 @@ public class Scale9Image extends AbstractQuad implements IResourceReady<TextureR
 	}
 
 	@Override
-	public void load(String resource)
+	protected void onTextureResourceReady(GameTexture texture)
 	{
-		textureResource = ResourceManager.getInstance().getResource(resource);
-		textureResource.registerAndLoad(this);
-	}
-
-	@Override
-	public void onResourceReady(TextureResource resource)
-	{
-		AbstractTexture texture = resource.getContent();
+		gameTexture = texture;
 		
 		HELPER_VEC4.set(1, 1, 1, 1);
 		model = new ScreenModel(texture, HELPER_VEC4);
@@ -83,10 +73,9 @@ public class Scale9Image extends AbstractQuad implements IResourceReady<TextureR
 	{
 		model.prepareBatchCount(9);
 
-		GameTexture texture = (GameTexture) textureResource.getContent();
 		Rectangle grid = new Rectangle(25, 25, 14, 14);
 
-		HashMap<String, GameTexture> textureMap = Scale9Texture.ToScale9TextureMap(grid, texture);
+		HashMap<String, GameTexture> textureMap = Scale9Texture.ToScale9TextureMap(grid, gameTexture);
 
 		GameTexture topLeftTexture = textureMap.get(Scale9Texture.TOP_LEFT);
 		GameTexture topMidTexture = textureMap.get(Scale9Texture.TOP_MIDDLE);
@@ -151,16 +140,12 @@ public class Scale9Image extends AbstractQuad implements IResourceReady<TextureR
 	{
 		super.dispose();
 		
-		if (textureResource != null)
-		{
-			textureResource.unregister(this);
-			textureResource = null;
-		}
+		gameTexture = null;
 	}
 	
 	@Override
 	public String toString()
 	{
-		return String.format("Scale9Image{%s}", textureResource);
+		return String.format("Scale9Image{%s}", resource);
 	}
 }

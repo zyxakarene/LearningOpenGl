@@ -2,38 +2,48 @@ package zyx.engine.components.screen;
 
 import zyx.engine.utils.callbacks.ICallback;
 
-public class Checkbox extends Button implements ICallback<Image>
+public class Checkbox extends Button
 {
 
-	private Image checkImg;
+	private AbstractImage checkImg;
 	private boolean checked;
+	
+	private ICallback<AbstractImage> onCheckImageLoaded;
 
-	public Checkbox(String upTexture, String hoverTexture, String downTexture, String checkIcon)
+	public Checkbox(boolean scale9)
 	{
-		super(upTexture, hoverTexture, downTexture);
+		super(scale9);
 
+		onCheckImageLoaded = (AbstractImage data) ->
+		{
+			onCheckImageLoaded();
+		};
+		
 		checkImg = new Image();
-		checkImg.load(checkIcon);
-		if (checkImg.loaded)
-		{
-			onCallback(checkImg);
-		}
-		else
-		{
-			checkImg.onLoaded.addCallback(this);
-		}
+		checkImg.onLoaded.addCallback(onCheckImageLoaded);
 
 		addChild(checkImg);
-		checkImg.visible = false;
 
+		checkImg.visible = false;
 		checked = false;
 	}
 
-	@Override
-	public void onCallback(Image data)
+	public void loadCheckmark(String resource)
 	{
-		checkImg.position.x = (getWidth() / 2) - (checkImg.getWidth() / 2);
-		checkImg.position.y = (getHeight() / 2) - (checkImg.getHeight() / 2);
+		checkImg.load(resource);
+	}
+
+	private void onCheckImageLoaded()
+	{
+		if (originalWidth != 0)
+		{
+			checkImg.setWidth(originalWidth);
+		}
+		
+		if (originalHeight != 0)
+		{
+			checkImg.setHeight(originalHeight);
+		}
 	}
 
 	@Override

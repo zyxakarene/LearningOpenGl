@@ -2,53 +2,29 @@ package zyx.engine.components.screen;
 
 import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.resources.IResourceReady;
-import zyx.engine.resources.ResourceManager;
-import zyx.engine.resources.impl.Resource;
 import zyx.engine.resources.impl.TextureResource;
-import zyx.engine.utils.callbacks.CustomCallback;
 import zyx.opengl.models.implementations.ScreenModel;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.textures.GameTexture;
 
-public class Image extends AbstractQuad implements IResourceReady<TextureResource>, ILoadable
+public class Image extends AbstractImage implements IResourceReady<TextureResource>
 {
 
 	protected static final Vector4f COLORS = SharedShaderObjects.SHARED_VECTOR_4F;
 
-	private Resource textureResource;
-
-	private String resource;
-
-	public CustomCallback<Image> onLoaded;
-
 	public Image()
 	{
 		setColor(1, 1, 1);
-
-		onLoaded = new CustomCallback<>(true);
 	}
-
+	
 	@Override
-	public void load(String resource)
+	protected void onTextureResourceReady(GameTexture texture)
 	{
-		this.resource = resource;
-
-		textureResource = ResourceManager.getInstance().getResource(resource);
-		textureResource.registerAndLoad(this);
-	}
-
-	@Override
-	public void onResourceReady(TextureResource resource)
-	{
-		GameTexture texture = resource.getContent();
-
 		model = new ScreenModel(texture, colors);
 		model.addVertexData(0, 0, texture);
 		model.buildModel();
 		
 		onModelCreated();
-
-		onLoaded.dispatch(this);
 	}
 
 	public void setTexture(GameTexture texture)
@@ -63,8 +39,6 @@ public class Image extends AbstractQuad implements IResourceReady<TextureResourc
 		model.buildModel();
 		
 		onModelCreated();
-		
-		onLoaded.dispatch(this);
 	}
 
 	@Override
@@ -76,12 +50,6 @@ public class Image extends AbstractQuad implements IResourceReady<TextureResourc
 		{
 			model.dispose();
 			model = null;
-		}
-
-		if (textureResource != null)
-		{
-			textureResource.unregister(this);
-			textureResource = null;
 		}
 	}
 

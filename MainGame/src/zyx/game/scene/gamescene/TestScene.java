@@ -48,8 +48,9 @@ public class TestScene extends Scene implements ICallback<InteractableContainer>
 			objects.add(model);
 		}
 
-		button = new AddBitmapFontButton("BtnUp", "BtnHover", "BtnDown");
-		stage.addChild(button);
+		button = new AddBitmapFontButton();
+//		button.load("BtnUp", "BtnHover", "BtnDown");
+//		stage.addChild(button);
 
 		button.onButtonClicked.addCallback(this);
 
@@ -57,8 +58,8 @@ public class TestScene extends Scene implements ICallback<InteractableContainer>
 		image1 = new Image();
 		image2 = new Image();
 
-		image1.load("sample");
-		image2.load("sample");
+//		image1.load("sample");
+//		image2.load("sample");
 
 		stage.addChild(container);
 		container.addChild(image1);

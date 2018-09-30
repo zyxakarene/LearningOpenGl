@@ -1,9 +1,8 @@
 package zyx.game.components.screen.json;
 
-import zyx.engine.components.screen.AbstractQuad;
-import zyx.engine.components.screen.ILoadable;
+import zyx.engine.components.screen.AbstractImage;
 
-class JsonImageConsumer extends JsonBaseConsumer<AbstractQuad>
+class JsonImageConsumer extends JsonBaseConsumer<AbstractImage>
 {
 	protected static final String TEXTURE = "texture";
 
@@ -13,10 +12,7 @@ class JsonImageConsumer extends JsonBaseConsumer<AbstractQuad>
 		switch (name)
 		{
 			case TEXTURE:
-				if (currentDisplayObject instanceof ILoadable)
-				{
-					((ILoadable)currentDisplayObject).load(value.toString());
-				}
+					currentDisplayObject.load(value.toString());
 				break;
 			default:
 				super.onAccept(name, value);
