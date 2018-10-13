@@ -2,7 +2,7 @@ package zyx.game.components.screen.json;
 
 import zyx.engine.components.screen.AbstractImage;
 
-class JsonImageConsumer extends JsonBaseConsumer<AbstractImage>
+class JsonImageConsumer extends JsonQuadConsumer<AbstractImage>
 {
 	protected static final String TEXTURE = "texture";
 

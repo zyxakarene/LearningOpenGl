@@ -58,6 +58,31 @@
 			"height":100,
 			"texture":["BtnUp", "BtnHover", "BtnDown"],
 			"checkIcon":"texture.check"
+		},
+		{
+			"name":"percent_container",
+			"type":"container",
+			"percentWidth":1,
+			"percentHeight":1,
+			"children":
+			[
+				{
+					"name":"screen",
+					"type":"quad",
+					"x":0,
+					"y":0,
+					"width":100,
+					"height":100,
+					"color":"0xFFFFFF"
+				},
+				{
+					"name":"percent_image",
+					"type":"image",
+					"width":100,
+					"height"100,
+					"texture":"flat_bg"
+				}
+			]
 		}
 	]
 }

@@ -160,7 +160,9 @@ public class DisplayObjectContainer extends DisplayObject
 	{
 		getScale(true, HELPER_VEC2);
 		
-		setScale(value / getWidth(), HELPER_VEC2.y);
+		float scaleY = HELPER_VEC2.y;
+		
+		setScale(value / getWidth(), scaleY);
 	}
 
 	@Override
@@ -168,7 +170,9 @@ public class DisplayObjectContainer extends DisplayObject
 	{
 		getScale(true, HELPER_VEC2);
 		
-		setScale(HELPER_VEC2.x, value / getHeight());
+		float scaleX = HELPER_VEC2.x;
+		
+		setScale(scaleX, value / getHeight());
 	}
 
 	@Override

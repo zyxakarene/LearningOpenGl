@@ -3,17 +3,23 @@ package zyx.game.components.screen.json;
 import java.util.function.BiConsumer;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.screen.DisplayObject;
+import zyx.utils.GameConstants;
 
 class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Object>
 {
 
+	protected static final Vector3f HELPER_VECTOR = new Vector3f();
+	
 	protected static final String NAME = "name";
 	protected static final String CHILDREN = "children";
 	protected static final String X = "x";
 	protected static final String Y = "y";
 	protected static final String WIDTH = "width";
 	protected static final String HEIGHT = "height";
+	protected static final String PERCENT_WIDTH = "percentWidth";
+	protected static final String PERCENT_HEIGHT = "percentHeight";
 	protected static final String ROTATION = "rotation";
 
 	protected T currentDisplayObject;
@@ -29,6 +35,8 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 		}
 		
 		json.forEach(this);
+		
+		onPostConsume(json);
 	}
 	
 	@Override
@@ -85,5 +93,21 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 	
 	protected void onAccept(String name, Object value)
 	{
+	}
+
+	protected void onPostConsume(JSONObject json)
+	{
+		Object percentWidth = json.get(PERCENT_WIDTH);
+		Object percentHeight = json.get(PERCENT_HEIGHT);
+		
+		if (percentWidth != null)
+		{
+			currentDisplayObject.setWidth(toFloat(percentWidth) * GameConstants.GAME_WIDTH);
+		}
+		
+		if(percentHeight != null)
+		{
+			currentDisplayObject.setHeight(toFloat(percentHeight) * GameConstants.GAME_HEIGHT);
+		}
 	}
 }

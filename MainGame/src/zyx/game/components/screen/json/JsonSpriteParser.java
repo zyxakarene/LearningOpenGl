@@ -1,12 +1,7 @@
 package zyx.game.components.screen.json;
 
 import org.json.simple.JSONObject;
-import zyx.engine.components.screen.AbstractImage;
-import zyx.engine.components.screen.Button;
-import zyx.engine.components.screen.Checkbox;
-import zyx.engine.components.screen.DisplayObject;
-import zyx.engine.components.screen.Image;
-import zyx.engine.components.screen.Scale9Image;
+import zyx.engine.components.screen.*;
 
 class JsonSpriteParser
 {
@@ -16,6 +11,7 @@ class JsonSpriteParser
 	private static final String TYPE = "type";
 
 	private static final String TYPE_CONTAINER = "container";
+	private static final String TYPE_QUAD = "quad";
 	private static final String TYPE_IMAGE = "image";
 	private static final String TYPE_SCALE_9_IMAGE = "scale9image";
 	private static final String TYPE_BUTTON = "button";
@@ -64,6 +60,9 @@ class JsonSpriteParser
 			case TYPE_SCALE_9_CHECKBOX:
 				createCheckbox(parent, json, true);
 				break;
+			case TYPE_QUAD:
+				createQuad(parent, json);
+				break;
 			default:
 				throw new AssertionError("Unknown type:" + type);
 		}
@@ -72,7 +71,15 @@ class JsonSpriteParser
 	private void getOrCreateContainer(JsonSprite parent, JSONObject json)
 	{
 		JsonSprite child = (currentChildDepth == 0) ? parent : new JsonSprite();
+		
+		currentChildDepth++;
+		
 		new JsonContainerConsumer().consume(child, json);
+		
+		if(parent != child)
+		{
+			parent.addChild(child);
+		}
 	}
 
 	private void createImage(JsonSprite parent, JSONObject json, boolean scale9)
@@ -108,5 +115,14 @@ class JsonSpriteParser
 		new JsonCheckboxConsumer().consume(checkbox, json);
 		
 		parent.addChild(checkbox);
+	}
+
+	private void createQuad(JsonSprite parent, JSONObject json)
+	{
+		Quad quad = new Quad(1, 1, 0xFFFFFF);
+		
+		new JsonQuadConsumer().consume(quad, json);
+
+		parent.addChild(quad);
 	}
 }

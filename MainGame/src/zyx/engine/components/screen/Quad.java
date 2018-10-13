@@ -13,11 +13,14 @@ public class Quad extends AbstractQuad
 		originalHeight = height;
 		
 		Color.toVector(color, colors);
+		colors.w = 1;
 		
 		ColorTexture texture = new ColorTexture(color, width, height);
 		model = new ScreenModel(texture, colors);
 		model.addVertexData(0, 0, texture);
 		model.buildModel();
+		
+		onModelCreated();
 		
 		loaded = true;
 	}
