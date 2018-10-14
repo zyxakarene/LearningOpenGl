@@ -41,6 +41,11 @@ public class DisplayObjectContainer extends DisplayObject
 	
 	public void addChild(DisplayObject child)
 	{
+		if (child == this)
+		{
+			throw new IllegalArgumentException("Cannot set DisplayObject as child of self");
+		}
+		
 		DisplayObjectContainer prevParent = child.getParent();
 		if (prevParent != null)
 		{

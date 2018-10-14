@@ -7,9 +7,8 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.components.screen.DisplayObject;
 import zyx.utils.GameConstants;
-import zyx.utils.pooling.IPoolable;
 
-class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Object>, IPoolable
+class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Object>
 {
 
 	protected static final Vector2f HELPER_VECTOR_2 = new Vector2f();
@@ -133,27 +132,5 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 			currentDisplayObject.setPosition(false, posX, posY);
 		}
 
-	}
-
-	@Override
-	public void initialize(Object[] args)
-	{
-	}
-
-	@Override
-	public void reset()
-	{
-	}
-
-	@Override
-	public void release()
-	{
-		currentDisplayObject = null;
-	}
-
-	@Override
-	public void dispose()
-	{
-		release();
 	}
 }

@@ -32,8 +32,9 @@ public class Image extends AbstractImage implements IResourceReady<TextureResour
 		if (model != null)
 		{
 			model.dispose();
+			model = null;
 		}
-
+		
 		model = new ScreenModel(texture, colors);
 		model.addVertexData(0, 0, texture);
 		model.buildModel();

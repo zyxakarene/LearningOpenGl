@@ -3,7 +3,6 @@ package zyx.opengl.models.implementations.physics;
 import java.util.HashMap;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.game.controls.SharedPools;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
@@ -80,7 +79,7 @@ public class DebugPhysDrawing
 
 	private static Joint getMeshJoint(String name, int id)
 	{
-		Matrix4f matrix = SharedPools.MATRIX_POOL.getInstance();
+		Matrix4f matrix = new Matrix4f();
 		return new Joint(id, name, matrix);
 	}
 

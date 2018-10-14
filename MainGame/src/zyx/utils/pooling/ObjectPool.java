@@ -1,7 +1,6 @@
 package zyx.utils.pooling;
 
 import java.util.LinkedList;
-import zyx.game.controls.SharedPools;
 import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IDisposeable;
 
@@ -81,4 +80,5 @@ public class ObjectPool<T> implements IDisposeable
 			initializeArgs[i] = null;
 		}
 	}
+
 }

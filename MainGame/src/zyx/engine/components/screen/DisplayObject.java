@@ -178,6 +178,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		invWorldMatrix = null;
 		worldMatrix = null;
 		localMatrix = null;
+		position = null;
 	}
 
 	public Vector2f globalToLocal(Vector2f point, Vector2f out)

@@ -140,6 +140,12 @@ public class Scale9Image extends AbstractImage implements IResourceReady<Texture
 	{
 		super.dispose();
 		
+		if (model != null)
+		{
+			model.dispose();
+			model = null;
+		}
+		
 		gameTexture = null;
 	}
 	
