@@ -222,6 +222,10 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		{
 			position.set(x, y);
 		}
+		else
+		{
+			position.set(HELPER_VEC2.x, -HELPER_VEC2.y);
+		}
 
 		localMatrix.m30 = HELPER_VEC2.x;
 		localMatrix.m31 = -HELPER_VEC2.y;
@@ -273,7 +277,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		MatrixUtils.getPositionFrom(local ? localMatrix : worldMatrix(), HELPER_VEC3);
 
 		out.x = HELPER_VEC3.x;
-		out.y = HELPER_VEC3.y;
+		out.y = -HELPER_VEC3.y;
 
 		return out;
 	}
