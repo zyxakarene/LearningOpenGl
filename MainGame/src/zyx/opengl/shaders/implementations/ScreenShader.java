@@ -23,8 +23,8 @@ public class ScreenShader extends AbstractShader
 	private int ClipXVecTrans;
 	private int ClipYVecTrans;
 
-	private Vector2f clipX = new Vector2f(50, 100);
-	private Vector2f clipY = new Vector2f(50, 100);
+	private Vector2f clipX = new Vector2f(0, GameConstants.GAME_WIDTH);
+	private Vector2f clipY = new Vector2f(0, GameConstants.GAME_HEIGHT);
 	
 	public ScreenShader(Object lock)
 	{

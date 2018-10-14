@@ -3,7 +3,7 @@ package zyx.game.components.screen.json;
 import org.json.simple.JSONArray;
 import zyx.engine.components.screen.Button;
 
-class JsonButtonConsumer<T extends Button> extends JsonBaseConsumer<T>
+public class JsonButtonConsumer<T extends Button> extends JsonBaseConsumer<T>
 {
 	protected static final String TEXTURE = "texture";
 

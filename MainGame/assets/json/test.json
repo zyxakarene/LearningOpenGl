@@ -60,27 +60,38 @@
 			"checkIcon":"texture.check"
 		},
 		{
-			"name":"percent_container",
+			"name":"offset_container",
 			"type":"container",
-			"percentWidth":1,
-			"percentHeight":1,
+			"x":100,
+			"y":100,
 			"children":
 			[
 				{
-					"name":"screen",
-					"type":"quad",
-					"x":0,
-					"y":0,
-					"width":100,
-					"height":100,
-					"color":"0xFFFFFF"
-				},
-				{
-					"name":"percent_image",
-					"type":"image",
-					"width":100,
-					"height"100,
-					"texture":"flat_bg"
+					"name":"percent_container",
+					"type":"container",
+					"percentWidth":0.25,
+					"percentHeight":0.5,
+					"centerOffsetX":0,
+					"centerOffsetY":0,
+					"children":
+					[
+						{
+							"name":"screen",
+							"type":"quad",
+							"x":0,
+							"y":0,
+							"width":100,
+							"height":100,
+							"color":"0xFFFFFF"
+						},
+						{
+							"name":"percent_image",
+							"type":"image",
+							"width":100,
+							"height"100,
+							"texture":"flat_bg"
+						}
+					]
 				}
 			]
 		}

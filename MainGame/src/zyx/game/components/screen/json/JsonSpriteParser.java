@@ -13,76 +13,89 @@ class JsonSpriteParser
 	private static final String TYPE_CONTAINER = "container";
 	private static final String TYPE_QUAD = "quad";
 	private static final String TYPE_IMAGE = "image";
-	private static final String TYPE_SCALE_9_IMAGE = "scale9image";
+	private static final String TYPE_SCALE_NINE_IMAGE = "scale9image";
 	private static final String TYPE_BUTTON = "button";
-	private static final String TYPE_SCALE_9_BUTTON = "scale9button";
+	private static final String TYPE_SCALE_NINE_BUTTON = "scale9button";
 	private static final String TYPE_CHECKBOX = "checkbox";
-	private static final String TYPE_SCALE_9_CHECKBOX = "scale9checkbox";
+	private static final String TYPE_SCALE_NINE_CHECKBOX = "scale9checkbox";
 
+	private ConsumerFactory factory;
+	private int currentChildDepth;
+	
 	static JsonSpriteParser getInstance()
 	{
 		return instance;
 	}
 
-	private int currentChildDepth;
+	private JsonSpriteParser()
+	{
+		factory = new ConsumerFactory();
+		currentChildDepth = 0;
+	}
 
-	void createSpriteFrom(JsonSprite parent, JSONObject json)
+	void createSpriteFrom(DisplayObjectContainer parent, JSONObject json)
 	{
 		currentChildDepth = 0;
 
 		createSprite(parent, json);
 	}
 
-	void createSprite(JsonSprite parent, JSONObject json)
+	void createSprite(DisplayObjectContainer parent, JSONObject json)
 	{
 		String type = (String) json.get(TYPE);
-
+		JsonBaseConsumer consumer;
+		
 		switch (type)
 		{
 			case TYPE_CONTAINER:
-				getOrCreateContainer(parent, json);
+				consumer = getOrCreateContainer(parent, json);
 				break;
 			case TYPE_IMAGE:
-				createImage(parent, json, false);
+				consumer = createImage(parent, json, false);
 				break;
-			case TYPE_SCALE_9_IMAGE:
-				createImage(parent, json, true);
+			case TYPE_SCALE_NINE_IMAGE:
+				consumer = createImage(parent, json, true);
 				break;
 			case TYPE_BUTTON:
-				createButton(parent, json, false);
+				consumer = createButton(parent, json, false);
 				break;
-			case TYPE_SCALE_9_BUTTON:
-				createButton(parent, json, true);
+			case TYPE_SCALE_NINE_BUTTON:
+				consumer = createButton(parent, json, true);
 				break;
 			case TYPE_CHECKBOX:
-				createCheckbox(parent, json, false);
+				consumer = createCheckbox(parent, json, false);
 				break;
-			case TYPE_SCALE_9_CHECKBOX:
-				createCheckbox(parent, json, true);
+			case TYPE_SCALE_NINE_CHECKBOX:
+				consumer = createCheckbox(parent, json, true);
 				break;
 			case TYPE_QUAD:
-				createQuad(parent, json);
+				consumer = createQuad(parent, json);
 				break;
 			default:
 				throw new AssertionError("Unknown type:" + type);
 		}
+		
+		consumer.postConsume(json);
 	}
 
-	private void getOrCreateContainer(JsonSprite parent, JSONObject json)
+	private JsonBaseConsumer getOrCreateContainer(DisplayObjectContainer parent, JSONObject json)
 	{
-		JsonSprite child = (currentChildDepth == 0) ? parent : new JsonSprite();
+		DisplayObjectContainer child = (currentChildDepth == 0) ? parent : new JsonSprite();
 		
 		currentChildDepth++;
-		
-		new JsonContainerConsumer().consume(child, json);
+				
+		JsonContainerConsumer consumer = new JsonContainerConsumer();
+		consumer.consume(child, json);
 		
 		if(parent != child)
 		{
 			parent.addChild(child);
 		}
+		
+		return consumer;
 	}
 
-	private void createImage(JsonSprite parent, JSONObject json, boolean scale9)
+	private JsonBaseConsumer createImage(DisplayObjectContainer parent, JSONObject json, boolean scale9)
 	{
 		AbstractImage image;
 		if (scale9)
@@ -94,35 +107,47 @@ class JsonSpriteParser
 			image = new Image();
 		}
 
-		new JsonImageConsumer().consume(image, json);
+		JsonImageConsumer consumer = new JsonImageConsumer();
+		consumer.consume(image, json);
 		
 		parent.addChild(image);
+		
+		return consumer;
 	}
 
-	private void createButton(JsonSprite parent, JSONObject json, boolean scale9)
+	private JsonBaseConsumer createButton(DisplayObjectContainer parent, JSONObject json, boolean scale9)
 	{
 		Button button = new Button(scale9);
 
-		new JsonButtonConsumer().consume(button, json);
+		JsonButtonConsumer consumer = new JsonButtonConsumer();
+		consumer.consume(button, json);
 		
 		parent.addChild(button);
+		
+		return consumer;
 	}
 
-	private void createCheckbox(JsonSprite parent, JSONObject json, boolean scale9)
+	private JsonBaseConsumer createCheckbox(DisplayObjectContainer parent, JSONObject json, boolean scale9)
 	{
 		Checkbox checkbox = new Checkbox(scale9);
 
-		new JsonCheckboxConsumer().consume(checkbox, json);
+		JsonCheckboxConsumer consumer = new JsonCheckboxConsumer();
+		consumer.consume(checkbox, json);
 		
 		parent.addChild(checkbox);
+		
+		return consumer;
 	}
 
-	private void createQuad(JsonSprite parent, JSONObject json)
+	private JsonBaseConsumer createQuad(DisplayObjectContainer parent, JSONObject json)
 	{
 		Quad quad = new Quad(1, 1, 0xFFFFFF);
 		
-		new JsonQuadConsumer().consume(quad, json);
+		JsonQuadConsumer consumer = new JsonQuadConsumer();
+		consumer.consume(quad, json);
 
 		parent.addChild(quad);
+		
+		return consumer;
 	}
 }

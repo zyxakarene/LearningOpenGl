@@ -187,10 +187,10 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 			out = new Vector2f();
 		}
 
-		HELPER_VEC4.set(point.x, point.y, 0, 1);
+		HELPER_VEC4.set(point.x, -point.y, 0, 1);
 		Matrix4f.transform(invWorldMatrix(), HELPER_VEC4, HELPER_VEC4);
 
-		out.set(HELPER_VEC4.x, HELPER_VEC4.y);
+		out.set(HELPER_VEC4.x, -HELPER_VEC4.y);
 		return out;
 	}
 

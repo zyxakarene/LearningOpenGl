@@ -124,7 +124,8 @@ public class DisplayObjectContainer extends DisplayObject
 			}
 		}
 
-		return mostRight - mostLeft;
+		getScale(true, HELPER_VEC2);
+		return (mostRight - mostLeft) * HELPER_VEC2.x;
 	}
 
 	@Override
@@ -152,7 +153,8 @@ public class DisplayObjectContainer extends DisplayObject
 			}
 		}
 
-		return mostDown - mostUp;
+		getScale(true, HELPER_VEC2);
+		return (mostDown - mostUp) * HELPER_VEC2.y;
 	}
 
 	@Override

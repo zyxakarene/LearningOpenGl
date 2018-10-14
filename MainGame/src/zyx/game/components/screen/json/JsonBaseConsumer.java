@@ -1,25 +1,30 @@
 package zyx.game.components.screen.json;
 
 import java.util.function.BiConsumer;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.components.screen.DisplayObject;
 import zyx.utils.GameConstants;
+import zyx.utils.pooling.IPoolable;
 
-class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Object>
+class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Object>, IPoolable
 {
 
-	protected static final Vector3f HELPER_VECTOR = new Vector3f();
-	
+	protected static final Vector2f HELPER_VECTOR_2 = new Vector2f();
+	protected static final Vector3f HELPER_VECTOR_3 = new Vector3f();
+	protected static final Vector4f HELPER_VECTOR_4 = new Vector4f();
+
 	protected static final String NAME = "name";
-	protected static final String CHILDREN = "children";
 	protected static final String X = "x";
 	protected static final String Y = "y";
 	protected static final String WIDTH = "width";
 	protected static final String HEIGHT = "height";
 	protected static final String PERCENT_WIDTH = "percentWidth";
 	protected static final String PERCENT_HEIGHT = "percentHeight";
+	protected static final String CENTER_OFFSET_X = "centerOffsetX";
+	protected static final String CENTER_OFFSET_Y = "centerOffsetY";
 	protected static final String ROTATION = "rotation";
 
 	protected T currentDisplayObject;
@@ -27,18 +32,16 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 	final void consume(T container, JSONObject json)
 	{
 		currentDisplayObject = container;
-		
+
 		if (json.containsKey(NAME))
 		{
 			String name = json.get(NAME).toString();
 			currentDisplayObject.name = name;
 		}
-		
+
 		json.forEach(this);
-		
-		onPostConsume(json);
 	}
-	
+
 	@Override
 	public final void accept(String name, Object value)
 	{
@@ -59,16 +62,6 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 			case ROTATION:
 				currentDisplayObject.setRotation(toFloat(value));
 				break;
-			case CHILDREN:
-				JsonSprite container = (JsonSprite) currentDisplayObject;
-				JSONArray array = (JSONArray) value;
-				int len = array.size();
-				for (int i = 0; i < len; i++)
-				{
-					JSONObject obj = (JSONObject) array.get(i);
-					JsonSpriteParser.getInstance().createSprite(container, obj);
-				}
-				break;
 			default:
 				onAccept(name, value);
 				break;
@@ -81,33 +74,86 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 		{
 			return (Float) value;
 		}
-		
+
 		if (value instanceof Number)
 		{
 			Number num = (Number) value;
 			return num.floatValue();
 		}
-		
+
 		throw new IllegalArgumentException("Invalid parameter: " + value);
 	}
-	
+
 	protected void onAccept(String name, Object value)
 	{
 	}
 
-	protected void onPostConsume(JSONObject json)
+	public void postConsume(JSONObject json)
 	{
 		Object percentWidth = json.get(PERCENT_WIDTH);
 		Object percentHeight = json.get(PERCENT_HEIGHT);
-		
+
 		if (percentWidth != null)
 		{
 			currentDisplayObject.setWidth(toFloat(percentWidth) * GameConstants.GAME_WIDTH);
 		}
-		
-		if(percentHeight != null)
+
+		if (percentHeight != null)
 		{
 			currentDisplayObject.setHeight(toFloat(percentHeight) * GameConstants.GAME_HEIGHT);
 		}
+
+		Object centerX = json.get(CENTER_OFFSET_X);
+		Object centerY = json.get(CENTER_OFFSET_Y);
+		
+		if(centerX != null || centerY != null)
+		{
+			currentDisplayObject.getPosition(false, HELPER_VECTOR_2);
+			float posX = HELPER_VECTOR_2.x;
+			float posY = HELPER_VECTOR_2.y;
+			
+			if (centerX != null)
+			{
+				float offsetX = toFloat(centerX);
+				float stageWidth = GameConstants.GAME_WIDTH;
+				float currentWidth = currentDisplayObject.getWidth();
+
+				posX = (stageWidth/2) - (currentWidth / 2) + offsetX;
+			}
+
+			if (centerY != null)
+			{
+				float offsetY = toFloat(centerY);
+				float stageHeight = GameConstants.GAME_HEIGHT;
+				float currentHeight = currentDisplayObject.getHeight();
+
+				posY = (stageHeight/2) - (currentHeight / 2) + offsetY;
+			}
+			
+			currentDisplayObject.setPosition(false, posX, posY);
+		}
+
+	}
+
+	@Override
+	public void initialize(Object[] args)
+	{
+	}
+
+	@Override
+	public void reset()
+	{
+	}
+
+	@Override
+	public void release()
+	{
+		currentDisplayObject = null;
+	}
+
+	@Override
+	public void dispose()
+	{
+		release();
 	}
 }

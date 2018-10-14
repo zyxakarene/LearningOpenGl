@@ -3,7 +3,7 @@ package zyx.game.components.screen.json;
 import zyx.engine.components.screen.AbstractQuad;
 import zyx.utils.Color;
 
-class JsonQuadConsumer<T extends AbstractQuad> extends JsonBaseConsumer<T>
+public class JsonQuadConsumer<T extends AbstractQuad> extends JsonBaseConsumer<T>
 {
 	protected static final String COLOR = "color";
 	protected static final String ALPHA = "alpha";
@@ -18,8 +18,8 @@ class JsonQuadConsumer<T extends AbstractQuad> extends JsonBaseConsumer<T>
 				hexColor = hexColor.replace("0x", "");
 				int color = Integer.parseInt(hexColor, 16);
 				
-				Color.toVector(color, HELPER_VECTOR);
-				currentDisplayObject.setColor(HELPER_VECTOR.x, HELPER_VECTOR.y, HELPER_VECTOR.z);
+				Color.toVector(color, HELPER_VECTOR_3);
+				currentDisplayObject.setColor(HELPER_VECTOR_3.x, HELPER_VECTOR_3.y, HELPER_VECTOR_3.z);
 				break;
 			case ALPHA:
 				currentDisplayObject.setAlpha(toFloat(value));

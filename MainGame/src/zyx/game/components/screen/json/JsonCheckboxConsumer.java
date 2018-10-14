@@ -2,7 +2,7 @@ package zyx.game.components.screen.json;
 
 import zyx.engine.components.screen.Checkbox;
 
-class JsonCheckboxConsumer extends JsonButtonConsumer<Checkbox>
+public class JsonCheckboxConsumer extends JsonButtonConsumer<Checkbox>
 {
 	protected static final String CHECK_ICON = "checkIcon";
 
