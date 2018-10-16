@@ -36,6 +36,7 @@ public class DebugPhysics
 	public void unregisterPhysbox(IPhysbox obj)
 	{
 		entryMap.remove(obj);
+		DebugPhysDrawing.removeModelFor(obj);
 	}
 
 	public void draw(IPhysbox parent)

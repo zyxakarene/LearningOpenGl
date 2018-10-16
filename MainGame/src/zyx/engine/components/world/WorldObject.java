@@ -22,7 +22,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 
 	private static final Vector3f HELPER_POSITION = new Vector3f();
 	private static final Vector3f HELPER_DIR = new Vector3f();
-	
+
 	private static final Vector3f HELPER_VEC3 = new Vector3f();
 	private static final Vector4f HELPER_VEC4 = new Vector4f();
 
@@ -505,7 +505,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		return DECOMPOSED_MATRIX.rotation.z;
 	}
 	//</editor-fold>
-	
+
 	@Override
 	public void lookAt(float x, float y, float z)
 	{

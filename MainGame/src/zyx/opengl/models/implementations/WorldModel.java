@@ -112,6 +112,7 @@ public class WorldModel extends AbstractModel
 		
 		skeleton = null;
 		shader = null;
+		physBox = null;
 	}
 	
 	

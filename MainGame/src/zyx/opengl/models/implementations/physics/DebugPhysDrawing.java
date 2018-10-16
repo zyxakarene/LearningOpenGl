@@ -3,6 +3,7 @@ package zyx.opengl.models.implementations.physics;
 import java.util.HashMap;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.game.controls.SharedPools;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
@@ -36,6 +37,23 @@ public class DebugPhysDrawing
 		return models;
 	}
 
+	public static void removeModelFor(IPhysbox physBox)
+	{
+		PhysBox box = physBox.getPhysbox();
+		WorldModel meshRemove = MESH_MAP.remove(box);
+		WorldModel boundingRemove = BOUNDING_BOX_MAP.remove(box);
+		
+		if(meshRemove != null)
+		{
+			meshRemove.dispose();
+		}
+		
+		if(boundingRemove != null)
+		{
+			boundingRemove.dispose();
+		}
+	}
+	
 	private static void createModel(PhysBox box)
 	{
 		PhysObject[] objects = box.getObjects();
@@ -79,7 +97,7 @@ public class DebugPhysDrawing
 
 	private static Joint getMeshJoint(String name, int id)
 	{
-		Matrix4f matrix = new Matrix4f();
+		Matrix4f matrix = SharedPools.MATRIX_POOL.getInstance();
 		return new Joint(id, name, matrix);
 	}
 

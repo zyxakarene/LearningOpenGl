@@ -33,6 +33,12 @@ public class MeshResource extends BaseTextureRequiredResource
 			model.dispose();
 			model = null;
 		}
+		
+		if(loadedVo != null)
+		{
+			loadedVo.dispose();
+			loadedVo = null;
+		}
 	}
 
 	@Override

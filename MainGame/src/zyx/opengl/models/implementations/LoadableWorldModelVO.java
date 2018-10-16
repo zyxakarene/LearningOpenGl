@@ -35,6 +35,17 @@ public class LoadableWorldModelVO implements ILoadableVO
 	{
 		this.gameTexture = gameTexture;
 	}
-	
-	
+
+	public void dispose()
+	{
+		if(skeleton != null)
+		{
+			skeleton.dispose();
+			skeleton = null;
+		}
+		
+		vertexData = null;
+		elementData = null;
+		physBox = null;
+	}
 }

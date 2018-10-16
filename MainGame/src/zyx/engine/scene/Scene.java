@@ -122,7 +122,8 @@ public class Scene
 	final void dispose()
 	{
 		camera.dispose();
-
+		picker.dispose();
+		
 		onDispose();
 
 		if (hud != null)
@@ -134,5 +135,6 @@ public class Scene
 		stage = null;
 		world = null;
 		camera = null;
+		picker = null;
 	}
 }
