@@ -1,7 +1,8 @@
 package zyx.game.components.screen.json;
 
+import zyx.engine.components.screen.base.DisplayObject;
+import zyx.engine.components.screen.base.DisplayObjectContainer;
 import org.json.simple.JSONObject;
-import zyx.engine.components.screen.*;
 import zyx.utils.pooling.ObjectPool;
 
 class ConsumerFactory
@@ -11,6 +12,7 @@ class ConsumerFactory
 	private ObjectPool<JsonContainerConsumer> containers;
 	private ObjectPool<JsonImageConsumer> images;
 	private ObjectPool<JsonQuadConsumer> quads;
+	private ObjectPool<JsonItemListConsumer> itemLists;
 
 	ConsumerFactory()
 	{
@@ -19,6 +21,7 @@ class ConsumerFactory
 		containers = new ObjectPool<>(JsonContainerConsumer.class, 3);
 		images = new ObjectPool<>(JsonImageConsumer.class, 3);
 		quads = new ObjectPool<>(JsonQuadConsumer.class, 3);
+		itemLists = new ObjectPool<>(JsonItemListConsumer.class, 1);
 	}
 
 	void consumeByType(String type, DisplayObjectContainer parent, DisplayObject child, JSONObject json)
@@ -45,17 +48,19 @@ class ConsumerFactory
 		{
 			case JsonSpriteParser.TYPE_CONTAINER:
 				return containers;
-			case JsonSpriteParser. TYPE_IMAGE:
-			case JsonSpriteParser. TYPE_SCALE_NINE_IMAGE:
+			case JsonSpriteParser.TYPE_IMAGE:
+			case JsonSpriteParser.TYPE_SCALE_NINE_IMAGE:
 				return images;
-			case JsonSpriteParser. TYPE_BUTTON:
-			case JsonSpriteParser. TYPE_SCALE_NINE_BUTTON:
+			case JsonSpriteParser.TYPE_BUTTON:
+			case JsonSpriteParser.TYPE_SCALE_NINE_BUTTON:
 				return buttons;
-			case JsonSpriteParser. TYPE_CHECKBOX:
-			case JsonSpriteParser. TYPE_SCALE_NINE_CHECKBOX:
+			case JsonSpriteParser.TYPE_CHECKBOX:
+			case JsonSpriteParser.TYPE_SCALE_NINE_CHECKBOX:
 				return checkboxes;
-			case JsonSpriteParser. TYPE_QUAD:
+			case JsonSpriteParser.TYPE_QUAD:
 				return quads;
+			case JsonSpriteParser.TYPE_ITEM_LIST:
+				return itemLists;
 			default:
 				throw new AssertionError("Unknown type:" + type);
 		}

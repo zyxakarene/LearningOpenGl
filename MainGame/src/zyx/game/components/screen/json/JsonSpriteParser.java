@@ -1,7 +1,14 @@
 package zyx.game.components.screen.json;
 
+import zyx.engine.components.screen.base.Quad;
+import zyx.engine.components.screen.interactable.Checkbox;
+import zyx.engine.components.screen.interactable.Button;
+import zyx.engine.components.screen.image.Image;
+import zyx.engine.components.screen.image.Scale9Image;
+import zyx.engine.components.screen.base.DisplayObject;
+import zyx.engine.components.screen.base.DisplayObjectContainer;
 import org.json.simple.JSONObject;
-import zyx.engine.components.screen.*;
+import zyx.engine.components.screen.list.ItemList;
 
 class JsonSpriteParser
 {
@@ -18,6 +25,7 @@ class JsonSpriteParser
 	static final String TYPE_SCALE_NINE_BUTTON = "scale9button";
 	static final String TYPE_CHECKBOX = "checkbox";
 	static final String TYPE_SCALE_NINE_CHECKBOX = "scale9checkbox";
+	static final String TYPE_ITEM_LIST = "itemList";
 
 	private ConsumerFactory factory;
 	private int currentChildDepth;
@@ -48,7 +56,7 @@ class JsonSpriteParser
 		switch (type)
 		{
 			case TYPE_CONTAINER:
-				child = (currentChildDepth == 0) ? parent : new JsonSprite();
+				child = (currentChildDepth == 0) ? parent : new DisplayObjectContainer();
 				currentChildDepth++;
 				break;
 			case TYPE_IMAGE:
@@ -71,6 +79,9 @@ class JsonSpriteParser
 				break;
 			case TYPE_QUAD:
 				child = new Quad(1, 1, 0xFFFFFF);
+				break;
+			case TYPE_ITEM_LIST:
+				child = new ItemList();
 				break;
 			default:
 				throw new AssertionError("Unknown type:" + type);

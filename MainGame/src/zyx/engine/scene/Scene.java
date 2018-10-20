@@ -1,6 +1,6 @@
 package zyx.engine.scene;
 
-import zyx.engine.components.screen.Stage;
+import zyx.engine.components.screen.base.Stage;
 import zyx.engine.components.world.World3D;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;

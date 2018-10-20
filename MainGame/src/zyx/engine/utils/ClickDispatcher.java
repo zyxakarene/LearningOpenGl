@@ -1,7 +1,7 @@
 package zyx.engine.utils;
 
 import java.util.LinkedList;
-import zyx.engine.components.screen.InteractableContainer;
+import zyx.engine.components.screen.interactable.InteractableContainer;
 import zyx.engine.utils.callbacks.CustomCallback;
 
 public class ClickDispatcher

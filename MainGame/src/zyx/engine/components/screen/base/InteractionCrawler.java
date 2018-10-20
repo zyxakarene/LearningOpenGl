@@ -1,24 +1,28 @@
-package zyx.engine.components.screen;
+package zyx.engine.components.screen.base;
 
 import java.util.LinkedList;
+import org.lwjgl.util.vector.Vector2f;
+import zyx.engine.components.animations.IFocusable;
+import zyx.engine.components.screen.interactable.InteractableContainer;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;
 import zyx.game.controls.input.MouseData;
+import zyx.utils.cheats.Print;
 
-class InteractionCrawler
+public class InteractionCrawler
 {
 	private LinkedList<DisplayObject> objects;
 	private DisplayObjectContainer parent;
 	
 	private DisplayObject hitTarget;
 	
-	InteractionCrawler(DisplayObjectContainer container)
+	public InteractionCrawler(DisplayObjectContainer container)
 	{
 		parent = container;
 		objects = new LinkedList<>();
 	}
 
-	void interactionTest(int x, int y)
+	public void interactionTest(int x, int y)
 	{
 		objects.clear();
 		
@@ -43,10 +47,25 @@ class InteractionCrawler
 				}
 			}
 			
+			if (child.name != null)
+			{
+				if (child.name.equals("breakpoint"))
+				{
+					Print.out("Testing", child.name);
+					Vector2f position = child.getPosition(false, null);
+					Vector2f scale = child.getScale(false, null);
+					float w = child.getWidth();
+					float h = child.getHeight();
+					Print.out(scale, position, w, h);
+				}
+			}
+			
 			hit = child.hitTest(x, y);
 			
 			if (hit)
 			{
+				child.hitTest(x, y);
+				
 				if (hitTarget != null && hitTarget != child)
 				{
 					onTargetHitRemoved(hitTarget);

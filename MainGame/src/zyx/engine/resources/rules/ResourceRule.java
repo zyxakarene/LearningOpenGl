@@ -19,7 +19,9 @@ public enum ResourceRule
 	MESHES_1_FOLDERS	("mesh.#.#",			"assets/models/#/#.zaf",	MeshResource.class),
 	
 	TEXTURES_BASE		("texture.#",			"assets/textures/#.png",	TextureResource.class),
-	SOUNDS				("sound.#",				"assets/sounds/#.wav",		SoundResource.class);
+	SOUNDS				("sound.#",				"assets/sounds/#.wav",		SoundResource.class),
+	
+	UNKNOWN				("",					"",							GenericResource.class);
 	
 	private static final char SEGMENT_SPLIT = '.';
 	

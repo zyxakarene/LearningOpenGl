@@ -1,6 +1,6 @@
 package zyx.game.components.screen.json;
 
-import zyx.engine.components.screen.AbstractQuad;
+import zyx.engine.components.screen.image.AbstractQuad;
 import zyx.utils.Color;
 
 public class JsonQuadConsumer<T extends AbstractQuad> extends JsonBaseConsumer<T>

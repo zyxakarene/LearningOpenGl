@@ -1,5 +1,6 @@
-package zyx.engine.components.screen;
+package zyx.engine.components.screen.base;
 
+import zyx.engine.components.screen.image.AbstractQuad;
 import zyx.opengl.models.implementations.ScreenModel;
 import zyx.opengl.textures.ColorTexture;
 import zyx.utils.Color;
@@ -9,8 +10,8 @@ public class Quad extends AbstractQuad
 
 	public Quad(float width, float height, int color)
 	{
-		originalWidth = width;
-		originalHeight = height;
+		originalWidth = 9000;
+		originalHeight = 9000;
 		
 		Color.toVector(color, colors);
 		colors.w = 1;
@@ -24,7 +25,7 @@ public class Quad extends AbstractQuad
 		
 		loaded = true;
 	}
-
+	
 	@Override
 	public void dispose()
 	{

@@ -1,7 +1,9 @@
-package zyx.engine.components.screen;
+package zyx.engine.components.screen.image;
 
 import java.util.HashMap;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
+import zyx.engine.components.screen.base.DisplayObjectContainer;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.impl.TextureResource;
 import zyx.opengl.models.implementations.ScreenModel;
@@ -150,8 +152,31 @@ public class Scale9Image extends AbstractImage implements IResourceReady<Texture
 	}
 	
 	@Override
+	public boolean hitTest(int x, int y)
+	{
+		if (!touchable || !visible)
+		{
+			return false;
+		}
+
+		HELPER_VEC4.x = x;
+		HELPER_VEC4.y = -y;
+		HELPER_VEC4.z = -1;
+		HELPER_VEC4.w = 1;
+		
+		Matrix4f.transform(invWorldMatrix(), HELPER_VEC4, HELPER_VEC4);
+		
+		float w = getWidth();
+		float h = getHeight();
+		
+		boolean collision = HELPER_VEC4.x >= 0 && HELPER_VEC4.y <= 0 && HELPER_VEC4.x <= w && HELPER_VEC4.y >= -h;
+		return collision;
+	}
+	
+	@Override
 	public String toString()
 	{
 		return String.format("Scale9Image{%s}", resource);
 	}
+	
 }

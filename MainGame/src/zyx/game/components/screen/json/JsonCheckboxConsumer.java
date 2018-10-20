@@ -1,6 +1,6 @@
 package zyx.game.components.screen.json;
 
-import zyx.engine.components.screen.Checkbox;
+import zyx.engine.components.screen.interactable.Checkbox;
 
 public class JsonCheckboxConsumer extends JsonButtonConsumer<Checkbox>
 {

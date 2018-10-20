@@ -1,7 +1,7 @@
 package zyx.game.components.screen.json;
 
 import org.json.simple.JSONArray;
-import zyx.engine.components.screen.Button;
+import zyx.engine.components.screen.interactable.Button;
 
 public class JsonButtonConsumer<T extends Button> extends JsonBaseConsumer<T>
 {

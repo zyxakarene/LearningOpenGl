@@ -1,13 +1,15 @@
 package zyx.game.components.screen.hud;
 
-import zyx.engine.components.screen.AbstractImage;
+import java.util.ArrayList;
+import zyx.engine.components.screen.image.AbstractImage;
+import zyx.engine.components.screen.list.ItemList;
 import zyx.game.components.screen.json.JsonSprite;
 
 public class MainHud extends JsonSprite
 {
 
 	private AbstractImage image;
-	private float startX;
+	private ItemList list;
 
 	@Override
 	public String getResource()
@@ -16,21 +18,21 @@ public class MainHud extends JsonSprite
 	}
 
 	@Override
-	protected void onInitialized()
+	protected void onComponentsCreated()
 	{
-		 image = this.<AbstractImage>getComponentByName("test_image_1");
-		 
-		 startX = image.getX();
+		image = this.<AbstractImage>getComponentByName("test_image_1");
+		list = this.<ItemList>getComponentByName("list_test");
 	}
 
 	@Override
-	public void update(long timestamp, int elapsedTime)
+	protected void onInitialize()
 	{
-		if (image != null)
+		ArrayList<Integer> data = new ArrayList<>();
+		for (int i = 0; i < 10; i++)
 		{
-//			image.setX(startX + (FloatMath.sin(timestamp / 100f) * 100));
+			data.add((int)(Math.random() * 0xFFFFFF));
 		}
-	}
 
-	
+		//list.setData(data);
+	}
 }

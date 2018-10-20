@@ -1,7 +1,10 @@
-package zyx.engine.components.screen;
+package zyx.engine.components.screen.text;
 
+import zyx.engine.components.animations.IFocusable;
+import zyx.engine.components.screen.interactable.InteractableContainer;
 import java.awt.event.KeyEvent;
 import org.lwjgl.util.vector.Vector4f;
+import zyx.engine.components.screen.base.Quad;
 import zyx.engine.curser.GameCursor;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
@@ -117,7 +120,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	}
 
 	@Override
-	void onDraw()
+	protected void onDraw()
 	{
 		if (glText != null)
 		{

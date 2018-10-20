@@ -1,10 +1,10 @@
 package zyx.game.components.screen;
 
-import zyx.engine.components.screen.Button;
-import zyx.engine.components.screen.InteractableContainer;
-import zyx.engine.components.screen.Quad;
-import zyx.engine.components.screen.Stage;
-import zyx.engine.components.screen.Textfield;
+import zyx.engine.components.screen.interactable.Button;
+import zyx.engine.components.screen.interactable.InteractableContainer;
+import zyx.engine.components.screen.base.Quad;
+import zyx.engine.components.screen.base.Stage;
+import zyx.engine.components.screen.text.Textfield;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.net.io.responses.ResponseDispatcher;
 import zyx.net.io.responses.ResponseManager;

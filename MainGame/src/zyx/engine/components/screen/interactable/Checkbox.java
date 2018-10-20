@@ -1,5 +1,7 @@
-package zyx.engine.components.screen;
+package zyx.engine.components.screen.interactable;
 
+import zyx.engine.components.screen.image.AbstractImage;
+import zyx.engine.components.screen.image.Image;
 import zyx.engine.utils.callbacks.ICallback;
 
 public class Checkbox extends Button

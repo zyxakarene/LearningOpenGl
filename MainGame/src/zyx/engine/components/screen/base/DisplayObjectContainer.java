@@ -1,4 +1,4 @@
-package zyx.engine.components.screen;
+package zyx.engine.components.screen.base;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,9 @@ public class DisplayObjectContainer extends DisplayObject
 	private ArrayList<DisplayObject> children;
 	private int numChildren;
 
+	public float forceWidth = -1;
+	public float forceHeight = -1;
+	
 	public DisplayObjectContainer()
 	{
 		children = new ArrayList<>();
@@ -107,6 +110,11 @@ public class DisplayObjectContainer extends DisplayObject
 	@Override
 	public float getWidth()
 	{
+		if (forceWidth != -1)
+		{
+			return forceWidth;
+		}
+		
 		float mostLeft = 0f;
 		float mostRight = 0f;
 
@@ -136,6 +144,11 @@ public class DisplayObjectContainer extends DisplayObject
 	@Override
 	public float getHeight()
 	{
+		if (forceHeight != -1)
+		{
+			return forceHeight;
+		}
+		
 		float mostUp = 0f;
 		float mostDown = 0f;
 
@@ -183,7 +196,7 @@ public class DisplayObjectContainer extends DisplayObject
 	}
 
 	@Override
-	void onDraw()
+	protected void onDraw()
 	{
 		DisplayObject loopHelper;
 		for (int i = 0; i < numChildren; i++)

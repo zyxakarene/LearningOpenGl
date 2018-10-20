@@ -5,7 +5,7 @@ import org.json.simple.JSONObject;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
-import zyx.engine.components.screen.DisplayObject;
+import zyx.engine.components.screen.base.DisplayObject;
 import zyx.utils.GameConstants;
 
 class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Object>

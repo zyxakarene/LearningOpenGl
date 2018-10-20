@@ -1,4 +1,4 @@
-package zyx.engine.components.screen;
+package zyx.engine.components.screen.base;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
@@ -24,7 +24,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	protected static final Vector4f HELPER_VEC4 = new Vector4f();
 
 	private DisplayObjectContainer parent;
-	private boolean dirty;
+	public boolean dirty;
 	private boolean dirtyInv;
 
 	protected Matrix4f invWorldMatrix;
@@ -40,7 +40,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 
 	public String name;
 	
-	GameCursor hoverIcon;
+	protected GameCursor hoverIcon;
 	
 	protected final ScreenShader shader;
 	protected Stage stage;
@@ -76,11 +76,17 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 
 			dirty = false;
 			dirtyInv = true;
+			
+			onWorldMatrixUpdated();
 		}
 
 		return worldMatrix;
 	}
 
+	protected void onWorldMatrixUpdated()
+	{
+	}
+	
 	public Matrix4f invWorldMatrix()
 	{
 		if (dirtyInv || dirty)
@@ -107,7 +113,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 
 	public abstract void setHeight(float value);
 
-	abstract void onDraw();
+	protected abstract void onDraw();
 
 	public boolean hasParent()
 	{
@@ -119,6 +125,30 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		return parent;
 	}
 
+	public float getWidth(boolean local)
+	{
+		float width = getWidth();
+		if (!local && parent != null)
+		{
+			float scaleX = parent.getScale(false, HELPER_VEC2).x;
+			width = width* scaleX;
+		}
+		
+		return width;
+	}
+
+	public float getHeight(boolean local)
+	{
+		float height = getHeight();
+		if (!local && parent != null)
+		{
+			float scaleY = parent.getScale(false, HELPER_VEC2).y;
+			height = height* scaleY;
+		}
+		
+		return height;
+	}
+	
 	protected final void setParent(DisplayObjectContainer parent)
 	{
 		if (parent != null && parent.stage != null)
@@ -332,16 +362,26 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		{
 			return false;
 		}
-		
+
 		HELPER_VEC4.x = x;
 		HELPER_VEC4.y = -y;
 		HELPER_VEC4.z = -1;
 		HELPER_VEC4.w = 1;
-
+		
 		Matrix4f.transform(invWorldMatrix(), HELPER_VEC4, HELPER_VEC4);
+		
+		if (parent != null)
+		{
+			getScale(true, HELPER_VEC2);
+		}
 
-		boolean collision = HELPER_VEC4.x >= 0 && HELPER_VEC4.y <= 0 && HELPER_VEC4.x <= getWidth() && HELPER_VEC4.y >= -getHeight();
-
+		float scaleX = 1 / HELPER_VEC2.x;
+		float scaleY = 1 / HELPER_VEC2.y;
+		float w = getWidth() * scaleX;
+		float h = getHeight() * scaleY;
+		
+		boolean collision = HELPER_VEC4.x >= 0 && HELPER_VEC4.y <= 0 && HELPER_VEC4.x <= w && HELPER_VEC4.y >= -h;
+		
 		return collision;
 	}
 }

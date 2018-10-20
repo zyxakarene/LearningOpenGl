@@ -1,0 +1,16 @@
+{
+	"name":"renderer_container",
+	"type":"container",
+	"forceWidth":100,
+	"forceHeight":100,
+	"children":
+	[
+		{
+			"name":"renderer_quad",
+			"type":"quad",
+			"width":100,
+			"height":100,
+			"color":"0xFFFFFF"
+		}
+	]
+}

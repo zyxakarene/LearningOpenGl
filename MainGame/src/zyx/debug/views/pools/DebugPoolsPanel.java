@@ -24,7 +24,7 @@ public class DebugPoolsPanel extends BaseDebugPanel
 		list = new JTable(listModel);
 		list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		listScrollPane.setViewportView(list);
-
+		
 		out = new ArrayList<>();
 	}
 

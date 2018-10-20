@@ -53,6 +53,20 @@ public class Color
 		return out;
 	}
 
+	public static Vector4f toVector(int color, Vector4f out)
+	{
+		if (out == null)
+		{
+			out = HELPER_4;
+		}
+		
+		out.x = ((color >> 16) & 0xff) / 255f;
+		out.y = ((color >> 8)  & 0xff) / 255f;
+		out.z = ((color)  & 0xff) / 255f;
+		
+		return out;
+	}
+
 	public static Vector4f toVector(long color, Vector4f out)
 	{
 		if (out == null)

@@ -1,5 +1,6 @@
-package zyx.engine.components.screen;
+package zyx.engine.components.screen.image;
 
+import zyx.engine.components.animations.ILoadable;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.Resource;

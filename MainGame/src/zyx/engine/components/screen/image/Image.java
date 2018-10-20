@@ -1,4 +1,4 @@
-package zyx.engine.components.screen;
+package zyx.engine.components.screen.image;
 
 import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.resources.IResourceReady;
@@ -26,7 +26,7 @@ public class Image extends AbstractImage implements IResourceReady<TextureResour
 		
 		onModelCreated();
 	}
-
+	
 	public void setTexture(GameTexture texture)
 	{
 		if (model != null)

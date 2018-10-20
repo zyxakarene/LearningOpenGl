@@ -1,5 +1,6 @@
-package zyx.engine.components.screen;
+package zyx.engine.components.screen.interactable;
 
+import zyx.engine.components.screen.base.DisplayObjectContainer;
 import zyx.game.controls.input.MouseData;
 
 public abstract class InteractableContainer extends DisplayObjectContainer
@@ -21,7 +22,7 @@ public abstract class InteractableContainer extends DisplayObjectContainer
 
 	protected abstract void onMouseClick();
 
-	void updateButtonState(boolean mouseCollision)
+	public void updateButtonState(boolean mouseCollision)
 	{
 		boolean isLeftDown = MouseData.data.isLeftDown();
 

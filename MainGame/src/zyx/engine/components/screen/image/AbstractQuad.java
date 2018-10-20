@@ -1,7 +1,9 @@
-package zyx.engine.components.screen;
+package zyx.engine.components.screen.image;
 
+import zyx.engine.components.screen.base.DisplayObject;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.opengl.models.implementations.ScreenModel;
+import zyx.utils.Color;
 
 public abstract class AbstractQuad extends DisplayObject
 {
@@ -23,6 +25,12 @@ public abstract class AbstractQuad extends DisplayObject
 	public void setColor(Vector4f color)
 	{
 		colors.set(color);
+		updateMesh();
+	}
+
+	public void setColor(int color)
+	{
+		Color.toVector(color, colors);
 		updateMesh();
 	}
 
@@ -122,7 +130,7 @@ public abstract class AbstractQuad extends DisplayObject
 	}
 	
 	@Override
-	void onDraw()
+	protected void onDraw()
 	{
 		if (loaded)
 		{

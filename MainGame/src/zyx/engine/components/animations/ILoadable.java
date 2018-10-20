@@ -1,4 +1,4 @@
-package zyx.engine.components.screen;
+package zyx.engine.components.animations;
 
 public interface ILoadable
 {

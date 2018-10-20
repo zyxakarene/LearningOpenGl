@@ -1,5 +1,9 @@
 package zyx;
 
+import zyx.engine.components.screen.interactable.Checkbox;
+import zyx.engine.components.screen.image.Image;
+import zyx.engine.components.screen.base.Stage;
+import zyx.engine.components.screen.base.DisplayObjectContainer;
 import zyx.game.components.world.camera.FirstPersonBehavior;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -7,7 +11,6 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.engine.components.screen.*;
 import zyx.game.components.GameObject;
 import zyx.engine.components.world.World3D;
 import zyx.engine.components.world.physics.BoxCollider;

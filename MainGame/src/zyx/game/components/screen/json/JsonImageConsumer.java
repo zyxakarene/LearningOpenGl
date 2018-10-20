@@ -1,6 +1,6 @@
 package zyx.game.components.screen.json;
 
-import zyx.engine.components.screen.AbstractImage;
+import zyx.engine.components.screen.image.AbstractImage;
 
 public class JsonImageConsumer extends JsonQuadConsumer<AbstractImage>
 {

@@ -68,8 +68,8 @@ public class ScreenShader extends AbstractShader
 	public void getClipRect(Rectangle out)
 	{
 		out.x = clipX.x;
-		out.y = clipX.y;
-		out.width = clipY.x;
+		out.y = clipY.x;
+		out.width = clipX.y;
 		out.height = clipY.y;
 	}
 	

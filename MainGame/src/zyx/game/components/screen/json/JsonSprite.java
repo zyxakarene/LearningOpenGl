@@ -2,22 +2,27 @@ package zyx.game.components.screen.json;
 
 import java.util.HashMap;
 import org.json.simple.JSONObject;
-import zyx.engine.components.screen.DisplayObject;
-import zyx.engine.components.screen.DisplayObjectContainer;
+import zyx.engine.components.screen.base.DisplayObject;
+import zyx.engine.components.screen.base.DisplayObjectContainer;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.JsonResource;
 import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IUpdateable;
 
-public class JsonSprite extends DisplayObjectContainer implements IResourceReady<JsonResource>, IUpdateable
+public abstract class JsonSprite extends DisplayObjectContainer implements IResourceReady<JsonResource>, IUpdateable
 {
 
 	private JsonResource resource;
 	private HashMap<String, DisplayObject> jsonChildren;
 
+	private boolean initialized;
+	private boolean loaded;
+	
 	public JsonSprite()
 	{
+		super();
+		
 		jsonChildren = new HashMap<>();
 		String res = getResource();
 		if (res != null)
@@ -27,10 +32,7 @@ public class JsonSprite extends DisplayObjectContainer implements IResourceReady
 		}
 	}
 
-	public String getResource()
-	{
-		return null;
-	}
+	public abstract String getResource();
 
 	public <T extends DisplayObject> T getComponentByName(String name)
 	{
@@ -44,10 +46,16 @@ public class JsonSprite extends DisplayObjectContainer implements IResourceReady
 		JSONObject content = resource.getContent();
 		JsonSpriteParser.getInstance().createSpriteFrom(this, content);
 
-		onInitialized();
+		onComponentsCreated();
+		
+		loaded = true;
 	}
 
-	protected void onInitialized()
+	protected void onComponentsCreated()
+	{
+	}
+
+	protected void onInitialize()
 	{
 	}
 
@@ -69,10 +77,21 @@ public class JsonSprite extends DisplayObjectContainer implements IResourceReady
 	}
 
 	@Override
-	public void update(long timestamp, int elapsedTime)
+	public final void update(long timestamp, int elapsedTime)
 	{
+		if (!initialized && loaded)
+		{
+			onInitialize();
+			initialized = true;
+		}
+		
+		onUpdate(timestamp, elapsedTime);
 	}
 
+	protected void onUpdate(long timestamp, int elapsedTime)
+	{
+	}
+	
 	@Override
 	public final void dispose()
 	{

@@ -38,7 +38,7 @@ public class ResourceRulePart
 
 		if (index < 0)
 		{
-			Print.out("No resource rule given for", resource);
+			throw new RuntimeException("No resource rule given for: " + resource);
 		}
 		
 		String[] segments = ruleSegments.get(index);

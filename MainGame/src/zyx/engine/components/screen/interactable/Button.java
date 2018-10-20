@@ -1,5 +1,8 @@
-package zyx.engine.components.screen;
+package zyx.engine.components.screen.interactable;
 
+import zyx.engine.components.screen.image.AbstractImage;
+import zyx.engine.components.screen.image.Image;
+import zyx.engine.components.screen.image.Scale9Image;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.curser.GameCursor;
 import zyx.engine.utils.ClickDispatcher;
