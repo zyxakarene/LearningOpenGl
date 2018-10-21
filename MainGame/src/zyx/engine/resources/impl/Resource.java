@@ -20,6 +20,10 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 	private boolean loaded;
 
 	private ResourceRequestDataInput resourceRequest;
+	
+	private ArrayList<Resource> dependencies;
+	private int loadedDependenciesCount;
+	private IResourceReady dependencyLoaded;
 
 	Resource(String path)
 	{
@@ -27,8 +31,20 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 		this.loaded = false;
 
 		this.pointers = new ArrayList<>();
+		this.dependencies = new ArrayList<>();
+		this.loadedDependenciesCount = 0;
+		
+		this.dependencyLoaded = (IResourceReady) (Resource resource) ->
+		{
+			onDependencyLoaded(resource);
+		};
 	}
 
+	public void addDependency(Resource dependency)
+	{
+		dependencies.add(dependency);
+	}
+	
 	public void registerAndLoad(IResourceReady callback)
 	{
 		DebugResourceList.addResource(this);
@@ -54,6 +70,21 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 	{
 		resourceRequest = new ResourceRequestDataInput(path, this);
 		ResourceLoader.getInstance().addRequest(resourceRequest);
+		
+		for (Resource dependency : dependencies)
+		{
+			dependency.registerAndLoad(dependencyLoaded);
+		}
+	}
+	
+	private void onDependencyLoaded(Resource resource)
+	{
+		loadedDependenciesCount++;
+		
+		if (content != null)
+		{
+			onContentLoaded(content);
+		}
 	}
 	
 	public void unregister(IResourceReady callback)
@@ -75,12 +106,16 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 
 	protected void onContentLoaded(Object content)
 	{
-		this.loaded = true;
 		this.content = content;
-
-		for (IResourceReady pointer : pointers)
+		
+		if (loadedDependenciesCount == dependencies.size())
 		{
-			pointer.onResourceReady(this);
+			this.loaded = true;
+
+			for (IResourceReady pointer : pointers)
+			{
+				pointer.onResourceReady(this);
+			}
 		}
 	}
 
@@ -93,6 +128,11 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 			resourceRequest = null;
 		}
 
+		for (Resource dependency : dependencies)
+		{
+			dependency.unregister(dependencyLoaded);
+		}
+		
 		onDispose();
 
 		if (pointers.isEmpty() == false)

@@ -18,6 +18,15 @@ public class MainHud extends JsonSprite
 	}
 
 	@Override
+	protected String[] getDependencies()
+	{
+		return new String[]
+		{
+			"json.renderer"
+		};
+	}
+
+	@Override
 	protected void onComponentsCreated()
 	{
 		image = this.<AbstractImage>getComponentByName("test_image_1");
@@ -30,7 +39,7 @@ public class MainHud extends JsonSprite
 		ArrayList<Integer> data = new ArrayList<>();
 		for (int i = 0; i < 10; i++)
 		{
-			data.add((int)(Math.random() * 0xFFFFFF));
+			data.add((int) (Math.random() * 0xFFFFFF));
 		}
 
 		list.setData(data);

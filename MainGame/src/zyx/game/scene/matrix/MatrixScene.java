@@ -3,13 +3,11 @@ package zyx.game.scene.matrix;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.resources.IResourceReady;
-import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.JsonResource;
 import zyx.engine.scene.Scene;
 import zyx.game.components.MeshObject;
 import zyx.game.controls.input.KeyboardData;
 import zyx.opengl.camera.Camera;
-import zyx.utils.cheats.DebugPoint;
 
 public class MatrixScene extends Scene implements IResourceReady<JsonResource>
 {
@@ -57,8 +55,6 @@ public class MatrixScene extends Scene implements IResourceReady<JsonResource>
 		world.addChild(parent1);
 
 		rot = 0;
-		
-		ResourceManager.getInstance().getResource("json.renderer").registerAndLoad(this);
 	}
 
 	@Override
