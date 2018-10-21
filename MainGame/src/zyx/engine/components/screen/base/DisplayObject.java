@@ -24,13 +24,13 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	protected static final Vector4f HELPER_VEC4 = new Vector4f();
 
 	private DisplayObjectContainer parent;
-	public boolean dirty;
+	private boolean dirty;
 	private boolean dirtyInv;
 
 	protected Matrix4f invWorldMatrix;
 	protected Matrix4f worldMatrix;
 	protected Matrix4f localMatrix;
-	public Vector2f position;
+	protected Vector2f position;
 
 	public boolean visible;
 	public boolean buttonMode;

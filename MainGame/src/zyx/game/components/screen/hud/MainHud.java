@@ -33,6 +33,6 @@ public class MainHud extends JsonSprite
 			data.add((int)(Math.random() * 0xFFFFFF));
 		}
 
-		//list.setData(data);
+		list.setData(data);
 	}
 }
