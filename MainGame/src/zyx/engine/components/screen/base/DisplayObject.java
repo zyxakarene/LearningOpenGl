@@ -1,15 +1,20 @@
 package zyx.engine.components.screen.base;
 
+import java.util.ArrayList;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;
+import zyx.engine.touch.MouseTouchManager;
 import zyx.game.controls.SharedPools;
+import zyx.game.controls.input.MouseData;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.ScreenShader;
 import zyx.opengl.shaders.implementations.Shader;
+import zyx.utils.geometry.Rectangle;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IPositionable2D;
 import zyx.utils.math.DecomposedMatrix;
@@ -17,8 +22,9 @@ import zyx.utils.math.MatrixUtils;
 
 public abstract class DisplayObject implements IPositionable2D, IDisposeable
 {
+
 	protected static final DecomposedMatrix DECOMPOSED_MATRIX = new DecomposedMatrix();
-	
+
 	protected static final Vector2f HELPER_VEC2 = new Vector2f();
 	protected static final Vector3f HELPER_VEC3 = new Vector3f();
 	protected static final Vector4f HELPER_VEC4 = new Vector4f();
@@ -26,7 +32,9 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	private DisplayObjectContainer parent;
 	private boolean dirty;
 	private boolean dirtyInv;
+	private ArrayList<ITouched> touchListeners;
 
+	protected Rectangle clipRect;
 	protected Matrix4f invWorldMatrix;
 	protected Matrix4f worldMatrix;
 	protected Matrix4f localMatrix;
@@ -39,9 +47,9 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	public boolean disposed;
 
 	public String name;
-	
+
 	protected GameCursor hoverIcon;
-	
+
 	protected final ScreenShader shader;
 	protected Stage stage;
 
@@ -57,7 +65,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		touchable = true;
 		focusable = false;
 		disposed = false;
-		
+
 		dirty = true;
 		dirtyInv = true;
 
@@ -76,7 +84,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 
 			dirty = false;
 			dirtyInv = true;
-			
+
 			onWorldMatrixUpdated();
 		}
 
@@ -86,7 +94,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	protected void onWorldMatrixUpdated()
 	{
 	}
-	
+
 	public Matrix4f invWorldMatrix()
 	{
 		if (dirtyInv || dirty)
@@ -131,9 +139,9 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		if (!local && parent != null)
 		{
 			float scaleX = parent.getScale(false, HELPER_VEC2).x;
-			width = width* scaleX;
+			width = width * scaleX;
 		}
-		
+
 		return width;
 	}
 
@@ -143,12 +151,12 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		if (!local && parent != null)
 		{
 			float scaleY = parent.getScale(false, HELPER_VEC2).y;
-			height = height* scaleY;
+			height = height * scaleY;
 		}
-		
+
 		return height;
 	}
-	
+
 	protected final void setParent(DisplayObjectContainer parent)
 	{
 		if (parent != null && parent.stage != null)
@@ -159,7 +167,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		{
 			stage = null;
 		}
-		
+
 		this.parent = parent;
 	}
 
@@ -197,7 +205,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 			return;
 		}
 		disposed = true;
-		
+
 		removeFromParent(false);
 
 		SharedPools.MATRIX_POOL.releaseInstance(invWorldMatrix);
@@ -356,6 +364,27 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		return position.y;
 	}
 
+	protected void addTouchListener(ITouched listener)
+	{
+		if (touchListeners == null)
+		{
+			touchListeners = new ArrayList<>();
+		}
+
+		if (touchListeners.contains(listener) == false)
+		{
+			touchListeners.add(listener);
+		}
+	}
+
+	protected void removeTouchListener(ITouched listener)
+	{
+		if (touchListeners != null)
+		{
+			touchListeners.remove(listener);
+		}
+	}
+
 	public boolean hitTest(int x, int y)
 	{
 		if (!touchable || !visible)
@@ -367,9 +396,9 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		HELPER_VEC4.y = -y;
 		HELPER_VEC4.z = -1;
 		HELPER_VEC4.w = 1;
-		
+
 		Matrix4f.transform(invWorldMatrix(), HELPER_VEC4, HELPER_VEC4);
-		
+
 		if (parent != null)
 		{
 			getScale(true, HELPER_VEC2);
@@ -379,9 +408,42 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		float scaleY = 1 / HELPER_VEC2.y;
 		float w = getWidth() * scaleX;
 		float h = getHeight() * scaleY;
-		
+
 		boolean collision = HELPER_VEC4.x >= 0 && HELPER_VEC4.y <= 0 && HELPER_VEC4.x <= w && HELPER_VEC4.y >= -h;
-		
+
 		return collision;
+	}
+
+	void dispatchTouch(boolean collided, int x, int y)
+	{
+		if (clipRect != null)
+		{
+			boolean insideClip = x > clipRect.x && x < clipRect.width && y > clipRect.y && y < clipRect.height;
+			if (!insideClip)
+			{
+				return;
+			}
+		}
+		
+		if (hoverIcon != null)
+		{
+			CursorManager.getInstance().setCursor(hoverIcon);
+		}
+		
+		if (touchListeners != null)
+		{
+			ITouched touch;
+			int len = touchListeners.size();
+			for (int i = 0; i < len; i++)
+			{
+				touch = touchListeners.get(i);
+				touch.onTouched(collided, MouseData.data);
+			}
+		}
+
+		if (parent != null)
+		{
+			parent.dispatchTouch(collided, x, y);
+		}
 	}
 }

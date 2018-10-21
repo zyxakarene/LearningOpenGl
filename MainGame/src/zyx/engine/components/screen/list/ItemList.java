@@ -3,10 +3,12 @@ package zyx.engine.components.screen.list;
 import java.util.ArrayList;
 import java.util.Collection;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
+import zyx.engine.components.screen.base.ITouched;
 import zyx.engine.components.screen.base.Quad;
+import zyx.game.controls.input.MouseData;
 import zyx.utils.geometry.Rectangle;
 
-public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer
+public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer implements ITouched
 {
 	private static final Rectangle CLIP_HELPER = new Rectangle();
 
@@ -15,9 +17,8 @@ public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer
 	private ArrayList<T> itemRenderers;
 	private ArrayList<Object> rendererData;
 
+	private DisplayObjectContainer container;
 	private Quad background;
-
-	private Rectangle clipRect;
 	
 	public ItemList()
 	{
@@ -25,11 +26,15 @@ public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer
 		rendererData = new ArrayList<>();
 
 		background = new Quad(10, 10, 0xFFFFFF);
-		background.setAlpha(0.5f);
-
+		background.setAlpha(0);
+		
 		clipRect = new Rectangle();
 		
+		container = new DisplayObjectContainer();
 		addChild(background);
+		addChild(container);
+		
+		addTouchListener(this);
 	}
 
 	public void setItemRenderer(Class<T> clazz)
@@ -73,11 +78,12 @@ public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer
 		for (Object data : rendererData)
 		{
 			T renderer = ListRendererFactory.createFrom(itemRenderer);
+			renderer.setClipRect(clipRect);
 			itemRenderers.add(renderer);
 			
 			renderer.setData(data);
 			
-			addChild(renderer);
+			container.addChild(renderer);
 			
 			renderer.setX(xPos);
 			xPos += renderer.getWidth();
@@ -94,5 +100,10 @@ public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer
 	public void setHeight(float value)
 	{
 		background.setHeight(value);
+	}
+
+	@Override
+	public void onTouched(boolean collided, MouseData data)
+	{
 	}
 }

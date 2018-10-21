@@ -1,7 +1,11 @@
 package zyx.engine.components.screen.interactable;
 
 import zyx.engine.components.screen.base.DisplayObjectContainer;
+import zyx.engine.components.screen.base.ITouched;
+import zyx.engine.touch.TouchData;
+import zyx.engine.touch.TouchState;
 import zyx.game.controls.input.MouseData;
+import zyx.utils.cheats.Print;
 
 public abstract class InteractableContainer extends DisplayObjectContainer
 {
@@ -9,9 +13,17 @@ public abstract class InteractableContainer extends DisplayObjectContainer
 	private boolean wasMouseOver;
 	private boolean wasMouseDown;
 	private boolean wasMouseDownOutside;
+	
+	private ITouched touchListener;
 
 	public InteractableContainer()
 	{
+		touchListener = (boolean collided, MouseData data) ->
+		{
+			updateButtonState(collided);
+		};
+		
+		addTouchListener(touchListener);
 	}
 
 	protected abstract void onMouseEnter();

@@ -1,13 +1,8 @@
 package zyx.engine.components.screen.base;
 
 import java.util.LinkedList;
-import org.lwjgl.util.vector.Vector2f;
-import zyx.engine.components.animations.IFocusable;
-import zyx.engine.components.screen.interactable.InteractableContainer;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;
-import zyx.game.controls.input.MouseData;
-import zyx.utils.cheats.Print;
 
 public class InteractionCrawler
 {
@@ -47,34 +42,19 @@ public class InteractionCrawler
 				}
 			}
 			
-			if (child.name != null)
-			{
-				if (child.name.equals("breakpoint"))
-				{
-					Print.out("Testing", child.name);
-					Vector2f position = child.getPosition(false, null);
-					Vector2f scale = child.getScale(false, null);
-					float w = child.getWidth();
-					float h = child.getHeight();
-					Print.out(scale, position, w, h);
-				}
-			}
-			
 			hit = child.hitTest(x, y);
 			
 			if (hit)
 			{
-				child.hitTest(x, y);
-				
 				if (hitTarget != null && hitTarget != child)
 				{
-					onTargetHitRemoved(hitTarget);
+					onTargetHitRemoved(hitTarget, x, y);
 				}
 				
 				objects.clear();
 				hitTarget = child;
 				
-				onTargetHit(hitTarget);
+				onTargetHit(hitTarget, x, y);
 			}
 		}
 		
@@ -82,38 +62,35 @@ public class InteractionCrawler
 		{
 			if (!hitTarget.disposed)
 			{
-				onTargetHitRemoved(hitTarget);
+				onTargetHitRemoved(hitTarget, x, y);
 			}
 			hitTarget = null;
 		}
 	}
 
-	private void onTargetHitRemoved(DisplayObject target)
+	private void onTargetHitRemoved(DisplayObject target, int x, int y)
 	{
 		CursorManager.getInstance().setCursor(GameCursor.POINTER);
 		
-		if (target instanceof InteractableContainer)
-		{
-			((InteractableContainer) target).updateButtonState(false);
-		}
+		target.dispatchTouch(false, x, y);
+//		if (target instanceof InteractableContainer)
+//		{
+//			((InteractableContainer) target).updateButtonState(false);
+//		}
 	}
 	
-	private void onTargetHit(DisplayObject target)
+	private void onTargetHit(DisplayObject target, int x, int y)
 	{
-		if (target.hoverIcon != null)
-		{
-			CursorManager.getInstance().setCursor(target.hoverIcon);
-		}
-		
-		if (target instanceof InteractableContainer)
-		{
-			((InteractableContainer) target).updateButtonState(true);
-		}
-		
-		if (target instanceof IFocusable && MouseData.data.isLeftClicked())
-		{
-			Stage.instance.setFocusedObject((IFocusable) target);
-		}
+		target.dispatchTouch(true, x, y);
+//		if (target instanceof InteractableContainer)
+//		{
+//			((InteractableContainer) target).updateButtonState(true);
+//		}
+//		
+//		if (target instanceof IFocusable && MouseData.data.isLeftClicked())
+//		{
+//			Stage.instance.setFocusedObject((IFocusable) target);
+//		}
 	}
 	
 }

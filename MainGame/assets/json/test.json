@@ -6,7 +6,7 @@
 		{
 			"name":"list_test",
 			"type":"itemList",
-			"itemRenderer":"renderer",
+			"itemRenderer":"HudRenderer",
 			"x":500,
 			"y":500,
 			"width":400,

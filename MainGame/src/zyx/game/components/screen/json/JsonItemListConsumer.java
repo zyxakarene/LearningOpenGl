@@ -3,11 +3,12 @@ package zyx.game.components.screen.json;
 import java.util.HashMap;
 import zyx.engine.components.screen.list.ItemList;
 import zyx.engine.components.screen.list.ItemRenderer;
+import zyx.game.components.screen.hud.HudRenderer;
 
 public class JsonItemListConsumer extends JsonContainerConsumer<ItemList>
 {
 
-	private static HashMap<String, Class<ItemRenderer>> ITEM_RENDERER_MAP = createRendererMap();
+	private static HashMap<String, Class<? extends ItemRenderer>> ITEM_RENDERER_MAP = createRendererMap();
 
 	protected static final String ITEM_RENDERER = "itemRenderer";
 
@@ -27,11 +28,11 @@ public class JsonItemListConsumer extends JsonContainerConsumer<ItemList>
 		}
 	}
 
-	private static HashMap<String, Class<ItemRenderer>> createRendererMap()
+	private static HashMap<String, Class<? extends ItemRenderer>> createRendererMap()
 	{
-		HashMap<String, Class<ItemRenderer>> map = new HashMap<>();
+		HashMap<String, Class<? extends ItemRenderer>> map = new HashMap<>();
 		
-		map.put("renderer", ItemRenderer.class);
+		map.put("HudRenderer", HudRenderer.class);
 		
 		return map;
 	}

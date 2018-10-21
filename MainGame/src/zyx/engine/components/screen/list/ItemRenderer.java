@@ -1,40 +1,46 @@
 package zyx.engine.components.screen.list;
 
-import zyx.engine.components.screen.base.Quad;
+import zyx.engine.components.screen.base.ITouched;
+import zyx.engine.curser.GameCursor;
 import zyx.game.components.screen.json.JsonSprite;
+import zyx.game.controls.input.MouseData;
+import zyx.utils.geometry.Rectangle;
 
-public class ItemRenderer extends JsonSprite
+public abstract class ItemRenderer extends JsonSprite implements ITouched
 {
-	protected Object data;
-	private Quad quad;
 
-	public ItemRenderer()
+	protected Object data;
+
+	public ItemRenderer(boolean button)
 	{
 		super();
-	}
-	
-	
-	@Override
-	public String getResource()
-	{
-		return "json.renderer";
+
+		if (button)
+		{
+			addTouchListener(this);
+
+			buttonMode = true;
+			hoverIcon = GameCursor.HAND;
+		}
 	}
 
-	@Override
-	protected void onComponentsCreated()
+	final void setClipRect(Rectangle clipRect)
 	{
-		quad = this.<Quad>getComponentByName("renderer_quad");
+		this.clipRect = clipRect;
 	}
-	
+
 	public final void setData(Object data)
 	{
 		this.data = data;
-		
 		onDataSet();
 	}
 
 	protected void onDataSet()
 	{
-		quad.setColor((Integer) data);
+	}
+
+	@Override
+	public void onTouched(boolean collided, MouseData data)
+	{
 	}
 }
