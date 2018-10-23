@@ -1,7 +1,12 @@
 package zyx.engine.touch;
 
-import zyx.engine.components.screen.base.ITouched;
+import java.util.HashMap;
+import zyx.engine.components.screen.base.DisplayObject;
+import zyx.engine.components.screen.base.DisplayObjectContainer;
+import zyx.engine.curser.CursorManager;
+import zyx.engine.curser.GameCursor;
 import zyx.game.controls.input.MouseData;
+import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IUpdateable;
 
 public class MouseTouchManager implements IUpdateable
@@ -15,6 +20,13 @@ public class MouseTouchManager implements IUpdateable
 	private TouchState currentState;
 	private MouseData mouseData;
 	private int pressTimer;
+	private boolean forceUpdate;
+	
+	private HashMap<DisplayObject, TouchEntry> touchListeners;
+	
+	private DisplayObject currentTarget;
+	private DisplayObject mouseDownTarget;
+	private boolean hasDownTarget;
 
 	private MouseTouchManager()
 	{
@@ -22,6 +34,7 @@ public class MouseTouchManager implements IUpdateable
 		mouseData = MouseData.data;
 		pressTimer = 0;
 		data = new TouchData();
+		touchListeners = new HashMap<>();
 	}
 
 	public static MouseTouchManager getInstance()
@@ -34,6 +47,32 @@ public class MouseTouchManager implements IUpdateable
 		return currentState;
 	}
 
+	public void registerTouch(DisplayObject target, ITouched listener)
+	{
+		if (touchListeners.containsKey(target) == false)
+		{
+			touchListeners.put(target, new TouchEntry(target));
+		}
+		
+		TouchEntry entry = touchListeners.get(target);
+		entry.addListener(listener);
+	}
+	
+	public void unregisterTouch(DisplayObject target, ITouched listener)
+	{
+		TouchEntry entry = touchListeners.get(target);
+		
+		if (entry != null)
+		{
+			entry.removeListener(listener);
+			
+			if (entry.touches.isEmpty())
+			{
+				touchListeners.remove(target);
+			}
+		}
+	}
+	
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
@@ -52,6 +91,8 @@ public class MouseTouchManager implements IUpdateable
 			case CLICK:
 			case RELEASE:
 			{
+				mouseDownTarget = null;
+				hasDownTarget = false;
 				newState = TouchState.HOVER;
 				break;
 			}
@@ -60,6 +101,8 @@ public class MouseTouchManager implements IUpdateable
 				if (leftDown)
 				{
 					pressTimer = 0;
+					mouseDownTarget = currentTarget;
+					hasDownTarget = true;
 					newState = TouchState.DOWN;
 				}
 				break;
@@ -97,14 +140,63 @@ public class MouseTouchManager implements IUpdateable
 			}
 		}
 
-		if (update || newState != currentState)
+		if (forceUpdate || update || newState != currentState)
 		{
+			forceUpdate = false;
 			currentState = newState;
 			
 			data.x = mouseData.x;
 			data.y = mouseData.y;
 			data.dX = mouseData.dX;
 			data.dY = mouseData.dY;
+			
+			if (hasDownTarget)
+			{
+				if (mouseDownTarget != null)
+				{
+					boolean collision = (mouseDownTarget == currentTarget);
+					dispatchTo(mouseDownTarget, currentState, collision);
+				}
+			}
+			else if (currentTarget != null)
+			{
+				dispatchTo(currentTarget, currentState, true);
+			}
+		}
+	}
+
+	public void setTouchedObject(DisplayObject target)
+	{
+		if (!hasDownTarget && currentTarget != null && currentTarget != target)
+		{
+			dispatchTo(currentTarget, currentState, false);
+		}
+		
+		currentTarget = target;
+		forceUpdate = true;
+	}
+
+	private void dispatchTo(DisplayObject target, TouchState state, boolean collision)
+	{
+		TouchEntry entry = touchListeners.get(target);
+		
+		if (entry != null)
+		{
+			for (ITouched touch : entry.touches)
+			{
+				touch.onTouched(state, collision, data);
+			}
+		}
+		
+		DisplayObjectContainer parent = target.getParent();
+		if (parent != null)
+		{
+			dispatchTo(parent, state, collision);
+		}
+		
+		if (target.hoverIcon != null)
+		{
+			CursorManager.getInstance().setCursor(target.hoverIcon);
 		}
 	}
 }

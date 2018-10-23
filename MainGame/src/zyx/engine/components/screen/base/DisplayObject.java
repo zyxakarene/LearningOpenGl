@@ -1,15 +1,13 @@
 package zyx.engine.components.screen.base;
 
-import java.util.ArrayList;
+import zyx.engine.touch.ITouched;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
-import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;
 import zyx.engine.touch.MouseTouchManager;
 import zyx.game.controls.SharedPools;
-import zyx.game.controls.input.MouseData;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.ScreenShader;
@@ -32,7 +30,6 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	private DisplayObjectContainer parent;
 	private boolean dirty;
 	private boolean dirtyInv;
-	private ArrayList<ITouched> touchListeners;
 
 	protected Rectangle clipRect;
 	protected Matrix4f invWorldMatrix;
@@ -48,7 +45,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 
 	public String name;
 
-	protected GameCursor hoverIcon;
+	public GameCursor hoverIcon;
 
 	protected final ScreenShader shader;
 	protected Stage stage;
@@ -366,23 +363,12 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 
 	protected void addTouchListener(ITouched listener)
 	{
-		if (touchListeners == null)
-		{
-			touchListeners = new ArrayList<>();
-		}
-
-		if (touchListeners.contains(listener) == false)
-		{
-			touchListeners.add(listener);
-		}
+		MouseTouchManager.getInstance().registerTouch(this, listener);
 	}
 
 	protected void removeTouchListener(ITouched listener)
 	{
-		if (touchListeners != null)
-		{
-			touchListeners.remove(listener);
-		}
+		MouseTouchManager.getInstance().unregisterTouch(this, listener);
 	}
 
 	public boolean hitTest(int x, int y)
@@ -392,6 +378,15 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 			return false;
 		}
 
+		if (clipRect != null)
+		{
+			boolean insideClip = x > clipRect.x && x < clipRect.width && y > clipRect.y && y < clipRect.height;
+			if (!insideClip)
+			{
+				return false;
+			}
+		}
+		
 		HELPER_VEC4.x = x;
 		HELPER_VEC4.y = -y;
 		HELPER_VEC4.z = -1;
@@ -412,38 +407,5 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		boolean collision = HELPER_VEC4.x >= 0 && HELPER_VEC4.y <= 0 && HELPER_VEC4.x <= w && HELPER_VEC4.y >= -h;
 
 		return collision;
-	}
-
-	void dispatchTouch(boolean collided, int x, int y)
-	{
-		if (clipRect != null)
-		{
-			boolean insideClip = x > clipRect.x && x < clipRect.width && y > clipRect.y && y < clipRect.height;
-			if (!insideClip)
-			{
-				return;
-			}
-		}
-		
-		if (hoverIcon != null)
-		{
-			CursorManager.getInstance().setCursor(hoverIcon);
-		}
-		
-		if (touchListeners != null)
-		{
-			ITouched touch;
-			int len = touchListeners.size();
-			for (int i = 0; i < len; i++)
-			{
-				touch = touchListeners.get(i);
-				touch.onTouched(collided, MouseData.data);
-			}
-		}
-
-		if (parent != null)
-		{
-			parent.dispatchTouch(collided, x, y);
-		}
 	}
 }

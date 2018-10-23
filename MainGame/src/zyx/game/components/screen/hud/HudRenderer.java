@@ -2,6 +2,8 @@ package zyx.game.components.screen.hud;
 
 import zyx.engine.components.screen.base.Quad;
 import zyx.engine.components.screen.list.ItemRenderer;
+import zyx.engine.touch.TouchData;
+import zyx.engine.touch.TouchState;
 import zyx.game.controls.input.MouseData;
 import zyx.utils.FloatMath;
 
@@ -34,9 +36,9 @@ public class HudRenderer extends ItemRenderer
 	}
 
 	@Override
-	public void onTouched(boolean collided, MouseData data)
+	public void onTouched(TouchState state, boolean collided, TouchData data)
 	{
-		if (data.isLeftClicked())
+		if (state == TouchState.CLICK)
 		{
 			quad.setColor(FloatMath.random(), FloatMath.random(), FloatMath.random());
 		}

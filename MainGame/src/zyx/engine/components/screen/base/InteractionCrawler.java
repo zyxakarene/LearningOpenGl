@@ -1,8 +1,7 @@
 package zyx.engine.components.screen.base;
 
 import java.util.LinkedList;
-import zyx.engine.curser.CursorManager;
-import zyx.engine.curser.GameCursor;
+import zyx.engine.touch.MouseTouchManager;
 
 public class InteractionCrawler
 {
@@ -19,6 +18,8 @@ public class InteractionCrawler
 
 	public void interactionTest(int x, int y)
 	{
+		hitTarget = null;
+		
 		objects.clear();
 		
 		objects.add(parent);
@@ -26,7 +27,7 @@ public class InteractionCrawler
 		
 		DisplayObject child;
 		DisplayObjectContainer childContainer;
-		boolean hit = false;
+		boolean hit;
 		while (objects.size() > 0)
 		{			
 			child = objects.removeLast();
@@ -36,7 +37,7 @@ public class InteractionCrawler
 				childContainer = (DisplayObjectContainer) child;
 				childContainer.getChildren(objects);
 				
-				if (((DisplayObjectContainer) child).focusable == false)
+				if (child.focusable == false)
 				{
 					continue;
 				}
@@ -46,51 +47,11 @@ public class InteractionCrawler
 			
 			if (hit)
 			{
-				if (hitTarget != null && hitTarget != child)
-				{
-					onTargetHitRemoved(hitTarget, x, y);
-				}
-				
 				objects.clear();
 				hitTarget = child;
-				
-				onTargetHit(hitTarget, x, y);
 			}
 		}
 		
-		if (!hit && hitTarget != null)
-		{
-			if (!hitTarget.disposed)
-			{
-				onTargetHitRemoved(hitTarget, x, y);
-			}
-			hitTarget = null;
-		}
+		MouseTouchManager.getInstance().setTouchedObject(hitTarget);
 	}
-
-	private void onTargetHitRemoved(DisplayObject target, int x, int y)
-	{
-		CursorManager.getInstance().setCursor(GameCursor.POINTER);
-		
-		target.dispatchTouch(false, x, y);
-//		if (target instanceof InteractableContainer)
-//		{
-//			((InteractableContainer) target).updateButtonState(false);
-//		}
-	}
-	
-	private void onTargetHit(DisplayObject target, int x, int y)
-	{
-		target.dispatchTouch(true, x, y);
-//		if (target instanceof InteractableContainer)
-//		{
-//			((InteractableContainer) target).updateButtonState(true);
-//		}
-//		
-//		if (target instanceof IFocusable && MouseData.data.isLeftClicked())
-//		{
-//			Stage.instance.setFocusedObject((IFocusable) target);
-//		}
-	}
-	
 }

@@ -3,9 +3,10 @@ package zyx.engine.components.screen.list;
 import java.util.ArrayList;
 import java.util.Collection;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
-import zyx.engine.components.screen.base.ITouched;
+import zyx.engine.touch.ITouched;
 import zyx.engine.components.screen.base.Quad;
-import zyx.game.controls.input.MouseData;
+import zyx.engine.touch.TouchData;
+import zyx.engine.touch.TouchState;
 import zyx.utils.geometry.Rectangle;
 
 public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer implements ITouched
@@ -103,7 +104,12 @@ public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer imp
 	}
 
 	@Override
-	public void onTouched(boolean collided, MouseData data)
+	public void onTouched(TouchState state, boolean collided, TouchData data)
 	{
+		if (state == TouchState.DRAG)
+		{
+			float x = container.getX();
+			container.setX(x + data.dX);
+		}
 	}
 }
