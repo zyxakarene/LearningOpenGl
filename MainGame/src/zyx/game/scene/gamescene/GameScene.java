@@ -1,87 +1,55 @@
 package zyx.game.scene.gamescene;
 
 import java.util.ArrayList;
-import org.lwjgl.input.Keyboard;
 import zyx.OnTeaPotClicked;
 import zyx.engine.scene.Scene;
-import zyx.engine.utils.worldpicker.ClickedInfo;
 import zyx.game.components.AnimatedMesh;
-import zyx.game.components.MeshObject;
-import zyx.utils.FloatMath;
-import zyx.utils.cheats.Print;
-import zyx.engine.utils.worldpicker.IHoveredItem;
 import zyx.game.components.SimpleMesh;
-import zyx.game.controls.input.KeyboardData;
-import zyx.utils.cheats.DebugPoint;
 
 public class GameScene extends Scene
 {
 
-	private ArrayList<MeshObject> objects;
+	private ArrayList<SimpleMesh> children;
 
 	public GameScene()
 	{
-		objects = new ArrayList<>();
+		children = new ArrayList<>();
 	}
 
 	@Override
 	protected void onInitialize()
 	{
-		for (int i = 0; i < 1; i++)
+		AnimatedMesh knight = new AnimatedMesh();
+		knight.load("mesh.worm.worm");
+		knight.setAnimation("wiggle");
+		world.addChild(knight);
+
+		addPickedObject(knight, new OnTeaPotClicked());
+		
+		AnimatedMesh parent = knight;
+		for (int i = 0; i < 10; i++)
 		{
-			MeshObject worm = new MeshObject(true);
-			worm.load("mesh.worm.worm");
-			((AnimatedMesh) worm.mesh).setAnimation("wiggle");
 
-			world.addChild(worm);
-			objects.add(worm);
+			AnimatedMesh child = new AnimatedMesh();
+			child.load("mesh.worm.worm");
+			child.setAnimation("wiggle");
+			parent.addChildAsAttachment(child, "Bone002");
 
-			addPickedObject(worm, new OnTeaPotClicked());
-		}
-	}
-
-	private SimpleMesh box;
-	private SimpleMesh platform;
-
-	@Override
-	protected void onUpdate(long timestamp, int elapsedTime)
-	{
-		if (box != null && KeyboardData.data.wasPressed(Keyboard.KEY_T))
-		{
-			box.dispose();
-			box = null;
+			parent = child;
 			
-			platform.dispose();
-			platform = null;
-		}
-
-		if (box == null && KeyboardData.data.wasPressed(Keyboard.KEY_R))
-		{
-			box = new SimpleMesh();
-			box.load("mesh.box");
-			
-			platform = new SimpleMesh();
-			platform.load("mesh.platform");
-			
-			world.addChild(box);
-			world.addChild(platform);
-		}
-
-		for (MeshObject object : objects)
-		{
-			object.update(timestamp, elapsedTime);
+			addPickedObject(child, new OnTeaPotClicked());
 		}
 	}
 
 	@Override
 	protected void onDispose()
 	{
-		for (MeshObject object : objects)
+		for (SimpleMesh simpleMesh : children)
 		{
-			object.dispose();
+			simpleMesh.dispose();
 		}
 
-		objects.clear();
-		objects = null;
+		children.clear();
+		children = null;
 	}
 }

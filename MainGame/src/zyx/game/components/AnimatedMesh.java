@@ -36,12 +36,6 @@ public class AnimatedMesh extends SimpleMesh
 	}
 
 	@Override
-	protected void onDrawAsAttachment()
-	{
-		model.setAnimation(animationController);
-	}
-
-	@Override
 	protected void onDispose()
 	{
 		super.onDispose();

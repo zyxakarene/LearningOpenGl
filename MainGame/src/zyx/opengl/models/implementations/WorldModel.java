@@ -1,26 +1,15 @@
 package zyx.opengl.models.implementations;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.models.AbstractModel;
-import zyx.opengl.models.SharedWorldModelTransformation;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
-import zyx.opengl.models.implementations.bones.attachments.Attachment;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.implementations.physics.PhysBox;
-import zyx.opengl.shaders.SharedShaderObjects;
 
 public class WorldModel extends AbstractModel
 {
-	private static final Vector3f ATTACHMENT_POSITION = new Vector3f(0, 0, 0);
-	private static final Vector3f ATTACHMENT_ROTATION = new Vector3f(0, 0, 0);
-	private static final Vector3f ATTACHMENT_SCALE = new Vector3f(1, 1, 1);
-
-	private static final Matrix4f MODEL_MATRIX = SharedShaderObjects.SHARED_MODEL_TRANSFORM;
-
 	private WorldShader shader;
 	private Skeleton skeleton;
 	
@@ -60,22 +49,6 @@ public class WorldModel extends AbstractModel
 		return physBox;
 	}
 		
-	public void drawAsAttachment(Attachment attachment)
-	{
-		skeleton.update();
-		Matrix4f bonePosCopy = new Matrix4f(attachment.joint.getAttachmentTransform());
-		Matrix4f.mul(MODEL_MATRIX, bonePosCopy, MODEL_MATRIX);
-
-		attachment.child.getPosition(true, ATTACHMENT_POSITION);
-		attachment.child.getRotation(true, ATTACHMENT_ROTATION);
-		attachment.child.getScale(true, ATTACHMENT_SCALE);
-		
-		SharedWorldModelTransformation.transform(ATTACHMENT_POSITION, ATTACHMENT_ROTATION, ATTACHMENT_SCALE);
-		
-		shader.upload();
-		super.draw();
-	}
-
 	@Override
 	protected void setupAttributes()
 	{

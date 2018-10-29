@@ -34,7 +34,7 @@ class PersistentConnection
 			throw new IllegalArgumentException("Packet size too big! " + data.getLength());
 		}
 		
-		if (socket.isConnected())
+		if (socket.isConnected() || data.getAddress() != null)
 		{
 			socket.send(data);
 		}
