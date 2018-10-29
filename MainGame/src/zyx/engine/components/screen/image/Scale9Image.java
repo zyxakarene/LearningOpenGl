@@ -75,7 +75,7 @@ public class Scale9Image extends AbstractImage implements IResourceReady<Texture
 	{
 		model.prepareBatchCount(9);
 
-		Rectangle grid = new Rectangle(25, 25, 14, 14);
+		Rectangle grid = Scale9Grids.getGridFor(gameTexture.getName());
 
 		HashMap<String, GameTexture> textureMap = Scale9Texture.ToScale9TextureMap(grid, gameTexture);
 
