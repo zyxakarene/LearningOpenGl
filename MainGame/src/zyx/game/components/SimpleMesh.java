@@ -10,13 +10,11 @@ import zyx.engine.resources.impl.MeshResource;
 import zyx.engine.resources.impl.Resource;
 import zyx.engine.utils.callbacks.CustomCallback;
 import zyx.engine.utils.callbacks.ICallback;
-import zyx.engine.utils.worldpicker.ClickedInfo;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.attachments.Attachment;
 import zyx.opengl.models.implementations.bones.attachments.AttachmentRequest;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.physics.PhysBox;
-import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.cheats.DebugPhysics;
@@ -88,28 +86,10 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 
 	private void drawAsAttachment(Attachment attachment)
 	{
-		SharedShaderObjects.SHARED_MODEL_TRANSFORM.load(attachment.parent.worldMatrix());
-		shader.upload();
-
-		if (loaded)
-		{
-			onTransform();
-
-			onDrawAsAttachment();
-			model.drawAsAttachment(attachment);
-
-			Attachment subAttachment;
-			int len = attachments.size();
-			for (int i = 0; i < len; i++)
-			{
-				subAttachment = attachments.get(i);
-				subAttachment.child.drawAsAttachment(subAttachment);
-			}
-		}
-	}
-
-	protected void onDrawAsAttachment()
-	{
+		Matrix4f.mul(attachment.parent.worldMatrix(), attachment.joint.getAttachmentTransform(), localMatrix);
+		updateTransforms(true);
+		
+		draw();
 	}
 	
 	public void onLoaded(ICallback<SimpleMesh> callback)
@@ -168,6 +148,17 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 		DebugPhysics.getInstance().registerPhysbox(this);
 		
 		onLoaded.dispatch(this);
+		
+		if (attachmentRequests != null)
+		{
+			while(!attachmentRequests.isEmpty())
+			{
+				AttachmentRequest request = attachmentRequests.remove();
+				addChildAsAttachment(request.child, request.attachmentPoint);
+			}
+			
+			attachmentRequests = null;
+		}
 	}
 
 	@Override
