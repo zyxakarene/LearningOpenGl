@@ -13,6 +13,7 @@ class ConsumerFactory
 	private ObjectPool<JsonImageConsumer> images;
 	private ObjectPool<JsonQuadConsumer> quads;
 	private ObjectPool<JsonItemListConsumer> itemLists;
+	private ObjectPool<JsonTextfieldConsumer> textfields;
 
 	ConsumerFactory()
 	{
@@ -22,6 +23,7 @@ class ConsumerFactory
 		images = new ObjectPool<>(JsonImageConsumer.class, 3);
 		quads = new ObjectPool<>(JsonQuadConsumer.class, 3);
 		itemLists = new ObjectPool<>(JsonItemListConsumer.class, 1);
+		textfields = new ObjectPool<>(JsonTextfieldConsumer.class, 1);
 	}
 
 	void consumeByType(String type, DisplayObjectContainer parent, DisplayObject child, JSONObject json)
@@ -61,6 +63,8 @@ class ConsumerFactory
 				return quads;
 			case JsonSpriteParser.TYPE_ITEM_LIST:
 				return itemLists;
+			case JsonSpriteParser.TYPE_TEXTFIELD:
+				return textfields;
 			default:
 				throw new AssertionError("Unknown type:" + type);
 		}

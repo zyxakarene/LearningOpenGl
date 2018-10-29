@@ -10,8 +10,8 @@ public class Quad extends AbstractQuad
 
 	public Quad(float width, float height, int color)
 	{
-		originalWidth = 9000;
-		originalHeight = 9000;
+		originalWidth = width;
+		originalHeight = height;
 		
 		Color.toVector(color, colors);
 		colors.w = 1;

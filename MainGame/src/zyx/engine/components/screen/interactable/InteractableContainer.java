@@ -20,7 +20,6 @@ public abstract class InteractableContainer extends DisplayObjectContainer
 	{
 		touchListener = (TouchState state, boolean collided, TouchData data) ->
 		{
-			Print.out(state, collided);
 			updateButtonState(collided);
 		};
 		

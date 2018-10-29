@@ -9,6 +9,7 @@ import zyx.engine.components.screen.base.DisplayObject;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
 import org.json.simple.JSONObject;
 import zyx.engine.components.screen.list.ItemList;
+import zyx.engine.components.screen.text.Textfield;
 
 class JsonSpriteParser
 {
@@ -26,6 +27,7 @@ class JsonSpriteParser
 	static final String TYPE_CHECKBOX = "checkbox";
 	static final String TYPE_SCALE_NINE_CHECKBOX = "scale9checkbox";
 	static final String TYPE_ITEM_LIST = "itemList";
+	static final String TYPE_TEXTFIELD = "textfield";
 
 	private ConsumerFactory factory;
 	private int currentChildDepth;
@@ -82,6 +84,9 @@ class JsonSpriteParser
 				break;
 			case TYPE_ITEM_LIST:
 				child = new ItemList();
+				break;
+			case TYPE_TEXTFIELD:
+				child = new Textfield();
 				break;
 			default:
 				throw new AssertionError("Unknown type:" + type);

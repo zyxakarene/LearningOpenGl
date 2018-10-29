@@ -57,7 +57,8 @@ public class AddBitmapFontButton extends Button
 //		ConnectionLoader.getInstance().addRequest(request);
 		if (field == null)
 		{
-			field = new Textfield("console", "Lorem ipsum?");
+			field = new Textfield("Lorem ipsum?");
+			field.load("font.console");
 			field.setScale(1, 1);
 
 			Stage.instance.addChild(field);

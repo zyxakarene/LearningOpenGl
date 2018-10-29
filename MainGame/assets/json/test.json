@@ -13,6 +13,16 @@
 			"height":100
 		},
 		{
+			"name":"text_test",
+			"type":"textfield",
+			"x":400,
+			"y":100,
+			"width":100,
+			"height"100,
+			"text":"Hello, I am a test textfield",
+			"font":"font.console"
+		},
+		{
 			"name":"test_image_1",
 			"type":"image",
 			"x":100,
