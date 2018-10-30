@@ -1,25 +1,32 @@
 package zyx.game.components.screen;
 
-import zyx.engine.components.screen.Button;
-import zyx.engine.components.screen.InteractableContainer;
-import zyx.engine.components.screen.Quad;
-import zyx.engine.components.screen.Stage;
-import zyx.engine.components.screen.Textfield;
+import zyx.engine.components.screen.interactable.Button;
+import zyx.engine.components.screen.interactable.InteractableContainer;
+import zyx.engine.components.screen.base.Quad;
+import zyx.engine.components.screen.base.Stage;
+import zyx.engine.components.screen.text.Textfield;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.net.io.responses.ResponseDispatcher;
 import zyx.net.io.responses.ResponseManager;
 import zyx.utils.FloatMath;
 
-public class AddBitmapFontButton extends Button implements ICallback<InteractableContainer>
+public class AddBitmapFontButton extends Button
 {
 
 	private Textfield field;
+	
+	private ICallback<InteractableContainer> btnClick;
 
-	public AddBitmapFontButton(String upTexture, String hoverTexture, String downTexture)
+	public AddBitmapFontButton()
 	{
-		super(upTexture, hoverTexture, downTexture);
+		super(false);
 
-		onButtonClicked.addCallback(this);
+		btnClick = (InteractableContainer data) ->
+		{
+			onBtnClicked();
+		};
+		
+		onButtonClicked.addCallback(btnClick);
 
 		ResponseDispatcher serverDispatcher = new ResponseDispatcher();
 		serverDispatcher.addResponseCallback("login", new LoginResponse());
@@ -41,8 +48,7 @@ public class AddBitmapFontButton extends Button implements ICallback<Interactabl
 		
 	}
 
-	@Override
-	public void onCallback(InteractableContainer ref)
+	private void onBtnClicked()
 	{
 //		WriteableDataObject data = new WriteableDataObject();
 //		data.addString("name", "Zyx");
@@ -51,7 +57,8 @@ public class AddBitmapFontButton extends Button implements ICallback<Interactabl
 //		ConnectionLoader.getInstance().addRequest(request);
 		if (field == null)
 		{
-			field = new Textfield("console", "Lorem ipsum?");
+			field = new Textfield("Lorem ipsum?");
+			field.load("font.console");
 			field.setScale(1, 1);
 
 			Stage.instance.addChild(field);

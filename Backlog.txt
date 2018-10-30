@@ -8,7 +8,6 @@ Bump mapping
 Shadows
 Terrain/Displacements
 Skybox
-Particles
 
 =Core=
 UI overhaul
@@ -21,6 +20,7 @@ async texture loading
 Load required textures with zaf model
 Cursor icons
 Ray picking
+Particles
 
 =Notes=
 Physics: When two colliders intersect, push them away from each others center until they no longer overlap.

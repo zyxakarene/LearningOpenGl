@@ -1,6 +1,6 @@
-package zyx.engine.components.screen;
+package zyx.engine.components.animations;
 
-interface IFocusable
+public interface IFocusable
 {
 	void onKeyPressed(char character);
 	void onFocused();

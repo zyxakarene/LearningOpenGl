@@ -37,6 +37,23 @@ public class DebugPhysDrawing
 		return models;
 	}
 
+	public static void removeModelFor(IPhysbox physBox)
+	{
+		PhysBox box = physBox.getPhysbox();
+		WorldModel meshRemove = MESH_MAP.remove(box);
+		WorldModel boundingRemove = BOUNDING_BOX_MAP.remove(box);
+		
+		if(meshRemove != null)
+		{
+			meshRemove.dispose();
+		}
+		
+		if(boundingRemove != null)
+		{
+			boundingRemove.dispose();
+		}
+	}
+	
 	private static void createModel(PhysBox box)
 	{
 		PhysObject[] objects = box.getObjects();

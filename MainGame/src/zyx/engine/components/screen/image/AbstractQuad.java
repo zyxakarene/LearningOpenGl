@@ -1,7 +1,9 @@
-package zyx.engine.components.screen;
+package zyx.engine.components.screen.image;
 
+import zyx.engine.components.screen.base.DisplayObject;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.opengl.models.implementations.ScreenModel;
+import zyx.utils.Color;
 
 public abstract class AbstractQuad extends DisplayObject
 {
@@ -15,11 +17,20 @@ public abstract class AbstractQuad extends DisplayObject
 	public AbstractQuad()
 	{
 		colors = new Vector4f(1, 1, 1, 1);
+		
+		originalWidth = 0;
+		originalHeight = 0;
 	}
 
 	public void setColor(Vector4f color)
 	{
 		colors.set(color);
+		updateMesh();
+	}
+
+	public void setColor(int color)
+	{
+		Color.toVector(color, colors);
 		updateMesh();
 	}
 
@@ -51,7 +62,7 @@ public abstract class AbstractQuad extends DisplayObject
 			return model.getWidth() * getScale(true, HELPER_VEC2).x;
 		}
 
-		return 0;
+		return originalWidth;
 	}
 
 	@Override
@@ -62,7 +73,7 @@ public abstract class AbstractQuad extends DisplayObject
 			return model.getHeight() * getScale(true, HELPER_VEC2).y;
 		}
 
-		return 0;
+		return originalHeight;
 	}
 
 	@Override
@@ -72,6 +83,10 @@ public abstract class AbstractQuad extends DisplayObject
 		{
 			getScale(true, HELPER_VEC2);
 			setScale(value / originalWidth, HELPER_VEC2.y);
+		}
+		else
+		{
+			originalWidth = value;
 		}
 	}
 
@@ -83,10 +98,39 @@ public abstract class AbstractQuad extends DisplayObject
 			getScale(true, HELPER_VEC2);
 			setScale(HELPER_VEC2.x, value / originalHeight);
 		}
+		else
+		{
+			originalHeight = value;
+		}
 	}
 
+	protected void onModelCreated()
+	{
+		loaded = true;
+		
+		float w = getWidth();
+		float h = getHeight();
+
+		if (originalWidth != 0)
+		{
+			float newW = originalWidth;
+			originalWidth = w;
+			setWidth(newW);
+		}
+		
+		if (originalHeight != 0)
+		{
+			float newH = originalHeight;
+			originalHeight = h;
+			setHeight(newH);
+		}
+		
+		originalWidth = w;
+		originalHeight = h;
+	}
+	
 	@Override
-	void onDraw()
+	protected void onDraw()
 	{
 		if (loaded)
 		{

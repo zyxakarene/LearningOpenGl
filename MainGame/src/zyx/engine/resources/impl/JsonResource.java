@@ -25,11 +25,11 @@ public class JsonResource extends Resource
 	}
 
 	@Override
-	public void resourceLoaded(ResourceDataInputStream fontData)
+	public void resourceLoaded(ResourceDataInputStream jsonData)
 	{
 		try
 		{
-			String text = new String(fontData.getData(), Charset.defaultCharset());
+			String text = new String(jsonData.getData(), Charset.defaultCharset());
 
 			json = (JSONObject) new JSONParser().parse(text);
 

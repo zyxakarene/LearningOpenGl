@@ -15,6 +15,7 @@ import zyx.game.scene.SceneType;
 import zyx.opengl.GLUtils;
 import zyx.opengl.SetupOpenGlCommand;
 import zyx.opengl.camera.Camera;
+import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.utils.DeltaTime;
 import zyx.utils.FPSCounter;
@@ -71,6 +72,10 @@ public class GameEngine
 			{
 				sceneManager.changeScene(SceneType.MATRIX);
 			}
+			else if (KeyboardData.data.wasPressed(Keyboard.KEY_5))
+			{
+				sceneManager.changeScene(SceneType.EMPTY);
+			}
 
 			Display.update();
 			Display.sync(GameConstants.FPS);
@@ -81,6 +86,7 @@ public class GameEngine
 
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
+			DebugDrawCalls.reset();
 			drawCalls = 0;
 			sceneManager.update(timestamp, elapsed);
 			FPSCounter.updateFPS();

@@ -1,4 +1,4 @@
-package zyx.engine.components.screen;
+package zyx.engine.components.screen.base;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,9 @@ public class DisplayObjectContainer extends DisplayObject
 	private ArrayList<DisplayObject> children;
 	private int numChildren;
 
+	public float forceWidth = -1;
+	public float forceHeight = -1;
+	
 	public DisplayObjectContainer()
 	{
 		children = new ArrayList<>();
@@ -41,6 +44,11 @@ public class DisplayObjectContainer extends DisplayObject
 	
 	public void addChild(DisplayObject child)
 	{
+		if (child == this)
+		{
+			throw new IllegalArgumentException("Cannot set DisplayObject as child of self");
+		}
+		
 		DisplayObjectContainer prevParent = child.getParent();
 		if (prevParent != null)
 		{
@@ -51,6 +59,14 @@ public class DisplayObjectContainer extends DisplayObject
 		
 		children.add(child);
 		numChildren++;
+		
+		childAdded(child);
+	}
+
+	public boolean removeChild(int index)
+	{
+		DisplayObject child = children.get(index);
+		return removeChild(child);
 	}
 
 	public boolean removeChild(DisplayObject child)
@@ -62,6 +78,8 @@ public class DisplayObjectContainer extends DisplayObject
 			
 			child.setParent(null);
 			
+			childRemoved(child);
+			
 			return true;
 		}
 		else
@@ -69,6 +87,19 @@ public class DisplayObjectContainer extends DisplayObject
 			String msg = String.format("Cannot remove child %s when its parent %s != this %s", child, child.getParent(), this);
 			throw new RuntimeException(msg);
 		}
+	}
+	
+	public void removeChildren(boolean dispose)
+	{
+		int len = children.size();
+		DisplayObject child;
+		for (int i = 0; i < len; i++)
+		{
+			child = children.get(i);
+			removeChild(child);
+		}
+		
+		children.clear();
 	}
 
 	public int numChilren()
@@ -79,6 +110,11 @@ public class DisplayObjectContainer extends DisplayObject
 	@Override
 	public float getWidth()
 	{
+		if (forceWidth != -1)
+		{
+			return forceWidth;
+		}
+		
 		float mostLeft = 0f;
 		float mostRight = 0f;
 
@@ -101,12 +137,18 @@ public class DisplayObjectContainer extends DisplayObject
 			}
 		}
 
-		return mostRight - mostLeft;
+		getScale(true, HELPER_VEC2);
+		return (mostRight - mostLeft) * HELPER_VEC2.x;
 	}
 
 	@Override
 	public float getHeight()
 	{
+		if (forceHeight != -1)
+		{
+			return forceHeight;
+		}
+		
 		float mostUp = 0f;
 		float mostDown = 0f;
 
@@ -129,7 +171,8 @@ public class DisplayObjectContainer extends DisplayObject
 			}
 		}
 
-		return mostDown - mostUp;
+		getScale(true, HELPER_VEC2);
+		return (mostDown - mostUp) * HELPER_VEC2.y;
 	}
 
 	@Override
@@ -137,7 +180,9 @@ public class DisplayObjectContainer extends DisplayObject
 	{
 		getScale(true, HELPER_VEC2);
 		
-		setScale(value / getWidth(), HELPER_VEC2.y);
+		float scaleY = HELPER_VEC2.y;
+		
+		setScale(value / getWidth(), scaleY);
 	}
 
 	@Override
@@ -145,11 +190,13 @@ public class DisplayObjectContainer extends DisplayObject
 	{
 		getScale(true, HELPER_VEC2);
 		
-		setScale(HELPER_VEC2.x, value / getHeight());
+		float scaleX = HELPER_VEC2.x;
+		
+		setScale(scaleX, value / getHeight());
 	}
 
 	@Override
-	void onDraw()
+	protected void onDraw()
 	{
 		DisplayObject loopHelper;
 		for (int i = 0; i < numChildren; i++)
@@ -173,5 +220,36 @@ public class DisplayObjectContainer extends DisplayObject
 		children.clear();
 		children = null;
 	}
-
+	
+	protected final void childAdded(DisplayObject child)
+	{
+		DisplayObjectContainer parent = getParent();
+		if (parent != null)
+		{
+			parent.childAdded(child);
+		}
+		
+		onChildAdded(child);
+	}
+	
+	protected final void childRemoved(DisplayObject child)
+	{
+		DisplayObjectContainer parent = getParent();
+		if (parent != null)
+		{
+			parent.childRemoved(child);
+		}
+		
+		onChildRemoved(child);
+	}
+	
+	protected void onChildAdded(DisplayObject child)
+	{
+		
+	}
+	
+	protected void onChildRemoved(DisplayObject child)
+	{
+		
+	}
 }

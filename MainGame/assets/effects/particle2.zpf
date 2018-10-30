@@ -14,4 +14,4 @@ lifespan=3000
 lifespanVariance=0
 rotation=0
 rotationVariance=0
-texture=texture.particle
+texture=BtnUp

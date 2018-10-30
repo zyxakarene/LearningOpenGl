@@ -1,16 +1,18 @@
-package zyx.engine.components.screen;
+package zyx.engine.components.screen.base;
 
+import zyx.engine.touch.ITouched;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.curser.GameCursor;
+import zyx.engine.touch.MouseTouchManager;
 import zyx.game.controls.SharedPools;
-import zyx.game.controls.input.MouseData;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.ScreenShader;
 import zyx.opengl.shaders.implementations.Shader;
+import zyx.utils.geometry.Rectangle;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IPositionable2D;
 import zyx.utils.math.DecomposedMatrix;
@@ -18,8 +20,9 @@ import zyx.utils.math.MatrixUtils;
 
 public abstract class DisplayObject implements IPositionable2D, IDisposeable
 {
+
 	protected static final DecomposedMatrix DECOMPOSED_MATRIX = new DecomposedMatrix();
-	
+
 	protected static final Vector2f HELPER_VEC2 = new Vector2f();
 	protected static final Vector3f HELPER_VEC3 = new Vector3f();
 	protected static final Vector4f HELPER_VEC4 = new Vector4f();
@@ -28,10 +31,11 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	private boolean dirty;
 	private boolean dirtyInv;
 
+	protected Rectangle clipRect;
 	protected Matrix4f invWorldMatrix;
 	protected Matrix4f worldMatrix;
 	protected Matrix4f localMatrix;
-	public Vector2f position;
+	protected Vector2f position;
 
 	public boolean visible;
 	public boolean buttonMode;
@@ -39,8 +43,10 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	public boolean focusable;
 	public boolean disposed;
 
-	GameCursor hoverIcon;
-	
+	public String name;
+
+	public GameCursor hoverIcon;
+
 	protected final ScreenShader shader;
 	protected Stage stage;
 
@@ -56,7 +62,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		touchable = true;
 		focusable = false;
 		disposed = false;
-		
+
 		dirty = true;
 		dirtyInv = true;
 
@@ -75,9 +81,15 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 
 			dirty = false;
 			dirtyInv = true;
+
+			onWorldMatrixUpdated();
 		}
 
 		return worldMatrix;
+	}
+
+	protected void onWorldMatrixUpdated()
+	{
 	}
 
 	public Matrix4f invWorldMatrix()
@@ -106,7 +118,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 
 	public abstract void setHeight(float value);
 
-	abstract void onDraw();
+	protected abstract void onDraw();
 
 	public boolean hasParent()
 	{
@@ -118,13 +130,41 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		return parent;
 	}
 
+	public float getWidth(boolean local)
+	{
+		float width = getWidth();
+		if (!local && parent != null)
+		{
+			float scaleX = parent.getScale(false, HELPER_VEC2).x;
+			width = width * scaleX;
+		}
+
+		return width;
+	}
+
+	public float getHeight(boolean local)
+	{
+		float height = getHeight();
+		if (!local && parent != null)
+		{
+			float scaleY = parent.getScale(false, HELPER_VEC2).y;
+			height = height * scaleY;
+		}
+
+		return height;
+	}
+
 	protected final void setParent(DisplayObjectContainer parent)
 	{
 		if (parent != null && parent.stage != null)
 		{
 			stage = parent.stage;
 		}
-		
+		else
+		{
+			stage = null;
+		}
+
 		this.parent = parent;
 	}
 
@@ -162,7 +202,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 			return;
 		}
 		disposed = true;
-		
+
 		removeFromParent(false);
 
 		SharedPools.MATRIX_POOL.releaseInstance(invWorldMatrix);
@@ -173,6 +213,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		invWorldMatrix = null;
 		worldMatrix = null;
 		localMatrix = null;
+		position = null;
 	}
 
 	public Vector2f globalToLocal(Vector2f point, Vector2f out)
@@ -182,10 +223,10 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 			out = new Vector2f();
 		}
 
-		HELPER_VEC4.set(point.x, point.y, 0, 1);
+		HELPER_VEC4.set(point.x, -point.y, 0, 1);
 		Matrix4f.transform(invWorldMatrix(), HELPER_VEC4, HELPER_VEC4);
 
-		out.set(HELPER_VEC4.x, HELPER_VEC4.y);
+		out.set(HELPER_VEC4.x, -HELPER_VEC4.y);
 		return out;
 	}
 
@@ -215,6 +256,10 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		if (local)
 		{
 			position.set(x, y);
+		}
+		else
+		{
+			position.set(HELPER_VEC2.x, -HELPER_VEC2.y);
 		}
 
 		localMatrix.m30 = HELPER_VEC2.x;
@@ -267,7 +312,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		MatrixUtils.getPositionFrom(local ? localMatrix : worldMatrix(), HELPER_VEC3);
 
 		out.x = HELPER_VEC3.x;
-		out.y = HELPER_VEC3.y;
+		out.y = -HELPER_VEC3.y;
 
 		return out;
 	}
@@ -316,11 +361,30 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		return position.y;
 	}
 
+	protected void addTouchListener(ITouched listener)
+	{
+		MouseTouchManager.getInstance().registerTouch(this, listener);
+	}
+
+	protected void removeTouchListener(ITouched listener)
+	{
+		MouseTouchManager.getInstance().unregisterTouch(this, listener);
+	}
+
 	public boolean hitTest(int x, int y)
 	{
 		if (!touchable || !visible)
 		{
 			return false;
+		}
+
+		if (clipRect != null)
+		{
+			boolean insideClip = x > clipRect.x && x < clipRect.width && y > clipRect.y && y < clipRect.height;
+			if (!insideClip)
+			{
+				return false;
+			}
 		}
 		
 		HELPER_VEC4.x = x;
@@ -330,7 +394,17 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 
 		Matrix4f.transform(invWorldMatrix(), HELPER_VEC4, HELPER_VEC4);
 
-		boolean collision = HELPER_VEC4.x >= 0 && HELPER_VEC4.y <= 0 && HELPER_VEC4.x <= getWidth() && HELPER_VEC4.y >= -getHeight();
+		if (parent != null)
+		{
+			getScale(true, HELPER_VEC2);
+		}
+
+		float scaleX = 1 / HELPER_VEC2.x;
+		float scaleY = 1 / HELPER_VEC2.y;
+		float w = getWidth() * scaleX;
+		float h = getHeight() * scaleY;
+
+		boolean collision = HELPER_VEC4.x >= 0 && HELPER_VEC4.y <= 0 && HELPER_VEC4.x <= w && HELPER_VEC4.y >= -h;
 
 		return collision;
 	}

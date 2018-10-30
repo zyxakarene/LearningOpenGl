@@ -13,6 +13,8 @@ class ResourceExchange
 	private static final LinkedList<ResourceRequest> LOAD_REQUESTS = new LinkedList<>();
 	private static final LinkedList<ResourceRequest> COMPLETED_LOADS = new LinkedList<>();
 
+	private static final LinkedList<ResourceRequest> HELPER_LIST = new LinkedList<>();
+
 	static boolean hasLoadRequests()
 	{
 		synchronized (LOCK)
@@ -109,15 +111,21 @@ class ResourceExchange
 			while (!COMPLETED_LOADS.isEmpty())
 			{
 				request = COMPLETED_LOADS.removeFirst();
-				if (request.requestCompleted)
-				{
-					request.complete(request.getData());
-				}
-
-				request.dispose();
+				HELPER_LIST.add(request);
 			}
 
 			REQUEST_MAP.clear();
+		}
+
+		while (!HELPER_LIST.isEmpty())
+		{
+			ResourceRequest request = HELPER_LIST.remove();
+			if (request.requestCompleted)
+			{
+				request.complete(request.getData());
+			}
+
+			request.dispose();
 		}
 	}
 

@@ -1,6 +1,7 @@
 package zyx.opengl.models.implementations;
 
 import zyx.opengl.models.AbstractModel;
+import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
@@ -26,6 +27,12 @@ public class WorldModel extends AbstractModel
 		setTexture(vo.gameTexture);
 	}
 
+	@Override
+	protected boolean canDraw()
+	{
+		return DebugDrawCalls.canDrawWorld();
+	}
+	
 	public Joint getAttatchment(String name)
 	{
 		return skeleton.getBoneByName(name);
@@ -78,6 +85,7 @@ public class WorldModel extends AbstractModel
 		
 		skeleton = null;
 		shader = null;
+		physBox = null;
 	}
 	
 	

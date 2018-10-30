@@ -2,13 +2,14 @@ package zyx.game.scene.matrix;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.resources.IResourceReady;
+import zyx.engine.resources.impl.JsonResource;
 import zyx.engine.scene.Scene;
 import zyx.game.components.MeshObject;
 import zyx.game.controls.input.KeyboardData;
 import zyx.opengl.camera.Camera;
-import zyx.utils.cheats.DebugPoint;
 
-public class MatrixScene extends Scene
+public class MatrixScene extends Scene implements IResourceReady<JsonResource>
 {
 	
 	private MeshObject parent1;
@@ -108,5 +109,10 @@ public class MatrixScene extends Scene
 	{
 		parent1.dispose();
 		parent1 = null;
+	}
+
+	@Override
+	public void onResourceReady(JsonResource resource)
+	{
 	}
 }

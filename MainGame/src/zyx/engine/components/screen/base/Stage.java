@@ -1,9 +1,9 @@
-package zyx.engine.components.screen;
+package zyx.engine.components.screen.base;
 
 import java.awt.event.KeyEvent;
+import zyx.engine.components.animations.IFocusable;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.controls.input.InputManager;
-import zyx.game.controls.input.KeyboardData;
 import zyx.utils.GameConstants;
 
 public final class Stage extends DisplayObjectContainer implements ICallback<Character>, IFocusable
@@ -33,7 +33,7 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 		crawler.interactionTest(x, y);
 	}
 
-	void setFocusedObject(IFocusable target)
+	public void setFocusedObject(IFocusable target)
 	{
 		if (focusedTarget != null)
 		{

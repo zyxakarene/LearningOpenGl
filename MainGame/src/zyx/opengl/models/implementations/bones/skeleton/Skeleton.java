@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import org.lwjgl.util.vector.Matrix4f;
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
 import zyx.utils.interfaces.IDisposeable;
-import zyx.utils.interfaces.IUpdateable;
 
 public class Skeleton implements IDisposeable
 {	
@@ -19,6 +18,7 @@ public class Skeleton implements IDisposeable
 	private HashMap<String, Joint> jointNameMap;
 	private HashMap<String, Animation> animations;
 	private Animator animator;
+	private boolean disposed;
 	
 	private LinkedList<Animation> animationList;
 
@@ -73,24 +73,29 @@ public class Skeleton implements IDisposeable
 	@Override
 	public void dispose()
 	{
-		rootJoint.dispose();
-		animator.dispose();
-		dummyJoint.dispose();
-		
-		while (animationList.isEmpty() == false)
-		{			
-			animationList.remove().dispose();
+		if (!disposed)
+		{
+			disposed = true;
+			
+			rootJoint.dispose();
+			animator.dispose();
+			dummyJoint.dispose();
+
+			while (animationList.isEmpty() == false)
+			{			
+				animationList.remove().dispose();
+			}
+
+			jointNameMap.clear();
+			animations.clear();
+			animationList.clear();
+
+			rootJoint = null;
+			jointNameMap = null;
+			animations = null;
+			animator = null;
+			animationList = null;
+			dummyJoint = null;
 		}
-		
-		jointNameMap.clear();
-		animations.clear();
-		animationList.clear();
-		
-		rootJoint = null;
-		jointNameMap = null;
-		animations = null;
-		animator = null;
-		animationList = null;
-		dummyJoint = null;
 	}
 }

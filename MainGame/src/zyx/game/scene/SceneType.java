@@ -14,7 +14,8 @@ public enum SceneType
 	STACK(StackScene.class),
 	GAME(GameScene.class),
 	TEST(TestScene.class),
-	PARTICLE(ParticleScene.class);
+	PARTICLE(ParticleScene.class),
+	EMPTY(EmptyScene.class);
 	
 	public final Class<? extends Scene> sceneClass;
 	

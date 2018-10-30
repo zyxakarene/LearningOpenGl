@@ -4,7 +4,10 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.utils.DeltaTime;
+import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
+import zyx.utils.geometry.Rectangle;
 
 public class ScreenShader extends AbstractShader
 {
@@ -16,7 +19,13 @@ public class ScreenShader extends AbstractShader
 	private int modelMatrixTrans;
 	private int viewMatrixTrans;
 	private int projectionMatrixTrans;
+	
+	private int ClipXVecTrans;
+	private int ClipYVecTrans;
 
+	private Vector2f clipX = new Vector2f(0, GameConstants.GAME_WIDTH);
+	private Vector2f clipY = new Vector2f(0, GameConstants.GAME_HEIGHT);
+	
 	public ScreenShader(Object lock)
 	{
 		super(lock);
@@ -28,10 +37,11 @@ public class ScreenShader extends AbstractShader
 		modelMatrixTrans = UniformUtils.createUniform(program, "model");
 		viewMatrixTrans = UniformUtils.createUniform(program, "view");
 		projectionMatrixTrans = UniformUtils.createUniform(program, "projection");
+		ClipXVecTrans = UniformUtils.createUniform(program, "clipX");
+		ClipYVecTrans = UniformUtils.createUniform(program, "clipY");
 		
 		MATRIX_VIEW.setIdentity();
 		MATRIX_VIEW.translate(new Vector2f(-GameConstants.GAME_WIDTH / 2, GameConstants.GAME_HEIGHT / 2));
-		
 	}
 
 	@Override
@@ -42,8 +52,27 @@ public class ScreenShader extends AbstractShader
 		UniformUtils.setUniformMatrix(modelMatrixTrans, MATRIX_MODEL);
 		UniformUtils.setUniformMatrix(viewMatrixTrans, MATRIX_VIEW);
 		UniformUtils.setUniformMatrix(projectionMatrixTrans, MATRIX_PROJECTION);
+		
+		UniformUtils.setUniform2F(ClipXVecTrans, clipX.x - 1, clipX.y + 1);
+		UniformUtils.setUniform2F(ClipYVecTrans, GameConstants.GAME_HEIGHT - clipY.x + 1, GameConstants.GAME_HEIGHT - clipY.y - 1);
 	}
 
+	public void setClipRect(float left, float right, float upper, float lower)
+	{
+		clipX.x = left;
+		clipX.y = right;
+		clipY.x = upper;
+		clipY.y = lower;
+	}
+	
+	public void getClipRect(Rectangle out)
+	{
+		out.x = clipX.x;
+		out.y = clipY.x;
+		out.width = clipX.y;
+		out.height = clipY.y;
+	}
+	
 	@Override
 	protected String getVertexName()
 	{

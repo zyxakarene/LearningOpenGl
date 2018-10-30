@@ -25,6 +25,8 @@ public class GameScene extends Scene
 		world.addChild(knight);
 
 		addPickedObject(knight, new OnTeaPotClicked());
+
+		children.add(knight);
 		
 		AnimatedMesh parent = knight;
 		for (int i = 0; i < 10; i++)
@@ -36,6 +38,8 @@ public class GameScene extends Scene
 			parent.addChildAsAttachment(child, "Bone002");
 
 			parent = child;
+			
+			children.add(child);
 			
 			addPickedObject(child, new OnTeaPotClicked());
 		}

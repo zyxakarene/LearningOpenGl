@@ -1,7 +1,11 @@
-package zyx.engine.components.screen;
+package zyx.engine.components.screen.text;
 
+import zyx.engine.components.animations.IFocusable;
+import zyx.engine.components.screen.interactable.InteractableContainer;
 import java.awt.event.KeyEvent;
 import org.lwjgl.util.vector.Vector4f;
+import zyx.engine.components.animations.ILoadable;
+import zyx.engine.components.screen.base.Quad;
 import zyx.engine.curser.GameCursor;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
@@ -10,7 +14,7 @@ import zyx.engine.resources.impl.Resource;
 import zyx.opengl.textures.bitmapfont.BitmapFont;
 import zyx.opengl.textures.bitmapfont.Text;
 
-public class Textfield extends InteractableContainer implements IFocusable, IResourceReady<FontResource>
+public class Textfield extends InteractableContainer implements IFocusable, IResourceReady<FontResource>, ILoadable
 {
 
 	private Text glText;
@@ -18,7 +22,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	private Vector4f colors;
 	private boolean loaded;
 
-	private Resource resource;
+	private Resource fontResource;
 	private float originalWidth;
 	private float originalHeight;
 
@@ -26,21 +30,25 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	private int caretPos;
 	private Quad caret;
 
-	public Textfield(String font)
-	{
-		this(font, "");
-	}
-
-	public Textfield(String font, String text)
+	public Textfield(String text)
 	{
 		this.text = text;
 		this.colors = new Vector4f(1, 1, 1, 1);
 
 		focusable = true;
 		hoverIcon = GameCursor.TEXT;
+	}
 
-		resource = ResourceManager.getInstance().getResource("font." + font);
-		resource.registerAndLoad(this);
+	public Textfield()
+	{
+		this("");
+	}
+
+	@Override
+	public void load(String resource)
+	{
+		fontResource = ResourceManager.getInstance().getResource(resource);
+		fontResource.registerAndLoad(this);
 	}
 
 	public void setColor(float r, float g, float b)
@@ -83,10 +91,13 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	public void setText(String text)
 	{
 		this.text = text;
-		glText.setText(text, colors);
+		if (loaded)
+		{
+			glText.setText(text, colors);
 
-		originalWidth = glText.getWidth();
-		originalHeight = glText.getHeight();
+			originalWidth = glText.getWidth();
+			originalHeight = glText.getHeight();
+		}
 	}
 
 	public String getText()
@@ -117,18 +128,18 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	}
 
 	@Override
-	void onDraw()
+	protected void onDraw()
 	{
 		if (glText != null)
 		{
 			glText.draw();
 		}
-		
+
 		if (hasFocus && caret != null)
 		{
 			caret.visible = Math.random() > 0.5;
 		}
-		
+
 		super.onDraw();
 	}
 
@@ -155,12 +166,17 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	@Override
 	public void dispose()
 	{
+		if (hasFocus)
+		{
+			stage.setFocusedObject(null);
+		}
+		
 		super.dispose();
 
-		if (resource != null)
+		if (fontResource != null)
 		{
-			resource.unregister(this);
-			resource = null;
+			fontResource.unregister(this);
+			fontResource = null;
 		}
 
 		if (glText != null)
@@ -168,7 +184,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 			glText.dispose();
 			glText = null;
 		}
-		
+
 		if (caret != null)
 		{
 			caret.dispose();
@@ -194,6 +210,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	@Override
 	protected void onMouseClick()
 	{
+		stage.setFocusedObject(this);
 	}
 
 	@Override
@@ -201,13 +218,13 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	{
 		if (character == KeyEvent.VK_BACK_SPACE)
 		{
-			setText(text.substring(0, text.length()-1));
+			setText(text.substring(0, text.length() - 1));
 		}
 		else
 		{
 			setText(text + character);
 		}
-		
+
 		caret.setPosition(true, originalWidth, 0);
 	}
 

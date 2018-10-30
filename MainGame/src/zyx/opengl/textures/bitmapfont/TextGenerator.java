@@ -1,5 +1,6 @@
 package zyx.opengl.textures.bitmapfont;
 
+import zyx.utils.ListUtils;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 import org.lwjgl.util.vector.Vector4f;
@@ -120,12 +121,12 @@ class TextGenerator
 	 */
 	float[] getVertexData()
 	{
-		return FontUtils.toFloatArray(vertexData);
+		return ListUtils.toFloatArray(vertexData);
 	}
 
 	int[] getElementData()
 	{
-		return FontUtils.toIntArray(elementData);
+		return ListUtils.toIntArray(elementData);
 	}
 
 	int getVertexCount()

@@ -39,16 +39,25 @@ public abstract class AbstractInstancedModel extends AbstractModel
 	{
 		if (elementCount > 0 && instanceCount > 0)
 		{
-			meshShader.bind();
-
-			if (texture != null)
+			if (canDraw())
 			{
-				texture.bind();
-				ModelUtils.drawInstancedElements(vao, elementCount, instanceCount);
+				meshShader.bind();
+
+				if (texture != null)
+				{
+					texture.bind();
+					ModelUtils.drawInstancedElements(vao, elementCount, instanceCount);
+				}
 			}
 		}
 	}
 
+	@Override
+	protected boolean canDraw()
+	{
+		return DebugDrawCalls.canDrawWorld();
+	}
+	
 	@Override
 	public void dispose()
 	{

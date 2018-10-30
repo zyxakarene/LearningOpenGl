@@ -7,11 +7,12 @@ import zyx.engine.utils.worldpicker.calculating.*;
 import zyx.game.components.GameObject;
 import zyx.opengl.camera.Camera;
 import zyx.utils.FloatMath;
+import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IPhysbox;
 import zyx.utils.pooling.ObjectPool;
 import zyx.utils.pooling.model.PoolableVector3f;
 
-public class WorldPicker
+public class WorldPicker implements IDisposeable
 {
 	private ArrayList<IPhysbox> pickables;
 	private ArrayList<IHoveredItem> clickCallbacks;
@@ -135,5 +136,19 @@ public class WorldPicker
 			
 			closestClick.onClicked(info);
 		}
+	}
+	
+	@Override
+	public void dispose()
+	{
+		pickables.clear();
+		clickCallbacks.clear();
+		collidedPositions.clear();
+		collidedObjects.clear();
+		collidedClicks.clear();
+		
+		positionPool.dispose();
+		
+		pickerImpl = null;
 	}
 }
