@@ -6,6 +6,7 @@
 package zyx.utils.cheats;
 
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 import zyx.game.components.GameObject;
 import zyx.game.components.SimpleMesh;
 
@@ -74,6 +75,11 @@ public class DebugPoint extends GameObject
 	}
 	
 	public static DebugPoint addToScene(Vector3f pos, int lifespan)
+	{
+		return addToScene(pos.x, pos.y, pos.z, lifespan);
+	}
+	
+	public static DebugPoint addToScene(Vector4f pos, int lifespan)
 	{
 		return addToScene(pos.x, pos.y, pos.z, lifespan);
 	}
