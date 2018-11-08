@@ -71,22 +71,12 @@ public class GameScene extends Scene
 			Matrix4f proj = SharedShaderObjects.SHARED_PROJECTION_TRANSFORM;
 			Matrix4f view = SharedShaderObjects.SHARED_VIEW_TRANSFORM;
 			
-			Matrix4f transposedView = Matrix4f.transpose(view, null);
-			
 			Matrix4f.mul(proj, view, out);
 			
 			ViewFrustum fr = new ViewFrustum();
-			ViewFrustum.extractPlanesOLD(out, fr.left, fr.right, fr.top, fr.bottom, fr.near, fr.far);
-
-			Print.out(fr);
+			ViewFrustum.extractPlanes(out, fr.left, fr.right, fr.top, fr.bottom, fr.near, fr.far);
 			
-//			AddDebugAt(fr.left);
-//			AddDebugAt(fr.right);
-//			AddDebugAt(fr.top);
-//			AddDebugAt(fr.bottom);
-//			AddDebugAt(fr.near);
-//			AddDebugAt(fr.far);
-			
+			Print.out("==");
 			boolean isoutside = outside(fr.left) || outside(fr.right) || outside(fr.top) || outside(fr.bottom) || outside(fr.near) || outside(fr.far);
 			if (isoutside)
 			{
@@ -109,9 +99,10 @@ public class GameScene extends Scene
 		planePos.y = plane[1];
 		planePos.z = plane[2];
 		planePos.normalise();
-		Print.out(planePos);
+//		Print.out(planePos);
 		
 		float dist = Vector3f.dot(pos, planePos) + plane[3] + 0;
+		Print.out(dist);
 		if(dist < 0)
 		{
 			// sphere culled
@@ -131,53 +122,5 @@ public class GameScene extends Scene
 
 		children.clear();
 		children = null;
-	}
-
-	private void AddDebugAt(float[] plane)
-	{
-//		NormalizePlane(plane);
-		float d = plane[3] * 5;
-		
-		Vector3f pos = new Vector3f();
-		pos.x = plane[0] *  d;
-		pos.y = plane[1] *  d;
-		pos.z = plane[2] *  d;
-		
-		Vector3f cameraPos = camera.getPosition(false, null);
-
-		Vector4f p = new Vector4f();
-		p.x = pos.x;
-		p.y = pos.y;
-		p.z = pos.z;
-		
-		Matrix4f transposedView = Matrix4f.transpose(SharedShaderObjects.SHARED_VIEW_TRANSFORM, null);
-
-		Matrix4f.transform(transposedView, p, p);
-		
-		p.x += cameraPos.x;
-		p.y += cameraPos.y;
-		p.z += cameraPos.z;
-		
-		Print.out(Arrays.toString(plane));
-		plane[0] = p.x;
-		plane[1] = p.y;
-		plane[2] = p.z;
-		Print.out(Arrays.toString(plane));
-		
-		DebugPoint.addToScene(p, 20);
-	}
-	
-	private void NormalizePlane(float[] plane)
-	{
-		float a = plane[0];
-		float b = plane[1];
-		float c = plane[2];
-		float d = plane[3];
-		
-		float mag = FloatMath.sqrt(a * a + b * b + c * c);
-		plane[0] = a / mag;
-		plane[1] = b / mag;
-		plane[2] = c / mag;
-		plane[3] = d / mag;
 	}
 }
