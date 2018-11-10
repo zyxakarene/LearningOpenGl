@@ -3,6 +3,7 @@ package zyx.game.components;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.WorldObject;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
@@ -10,6 +11,7 @@ import zyx.engine.resources.impl.MeshResource;
 import zyx.engine.resources.impl.Resource;
 import zyx.engine.utils.callbacks.CustomCallback;
 import zyx.engine.utils.callbacks.ICallback;
+import zyx.opengl.camera.Camera;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.attachments.Attachment;
 import zyx.opengl.models.implementations.bones.attachments.AttachmentRequest;
@@ -61,8 +63,11 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	@Override
 	protected void onDraw()
 	{
-		if (loaded)
+		if (loaded && inView())
 		{
+			shader.bind();
+			shader.upload();
+
 			if (overwriteTexture != null)
 			{
 				model.setOverwriteTexture(overwriteTexture);
@@ -84,14 +89,26 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 		}
 	}
 
+	private static final Vector3f IN_VIEW_VECTOR = new Vector3f();
+	
+	@Override
+	public boolean inView()
+	{
+		getPosition(false, IN_VIEW_VECTOR);
+		float radius = 0;
+		
+		boolean visible = Camera.getInstance().isInView(IN_VIEW_VECTOR, radius);
+		return visible;
+	}
+	
 	private void drawAsAttachment(Attachment attachment)
 	{
 		Matrix4f.mul(attachment.parent.worldMatrix(), attachment.joint.getAttachmentTransform(), localMatrix);
 		updateTransforms(true);
-		
+
 		draw();
 	}
-	
+
 	public void onLoaded(ICallback<SimpleMesh> callback)
 	{
 		if (loaded)
@@ -146,17 +163,17 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 		loaded = true;
 
 		DebugPhysics.getInstance().registerPhysbox(this);
-		
+
 		onLoaded.dispatch(this);
-		
+
 		if (attachmentRequests != null)
 		{
-			while(!attachmentRequests.isEmpty())
+			while (!attachmentRequests.isEmpty())
 			{
 				AttachmentRequest request = attachmentRequests.remove();
 				addChildAsAttachment(request.child, request.attachmentPoint);
 			}
-			
+
 			attachmentRequests = null;
 		}
 	}
@@ -177,7 +194,7 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 		}
 
 		DebugPhysics.getInstance().unregisterPhysbox(this);
-		
+
 		model = null;
 		physbox = null;
 

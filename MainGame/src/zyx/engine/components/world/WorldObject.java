@@ -58,6 +58,11 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		dirty = false;
 	}
 
+	public boolean inView()
+	{
+		return true;
+	}
+	
 	public Matrix4f worldMatrix()
 	{
 		if (dirty)
@@ -191,8 +196,6 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		}
 
 		SharedShaderObjects.SHARED_MODEL_TRANSFORM.load(worldMatrix());
-		shader.bind();
-		shader.upload();
 
 		onDraw();
 

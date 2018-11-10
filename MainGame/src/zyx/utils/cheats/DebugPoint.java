@@ -33,7 +33,7 @@ public class DebugPoint extends GameObject
 		mesh.load("mesh.debug");
 		addChild(mesh);
 		
-		setPosition(true, x, y, z);
+		setPosition(false, x, y, z);
 		setScale(0.1f, 0.1f, 0.1f);
 	}
 

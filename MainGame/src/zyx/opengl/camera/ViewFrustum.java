@@ -1,54 +1,93 @@
 package zyx.opengl.camera;
 
-import java.util.Arrays;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
+import zyx.utils.cheats.Print;
+import zyx.utils.geometry.Plane;
 
 public class ViewFrustum
 {
-	public float[] left = new float[4];
-	public float[] right = new float[4];
-	public float[] near = new float[4];
-	public float[] far = new float[4];
-	public float[] top = new float[4];
-	public float[] bottom = new float[4];
+
+	public final Plane left;
+	public final Plane right;
+	public final Plane near;
+	public final Plane far;
+	public final Plane top;
+	public final Plane bottom;
+
+	public ViewFrustum()
+	{
+		left = new Plane();
+		right = new Plane();
+		near = new Plane();
+		far = new Plane();
+		top = new Plane();
+		bottom = new Plane();
+	}
+
+	public boolean isInsideView(Vector3f worldPosition, float diameter)
+	{
+		boolean isOutside
+				= isOutsidePlane(worldPosition, left, diameter)
+				|| isOutsidePlane(worldPosition, right, diameter)
+				|| isOutsidePlane(worldPosition, top, diameter)
+				|| isOutsidePlane(worldPosition, bottom, diameter)
+				|| isOutsidePlane(worldPosition, near, diameter)
+				|| isOutsidePlane(worldPosition, far, diameter);
+
+		return !isOutside;
+	}
+
+	private boolean isOutsidePlane(Vector3f worldPosition, Plane plane, float diameter)
+	{
+		float dotProduct = worldPosition.x * plane.a + worldPosition.y * plane.b + worldPosition.z * plane.c;
+		float dist = dotProduct + plane.d + diameter;
+//		Print.out(dist);
+		return dist < 0;
+	}
+
+	public void extractPlanesFrom(Matrix4f matrix)
+	{
+		left.d = matrix.m33 + matrix.m30;
+		left.c = matrix.m23 + matrix.m20;
+		left.b = matrix.m13 + matrix.m10;
+		left.a = matrix.m03 + matrix.m00;
+		left.normalize();
+
+		right.d = matrix.m33 - matrix.m30;
+		right.c = matrix.m23 - matrix.m20;
+		right.b = matrix.m13 - matrix.m10;
+		right.a = matrix.m03 - matrix.m00;
+		right.normalize();
+
+		bottom.d = matrix.m33 + matrix.m31;
+		bottom.c = matrix.m23 + matrix.m21;
+		bottom.b = matrix.m13 + matrix.m11;
+		bottom.a = matrix.m03 + matrix.m01;
+		bottom.normalize();
+
+		top.d = matrix.m33 - matrix.m31;
+		top.c = matrix.m23 - matrix.m21;
+		top.b = matrix.m13 - matrix.m11;
+		top.a = matrix.m03 - matrix.m01;
+		top.normalize();
+
+		near.d = matrix.m33 + matrix.m32;
+		near.c = matrix.m23 + matrix.m22;
+		near.b = matrix.m13 + matrix.m12;
+		near.a = matrix.m03 + matrix.m02;
+		near.normalize();
+
+		far.d = matrix.m33 - matrix.m32;
+		far.c = matrix.m23 - matrix.m22;
+		far.b = matrix.m13 - matrix.m12;
+		far.a = matrix.m03 - matrix.m02;
+		far.normalize();
+	}
 
 	@Override
 	public String toString()
 	{
-		return "ViewFrustum{" + "\nleft=" + Arrays.toString(left) + ", \nright=" + Arrays.toString(right) + ", \nnear=" + Arrays.toString(near) + ", \nfar=" + Arrays.toString(far) + ", \ntop=" + Arrays.toString(top) + ", \nbottom=" + Arrays.toString(bottom) + '}';
+		return "ViewFrustum{" + "\nleft=" + left + ", \nright=" + right + ", \nnear=" + near + ", \nfar=" + far + ", \ntop=" + top + ", \nbottom=" + bottom + '}';
 	}
-	
-	public static void extractPlanes(Matrix4f matrix, float left[], float right[], float top[], float bottom[], float near[], float far[])
-	{
-		left[3] = matrix.m33 + matrix.m30;
-		left[2] = matrix.m23 + matrix.m20;
-		left[1] = matrix.m13 + matrix.m10;
-		left[0] = matrix.m03 + matrix.m00;
-		
-		right[3] = matrix.m33 - matrix.m30;
-		right[2] = matrix.m23 - matrix.m20;
-		right[1] = matrix.m13 - matrix.m10;
-		right[0] = matrix.m03 - matrix.m00;
-		
-		bottom[3] = matrix.m33 + matrix.m31;
-		bottom[2] = matrix.m23 + matrix.m21;
-		bottom[1] = matrix.m13 + matrix.m11;
-		bottom[0] = matrix.m03 + matrix.m01;		
-		
-		top[3] = matrix.m33 - matrix.m31;
-		top[2] = matrix.m23 - matrix.m21;
-		top[1] = matrix.m13 - matrix.m11;
-		top[0] = matrix.m03 - matrix.m01;
-		
-		near[3] = matrix.m33 + matrix.m32;
-		near[2] = matrix.m23 + matrix.m22;
-		near[1] = matrix.m13 + matrix.m12;
-		near[0] = matrix.m03 + matrix.m02;
-		
-		far[3] = matrix.m33 - matrix.m32;
-		far[2] = matrix.m23 - matrix.m22;
-		far[1] = matrix.m13 - matrix.m12;
-		far[0] = matrix.m03 - matrix.m02;
-	}
-	
 }
