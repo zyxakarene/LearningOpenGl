@@ -25,6 +25,8 @@ import zyx.utils.interfaces.IPhysbox;
 
 public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<MeshResource>
 {
+	private static final Vector3f IN_VIEW_POS = new Vector3f();
+	private static final Vector3f IN_VIEW_SCALE = new Vector3f();
 
 	protected String resource;
 	protected boolean loaded;
@@ -88,16 +90,20 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 			}
 		}
 	}
-
-	private static final Vector3f IN_VIEW_VECTOR = new Vector3f();
 	
 	@Override
 	public boolean inView()
 	{
-		getPosition(false, IN_VIEW_VECTOR);
-		float radius = 0;
+		Vector3f center = model.getRadiusCenter();
+		localToGlobal(center, IN_VIEW_POS);
+		getScale(false, IN_VIEW_SCALE);
+
+		float scale = IN_VIEW_SCALE.x > IN_VIEW_SCALE.y ? IN_VIEW_SCALE.x : IN_VIEW_SCALE.y;
+		scale = scale > IN_VIEW_SCALE.z ? scale : IN_VIEW_SCALE.z;
 		
-		boolean visible = Camera.getInstance().isInView(IN_VIEW_VECTOR, radius);
+		float radius = model.getRadius() * scale;
+		
+		boolean visible = Camera.getInstance().isInView(IN_VIEW_POS, radius);
 		return visible;
 	}
 	

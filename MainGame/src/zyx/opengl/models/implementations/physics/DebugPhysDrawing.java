@@ -88,7 +88,7 @@ public class DebugPhysDrawing
 		}
 		
 		Skeleton skeleton = new Skeleton(getMeshJoint("root", 0), getMeshJoint("dummy", 0));
-		LoadableWorldModelVO vo = new LoadableWorldModelVO(vertexData, elementData, skeleton, null, "");
+		LoadableWorldModelVO vo = new LoadableWorldModelVO(vertexData, elementData, skeleton, null, "", new Vector3f(), 1000);
 		vo.setGameTexture(new ColorTexture(0xFF0000));
 		WorldModel model = new WorldModel(vo);
 
@@ -186,7 +186,7 @@ public class DebugPhysDrawing
 
 		fillData(boundingBox, vertexData, elementData);
 		Skeleton skeleton = new Skeleton(getMeshJoint("root11", 0), getMeshJoint("dummy22", 0));
-		LoadableWorldModelVO vo = new LoadableWorldModelVO(vertexData, elementData, skeleton, null, "");
+		LoadableWorldModelVO vo = new LoadableWorldModelVO(vertexData, elementData, skeleton, null, "", new Vector3f(), 1000);
 		vo.setGameTexture(new ColorTexture(0x00FF00));
 		WorldModel model = new WorldModel(vo);
 

@@ -14,6 +14,9 @@ public class SmdObject
 	private PhysInformation phys = new PhysInformation();
 	private ArrayList<Integer> elements;
 	private String texturePath;
+	
+	private Vector3f radiusCenter = new Vector3f();
+	private float radius = 0;
 
 	public void setRootBone(Bone bone)
 	{
@@ -34,6 +37,64 @@ public class SmdObject
 	{
 		this.verticies = response.verticies;
 		this.elements = response.elements;
+		
+		calculateRadius(verticies);
+	}
+	
+	private void calculateRadius(ArrayList<Vertex> verticies)
+	{
+		float minX = 0;
+		float maxX = 0;
+		float minY = 0;
+		float maxY = 0;
+		float minZ = 0;
+		float maxZ = 0;
+		for (Vertex vertex : verticies)
+		{
+			Vector3f position = vertex.getPos();
+			
+			if (position.x < minX)
+			{
+				minX = position.x;
+			}
+			else if (position.x > maxX)
+			{
+				maxX = position.x;
+			}
+			
+			if (position.y < minY)
+			{
+				minY = position.y;
+			}
+			else if (position.y > maxY)
+			{
+				maxY = position.y;
+			}
+			
+			if (position.z < minZ)
+			{
+				minZ = position.z;
+			}
+			else if (position.z > maxZ)
+			{
+				maxZ = position.z;
+			}
+		}
+		
+		float diffX = maxX - minX;
+		float diffY = maxY - minY;
+		float diffZ = maxZ - minZ;
+		
+		float centerX = minX + (diffX / 2f);
+		float centerY = minY + (diffY / 2f);
+		float centerZ = minZ + (diffZ / 2f);
+		
+		float localRadius = diffX > diffY ? diffX : diffY;
+		localRadius = localRadius > diffZ ? localRadius : diffZ;
+		localRadius = localRadius / 2f;
+		
+		radius = localRadius;
+		radiusCenter.set(centerX, centerY, centerZ);
 	}
 	
 	public void addAnimation(Animation animation)
@@ -76,5 +137,10 @@ public class SmdObject
 		phys.save(out);
 		
 		out.writeUTF(texturePath);
+		
+		out.writeFloat(radiusCenter.x);
+		out.writeFloat(radiusCenter.y);
+		out.writeFloat(radiusCenter.z);
+		out.writeFloat(radius);
 	}
 }

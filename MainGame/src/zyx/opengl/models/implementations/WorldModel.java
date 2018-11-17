@@ -1,5 +1,6 @@
 package zyx.opengl.models.implementations;
 
+import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.shaders.implementations.WorldShader;
@@ -15,6 +16,9 @@ public class WorldModel extends AbstractModel
 	private Skeleton skeleton;
 	
 	private PhysBox physBox;
+	
+	private Vector3f radiusCenter;
+	private float radius;
 
 	public WorldModel(LoadableWorldModelVO vo)
 	{
@@ -23,6 +27,9 @@ public class WorldModel extends AbstractModel
 
 		skeleton = vo.skeleton;
 		physBox = vo.physBox;
+		radiusCenter = vo.radiusCenter;
+		radius = vo.radius;
+		
 		setVertexData(vo.vertexData, vo.elementData);
 		setTexture(vo.gameTexture);
 	}
@@ -54,6 +61,16 @@ public class WorldModel extends AbstractModel
 	public PhysBox getPhysbox()
 	{
 		return physBox;
+	}
+
+	public Vector3f getRadiusCenter()
+	{
+		return radiusCenter;
+	}
+
+	public float getRadius()
+	{
+		return radius;
 	}
 		
 	@Override
