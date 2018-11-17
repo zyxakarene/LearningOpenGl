@@ -124,4 +124,9 @@ public class ParticleVoBuilder
 	{
 		vo.worldParticle = worldParticle;
 	}
+
+	public void radius(float radius)
+	{
+		vo.radius = radius;
+	}
 }

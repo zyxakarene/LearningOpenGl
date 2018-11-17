@@ -16,3 +16,4 @@ rotation=0.1
 rotationVariance=0.5
 texture=sample
 worldParticle=true
+radius=100

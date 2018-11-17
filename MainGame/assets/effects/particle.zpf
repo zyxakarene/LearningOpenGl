@@ -16,3 +16,4 @@ rotation=0.1
 rotationVariance=0.5
 texture=BtnDown
 worldParticle=false
+radius=20

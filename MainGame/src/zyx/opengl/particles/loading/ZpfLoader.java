@@ -25,6 +25,7 @@ public class ZpfLoader
 	private static final String KEY_ROTATION = "rotation";
 	private static final String KEY_ROTATION_VARIANCE = "rotationVariance";
 	private static final String KEY_TEXTURE = "texture";
+	private static final String KEY_RADIUS = "radius";
 	
 	public static LoadableParticleVO loadFromZpf(ResourceDataInputStream in)
 	{
@@ -54,6 +55,12 @@ public class ZpfLoader
 	{
 		switch(key)
 		{
+			case KEY_RADIUS:
+			{
+				float radius = Float.parseFloat(value);
+				builder.radius(radius);
+				break;
+			}
 			case KEY_WORLD_PARTICLE:
 			{
 				boolean worldParticle = Boolean.parseBoolean(value);

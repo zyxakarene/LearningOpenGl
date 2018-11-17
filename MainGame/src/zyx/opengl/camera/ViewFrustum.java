@@ -28,11 +28,11 @@ public class ViewFrustum
 	public boolean isInsideView(Vector3f worldPosition, float diameter)
 	{
 		boolean isOutside
-				= isOutsidePlane(worldPosition, left, diameter)
+				= isOutsidePlane(worldPosition, near, diameter)
+				|| isOutsidePlane(worldPosition, left, diameter)
 				|| isOutsidePlane(worldPosition, right, diameter)
 				|| isOutsidePlane(worldPosition, top, diameter)
 				|| isOutsidePlane(worldPosition, bottom, diameter)
-				|| isOutsidePlane(worldPosition, near, diameter)
 				|| isOutsidePlane(worldPosition, far, diameter);
 
 		return !isOutside;

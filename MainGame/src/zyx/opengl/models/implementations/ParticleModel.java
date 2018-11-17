@@ -51,6 +51,12 @@ public class ParticleModel extends AbstractInstancedModel implements IParticleMo
 	}
 
 	@Override
+	public float getRadius()
+	{
+		return vo.radius;
+	}
+	
+	@Override
 	public void draw()
 	{
 		shader.bind();
