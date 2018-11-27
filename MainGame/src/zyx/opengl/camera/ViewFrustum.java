@@ -2,7 +2,6 @@ package zyx.opengl.camera;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.utils.cheats.Print;
 import zyx.utils.geometry.Plane;
 
 public class ViewFrustum
@@ -42,7 +41,7 @@ public class ViewFrustum
 	{
 		float dotProduct = worldPosition.x * plane.a + worldPosition.y * plane.b + worldPosition.z * plane.c;
 		float dist = dotProduct + plane.d + diameter;
-//		Print.out(dist);
+
 		return dist < 0;
 	}
 

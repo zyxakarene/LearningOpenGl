@@ -11,7 +11,6 @@ import zyx.engine.resources.impl.MeshResource;
 import zyx.engine.resources.impl.Resource;
 import zyx.engine.utils.callbacks.CustomCallback;
 import zyx.engine.utils.callbacks.ICallback;
-import zyx.opengl.camera.Camera;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.attachments.Attachment;
 import zyx.opengl.models.implementations.bones.attachments.AttachmentRequest;
@@ -25,9 +24,6 @@ import zyx.utils.interfaces.IPhysbox;
 
 public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<MeshResource>
 {
-	private static final Vector3f IN_VIEW_POS = new Vector3f();
-	private static final Vector3f IN_VIEW_SCALE = new Vector3f();
-
 	protected String resource;
 	protected boolean loaded;
 	protected WorldModel model;
@@ -90,21 +86,24 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 			}
 		}
 	}
-	
+		
 	@Override
-	public boolean inView()
+	public float getRadius()
 	{
-		Vector3f center = model.getRadiusCenter();
-		localToGlobal(center, IN_VIEW_POS);
-		getScale(false, IN_VIEW_SCALE);
+		return loaded ? model.getRadius() : 0;
+	}
 
-		float scale = IN_VIEW_SCALE.x > IN_VIEW_SCALE.y ? IN_VIEW_SCALE.x : IN_VIEW_SCALE.y;
-		scale = scale > IN_VIEW_SCALE.z ? scale : IN_VIEW_SCALE.z;
-		
-		float radius = model.getRadius() * scale;
-		
-		boolean visible = Camera.getInstance().isInView(IN_VIEW_POS, radius);
-		return visible;
+	@Override
+	public void getCenter(Vector3f out)
+	{
+		if (loaded)
+		{
+			out.set(model.getRadiusCenter());
+		}
+		else
+		{
+			out.set(0, 0, 0);
+		}
 	}
 	
 	private void drawAsAttachment(Attachment attachment)
