@@ -15,8 +15,7 @@ out vec3 Normal;
 
 uniform mat4 model;
 uniform mat4 modelInverseTranspose;
-uniform mat4 view;
-uniform mat4 projection;
+uniform mat4 projectionView;
 
 uniform mat4 bones[MAX_JOINTS];
 uniform mat4 bonesInverseTranspose[MAX_JOINTS];
@@ -41,5 +40,5 @@ void main()
 
     Texcoord = texcoord;
     Normal = mat3(modelInverseTranspose) * vec3(totalLocalNorm);  
-    gl_Position = projection * view * model * totalLocalPos;
+    gl_Position = projectionView * model * totalLocalPos;
 }

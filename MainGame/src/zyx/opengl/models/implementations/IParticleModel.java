@@ -13,4 +13,6 @@ public interface IParticleModel extends IDisposeable, IUpdateable
 	public boolean isWorldParticle();
 
 	public IParticleModel cloneParticle();
+
+	public float getRadius();
 }

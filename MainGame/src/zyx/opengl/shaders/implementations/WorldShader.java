@@ -9,16 +9,14 @@ import zyx.opengl.shaders.SharedShaderObjects;
 public class WorldShader extends AbstractShader
 {
 
-	private static final Matrix4f MATRIX_PROJECTION = SharedShaderObjects.SHARED_PROJECTION_TRANSFORM;
-	private static final Matrix4f MATRIX_VIEW = SharedShaderObjects.SHARED_VIEW_TRANSFORM;
+	private static final Matrix4f MATRIX_PROJECTION_VIEW = SharedShaderObjects.SHARED_PROJECTION_VIEW_TRANSFORM;
 	private static final Matrix4f MATRIX_MODEL = SharedShaderObjects.SHARED_MODEL_TRANSFORM;
 	private static final Matrix4f MATRIX_MODEL_INVERT_TRANSPOSE = new Matrix4f();
 	
 	public final Matrix4f[] BONES = new Matrix4f[20];
 	public final Matrix4f[] INVERT_BONES = new Matrix4f[20];
 
-	private int projectionMatrixTrans;
-	private int viewMatrixTrans;
+	private int projectionViewMatrixTrans;
 	private int modelMatrixTrans;
 	private int boneMatrixTrans;
 	private int lightDirection;
@@ -42,10 +40,9 @@ public class WorldShader extends AbstractShader
 	@Override
 	protected void postLoading()
 	{
-		projectionMatrixTrans = UniformUtils.createUniform(program, "projection");
-		viewMatrixTrans = UniformUtils.createUniform(program, "view");
 		modelMatrixTrans = UniformUtils.createUniform(program, "model");
 		boneMatrixTrans = UniformUtils.createUniform(program, "bones");
+		projectionViewMatrixTrans = UniformUtils.createUniform(program, "projectionView");
 		
 		boneMatrixTrans_InverseTranspose = UniformUtils.createUniform(program, "bonesInverseTranspose");
 		modelMatrixTrans_InverseTranspose = UniformUtils.createUniform(program, "modelInverseTranspose");
@@ -56,9 +53,8 @@ public class WorldShader extends AbstractShader
 	@Override
 	public void upload()
 	{
-		UniformUtils.setUniformMatrix(projectionMatrixTrans, MATRIX_PROJECTION);
-		UniformUtils.setUniformMatrix(viewMatrixTrans, MATRIX_VIEW);
 		UniformUtils.setUniformMatrix(modelMatrixTrans, MATRIX_MODEL);
+		UniformUtils.setUniformMatrix(projectionViewMatrixTrans, MATRIX_PROJECTION_VIEW);
 		
 		MATRIX_MODEL_INVERT_TRANSPOSE.load(MATRIX_MODEL);
 		MATRIX_MODEL_INVERT_TRANSPOSE.invert();

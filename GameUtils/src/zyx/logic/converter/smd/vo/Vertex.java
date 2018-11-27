@@ -22,6 +22,11 @@ public class Vertex
 		this.uv = new Vector2f(uv);
 		this.index = index;
 	}
+
+	public Vector3f getPos()
+	{
+		return pos;
+	}
 	
 	public void addWeight(byte index, float weight)
 	{

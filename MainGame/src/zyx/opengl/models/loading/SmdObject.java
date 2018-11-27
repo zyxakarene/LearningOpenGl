@@ -2,6 +2,7 @@ package zyx.opengl.models.loading;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import org.lwjgl.util.vector.Vector3f;
 import zyx.utils.cheats.Print;
 
 class SmdObject
@@ -12,6 +13,9 @@ class SmdObject
 	SmdAnimation[] animations;
 	SmdPhysInfo physInformation;
 	String texture;
+	
+	Vector3f radiusCenter;
+	float radius;
 	
 	public void read(DataInputStream in) throws IOException
 	{
@@ -52,5 +56,11 @@ class SmdObject
 		Print.out("↳", physInformation.physBoxes.length, "physboxes\n");
 		
 		texture = in.readUTF();
+		
+		radiusCenter = new Vector3f();
+		radiusCenter.x = in.readFloat();
+		radiusCenter.y = in.readFloat();
+		radiusCenter.z = in.readFloat();
+		radius = in.readFloat();
 	}
 }

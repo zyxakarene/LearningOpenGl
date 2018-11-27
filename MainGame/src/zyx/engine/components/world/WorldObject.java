@@ -5,6 +5,8 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.game.controls.SharedPools;
+import zyx.opengl.camera.Camera;
+import zyx.opengl.camera.IFrustumHideable;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.SharedShaderObjects;
@@ -15,7 +17,7 @@ import zyx.utils.interfaces.IPositionable;
 import zyx.utils.math.DecomposedMatrix;
 import zyx.utils.math.MatrixUtils;
 
-public abstract class WorldObject implements IPositionable, IDisposeable
+public abstract class WorldObject implements IPositionable, IDisposeable, IFrustumHideable
 {
 
 	protected static final DecomposedMatrix DECOMPOSED_MATRIX = new DecomposedMatrix();
@@ -56,6 +58,22 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		disposed = false;
 
 		dirty = false;
+	}
+
+	public boolean inView()
+	{
+		getCenter(HELPER_POSITION);
+
+		localToGlobal(HELPER_POSITION, HELPER_POSITION);
+		getScale(false, HELPER_VEC3);
+
+		float scale = HELPER_VEC3.x > HELPER_VEC3.y ? HELPER_VEC3.x : HELPER_VEC3.y;
+		scale = scale > HELPER_VEC3.z ? scale : HELPER_VEC3.z;
+
+		float radius = getRadius()* scale;
+
+		boolean visible = Camera.getInstance().isInView(HELPER_POSITION, radius);
+		return visible;
 	}
 
 	public Matrix4f worldMatrix()
@@ -191,8 +209,6 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 		}
 
 		SharedShaderObjects.SHARED_MODEL_TRANSFORM.load(worldMatrix());
-		shader.bind();
-		shader.upload();
 
 		onDraw();
 
@@ -539,5 +555,17 @@ public abstract class WorldObject implements IPositionable, IDisposeable
 
 			lookAt(HELPER_POSITION.x, HELPER_POSITION.y, HELPER_POSITION.z);
 		}
+	}
+
+	@Override
+	public float getRadius()
+	{
+		return 0;
+	}
+
+	@Override
+	public void getCenter(Vector3f out)
+	{
+		out.set(0, 0, 0);
 	}
 }

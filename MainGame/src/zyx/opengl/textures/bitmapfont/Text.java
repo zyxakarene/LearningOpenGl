@@ -4,6 +4,7 @@ import java.nio.FloatBuffer;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.models.BufferWrapper;
+import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.shaders.implementations.Shader;
 
 public class Text extends AbstractModel
@@ -24,6 +25,12 @@ public class Text extends AbstractModel
 		setTexture(font.texture);
 	}
 
+	@Override
+	protected boolean canDraw()
+	{
+		return DebugDrawCalls.canDrawUi();
+	}
+	
 	public void setText(String text, Vector4f color)
 	{
 		TextGenerator generator = new TextGenerator(font.fontFile, color);

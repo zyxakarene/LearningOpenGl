@@ -1,26 +1,29 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package zyx.debug.views.base;
 
-public abstract class BaseDebugPanel extends javax.swing.JPanel
+import java.awt.LayoutManager;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+
+public abstract class BaseDebugPanel extends JPanel
 {
 
-	public BaseDebugPanel()
+	public BaseDebugPanel(LayoutManager layout)
 	{
-		initComponents();
+		super(layout);
 	}
 	
+	public BaseDebugPanel()
+	{
+		BoxLayout defaultLayout = new BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS);
+		setLayout(defaultLayout);
+	}
+
 	public abstract void update();
-	
+
 	public abstract String getTabName();
-	
-	@SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
-
-        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
-    }// </editor-fold>//GEN-END:initComponents
-
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    // End of variables declaration//GEN-END:variables
 }

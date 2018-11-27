@@ -5,7 +5,7 @@ public class DebugDrawCalls
 	private static final Object LOCK = new Object();
 	
 	private static int limitUi = -1;
-	private static int limitWorld = 1;
+	private static int limitWorld = -1;
 	private static int currentDrawWorld;
 	private static int currentDrawUi;
 	
@@ -38,8 +38,13 @@ public class DebugDrawCalls
 	{
 		synchronized (LOCK)
 		{
+			if (limitWorld != -1 && currentDrawWorld + 1 > limitWorld)
+			{
+				return false;
+			}
+			
 			currentDrawWorld++;
-			return limitWorld == -1 || currentDrawWorld <= limitWorld;
+			return true;
 		}
 	}
 	
@@ -47,8 +52,29 @@ public class DebugDrawCalls
 	{
 		synchronized (LOCK)
 		{
+			if (limitUi != -1 && currentDrawUi + 1 > limitUi)
+			{
+				return false;
+			}
+			
 			currentDrawUi++;
-			return limitUi == -1 || currentDrawUi <= limitUi;
+			return true;
+		}
+	}
+
+	public static int getCurrentDrawWorld()
+	{
+		synchronized (LOCK)
+		{
+			return currentDrawWorld;
+		}
+	}
+
+	public static int getCurrentDrawUi()
+	{
+		synchronized (LOCK)
+		{
+			return currentDrawUi;
 		}
 	}
 }

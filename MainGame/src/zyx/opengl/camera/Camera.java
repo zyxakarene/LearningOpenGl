@@ -1,6 +1,7 @@
 package zyx.opengl.camera;
 
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.WorldObject;
 import zyx.engine.utils.worldpicker.calculating.RayPicker;
 import zyx.opengl.shaders.SharedShaderObjects;
@@ -17,11 +18,13 @@ public class Camera extends WorldObject
 	}
 
 	private boolean initialized;
-
+	private ViewFrustum frustum;
+	
 	private Camera()
 	{
 		super(Shader.WORLD);
 		initialized = false;
+		frustum = new ViewFrustum();
 	}
 
 	public void initialize()
@@ -50,5 +53,15 @@ public class Camera extends WorldObject
 	public void getViewMatrix(Matrix4f out)
 	{
 		out.load(SharedShaderObjects.SHARED_VIEW_TRANSFORM);
+	}
+
+	public void setViewFrustum(Matrix4f matrix)
+	{
+		frustum.extractPlanesFrom(matrix);
+	}
+
+	public boolean isInView(Vector3f worldPosition, float radius)
+	{
+		return frustum.isInsideView(worldPosition, radius);
 	}
 }

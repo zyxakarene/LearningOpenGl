@@ -12,6 +12,8 @@ import zyx.utils.interfaces.IPhysbox;
 import zyx.engine.utils.worldpicker.IHoveredItem;
 import zyx.game.components.screen.hud.MainHud;
 import zyx.game.controls.input.MouseData;
+import zyx.opengl.camera.Camera;
+import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.cheats.DebugContainer;
 
 public class Scene
@@ -85,6 +87,9 @@ public class Scene
 
 	final void draw()
 	{
+		SharedShaderObjects.combineMatrices();
+		Camera.getInstance().setViewFrustum(SharedShaderObjects.SHARED_PROJECTION_VIEW_TRANSFORM);
+		
 		world.drawScene();
 
 		onDraw();

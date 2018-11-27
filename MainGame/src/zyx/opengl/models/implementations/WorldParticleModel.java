@@ -124,6 +124,12 @@ public class WorldParticleModel extends AbstractInstancedModel implements IParti
 	}
 	
 	@Override
+	public float getRadius()
+	{
+		return vo.radius;
+	}
+	
+	@Override
 	public void draw()
 	{
 		shader.bind();
