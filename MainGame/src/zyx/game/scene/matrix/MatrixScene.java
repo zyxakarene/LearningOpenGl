@@ -19,6 +19,14 @@ public class MatrixScene extends Scene implements IResourceReady<JsonResource>
 	private int rot;
 
 	@Override
+	protected void onPreloadResources()
+	{
+		preloadResource("mesh.simple.box");
+		preloadResource("sound.Explosion");
+		preloadResource("flat_bg");
+	}
+	
+	@Override
 	protected void onInitialize()
 	{
 		Camera.getInstance().setPosition(true, 10, -50, 0);

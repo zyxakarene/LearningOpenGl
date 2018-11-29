@@ -62,8 +62,6 @@ public class GameScene extends Scene
 				}
 			}
 		}
-		
-		DebugPoint.addToScene(0, 0, 20, 0);
 	}
 
 	@Override
@@ -86,6 +84,8 @@ public class GameScene extends Scene
 	@Override
 	protected void onDispose()
 	{
+		DebugPoint.clearAll();
+		
 		for (SimpleMesh simpleMesh : children)
 		{
 			simpleMesh.dispose();

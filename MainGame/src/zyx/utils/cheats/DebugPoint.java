@@ -55,6 +55,11 @@ public class DebugPoint extends GameObject
 		return alive;
 	}
 
+	public void kill()
+	{
+		alive = false;
+	}
+	
 	@Override
 	protected void onDispose()
 	{
@@ -64,6 +69,11 @@ public class DebugPoint extends GameObject
 		
 		mesh.dispose();
 		mesh = null;
+	}
+	
+	public static void clearAll()
+	{
+		DebugContainer.getInstance().clear();
 	}
 	
 	public static DebugPoint addToScene(float x, float y, float z, int lifespan)

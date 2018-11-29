@@ -4,6 +4,8 @@ import zyx.engine.components.screen.base.Stage;
 import zyx.engine.components.world.World3D;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;
+import zyx.engine.scene.preloading.ResourcePreloadProcess;
+import zyx.engine.utils.callbacks.ICallback;
 import zyx.engine.utils.worldpicker.WorldPicker;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.MegaManager;
@@ -12,6 +14,7 @@ import zyx.utils.interfaces.IPhysbox;
 import zyx.engine.utils.worldpicker.IHoveredItem;
 import zyx.game.components.screen.hud.MainHud;
 import zyx.game.controls.input.MouseData;
+import zyx.game.controls.process.ProcessQueue;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.cheats.DebugContainer;
@@ -28,6 +31,9 @@ public class Scene
 	
 	protected MainHud hud;
 
+	private ProcessQueue preloadQueue;
+	private boolean ready;
+	
 	public Scene()
 	{
 		picker = new WorldPicker();
@@ -37,6 +43,9 @@ public class Scene
 		camera = new CameraController();
 		
 		debugContainer = DebugContainer.getInstance();
+		preloadQueue = new ProcessQueue();
+		
+		ready = false;
 	}
 
 	protected void addPickedObject(IPhysbox object, IHoveredItem clickCallback)
@@ -58,9 +67,26 @@ public class Scene
 			stage.addChild(hud);
 		}
 		
-		onInitialize();
+		onPreloadResources();
+		
+		ICallback<ProcessQueue> onCompleted = (ProcessQueue data) ->
+		{
+			onInitialize();
+			ready = true;
+		};
+		
+		preloadQueue.start(onCompleted);
 	}
 
+	protected void onPreloadResources()
+	{
+	}
+	
+	protected final void preloadResource(String resource)
+	{
+		preloadQueue.addProcess(new ResourcePreloadProcess(resource));
+	}
+	
 	final void update(long timestamp, int elapsedTime)
 	{
 		GLUtils.errorCheck();
@@ -78,7 +104,11 @@ public class Scene
 		
 		MegaManager.update(timestamp, elapsedTime);
 		camera.update(timestamp, elapsedTime);
-		onUpdate(timestamp, elapsedTime);
+		
+		if (ready)
+		{
+			onUpdate(timestamp, elapsedTime);
+		}
 
 		CursorManager.getInstance().update();
 
@@ -87,20 +117,23 @@ public class Scene
 
 	final void draw()
 	{
-		SharedShaderObjects.combineMatrices();
-		Camera.getInstance().setViewFrustum(SharedShaderObjects.SHARED_PROJECTION_VIEW_TRANSFORM);
-		
-		world.drawScene();
+		if (ready)
+		{
+			SharedShaderObjects.combineMatrices();
+			Camera.getInstance().setViewFrustum(SharedShaderObjects.SHARED_PROJECTION_VIEW_TRANSFORM);
+			
+			world.drawScene();
 
-		onDraw();
+			onDraw();
 
-		GLUtils.disableDepthTest();
-		GLUtils.disableCulling();
-		stage.drawStage();
-		GLUtils.enableCulling();
-		GLUtils.enableDepthTest();
+			GLUtils.disableDepthTest();
+			GLUtils.disableCulling();
+			stage.drawStage();
+			GLUtils.enableCulling();
+			GLUtils.enableDepthTest();
 
-		GLUtils.errorCheck();
+			GLUtils.errorCheck();
+		}
 	}
 
 	protected void onUpdate(long timestamp, int elapsedTime)
@@ -137,9 +170,20 @@ public class Scene
 			hud = null;
 		}
 		
+		if (preloadQueue != null)
+		{
+			preloadQueue.dispose();
+			preloadQueue = null;
+		}
+		
 		stage = null;
 		world = null;
 		camera = null;
 		picker = null;
+	}
+
+	boolean isReady()
+	{
+		return ready;
 	}
 }

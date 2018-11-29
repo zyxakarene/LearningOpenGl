@@ -32,6 +32,11 @@ public class ResourceManager
 		
 		return res;
 	}
+	
+	public <T extends Resource> T getResourceAs(String resource)
+	{
+		return (T) getResource(resource);
+	}
 
 	public void disposeResource(String resource)
 	{

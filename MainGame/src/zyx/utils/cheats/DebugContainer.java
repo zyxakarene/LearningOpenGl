@@ -32,6 +32,14 @@ public class DebugContainer extends WorldObject
 		points.add(point);
 	}
 
+	public void clear()
+	{
+		for (DebugPoint point : points)
+		{
+			point.kill();
+		}
+	}
+	
 	public void update(long timestamp, int elapsedTime)
 	{
 		DebugPoint point;

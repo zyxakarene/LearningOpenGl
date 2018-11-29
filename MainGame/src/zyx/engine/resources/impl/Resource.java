@@ -112,8 +112,10 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 		{
 			this.loaded = true;
 
-			for (IResourceReady pointer : pointers)
+			IResourceReady pointer;
+			for (int i = pointers.size() - 1; i >= 0; i--)
 			{
+				pointer = pointers.get(i);
 				pointer.onResourceReady(this);
 			}
 		}
