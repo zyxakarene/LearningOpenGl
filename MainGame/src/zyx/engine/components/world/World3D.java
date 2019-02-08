@@ -1,5 +1,6 @@
 package zyx.engine.components.world;
 
+import zyx.engine.components.world.complexphysics.ComplexPhysics;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.Shader;
 
@@ -8,12 +9,12 @@ public final class World3D extends WorldObject
 
 	public static final World3D instance = new World3D();
 	
-	public final Physics physics;
+	public final ComplexPhysics physics;
 
 	private World3D()
 	{
 		super(Shader.WORLD);
-		physics = new Physics();
+		physics = new ComplexPhysics();
 	}
 
 	public void drawScene()

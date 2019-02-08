@@ -5,7 +5,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.controls.input.KeyboardData;
-import zyx.game.controls.input.MouseData;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.models.implementations.physics.PhysObject;
 import zyx.opengl.models.implementations.physics.PhysTriangle;
@@ -31,6 +30,8 @@ public class PhysPicker extends AbstractPicker
 
 	private final LinkedList<Vector3f> positions = new LinkedList<>();
 
+	public float maxDistance = Float.MAX_VALUE;
+	
 	@Override
 	public boolean collided(Vector3f pos, Vector3f dir, IPhysbox physContainer, Vector3f intersectPoint)
 	{
@@ -82,11 +83,24 @@ public class PhysPicker extends AbstractPicker
 		}
 		else if (positions.size() == 1)
 		{
-			return true;
+			Vector3f collidePoint = positions.get(0);
+			float distance = FloatMath.distance(collidePoint, pos);
+
+			if (distance <= maxDistance)
+			{
+				collidePoint.z += 1f;
+				intersectPoint.set(collidePoint);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 		else
 		{
-			float closestDistance = Float.MAX_VALUE;
+			boolean hitWithinDistance = false;
+			float closestDistance = maxDistance;
 			float currentDistance;
 			Vector3f closestPos = new Vector3f(intersectPoint);
 			Vector3f currentPos;
@@ -97,13 +111,14 @@ public class PhysPicker extends AbstractPicker
 				currentDistance = FloatMath.distance(currentPos, pos);
 				if (currentDistance < closestDistance)
 				{
+					hitWithinDistance = true;
 					closestDistance = currentDistance;
 					closestPos = currentPos;
 				}
 			}
 
 			intersectPoint.set(closestPos);
-			return true;
+			return hitWithinDistance;
 		}
 	}
 

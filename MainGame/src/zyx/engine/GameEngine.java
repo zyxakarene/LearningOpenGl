@@ -74,6 +74,10 @@ public class GameEngine
 			}
 			else if (KeyboardData.data.wasPressed(Keyboard.KEY_5))
 			{
+				sceneManager.changeScene(SceneType.PHYS);
+			}
+			else if (KeyboardData.data.wasPressed(Keyboard.KEY_6))
+			{
 				sceneManager.changeScene(SceneType.EMPTY);
 			}
 

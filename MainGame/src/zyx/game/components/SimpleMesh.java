@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.components.world.World3D;
 import zyx.engine.components.world.WorldObject;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
@@ -24,6 +25,7 @@ import zyx.utils.interfaces.IPhysbox;
 
 public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<MeshResource>
 {
+
 	protected String resource;
 	protected boolean loaded;
 	protected WorldModel model;
@@ -86,7 +88,7 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 			}
 		}
 	}
-		
+
 	@Override
 	public float getRadius()
 	{
@@ -105,7 +107,7 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 			out.set(0, 0, 0);
 		}
 	}
-	
+
 	private void drawAsAttachment(Attachment attachment)
 	{
 		Matrix4f.mul(attachment.parent.worldMatrix(), attachment.joint.getAttachmentTransform(), localMatrix);
@@ -159,6 +161,22 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	}
 
 	@Override
+	protected void onParentChanged(WorldObject parent)
+	{
+		if (physbox != null)
+		{
+			if (parent == null)
+			{
+				World3D.instance.physics.removeMesh(this);
+			}
+			else
+			{
+				World3D.instance.physics.addMesh(this);
+			}
+		}
+	}
+
+	@Override
 	public void onResourceReady(MeshResource resource)
 	{
 		WorldModel data = resource.getContent();
@@ -166,6 +184,11 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 		physbox = data.getPhysbox();
 		model = data;
 		loaded = true;
+
+		if (hasParent())
+		{
+			World3D.instance.physics.addMesh(this);
+		}
 
 		DebugPhysics.getInstance().registerPhysbox(this);
 
@@ -197,6 +220,8 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 			onLoaded.dispose();
 			onLoaded = null;
 		}
+
+		World3D.instance.physics.removeMesh(this);
 
 		DebugPhysics.getInstance().unregisterPhysbox(this);
 

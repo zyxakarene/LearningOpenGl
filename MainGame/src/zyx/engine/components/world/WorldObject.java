@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import zyx.engine.components.world.complexphysics.EntityCollider;
 import zyx.game.controls.SharedPools;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.camera.IFrustumHideable;
@@ -42,7 +43,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 
 	protected final AbstractShader shader;
 
-	private Collider collider;
+	private EntityCollider collider;
 	public boolean drawable = true;
 
 	public WorldObject(Shader type)
@@ -106,7 +107,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 		return invWorldMatrix;
 	}
 
-	public void setCollider(Collider newCollider)
+	public void setCollider(EntityCollider newCollider)
 	{
 		if (collider != null)
 		{
@@ -121,7 +122,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 		}
 	}
 
-	public Collider getCollider()
+	public EntityCollider getCollider()
 	{
 		return collider;
 	}
@@ -138,6 +139,8 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 			child.parent = this;
 			children.add(child);
 
+			child.onParentChanged(this);
+			
 			updateTransforms(true);
 		}
 	}
@@ -148,6 +151,8 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 		{
 			child.parent = null;
 			children.remove(child);
+			
+			child.onParentChanged(null);
 		}
 		else
 		{
@@ -227,6 +232,12 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 		}
 		onDispose();
 
+		if (collider != null)
+		{
+			collider.dispose();
+			collider = null;
+		}
+		
 		disposed = true;
 		removeFromParent(false);
 
@@ -567,5 +578,9 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 	public void getCenter(Vector3f out)
 	{
 		out.set(0, 0, 0);
+	}
+
+	protected void onParentChanged(WorldObject parent)
+	{
 	}
 }

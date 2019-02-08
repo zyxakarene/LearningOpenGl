@@ -38,9 +38,14 @@ public class SmdImporter
 
 	private void importFile(File file) throws FileNotFoundException
 	{
-		if (file == null || file.exists() == false)
+		if (file == null)
 		{
 			return;
+		}
+		
+		if (file.exists() == false)
+		{
+			throw new RuntimeException("[Error] File not found: " + file.getName());
 		}
 		
 		Scanner scan = new Scanner(file);

@@ -6,6 +6,7 @@ import zyx.game.scene.gamescene.StackScene;
 import zyx.game.scene.gamescene.TestScene;
 import zyx.game.scene.matrix.MatrixScene;
 import zyx.game.scene.particle.ParticleScene;
+import zyx.game.scene.phys.PhysScene;
 
 public enum SceneType
 {
@@ -15,6 +16,7 @@ public enum SceneType
 	GAME(GameScene.class),
 	TEST(TestScene.class),
 	PARTICLE(ParticleScene.class),
+	PHYS(PhysScene.class),
 	EMPTY(EmptyScene.class);
 	
 	public final Class<? extends Scene> sceneClass;

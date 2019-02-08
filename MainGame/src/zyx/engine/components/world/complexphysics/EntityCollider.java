@@ -1,31 +1,34 @@
-package zyx.engine.components.world;
+package zyx.engine.components.world.complexphysics;
 
+import zyx.engine.components.world.*;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.controls.SharedPools;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IUpdateable;
 
-public abstract class Collider implements IUpdateable, IDisposeable
+public class EntityCollider implements IUpdateable, IDisposeable
 {
 
 	public Vector3f velocity;
-	public boolean isStatic;
+	private float height;
 	
-	protected WorldObject parent;
+	private WorldObject parent;
 	
 	private static final Vector3f HELPER_POS = new Vector3f();
 	
-	public Collider(boolean isStatic)
+	public EntityCollider(float height)
 	{
-		this.isStatic = isStatic;
 		velocity = SharedPools.VECTOR_POOL.getInstance();
-//		World3D.instance.physics.addCollider(this);
+		
+		this.height = height;
+		
+		World3D.instance.physics.addCollider(this);
 	}
 	
 	@Override
 	public final void update(long timestamp, int elapsedTime)
 	{
-		if (!isStatic && parent != null)
+		if (parent != null)
 		{
 			float delta = elapsedTime * 0.001f;
 			parent.getPosition(false, HELPER_POS);
@@ -35,33 +38,15 @@ public abstract class Collider implements IUpdateable, IDisposeable
 			HELPER_POS.z += velocity.z * delta;
 			parent.setPosition(true, HELPER_POS);
 		}
-		
-		onUpdate(timestamp, elapsedTime);
 	}
 	
-	final void setParent(WorldObject parent)
-	{
-		this.parent = parent;
-		
-		if (parent == null)
-		{
-			onParentCleared();
-		}
-		else
-		{
-			onParentSet();
-		}
-	}
-
 	@Override
 	public final void dispose()
 	{
 		SharedPools.VECTOR_POOL.releaseInstance(velocity);
-//		World3D.instance.physics.removeCollider(this);
+		World3D.instance.physics.removeCollider(this);
 		
 		velocity = null;
-		
-		onDispose();
 	}
 	
 	public void getPosition(Vector3f out)
@@ -78,20 +63,16 @@ public abstract class Collider implements IUpdateable, IDisposeable
 		}
 	}
 	
-	protected void onUpdate(long timestamp, int elapsedTime)
+	public void setPosition(Vector3f pos)
 	{
-	}
-	
-	protected void onDispose()
-	{
-	}
-
-	protected void onParentCleared()
-	{
-	}
-	
-	protected void onParentSet()
-	{
+		if (parent != null)
+		{
+			parent.setPosition(false, pos);
+		}
 	}
 
+	public void setParent(WorldObject parent)
+	{
+		this.parent = parent;
+	}
 }

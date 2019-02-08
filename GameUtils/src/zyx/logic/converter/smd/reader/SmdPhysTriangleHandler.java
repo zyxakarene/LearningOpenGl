@@ -83,7 +83,7 @@ public class SmdPhysTriangleHandler implements ISmdHandler
 			PhysBox value = entry.getValue();
 
 			boolean valid = new PhysBoxValidator(value).validate();
-			if (valid)
+			if (valid || true)
 			{
 				boxList.add(value);
 			}

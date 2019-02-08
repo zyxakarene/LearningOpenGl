@@ -47,7 +47,7 @@ public class DebugPhysics
 			GLUtils.disableCulling();
 			WorldModel[] models = entryMap.get(parent);
 			
-			models[DebugPhysDrawing.INDEX_BOUNDING].draw();
+//			models[DebugPhysDrawing.INDEX_BOUNDING].draw();
 			models[DebugPhysDrawing.INDEX_MESH].draw();
 			
 			GLUtils.enableCulling();
