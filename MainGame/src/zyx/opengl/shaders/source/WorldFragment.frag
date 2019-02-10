@@ -11,18 +11,22 @@ layout(location = 0) out vec4 outColor;
 uniform sampler2D tex;
 uniform vec3 lightDir = vec3(0, -1, 1);
 
+uniform int debugColor;
+
 void main()
 {
     vec3 normVertex = normalize(Normal);
-	float cosTheta = clamp(dot(normVertex, lightDir), 0, 1);
+    float cosTheta = clamp(dot(normVertex, lightDir), debugColor, 1);
 
-	vec4 color = vec4(DIRECT_LIGHT) * cosTheta;
-	color.a = 1;
+    vec4 color = (vec4(DIRECT_LIGHT) * cosTheta);
+    color.a = 1;
 
-    vec4 materialColor =  texture(tex, vec2(Texcoord.x, -Texcoord.y));
+    vec4 materialColor =  texture(tex, vec2(Texcoord.x, -Texcoord.y)) + debugColor;
+
 
     outColor = materialColor * color + vec4(AMBIENT_LIGHT) * materialColor;
 
-	//View normals
+    
+    //View normals
     //outColor = vec4(0.5 + 0.5 * normVertex, 1);
 }

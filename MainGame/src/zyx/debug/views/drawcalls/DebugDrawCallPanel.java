@@ -16,6 +16,9 @@ public class DebugDrawCallPanel extends BaseDebugPanel
 	private JLabel uiDrawCalls;
 	private JLabel worldDrawCalls;
 
+	private JCheckBox uiHighlightCheck;
+	private JCheckBox worldHighlightCheck;
+	
 	public DebugDrawCallPanel()
 	{
 		setLayout(null);
@@ -25,6 +28,9 @@ public class DebugDrawCallPanel extends BaseDebugPanel
 		
 		uiDrawCalls = new JLabel("UI: 0");
         worldDrawCalls = new JLabel("World: 0");
+		
+		uiHighlightCheck = new JCheckBox("Highlight", false);
+        worldHighlightCheck = new JCheckBox("Highlight", false);
 		
 		SpinnerNumberModel uiModel = new SpinnerNumberModel(-1, -1, Integer.MAX_VALUE, 1);
 		SpinnerNumberModel worldModel = new SpinnerNumberModel(-1, -1, Integer.MAX_VALUE, 1);
@@ -39,6 +45,9 @@ public class DebugDrawCallPanel extends BaseDebugPanel
 
 		worldDrawCalls.setBounds(170, 10, 100, 20);
 		uiDrawCalls.setBounds(170, 40, 100, 20);
+
+		uiHighlightCheck.setBounds(240, 40, 100, 20);
+		worldHighlightCheck.setBounds(240, 10, 100, 20);
 		
         add(uiLabel);
         add(uiStepper);
@@ -48,11 +57,17 @@ public class DebugDrawCallPanel extends BaseDebugPanel
 
         add(uiDrawCalls);
         add(worldDrawCalls);
+
+        add(uiHighlightCheck);
+        add(worldHighlightCheck);
 	}
 
 	@Override
 	public void update()
 	{
+		DebugDrawCalls.setUiHighlight(uiHighlightCheck.isSelected());
+		DebugDrawCalls.setWorldHighlight(worldHighlightCheck.isSelected());
+
 		DebugDrawCalls.setUiDrawLimit((int) uiStepper.getValue());
 		DebugDrawCalls.setWorldDrawLimit((int) worldStepper.getValue());
 		

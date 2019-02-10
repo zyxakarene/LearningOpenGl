@@ -1,6 +1,7 @@
 package zyx.opengl.shaders.implementations;
 
 import org.lwjgl.util.vector.Matrix4f;
+import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.models.implementations.LoadableParticleVO;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.SharedShaderObjects;
@@ -16,7 +17,8 @@ public class WorldParticleShader extends AbstractShader
 	
 	private int projectionMatrixTrans;
 	private int viewMatrixTrans;
-	
+	private int debugColorTrans;
+
 	private int timeUniform;
 	private int parentScaleUniform;
 	private int instancesUniform;
@@ -56,7 +58,8 @@ public class WorldParticleShader extends AbstractShader
 	{
 		projectionMatrixTrans = UniformUtils.createUniform(program, "projection");
 		viewMatrixTrans = UniformUtils.createUniform(program, "view");
-		
+		debugColorTrans = UniformUtils.createUniform(program, "debugColor");
+
 		timeUniform = UniformUtils.createUniform(program, "time");
 		parentScaleUniform = UniformUtils.createUniform(program, "parentScale");
 		instancesUniform = UniformUtils.createUniform(program, "instances");
@@ -80,6 +83,7 @@ public class WorldParticleShader extends AbstractShader
 		
 		UniformUtils.setUniformFloat(timeUniform, elapsedTime);
 		UniformUtils.setUniformFloat(parentScaleUniform, parentScale);
+		UniformUtils.setUniformInt(debugColorTrans, DebugDrawCalls.shouldHighlightWorld() ? 1 : 0);
 	}
 
 	@Override

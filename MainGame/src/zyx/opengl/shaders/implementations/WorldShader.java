@@ -2,6 +2,7 @@ package zyx.opengl.shaders.implementations;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.SharedShaderObjects;
@@ -20,6 +21,7 @@ public class WorldShader extends AbstractShader
 	private int modelMatrixTrans;
 	private int boneMatrixTrans;
 	private int lightDirection;
+	private int debugColor;
 	
 	private int modelMatrixTrans_InverseTranspose;
 	private int boneMatrixTrans_InverseTranspose;
@@ -48,11 +50,13 @@ public class WorldShader extends AbstractShader
 		modelMatrixTrans_InverseTranspose = UniformUtils.createUniform(program, "modelInverseTranspose");
 		
 		lightDirection = UniformUtils.createUniform(program, "lightDir");
+		debugColor = UniformUtils.createUniform(program, "debugColor");
 	}
 
 	@Override
 	public void upload()
 	{
+		UniformUtils.setUniformInt(debugColor, DebugDrawCalls.shouldHighlightWorld() ? 1 : 0);
 		UniformUtils.setUniformMatrix(modelMatrixTrans, MATRIX_MODEL);
 		UniformUtils.setUniformMatrix(projectionViewMatrixTrans, MATRIX_PROJECTION_VIEW);
 		
