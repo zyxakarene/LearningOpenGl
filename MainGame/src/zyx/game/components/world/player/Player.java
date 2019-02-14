@@ -10,7 +10,7 @@ public class Player extends MeshObject
 	{
 		load("mesh.box");
 
-		setScale(0.05f, 0.05f, 0.2f);
+		setScale(0.001f, 0.001f, 0.2f);
 		setCollider(new EntityCollider(10));
 
 		addBehavior(new PlayerMovementBehavior());

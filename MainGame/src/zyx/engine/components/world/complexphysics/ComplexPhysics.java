@@ -2,6 +2,7 @@ package zyx.engine.components.world.complexphysics;
 
 import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.utils.worldpicker.ColliderInfo;
 import zyx.engine.utils.worldpicker.calculating.PhysPicker;
 import zyx.utils.cheats.DebugPoint;
 import zyx.utils.cheats.Print;
@@ -10,21 +11,24 @@ import zyx.utils.interfaces.IUpdateable;
 
 public final class ComplexPhysics implements IUpdateable
 {
+
 	private static final Vector3f HELPER_FROM = new Vector3f();
-	private static final Vector3f HELPER_DIR_XY = new Vector3f();
-	private static final Vector3f HELPER_DIR_Z = new Vector3f();
+	private static final Vector3f HELPER_DIR = new Vector3f();
 	private static final Vector3f HELPER_POINT = new Vector3f();
-	
+
+	private ColliderInfo out;
+
 	private ArrayList<IPhysbox> meshes;
 	private ArrayList<EntityCollider> colliders;
 
 	private PhysPicker picker;
-	
+
 	public ComplexPhysics()
 	{
 		colliders = new ArrayList<>();
 		meshes = new ArrayList<>();
 		picker = new PhysPicker();
+		out = new ColliderInfo();
 	}
 
 	public void addCollider(EntityCollider collider)
@@ -68,8 +72,6 @@ public final class ComplexPhysics implements IUpdateable
 		IPhysbox mesh;
 		EntityCollider collider;
 		boolean collided = false;
-		boolean hasXY = false;
-		boolean hasZ = false;
 		int i;
 		int j;
 
@@ -77,77 +79,78 @@ public final class ComplexPhysics implements IUpdateable
 		{
 			collider = colliders.get(i);
 			collider.velocity.z -= 0.1f;
-			
+
 			collider.getPosition(HELPER_FROM);
 			Print.out("Checking from", HELPER_FROM);
-			
-			HELPER_DIR_Z.set(collider.velocity);
-			HELPER_DIR_Z.x = 0;
-			HELPER_DIR_Z.y = 0;
-			
-			HELPER_DIR_XY.set(collider.velocity);
-			HELPER_DIR_XY.z = 0;
-			
-			hasXY = HELPER_DIR_XY.x != 0 || HELPER_DIR_XY.y != 0;
-			hasZ = HELPER_DIR_Z.z != 0;
-			
+
+			HELPER_DIR.set(collider.velocity);
+			HELPER_DIR.normalise();
+
 			picker.maxDistance = collider.velocity.length() * elapsedTime;
 			picker.maxDistance = picker.maxDistance * picker.maxDistance;
-			
-			if (hasXY)
+			Print.out("Dist:", picker.maxDistance);
+			for (j = 0; j < meshLen && !collided; j++)
 			{
-				HELPER_DIR_XY.normalise();
-				Print.out(picker.maxDistance);
-			}
-			
-			if (hasZ)
-			{
-				HELPER_DIR_Z.normalise();
-			}
-			
-			
-			for (j = 0; j < meshLen; j++)
-			{
-				collided = false;
 				mesh = meshes.get(j);
-				
-				if (hasXY)
+
+				picker.collided(HELPER_FROM, HELPER_DIR, mesh, out);
+
+				if (out.hasCollision)
 				{
-					collided = picker.collided(HELPER_FROM, HELPER_DIR_XY, mesh, HELPER_POINT);
-				}
-				
-				if (collided)
-				{
-					picker.collided(HELPER_FROM, HELPER_DIR_XY, mesh, HELPER_POINT);
-					
-					Print.out("Collided XY at", HELPER_POINT);
-//					DebugPoint.addToScene(HELPER_POINT, 10000);
-					collider.setPosition(HELPER_POINT);
+					collided = true;
+					Print.out("Collided at", out.intersectPoint, "Angle:", out.triangleAngle);
+					DebugPoint point = DebugPoint.addToScene(out.intersectPoint, 500);
+					point.setScale(0.02f, 0.02f, 0.02f);
+
 					collider.velocity.x = 0;
 					collider.velocity.y = 0;
-				}
-				
-				if (hasZ)
-				{
-					collided = picker.collided(HELPER_FROM, HELPER_DIR_Z, mesh, HELPER_POINT);
-				}
-				
-				if (collided)
-				{
-					Print.out("Collided Z at", HELPER_POINT);
-//					DebugPoint.addToScene(HELPER_POINT, 10000);
-					collider.setPosition(HELPER_POINT);
 					collider.velocity.z = 0;
+
+					if (out.triangleAngle >= -0.5)
+					{
+						Print.out("On a slooope");
+						Vector3f slideDir = new Vector3f(out.triangle.normal);
+						slideDir.normalise();
+
+						Vector3f supposedFrom = new Vector3f(HELPER_FROM);
+						supposedFrom.x += HELPER_DIR.x * picker.maxDistance;
+						supposedFrom.y += HELPER_DIR.y * picker.maxDistance;
+						supposedFrom.z += HELPER_DIR.z * picker.maxDistance;
+
+						picker.collidedSingular(supposedFrom, slideDir, out.triangle, out);
+
+						if (out.hasCollision)
+						{
+							out.intersectPoint.x += slideDir.x * 0.01f;
+							out.intersectPoint.y += slideDir.y * 0.01f;
+							//out.intersectPoint.z += 0.2f;
+							HELPER_FROM.x = out.intersectPoint.x;
+							HELPER_FROM.y = out.intersectPoint.y;
+							HELPER_FROM.z = out.intersectPoint.z;
+
+							point = DebugPoint.addToScene(out.intersectPoint, 500);
+							point.setScale(0.01f, 0.01f, 0.01f);
+							point.setRotation(45f, 45f, 45f);
+							collider.setPosition(out.intersectPoint);
+						}
+					}
+					else
+					{
+						HELPER_FROM.x = out.intersectPoint.x;
+						HELPER_FROM.y = out.intersectPoint.y;
+						HELPER_FROM.z = out.intersectPoint.z;
+					}
 				}
 			}
-			
+
 			if (!collided)
 			{
-				HELPER_POINT.x = HELPER_FROM.x + (collider.velocity.x * elapsedTime);
-				HELPER_POINT.y = HELPER_FROM.y + (collider.velocity.y * elapsedTime);
-				HELPER_POINT.z = HELPER_FROM.z + (collider.velocity.z * elapsedTime);
-				collider.setPosition(HELPER_POINT);
+				HELPER_FROM.x = HELPER_FROM.x + (collider.velocity.x * elapsedTime);
+				HELPER_FROM.y = HELPER_FROM.y + (collider.velocity.y * elapsedTime);
+				HELPER_FROM.z = HELPER_FROM.z + (collider.velocity.z * elapsedTime);
 			}
+			collider.setPosition(HELPER_FROM);
+			Print.out("Final setting pos to", HELPER_FROM);
 		}
 	}
 }

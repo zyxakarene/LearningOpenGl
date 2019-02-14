@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.utils.worldpicker.ColliderInfo;
 import zyx.game.controls.input.KeyboardData;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.models.implementations.physics.PhysObject;
@@ -31,23 +32,30 @@ public class PhysPicker extends AbstractPicker
 	private final LinkedList<Vector3f> positions = new LinkedList<>();
 
 	public float maxDistance = Float.MAX_VALUE;
-	
+
 	@Override
-	public boolean collided(Vector3f pos, Vector3f dir, IPhysbox physContainer, Vector3f intersectPoint)
+	public void collided(Vector3f pos, Vector3f dir, IPhysbox physContainer, ColliderInfo out)
 	{
 		PhysBox phys = physContainer.getPhysbox();
 		Matrix4f mat = physContainer.getMatrix();
+		out.hasCollision = false;
+
 		if (phys == null)
 		{
-			return false;
+			return;
 		}
 
 		boolean hitOBB = RayOBB.hit(phys.getBoundingBox(), mat, pos, dir);
 		if (!hitOBB)
 		{
-			return false;
+			return;
 		}
 
+		Vector3f posCopy = new Vector3f(pos);
+		posCopy.x -= dir.x * 0.01f;
+		posCopy.y -= dir.y * 0.01f;
+		posCopy.z -= dir.z * 0.01f;
+		
 		positions.clear();
 
 		PhysObject[] objects = phys.getObjects();
@@ -57,21 +65,21 @@ public class PhysPicker extends AbstractPicker
 			short boneId = object.getBoneId();
 			PhysTriangle[] triangles = object.getTriangles();
 			Matrix4f boneMatrix = physContainer.getBoneMatrix(boneId);
-						
+
 			Matrix4f.mul(mat, boneMatrix, BONE_TRANSFORM);
 
 			Matrix4f.load(BONE_TRANSFORM, INVERT_TRANSPOSE);
 			Matrix4f.invert(INVERT_TRANSPOSE, INVERT_TRANSPOSE);
 			Matrix4f.transpose(INVERT_TRANSPOSE, INVERT_TRANSPOSE);
-			
+
 			boolean collided;
 			for (PhysTriangle triangle : triangles)
 			{
-				collided = testTriangle(pos, dir, triangle, BONE_TRANSFORM, intersectPoint);
+				collided = testTriangle(posCopy, dir, triangle, BONE_TRANSFORM, out);
 
 				if (collided)
 				{
-					positions.add(new Vector3f(intersectPoint));
+					positions.add(new Vector3f(out.intersectPoint));
 				}
 			}
 
@@ -79,22 +87,18 @@ public class PhysPicker extends AbstractPicker
 
 		if (positions.isEmpty())
 		{
-			return false;
+			return;
 		}
 		else if (positions.size() == 1)
 		{
 			Vector3f collidePoint = positions.get(0);
-			float distance = FloatMath.distance(collidePoint, pos);
+			float distance = FloatMath.distance(collidePoint, posCopy);
 
 			if (distance <= maxDistance)
 			{
-				collidePoint.z += 1f;
-				intersectPoint.set(collidePoint);
-				return true;
-			}
-			else
-			{
-				return false;
+//				collidePoint.z += 1f;
+				out.intersectPoint.set(collidePoint);
+				out.hasCollision = true;
 			}
 		}
 		else
@@ -102,13 +106,13 @@ public class PhysPicker extends AbstractPicker
 			boolean hitWithinDistance = false;
 			float closestDistance = maxDistance;
 			float currentDistance;
-			Vector3f closestPos = new Vector3f(intersectPoint);
+			Vector3f closestPos = new Vector3f(out.intersectPoint);
 			Vector3f currentPos;
 
 			while (positions.isEmpty() == false)
 			{
 				currentPos = positions.remove();
-				currentDistance = FloatMath.distance(currentPos, pos);
+				currentDistance = FloatMath.distance(currentPos, posCopy);
 				if (currentDistance < closestDistance)
 				{
 					hitWithinDistance = true;
@@ -117,12 +121,12 @@ public class PhysPicker extends AbstractPicker
 				}
 			}
 
-			intersectPoint.set(closestPos);
-			return hitWithinDistance;
+			out.intersectPoint.set(closestPos);
+			out.hasCollision = hitWithinDistance;
 		}
 	}
 
-	private boolean testTriangle(Vector3f pos, Vector3f dir, PhysTriangle triangle, Matrix4f mat, Vector3f intersectPoint)
+	private boolean testTriangle(Vector3f pos, Vector3f dir, PhysTriangle triangle, Matrix4f mat, ColliderInfo out)
 	{
 		NORMAL.set(triangle.normal);
 
@@ -140,7 +144,18 @@ public class PhysPicker extends AbstractPicker
 		transformVertex(VERTEX_1, mat);
 		transformVertex(VERTEX_2, mat);
 		transformVertex(VERTEX_3, mat);
-		
+
+		if (VERTEX_1.x == 25 && VERTEX_1.y == 25 && VERTEX_1.z == 0)
+		{
+			if (VERTEX_2.x == -25 && VERTEX_2.y == 25 && VERTEX_2.z == 0)
+			{
+				if (VERTEX_3.x == -25 && VERTEX_3.y == -25 && VERTEX_3.z == 0)
+				{
+					Print.out("Testing test Triangle!");
+				}
+			}
+		}
+
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_P))
 		{
 			DebugPoint.addToScene(VERTEX_1, 1000);
@@ -179,15 +194,85 @@ public class PhysPicker extends AbstractPicker
 		float t = f * Vector3f.dot(EDGE_2, Q);
 		if (t > EPSILON) // ray intersection
 		{
-			intersectPoint.set(pos);
-			intersectPoint.x += dir.x * t;
-			intersectPoint.y += dir.y * t;
-			intersectPoint.z += dir.z * t;
+			out.triangle.normal.set(NORMAL);
+			out.triangle.v1.set(VERTEX_1);
+			out.triangle.v2.set(VERTEX_2);
+			out.triangle.v3.set(VERTEX_3);
+
+			out.intersectPoint.set(pos);
+			out.intersectPoint.x += dir.x * t;
+			out.intersectPoint.y += dir.y * t;
+			out.intersectPoint.z += dir.z * t;
+
+			out.triangleAngle = diff;
 			return true;
 		}
 		else // This means that there is a line intersection but not a ray intersection.
 		{
 			return false;
 		}
+	}
+
+	private boolean testTriangleSimple(Vector3f pos, Vector3f dir, PhysTriangle triangle, ColliderInfo out)
+	{
+		NORMAL.set(triangle.normal);
+
+		VERTEX_1.set(triangle.v1);
+		VERTEX_2.set(triangle.v2);
+		VERTEX_3.set(triangle.v3);
+
+		Vector3f.sub(VERTEX_2, VERTEX_1, EDGE_1);
+		Vector3f.sub(VERTEX_3, VERTEX_1, EDGE_2);
+
+		Vector3f.cross(dir, EDGE_2, H);
+		float a = Vector3f.dot(EDGE_1, H);
+
+		if (a > -EPSILON && a < EPSILON)
+		{
+			return false;
+		}
+
+		float f = 1 / a;
+
+		Vector3f.sub(pos, VERTEX_1, S);
+		float u = f * Vector3f.dot(S, H);
+		if (u < 0 || u > 1)
+		{
+			return false;
+		}
+
+		Vector3f.cross(S, EDGE_1, Q);
+		float v = f * Vector3f.dot(dir, Q);
+		if (v < 0 || u + v > 1)
+		{
+			return false;
+		}
+
+		// At this stage we can compute t to find out where the intersection point is on the line.
+		float t = f * Vector3f.dot(EDGE_2, Q);
+		if (t > EPSILON) // ray intersection
+		{
+			out.triangle.normal.set(NORMAL);
+			out.triangle.v1.set(VERTEX_1);
+			out.triangle.v2.set(VERTEX_2);
+			out.triangle.v3.set(VERTEX_3);
+
+			out.intersectPoint.set(pos);
+			out.intersectPoint.x += dir.x * t;
+			out.intersectPoint.y += dir.y * t;
+			out.intersectPoint.z += dir.z * t;
+
+			out.triangleAngle = Vector3f.dot(NORMAL, dir);
+			return true;
+		}
+		else // This means that there is a line intersection but not a ray intersection.
+		{
+			return false;
+		}
+	}
+
+	public void collidedSingular(Vector3f pos, Vector3f dir, PhysTriangle triangle, ColliderInfo out)
+	{
+		testTriangleSimple(pos, dir, triangle, out);
 	}
 }

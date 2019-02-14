@@ -2,6 +2,7 @@ package zyx.engine.utils.worldpicker.calculating;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.utils.worldpicker.ColliderInfo;
 import zyx.game.controls.input.MouseData;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.models.implementations.physics.PhysObject;
@@ -14,19 +15,21 @@ public class PhysConvexPicker extends AbstractPicker
 {
 
 	@Override
-	public boolean collided(Vector3f pos, Vector3f dir, IPhysbox physContainer, Vector3f intersectPoint)
+	public void collided(Vector3f pos, Vector3f dir, IPhysbox physContainer, ColliderInfo out)
 	{
 		PhysBox phys = physContainer.getPhysbox();
 		Matrix4f mat = physContainer.getMatrix();
+		out.hasCollision = false;
+		
 		if (phys == null)
 		{
-			return false;
+			return;
 		}
 
 		boolean hitOBB = RayOBB.hit(phys.getBoundingBox(), mat, pos, dir);
 		if (!hitOBB)
 		{
-			return false;
+			return;
 		}
 		
 		PhysObject[] objects = phys.getObjects();
@@ -40,13 +43,10 @@ public class PhysConvexPicker extends AbstractPicker
 			boolean collided = testTriangle(pos, dir, triangles, boneMatrix);
 			if (collided)
 			{
-				return true;
+				out.hasCollision = true;
+				return;
 			}
 		}
-
-
-//		intersectPoint.set(pos);
-		return false;
 	}
 
 	private float intersectPlane(Vector3f planeNormal, Vector3f vertexPos, Vector3f startPos, Vector3f rayDir)

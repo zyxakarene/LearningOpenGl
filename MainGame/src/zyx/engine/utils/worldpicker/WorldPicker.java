@@ -25,7 +25,8 @@ public class WorldPicker implements IDisposeable
 	private LinkedList<PoolableVector3f> collidedPositions;
 	private LinkedList<IPhysbox> collidedObjects;
 	private LinkedList<IHoveredItem> collidedClicks;
-	private Vector3f outPosition;
+	
+	private ColliderInfo colliderInfo;
 	
 	private AbstractPicker pickerImpl;
 
@@ -37,11 +38,12 @@ public class WorldPicker implements IDisposeable
 		currentPos = new Vector3f();
 		camera = Camera.getInstance();
 		
+		colliderInfo = new ColliderInfo();
+		
 		positionPool = new ObjectPool<>(PoolableVector3f.class, 10);
 		collidedPositions = new LinkedList<>();
 		collidedObjects = new LinkedList<>();
 		collidedClicks = new LinkedList<>();
-		outPosition = new Vector3f();
 		
 		pickerImpl = new PhysPicker();
 	}
@@ -61,7 +63,6 @@ public class WorldPicker implements IDisposeable
 	public void update()
 	{
 		camera.getPosition(false, currentPos);
-		boolean collided;
 		PoolableVector3f out;
 		IHoveredItem click;
 		IPhysbox pickable;
@@ -71,12 +72,12 @@ public class WorldPicker implements IDisposeable
 		{
 			pickable = pickables.get(i);
 			click = clickCallbacks.get(i);
-			collided = pickerImpl.collided(currentPos, currentRay, pickable, outPosition);
+			pickerImpl.collided(currentPos, currentRay, pickable, colliderInfo);
 			
-			if (collided)
+			if (colliderInfo.hasCollision)
 			{
 				out = positionPool.getInstance();
-				out.set(outPosition);
+				out.set(colliderInfo.intersectPoint);
 				
 				collidedClicks.add(click);
 				collidedPositions.add(out);

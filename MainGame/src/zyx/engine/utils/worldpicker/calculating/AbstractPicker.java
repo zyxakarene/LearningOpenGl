@@ -3,6 +3,7 @@ package zyx.engine.utils.worldpicker.calculating;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import zyx.engine.utils.worldpicker.ColliderInfo;
 import zyx.utils.interfaces.IPhysbox;
 
 public abstract class AbstractPicker
@@ -15,7 +16,7 @@ public abstract class AbstractPicker
 	protected static final Vector3f VERTEX_3 = new Vector3f();
 	protected static final Vector3f NORMAL = new Vector3f();
 
-	public abstract boolean collided(Vector3f pos, Vector3f dir, IPhysbox physContainer, Vector3f intersectPoint);
+	public abstract void collided(Vector3f pos, Vector3f dir, IPhysbox physContainer, ColliderInfo out);
 
 	protected void transformVertex(Vector3f vertex, Matrix4f mat)
 	{

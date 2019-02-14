@@ -2,6 +2,7 @@ package zyx.engine.utils.worldpicker.calculating;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.utils.worldpicker.ColliderInfo;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.models.implementations.physics.PhysTriangle;
 import zyx.utils.cheats.Print;
@@ -11,20 +12,22 @@ public class PhysPlanePicker extends AbstractPicker
 {
 
 	@Override
-	public boolean collided(Vector3f pos, Vector3f dir, IPhysbox physContainer, Vector3f intersectPoint)
+	public void collided(Vector3f pos, Vector3f dir, IPhysbox physContainer, ColliderInfo out)
 	{
 		PhysBox phys = physContainer.getPhysbox();
 		Matrix4f mat = physContainer.getMatrix();
+		out.hasCollision = false;
+		
 		if (phys == null)
 		{
-			return false;
+			return;
 		}
 		boolean collided = false;
 
 		PhysTriangle[] triangles = phys.getTriangles();
 		if (triangles.length == 0)
 		{
-			return false;
+			return;
 		}
 
 		Vector3f endPos = new Vector3f(pos);
@@ -40,13 +43,13 @@ public class PhysPlanePicker extends AbstractPicker
 			if (!collided)
 			{
 				negativeCount++;
-				return false;
+				return;
 			}
 		}
 		Print.out(negativeCount, triangles.length);
 
-		intersectPoint.set(pos);
-		return collided;
+		out.intersectPoint.set(pos);
+		out.hasCollision = collided;
 	}
 
 	private boolean testTriangle(Vector3f startPos, Vector3f endPos, PhysTriangle triangle, Matrix4f matrix)
