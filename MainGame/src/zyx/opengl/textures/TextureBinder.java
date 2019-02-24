@@ -1,8 +1,9 @@
 package zyx.opengl.textures;
 
 import org.newdawn.slick.opengl.TextureImpl;
+import zyx.utils.cheats.Print;
 
-class TextureBinder
+public class TextureBinder
 {
 
 	private static AbstractTexture currentlyBoundTexture;
@@ -16,6 +17,12 @@ class TextureBinder
 		}
 	}
 
+	public static void unbindTexture()
+	{
+		TextureImpl.unbind();
+		currentlyBoundTexture = null;
+	}
+	
 	static void dispose(AbstractTexture texture)
 	{
 		if (currentlyBoundTexture == texture)
@@ -23,5 +30,15 @@ class TextureBinder
 			TextureImpl.unbind();
 			currentlyBoundTexture = null;
 		}
+	}
+
+	public static String currentTexture()
+	{
+		if (currentlyBoundTexture != null)
+		{
+			return currentlyBoundTexture.toString();
+		}
+
+		return "[No current texture]";
 	}
 }

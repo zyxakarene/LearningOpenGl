@@ -129,6 +129,11 @@ public abstract class AbstractQuad extends DisplayObject
 		originalHeight = h;
 	}
 	
+	public boolean isLoaded()
+	{
+		return loaded;
+	}
+	
 	@Override
 	protected void onDraw()
 	{

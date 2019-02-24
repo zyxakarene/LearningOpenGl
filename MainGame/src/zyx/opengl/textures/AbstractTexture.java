@@ -69,6 +69,11 @@ public abstract class AbstractTexture implements IDisposeable
 		onDispose();
 	}
 
+	public final String currentTexture()
+	{
+		return TextureBinder.currentTexture();
+	}
+	
 	abstract protected void onBind();
 
 	abstract protected void onDispose();

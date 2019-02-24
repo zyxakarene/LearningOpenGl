@@ -17,5 +17,12 @@ public class Rectangle
 		this.width = width;
 		this.height = height;
 	}
-
+	
+	public void copyFrom(Rectangle source)
+	{
+		this.x = source.x;
+		this.y = source.y;
+		this.width = source.width;
+		this.height = source.height;
+	}
 }

@@ -5,8 +5,6 @@ import zyx.engine.curser.GameCursor;
 import zyx.engine.touch.TouchData;
 import zyx.engine.touch.TouchState;
 import zyx.game.components.screen.json.JsonSprite;
-import zyx.game.controls.input.MouseData;
-import zyx.utils.geometry.Rectangle;
 
 public abstract class ItemRenderer extends JsonSprite implements ITouched
 {
@@ -24,11 +22,6 @@ public abstract class ItemRenderer extends JsonSprite implements ITouched
 			buttonMode = true;
 			hoverIcon = GameCursor.HAND;
 		}
-	}
-
-	final void setClipRect(Rectangle clipRect)
-	{
-		this.clipRect = clipRect;
 	}
 
 	public final void setData(Object data)

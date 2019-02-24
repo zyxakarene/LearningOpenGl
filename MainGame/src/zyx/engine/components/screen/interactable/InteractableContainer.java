@@ -74,4 +74,16 @@ public abstract class InteractableContainer extends DisplayObjectContainer
 			wasMouseDown = false;
 		}
 	}
+
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+		
+		if(touchListener != null)
+		{
+			removeTouchListener(touchListener);
+			touchListener = null;
+		}
+	}
 }

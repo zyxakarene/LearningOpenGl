@@ -35,6 +35,7 @@ public class ParticleScene extends Scene
 
 			if (i == 0)
 			{
+				model.setPosition(true, 0, 10, 0);
 				world.addChild(model);
 				model.setScale(0.1f, 0.1f, 0.1f);
 			}
@@ -64,7 +65,7 @@ public class ParticleScene extends Scene
 			worldSystem2.setX(-20);
 			model.addChild(worldSystem2);
 			
-			model.addBehavior(new RotateBehavior());
+//			model.addBehavior(new RotateBehavior());
 		}
 		
 		GLUtils.errorCheck();

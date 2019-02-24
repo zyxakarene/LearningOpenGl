@@ -12,14 +12,20 @@ import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.ScreenShader;
 import zyx.opengl.shaders.implementations.Shader;
+import zyx.utils.FloatMath;
 import zyx.utils.geometry.Rectangle;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IPositionable2D;
 import zyx.utils.math.DecomposedMatrix;
 import zyx.utils.math.MatrixUtils;
+import zyx.utils.pooling.GenericPool;
+import zyx.utils.pooling.ObjectPool;
+import zyx.utils.pooling.model.PoolableRectangle;
 
 public abstract class DisplayObject implements IPositionable2D, IDisposeable
 {
+
+	private static final ObjectPool<Rectangle> CLIP_POOL = new GenericPool(PoolableRectangle.class, 10);
 
 	protected static final DecomposedMatrix DECOMPOSED_MATRIX = new DecomposedMatrix();
 
@@ -191,7 +197,27 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		SharedShaderObjects.SHARED_MODEL_TRANSFORM.load(worldMatrix());
 		shader.upload();
 
+		Rectangle oldClipData = null;
+		if (clipRect != null)
+		{
+			oldClipData = CLIP_POOL.getInstance();
+			shader.getClipRect(oldClipData);
+			getPosition(true, HELPER_VEC2);
+			float clipX = FloatMath.max(oldClipData.x, clipRect.x + HELPER_VEC2.x);
+			float clipY = FloatMath.max(oldClipData.y, clipRect.y + HELPER_VEC2.y);
+			float clipW = FloatMath.min(oldClipData.width, clipRect.x + HELPER_VEC2.x + clipRect.width);
+			float clipH = FloatMath.min(oldClipData.height, clipRect.y + HELPER_VEC2.y + clipRect.height);
+			
+			shader.setClipRect(clipX, clipW, clipY, clipH);
+		}
+		
 		onDraw();
+		
+		if (clipRect != null)
+		{
+			shader.setClipRect(oldClipData.x, oldClipData.width, oldClipData.y, oldClipData.height);
+			CLIP_POOL.releaseInstance(oldClipData);
+		}
 	}
 
 	@Override

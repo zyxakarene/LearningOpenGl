@@ -14,7 +14,11 @@ class TextureUtils
 	{
 		try
 		{
-			return TextureLoader.getTexture(GameConstants.TEXTURE_FORMAT, stream, GL11.GL_NEAREST);
+			Texture texture = TextureLoader.getTexture(GameConstants.TEXTURE_FORMAT, stream, GL11.GL_NEAREST);
+			
+			TextureBinder.unbindTexture();
+			
+			return texture;
 		}
 		catch (Exception e)
 		{

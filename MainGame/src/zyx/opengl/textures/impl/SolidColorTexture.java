@@ -16,7 +16,7 @@ import static org.lwjgl.opengl.GL11.glTexParameteri;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureImpl;
-import zyx.opengl.GLUtils;
+import zyx.opengl.textures.TextureBinder;
 
 public class SolidColorTexture implements Texture
 {
@@ -25,8 +25,8 @@ public class SolidColorTexture implements Texture
 
 	public SolidColorTexture(int color)
 	{
-		TextureImpl.unbind();
-
+		TextureBinder.unbindTexture();
+		
 		textureId = GL11.glGenTextures();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
 

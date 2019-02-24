@@ -17,14 +17,20 @@ public class TestScene extends Scene
 	}
 
 	@Override
+	protected void onPreloadResources()
+	{
+		preloadResource("flat_bg");
+	}
+
+	@Override
 	protected void onInitialize()
 	{
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			MeshObject model = new MeshObject();
 			model.load("mesh.box");
-			model.setX(FloatMath.random() * 300);
-			model.setY(FloatMath.random() * 300);
+//			model.setX(FloatMath.random() * 300);
+//			model.setY(FloatMath.random() * 300);
 
 			world.addChild(model);
 			objects.add(model);

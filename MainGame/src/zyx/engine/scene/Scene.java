@@ -12,6 +12,7 @@ import zyx.game.controls.MegaManager;
 import zyx.opengl.GLUtils;
 import zyx.utils.interfaces.IPhysbox;
 import zyx.engine.utils.worldpicker.IHoveredItem;
+import zyx.game.components.screen.debug.DebugPanel;
 import zyx.game.components.screen.hud.MainHud;
 import zyx.game.controls.input.MouseData;
 import zyx.game.controls.process.ProcessQueue;
@@ -33,6 +34,8 @@ public class Scene
 
 	private ProcessQueue preloadQueue;
 	private boolean ready;
+	
+	public DebugPanel debugPanel;
 	
 	public Scene()
 	{
@@ -66,6 +69,9 @@ public class Scene
 		{
 			stage.addChild(hud);
 		}
+		
+		debugPanel = new DebugPanel();
+		stage.addChild(debugPanel);
 		
 		onPreloadResources();
 		
@@ -174,6 +180,12 @@ public class Scene
 		{
 			preloadQueue.dispose();
 			preloadQueue = null;
+		}
+		
+		if(debugPanel != null)
+		{
+			debugPanel.dispose();
+			debugPanel = null;
 		}
 		
 		stage = null;

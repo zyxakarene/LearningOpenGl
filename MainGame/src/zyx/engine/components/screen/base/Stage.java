@@ -25,6 +25,7 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 	public final void drawStage()
 	{
 		shader.bind();
+		shader.setClipRect(0, GameConstants.GAME_WIDTH, 0, GameConstants.GAME_HEIGHT);
 		draw();
 	}
 
