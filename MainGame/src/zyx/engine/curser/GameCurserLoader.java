@@ -24,7 +24,7 @@ class GameCurserLoader implements IResourceLoaded<ResourceByteArray>
 		this.gameCursor = gameCursor;
 
 		ResourceRequest request = new ResourceRequestByteArray(gameCursor.path, this);
-		ResourceLoader.getInstance().addRequest(request);
+		ResourceLoader.getInstance().addEntry(request);
 	}
 
 	@Override

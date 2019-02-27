@@ -2,139 +2,51 @@ package zyx.game.controls.resourceloader;
 
 import java.util.HashMap;
 import zyx.game.controls.resourceloader.requests.ResourceRequest;
-import java.util.LinkedList;
+import zyx.synchronizer.BaseExchange;
 
-class ResourceExchange
+class ResourceExchange extends BaseExchange<ResourceRequest, ResourceRequest>
 {
 
-	static final Object LOCK = new Object();
+	private HashMap<String, ResourceRequest> requestMap;
 
-	private static final HashMap<String, ResourceRequest> REQUEST_MAP = new HashMap<>();
-	private static final LinkedList<ResourceRequest> LOAD_REQUESTS = new LinkedList<>();
-	private static final LinkedList<ResourceRequest> COMPLETED_LOADS = new LinkedList<>();
-
-	private static final LinkedList<ResourceRequest> HELPER_LIST = new LinkedList<>();
-
-	static boolean hasLoadRequests()
+	public ResourceExchange()
 	{
-		synchronized (LOCK)
-		{
-			return LOAD_REQUESTS.isEmpty() == false;
-		}
+		requestMap = new HashMap<>();
 	}
 
-	static void addLoad(ResourceRequest request)
+	@Override
+	protected void onReplyCompleted(ResourceRequest request)
 	{
-		synchronized (LOCK)
+		requestMap.remove(request.path);
+
+		if (request.requestCompleted)
 		{
-			if (REQUEST_MAP.containsKey(request.path))
-			{
-				ResourceRequest otherRequest = REQUEST_MAP.get(request.path);
-				otherRequest.mergeFrom(request);
-
-				request.dispose();
-			}
-			else
-			{
-				LOAD_REQUESTS.add(request);
-				REQUEST_MAP.put(request.path, request);
-			}
-
-			LOCK.notify();
+			request.complete(request.getData());
 		}
+
+		request.dispose();
 	}
 
-	static void removeLoad(ResourceRequest request)
+	@Override
+	protected void onRemoveEntry(ResourceRequest request)
 	{
-		synchronized (LOCK)
-		{
-			LOAD_REQUESTS.remove(request);
-
-			if (REQUEST_MAP.containsKey(request.path))
-			{
-				ResourceRequest otherRequest = REQUEST_MAP.get(request.path);
-				otherRequest.unMergeFrom(request);
-			}
-		}
+		requestMap.remove(request.path);
 	}
 
-	static void addCompleted(ResourceRequest request)
+	@Override
+	protected boolean shouldAddEntry(ResourceRequest request)
 	{
-		synchronized (LOCK)
+		if (requestMap.containsKey(request.path))
 		{
-			COMPLETED_LOADS.add(request);
-		}
-	}
-
-	static ResourceRequest getRequest()
-	{
-		synchronized (LOCK)
-		{
-			if (LOAD_REQUESTS.isEmpty())
-			{
-				return null;
-			}
-			else
-			{
-				return LOAD_REQUESTS.removeLast();
-			}
-		}
-	}
-
-	static ResourceRequest getCompleted()
-	{
-		synchronized (LOCK)
-		{
-			return COMPLETED_LOADS.removeLast();
-		}
-	}
-
-	static void sleep()
-	{
-		synchronized (LOCK)
-		{
-			try
-			{
-				LOCK.wait();
-			}
-			catch (InterruptedException ex)
-			{
-			}
-		}
-	}
-
-	static void sendReplies()
-	{
-		synchronized (LOCK)
-		{
-			ResourceRequest request;
-			while (!COMPLETED_LOADS.isEmpty())
-			{
-				request = COMPLETED_LOADS.removeFirst();
-				HELPER_LIST.add(request);
-			}
-
-			REQUEST_MAP.clear();
-		}
-
-		while (!HELPER_LIST.isEmpty())
-		{
-			ResourceRequest request = HELPER_LIST.remove();
-			if (request.requestCompleted)
-			{
-				request.complete(request.getData());
-			}
+			ResourceRequest otherRequest = requestMap.get(request.path);
+			otherRequest.mergeFrom(request);
 
 			request.dispose();
+			return false;
 		}
-	}
 
-	static void dispose()
-	{
-		synchronized (LOCK)
-		{
-			COMPLETED_LOADS.clear();
-			LOAD_REQUESTS.clear();
-		}
+		requestMap.put(request.path, request);
+
+		return true;
 	}
 }

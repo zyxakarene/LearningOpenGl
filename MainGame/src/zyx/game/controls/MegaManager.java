@@ -8,15 +8,17 @@ import zyx.game.controls.input.InputManager;
 import zyx.game.controls.input.MouseData;
 import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.sound.SoundManager;
-import zyx.net.io.ConnectionLoader;
+import zyx.net.core.ConnectionHandler;
+import zyx.utils.tasks.TaskScheduler;
 
 public class MegaManager
 {
 
 	public static void update(long timestamp, int elapsed)
 	{
-		ResourceLoader.getInstance().handleResourceReplies();
-		ConnectionLoader.getInstance().handleConnectionResponses();
+		TaskScheduler.getInstance().handleReplies();
+		ResourceLoader.getInstance().handleReplies();
+		ConnectionHandler.getInstance().handleReplies();
 
 		MeshAnimator.getInstance().update(timestamp, elapsed);
 		InputManager.getInstance().update(timestamp, elapsed);

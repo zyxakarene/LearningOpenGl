@@ -52,11 +52,11 @@ public class GameScene extends Scene
 			addPickedObject(child, new OnTeaPotClicked());
 		}
 		
-		for (int i = -10; i < 10; i++)
+		for (int i = -3; i < 3; i++)
 		{
-			for (int j = -10; j < 10; j++)
+			for (int j = -3; j < 3; j++)
 			{
-				for (int k = -10; k < 10; k++)
+				for (int k = -3; k < 3; k++)
 				{
 					DebugPoint.addToScene(i * 10,j * 10,k * 10 - 100, 0);
 				}

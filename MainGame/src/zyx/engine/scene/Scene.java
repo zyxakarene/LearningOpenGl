@@ -70,8 +70,8 @@ public class Scene
 			stage.addChild(hud);
 		}
 		
-		debugPanel = new DebugPanel();
-		stage.addChild(debugPanel);
+//		debugPanel = new DebugPanel();
+//		stage.addChild(debugPanel);
 		
 		onPreloadResources();
 		

@@ -4,8 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
+import zyx.net.core.ConnectionEstablisher;
 import zyx.net.data.WriteableDataObject;
-import zyx.net.io.ConnectionLoader;
 
 public class ConnectionRequest
 {
@@ -25,8 +25,8 @@ public class ConnectionRequest
 	{
 		if (host == null)
 		{
-			host = ConnectionLoader.getInstance().address;
-			port = ConnectionLoader.getInstance().port;
+			host = ConnectionEstablisher.getInstance().address;
+			port = ConnectionEstablisher.getInstance().port;
 		}
 		
 		this.data = data;

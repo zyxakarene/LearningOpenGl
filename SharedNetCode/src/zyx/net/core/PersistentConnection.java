@@ -1,4 +1,4 @@
-package zyx.net.io;
+package zyx.net.core;
 
 import java.io.IOException;
 import java.net.*;

@@ -50,11 +50,6 @@ public class AddBitmapFontButton extends Button
 
 	private void onBtnClicked()
 	{
-//		WriteableDataObject data = new WriteableDataObject();
-//		data.addString("name", "Zyx");
-//		ConnectionRequest request = new ConnectionRequest("auth", data);
-//
-//		ConnectionLoader.getInstance().addRequest(request);
 		if (field == null)
 		{
 			field = new Textfield("Lorem ipsum?");

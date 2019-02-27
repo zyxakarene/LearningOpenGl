@@ -1,38 +1,23 @@
 package zyx.game.controls.resourceloader;
 
 import zyx.game.controls.resourceloader.requests.ResourceRequest;
-import zyx.utils.interfaces.IDisposeable;
+import zyx.synchronizer.BaseRunner;
 
-class ResourceRunner implements Runnable, IDisposeable
+class ResourceRunner extends BaseRunner<ResourceRequest, ResourceRequest>
 {
-
-	private boolean enabled = true;
-
 	@Override
-	public void run()
+	protected ResourceRequest handleEntry(ResourceRequest entry)
 	{
-		while (enabled)
-		{
-			ResourceRequest request = ResourceExchange.getRequest();
-			if (request != null)
-			{
-				FileLoader loader = new FileLoader(request);
-				loader.loadFile();
-								
-				ResourceExchange.addCompleted(request);
-			}
-			else
-			{
-				ResourceExchange.sleep();
-			}
-			
-		}
+		FileLoader loader = new FileLoader(entry);
+		loader.loadFile();
+		
+		return entry;
 	}
-
+	
 	@Override
-	public void dispose()
+	protected String getName()
 	{
-		enabled = false;
+		return "ResourceLoaderRunner";
 	}
 
 }

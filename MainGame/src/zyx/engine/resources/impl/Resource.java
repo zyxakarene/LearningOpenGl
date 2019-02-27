@@ -69,7 +69,7 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 	protected void beginLoad()
 	{
 		resourceRequest = new ResourceRequestDataInput(path, this);
-		ResourceLoader.getInstance().addRequest(resourceRequest);
+		ResourceLoader.getInstance().addEntry(resourceRequest);
 		
 		for (Resource dependency : dependencies)
 		{
@@ -125,7 +125,7 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 	{
 		if (loading && !loaded && resourceRequest != null)
 		{
-			ResourceLoader.getInstance().cancelRequest(resourceRequest);
+			ResourceLoader.getInstance().cancelEntry(resourceRequest);
 			resourceRequest.dispose();
 			resourceRequest = null;
 		}

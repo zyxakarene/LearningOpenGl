@@ -40,8 +40,6 @@ public class DebugView extends javax.swing.JFrame
 		{
 			panel.update();
 		}
-		
-		repaint();
 	}
 	
 	@SuppressWarnings("unchecked")
