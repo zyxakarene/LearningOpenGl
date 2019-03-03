@@ -5,13 +5,13 @@ import java.util.HashMap;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 
 class UniformUtils
 {
 
 	private static Matrix4f[] matrixArray = new Matrix4f[1];
 	
-	private static FloatBuffer buff;
 	private static final HashMap<Integer, FloatBuffer> BUFFERS = new HashMap<>();
 
 	/**
@@ -48,17 +48,7 @@ class UniformUtils
 	{
 		int size = 16 * matrices.length;
 		
-		if (BUFFERS.containsKey(size) == false)
-		{
-			buff = BufferUtils.createFloatBuffer(size);
-			BUFFERS.put(size, buff);
-		}
-		else
-		{
-			buff = BUFFERS.get(size);
-		}
-		
-		buff.clear();
+		FloatBuffer buff = getBufferOfSize(size);
 		for (Matrix4f matrix : matrices)
 		{
 			matrix.store(buff);
@@ -66,6 +56,25 @@ class UniformUtils
 		buff.flip();
 
 		GL20.glUniformMatrix4(uniform, false, buff);
+	}
+
+	/**
+	 * Uploads an array of Vec3s to the given uniform.
+	 * @param uniform The uniform to upload to
+	 * @param positions The data to upload
+	 */
+	static void setUniformArrayF(int uniform, Vector3f[] positions)
+	{
+		int size = 3 * positions.length;
+		
+		FloatBuffer buff = getBufferOfSize(size);
+		for (Vector3f position : positions)
+		{
+			position.store(buff);
+		}
+		buff.flip();
+
+		GL20.glUniform3(uniform, buff);
 	}
 	
 	static void setUniform2F(int uniform, float x, float y)
@@ -92,4 +101,23 @@ class UniformUtils
     {
         GL20.glUniform4f(uniform, x, y, z, w);
     }
+	
+	private static FloatBuffer getBufferOfSize(int size)
+	{
+		FloatBuffer buff;
+		
+		if (BUFFERS.containsKey(size) == false)
+		{
+			buff = BufferUtils.createFloatBuffer(size);
+			BUFFERS.put(size, buff);
+		}
+		else
+		{
+			buff = BUFFERS.get(size);
+		}
+		
+		buff.clear();
+		
+		return buff;
+	}
 }

@@ -21,6 +21,8 @@ public class WorldShader extends AbstractShader
 	private int modelMatrixTrans;
 	private int boneMatrixTrans;
 	private int lightDirection;
+	private int lightPositions;
+	private int lightColors;
 	private int debugColor;
 	
 	private int modelMatrixTrans_InverseTranspose;
@@ -51,6 +53,8 @@ public class WorldShader extends AbstractShader
 		
 		lightDirection = UniformUtils.createUniform(program, "lightDir");
 		debugColor = UniformUtils.createUniform(program, "debugColor");
+		lightPositions = UniformUtils.createUniform(program, "lightPositions");
+		lightColors = UniformUtils.createUniform(program, "lightColors");
 	}
 
 	@Override
@@ -70,6 +74,19 @@ public class WorldShader extends AbstractShader
 			UniformUtils.setUniformMatrix(boneMatrixTrans, BONES);
 			UniformUtils.setUniformMatrix(boneMatrixTrans_InverseTranspose, INVERT_BONES);
 		}
+	}
+	
+	public void uploadLights(Vector3f pos)
+	{
+		bind();
+		Vector3f[] positions = new Vector3f[2];
+		positions[0] = pos;
+		positions[1] = new Vector3f(0, 0, 0);
+		UniformUtils.setUniformArrayF(lightPositions, positions);
+		
+		positions[0] = new Vector3f(1, 0, 0);
+		positions[1] = new Vector3f(0, 1, 0);
+		UniformUtils.setUniformArrayF(lightColors, positions);
 	}
 	
 	public void uploadLightDirection(Vector3f direction)

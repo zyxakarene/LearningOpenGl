@@ -67,6 +67,11 @@ public class CameraUpdateLightbehavior extends Behavior
 
 			worldShader.uploadLightDirection(d);
 		}
+		
+		if (KeyboardData.data.isDown(Keyboard.KEY_SPACE))
+		{
+			worldShader.uploadLights(controller.getPosition(false, null));
+		}
 	}
 
 }
