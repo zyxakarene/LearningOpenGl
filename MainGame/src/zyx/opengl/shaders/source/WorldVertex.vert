@@ -1,8 +1,9 @@
 #version 420
-
+#define MAX_NUM_TOTAL_LIGHTS 100
 const int MAX_JOINTS = 20;//max joints allowed in a skeleton
 const int MAX_WEIGHTS = 2;//max number of joints that can affect a vertex
-const int LIGHT_COUNT = 2;//How many lights do we have
+const int LIGHT_COUNT = 5;//How many lights per batch
+const int LIGHT_BACTHES = 2;//How many light batches
 
 struct Light
 {
@@ -19,10 +20,11 @@ layout(location = 4) in vec2 weights;
 
 out vec2 Texcoord;
 out vec3 Normal;
-out Light[LIGHT_COUNT] Lights;
+out Light[MAX_NUM_TOTAL_LIGHTS] Lights_1;
+out Light[MAX_NUM_TOTAL_LIGHTS] Lights_2;
 
-uniform vec3[LIGHT_COUNT] lightPositions;
-uniform vec3[LIGHT_COUNT] lightColors;
+uniform vec3[MAX_NUM_TOTAL_LIGHTS] lightPositions;
+uniform vec3[MAX_NUM_TOTAL_LIGHTS] lightColors;
 uniform mat4 model;
 uniform mat4 modelInverseTranspose;
 uniform mat4 projectionView;
@@ -50,12 +52,21 @@ void main()
 
 	vec4 vertexPos = model * totalLocalPos;
 
-	for(int i = 0; i < LIGHT_COUNT; i++)
+	for(int i = 0; i < MAX_NUM_TOTAL_LIGHTS; i++)
     {
-		Lights[i].Position = lightPositions[i] - vertexPos.xyz;
-		Lights[i].Intensity = 1;
-		Lights[i].Color = lightColors[i];
+		int index = i;
+		Lights_1[i].Position = lightPositions[index] - vertexPos.xyz;
+		Lights_1[i].Intensity = 1;
+		Lights_1[i].Color = lightColors[index];
 	}
+
+	//for(int i = 0; i < LIGHT_COUNT; i++)
+    //{
+	//	int index = LIGHT_COUNT + i;
+	//	Lights_2[i].Position = lightPositions[index] - vertexPos.xyz;
+	//	Lights_2[i].Intensity = 1;
+	//	Lights_2[i].Color = lightColors[index];
+	//}
 
     Texcoord = texcoord;
     Normal = mat3(modelInverseTranspose) * vec3(totalLocalNorm);

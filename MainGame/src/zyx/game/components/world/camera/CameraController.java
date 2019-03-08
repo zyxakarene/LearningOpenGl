@@ -5,6 +5,7 @@ import zyx.game.behavior.camera.CameraUpdateLightbehavior;
 import zyx.game.behavior.camera.CameraUpdateViewBehavior;
 import zyx.game.behavior.freefly.CameraFreeFlyBehavior;
 import zyx.game.components.GameObject;
+import zyx.game.controls.lights.LightsManager;
 import zyx.opengl.camera.Camera;
 
 public class CameraController extends GameObject
@@ -19,6 +20,8 @@ public class CameraController extends GameObject
 		addBehavior(new CameraFreeFlyBehavior());
 		addBehavior(new CameraUpdateViewBehavior());
 		addBehavior(new CameraUpdateLightbehavior());
+		
+		LightsManager.getInstane().setSource(this);
 	}
 
 	@Override

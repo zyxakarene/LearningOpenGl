@@ -1,10 +1,10 @@
-package zyx.game.scene.particle;
+package zyx.game.behavior.misc;
 
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
 import zyx.utils.FloatMath;
 
-class RotateBehavior extends Behavior
+public class JiggleBehavior extends Behavior
 {
 
 	private float x;
@@ -17,9 +17,9 @@ class RotateBehavior extends Behavior
 	
 	private float scale;
 
-	public RotateBehavior()
+	public JiggleBehavior()
 	{
-		super(BehaviorType.ROTATER);
+		super(BehaviorType.JIGGLE);
 
 		x = FloatMath.random() * 360 * 0;
 		y = FloatMath.random() * 360 * 0;

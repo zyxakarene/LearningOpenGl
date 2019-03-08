@@ -1,7 +1,9 @@
 package zyx.opengl.shaders;
 
 import java.util.HashMap;
+import zyx.opengl.GLUtils;
 import zyx.opengl.shaders.implementations.*;
+import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IUpdateable;
 
 public class ShaderManager implements IUpdateable
@@ -33,6 +35,7 @@ public class ShaderManager implements IUpdateable
 		for (int i = 0; i < length; i++)
 		{
 			shader = shaderMap.get(shaders[i]);
+			Print.out("Loading shader:", shader.getName());
 			shader.load();
 			
 			shaderArray[i] = shader;

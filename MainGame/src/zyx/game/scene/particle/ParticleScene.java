@@ -1,5 +1,6 @@
 package zyx.game.scene.particle;
 
+import zyx.game.behavior.misc.JiggleBehavior;
 import java.util.ArrayList;
 import zyx.engine.scene.Scene;
 import zyx.game.components.MeshObject;
@@ -65,7 +66,7 @@ public class ParticleScene extends Scene
 			worldSystem2.setX(-20);
 			model.addChild(worldSystem2);
 			
-			model.addBehavior(new RotateBehavior());
+			model.addBehavior(new JiggleBehavior());
 		}
 		
 		GLUtils.errorCheck();

@@ -9,6 +9,8 @@ public class GameConstants
 	public static final int FPS = 60;
 	public static final int MS_PER_FRAME = 1000 / FPS;
 
+	public static final int LIGHT_COUNT = 10;
+	
 	public static final int GAME_WIDTH = (int) (1920 * 0.75);
 	public static final int GAME_HEIGHT = (int) (1080 * 0.75);
 	

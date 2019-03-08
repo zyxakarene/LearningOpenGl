@@ -11,7 +11,7 @@ class UniformUtils
 {
 
 	private static Matrix4f[] matrixArray = new Matrix4f[1];
-	
+
 	private static final HashMap<Integer, FloatBuffer> BUFFERS = new HashMap<>();
 
 	/**
@@ -37,7 +37,7 @@ class UniformUtils
 		matrixArray[0] = matrix;
 		setUniformMatrix(uniform, matrixArray);
 	}
-	
+
 	/**
 	 * Uploads the given matrix array into the given uniform
 	 *
@@ -47,7 +47,7 @@ class UniformUtils
 	static void setUniformMatrix(int uniform, Matrix4f[] matrices)
 	{
 		int size = 16 * matrices.length;
-		
+
 		FloatBuffer buff = getBufferOfSize(size);
 		for (Matrix4f matrix : matrices)
 		{
@@ -60,52 +60,62 @@ class UniformUtils
 
 	/**
 	 * Uploads an array of Vec3s to the given uniform.
+	 *
 	 * @param uniform The uniform to upload to
-	 * @param positions The data to upload
+	 * @param data The data to upload
 	 */
-	static void setUniformArrayF(int uniform, Vector3f[] positions)
+	static void setUniformArrayF(int uniform, Vector3f[] data)
 	{
-		int size = 3 * positions.length;
-		
+		int size = 3 * data.length;
+
 		FloatBuffer buff = getBufferOfSize(size);
-		for (Vector3f position : positions)
+		for (Vector3f entry : data)
 		{
-			position.store(buff);
+			if (entry != null)
+			{
+				entry.store(buff);
+			}
+			else
+			{
+				buff.put(0);
+				buff.put(0);
+				buff.put(0);
+			}
 		}
 		buff.flip();
 
 		GL20.glUniform3(uniform, buff);
 	}
-	
+
 	static void setUniform2F(int uniform, float x, float y)
-    {
-        GL20.glUniform2f(uniform, x, y);
-    }
-	
+	{
+		GL20.glUniform2f(uniform, x, y);
+	}
+
 	static void setUniformInt(int uniform, int value)
-    {
-        GL20.glUniform1i(uniform, value);
-    }
-	
+	{
+		GL20.glUniform1i(uniform, value);
+	}
+
 	static void setUniformFloat(int uniform, float value)
-    {
-        GL20.glUniform1f(uniform, value);
-    }
-	
+	{
+		GL20.glUniform1f(uniform, value);
+	}
+
 	static void setUniform3F(int uniform, float x, float y, float z)
-    {
-        GL20.glUniform3f(uniform, x, y, z);
-    }
-	
+	{
+		GL20.glUniform3f(uniform, x, y, z);
+	}
+
 	static void setUniform4F(int uniform, float x, float y, float z, float w)
-    {
-        GL20.glUniform4f(uniform, x, y, z, w);
-    }
-	
+	{
+		GL20.glUniform4f(uniform, x, y, z, w);
+	}
+
 	private static FloatBuffer getBufferOfSize(int size)
 	{
 		FloatBuffer buff;
-		
+
 		if (BUFFERS.containsKey(size) == false)
 		{
 			buff = BufferUtils.createFloatBuffer(size);
@@ -115,9 +125,9 @@ class UniformUtils
 		{
 			buff = BUFFERS.get(size);
 		}
-		
+
 		buff.clear();
-		
+
 		return buff;
 	}
 }
