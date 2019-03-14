@@ -1,36 +1,30 @@
 #version 420
 
-#define MAX_NUM_TOTAL_LIGHTS 100
-const float AMBIENT_LIGHT = 0.25;//The default light everything is receiving
-const float DIRECT_LIGHT = 1.0 - AMBIENT_LIGHT;//The light recieved when facing the light
-const int LIGHT_COUNT = 5;//How many lights per batch
-const int LIGHT_BACTHES = 2;//How many light batches
-struct Light
-{
-	vec3 Position;
-	vec3 Color;
-	float Intensity;
-};
+const float AMBIENT_LIGHT = 0; //0.25;//The default light everything is receiving
+const float DIRECT_LIGHT = 0; //1.0 - AMBIENT_LIGHT;//The light recieved when facing the light
+const int LIGHT_COUNT = 30;//How many lights per batch
 
 in vec2 Texcoord;
 in vec3 Normal;
-in Light[MAX_NUM_TOTAL_LIGHTS] Lights_1;
-in Light[MAX_NUM_TOTAL_LIGHTS] Lights_2;
+in vec3[LIGHT_COUNT] LightPos;
 
 layout(location = 0) out vec4 outColor;
 
 uniform sampler2D tex;
 uniform vec3 lightDir = vec3(0, -1, 1);
+uniform vec3[LIGHT_COUNT] lightColors;
+uniform int[LIGHT_COUNT] lightPowers;
 
 uniform int debugColor;
 
-vec3 handleLightInfo(in Light light, in vec3 normVertex)
+vec3 handleLightInfo(in int index, in vec3 normVertex)
 {
-	vec3 ToLightVec = light.Position;
-	vec3 LightColor = light.Color;
+	vec3 ToLightVec = LightPos[index];
+	vec3 LightColor = lightColors[index];
+	int LightPower = lightPowers[index];
 
 	float dist = length(ToLightVec);
-	float power = (1 / (dist * dist)) * 20;
+	float power = (1 / (dist * dist)) * 10;
 	power = clamp(power, 0.0, 0.75);
 
 	vec3 normalLightVec = normalize(ToLightVec);
@@ -48,14 +42,13 @@ void main()
 	vec4 color = (vec4(DIRECT_LIGHT) * cosTheta);
 
 
-	for(int i = 0; i < MAX_NUM_TOTAL_LIGHTS; i++)
+	for(int i = 0; i < LIGHT_COUNT; i++)
     {
-		vec3 difuse_1 = handleLightInfo(Lights_1[i], normVertex);
-		vec3 difuse_2 = handleLightInfo(Lights_2[i], normVertex);
+		vec3 difuse = handleLightInfo(i, normVertex);
 
-		color.r += difuse_1.r + difuse_2.r;
-		color.g += difuse_1.g + difuse_2.g;
-		color.b += difuse_1.b + difuse_2.b;
+		color.r += difuse.r;
+		color.g += difuse.g;
+		color.b += difuse.b;
 	}
 
     color.a = 1;

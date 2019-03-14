@@ -6,6 +6,8 @@ import zyx.engine.scene.Scene;
 import zyx.game.components.GameObject;
 import zyx.game.components.SimpleMesh;
 import zyx.game.behavior.misc.JiggleBehavior;
+import zyx.game.behavior.misc.RotateBehavior;
+import zyx.game.components.MeshObject;
 import zyx.opengl.GLUtils;
 import zyx.utils.FloatMath;
 import zyx.utils.cheats.DebugPoint;
@@ -13,9 +15,7 @@ import zyx.utils.cheats.DebugPoint;
 public class DragonScene extends Scene
 {
 
-	private ArrayList<GameObject> lights = new ArrayList<>();
-	
-	private SimpleMesh mesh;
+	private ArrayList<GameObject> gameObjects = new ArrayList<>();
 
 	public DragonScene()
 	{
@@ -30,14 +30,16 @@ public class DragonScene extends Scene
 	@Override
 	protected void onInitialize()
 	{
-		mesh = new SimpleMesh();
-		mesh.setScale(0.33f, 0.33f, 0.33f);
-//		mesh.setY(20);
-//		mesh.setZ(-10);
-		mesh.load("mesh.dragon");
-		world.addChild(mesh);
+		MeshObject dragon = new MeshObject();
+		dragon.setScale(0.33f, 0.33f, 0.33f);
+//		dragon.setY(20);
+//		dragon.setZ(-10);
+		dragon.load("mesh.dragon");
+		world.addChild(dragon);
 		
-		DebugPoint.addToScene(0, 0, 0, 0);
+		dragon.addBehavior(new RotateBehavior());
+		
+		gameObjects.add(dragon);
 		
 		for (int i = 0; i < 30; i++)
 		{
@@ -48,19 +50,23 @@ public class DragonScene extends Scene
 			world.addChild(lightContainer);
 
 			float x = -20f + (40f * FloatMath.random());
-			float y = -10f + (20f * FloatMath.random());
+			float y = -20f + (40f * FloatMath.random());
 			float z = (25f * FloatMath.random());
 			lightContainer.setPosition(true, x, y, z);
 			GLUtils.errorCheck();
+			
+//			lightContainer.addBehavior(new JiggleBehavior());
+			
+			gameObjects.add(lightContainer);
 		}
 	}
 
 	@Override
 	protected void onUpdate(long timestamp, int elapsedTime)
 	{
-		for (int i = 0; i < lights.size(); i++)
+		for (int i = 0; i < gameObjects.size(); i++)
 		{
-			GameObject obj = lights.get(i);
+			GameObject obj = gameObjects.get(i);
 			obj.update(timestamp, elapsedTime);
 		}
 	}
@@ -68,16 +74,13 @@ public class DragonScene extends Scene
 	@Override
 	protected void onDispose()
 	{
-		for (int i = 0; i < lights.size(); i++)
+		for (int i = 0; i < gameObjects.size(); i++)
 		{
-			GameObject obj = lights.get(i);
+			GameObject obj = gameObjects.get(i);
 			obj.dispose();
 		}
 		
-		mesh.dispose();
-		mesh = null;
-		
-		lights.clear();
-		lights = null;
+		gameObjects.clear();
+		gameObjects = null;
 	}
 }

@@ -6,10 +6,13 @@ import zyx.utils.FloatMath;
 
 public class RotateBehavior extends Behavior
 {
+	private float z;
 
 	public RotateBehavior()
 	{
 		super(BehaviorType.ROTATE);
+		
+		z = 0f;
 	}
 
 	@Override
@@ -17,7 +20,7 @@ public class RotateBehavior extends Behavior
 	{
 		float d = timestamp;
 		
-		float z = FloatMath.cos(d * 0.01f);
+		z += elapsedTime * 0.1f;
 				
 		gameObject.setRotation(0, 0, z);
 	}

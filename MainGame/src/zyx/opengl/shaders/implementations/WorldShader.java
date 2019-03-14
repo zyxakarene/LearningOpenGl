@@ -48,7 +48,6 @@ public class WorldShader extends AbstractShader
 	protected void postLoading()
 	{
 		modelMatrixTrans = UniformUtils.createUniform(program, "model");
-		GLUtils.errorCheck();
 		boneMatrixTrans = UniformUtils.createUniform(program, "bones");
 		projectionViewMatrixTrans = UniformUtils.createUniform(program, "projectionView");
 

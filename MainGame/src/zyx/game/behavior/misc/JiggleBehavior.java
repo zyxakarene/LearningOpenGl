@@ -14,22 +14,26 @@ public class JiggleBehavior extends Behavior
 	private float px;
 	private float py;
 	private float pz;
-	
+
 	private float scale;
+	private float randomOffset;
 
 	public JiggleBehavior()
 	{
 		super(BehaviorType.JIGGLE);
 
-		x = FloatMath.random() * 360 * 0;
-		y = FloatMath.random() * 360 * 0;
-		z = FloatMath.random() * 360 * 0;
-		
-		px = 0;
-		py = 0;
-		pz = 0;
-		
+		randomOffset = FloatMath.random() * 1000;
 		scale = 0.1f;
+	}
+
+	@Override
+	public void initialize()
+	{
+		gameObject.getPosition(false, HELPER_POS);
+		
+		px = HELPER_POS.x;
+		py = HELPER_POS.y;
+		pz = HELPER_POS.z;
 	}
 
 	@Override
@@ -39,14 +43,14 @@ public class JiggleBehavior extends Behavior
 		y += elapsedTime * 0.04f;
 		z += elapsedTime * -0.015f;
 
-		double d = timestamp;
-		
-		px = (float) Math.sin(d * 0.001) * 2;
-		py = (float) Math.cos(d * 0.01) * 2;
-		pz = (float) Math.cos(d * 0.01);
-				
+		float d = timestamp + randomOffset;
+
+		float posX = px + FloatMath.sin(d * 0.001f) * 2;
+		float posY = py + FloatMath.cos(d * 0.01f) * 2;
+		float posZ = pz + FloatMath.cos(d * 0.01f);
+
 		gameObject.setRotation(x, y, z);
-		gameObject.setPosition(true, px, py, pz);
+		gameObject.setPosition(false, posX, posY, posZ);
 	}
 
 }
