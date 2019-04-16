@@ -28,8 +28,8 @@ public class GameScene extends Scene
 	protected void onInitialize()
 	{
 		AnimatedMesh knight = new AnimatedMesh();
-		knight.load("mesh.worm.worm");
-		knight.setAnimation("wiggle");
+		knight.load("mesh.knight.knight");
+		knight.setAnimation("attack");
 		world.addChild(knight);
 
 		addPickedObject(knight, new OnTeaPotClicked());
