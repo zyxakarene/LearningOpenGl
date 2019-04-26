@@ -6,6 +6,10 @@ in vec4 Color;
 out vec4 outColor;
 
 uniform sampler2D tex;
+uniform sampler2D gPosition;
+uniform sampler2D gNormal;
+uniform sampler2D gAlbedoSpec;
+
 uniform vec2 clipX;
 uniform vec2 clipY;
 

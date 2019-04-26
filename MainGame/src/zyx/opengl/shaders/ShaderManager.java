@@ -29,6 +29,7 @@ public class ShaderManager implements IUpdateable
 		shaderMap.put(Shader.SCREEN, new ScreenShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.PARTICLE, new ParticleShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.WORLD_PARTICLE, new WorldParticleShader(AbstractShader.LOCK));
+		shaderMap.put(Shader.DEFERED_LIGHT_PASS, new LightingPassShader(AbstractShader.LOCK));
 		
 		AbstractShader shader;
 		int length = shaders.length;

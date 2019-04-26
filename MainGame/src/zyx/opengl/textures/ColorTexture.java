@@ -28,7 +28,7 @@ public class ColorTexture extends AbstractTexture
 	@Override
 	protected void onBind()
 	{
-		BufferBinder.bindBuffer(BUFFER_ID);
+//		BufferBinder.bindBuffer(BUFFER_ID);
 		glActiveTexture(GL13.GL_TEXTURE0);
 		texture.bind();
 

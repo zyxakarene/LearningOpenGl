@@ -64,6 +64,8 @@ public class Scene
 	
 	final void initialize()
 	{
+		world.initialize();
+		
 		world.addChild(debugContainer);
 		hud = createHud();
 		if (hud != null)

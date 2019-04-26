@@ -42,6 +42,9 @@ public abstract class AbstractShader implements IUpdateable
 		program = ShaderUtils.createProgram(vertexShader, fragmentShader);
 		GLUtils.errorCheck();
 		
+		bind();
+		GLUtils.errorCheck();
+		
 		postLoading();
 		GLUtils.errorCheck();
 	}

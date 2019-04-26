@@ -5,6 +5,7 @@ import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.impl.TextureResource;
 import zyx.opengl.models.implementations.ScreenModel;
 import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.GameTexture;
 
 public class Image extends AbstractImage implements IResourceReady<TextureResource>
@@ -27,7 +28,7 @@ public class Image extends AbstractImage implements IResourceReady<TextureResour
 		onModelCreated();
 	}
 	
-	public void setTexture(GameTexture texture)
+	public void setTexture(AbstractTexture texture)
 	{
 		if (model != null)
 		{
