@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import org.lwjgl.opengl.GL13;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
 import org.newdawn.slick.opengl.TextureImpl;
+import org.newdawn.slick.opengl.renderer.SGL;
 import zyx.opengl.GLUtils;
 import zyx.utils.GameConstants;
 
@@ -18,7 +19,7 @@ public class TextureFromInt extends AbstractTexture
 	{
 		super("TextureFromId:" + id);
 
-		this.textureId = id;
+		this.textureId = id + 0;
 		this.attachment = attachment;
 		
 		setSizes(512, 512);
@@ -28,6 +29,8 @@ public class TextureFromInt extends AbstractTexture
 	protected void onBind()
 	{
 		TextureImpl.bindNone();
+		
+		GL11.glEnable(SGL.GL_TEXTURE_2D);
 		glActiveTexture(attachment);
 		GL11.glBindTexture(GL_TEXTURE_2D, textureId);
 

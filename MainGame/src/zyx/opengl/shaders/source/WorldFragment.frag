@@ -2,24 +2,24 @@
 
 const float AMBIENT_LIGHT = 0.25;//The default light everything is receiving
 const float DIRECT_LIGHT = 1.0 - AMBIENT_LIGHT;//The light recieved when facing the light
-const int LIGHT_COUNT = 30;//How many lights per batch
+const int LIGHT_COUNT = 2;//How many lights per batch
 
 in vec2 Texcoord;
 in vec3 Normal;
+in vec4 WorldPos;
 in vec3[LIGHT_COUNT] LightPos;
 
-layout(location = 0) out vec4 outColor;
+layout (binding = 0) uniform sampler2D tex;
 
-uniform sampler2D tex;
 uniform vec3 lightDir = vec3(0, -1, 1);
 uniform vec3[LIGHT_COUNT] lightColors;
 uniform int[LIGHT_COUNT] lightPowers;
 
 uniform int debugColor;
 
-layout (location = 1) out vec3 gPosition;
-layout (location = 2) out vec3 gNormal;
-layout (location = 3) out vec4 gAlbedoSpec;
+layout (location = 0) out vec4 gPosition;
+layout (location = 1) out vec4 gNormal;
+layout (location = 2) out vec4 gAlbedoSpec;
 
 vec3 handleLightInfo(in int index, in vec3 normVertex)
 {
@@ -59,11 +59,11 @@ void main()
 
 	vec4 materialColor =  texture(tex, vec2(Texcoord.x, -Texcoord.y)) + debugColor;
 
-    //outColor = materialColor * color + vec4(AMBIENT_LIGHT) * materialColor;
+	vec4 outColor = materialColor * color + vec4(AMBIENT_LIGHT) * materialColor;
     
-	gPosition.rgb = vec3(1);
-	gNormal.rgb = materialColor.rgb;
-	gAlbedoSpec.rgb = materialColor.rgb;
+	gPosition = vec4(WorldPos.rgb, 1);
+	gNormal = vec4(0.5 + 0.5 * normVertex, 1);
+	gAlbedoSpec = materialColor;
 
     //View normals
     //outColor = vec4(0.5 + 0.5 * normVertex, 1);

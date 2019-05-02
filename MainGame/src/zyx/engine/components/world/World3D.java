@@ -3,6 +3,7 @@ package zyx.engine.components.world;
 import org.lwjgl.opengl.GL11;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.Shader;
+import zyx.opengl.textures.BufferBinder;
 import zyx.opengl.textures.BufferTexture;
 import zyx.utils.GameConstants;
 
@@ -27,6 +28,9 @@ public final class World3D extends WorldObject
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
 		shader.bind();
+		draw();
+		
+		BufferBinder.bindBuffer(0);
 		draw();
 	}
 

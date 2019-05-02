@@ -7,6 +7,7 @@ import zyx.opengl.lighs.ILight;
 import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.shaders.AbstractShader;
+import zyx.opengl.shaders.ShaderUtils;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.Color;
 
@@ -78,7 +79,7 @@ public class WorldShader extends AbstractShader
 			UniformUtils.setUniformMatrix(boneMatrixTrans_InverseTranspose, INVERT_BONES);
 		}
 	}
-
+	
 	public void uploadLights(ILight[] lights)
 	{
 		bind();
