@@ -17,7 +17,6 @@ import zyx.opengl.models.implementations.bones.attachments.AttachmentRequest;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.shaders.implementations.Shader;
-import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.cheats.DebugPhysics;
 import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IPhysbox;
@@ -36,8 +35,6 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	private ArrayList<WorldObject> attachedObjects;
 	private ArrayList<Attachment> attachments;
 	private LinkedList<AttachmentRequest> attachmentRequests;
-
-	private AbstractTexture overwriteTexture;
 
 	public SimpleMesh()
 	{
@@ -66,16 +63,9 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 			shader.bind();
 			shader.upload();
 
-			if (overwriteTexture != null)
-			{
-				model.setOverwriteTexture(overwriteTexture);
-			}
-
 			model.draw();
 
 			DebugPhysics.getInstance().draw(this);
-
-			model.setOverwriteTexture(null);
 
 			Attachment attachment;
 			int len = attachments.size();

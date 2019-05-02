@@ -1,44 +1,72 @@
 package zyx.opengl.textures;
 
+import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.TextureImpl;
-import zyx.utils.cheats.Print;
 
 public class TextureBinder
 {
 
-	private static AbstractTexture currentlyBoundTexture;
+	private static AbstractTexture[] activeTextures = new AbstractTexture[TextureSlot.COUNT];
 
 	static void bind(AbstractTexture texture)
 	{
-		if (currentlyBoundTexture != texture)
+		int index = texture.slot.index;
+		if (activeTextures[index] != texture)
 		{
-			currentlyBoundTexture = texture;
-			currentlyBoundTexture.onBind();
+			TextureUtils.activateTextureSlot(texture.slot);
+			
+			activeTextures[index] = texture;
+			texture.onBind();
 		}
 	}
 
-	public static void unbindTexture()
+	public static void unbindTextures()
 	{
 		TextureImpl.unbind();
-		currentlyBoundTexture = null;
+		
+		for (int i = 0; i < activeTextures.length; i++)
+		{
+			AbstractTexture texture = activeTextures[i];
+			if (texture != null)
+			{
+				TextureUtils.activateTextureSlot(texture.slot);
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+				
+				activeTextures[i] = null;
+			}
+		}
 	}
 	
 	static void dispose(AbstractTexture texture)
 	{
-		if (currentlyBoundTexture == texture)
+		int index = texture.slot.index;
+		if (activeTextures[index] == texture)
 		{
 			TextureImpl.unbind();
-			currentlyBoundTexture = null;
+			activeTextures[index] = null;
 		}
 	}
 
 	public static String currentTexture()
 	{
-		if (currentlyBoundTexture != null)
+		StringBuilder builder = new StringBuilder();
+		
+		for (AbstractTexture texture : activeTextures)
 		{
-			return currentlyBoundTexture.toString();
+			if (texture != null)
+			{
+				builder.append(texture);
+				builder.append(" ");
+			}
 		}
 
-		return "[No current texture]";
+		if (builder.length() == 0)
+		{
+			return "[No current texture]";
+		}
+		else
+		{
+			return builder.toString();
+		}
 	}
 }

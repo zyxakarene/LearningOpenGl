@@ -1,8 +1,6 @@
 package zyx.opengl.textures;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
-import static org.lwjgl.opengl.GL13.glActiveTexture;
 import zyx.opengl.textures.impl.CheckerdColorTexture;
 
 public class MissingTexture extends AbstractTexture
@@ -26,7 +24,7 @@ public class MissingTexture extends AbstractTexture
 
 	private MissingTexture()
 	{
-		super("MissingTexture");
+		super("MissingTexture", TextureSlot.SLOT_1);
 
 		texture = new CheckerdColorTexture(0xFF00FF, 0x000000);
 		setSizes(texture.getImageWidth(), texture.getImageHeight());
@@ -35,8 +33,6 @@ public class MissingTexture extends AbstractTexture
 	@Override
 	protected void onBind()
 	{
-//		BufferBinder.bindBuffer(BUFFER_ID);
-		glActiveTexture(GL13.GL_TEXTURE0);
 		texture.bind();
 
 		//Swallow some error in Slick-Utils

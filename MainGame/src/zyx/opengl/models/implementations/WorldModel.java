@@ -9,6 +9,8 @@ import zyx.opengl.models.implementations.bones.animation.AnimationController;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.implementations.physics.PhysBox;
+import zyx.opengl.textures.AbstractTexture;
+import zyx.opengl.textures.MissingTexture;
 
 public class WorldModel extends AbstractModel
 {
@@ -31,7 +33,11 @@ public class WorldModel extends AbstractModel
 		radius = vo.radius;
 		
 		setVertexData(vo.vertexData, vo.elementData);
-		setTexture(vo.gameTexture);
+		AbstractTexture[] texs = new AbstractTexture[]
+		{
+			vo.gameTexture, MissingTexture.getInstance()
+		};
+		setTextures(texs);
 	}
 
 	@Override

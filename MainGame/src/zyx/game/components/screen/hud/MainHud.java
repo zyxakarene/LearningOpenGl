@@ -39,19 +39,19 @@ public class MainHud extends JsonSprite
 		Image debugPos = new Image();
 		debugPos.setScale(1, -1);
 		debugPos.setPosition(true, 0, 512);
-		debugPos.setTexture(new TextureFromInt(World3D.instance.deferedBuffer.position, GL13.GL_TEXTURE0));
+		debugPos.setTexture(new TextureFromInt(World3D.instance.deferedBuffer.position));
 		addChild(debugPos);
 		
 		Image debugNorm = new Image();
 		debugNorm.setScale(1, -1);
 		debugNorm.setPosition(true, 512, 512);
-		debugNorm.setTexture(new TextureFromInt(World3D.instance.deferedBuffer.normal, GL13.GL_TEXTURE0));
+		debugNorm.setTexture(new TextureFromInt(World3D.instance.deferedBuffer.normal));
 		addChild(debugNorm);
 		
 		Image debugCol = new Image();
 		debugCol.setScale(1, -1);
 		debugCol.setPosition(true, 1024, 512);
-		debugCol.setTexture(new TextureFromInt(World3D.instance.deferedBuffer.color, GL13.GL_TEXTURE0));
+		debugCol.setTexture(new TextureFromInt(World3D.instance.deferedBuffer.color));
 		addChild(debugCol);
 	}
 

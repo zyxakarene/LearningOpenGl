@@ -15,7 +15,7 @@ public class DeferredLightModel extends AbstractModel
 
 		shader = (LightingPassShader) meshShader;
 
-		setTexture(texture);
+		setTexture(null);
 	}
 	
 	public void addVertexData(float x, float y, float width, float height, AbstractTexture tex)

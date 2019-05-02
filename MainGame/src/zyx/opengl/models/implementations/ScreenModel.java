@@ -127,12 +127,12 @@ public class ScreenModel extends AbstractModel
 	
 	public float getWidth()
 	{
-		return getTexture().getWidth();
+		return getDefaultTexture().getWidth();
 	}
 	
 	public float getHeight()
 	{
-		return getTexture().getHeight();
+		return getDefaultTexture().getHeight();
 	}
 	
 	@Override

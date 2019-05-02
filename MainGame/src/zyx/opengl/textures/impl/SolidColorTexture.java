@@ -25,7 +25,7 @@ public class SolidColorTexture implements Texture
 
 	public SolidColorTexture(int color)
 	{
-		TextureBinder.unbindTexture();
+		TextureBinder.unbindTextures();
 		
 		textureId = GL11.glGenTextures();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
