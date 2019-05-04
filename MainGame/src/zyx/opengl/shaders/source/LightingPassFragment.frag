@@ -23,5 +23,5 @@ void main()
 	color.g += Diffuse.r;
 	color.b += Specular;
 
-    FragColor = vec4(color, 1.0);
+    FragColor = vec4(Diffuse, 1.0);
 }

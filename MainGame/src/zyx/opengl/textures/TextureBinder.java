@@ -1,5 +1,6 @@
 package zyx.opengl.textures;
 
+import zyx.opengl.textures.enums.TextureSlot;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.TextureImpl;
 

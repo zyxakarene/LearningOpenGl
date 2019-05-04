@@ -1,4 +1,4 @@
-package zyx.opengl.textures;
+package zyx.opengl.textures.enums;
 
 import org.lwjgl.opengl.GL13;
 

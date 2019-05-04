@@ -1,13 +1,13 @@
 package zyx.game.components.screen.hud;
 
 import java.util.ArrayList;
-import org.lwjgl.opengl.GL13;
 import zyx.engine.components.screen.image.AbstractImage;
 import zyx.engine.components.screen.image.Image;
 import zyx.engine.components.screen.list.ItemList;
-import zyx.engine.components.world.World3D;
 import zyx.game.components.screen.json.JsonSprite;
+import zyx.opengl.deferred.DeferredRenderer;
 import zyx.opengl.textures.TextureFromInt;
+import zyx.opengl.textures.enums.TextureSlot;
 
 public class MainHud extends JsonSprite
 {
@@ -36,22 +36,24 @@ public class MainHud extends JsonSprite
 		image = this.<AbstractImage>getComponentByName("test_image_1");
 		list = this.<ItemList>getComponentByName("list_test");
 		
+		DeferredRenderer renderer = DeferredRenderer.getInstance();
+		
 		Image debugPos = new Image();
 		debugPos.setScale(1, -1);
 		debugPos.setPosition(true, 0, 512);
-		debugPos.setTexture(new TextureFromInt(World3D.instance.deferedBuffer.position));
+		debugPos.setTexture(new TextureFromInt(512, 512, renderer.positionInt(), TextureSlot.SLOT_0));
 		addChild(debugPos);
 		
 		Image debugNorm = new Image();
 		debugNorm.setScale(1, -1);
 		debugNorm.setPosition(true, 512, 512);
-		debugNorm.setTexture(new TextureFromInt(World3D.instance.deferedBuffer.normal));
+		debugNorm.setTexture(new TextureFromInt(512, 512, renderer.normalInt(), TextureSlot.SLOT_0));
 		addChild(debugNorm);
 		
 		Image debugCol = new Image();
 		debugCol.setScale(1, -1);
 		debugCol.setPosition(true, 1024, 512);
-		debugCol.setTexture(new TextureFromInt(World3D.instance.deferedBuffer.color));
+		debugCol.setTexture(new TextureFromInt(512, 512, renderer.colorInt(), TextureSlot.SLOT_0));
 		addChild(debugCol);
 	}
 

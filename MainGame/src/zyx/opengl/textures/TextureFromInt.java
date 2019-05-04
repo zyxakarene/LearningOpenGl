@@ -4,19 +4,20 @@ import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import org.newdawn.slick.opengl.TextureImpl;
 import org.newdawn.slick.opengl.renderer.SGL;
+import zyx.opengl.textures.enums.TextureSlot;
 
 public class TextureFromInt extends AbstractTexture
 {
 
 	private final int textureId;
 
-	public TextureFromInt(int id)
+	public TextureFromInt(int width, int height, int id, TextureSlot slot)
 	{
-		super("TextureFromId:" + id);
+		super("TextureFromId:" + id, slot);
 
 		this.textureId = id + 0;
 		
-		setSizes(512, 512);
+		setSizes(width, height);
 	}
 
 	@Override

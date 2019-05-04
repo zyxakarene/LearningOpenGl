@@ -1,11 +1,9 @@
 package zyx.engine.components.world;
 
-import org.lwjgl.opengl.GL11;
+import zyx.opengl.deferred.DeferredRenderer;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.BufferBinder;
-import zyx.opengl.textures.BufferTexture;
-import zyx.utils.GameConstants;
 
 public final class World3D extends WorldObject
 {
@@ -13,25 +11,25 @@ public final class World3D extends WorldObject
 	public static final World3D instance = new World3D();
 
 	public final Physics physics;
-
-	public BufferTexture deferedBuffer;
+	
+	private DeferredRenderer renderer;
 
 	private World3D()
 	{
 		super(Shader.WORLD);
 		physics = new Physics();
+		
+		renderer = DeferredRenderer.getInstance();
 	}
 
 	public void drawScene()
 	{
-		deferedBuffer.bind();
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		renderer.prepareRender();
 
 		shader.bind();
 		draw();
 		
-		BufferBinder.bindBuffer(0);
-		draw();
+		renderer.draw();
 	}
 
 	@Override
@@ -102,12 +100,4 @@ public final class World3D extends WorldObject
 		throw new IllegalArgumentException(INVALID_METHOD_CALL);
 	}
 	//</editor-fold>
-
-	public void initialize()
-	{
-		if (deferedBuffer == null)
-		{
-			deferedBuffer = new BufferTexture(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
-		}
-	}
 }

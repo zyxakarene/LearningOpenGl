@@ -1,5 +1,6 @@
 package zyx.opengl.textures;
 
+import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.geometry.Rectangle;
 import zyx.utils.interfaces.IDisposeable;
 

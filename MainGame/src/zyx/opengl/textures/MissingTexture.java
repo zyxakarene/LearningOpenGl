@@ -1,5 +1,6 @@
 package zyx.opengl.textures;
 
+import zyx.opengl.textures.enums.TextureSlot;
 import org.lwjgl.opengl.GL11;
 import zyx.opengl.textures.impl.CheckerdColorTexture;
 

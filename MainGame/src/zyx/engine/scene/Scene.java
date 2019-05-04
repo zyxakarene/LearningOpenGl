@@ -18,6 +18,7 @@ import zyx.game.controls.input.MouseData;
 import zyx.game.controls.lights.LightsManager;
 import zyx.game.controls.process.ProcessQueue;
 import zyx.opengl.camera.Camera;
+import zyx.opengl.deferred.DeferredRenderer;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.cheats.DebugContainer;
 
@@ -64,8 +65,6 @@ public class Scene
 	
 	final void initialize()
 	{
-		world.initialize();
-		
 		world.addChild(debugContainer);
 		hud = createHud();
 		if (hud != null)

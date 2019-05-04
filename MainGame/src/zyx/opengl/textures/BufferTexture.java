@@ -34,8 +34,9 @@ import static org.lwjgl.opengl.GL30.glGenRenderbuffers;
 import static org.lwjgl.opengl.GL30.glRenderbufferStorage;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
+import zyx.opengl.textures.enums.TextureAttachment;
 
-public class BufferTexture
+class BufferTexture
 {
 
 	private int bufferId;
@@ -44,39 +45,26 @@ public class BufferTexture
 	public int normal;
 	public int color;
 
-	public BufferTexture(int width, int height)
+	private FrameBufferTexture positionTex;
+	private FrameBufferTexture normalTex;
+	private FrameBufferTexture colorTex;
+	
+	private BufferTexture(int width, int height)
 	{
 		ShaderManager.INSTANCE.bind(Shader.WORLD);
 		
 		bufferId = GL30.glGenFramebuffers();
 		BufferBinder.bindBuffer(bufferId);
 
-		ByteBuffer nullBuffer = null;
+		positionTex = new FrameBufferTexture(width, height, TextureAttachment.ATTACHMENT_0);
+		position = positionTex.id;
 
-		// - position color buffer
-		position = glGenTextures();
-		glBindTexture(GL_TEXTURE_2D, position);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_FLOAT, nullBuffer);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, position, 0);
+		normalTex = new FrameBufferTexture(width, height, TextureAttachment.ATTACHMENT_1);
+		normal = normalTex.id;
 
-		// - normal color buffer
-		normal = glGenTextures();
-		glBindTexture(GL_TEXTURE_2D, normal);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_FLOAT, nullBuffer);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, normal, 0);
-
-		// - color + specular color buffer
-		color = glGenTextures();
-		glBindTexture(GL_TEXTURE_2D, color);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_FLOAT, nullBuffer);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, color, 0);
-
+		colorTex = new FrameBufferTexture(width, height, TextureAttachment.ATTACHMENT_2);
+		color = colorTex.id;
+		
 		int attachments[] =
 		{
 			GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2

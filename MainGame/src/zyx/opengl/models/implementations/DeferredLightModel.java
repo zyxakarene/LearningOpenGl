@@ -9,27 +9,25 @@ public class DeferredLightModel extends AbstractModel
 {
 	public final LightingPassShader shader;
 	
-	public DeferredLightModel()
+	public DeferredLightModel(AbstractTexture... textures)
 	{
 		super(Shader.DEFERED_LIGHT_PASS);
 
 		shader = (LightingPassShader) meshShader;
 
-		setTexture(null);
+		setTextures(textures);
+		setVertexData();
 	}
 	
-	public void addVertexData(float x, float y, float width, float height, AbstractTexture tex)
+	private void setVertexData()
 	{
-		AbstractTexture t = tex;
-		float w = width;
-		float h = height;
 		float vertexData[] =
 		{
-			//x			y			Texcoords
-			x,			-y,			t.x, t.y,	// Top-left
-			x + w,		-y,			t.u, t.y,	// Top-right
-			x + w,		-h - y,		t.u, t.v,	// Bottom-right
-			x,			-h - y,		t.x, t.v,	// Bottom-left
+			//x		y		Texcoords
+			-1,		1,		0, 1,	// Top-left
+			1,		1,		1, 1,	// Top-right
+			1,		-1,		1, 0,	// Bottom-right
+			-1,		-1,		0, 0,	// Bottom-left
 		};
 		
 		int elementData[] =
