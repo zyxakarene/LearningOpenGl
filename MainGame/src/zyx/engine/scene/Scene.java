@@ -13,6 +13,7 @@ import zyx.opengl.GLUtils;
 import zyx.utils.interfaces.IPhysbox;
 import zyx.engine.utils.worldpicker.IHoveredItem;
 import zyx.game.components.screen.debug.DebugPanel;
+import zyx.game.components.screen.hud.BaseHud;
 import zyx.game.components.screen.hud.MainHud;
 import zyx.game.controls.input.MouseData;
 import zyx.game.controls.lights.LightsManager;
@@ -32,7 +33,7 @@ public class Scene
 	protected World3D world;
 	protected CameraController camera;
 	
-	protected MainHud hud;
+	protected BaseHud hud;
 
 	private ProcessQueue preloadQueue;
 	private boolean ready;
@@ -149,9 +150,9 @@ public class Scene
 	{
 	}
 	
-	protected MainHud createHud()
+	protected BaseHud createHud()
 	{
-		return null;
+		return new BaseHud();
 	}
 	
 	protected void onDraw()

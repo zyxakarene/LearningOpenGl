@@ -1,9 +1,9 @@
 package zyx.engine.components.world;
 
 import zyx.opengl.deferred.DeferredRenderer;
+import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.Shader;
-import zyx.opengl.textures.BufferBinder;
 
 public final class World3D extends WorldObject
 {
@@ -11,14 +11,14 @@ public final class World3D extends WorldObject
 	public static final World3D instance = new World3D();
 
 	public final Physics physics;
-	
+
 	private DeferredRenderer renderer;
 
 	private World3D()
 	{
 		super(Shader.WORLD);
 		physics = new Physics();
-		
+
 		renderer = DeferredRenderer.getInstance();
 	}
 
@@ -28,8 +28,10 @@ public final class World3D extends WorldObject
 
 		shader.bind();
 		draw();
-		
+
 		renderer.draw();
+
+		ParticleManager.getInstance().draw();
 	}
 
 	@Override

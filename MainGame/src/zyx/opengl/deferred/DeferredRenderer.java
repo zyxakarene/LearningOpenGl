@@ -3,14 +3,20 @@ package zyx.opengl.deferred;
 import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_COMPONENT;
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import static org.lwjgl.opengl.GL30.GL_DEPTH_ATTACHMENT;
+import static org.lwjgl.opengl.GL30.GL_DRAW_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_COMPLETE;
+import static org.lwjgl.opengl.GL30.GL_READ_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.GL_RENDERBUFFER;
+import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 import static org.lwjgl.opengl.GL30.glBindRenderbuffer;
+import static org.lwjgl.opengl.GL30.glBlitFramebuffer;
 import static org.lwjgl.opengl.GL30.glCheckFramebufferStatus;
 import static org.lwjgl.opengl.GL30.glFramebufferRenderbuffer;
 import static org.lwjgl.opengl.GL30.glGenRenderbuffers;
@@ -30,7 +36,8 @@ public class DeferredRenderer
 
 	private static DeferredRenderer instance = new DeferredRenderer();
 
-	private final int bufferId;
+	private int bufferId;
+	private int depthBufferId;
 
 	private FrameBufferTexture positionBuffer;
 	private FrameBufferTexture normalBuffer;
@@ -74,7 +81,15 @@ public class DeferredRenderer
 	{
 		BufferBinder.bindBuffer(0);
 		ShaderManager.INSTANCE.bind(Shader.DEFERED_LIGHT_PASS);
+		
 		model.draw();
+		
+		int w = GameConstants.GAME_WIDTH;
+		int h = GameConstants.GAME_HEIGHT;
+		
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, depthBufferId);
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0); // write to default framebuffer
+		glBlitFramebuffer(0, 0, w, h, 0, 0, w, h, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 	}
 
 	public void prepareRender()
@@ -111,10 +126,10 @@ public class DeferredRenderer
 
 		GL20.glDrawBuffers(buffer);
 
-		int rboDepth = glGenRenderbuffers();
-		glBindRenderbuffer(GL_RENDERBUFFER, rboDepth);
+		depthBufferId = glGenRenderbuffers();
+		glBindRenderbuffer(GL_RENDERBUFFER, depthBufferId);
 		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepth);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferId);
 
 		// finally check if framebuffer is complete
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)

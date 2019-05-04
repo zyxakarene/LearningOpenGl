@@ -7,6 +7,7 @@ import zyx.engine.components.world.WorldObject;
 import zyx.opengl.lighs.ILight;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.ShaderManager;
+import zyx.opengl.shaders.implementations.LightingPassShader;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.utils.GameConstants;
@@ -28,7 +29,7 @@ public class LightsManager
 
 	private WorldObject viewer;
 	private LightSorter lightSorter;
-	private WorldShader worldShader;
+	private LightingPassShader lightShader;
 
 	private LightsManager()
 	{
@@ -44,7 +45,7 @@ public class LightsManager
 		this.viewer = viewer;
 
 		lightSorter.setViewer(viewer);
-		worldShader = (WorldShader) ShaderManager.INSTANCE.get(Shader.WORLD);
+		lightShader = (LightingPassShader) ShaderManager.INSTANCE.get(Shader.DEFERED_LIGHT_PASS);
 	}
 
 	public void addLight(ILight light)
@@ -82,6 +83,6 @@ public class LightsManager
 			}
 		}
 
-		worldShader.uploadLights(nearestLights);
+		lightShader.uploadLights(nearestLights);
 	}
 }

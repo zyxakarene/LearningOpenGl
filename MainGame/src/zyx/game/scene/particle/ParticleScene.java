@@ -84,12 +84,6 @@ public class ParticleScene extends Scene
 	}
 
 	@Override
-	protected void onDraw()
-	{
-		ParticleManager.getInstance().draw();
-	}
-
-	@Override
 	protected void onDispose()
 	{
 		ParticleManager.getInstance().dispose();

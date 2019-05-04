@@ -45,7 +45,6 @@ void main()
     float cosTheta = clamp(dot(normVertex, lightDir), debugColor, 1);
 	vec4 color = (vec4(DIRECT_LIGHT) * cosTheta);
 
-
 	for(int i = 0; i < LIGHT_COUNT; i++)
     {
 		vec3 difuse = handleLightInfo(i, normVertex);
@@ -59,10 +58,8 @@ void main()
 
 	vec4 materialColor =  texture(tex, vec2(Texcoord.x, -Texcoord.y)) + debugColor;
 
-	vec4 outColor = materialColor * color + vec4(AMBIENT_LIGHT) * materialColor;
-    
 	gPosition = vec4(WorldPos.rgb, 1);
-	gNormal = vec4(0.5 + 0.5 * normVertex, 1);
+	gNormal = vec4(Normal, 1);
 	gAlbedoSpec = materialColor;
 
     //View normals
