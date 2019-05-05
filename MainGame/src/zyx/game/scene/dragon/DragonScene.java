@@ -1,6 +1,7 @@
 package zyx.game.scene.dragon;
 
 import java.util.ArrayList;
+import org.lwjgl.input.Keyboard;
 import zyx.engine.components.world.GameLight;
 import zyx.engine.scene.Scene;
 import zyx.game.components.GameObject;
@@ -8,14 +9,17 @@ import zyx.game.components.SimpleMesh;
 import zyx.game.behavior.misc.JiggleBehavior;
 import zyx.game.behavior.misc.RotateBehavior;
 import zyx.game.components.MeshObject;
+import zyx.game.controls.input.KeyboardData;
 import zyx.opengl.GLUtils;
 import zyx.utils.FloatMath;
+import zyx.utils.GameConstants;
 import zyx.utils.cheats.DebugPoint;
 
 public class DragonScene extends Scene
 {
 
 	private ArrayList<GameObject> gameObjects = new ArrayList<>();
+	private GameObject globalLight;
 
 	public DragonScene()
 	{
@@ -41,7 +45,7 @@ public class DragonScene extends Scene
 		
 		gameObjects.add(dragon);
 		
-		for (int i = 0; i < 30; i++)
+		for (int i = 0; i < GameConstants.LIGHT_COUNT; i++)
 		{
 			GameObject lightContainer = new GameObject();
 			GameLight light = new GameLight((int) (0xFFFFFF * Math.random()), 1);
@@ -55,10 +59,14 @@ public class DragonScene extends Scene
 			lightContainer.setPosition(true, x, y, z);
 			GLUtils.errorCheck();
 			
-//			lightContainer.addBehavior(new JiggleBehavior());
+			lightContainer.addBehavior(new JiggleBehavior());
 			
 			gameObjects.add(lightContainer);
+			
+			globalLight = lightContainer;
 		}
+		
+		globalLight.setPosition(false, 0, 0, 0);
 	}
 
 	@Override
@@ -68,6 +76,11 @@ public class DragonScene extends Scene
 		{
 			GameObject obj = gameObjects.get(i);
 			obj.update(timestamp, elapsedTime);
+		}
+		
+		if (KeyboardData.data.isDown(Keyboard.KEY_SPACE))
+		{
+			globalLight.setPosition(false, camera.getPosition(false, null));
 		}
 	}
 

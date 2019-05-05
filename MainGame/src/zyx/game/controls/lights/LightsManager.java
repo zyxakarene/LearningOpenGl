@@ -75,7 +75,7 @@ public class LightsManager
 				nearestLights[i] = allLights.get(i);
 
 				Vector3f pos = nearestLights[i].getLightPosition(new Vector3f());
-				DebugPoint.addToScene(pos, 20);
+//				DebugPoint.addToScene(pos, 20);
 			}
 			else
 			{
