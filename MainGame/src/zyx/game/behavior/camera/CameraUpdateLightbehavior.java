@@ -12,7 +12,6 @@ import zyx.opengl.shaders.implementations.LightingPassShader;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.utils.FloatMath;
 import zyx.utils.GeometryUtils;
-import zyx.utils.cheats.Print;
 
 public class CameraUpdateLightbehavior extends Behavior
 {
@@ -57,7 +56,6 @@ public class CameraUpdateLightbehavior extends Behavior
 			mat.rotate(FloatMath.toRadians(cameraRot.x), GeometryUtils.ROTATION_X);
 			mat.rotate(FloatMath.toRadians(cameraRot.y), GeometryUtils.ROTATION_Y);
 			mat.rotate(FloatMath.toRadians(cameraRot.z), GeometryUtils.ROTATION_Z);
-			Print.out(mat);
 			
 			Vector3f a = new Vector3f(mat.m20, mat.m21, mat.m22); // Left-handed column oriented: get z row.
 			Vector3f b = new Vector3f(mat.m02,mat.m12,mat.m22); // Left-handed row oriented: get z column.
@@ -65,11 +63,6 @@ public class CameraUpdateLightbehavior extends Behavior
 			Vector3f d = new Vector3f(mat.m02,mat.m12, mat.m22); // Right-handed row oriented: get -z column.
 
 			lightShader.uploadLightDirection(d);
-		}
-		
-		if (KeyboardData.data.isDown(Keyboard.KEY_SPACE))
-		{
-			lightShader.uploadLights(controller.getPosition(false, null));
 		}
 	}
 

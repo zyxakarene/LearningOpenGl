@@ -5,30 +5,35 @@ import zyx.game.controls.SharedPools;
 import zyx.game.controls.lights.LightsManager;
 import zyx.opengl.lighs.ILight;
 import zyx.opengl.shaders.implementations.Shader;
+import zyx.utils.Color;
 
 public class GameLight extends WorldObject implements ILight
 {
 
-	private float intensity;
+	private int power;
 	private int color;
 	
 	private Vector3f pos;
+	private Vector3f colorVector;
 	private boolean dirtyPos;
 
 	public GameLight()
 	{
-		this(0xFFFFFF, 1);
+		this(0xFFFFFF, 100);
 	}
 	
-	public GameLight(int color, float intensity)
+	public GameLight(int color, int power)
 	{
 		super(Shader.WORLD);
 		
 		this.color = color;
-		this.intensity = intensity;
+		this.power = power;
 		this.dirtyPos = true;
 		this.pos = SharedPools.VECTOR_POOL_3F.getInstance();
+		this.colorVector = SharedPools.VECTOR_POOL_3F.getInstance();
 		
+		Color.toVector(color, colorVector);
+
 		LightsManager.getInstane().addLight(this);
 	}
 
@@ -38,9 +43,9 @@ public class GameLight extends WorldObject implements ILight
 	}
 
 	@Override
-	public float getIntensity()
+	public int getPower()
 	{
-		return intensity;
+		return power;
 	}
 
 	@Override
@@ -63,6 +68,13 @@ public class GameLight extends WorldObject implements ILight
 	}
 
 	@Override
+	public Vector3f getColorVector(Vector3f out)
+	{
+		out.set(colorVector);
+		return out;
+	}
+	
+	@Override
 	protected void updateTransforms(boolean alsoChildren)
 	{
 		super.updateTransforms(alsoChildren);
@@ -75,6 +87,10 @@ public class GameLight extends WorldObject implements ILight
 	{
 		LightsManager.getInstane().removeLight(this);
 		SharedPools.VECTOR_POOL_3F.releaseInstance(pos);
+		SharedPools.VECTOR_POOL_3F.releaseInstance(colorVector);
+		
+		pos = null;
+		colorVector = null;
 		
 		super.onDispose();
 	}

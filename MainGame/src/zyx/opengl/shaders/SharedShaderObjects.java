@@ -18,5 +18,5 @@ public class SharedShaderObjects
 	public static void combineMatrices()
 	{
 		Matrix4f.mul(SHARED_PROJECTION_TRANSFORM, SHARED_VIEW_TRANSFORM, SHARED_PROJECTION_VIEW_TRANSFORM);
-}
+	}
 }

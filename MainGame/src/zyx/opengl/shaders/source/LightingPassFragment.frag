@@ -1,7 +1,7 @@
 #version 420
 const float AMBIENT_LIGHT = 0.01; //0.25;//The default light everything is receiving
 const float DIRECT_LIGHT = 0.05; //1.0 - AMBIENT_LIGHT;//The light recieved when facing the light
-const int LIGHT_COUNT = 500;//How many lights do we support
+const int LIGHT_COUNT = 325;//How many lights do we support
 
 in vec2 TexCoords;
 
@@ -25,10 +25,8 @@ vec3 handleLightInfo(in int index, in vec3 normal, in vec3 fragmentPosition)
 
 	vec3 ToLightVec = LightPosition - fragmentPosition;
 
-	float debugPower = 0.05;
-
 	float dist = length(ToLightVec);
-	float power = (1 / (dist * dist)) * 10 * debugPower;
+	float power = (1 / (dist * dist)) * (LightPower / 100);
 	power = clamp(power, 0.0, 0.75);
 
 	vec3 normalLightVec = normalize(ToLightVec);

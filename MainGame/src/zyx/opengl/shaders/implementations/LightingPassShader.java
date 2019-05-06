@@ -2,9 +2,7 @@ package zyx.opengl.shaders.implementations;
 
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.lighs.ILight;
-import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.shaders.AbstractShader;
-import zyx.utils.Color;
 
 public class LightingPassShader extends AbstractShader
 {
@@ -13,9 +11,15 @@ public class LightingPassShader extends AbstractShader
 	private int normalTexUniform;
 	private int albedoTexUniform;
 
-	private int lightDirection;
-	private int lightPositions;
-	private int lightColors;
+	private int lightDirectionUniform;
+	private int lightPositionsUniform;
+	private int lightColorsUniform;
+	private int lightPowersUniform;
+	
+	private int lastLightCount = -1;
+	private Vector3f[] lightPositions;
+	private Vector3f[] lightColors;
+	private int[] lightPowers;
 
 	public LightingPassShader(Object lock)
 	{
@@ -34,9 +38,10 @@ public class LightingPassShader extends AbstractShader
 		normalTexUniform = UniformUtils.createUniform(program, "gNormal");
 		albedoTexUniform = UniformUtils.createUniform(program, "gAlbedoSpec");
 
-		lightDirection = UniformUtils.createUniform(program, "lightDir");
-		lightPositions = UniformUtils.createUniform(program, "lightPositions");
-		lightColors = UniformUtils.createUniform(program, "lightColors");
+		lightDirectionUniform = UniformUtils.createUniform(program, "lightDir");
+		lightPositionsUniform = UniformUtils.createUniform(program, "lightPositions");
+		lightColorsUniform = UniformUtils.createUniform(program, "lightColors");
+		lightPowersUniform = UniformUtils.createUniform(program, "lightPowers");
 
 		UniformUtils.setUniformInt(positionTexUniform, 0);
 		UniformUtils.setUniformInt(normalTexUniform, 1);
@@ -45,10 +50,23 @@ public class LightingPassShader extends AbstractShader
 
 	public void uploadLights(ILight[] lights)
 	{
+		if (lastLightCount != lights.length)
+		{
+			lastLightCount = lights.length;
+			
+			lightColors = new Vector3f[lastLightCount];
+			lightPositions = new Vector3f[lastLightCount];
+			lightPowers = new int[lastLightCount];
+			
+			for (int i = 0; i < lastLightCount; i++)
+			{
+				lightColors[i] = new Vector3f();
+				lightPositions[i] = new Vector3f();
+			}
+		}
+		
 		bind();
-		Vector3f[] pos = new Vector3f[lights.length];
-		Vector3f[] color = new Vector3f[lights.length];
-		for (int i = 0; i < pos.length; i++)
+		for (int i = 0; i < lastLightCount; i++)
 		{
 			ILight light = lights[i];
 
@@ -57,38 +75,20 @@ public class LightingPassShader extends AbstractShader
 				continue;
 			}
 
-			Vector3f lightPos = new Vector3f();
-			light.getLightPosition(lightPos);
-			pos[i] = lightPos;
-
-			Vector3f lightCol = new Vector3f();
-			int col = light.getColor();
-			Color.toVector(col, lightCol);
-
-			color[i] = lightCol;
+			light.getLightPosition(lightPositions[i]);
+			light.getColorVector(lightColors[i]);
+			lightPowers[i] = light.getPower();
 		}
 
-		UniformUtils.setUniformArrayF(lightPositions, pos);
-		UniformUtils.setUniformArrayF(lightColors, color);
-	}
-
-	public void uploadLights(Vector3f pos)
-	{
-		bind();
-		Vector3f[] positions = new Vector3f[2];
-		positions[0] = pos;
-		positions[1] = new Vector3f(0, 0, 0);
-		UniformUtils.setUniformArrayF(lightPositions, positions);
-
-		positions[0] = new Vector3f(1, 0, 0);
-		positions[1] = new Vector3f(0, 1, 0);
-		UniformUtils.setUniformArrayF(lightColors, positions);
+		UniformUtils.setUniformArrayF(lightPositionsUniform, lightPositions);
+		UniformUtils.setUniformArrayF(lightColorsUniform, lightColors);
+		UniformUtils.setUniformArrayI(lightPowersUniform, lightPowers);
 	}
 
 	public void uploadLightDirection(Vector3f direction)
 	{
 		bind();
-		UniformUtils.setUniform3F(lightDirection, direction.x, direction.y, direction.z);
+		UniformUtils.setUniform3F(lightDirectionUniform, direction.x, direction.y, direction.z);
 	}
 
 	@Override

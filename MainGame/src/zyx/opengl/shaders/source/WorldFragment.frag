@@ -14,7 +14,9 @@ layout (location = 2) out vec4 gAlbedoSpec;
 
 void main()
 {
-	vec4 materialColor =  texture(tex, vec2(Texcoord.x, -Texcoord.y)) + debugColor;
+	vec4 materialColor =  texture(tex, vec2(Texcoord.x, -Texcoord.y));
+	materialColor += (100 * debugColor);
+	materialColor.a = 1;
 
 	gPosition = vec4(WorldPos.rgb, 1);
 	gNormal = vec4(Normal, 1);

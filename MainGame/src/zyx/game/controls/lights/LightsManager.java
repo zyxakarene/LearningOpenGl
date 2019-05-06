@@ -1,17 +1,12 @@
 package zyx.game.controls.lights;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.WorldObject;
 import zyx.opengl.lighs.ILight;
-import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.LightingPassShader;
 import zyx.opengl.shaders.implementations.Shader;
-import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.utils.GameConstants;
-import zyx.utils.cheats.DebugPoint;
 
 public class LightsManager
 {
@@ -73,9 +68,6 @@ public class LightsManager
 			if (i < lightCount)
 			{
 				nearestLights[i] = allLights.get(i);
-
-				Vector3f pos = nearestLights[i].getLightPosition(new Vector3f());
-//				DebugPoint.addToScene(pos, 20);
 			}
 			else
 			{
