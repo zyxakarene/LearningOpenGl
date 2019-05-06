@@ -2,6 +2,7 @@ package zyx.game.scene.gamescene;
 
 import java.util.ArrayList;
 import zyx.engine.scene.Scene;
+import zyx.game.components.AnimatedMesh;
 import zyx.game.components.MeshObject;
 import zyx.game.components.screen.hud.MainHud;
 import zyx.utils.FloatMath;
@@ -10,6 +11,7 @@ public class TestScene extends Scene
 {
 
 	private ArrayList<MeshObject> objects;
+	private AnimatedMesh knight;
 
 	public TestScene()
 	{
@@ -29,12 +31,17 @@ public class TestScene extends Scene
 		{
 			MeshObject model = new MeshObject();
 			model.load("mesh.box");
-//			model.setX(FloatMath.random() * 300);
+			model.setX(-20);
 //			model.setY(FloatMath.random() * 300);
 
 			world.addChild(model);
 			objects.add(model);
 		}
+		
+		knight = new AnimatedMesh();
+		knight.load("mesh.knight.knight");
+		knight.setAnimation("attack");
+		world.addChild(knight);
 	}
 
 	@Override
@@ -60,6 +67,9 @@ public class TestScene extends Scene
 			object.dispose();
 		}
 
+		knight.dispose();
+		knight = null;
+		
 		objects.clear();
 		objects = null;
 	}

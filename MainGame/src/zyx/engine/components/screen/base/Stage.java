@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import zyx.engine.components.animations.IFocusable;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.controls.input.InputManager;
+import zyx.opengl.textures.BufferBinder;
 import zyx.utils.GameConstants;
 
 public final class Stage extends DisplayObjectContainer implements ICallback<Character>, IFocusable
@@ -24,6 +25,8 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 
 	public final void drawStage()
 	{
+		BufferBinder.bindBuffer(0);
+
 		shader.bind();
 		shader.setClipRect(0, GameConstants.GAME_WIDTH, 0, GameConstants.GAME_HEIGHT);
 		draw();

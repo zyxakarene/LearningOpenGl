@@ -2,8 +2,6 @@ package zyx.opengl.textures;
 
 import java.io.InputStream;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
-import static org.lwjgl.opengl.GL13.glActiveTexture;
 import org.newdawn.slick.opengl.Texture;
 import zyx.opengl.GLUtils;
 import zyx.utils.geometry.Rectangle;
@@ -20,6 +18,7 @@ public class GameTexture extends AbstractTexture
 		super(rect, name);
 
 		texture = parent;
+		
 		setSizes();
 	}
 
@@ -47,8 +46,6 @@ public class GameTexture extends AbstractTexture
 	@Override
 	protected void onBind()
 	{
-		BufferBinder.bindBuffer(BUFFER_ID);
-		glActiveTexture(GL13.GL_TEXTURE0);
 		texture.bind();
 
 		//Swallow some error in Slick-Utils

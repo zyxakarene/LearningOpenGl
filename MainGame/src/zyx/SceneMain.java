@@ -18,7 +18,7 @@ public class SceneMain
 	{
 		if (SHOW_DEBUG_RESOURCES)
 		{
-			GameStarter starter = new GameStarter(SceneType.MATRIX);
+			GameStarter starter = new GameStarter(SceneType.DRAGON);
 			Thread gameThread = new Thread(starter);
 
 			gameThread.start();
@@ -27,7 +27,7 @@ public class SceneMain
 		}
 		else
 		{
-			java.awt.EventQueue.invokeLater(new GameStarter(SceneType.MATRIX));
+			java.awt.EventQueue.invokeLater(new GameStarter(SceneType.DRAGON));
 		}
 	}
 

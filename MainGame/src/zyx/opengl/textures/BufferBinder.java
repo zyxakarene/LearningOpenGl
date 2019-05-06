@@ -2,12 +2,12 @@ package zyx.opengl.textures;
 
 import org.lwjgl.opengl.GL30;
 
-class BufferBinder
+public class BufferBinder
 {
 
 	private static int currentBufferId = -1;
 
-	static void bindBuffer(int bufferId)
+	public static void bindBuffer(int bufferId)
 	{
 		if (currentBufferId != bufferId)
 		{

@@ -7,18 +7,16 @@ import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.input.KeyboardData;
-import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.ShaderManager;
+import zyx.opengl.shaders.implementations.LightingPassShader;
 import zyx.opengl.shaders.implementations.Shader;
-import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.utils.FloatMath;
 import zyx.utils.GeometryUtils;
-import zyx.utils.cheats.Print;
 
 public class CameraUpdateLightbehavior extends Behavior
 {
 
-	private WorldShader worldShader;
+	private LightingPassShader lightShader;
 	private Vector3f cameraRot;
 	private CameraController controller;
 
@@ -31,7 +29,7 @@ public class CameraUpdateLightbehavior extends Behavior
 	public void initialize()
 	{
 		cameraRot = new Vector3f();
-		worldShader = (WorldShader) ShaderManager.INSTANCE.get(Shader.WORLD);
+		lightShader = (LightingPassShader) ShaderManager.INSTANCE.get(Shader.DEFERED_LIGHT_PASS);
 		controller = (CameraController) gameObject;
 	}
 
@@ -58,14 +56,13 @@ public class CameraUpdateLightbehavior extends Behavior
 			mat.rotate(FloatMath.toRadians(cameraRot.x), GeometryUtils.ROTATION_X);
 			mat.rotate(FloatMath.toRadians(cameraRot.y), GeometryUtils.ROTATION_Y);
 			mat.rotate(FloatMath.toRadians(cameraRot.z), GeometryUtils.ROTATION_Z);
-			Print.out(mat);
 			
 			Vector3f a = new Vector3f(mat.m20, mat.m21, mat.m22); // Left-handed column oriented: get z row.
 			Vector3f b = new Vector3f(mat.m02,mat.m12,mat.m22); // Left-handed row oriented: get z column.
 			Vector3f c = new Vector3f(-mat.m20,-mat.m21,-mat.m22); // OpenGL style matrix (right-handed, column oriented), get the -z row.
 			Vector3f d = new Vector3f(mat.m02,mat.m12, mat.m22); // Right-handed row oriented: get -z column.
 
-			worldShader.uploadLightDirection(d);
+			lightShader.uploadLightDirection(d);
 		}
 	}
 

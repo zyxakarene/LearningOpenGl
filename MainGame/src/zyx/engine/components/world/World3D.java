@@ -1,5 +1,7 @@
 package zyx.engine.components.world;
 
+import zyx.opengl.deferred.DeferredRenderer;
+import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.Shader;
 
@@ -7,19 +9,29 @@ public final class World3D extends WorldObject
 {
 
 	public static final World3D instance = new World3D();
-	
+
 	public final Physics physics;
+
+	private DeferredRenderer renderer;
 
 	private World3D()
 	{
 		super(Shader.WORLD);
 		physics = new Physics();
+
+		renderer = DeferredRenderer.getInstance();
 	}
 
 	public void drawScene()
 	{
+		renderer.prepareRender();
+
 		shader.bind();
 		draw();
+
+		renderer.draw();
+
+		ParticleManager.getInstance().draw();
 	}
 
 	@Override
@@ -37,8 +49,8 @@ public final class World3D extends WorldObject
 	public String toString()
 	{
 		return "World3D";
-	}	
-	
+	}
+
 	//<editor-fold defaultstate="collapsed" desc="Getter & Setter">
 	private static final String INVALID_METHOD_CALL = "This method is invalid";
 

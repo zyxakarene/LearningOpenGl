@@ -1,5 +1,6 @@
 package zyx.opengl.shaders;
 
+import zyx.opengl.GLUtils;
 import zyx.opengl.shaders.source.ShaderSourceLoader;
 import zyx.utils.interfaces.IUpdateable;
 
@@ -39,8 +40,13 @@ public abstract class AbstractShader implements IUpdateable
 		fragmentShader = ShaderUtils.createFragmentShader(fragmentSource);
 
 		program = ShaderUtils.createProgram(vertexShader, fragmentShader);
-
+		GLUtils.errorCheck();
+		
+		bind();
+		GLUtils.errorCheck();
+		
 		postLoading();
+		GLUtils.errorCheck();
 	}
 	
 	public abstract String getName();
