@@ -31,10 +31,12 @@ public class DragonScene extends Scene
 	{
 		MeshObject dragon = new MeshObject();
 		dragon.setScale(0.33f, 0.33f, 0.33f);
-//		dragon.setY(20);
-//		dragon.setZ(-10);
 		dragon.load("mesh.dragon");
 		world.addChild(dragon);
+
+		MeshObject platform = new MeshObject();
+		platform.load("mesh.platform");
+		world.addChild(platform);
 		
 		//dragon.addBehavior(new RotateBehavior());
 		

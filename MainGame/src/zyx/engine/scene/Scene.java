@@ -129,7 +129,7 @@ public class Scene
 		if (ready)
 		{
 			SharedShaderObjects.combineMatrices();
-			Camera.getInstance().setViewFrustum(SharedShaderObjects.WORLD_PROJECTION_VIEW_TRANSFORM);
+			Camera.getInstance().setViewFrustum(SharedShaderObjects.SUN_PROJECTION_VIEW_TRANSFORM);
 			
 			LightsManager.getInstane().uploadLights();
 			world.drawScene();

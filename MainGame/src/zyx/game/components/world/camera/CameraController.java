@@ -37,6 +37,12 @@ public class CameraController extends GameObject
 	}
 
 	@Override
+	public Vector3f getDir(boolean local, Vector3f out)
+	{
+		return Camera.getInstance().getDir(local, out);
+	}
+	
+	@Override
 	public void setRotation(Vector3f rot)
 	{
 		Camera.getInstance().setRotation(rot);
@@ -47,4 +53,12 @@ public class CameraController extends GameObject
 	{
 		Camera.getInstance().setPosition(local, pos);
 	}
+
+	@Override
+	public void setDir(boolean local, Vector3f dir)
+	{
+		Camera.getInstance().setDir(local, dir);
+	}
+	
+	
 }

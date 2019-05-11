@@ -6,7 +6,7 @@ import zyx.opengl.shaders.SharedShaderObjects;
 public class DepthShader extends BaseBoneShader
 {
 
-	private static final Matrix4f MATRIX_PROJECTION_VIEW = SharedShaderObjects.WORLD_PROJECTION_VIEW_TRANSFORM;
+	private static final Matrix4f MATRIX_PROJECTION_VIEW = SharedShaderObjects.SUN_PROJECTION_VIEW_TRANSFORM;
 	private static final Matrix4f MATRIX_MODEL = SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM;
 
 	private int projectionViewMatrixTrans;
