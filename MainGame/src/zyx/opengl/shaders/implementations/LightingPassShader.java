@@ -75,12 +75,15 @@ public class LightingPassShader extends AbstractShader
 
 			if (light == null)
 			{
-				continue;
+				lightPowers[i] = 0;
+			}
+			else
+			{
+				light.getLightPosition(lightPositions[i]);
+				light.getColorVector(lightColors[i]);
+				lightPowers[i] = light.getPower();
 			}
 
-			light.getLightPosition(lightPositions[i]);
-			light.getColorVector(lightColors[i]);
-			lightPowers[i] = light.getPower();
 		}
 
 		UniformUtils.setUniformArrayF(lightPositionsUniform, lightPositions);
