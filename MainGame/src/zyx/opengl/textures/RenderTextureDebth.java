@@ -1,8 +1,10 @@
 package zyx.opengl.textures;
 
+import zyx.opengl.buffers.BufferBinder;
 import java.nio.ByteBuffer;
 import org.lwjgl.opengl.*;
 import org.newdawn.slick.opengl.TextureImpl;
+import zyx.opengl.buffers.Buffer;
 import zyx.utils.geometry.Rectangle;
 
 public class RenderTextureDebth extends AbstractTexture
@@ -46,7 +48,7 @@ public class RenderTextureDebth extends AbstractTexture
 		// "Bind" the newly created texture : all future texture functions will modify this texture
 		bind();
 
-		BufferBinder.bindBuffer(bufferId);
+		BufferBinder.bindBuffer(Buffer.RENDER_TO_TEXTURE);
 
 		// Give an empty image to OpenGL ( the last "0" )
 		int w = (int) getWidth();

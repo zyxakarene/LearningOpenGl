@@ -2,7 +2,8 @@ package zyx.game.components.screen.hud;
 
 import zyx.engine.components.screen.image.Image;
 import zyx.game.components.screen.json.JsonSprite;
-import zyx.opengl.deferred.DeferredRenderer;
+import zyx.opengl.buffers.DeferredRenderer;
+import zyx.opengl.buffers.DepthRenderer;
 import zyx.opengl.textures.TextureFromInt;
 import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.GameConstants;
@@ -20,6 +21,7 @@ public class BaseHud extends JsonSprite
 	protected void onComponentsCreated()
 	{
 		DeferredRenderer renderer = DeferredRenderer.getInstance();
+		DepthRenderer depthRenderer = DepthRenderer.getInstance();
 		
 		Image debugPos = new Image();
 		debugPos.setScale(1, -1);
@@ -38,5 +40,11 @@ public class BaseHud extends JsonSprite
 		debugCol.setPosition(true, 256, GameConstants.GAME_HEIGHT);
 		debugCol.setTexture(new TextureFromInt(128, 128, renderer.colorInt(), TextureSlot.SLOT_0));
 		addChild(debugCol);
+		
+		Image debugDepth = new Image();
+		debugDepth.setScale(1, -1);
+		debugDepth.setPosition(true, 384, GameConstants.GAME_HEIGHT);
+		debugDepth.setTexture(new TextureFromInt(128, 128, depthRenderer.depthInt(), TextureSlot.SLOT_0));
+		addChild(debugDepth);
 	}
 }

@@ -93,7 +93,7 @@ public class ParticleSystem extends WorldObject implements IResourceReady<Partic
 	{
 		if (loaded && inView())
 		{
-			SharedShaderObjects.SHARED_MODEL_TRANSFORM.load(worldMatrix());
+			SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM.load(worldMatrix());
 			
 			model.draw();
 		}

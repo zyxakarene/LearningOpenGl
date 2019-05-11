@@ -194,7 +194,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 			return;
 		}
 
-		SharedShaderObjects.SHARED_MODEL_TRANSFORM.load(worldMatrix());
+		SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM.load(worldMatrix());
 		shader.upload();
 
 		Rectangle oldClipData = null;

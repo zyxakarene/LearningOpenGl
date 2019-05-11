@@ -7,9 +7,15 @@ import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.input.KeyboardData;
+import zyx.opengl.GLUtils;
 import zyx.opengl.shaders.ShaderManager;
+import zyx.opengl.shaders.SharedShaderObjects;
+import static zyx.opengl.shaders.SharedShaderObjects.SUN_ORTHOGRAPHIC_PROJECTION;
+import static zyx.opengl.shaders.SharedShaderObjects.SUN_PROJECTION_VIEW_TRANSFORM;
+import static zyx.opengl.shaders.SharedShaderObjects.SUN_VIEW_TRANSFORM;
 import zyx.opengl.shaders.implementations.LightingPassShader;
 import zyx.opengl.shaders.implementations.Shader;
+import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.utils.FloatMath;
 import zyx.utils.GeometryUtils;
 
@@ -17,6 +23,7 @@ public class CameraUpdateLightbehavior extends Behavior
 {
 
 	private LightingPassShader lightShader;
+	private WorldShader worldShader;
 	private Vector3f cameraRot;
 	private CameraController controller;
 
@@ -30,6 +37,7 @@ public class CameraUpdateLightbehavior extends Behavior
 	{
 		cameraRot = new Vector3f();
 		lightShader = (LightingPassShader) ShaderManager.INSTANCE.get(Shader.DEFERED_LIGHT_PASS);
+		worldShader = (WorldShader) ShaderManager.INSTANCE.get(Shader.WORLD);
 		controller = (CameraController) gameObject;
 	}
 
@@ -53,6 +61,7 @@ public class CameraUpdateLightbehavior extends Behavior
 			HELPER_DIR.y = FloatMath.cos(elevation) * FloatMath.sin(elevation);
 			
 			Matrix4f mat = new Matrix4f();
+			mat.translate(gameObject.getPosition(false, null));
 			mat.rotate(FloatMath.toRadians(cameraRot.x), GeometryUtils.ROTATION_X);
 			mat.rotate(FloatMath.toRadians(cameraRot.y), GeometryUtils.ROTATION_Y);
 			mat.rotate(FloatMath.toRadians(cameraRot.z), GeometryUtils.ROTATION_Z);
@@ -62,7 +71,14 @@ public class CameraUpdateLightbehavior extends Behavior
 			Vector3f c = new Vector3f(-mat.m20,-mat.m21,-mat.m22); // OpenGL style matrix (right-handed, column oriented), get the -z row.
 			Vector3f d = new Vector3f(mat.m02,mat.m12, mat.m22); // Right-handed row oriented: get -z column.
 
+			SharedShaderObjects.SUN_VIEW_TRANSFORM.load(mat);
+			Matrix4f.mul(SUN_ORTHOGRAPHIC_PROJECTION, SUN_VIEW_TRANSFORM, SUN_PROJECTION_VIEW_TRANSFORM);
+
+			GLUtils.errorCheck();
+			//worldShader.uploadSunViewProjectionMatrix(SUN_PROJECTION_VIEW_TRANSFORM);
+			GLUtils.errorCheck();
 			lightShader.uploadLightDirection(d);
+			GLUtils.errorCheck();
 		}
 	}
 

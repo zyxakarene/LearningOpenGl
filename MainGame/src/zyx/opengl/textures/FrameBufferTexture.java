@@ -1,6 +1,7 @@
 package zyx.opengl.textures;
 
 import java.nio.ByteBuffer;
+import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_RGBA;

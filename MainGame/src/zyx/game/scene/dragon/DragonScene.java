@@ -36,7 +36,7 @@ public class DragonScene extends Scene
 		dragon.load("mesh.dragon");
 		world.addChild(dragon);
 		
-		dragon.addBehavior(new RotateBehavior());
+		//dragon.addBehavior(new RotateBehavior());
 		
 		gameObjects.add(dragon);
 		

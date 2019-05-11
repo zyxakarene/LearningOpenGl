@@ -10,6 +10,7 @@ public class LightingPassShader extends AbstractShader
 	private int positionTexUniform;
 	private int normalTexUniform;
 	private int albedoTexUniform;
+	private int depthTexUniform;
 
 	private int lightDirectionUniform;
 	private int lightPositionsUniform;
@@ -37,6 +38,7 @@ public class LightingPassShader extends AbstractShader
 		positionTexUniform = UniformUtils.createUniform(program, "gPosition");
 		normalTexUniform = UniformUtils.createUniform(program, "gNormal");
 		albedoTexUniform = UniformUtils.createUniform(program, "gAlbedoSpec");
+		depthTexUniform = UniformUtils.createUniform(program, "gDepth");
 
 		lightDirectionUniform = UniformUtils.createUniform(program, "lightDir");
 		lightPositionsUniform = UniformUtils.createUniform(program, "lightPositions");
@@ -46,6 +48,7 @@ public class LightingPassShader extends AbstractShader
 		UniformUtils.setUniformInt(positionTexUniform, 0);
 		UniformUtils.setUniformInt(normalTexUniform, 1);
 		UniformUtils.setUniformInt(albedoTexUniform, 2);
+		UniformUtils.setUniformInt(depthTexUniform, 3);
 	}
 
 	public void uploadLights(ILight[] lights)

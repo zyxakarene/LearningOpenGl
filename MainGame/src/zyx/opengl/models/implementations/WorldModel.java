@@ -1,6 +1,8 @@
 package zyx.opengl.models.implementations;
 
 import org.lwjgl.util.vector.Vector3f;
+import zyx.opengl.buffers.DeferredRenderer;
+import zyx.opengl.buffers.DepthRenderer;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.shaders.implementations.WorldShader;
@@ -9,12 +11,17 @@ import zyx.opengl.models.implementations.bones.animation.AnimationController;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.implementations.physics.PhysBox;
+import zyx.opengl.shaders.AbstractShader;
+import zyx.opengl.shaders.ShaderManager;
+import zyx.opengl.shaders.implementations.DepthShader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.MissingTexture;
 
 public class WorldModel extends AbstractModel
 {
 	private WorldShader shader;
+	private DepthShader shadowShader;
+
 	private Skeleton skeleton;
 	
 	private PhysBox physBox;
@@ -26,6 +33,7 @@ public class WorldModel extends AbstractModel
 	{
 		super(Shader.WORLD);
 		this.shader = (WorldShader) meshShader;
+		this.shadowShader = (DepthShader) ShaderManager.INSTANCE.get(Shader.DEPTH);
 
 		skeleton = vo.skeleton;
 		physBox = vo.physBox;
@@ -35,7 +43,7 @@ public class WorldModel extends AbstractModel
 		setVertexData(vo.vertexData, vo.elementData);
 		AbstractTexture[] texs = new AbstractTexture[]
 		{
-			vo.gameTexture, MissingTexture.getInstance()
+			vo.gameTexture
 		};
 		setTextures(texs);
 	}
@@ -59,8 +67,15 @@ public class WorldModel extends AbstractModel
 	@Override
 	public void draw()
 	{
+		DeferredRenderer.getInstance().bindBuffer();
 		skeleton.update();
 		shader.uploadBones();
+		super.draw();
+		
+		DepthRenderer.getInstance().bindBuffer();
+		shadowShader.bind();
+		shadowShader.upload();
+		shadowShader.uploadBones();
 		super.draw();
 	}
 

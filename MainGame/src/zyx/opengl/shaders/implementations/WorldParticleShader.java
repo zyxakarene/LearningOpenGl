@@ -9,8 +9,8 @@ import zyx.opengl.shaders.SharedShaderObjects;
 public class WorldParticleShader extends AbstractShader
 {
 
-	private static final Matrix4f MATRIX_PROJECTION = SharedShaderObjects.SHARED_PROJECTION_TRANSFORM;
-	private static final Matrix4f MATRIX_VIEW = SharedShaderObjects.SHARED_VIEW_TRANSFORM;
+	private static final Matrix4f MATRIX_PROJECTION = SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION;
+	private static final Matrix4f MATRIX_VIEW = SharedShaderObjects.SHARED_WORLD_VIEW_TRANSFORM;
 
 	public static float elapsedTime = 0;
 	public static float parentScale = 0;

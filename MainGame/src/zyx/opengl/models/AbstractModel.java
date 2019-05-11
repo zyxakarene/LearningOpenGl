@@ -95,8 +95,6 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 		{
 			if (canDraw())
 			{
-				meshShader.bind();
-
 				bindTextures();
 
 				ModelUtils.drawElements(vao, elementCount);

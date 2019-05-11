@@ -35,24 +35,24 @@ public class Camera extends WorldObject
 		}
 		
 		initialized = true;
-		Projection.createPerspective(70f, 0.001f, 2f, SharedShaderObjects.SHARED_PROJECTION_TRANSFORM);
-		Projection.createOrthographic(1f, 2f, SharedShaderObjects.SHARED_ORTHOGRAPHIC_TRANSFORM, 2);
+		Projection.createPerspective(70f, 0.001f, 2f, SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION);
+		Projection.createOrthographic(1f, 2f, SharedShaderObjects.UI_ORTHOGRAPHIC_PROJECTION, 2);
 		
-//		Projection.createOrthographic(0.01f, 1000f, WorldShader.MATRIX_PROJECTION, 16);
+		Projection.createOrthographic(0.001f, 70f, SharedShaderObjects.SUN_ORTHOGRAPHIC_PROJECTION, 16f);
 		
-		RayPicker.getInstance().setProjectionMatrix(SharedShaderObjects.SHARED_PROJECTION_TRANSFORM);
+		RayPicker.getInstance().setProjectionMatrix(SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION);
 		
 		setRotation(-90, 0, 0);
 	}
 	
 	public void getProjectionMatrix(Matrix4f out)
 	{
-		out.load(SharedShaderObjects.SHARED_PROJECTION_TRANSFORM);
+		out.load(SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION);
 	}
 	
 	public void getViewMatrix(Matrix4f out)
 	{
-		out.load(SharedShaderObjects.SHARED_VIEW_TRANSFORM);
+		out.load(SharedShaderObjects.SHARED_WORLD_VIEW_TRANSFORM);
 	}
 
 	public void setViewFrustum(Matrix4f matrix)

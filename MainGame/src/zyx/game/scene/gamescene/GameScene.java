@@ -70,7 +70,7 @@ public class GameScene extends Scene
 		if (KeyboardData.data.isDown(Keyboard.KEY_SPACE))
 		{
 			ViewFrustum fr = new ViewFrustum();
-			fr.extractPlanesFrom(SharedShaderObjects.SHARED_PROJECTION_VIEW_TRANSFORM);
+			fr.extractPlanesFrom(SharedShaderObjects.WORLD_PROJECTION_VIEW_TRANSFORM);
 			
 			Print.out("==");
 			boolean isInView = fr.isInsideView(new Vector3f(0, 0, 20), 0);

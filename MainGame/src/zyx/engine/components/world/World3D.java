@@ -1,6 +1,7 @@
 package zyx.engine.components.world;
 
-import zyx.opengl.deferred.DeferredRenderer;
+import zyx.opengl.buffers.DeferredRenderer;
+import zyx.opengl.buffers.DepthRenderer;
 import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.Shader;
@@ -13,6 +14,7 @@ public final class World3D extends WorldObject
 	public final Physics physics;
 
 	private DeferredRenderer renderer;
+	private DepthRenderer depth;
 
 	private World3D()
 	{
@@ -20,10 +22,12 @@ public final class World3D extends WorldObject
 		physics = new Physics();
 
 		renderer = DeferredRenderer.getInstance();
+		depth = DepthRenderer.getInstance();
 	}
 
 	public void drawScene()
 	{
+		depth.prepareRender();
 		renderer.prepareRender();
 
 		shader.bind();
@@ -42,7 +46,7 @@ public final class World3D extends WorldObject
 	@Override
 	protected void onTransform()
 	{
-		SharedShaderObjects.SHARED_MODEL_TRANSFORM.setIdentity();
+		SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM.setIdentity();
 	}
 
 	@Override

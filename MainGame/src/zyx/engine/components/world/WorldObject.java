@@ -208,7 +208,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 			return;
 		}
 
-		SharedShaderObjects.SHARED_MODEL_TRANSFORM.load(worldMatrix());
+		SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM.load(worldMatrix());
 
 		onDraw();
 

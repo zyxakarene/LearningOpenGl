@@ -1,7 +1,6 @@
 package zyx.opengl.shaders;
 
 import java.util.HashMap;
-import zyx.opengl.GLUtils;
 import zyx.opengl.shaders.implementations.*;
 import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IUpdateable;
@@ -13,7 +12,7 @@ public class ShaderManager implements IUpdateable
 
 	private final HashMap<Shader, AbstractShader> shaderMap;
 	private final AbstractShader[] shaderArray;
-	
+
 	private final Shader[] shaders;
 
 	private ShaderManager()
@@ -25,12 +24,13 @@ public class ShaderManager implements IUpdateable
 
 	public void initialize()
 	{
+		shaderMap.put(Shader.DEPTH, new DepthShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.WORLD, new WorldShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.SCREEN, new ScreenShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.PARTICLE, new ParticleShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.WORLD_PARTICLE, new WorldParticleShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.DEFERED_LIGHT_PASS, new LightingPassShader(AbstractShader.LOCK));
-		
+
 		AbstractShader shader;
 		int length = shaders.length;
 		for (int i = 0; i < length; i++)
@@ -38,11 +38,11 @@ public class ShaderManager implements IUpdateable
 			shader = shaderMap.get(shaders[i]);
 			Print.out("Loading shader:", shader.getName());
 			shader.load();
-			
+
 			shaderArray[i] = shader;
 		}
 	}
-	
+
 	public String getNameFromProgram(int program)
 	{
 		for (AbstractShader shader : shaderArray)
@@ -52,15 +52,15 @@ public class ShaderManager implements IUpdateable
 				return shader.getName();
 			}
 		}
-		
+
 		return "N/A";
 	}
-	
+
 	public void bind(Shader shader)
 	{
 		shaderMap.get(shader).bind();
 	}
-	
+
 	public AbstractShader get(Shader shader)
 	{
 		return shaderMap.get(shader);

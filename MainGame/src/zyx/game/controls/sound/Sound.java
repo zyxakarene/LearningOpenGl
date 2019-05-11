@@ -110,7 +110,7 @@ public class Sound implements IDisposeable, IUpdateable, IResourceReady<SoundRes
 		SHARED_VECTOR_4F.z = SHARED_VECTOR_3F.z;
 		SHARED_VECTOR_4F.w = 1;
 
-		Matrix4f.transform(SharedShaderObjects.SHARED_VIEW_TRANSFORM, SHARED_VECTOR_4F, SHARED_VECTOR_4F);
+		Matrix4f.transform(SharedShaderObjects.SHARED_WORLD_VIEW_TRANSFORM, SHARED_VECTOR_4F, SHARED_VECTOR_4F);
 	}
 
 	private void stop()

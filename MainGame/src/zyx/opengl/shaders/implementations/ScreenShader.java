@@ -12,9 +12,9 @@ import zyx.utils.geometry.Rectangle;
 public class ScreenShader extends AbstractShader
 {
 
-	private static final Matrix4f MATRIX_PROJECTION = SharedShaderObjects.SHARED_ORTHOGRAPHIC_TRANSFORM;
+	private static final Matrix4f MATRIX_PROJECTION = SharedShaderObjects.UI_ORTHOGRAPHIC_PROJECTION;
 	private static final Matrix4f MATRIX_VIEW = new Matrix4f();
-	private static final Matrix4f MATRIX_MODEL = SharedShaderObjects.SHARED_MODEL_TRANSFORM;
+	private static final Matrix4f MATRIX_MODEL = SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM;
 
 	private int modelMatrixTrans;
 	private int viewMatrixTrans;

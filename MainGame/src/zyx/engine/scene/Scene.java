@@ -19,7 +19,7 @@ import zyx.game.controls.input.MouseData;
 import zyx.game.controls.lights.LightsManager;
 import zyx.game.controls.process.ProcessQueue;
 import zyx.opengl.camera.Camera;
-import zyx.opengl.deferred.DeferredRenderer;
+import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.cheats.DebugContainer;
 
@@ -129,7 +129,7 @@ public class Scene
 		if (ready)
 		{
 			SharedShaderObjects.combineMatrices();
-			Camera.getInstance().setViewFrustum(SharedShaderObjects.SHARED_PROJECTION_VIEW_TRANSFORM);
+			Camera.getInstance().setViewFrustum(SharedShaderObjects.WORLD_PROJECTION_VIEW_TRANSFORM);
 			
 			LightsManager.getInstane().uploadLights();
 			world.drawScene();

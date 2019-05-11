@@ -1,52 +1,32 @@
-package zyx.opengl.deferred;
+package zyx.opengl.buffers;
 
-import java.nio.IntBuffer;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_COMPONENT;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
-import static org.lwjgl.opengl.GL30.GL_DEPTH_ATTACHMENT;
 import static org.lwjgl.opengl.GL30.GL_DRAW_FRAMEBUFFER;
-import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
-import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_COMPLETE;
 import static org.lwjgl.opengl.GL30.GL_READ_FRAMEBUFFER;
-import static org.lwjgl.opengl.GL30.GL_RENDERBUFFER;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
-import static org.lwjgl.opengl.GL30.glBindRenderbuffer;
 import static org.lwjgl.opengl.GL30.glBlitFramebuffer;
-import static org.lwjgl.opengl.GL30.glCheckFramebufferStatus;
-import static org.lwjgl.opengl.GL30.glFramebufferRenderbuffer;
-import static org.lwjgl.opengl.GL30.glGenRenderbuffers;
-import static org.lwjgl.opengl.GL30.glRenderbufferStorage;
 import zyx.opengl.models.implementations.DeferredLightModel;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
-import zyx.opengl.textures.BufferBinder;
 import zyx.opengl.textures.FrameBufferTexture;
 import zyx.opengl.textures.TextureFromInt;
 import zyx.opengl.textures.enums.TextureAttachment;
 import zyx.opengl.textures.enums.TextureSlot;
-import zyx.utils.GameConstants;
 
-public class DeferredRenderer
+public class DeferredRenderer extends BaseFrameBuffer
 {
 
 	private static DeferredRenderer instance = new DeferredRenderer();
 
-	private int bufferId;
-	private int depthBufferId;
-
 	private FrameBufferTexture positionBuffer;
 	private FrameBufferTexture normalBuffer;
 	private FrameBufferTexture colorBuffer;
-	
+
 	private TextureFromInt positionTexture;
 	private TextureFromInt normalTexture;
 	private TextureFromInt colorTexture;
-	
+
 	private DeferredLightModel model;
 
 	public static DeferredRenderer getInstance()
@@ -56,46 +36,47 @@ public class DeferredRenderer
 
 	public DeferredRenderer()
 	{
-		int w = GameConstants.GAME_WIDTH;
-		int h = GameConstants.GAME_HEIGHT;
+		super(Buffer.DEFERRED);
 
-		bufferId = GL30.glGenFramebuffers();
-		BufferBinder.bindBuffer(bufferId);
+	}
 
+	@Override
+	protected void onCreateFrameBufferTextures()
+	{
 		positionBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_0);
 		normalBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_1);
 		colorBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_2);
+	}
 
-		setupBufferValues(w, h);
-
-		BufferBinder.bindBuffer(0);
-
+	@Override
+	protected void onBufferCreated()
+	{
 		positionTexture = new TextureFromInt(w, h, positionBuffer.id, TextureSlot.SLOT_0);
 		normalTexture = new TextureFromInt(w, h, normalBuffer.id, TextureSlot.SLOT_1);
 		colorTexture = new TextureFromInt(w, h, colorBuffer.id, TextureSlot.SLOT_2);
-		
+
 		model = new DeferredLightModel(positionTexture, normalTexture, colorTexture);
 	}
 
 	public void draw()
 	{
-		BufferBinder.bindBuffer(0);
+		BufferBinder.bindBuffer(Buffer.DEFAULT);
 		ShaderManager.INSTANCE.bind(Shader.DEFERED_LIGHT_PASS);
-		
+
 		model.draw();
-		
-		int w = GameConstants.GAME_WIDTH;
-		int h = GameConstants.GAME_HEIGHT;
-		
+
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, depthBufferId);
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0); // write to default framebuffer
 		glBlitFramebuffer(0, 0, w, h, 0, 0, w, h, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 	}
 
-	public void prepareRender()
+	@Override
+	protected int[] getAttachments()
 	{
-		BufferBinder.bindBuffer(bufferId);
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		return new int[]
+		{
+			positionBuffer.attachment, normalBuffer.attachment, colorBuffer.attachment
+		};
 	}
 
 	public int positionInt()
@@ -111,31 +92,5 @@ public class DeferredRenderer
 	public int colorInt()
 	{
 		return colorBuffer.id;
-	}
-	
-	private void setupBufferValues(int width, int height)
-	{
-		int attachments[] =
-		{
-			positionBuffer.attachment, normalBuffer.attachment, colorBuffer.attachment
-		};
-
-		IntBuffer buffer = BufferUtils.createIntBuffer(attachments.length);
-		buffer.put(attachments);
-		buffer.flip();
-
-		GL20.glDrawBuffers(buffer);
-
-		depthBufferId = glGenRenderbuffers();
-		glBindRenderbuffer(GL_RENDERBUFFER, depthBufferId);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferId);
-
-		// finally check if framebuffer is complete
-		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		{
-			System.out.println("Framebuffer not complete!");
-			System.exit(-1);
-		}
 	}
 }
