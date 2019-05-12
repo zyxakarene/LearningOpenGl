@@ -18,6 +18,8 @@ uniform vec3[LIGHT_COUNT] lightPositions;
 
 uniform vec3 lightDir = vec3(0, 0, -1);
 
+uniform mat4 sunProjView;
+
 vec3 handleLightInfo(in int index, in vec3 normal, in vec3 fragmentPosition)
 {
 	vec3 LightPosition = lightPositions[index];
@@ -38,16 +40,63 @@ vec3 handleLightInfo(in int index, in vec3 normal, in vec3 fragmentPosition)
 	return difuse;
 }
 
+float ShadowCalculation(vec4 fragPosLightSpace)
+{
+    // perform perspective divide
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // Transform to [0,1] range
+    projCoords = projCoords * 0.5 + 0.5;
+    // Get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = texture(gDepth, projCoords.xy).r; 
+    // Get depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+    // Check whether current frag pos is in shadow
+    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+    // Keep the shadow at 0.0 when outside the far_plane region of the light's frustum.
+
+
+	float bias = 0.0025f;
+    shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;  
+
+    if(projCoords.z < 0.0 || projCoords.x < 0.0 || projCoords.y < 0.0 ||
+       projCoords.z > 1.0 || projCoords.x > 1.0 || projCoords.y > 1.0)
+      {
+        shadow = 0.0;
+      }
+
+      if(shadow > 0)
+      {
+        vec2 texelSize = 1.0 / textureSize(gDepth, 0);
+        for(int x = -1; x <= 1; ++x)
+        {
+            for(int y = -1; y <= 1; ++y)
+            {
+                float pcfDepth = texture(gDepth, projCoords.xy + vec2(x, y) * texelSize).r; 
+                shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;        
+            }    
+        }
+        shadow /= 9.0;
+      }
+
+    return shadow;
+}
+
 void main()
 {
     // retrieve data from gbuffer
     vec3 FragPos = texture(gPosition, TexCoords).rgb;
     vec3 Normal = texture(gNormal, TexCoords).rgb;
     vec3 Diffuse = texture(gAlbedoSpec, TexCoords).rgb;
-    float Depth = texture(gDepth, TexCoords).r;
+	
+	vec4 FragPosSunSpace = sunProjView * vec4(FragPos, 1.0);
+	float shadowValue = ShadowCalculation(FragPosSunSpace);
+	float invShadowValue = 1 - shadowValue;
 
+	float ambLight = AMBIENT_LIGHT;
+	float dirLight = DIRECT_LIGHT * invShadowValue;
+	
     float cosTheta = clamp(dot(Normal, lightDir), 0, 1);
-	vec3 sunBrightness = (vec3(DIRECT_LIGHT) * cosTheta) + AMBIENT_LIGHT;
+	vec3 sunBrightness = vec3((dirLight * cosTheta) + ambLight);
     
 	float r = 0;
 	float g = 0;
@@ -61,6 +110,6 @@ void main()
 		sunBrightness.b += difuse.b;
 	}
 
-	vec3 outColor = (Diffuse * sunBrightness);
+	vec3 outColor = Diffuse * sunBrightness;
     FragColor = vec4(outColor, 1.0);
 }

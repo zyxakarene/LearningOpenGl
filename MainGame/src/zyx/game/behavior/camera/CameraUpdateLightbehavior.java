@@ -113,6 +113,7 @@ public class CameraUpdateLightbehavior extends Behavior
 		viewMatrix.rotate(cameraRotationRad.y, GeometryUtils.ROTATION_Y);
 		viewMatrix.rotate(cameraRotationRad.z, GeometryUtils.ROTATION_Z);
 
+		lightShader.uploadSunMatrix();
 	}
 
 }

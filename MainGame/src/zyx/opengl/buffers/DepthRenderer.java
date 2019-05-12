@@ -1,6 +1,7 @@
 package zyx.opengl.buffers;
 
 import zyx.opengl.textures.FrameBufferTexture;
+import zyx.opengl.textures.TextureFromInt;
 import zyx.opengl.textures.enums.TextureAttachment;
 
 public class DepthRenderer extends BaseFrameBuffer
@@ -17,13 +18,13 @@ public class DepthRenderer extends BaseFrameBuffer
 
 	public DepthRenderer()
 	{
-		super(Buffer.DEPTH);
+		super(Buffer.DEPTH, 1f);
 	}
 
 	@Override
 	protected void onCreateFrameBufferTextures()
 	{
-		depthBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_3);
+		depthBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_0);
 	}
 
 	@Override

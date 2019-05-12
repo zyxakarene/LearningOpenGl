@@ -26,6 +26,7 @@ public class DeferredRenderer extends BaseFrameBuffer
 	private TextureFromInt positionTexture;
 	private TextureFromInt normalTexture;
 	private TextureFromInt colorTexture;
+	private TextureFromInt depthTexture;
 
 	private DeferredLightModel model;
 
@@ -36,7 +37,7 @@ public class DeferredRenderer extends BaseFrameBuffer
 
 	public DeferredRenderer()
 	{
-		super(Buffer.DEFERRED);
+		super(Buffer.DEFERRED, 1f);
 
 	}
 
@@ -51,11 +52,14 @@ public class DeferredRenderer extends BaseFrameBuffer
 	@Override
 	protected void onBufferCreated()
 	{
+		int depthInt = DepthRenderer.getInstance().depthInt();
+		
 		positionTexture = new TextureFromInt(w, h, positionBuffer.id, TextureSlot.SLOT_0);
 		normalTexture = new TextureFromInt(w, h, normalBuffer.id, TextureSlot.SLOT_1);
 		colorTexture = new TextureFromInt(w, h, colorBuffer.id, TextureSlot.SLOT_2);
-
-		model = new DeferredLightModel(positionTexture, normalTexture, colorTexture);
+		depthTexture = new TextureFromInt(w, h, depthInt, TextureSlot.SLOT_3);
+		
+		model = new DeferredLightModel(positionTexture, normalTexture, colorTexture, depthTexture);
 	}
 
 	public void draw()

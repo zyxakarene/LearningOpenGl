@@ -42,7 +42,7 @@ public class DragonScene extends Scene
 		
 		gameObjects.add(dragon);
 		
-		for (int i = 0; i < GameConstants.LIGHT_COUNT; i++)
+		for (int i = 0; i < 10; i++)
 		{
 			GameObject lightContainer = new GameObject();
 			GameLight light = new GameLight((int) (0xFFFFFF * Math.random()), 100);

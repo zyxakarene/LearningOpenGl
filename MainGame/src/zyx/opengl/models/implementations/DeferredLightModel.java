@@ -1,19 +1,14 @@
 package zyx.opengl.models.implementations;
 
 import zyx.opengl.models.AbstractModel;
-import zyx.opengl.shaders.implementations.LightingPassShader;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.AbstractTexture;
 
 public class DeferredLightModel extends AbstractModel
 {
-	public final LightingPassShader shader;
-	
 	public DeferredLightModel(AbstractTexture... textures)
 	{
 		super(Shader.DEFERED_LIGHT_PASS);
-
-		shader = (LightingPassShader) meshShader;
 
 		setTextures(textures);
 		setVertexData();

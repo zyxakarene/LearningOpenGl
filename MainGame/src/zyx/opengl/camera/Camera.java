@@ -37,31 +37,14 @@ public class Camera extends WorldObject
 		}
 		
 		initialized = true;
-		Projection.createPerspective(70f, 0.001f, 2f, SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION);
+		Projection.createPerspective(70f, 0.001f, 60f, SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION);
 		Projection.createOrthographic(1f, 2f, SharedShaderObjects.UI_ORTHOGRAPHIC_PROJECTION, 2);
 		
-		Projection.createOrthographic(0.1f, 200f, SharedShaderObjects.SUN_ORTHOGRAPHIC_PROJECTION, 4f);
+		Projection.createOrthographic(0.1f, 200f, SharedShaderObjects.SUN_ORTHOGRAPHIC_PROJECTION, 8f);
 		
 		RayPicker.getInstance().setProjectionMatrix(SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION);
 		
 		setRotation(-90, 0, 0);
-
-		Matrix4f mat = SharedShaderObjects.SUN_VIEW_TRANSFORM;
-		Vector3f cameraPosition = new Vector3f(21.33304f, -67.95955f, 76.854935f);
-		Vector3f cameraRotation = new Vector3f(-40.416027f, -4.268868E-6f, -11.350725f);
-		
-		cameraRotation.x = FloatMath.toRadians(cameraRotation.x);
-		cameraRotation.y = FloatMath.toRadians(cameraRotation.y);
-		cameraRotation.z = FloatMath.toRadians(cameraRotation.z);
-		
-		mat.setIdentity();
-		mat.rotate(cameraRotation.x, GeometryUtils.ROTATION_X);
-		mat.rotate(cameraRotation.y, GeometryUtils.ROTATION_Y);
-		mat.rotate(cameraRotation.z, GeometryUtils.ROTATION_Z);
-
-		cameraPosition.negate();
-		mat.translate(cameraPosition);
-
 	}
 	
 	public void getProjectionMatrix(Matrix4f out)
@@ -81,7 +64,6 @@ public class Camera extends WorldObject
 
 	public boolean isInView(Vector3f worldPosition, float radius)
 	{
-		return true;
-		//return frustum.isInsideView(worldPosition, radius);
+		return frustum.isInsideView(worldPosition, radius);
 	}
 }

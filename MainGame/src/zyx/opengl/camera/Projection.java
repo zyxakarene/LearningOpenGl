@@ -14,8 +14,6 @@ class Projection
 	{
 		float aspect = WIDTH / HEIGHT;
 
-		far *= 30;
-
 		float angle = (fov / 180.0f) * FloatMath.PI;
 		float f = 1.0f / FloatMath.tan(angle * 0.5f);
 

@@ -3,6 +3,7 @@ package zyx.opengl.shaders.implementations;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.lighs.ILight;
 import zyx.opengl.shaders.AbstractShader;
+import zyx.opengl.shaders.SharedShaderObjects;
 
 public class LightingPassShader extends AbstractShader
 {
@@ -16,6 +17,7 @@ public class LightingPassShader extends AbstractShader
 	private int lightPositionsUniform;
 	private int lightColorsUniform;
 	private int lightPowersUniform;
+	private int sunProjViewUniform;
 	
 	private int lastLightCount = -1;
 	private Vector3f[] lightPositions;
@@ -44,6 +46,7 @@ public class LightingPassShader extends AbstractShader
 		lightPositionsUniform = UniformUtils.createUniform(program, "lightPositions");
 		lightColorsUniform = UniformUtils.createUniform(program, "lightColors");
 		lightPowersUniform = UniformUtils.createUniform(program, "lightPowers");
+		sunProjViewUniform = UniformUtils.createUniform(program, "sunProjView");
 
 		UniformUtils.setUniformInt(positionTexUniform, 0);
 		UniformUtils.setUniformInt(normalTexUniform, 1);
@@ -95,6 +98,12 @@ public class LightingPassShader extends AbstractShader
 	{
 		bind();
 		UniformUtils.setUniform3F(lightDirectionUniform, direction.x, direction.y, direction.z);
+	}
+
+	public void uploadSunMatrix()
+	{
+		bind();
+		UniformUtils.setUniformMatrix(sunProjViewUniform, SharedShaderObjects.SUN_PROJECTION_VIEW_TRANSFORM);
 	}
 
 	@Override

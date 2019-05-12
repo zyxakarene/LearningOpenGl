@@ -44,7 +44,7 @@ public class BaseHud extends JsonSprite
 		Image debugDepth = new Image();
 		debugDepth.setScale(1, -1);
 		debugDepth.setPosition(true, 384, GameConstants.GAME_HEIGHT);
-		debugDepth.setTexture(new TextureFromInt(1920, 1080, depthRenderer.depthInt(), TextureSlot.SLOT_0));
+		debugDepth.setTexture(new TextureFromInt(128, 128, depthRenderer.depthInt(), TextureSlot.SLOT_0));
 		addChild(debugDepth);
 	}
 }
