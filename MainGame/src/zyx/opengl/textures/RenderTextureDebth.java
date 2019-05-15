@@ -3,7 +3,6 @@ package zyx.opengl.textures;
 import zyx.opengl.buffers.BufferBinder;
 import java.nio.ByteBuffer;
 import org.lwjgl.opengl.*;
-import org.newdawn.slick.opengl.TextureImpl;
 import zyx.opengl.buffers.Buffer;
 import zyx.utils.geometry.Rectangle;
 
@@ -33,8 +32,8 @@ public class RenderTextureDebth extends AbstractTexture
 	@Override
 	protected void onBind()
 	{
+		TextureBinder.unbindTextures();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, stencilBufferId);
-		TextureImpl.unbind();
 	}
 
 	@Override

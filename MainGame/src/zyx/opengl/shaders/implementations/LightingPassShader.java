@@ -103,6 +103,7 @@ public class LightingPassShader extends AbstractShader
 	public void uploadSunMatrix()
 	{
 		bind();
+		SharedShaderObjects.combineMatrices();
 		UniformUtils.setUniformMatrix(sunProjViewUniform, SharedShaderObjects.SUN_PROJECTION_VIEW_TRANSFORM);
 	}
 

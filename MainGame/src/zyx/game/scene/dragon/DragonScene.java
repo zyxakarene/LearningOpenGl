@@ -14,10 +14,11 @@ import zyx.utils.GameConstants;
 public class DragonScene extends Scene
 {
 
-	private ArrayList<GameObject> gameObjects = new ArrayList<>();
+	private ArrayList<GameObject> gameObjects;
 
 	public DragonScene()
 	{
+		gameObjects = new ArrayList<>();
 	}
 
 	@Override
@@ -41,6 +42,7 @@ public class DragonScene extends Scene
 		//dragon.addBehavior(new RotateBehavior());
 		
 		gameObjects.add(dragon);
+		gameObjects.add(platform);
 		
 		for (int i = 0; i < 10; i++)
 		{

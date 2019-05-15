@@ -7,6 +7,7 @@ import zyx.engine.utils.worldpicker.calculating.RayPicker;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.utils.FloatMath;
+import zyx.utils.GameConstants;
 import zyx.utils.GeometryUtils;
 
 public class Camera extends WorldObject
@@ -37,10 +38,10 @@ public class Camera extends WorldObject
 		}
 		
 		initialized = true;
-		Projection.createPerspective(70f, 0.001f, 60f, SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION);
-		Projection.createOrthographic(1f, 2f, SharedShaderObjects.UI_ORTHOGRAPHIC_PROJECTION, 2);
+		Projection.createPerspective(GameConstants.FOV, 0.01f, 100f, SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION);
+		Projection.createOrthographic(1f, 2f, 2, SharedShaderObjects.UI_ORTHOGRAPHIC_PROJECTION);
 		
-		Projection.createOrthographic(0.1f, 200f, SharedShaderObjects.SUN_ORTHOGRAPHIC_PROJECTION, 8f);
+		Projection.createOrthographic(0.1f, 200f, 8f, SharedShaderObjects.SUN_ORTHOGRAPHIC_PROJECTION);
 		
 		RayPicker.getInstance().setProjectionMatrix(SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION);
 		

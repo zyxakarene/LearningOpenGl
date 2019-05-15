@@ -1,19 +1,17 @@
 package zyx.opengl.textures;
 
 import java.io.InputStream;
-import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.opengl.Texture;
-import zyx.opengl.GLUtils;
+import zyx.opengl.textures.custom.ITexture;
+import zyx.opengl.textures.custom.Texture;
+import zyx.opengl.textures.enums.TextureFiltering;
 import zyx.utils.geometry.Rectangle;
 
 public class GameTexture extends AbstractTexture
 {
 
-	private static final int BUFFER_ID = 0;
+	protected ITexture texture;
 
-	protected Texture texture;
-
-	protected GameTexture(Texture parent, Rectangle rect, String name)
+	protected GameTexture(ITexture parent, Rectangle rect, String name)
 	{
 		super(rect, name);
 
@@ -31,7 +29,7 @@ public class GameTexture extends AbstractTexture
 	{
 		super(rect, name);
 
-		texture = TextureUtils.createTexture(stream);
+		texture = new Texture(stream, TextureFiltering.NEAREST);
 		setSizes();
 	}
 
@@ -40,17 +38,13 @@ public class GameTexture extends AbstractTexture
 		float w = u - x;
 		float h = v - y;
 
-		setSizes(texture.getImageWidth() * w, texture.getImageHeight() * h);
+		setSizes(texture.getWidth()* w, texture.getHeight()* h);
 	}
 
 	@Override
 	protected void onBind()
 	{
 		texture.bind();
-
-		//Swallow some error in Slick-Utils
-		//Or maybe I suck at this, who knows!
-		GL11.glGetError();
 	}
 
 	@Override
@@ -58,10 +52,8 @@ public class GameTexture extends AbstractTexture
 	{
 		if (texture != null)
 		{
-			texture.release();
+			texture.dispose();
 			texture = null;
-
-			GLUtils.errorCheck();
 		}
 	}
 }

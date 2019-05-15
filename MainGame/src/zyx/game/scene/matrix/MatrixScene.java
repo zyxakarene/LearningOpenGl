@@ -113,8 +113,11 @@ public class MatrixScene extends Scene implements IResourceReady<JsonResource>
 	@Override
 	protected void onDispose()
 	{
-		parent1.dispose();
-		parent1 = null;
+		if (parent1 != null)
+		{
+			parent1.dispose();
+			parent1 = null;
+		}
 	}
 
 	@Override

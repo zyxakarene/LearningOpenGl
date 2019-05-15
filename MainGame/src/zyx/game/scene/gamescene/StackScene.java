@@ -39,11 +39,17 @@ public class StackScene extends Scene
 	@Override
 	protected void onDispose()
 	{
-		platform.dispose();
-		child.dispose();
+		if (platform != null)
+		{
+			platform.dispose();
+			platform = null;
+		}
 		
-		platform = null;
-		child = null;
+		if (child != null)
+		{
+			child.dispose();
+			child = null;
+		}
 	}
 	
 }

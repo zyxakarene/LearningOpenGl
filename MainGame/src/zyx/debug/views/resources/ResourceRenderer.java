@@ -21,7 +21,10 @@ public class ResourceRenderer extends JLabel implements ListCellRenderer<Resourc
 	@Override
 	public Component getListCellRendererComponent(JList<? extends Resource> list, Resource value, int index, boolean isSelected, boolean cellHasFocus)
 	{
-		setText(value.path);
+		if (value != null)
+		{
+			setText(value.path);
+		}
 
 		if (isSelected)
 		{
@@ -32,8 +35,11 @@ public class ResourceRenderer extends JLabel implements ListCellRenderer<Resourc
 			setBackground(Color.WHITE);
 		}
 
-		Icon icon = ResourceIcons.createIcon(value);
-		setIcon(icon);
+		if (value != null)
+		{
+			Icon icon = ResourceIcons.createIcon(value);
+			setIcon(icon);
+		}
 
 		setSize(getWidth(), 16);
 		
