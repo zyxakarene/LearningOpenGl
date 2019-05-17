@@ -75,6 +75,7 @@ public class CameraUpdateLightbehavior extends Behavior
 			Vector3f d = new Vector3f(mat.m02, mat.m12, mat.m22); // Right-handed row oriented: get -z column.
 
 			setSunShadowDir();
+			setSunPos();
 
 			GLUtils.errorCheck();
 			lightShader.uploadLightDirection(d);
@@ -103,6 +104,11 @@ public class CameraUpdateLightbehavior extends Behavior
 
 	private void setSunPosDynamic()
 	{
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
+		{
+			DebugPoint.clearAll();
+		}
+		
 		Matrix4f cam = new Matrix4f();
 		Matrix4f camInv = new Matrix4f();
 		
@@ -117,13 +123,16 @@ public class CameraUpdateLightbehavior extends Behavior
 		float ar = (float) GameConstants.GAME_HEIGHT / (float) GameConstants.GAME_WIDTH;
 		float tanHalfHFOV = FloatMath.tan(FloatMath.DEG_TO_RAD * (GameConstants.FOV / 2f));
 		float tanHalfVFOV = FloatMath.tan(FloatMath.DEG_TO_RAD * ((GameConstants.FOV * ar) / 2f));
+		
+		tanHalfHFOV *= 1.9f;
+		tanHalfVFOV *= 1.9f;
 
 		float[] m_cascadeEnd = new float[]
 		{
-			0.01f,
-			20f,
-			60f,
-			100f
+			5f,
+			-30,
+			-80f,
+			-100f
 		};
 
 		int cascadeCount = m_cascadeEnd.length - 1;
@@ -155,39 +164,41 @@ public class CameraUpdateLightbehavior extends Behavior
 			}
 
 			float minX = Float.MAX_VALUE;
-			float maxX = Float.MIN_VALUE;
+			float maxX = -Float.MAX_VALUE;
 			float minY = Float.MAX_VALUE;
-			float maxY = Float.MIN_VALUE;
+			float maxY = -Float.MAX_VALUE;
 			float minZ = Float.MAX_VALUE;
-			float maxZ = Float.MIN_VALUE;
+			float maxZ = -Float.MAX_VALUE;
 
 			for (int j = 0; j < frustumCorners.length; j++)
 			{
 				// Transform the frustum coordinate from view to world space
-				Vector4f vW = Matrix4f.transform(cam, frustumCorners[j], null);
+				Vector4f vW = Matrix4f.transform(camInv, frustumCorners[j], null);
 
 				if (KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
 				{
-					DebugPoint.addToScene(vW, 10000);
-					Print.out(vW);
+//					DebugPoint point = DebugPoint.addToScene(vW, 0);
+//					point.setScale(0.1f, 0.1f, 0.1f);
 				}
 				
 				// Transform the frustum coordinate from world to light space
 				Matrix4f.transform(LightM, vW, frustumCornersL[j]);
 
+				if (KeyboardData.data.wasPressed(Keyboard.KEY_SPACE) && i == shadowToUse)
+				{
+//					DebugPoint.addToScene(frustumCornersL[j], 0);
+				}
+				
 				minX = FloatMath.min(minX, frustumCornersL[j].x);
 				maxX = FloatMath.max(maxX, frustumCornersL[j].x);
 				minY = FloatMath.min(minY, frustumCornersL[j].y);
 				maxY = FloatMath.max(maxY, frustumCornersL[j].y);
 				minZ = FloatMath.min(minZ, frustumCornersL[j].z);
 				maxZ = FloatMath.max(maxZ, frustumCornersL[j].z);
-				
-//				if (KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
-//				{
-//					DebugPoint.addToScene(maxX, maxY, maxZ, 20000);
-//					DebugPoint.addToScene(minX, minY, minZ, 20000);
-//				}
 			}
+			
+			maxZ += 1000f;
+			minZ -= 1000f;
 			
 			float r = maxX;
 			float l = minX;
@@ -199,11 +210,27 @@ public class CameraUpdateLightbehavior extends Behavior
 			
 			if (i == shadowToUse)
 			{
+				if (KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
+				{
+					DebugPoint.addToScene(maxX, maxY, minZ, 0);
+					DebugPoint.addToScene(minX, maxY, minZ, 0);
+					DebugPoint.addToScene(maxX, minY, minZ, 0);
+					DebugPoint.addToScene(minX, minY, minZ, 0);
+					
+					DebugPoint.addToScene(maxX, maxY, maxZ, 0);
+					DebugPoint.addToScene(minX, maxY, maxZ, 0);
+					DebugPoint.addToScene(maxX, minY, maxZ, 0);
+					DebugPoint.addToScene(minX, minY, maxZ, 0);
+				}
+				
 				Projection.createOrthographic(n, f, l, r, t, b, ortho);
 				SharedShaderObjects.SUN_ORTHOGRAPHIC_PROJECTION.load(ortho);
 			}
 		}
-
+		
+		SharedShaderObjects.combineMatrices();
+		
+		
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_UP))
 		{
 			shadowToUse++;
@@ -218,19 +245,13 @@ public class CameraUpdateLightbehavior extends Behavior
 
 	private void setSunPos()
 	{
-		Vector3f cameraPosition = gameObject.getPosition(false, null);
-
-		cameraPosition.x -= cameraDir.x * 100;
-		cameraPosition.y -= cameraDir.y * 100;
-		cameraPosition.z -= cameraDir.z * 100;
-
 		Matrix4f viewMatrix = SharedShaderObjects.SUN_VIEW_TRANSFORM;
 		viewMatrix.setIdentity();
-		cameraPosition.negate();
-		viewMatrix.translate(cameraPosition);
 		viewMatrix.rotate(cameraRotationRad.x, GeometryUtils.ROTATION_X);
 		viewMatrix.rotate(cameraRotationRad.y, GeometryUtils.ROTATION_Y);
 		viewMatrix.rotate(cameraRotationRad.z, GeometryUtils.ROTATION_Z);
+		
+		SharedShaderObjects.combineMatrices();
 
 		lightShader.uploadSunMatrix();
 	}
