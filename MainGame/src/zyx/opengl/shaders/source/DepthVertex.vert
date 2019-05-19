@@ -1,4 +1,6 @@
 #version 420
+const int SHADOW_QUADRANTS = 4;//Amount of quadrants
+
 layout(location = 0) in vec3 position;
 layout(location = 1) in vec3 normals;
 layout(location = 2) in vec2 texcoord;
@@ -8,8 +10,12 @@ layout(location = 4) in vec2 weights;
 #include "BonesShaderLibrary.glsl";
 
 uniform mat4 model;
-uniform mat4 projectionView;
-uniform vec4 sunNearPlane;
+uniform mat4 projectionViews[SHADOW_QUADRANTS];
+
+uniform int currentQuadrant;
+uniform vec2 shadowOffsets;
+uniform vec2 shadowOffsetMin;
+uniform vec2 shadowOffsetMax;
 
 void main()
 {
@@ -20,15 +26,13 @@ void main()
 
 	vec4 worldPosition = model * transformedPos;
 
-	vec4 glView = projectionView * worldPosition;
+	mat4 projection = projectionViews[currentQuadrant];
+	vec4 glView = projection * worldPosition;
 
-	float origX = glView.x;
-	float origY = glView.y;
-	float relocatedX = (origX / 2) - 0.5;
-	float relocatedY = (origY / 2) - 0.5;
-
-	//glView.x = min(0, relocatedX);
-	//glView.y = min(0, relocatedY);
+	float relocatedX = (glView.x / 2) + shadowOffsets.x;
+	float relocatedY = (glView.y / 2) + shadowOffsets.y;
+	glView.x = clamp(relocatedX, shadowOffsetMin.x, shadowOffsetMax.x);
+	glView.y = clamp(relocatedY, shadowOffsetMin.y, shadowOffsetMax.y);
 
     gl_Position = glView;
 }

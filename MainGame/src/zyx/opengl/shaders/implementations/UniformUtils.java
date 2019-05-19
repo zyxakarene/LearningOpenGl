@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 class UniformUtils
@@ -87,6 +88,34 @@ class UniformUtils
 		buff.flip();
 
 		GL20.glUniform3(uniform, buff);
+	}
+
+	/**
+	 * Uploads an array of Vec2s to the given uniform.
+	 *
+	 * @param uniform The uniform to upload to
+	 * @param data The data to upload
+	 */
+	static void setUniformArrayF(int uniform, Vector2f[] data)
+	{
+		int size = 2 * data.length;
+
+		FloatBuffer buff = getFloatBufferOfSize(size);
+		for (Vector2f entry : data)
+		{
+			if (entry != null)
+			{
+				entry.store(buff);
+			}
+			else
+			{
+				buff.put(0);
+				buff.put(0);
+			}
+		}
+		buff.flip();
+
+		GL20.glUniform2(uniform, buff);
 	}
 
 	

@@ -1,5 +1,6 @@
 package zyx.opengl.models.implementations;
 
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
@@ -16,6 +17,7 @@ import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.DepthShader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.MissingTexture;
+import zyx.utils.GameConstants;
 
 public class WorldModel extends AbstractModel
 {
@@ -76,7 +78,21 @@ public class WorldModel extends AbstractModel
 		shadowShader.bind();
 		shadowShader.upload();
 		shadowShader.uploadBones();
+		
+		
+		GL11.glViewport(0, 0, GameConstants.GAME_WIDTH * 2, GameConstants.GAME_HEIGHT * 2);
+		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_0);
 		super.draw();
+		
+		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_1);
+		super.draw();
+		
+		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_2);
+		super.draw();
+		
+		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_3);
+		super.draw();
+		GL11.glViewport(0, 0, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
 	}
 
 	public PhysBox getPhysbox()

@@ -11,7 +11,6 @@ import zyx.game.controls.input.KeyboardData;
 import zyx.opengl.GLUtils;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.camera.Projection;
-import zyx.opengl.camera.ViewFrustum;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.DepthShader;
@@ -22,7 +21,6 @@ import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
 import zyx.utils.GeometryUtils;
 import zyx.utils.cheats.DebugPoint;
-import zyx.utils.cheats.Print;
 
 public class CameraUpdateLightbehavior extends Behavior
 {
@@ -101,13 +99,7 @@ public class CameraUpdateLightbehavior extends Behavior
 		cameraRotationRad.x = FloatMath.toRadians(cameraRotation.x);
 		cameraRotationRad.y = FloatMath.toRadians(cameraRotation.y);
 		cameraRotationRad.z = FloatMath.toRadians(cameraRotation.z);
-		cameraRotationRad.w = FloatMath.toRadians(cameraRotation.x + 90);
-
-		ViewFrustum fru = new ViewFrustum();
-		fru.extractPlanesFrom(SharedShaderObjects.WORLD_PROJECTION_VIEW_TRANSFORM);
-		fru.near.d = -100000f;
-		depthShader.uploadSunNearPlane(fru.near);
-		
+		cameraRotationRad.w = FloatMath.toRadians(cameraRotation.x + 90);		
 		
 		gameObject.getDir(false, cameraDir);
 	}
@@ -140,15 +132,16 @@ public class CameraUpdateLightbehavior extends Behavior
 		float[] m_cascadeEnd = new float[]
 		{
 			-1f,
-			-60,
+			-50,
 			-100f,
-			-150f
+			-180f,
+			-350f
 		};
 
-		for (int i = 0; i < m_cascadeEnd.length; i++)
-		{
-			m_cascadeEnd[i] = m_cascadeEnd[i] * 0.5f;
-		}
+//		for (int i = 0; i < m_cascadeEnd.length; i++)
+//		{
+//			m_cascadeEnd[i] = m_cascadeEnd[i] * 0.5f;
+//		}
 		
 		int cascadeCount = m_cascadeEnd.length - 1;
 		for (int i = 0; i < cascadeCount; i++)
@@ -241,8 +234,31 @@ public class CameraUpdateLightbehavior extends Behavior
 //					DebugPoint.addToScene(minX, minY, maxZ, 0);
 				}
 				
-				Projection.createOrthographic(n, f, l, r, t, b, ortho);
-				SharedShaderObjects.SUN_ORTHOGRAPHIC_PROJECTION.load(ortho);
+			}
+			
+			Projection.createOrthographic(n, f, l, r, t, b, ortho);
+			switch (i)
+			{
+				case 0:
+				{
+					SharedShaderObjects.SUN_ORTHOGRAPHIC_PROJECTION_CASCADE_1.load(ortho);
+					break;
+				}
+				case 1:
+				{
+					SharedShaderObjects.SUN_ORTHOGRAPHIC_PROJECTION_CASCADE_2.load(ortho);
+					break;
+				}
+				case 2:
+				{
+					SharedShaderObjects.SUN_ORTHOGRAPHIC_PROJECTION_CASCADE_3.load(ortho);
+					break;
+				}
+				case 3:
+				{
+					SharedShaderObjects.SUN_ORTHOGRAPHIC_PROJECTION_CASCADE_4.load(ortho);
+					break;
+				}
 			}
 		}
 		
@@ -259,6 +275,7 @@ public class CameraUpdateLightbehavior extends Behavior
 		}
 		
 		lightShader.uploadSunMatrix();
+		depthShader.uploadSunMatrix();
 	}
 
 	private void setSunPos()
