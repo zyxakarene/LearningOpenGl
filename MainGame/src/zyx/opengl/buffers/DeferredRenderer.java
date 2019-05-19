@@ -22,11 +22,13 @@ public class DeferredRenderer extends BaseFrameBuffer
 	private FrameBufferTexture positionBuffer;
 	private FrameBufferTexture normalBuffer;
 	private FrameBufferTexture colorBuffer;
+	private FrameBufferTexture depthBuffer;
 
 	private TextureFromInt positionTexture;
 	private TextureFromInt normalTexture;
 	private TextureFromInt colorTexture;
 	private TextureFromInt depthTexture;
+	private TextureFromInt shadowDepthTexture;
 
 	private DeferredLightModel model;
 
@@ -47,6 +49,7 @@ public class DeferredRenderer extends BaseFrameBuffer
 		positionBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_0);
 		normalBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_1);
 		colorBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_2);
+		depthBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_3);
 	}
 
 	@Override
@@ -57,9 +60,10 @@ public class DeferredRenderer extends BaseFrameBuffer
 		positionTexture = new TextureFromInt(w, h, positionBuffer.id, TextureSlot.SLOT_0);
 		normalTexture = new TextureFromInt(w, h, normalBuffer.id, TextureSlot.SLOT_1);
 		colorTexture = new TextureFromInt(w, h, colorBuffer.id, TextureSlot.SLOT_2);
-		depthTexture = new TextureFromInt(w, h, depthInt, TextureSlot.SLOT_3);
+		depthTexture = new TextureFromInt(w, h, depthBuffer.id, TextureSlot.SLOT_3);
+		shadowDepthTexture = new TextureFromInt(w, h, depthInt, TextureSlot.SLOT_4);
 		
-		model = new DeferredLightModel(positionTexture, normalTexture, colorTexture, depthTexture);
+		model = new DeferredLightModel(positionTexture, normalTexture, colorTexture, depthTexture, shadowDepthTexture);
 	}
 
 	public void draw()
@@ -79,7 +83,7 @@ public class DeferredRenderer extends BaseFrameBuffer
 	{
 		return new int[]
 		{
-			positionBuffer.attachment, normalBuffer.attachment, colorBuffer.attachment
+			positionBuffer.attachment, normalBuffer.attachment, colorBuffer.attachment, depthBuffer.attachment
 		};
 	}
 
@@ -96,5 +100,10 @@ public class DeferredRenderer extends BaseFrameBuffer
 	public int colorInt()
 	{
 		return colorBuffer.id;
+	}
+
+	public int depthInt()
+	{
+		return depthBuffer.id;
 	}
 }

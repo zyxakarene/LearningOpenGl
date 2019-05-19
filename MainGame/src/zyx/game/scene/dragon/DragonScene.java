@@ -10,6 +10,7 @@ import zyx.game.components.MeshObject;
 import zyx.opengl.GLUtils;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
+import zyx.utils.cheats.DebugPoint;
 
 public class DragonScene extends Scene
 {
@@ -30,19 +31,37 @@ public class DragonScene extends Scene
 	@Override
 	protected void onInitialize()
 	{
-		MeshObject dragon = new MeshObject();
-		dragon.setScale(0.33f, 0.33f, 0.33f);
-		dragon.load("mesh.dragon");
-		world.addChild(dragon);
+		DebugPoint.addToScene(0, 100, 0, 0);
+		for (int i = 0; i < 10; i++)
+		{
+			for (int j = 0; j < 10; j++)
+			{
+				MeshObject dragon = new MeshObject();
+				dragon.setScale(0.33f, 0.33f, 0.33f);
+				dragon.load("mesh.dragon");
+				world.addChild(dragon);
 
-		MeshObject platform = new MeshObject();
-		platform.load("mesh.platform");
-		world.addChild(platform);
+				MeshObject platform = new MeshObject();
+				platform.load("mesh.platform");
+				world.addChild(platform);
+
+				gameObjects.add(dragon);
+				gameObjects.add(platform);
+
+				dragon.setX(i * 30f);
+				platform.setX(i * 60f);
+				
+				dragon.setY(j * 30f);
+				platform.setY(j * 60f);
+				
+				dragon.setZ(20f);
+				platform.setZ(-10f);
+				
+//				dragon.addBehavior(new JiggleBehavior());
+			}
+		}
 		
-		//dragon.addBehavior(new RotateBehavior());
 		
-		gameObjects.add(dragon);
-		gameObjects.add(platform);
 		
 		for (int i = 0; i < 10; i++)
 		{

@@ -32,8 +32,8 @@ public abstract class BaseFrameBuffer
 	{
 		this.buffer = bufferEnum;
 		
-		w = GameConstants.GAME_WIDTH;
-		h = GameConstants.GAME_HEIGHT;
+		w = (int) (GameConstants.GAME_WIDTH * renderScale);
+		h = (int) (GameConstants.GAME_HEIGHT * renderScale);
 
 		bufferId = GL30.glGenFramebuffers();
 		buffer.bufferId = bufferId;

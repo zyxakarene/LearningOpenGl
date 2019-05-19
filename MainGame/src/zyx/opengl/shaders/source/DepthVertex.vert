@@ -9,6 +9,7 @@ layout(location = 4) in vec2 weights;
 
 uniform mat4 model;
 uniform mat4 projectionView;
+uniform vec4 sunNearPlane;
 
 void main()
 {
@@ -19,5 +20,15 @@ void main()
 
 	vec4 worldPosition = model * transformedPos;
 
-    gl_Position = projectionView * worldPosition;
+	vec4 glView = projectionView * worldPosition;
+
+	float origX = glView.x;
+	float origY = glView.y;
+	float relocatedX = (origX / 2) - 0.5;
+	float relocatedY = (origY / 2) - 0.5;
+
+	//glView.x = min(0, relocatedX);
+	//glView.y = min(0, relocatedY);
+
+    gl_Position = glView;
 }

@@ -10,6 +10,7 @@ layout(location = 4) in vec2 weights;
 out vec2 Texcoord;
 out vec3 Normal;
 out vec4 WorldPos;
+out float Z;
 
 uniform mat4 model;
 uniform mat4 modelInverseTranspose;
@@ -28,4 +29,5 @@ void main()
     Normal = mat3(modelInverseTranspose) * vec3(transformedNorm);
 	WorldPos = worldPosition;
     gl_Position = projectionView * worldPosition;
+	Z = gl_Position.z;
 }

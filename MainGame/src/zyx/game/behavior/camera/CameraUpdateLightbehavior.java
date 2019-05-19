@@ -11,8 +11,10 @@ import zyx.game.controls.input.KeyboardData;
 import zyx.opengl.GLUtils;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.camera.Projection;
+import zyx.opengl.camera.ViewFrustum;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.opengl.shaders.implementations.DepthShader;
 import zyx.opengl.shaders.implementations.LightingPassShader;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.WorldShader;
@@ -25,6 +27,7 @@ import zyx.utils.cheats.Print;
 public class CameraUpdateLightbehavior extends Behavior
 {
 
+	private DepthShader depthShader;
 	private LightingPassShader lightShader;
 	private WorldShader worldShader;
 	private Vector3f cameraRot;
@@ -39,6 +42,7 @@ public class CameraUpdateLightbehavior extends Behavior
 	public void initialize()
 	{
 		cameraRot = new Vector3f();
+		depthShader = (DepthShader) ShaderManager.INSTANCE.get(Shader.DEPTH);
 		lightShader = (LightingPassShader) ShaderManager.INSTANCE.get(Shader.DEFERED_LIGHT_PASS);
 		worldShader = (WorldShader) ShaderManager.INSTANCE.get(Shader.WORLD);
 		controller = (CameraController) gameObject;
@@ -99,6 +103,12 @@ public class CameraUpdateLightbehavior extends Behavior
 		cameraRotationRad.z = FloatMath.toRadians(cameraRotation.z);
 		cameraRotationRad.w = FloatMath.toRadians(cameraRotation.x + 90);
 
+		ViewFrustum fru = new ViewFrustum();
+		fru.extractPlanesFrom(SharedShaderObjects.WORLD_PROJECTION_VIEW_TRANSFORM);
+		fru.near.d = -100000f;
+		depthShader.uploadSunNearPlane(fru.near);
+		
+		
 		gameObject.getDir(false, cameraDir);
 	}
 
@@ -124,17 +134,22 @@ public class CameraUpdateLightbehavior extends Behavior
 		float tanHalfHFOV = FloatMath.tan(FloatMath.DEG_TO_RAD * (GameConstants.FOV / 2f));
 		float tanHalfVFOV = FloatMath.tan(FloatMath.DEG_TO_RAD * ((GameConstants.FOV * ar) / 2f));
 		
-		tanHalfHFOV *= 1.9f;
-		tanHalfVFOV *= 1.9f;
+		tanHalfHFOV *= 3f;
+		tanHalfVFOV *= 3f;
 
 		float[] m_cascadeEnd = new float[]
 		{
-			5f,
-			-30,
-			-80f,
-			-100f
+			-1f,
+			-60,
+			-100f,
+			-150f
 		};
 
+		for (int i = 0; i < m_cascadeEnd.length; i++)
+		{
+			m_cascadeEnd[i] = m_cascadeEnd[i] * 0.5f;
+		}
+		
 		int cascadeCount = m_cascadeEnd.length - 1;
 		for (int i = 0; i < cascadeCount; i++)
 		{
@@ -177,8 +192,8 @@ public class CameraUpdateLightbehavior extends Behavior
 
 				if (KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
 				{
-//					DebugPoint point = DebugPoint.addToScene(vW, 0);
-//					point.setScale(0.1f, 0.1f, 0.1f);
+					DebugPoint point = DebugPoint.addToScene(vW, 0);
+					point.setScale(1f, 1f, 1f);
 				}
 				
 				// Transform the frustum coordinate from world to light space
@@ -212,15 +227,18 @@ public class CameraUpdateLightbehavior extends Behavior
 			{
 				if (KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
 				{
-					DebugPoint.addToScene(maxX, maxY, minZ, 0);
-					DebugPoint.addToScene(minX, maxY, minZ, 0);
-					DebugPoint.addToScene(maxX, minY, minZ, 0);
-					DebugPoint.addToScene(minX, minY, minZ, 0);
+					maxZ -= 1000f;
+					minZ += 100f;
 					
-					DebugPoint.addToScene(maxX, maxY, maxZ, 0);
-					DebugPoint.addToScene(minX, maxY, maxZ, 0);
-					DebugPoint.addToScene(maxX, minY, maxZ, 0);
-					DebugPoint.addToScene(minX, minY, maxZ, 0);
+//					DebugPoint.addToScene(maxX, maxY, minZ, 0);
+//					DebugPoint.addToScene(minX, maxY, minZ, 0);
+//					DebugPoint.addToScene(maxX, minY, minZ, 0);
+//					DebugPoint.addToScene(minX, minY, minZ, 0);
+//					
+//					DebugPoint.addToScene(maxX, maxY, maxZ, 0);
+//					DebugPoint.addToScene(minX, maxY, maxZ, 0);
+//					DebugPoint.addToScene(maxX, minY, maxZ, 0);
+//					DebugPoint.addToScene(minX, minY, maxZ, 0);
 				}
 				
 				Projection.createOrthographic(n, f, l, r, t, b, ortho);

@@ -2,6 +2,7 @@ package zyx.opengl.shaders.implementations;
 
 import org.lwjgl.util.vector.Matrix4f;
 import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.utils.geometry.Plane;
 
 public class DepthShader extends BaseBoneShader
 {
@@ -11,6 +12,7 @@ public class DepthShader extends BaseBoneShader
 
 	private int projectionViewMatrixTrans;
 	private int modelMatrixTrans;
+	private int sunNearPlaneUniform;
 
 	public DepthShader(Object lock)
 	{
@@ -22,6 +24,7 @@ public class DepthShader extends BaseBoneShader
 	{
 		modelMatrixTrans = UniformUtils.createUniform(program, "model");
 		projectionViewMatrixTrans = UniformUtils.createUniform(program, "projectionView");
+		sunNearPlaneUniform = UniformUtils.createUniform(program, "sunNearPlane");
 	}
 
 	@Override
@@ -31,6 +34,12 @@ public class DepthShader extends BaseBoneShader
 		UniformUtils.setUniformMatrix(projectionViewMatrixTrans, MATRIX_PROJECTION_VIEW);
 
 		//uploadBones();
+	}
+
+	public void uploadSunNearPlane(Plane near)
+	{
+		bind();
+		UniformUtils.setUniform4F(sunNearPlaneUniform, near.a, near.b, near.c, near.d);
 	}
 
 	@Override
@@ -50,5 +59,5 @@ public class DepthShader extends BaseBoneShader
 	{
 		return "DepthShader";
 	}
-	
+
 }
