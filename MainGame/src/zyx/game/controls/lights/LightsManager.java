@@ -30,6 +30,8 @@ public class LightsManager
 	private LightSorter lightSorter;
 	private LightingPassShader lightShader;
 	private DepthShader depthShader;
+	
+	private Vector3f sunDir;
 
 	private LightsManager()
 	{
@@ -38,6 +40,8 @@ public class LightsManager
 
 		nearestLightCount = GameConstants.LIGHT_COUNT;
 		nearestLights = new ILight[nearestLightCount];
+		
+		sunDir = new Vector3f();
 	}
 
 	public void setSource(WorldObject viewer)
@@ -91,10 +95,9 @@ public class LightsManager
 		if (currentSun != null)
 		{
 			currentSun.calculateShadows();
-			Vector3f dir = new Vector3f();
-			currentSun.getSunDirection(dir);
 			
-			lightShader.uploadLightDirection(dir);
+			currentSun.getSunDirection(sunDir);
+			lightShader.uploadLightDirection(sunDir);
 			lightShader.uploadSunMatrix();
 			
 			depthShader.uploadSunMatrix();

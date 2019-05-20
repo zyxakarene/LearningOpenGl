@@ -5,7 +5,6 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.game.controls.lights.LightsManager;
-import zyx.opengl.camera.Camera;
 import zyx.opengl.camera.Projection;
 import zyx.opengl.lighs.ISun;
 import zyx.opengl.shaders.SharedShaderObjects;
@@ -20,10 +19,10 @@ public class GameSun extends WorldObject implements ISun
 	private static final Vector3f HELPER_VEC = new Vector3f();
 	private static final Vector4f HELPER_WORLD_SPACE = new Vector4f();
 
-	private Vector4f cameraRotationRad;
 	private boolean dirtyPos;
 
 	private Matrix4f invertedCamera;
+	private Vector3f globalLightDir;
 
 	private final int cascadeCount = 4;
 	private float[] cascadeLimits = new float[cascadeCount + 1];
@@ -32,11 +31,12 @@ public class GameSun extends WorldObject implements ISun
 	private HashMap<Integer, Vector4f[]> frustumCornerMap;
 	private Matrix4f[] cascadeToMatrixMap;
 
-	public GameSun()
+	GameSun()
 	{
 		super(Shader.WORLD);
 
-		cameraRotationRad = new Vector4f();
+		globalLightDir = new Vector3f();
+		
 		invertedCamera = new Matrix4f();
 		frustumCornersL = new Vector4f[8];
 		frustumCornerMap = new HashMap<>();
@@ -64,15 +64,19 @@ public class GameSun extends WorldObject implements ISun
 		LightsManager.getInstane().setSun(this);
 	}
 
-	@Override
-	protected void updateTransforms(boolean alsoChildren)
+	void setEnabled(boolean enabled)
 	{
-		super.updateTransforms(alsoChildren);
-
-		dirtyPos = true;
+		if (enabled)
+		{
+			LightsManager.getInstane().setSun(this);
+		}
+		else
+		{
+			LightsManager.getInstane().setSun(null);
+		}
 	}
 
-	public void setCascades(float[] cascades)
+	void setCascades(float[] cascades)
 	{
 		if (cascades.length != cascadeLimits.length)
 		{
@@ -116,7 +120,7 @@ public class GameSun extends WorldObject implements ISun
 			frustumCorners[7].set(-xf, -yf, cascadeLimits[i + 1], 1);
 		}
 	}
-
+	
 	private Vector4f[] createFrustumCorners(int id)
 	{
 		Vector4f[] corners = new Vector4f[8];
@@ -131,6 +135,14 @@ public class GameSun extends WorldObject implements ISun
 	}
 	
 	@Override
+	protected void updateTransforms(boolean alsoChildren)
+	{
+		super.updateTransforms(alsoChildren);
+
+		dirtyPos = true;
+	}
+	
+	@Override
 	protected void onDraw()
 	{
 	}
@@ -138,7 +150,7 @@ public class GameSun extends WorldObject implements ISun
 	@Override
 	public void getSunDirection(Vector3f out)
 	{
-		super.getDir(false, out);
+		out.set(globalLightDir);
 	}
 
 	@Override
@@ -207,14 +219,16 @@ public class GameSun extends WorldObject implements ISun
 	private void setRotation()
 	{
 		getRotation(false, HELPER_VEC);
-		cameraRotationRad.x = FloatMath.toRadians(HELPER_VEC.x);
-		cameraRotationRad.y = FloatMath.toRadians(HELPER_VEC.y);
-		cameraRotationRad.z = FloatMath.toRadians(HELPER_VEC.z);
+		float x = FloatMath.toRadians(HELPER_VEC.x);
+		float y = FloatMath.toRadians(HELPER_VEC.y);
+		float z = FloatMath.toRadians(HELPER_VEC.z);
 
 		Matrix4f viewMatrix = SharedShaderObjects.SUN_VIEW_TRANSFORM;
 		viewMatrix.setIdentity();
-		viewMatrix.rotate(cameraRotationRad.x, GeometryUtils.ROTATION_X);
-		viewMatrix.rotate(cameraRotationRad.y, GeometryUtils.ROTATION_Y);
-		viewMatrix.rotate(cameraRotationRad.z, GeometryUtils.ROTATION_Z);
+		viewMatrix.rotate(x, GeometryUtils.ROTATION_X);
+		viewMatrix.rotate(y, GeometryUtils.ROTATION_Y);
+		viewMatrix.rotate(z, GeometryUtils.ROTATION_Z);
+		
+		globalLightDir.set(viewMatrix.m02, viewMatrix.m12, viewMatrix.m22);
 	}
 }

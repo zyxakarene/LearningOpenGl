@@ -1,5 +1,6 @@
 package zyx.engine.components.world;
 
+import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
 import zyx.opengl.particles.ParticleManager;
@@ -16,6 +17,8 @@ public final class World3D extends WorldObject
 	private DeferredRenderer renderer;
 	private DepthRenderer depth;
 
+	private GameSun sun;
+	
 	private World3D()
 	{
 		super(Shader.WORLD);
@@ -23,6 +26,8 @@ public final class World3D extends WorldObject
 
 		renderer = DeferredRenderer.getInstance();
 		depth = DepthRenderer.getInstance();
+		
+		sun = new GameSun();
 	}
 
 	public void drawScene()
@@ -38,6 +43,21 @@ public final class World3D extends WorldObject
 		ParticleManager.getInstance().draw();
 	}
 
+	public void setSunDir(Vector3f dir)
+	{
+		sun.setDir(true, dir);
+	}
+
+	public void setSunRotation(Vector3f rotation)
+	{
+		sun.setRotation(rotation);
+	}
+	
+	public void setSunEnabled(boolean enabled)
+	{
+		sun.setEnabled(enabled);
+	}
+	
 	@Override
 	protected void onDraw()
 	{
