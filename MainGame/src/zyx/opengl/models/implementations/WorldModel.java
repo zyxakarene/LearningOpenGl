@@ -18,16 +18,18 @@ import zyx.opengl.shaders.implementations.DepthShader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.MissingTexture;
 import zyx.utils.GameConstants;
+import zyx.utils.interfaces.IShadowable;
 
-public class WorldModel extends AbstractModel
+public class WorldModel extends AbstractModel implements IShadowable
 {
+
 	private WorldShader shader;
 	private DepthShader shadowShader;
 
 	private Skeleton skeleton;
-	
+
 	private PhysBox physBox;
-	
+
 	private Vector3f radiusCenter;
 	private float radius;
 
@@ -41,7 +43,7 @@ public class WorldModel extends AbstractModel
 		physBox = vo.physBox;
 		radiusCenter = vo.radiusCenter;
 		radius = vo.radius;
-		
+
 		setVertexData(vo.vertexData, vo.elementData);
 		AbstractTexture[] texs = new AbstractTexture[]
 		{
@@ -55,7 +57,7 @@ public class WorldModel extends AbstractModel
 	{
 		return DebugDrawCalls.canDrawWorld();
 	}
-	
+
 	public Joint getAttatchment(String name)
 	{
 		return skeleton.getBoneByName(name);
@@ -73,26 +75,28 @@ public class WorldModel extends AbstractModel
 		skeleton.update();
 		shader.uploadBones();
 		super.draw();
-		
-		DepthRenderer.getInstance().bindBuffer();
+
+		DepthRenderer.getInstance().drawShadowable(this);
+	}
+
+	@Override
+	public void drawShadow()
+	{
 		shadowShader.bind();
 		shadowShader.upload();
 		shadowShader.uploadBones();
-		
-		
-		GL11.glViewport(0, 0, GameConstants.GAME_WIDTH * 2, GameConstants.GAME_HEIGHT * 2);
+
 		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_0);
 		super.draw();
-		
+
 		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_1);
 		super.draw();
-		
+
 		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_2);
 		super.draw();
-		
+
 		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_3);
 		super.draw();
-		GL11.glViewport(0, 0, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
 	}
 
 	public PhysBox getPhysbox()
@@ -109,7 +113,7 @@ public class WorldModel extends AbstractModel
 	{
 		return radius;
 	}
-		
+
 	@Override
 	protected void setupAttributes()
 	{
@@ -134,13 +138,12 @@ public class WorldModel extends AbstractModel
 	public void dispose()
 	{
 		super.dispose();
-		
+
 		skeleton.dispose();
-		
+
 		skeleton = null;
 		shader = null;
 		physBox = null;
 	}
-	
-	
+
 }

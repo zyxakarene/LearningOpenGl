@@ -30,7 +30,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 
 	public boolean disposed;
 
-	private boolean dirty;
+	boolean dirty;
 	private boolean dirtyInv;
 	protected Matrix4f invWorldMatrix;
 	protected Matrix4f worldMatrix;

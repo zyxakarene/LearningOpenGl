@@ -21,6 +21,7 @@ import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
 import zyx.utils.GeometryUtils;
 import zyx.utils.cheats.DebugPoint;
+import zyx.utils.cheats.Print;
 
 public class CameraUpdateLightbehavior extends Behavior
 {
@@ -76,8 +77,8 @@ public class CameraUpdateLightbehavior extends Behavior
 			Vector3f c = new Vector3f(-mat.m20, -mat.m21, -mat.m22); // OpenGL style matrix (right-handed, column oriented), get the -z row.
 			Vector3f d = new Vector3f(mat.m02, mat.m12, mat.m22); // Right-handed row oriented: get -z column.
 
-			setSunShadowDir();
-			setSunPos();
+//			setSunShadowDir();
+//			setSunPos();
 
 			GLUtils.errorCheck();
 			lightShader.uploadLightDirection(d);
@@ -85,7 +86,7 @@ public class CameraUpdateLightbehavior extends Behavior
 		}
 
 //		setSunPos();
-		setSunPosDynamic();
+//		setSunPosDynamic();
 	}
 
 	private int shadowToUse = 0;
@@ -102,6 +103,7 @@ public class CameraUpdateLightbehavior extends Behavior
 		cameraRotationRad.w = FloatMath.toRadians(cameraRotation.x + 90);		
 		
 		gameObject.getDir(false, cameraDir);
+		Print.out(cameraDir);
 	}
 
 	private void setSunPosDynamic()
