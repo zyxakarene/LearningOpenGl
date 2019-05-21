@@ -28,6 +28,8 @@ public final class World3D extends WorldObject
 		depth = DepthRenderer.getInstance();
 		
 		sun = new GameSun();
+		Vector3f startSunDir = new Vector3f(-0.0626f, 0.7103f, -0.701f);
+		setSunDir(startSunDir);
 	}
 
 	public void drawScene()

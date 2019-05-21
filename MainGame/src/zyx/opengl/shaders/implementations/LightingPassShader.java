@@ -28,6 +28,8 @@ public class LightingPassShader extends AbstractShader
 	private int lightPowersUniform;
 	private int sunProjViewsUniform;
 	private int uvQuadrantOffsetUniform;
+	private int uvQuadrantMinUniform;
+	private int uvQuadrantMaxUniform;
 	
 	private int lastLightCount = -1;
 	private Vector3f[] lightPositions;
@@ -58,6 +60,8 @@ public class LightingPassShader extends AbstractShader
 		lightPowersUniform = UniformUtils.createUniform(program, "lightPowers");
 		sunProjViewsUniform = UniformUtils.createUniform(program, "sunProjViews");
 		uvQuadrantOffsetUniform = UniformUtils.createUniform(program, "shadowUvOffsetPerQuadrant");
+		uvQuadrantMinUniform = UniformUtils.createUniform(program, "uvLimitsMinPerQuadrant");
+		uvQuadrantMaxUniform = UniformUtils.createUniform(program, "uvLimitsMaxPerQuadrant");
 
 		UniformUtils.setUniformInt(positionTexUniform, 0);
 		UniformUtils.setUniformInt(normalTexUniform, 1);
@@ -74,6 +78,24 @@ public class LightingPassShader extends AbstractShader
 			new Vector2f(0.5f, 0.0f),
 		};
 		UniformUtils.setUniformArrayF(uvQuadrantOffsetUniform, uvOffsets);
+		
+		Vector2f[] uvLimitsMin = new Vector2f[]
+		{
+			new Vector2f(0.0f, 0.5f),
+			new Vector2f(0.5f, 0.5f),
+			new Vector2f(0.0f, 0.0f),
+			new Vector2f(0.5f, 0.0f),
+		};
+		UniformUtils.setUniformArrayF(uvQuadrantMinUniform, uvLimitsMin);
+		
+		Vector2f[] uvLimitsMax = new Vector2f[]
+		{
+			new Vector2f(0.5f, 1.0f),
+			new Vector2f(1.0f, 1.0f),
+			new Vector2f(0.5f, 0.5f),
+			new Vector2f(1.0f, 0.5f),
+		};
+		UniformUtils.setUniformArrayF(uvQuadrantMaxUniform, uvLimitsMax);
 	}
 
 	public void uploadLights(ILight[] lights)

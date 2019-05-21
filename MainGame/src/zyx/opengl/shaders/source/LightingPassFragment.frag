@@ -21,6 +21,8 @@ uniform vec3[LIGHT_COUNT] lightPositions;
 uniform vec3 lightDir = vec3(0, 0, -1);
 
 uniform vec2 shadowUvOffsetPerQuadrant[SHADOW_QUADRANTS];
+uniform vec2 uvLimitsMinPerQuadrant[SHADOW_QUADRANTS];
+uniform vec2 uvLimitsMaxPerQuadrant[SHADOW_QUADRANTS];
 uniform mat4 sunProjViews[SHADOW_QUADRANTS];
 
 vec3 handleLightInfo(in int index, in vec3 normal, in vec3 fragmentPosition)
@@ -65,29 +67,9 @@ float ShadowCalculation(vec4 fragPosLightSpace, int quadrant)
 
 
 	vec3 uvCoords = projCoords;
-	vec2 uvLimitsMin;
-	vec2 uvLimitsMax;
-	if(quadrant == 0)
-	{
-		uvLimitsMin = vec2(0.0, 0.5);
-		uvLimitsMax = vec2(0.5, 1.0);
-	}
-	else if(quadrant == 1)
-	{
-		uvLimitsMin = vec2(0.5, 0.5);
-		uvLimitsMax = vec2(1.0, 1.0);
-	}
-	else if(quadrant == 2)
-	{
-		uvLimitsMin = vec2(0.0, 0.0);
-		uvLimitsMax = vec2(0.5, 0.5);
-	}
-	else if(quadrant == 3)
-	{
-		uvLimitsMin = vec2(0.5, 0.0);
-		uvLimitsMax = vec2(1.0, 0.5);
-	}
-
+	vec2 uvLimitsMin = uvLimitsMinPerQuadrant[quadrant];
+	vec2 uvLimitsMax = uvLimitsMaxPerQuadrant[quadrant];
+	
     if(uvCoords.x < uvLimitsMin.x || uvCoords.y < uvLimitsMin.y || uvCoords.x > uvLimitsMax.x || uvCoords.y > uvLimitsMax.y ||
 	   uvCoords.z < 0.0 || uvCoords.z > 1.0)
 	{
@@ -107,7 +89,7 @@ float ShadowCalculation(vec4 fragPosLightSpace, int quadrant)
 				shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;        
 			}    
 		}
-		shadow /= 9.0;
+		shadow = shadow / 9;
 	}
 
     return shadow;
@@ -175,6 +157,6 @@ void main()
 		sunBrightness.b += difuse.b;
 	}
 
-	vec3 outColor = Diffuse * sunBrightness * col;
+	vec3 outColor = Diffuse * sunBrightness; // * col;
     FragColor = vec4(outColor, 1.0);
 }
