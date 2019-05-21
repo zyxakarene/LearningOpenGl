@@ -36,7 +36,7 @@ public class GameEngine
 		new SetupOpenGlCommand().execute();
 		GLUtils.enableGLSettings();
 
-		ShaderManager.INSTANCE.initialize();
+		ShaderManager.getInstance().initialize();
 		CursorManager.getInstance().initialize();
 		Camera.getInstance().initialize();
 

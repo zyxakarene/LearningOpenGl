@@ -37,7 +37,7 @@ public class WorldModel extends AbstractModel implements IShadowable
 	{
 		super(Shader.WORLD);
 		this.shader = (WorldShader) meshShader;
-		this.shadowShader = (DepthShader) ShaderManager.INSTANCE.get(Shader.DEPTH);
+		this.shadowShader = ShaderManager.getInstance().<DepthShader>get(Shader.DEPTH);
 
 		skeleton = vo.skeleton;
 		physBox = vo.physBox;

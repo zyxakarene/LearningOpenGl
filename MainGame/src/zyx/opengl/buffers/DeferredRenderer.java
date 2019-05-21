@@ -69,7 +69,7 @@ public class DeferredRenderer extends BaseFrameBuffer
 	public void draw()
 	{
 		BufferBinder.bindBuffer(Buffer.DEFAULT);
-		ShaderManager.INSTANCE.bind(Shader.DEFERED_LIGHT_PASS);
+		ShaderManager.getInstance().bind(Shader.DEFERED_LIGHT_PASS);
 
 		model.draw();
 

@@ -8,13 +8,18 @@ import zyx.utils.interfaces.IUpdateable;
 public class ShaderManager implements IUpdateable
 {
 
-	public static final ShaderManager INSTANCE = new ShaderManager();
+	private static final ShaderManager INSTANCE = new ShaderManager();
 
 	private final HashMap<Shader, AbstractShader> shaderMap;
 	private final AbstractShader[] shaderArray;
 
 	private final Shader[] shaders;
 
+	public static ShaderManager getInstance()
+	{
+		return INSTANCE;
+	}
+	
 	private ShaderManager()
 	{
 		shaders = Shader.values();
@@ -61,11 +66,13 @@ public class ShaderManager implements IUpdateable
 		shaderMap.get(shader).bind();
 	}
 
-	public AbstractShader get(Shader shader)
+	public <T extends AbstractShader> T get(Shader shader)
 	{
-		return shaderMap.get(shader);
+		AbstractShader abstractShader = shaderMap.get(shader);
+		
+		return (T) abstractShader;
 	}
-
+	
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{

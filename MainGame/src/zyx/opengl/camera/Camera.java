@@ -41,7 +41,7 @@ public class Camera extends WorldObject
 		Projection.createPerspective(GameConstants.FOV, 1f, 1000f, SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION);
 		Projection.createOrthographic(1f, 2f, 2, SharedShaderObjects.UI_ORTHOGRAPHIC_PROJECTION);
 		
-		Projection.createOrthographic(0.1f, 200f, 8f, SharedShaderObjects.SUN_ORTHOGRAPHIC_PROJECTION_CASCADE_1);
+		Projection.createOrthographic(0.1f, 200f, 4f, SharedShaderObjects.SUN_ORTHOGRAPHIC_PROJECTION_CASCADE_1);
 		
 		RayPicker.getInstance().setProjectionMatrix(SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION);
 		

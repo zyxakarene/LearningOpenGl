@@ -72,7 +72,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		dirty = true;
 		dirtyInv = true;
 
-		shader = (ScreenShader) ShaderManager.INSTANCE.get(Shader.SCREEN);
+		shader = ShaderManager.getInstance().<ScreenShader>get(Shader.SCREEN);
 	}
 
 	public Matrix4f worldMatrix()

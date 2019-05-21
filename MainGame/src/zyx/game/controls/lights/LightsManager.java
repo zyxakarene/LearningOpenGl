@@ -49,8 +49,8 @@ public class LightsManager
 		this.viewer = viewer;
 
 		lightSorter.setViewer(viewer);
-		lightShader = (LightingPassShader) ShaderManager.INSTANCE.get(Shader.DEFERED_LIGHT_PASS);
-		depthShader = (DepthShader) ShaderManager.INSTANCE.get(Shader.DEPTH);
+		lightShader = ShaderManager.getInstance().<LightingPassShader>get(Shader.DEFERED_LIGHT_PASS);
+		depthShader = ShaderManager.getInstance().<DepthShader>get(Shader.DEPTH);
 	}
 
 	public void addLight(ILight light)

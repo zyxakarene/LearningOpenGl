@@ -54,7 +54,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 
 		children = new ArrayList<>();
 
-		shader = ShaderManager.INSTANCE.get(type);
+		shader = ShaderManager.getInstance().get(type);
 		disposed = false;
 
 		dirty = false;

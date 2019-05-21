@@ -25,7 +25,7 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 
 	public AbstractModel(Shader shader)
 	{
-		meshShader = ShaderManager.INSTANCE.get(shader);
+		meshShader = ShaderManager.getInstance().get(shader);
 		createObjects();
 		setupAttributes();
 	}
