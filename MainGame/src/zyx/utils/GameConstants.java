@@ -13,6 +13,7 @@ public class GameConstants
 	
 	public static final int GAME_WIDTH = (int) (1920 * 0.75);
 	public static final int GAME_HEIGHT = (int) (1080 * 0.75);
+	public static final float FOV = 70f;
 	
 	public static final Logger LOGGER = Logger.getGlobal();
 	public static final String TEXTURE_FORMAT = "png";

@@ -29,8 +29,6 @@ public class MatrixScene extends Scene implements IResourceReady<JsonResource>
 	@Override
 	protected void onInitialize()
 	{
-		Camera.getInstance().setPosition(true, 10, -50, 0);
-		
 		Vector3f dir1 = new Vector3f(45, 45, 0);
 		dir1.normalise();
 		Vector3f dir2 = new Vector3f(0, 50, 50);
@@ -115,8 +113,11 @@ public class MatrixScene extends Scene implements IResourceReady<JsonResource>
 	@Override
 	protected void onDispose()
 	{
-		parent1.dispose();
-		parent1 = null;
+		if (parent1 != null)
+		{
+			parent1.dispose();
+			parent1 = null;
+		}
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package zyx.opengl.textures;
 
 import zyx.opengl.textures.enums.TextureSlot;
-import org.lwjgl.opengl.GL11;
 import zyx.opengl.textures.impl.CheckerdColorTexture;
 
 public class MissingTexture extends AbstractTexture
@@ -18,8 +17,6 @@ public class MissingTexture extends AbstractTexture
 		
 		return instance;
 	}
-	
-	private static final int BUFFER_ID = 0;
 
 	private CheckerdColorTexture texture;
 
@@ -28,21 +25,18 @@ public class MissingTexture extends AbstractTexture
 		super("MissingTexture", TextureSlot.SLOT_1);
 
 		texture = new CheckerdColorTexture(0xFF00FF, 0x000000);
-		setSizes(texture.getImageWidth(), texture.getImageHeight());
+		setSizes(texture.getWidth(), texture.getHeight());
 	}
 
 	@Override
 	protected void onBind()
 	{
 		texture.bind();
-
-		//Swallow some error in Slick-Utils
-		//Or maybe I suck at this, who knows!
-		GL11.glGetError();
 	}
 
 	@Override
 	protected void onDispose()
 	{
+		//Do not dispose this forever kept texture. It is eternal and must not be destroyed
 	}
 }

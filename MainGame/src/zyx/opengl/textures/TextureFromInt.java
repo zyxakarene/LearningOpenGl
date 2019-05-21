@@ -2,8 +2,6 @@ package zyx.opengl.textures;
 
 import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import org.newdawn.slick.opengl.TextureImpl;
-import org.newdawn.slick.opengl.renderer.SGL;
 import zyx.opengl.textures.enums.TextureSlot;
 
 public class TextureFromInt extends AbstractTexture
@@ -23,14 +21,8 @@ public class TextureFromInt extends AbstractTexture
 	@Override
 	protected void onBind()
 	{
-		TextureImpl.bindNone();
-		
-		GL11.glEnable(SGL.GL_TEXTURE_2D);
+		TextureBinder.unbindTextures();
 		GL11.glBindTexture(GL_TEXTURE_2D, textureId);
-
-		//Swallow some error in Slick-Utils
-		//Or maybe I suck at this, who knows!
-		GL11.glGetError();
 	}
 
 	@Override

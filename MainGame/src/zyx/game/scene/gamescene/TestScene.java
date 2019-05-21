@@ -67,8 +67,11 @@ public class TestScene extends Scene
 			object.dispose();
 		}
 
-		knight.dispose();
-		knight = null;
+		if (knight != null)
+		{
+			knight.dispose();
+			knight = null;
+		}
 		
 		objects.clear();
 		objects = null;

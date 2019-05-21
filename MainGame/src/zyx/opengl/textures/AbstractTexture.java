@@ -77,7 +77,7 @@ public abstract class AbstractTexture implements IDisposeable
 	@Override
 	public final void dispose()
 	{
-		TextureBinder.dispose(this);
+		TextureBinder.unbindTexture(this);
 
 		onDispose();
 	}

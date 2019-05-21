@@ -3,6 +3,7 @@
 in vec2 Texcoord;
 in vec3 Normal;
 in vec4 WorldPos;
+in float Z;
 
 layout (binding = 0) uniform sampler2D tex;
 
@@ -17,11 +18,10 @@ void main()
 {
 	vec4 materialColor =  texture(tex, vec2(Texcoord.x, -Texcoord.y));
 	materialColor += (100 * debugColor);
+	
+	float dist = Z;
 
-	float dist = distance(WorldPos, vec4(0, 0, 0, 1));
-	dist = dist / 100;
-
-	gPosition = vec4(WorldPos.rgb, 1);
+	gPosition = vec4(WorldPos.xyz, 1);
 	gNormal = vec4(Normal, 1);
 	gAlbedoSpec = materialColor;
 	gDepth = vec4(dist, dist, dist, 1);

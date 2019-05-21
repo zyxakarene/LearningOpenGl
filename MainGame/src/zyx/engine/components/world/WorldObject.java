@@ -30,7 +30,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 
 	public boolean disposed;
 
-	private boolean dirty;
+	boolean dirty;
 	private boolean dirtyInv;
 	protected Matrix4f invWorldMatrix;
 	protected Matrix4f worldMatrix;
@@ -540,7 +540,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 	@Override
 	public void setDir(boolean local, Vector3f dir)
 	{
-		if (local)
+		if (local || parent == null)
 		{
 			MatrixUtils.setDirTo(localMatrix, dir, GeometryUtils.ROTATION_Z);
 			updateTransforms(true);

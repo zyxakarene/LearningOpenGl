@@ -24,7 +24,7 @@ public class DebugResourcePanel extends BaseDebugPanel
 		listScrollPane = new JScrollPane();
 		add(listScrollPane);
 		
-		listModel = new DefaultListModel<>();
+		listModel = new SafeDefaultListModel<>();
 		cellRenderer = new ResourceRenderer();
 
 		list = new JList<>();

@@ -5,19 +5,17 @@ import zyx.engine.components.world.GameLight;
 import zyx.engine.scene.Scene;
 import zyx.game.components.GameObject;
 import zyx.game.behavior.misc.JiggleBehavior;
-import zyx.game.behavior.misc.RotateBehavior;
 import zyx.game.components.MeshObject;
 import zyx.opengl.GLUtils;
 import zyx.utils.FloatMath;
-import zyx.utils.GameConstants;
 
 public class DragonScene extends Scene
 {
-
-	private ArrayList<GameObject> gameObjects = new ArrayList<>();
+	private ArrayList<GameObject> gameObjects;
 
 	public DragonScene()
 	{
+		gameObjects = new ArrayList<>();
 	}
 
 	@Override
@@ -31,16 +29,19 @@ public class DragonScene extends Scene
 	{
 		MeshObject dragon = new MeshObject();
 		dragon.setScale(0.33f, 0.33f, 0.33f);
-//		dragon.setY(20);
-//		dragon.setZ(-10);
 		dragon.load("mesh.dragon");
 		world.addChild(dragon);
-		
-		//dragon.addBehavior(new RotateBehavior());
-		
+
+		MeshObject platform = new MeshObject();
+		platform.load("mesh.platform");
+		world.addChild(platform);
+
 		gameObjects.add(dragon);
+		gameObjects.add(platform);
+
+//		dragon.addBehavior(new JiggleBehavior());
 		
-		for (int i = 0; i < GameConstants.LIGHT_COUNT; i++)
+		for (int i = 0; i < 10; i++)
 		{
 			GameObject lightContainer = new GameObject();
 			GameLight light = new GameLight((int) (0xFFFFFF * Math.random()), 100);

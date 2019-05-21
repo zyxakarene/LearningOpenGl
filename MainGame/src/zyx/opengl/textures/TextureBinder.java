@@ -2,7 +2,7 @@ package zyx.opengl.textures;
 
 import zyx.opengl.textures.enums.TextureSlot;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.opengl.TextureImpl;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 
 public class TextureBinder
 {
@@ -14,7 +14,7 @@ public class TextureBinder
 		int index = texture.slot.index;
 		if (activeTextures[index] != texture)
 		{
-			TextureUtils.activateTextureSlot(texture.slot);
+			activateTextureSlot(texture.slot);
 			
 			activeTextures[index] = texture;
 			texture.onBind();
@@ -23,14 +23,12 @@ public class TextureBinder
 
 	public static void unbindTextures()
 	{
-		TextureImpl.unbind();
-		
 		for (int i = 0; i < activeTextures.length; i++)
 		{
 			AbstractTexture texture = activeTextures[i];
 			if (texture != null)
 			{
-				TextureUtils.activateTextureSlot(texture.slot);
+				activateTextureSlot(texture.slot);
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 				
 				activeTextures[i] = null;
@@ -38,13 +36,20 @@ public class TextureBinder
 		}
 	}
 	
-	static void dispose(AbstractTexture texture)
+	private static void activateTextureSlot(TextureSlot slot)
+	{
+		glActiveTexture(slot.glSlot);
+	}
+	
+	static void unbindTexture(AbstractTexture texture)
 	{
 		int index = texture.slot.index;
 		if (activeTextures[index] == texture)
 		{
-			TextureImpl.unbind();
 			activeTextures[index] = null;
+			
+			activateTextureSlot(texture.slot);
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 		}
 	}
 

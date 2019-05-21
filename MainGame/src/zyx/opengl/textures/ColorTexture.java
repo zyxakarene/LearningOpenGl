@@ -1,12 +1,9 @@
 package zyx.opengl.textures;
 
-import org.lwjgl.opengl.GL11;
 import zyx.opengl.textures.impl.SolidColorTexture;
 
 public class ColorTexture extends AbstractTexture
 {
-
-	private static final int BUFFER_ID = 0;
 
 	private SolidColorTexture texture;
 
@@ -27,10 +24,6 @@ public class ColorTexture extends AbstractTexture
 	protected void onBind()
 	{
 		texture.bind();
-
-		//Swallow some error in Slick-Utils
-		//Or maybe I suck at this, who knows!
-		GL11.glGetError();
 	}
 
 	@Override
@@ -38,7 +31,7 @@ public class ColorTexture extends AbstractTexture
 	{
 		if (texture != null)
 		{
-			texture.release();
+			texture.dispose();
 			texture = null;
 		}
 	}

@@ -4,17 +4,15 @@ import org.lwjgl.util.vector.Matrix4f;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
 
-class Projection
+public class Projection
 {
 
 	private static final float WIDTH = GameConstants.GAME_WIDTH;
 	private static final float HEIGHT = GameConstants.GAME_HEIGHT;
 
-	static Matrix4f createPerspective(float fov, float near, float far, Matrix4f out)
+	public static Matrix4f createPerspective(float fov, float near, float far, Matrix4f out)
 	{
 		float aspect = WIDTH / HEIGHT;
-
-		far *= 30;
 
 		float angle = (fov / 180.0f) * FloatMath.PI;
 		float f = 1.0f / FloatMath.tan(angle * 0.5f);
@@ -31,13 +29,18 @@ class Projection
 		return out;
 	}
 
-	static Matrix4f createOrthographic(float near, float far, Matrix4f out, float scale)
+	public static Matrix4f createOrthographic(float near, float far, float scale, Matrix4f out)
 	{
 		float left = -WIDTH / scale;
 		float right = WIDTH / scale;
 		float top = HEIGHT / scale;
 		float bottom = -HEIGHT / scale;
 
+		return createOrthographic(near, far, left, right, top, bottom, out);
+	}
+
+	public static Matrix4f createOrthographic(float near, float far, float left, float right, float top, float bottom, Matrix4f out)
+	{
 		out.setIdentity();
 
 		out.m00 = 2.0f / (right - left);

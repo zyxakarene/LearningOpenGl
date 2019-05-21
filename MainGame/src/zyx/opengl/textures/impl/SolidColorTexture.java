@@ -14,11 +14,10 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 import org.newdawn.slick.Color;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureImpl;
 import zyx.opengl.textures.TextureBinder;
+import zyx.opengl.textures.custom.ITexture;
 
-public class SolidColorTexture implements Texture
+public class SolidColorTexture implements ITexture
 {
 
 	private int textureId;
@@ -57,75 +56,27 @@ public class SolidColorTexture implements Texture
 	@Override
 	public void bind()
 	{
-		TextureImpl.bindNone();
+		TextureBinder.unbindTextures();
 		GL11.glBindTexture(GL_TEXTURE_2D, textureId);
 	}
 
 	@Override
-	public void release()
+	public void dispose()
 	{
 		GL11.glDeleteTextures(textureId);
-		textureId = 0;
+		textureId = -1;
 	}
 
+	
 	@Override
-	public boolean hasAlpha()
-	{
-		return false;
-	}
-
-	@Override
-	public int getImageHeight()
+	public int getHeight()
 	{
 		return 2;
 	}
 
 	@Override
-	public int getImageWidth()
+	public int getWidth()
 	{
 		return 2;
 	}
-
-	@Override
-	public float getHeight()
-	{
-		return 2;
-	}
-
-	@Override
-	public float getWidth()
-	{
-		return 2;
-	}
-
-	@Override
-	public int getTextureHeight()
-	{
-		return 2;
-	}
-
-	@Override
-	public int getTextureWidth()
-	{
-		return 2;
-	}
-
-	@Override
-	public int getTextureID()
-	{
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
-	public byte[] getTextureData()
-	{
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
-	public String getTextureRef()
-	{
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
-
 }
