@@ -6,7 +6,7 @@ import static org.lwjgl.opengl.GL30.GL_DRAW_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.GL_READ_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 import static org.lwjgl.opengl.GL30.glBlitFramebuffer;
-import zyx.opengl.models.implementations.DeferredLightModel;
+import zyx.opengl.models.implementations.FullScreenQuadModel;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.FrameBufferTexture;
@@ -29,8 +29,11 @@ public class DeferredRenderer extends BaseFrameBuffer
 	private TextureFromInt colorTexture;
 	private TextureFromInt depthTexture;
 	private TextureFromInt shadowDepthTexture;
+	private TextureFromInt ambientOcclusionTexture;
 
-	private DeferredLightModel model;
+	private FullScreenQuadModel model;
+	
+	private boolean hack = false;
 
 	public static DeferredRenderer getInstance()
 	{
@@ -63,11 +66,20 @@ public class DeferredRenderer extends BaseFrameBuffer
 		depthTexture = new TextureFromInt(w, h, depthBuffer.id, TextureSlot.SLOT_3);
 		shadowDepthTexture = new TextureFromInt(w, h, depthInt, TextureSlot.SLOT_4);
 		
-		model = new DeferredLightModel(positionTexture, normalTexture, colorTexture, depthTexture, shadowDepthTexture);
+		model = new FullScreenQuadModel(Shader.DEFERED_LIGHT_PASS, positionTexture, normalTexture, colorTexture, depthTexture, shadowDepthTexture);
 	}
 
 	public void draw()
 	{
+		if (!hack)
+		{
+			hack = true;
+			int ambientInt = AmbientOcclusionRenderer.getInstance().ambientOcclusionInt();
+			ambientOcclusionTexture = new TextureFromInt(w, h, ambientInt, TextureSlot.SLOT_5);
+
+			model = new FullScreenQuadModel(Shader.DEFERED_LIGHT_PASS, positionTexture, normalTexture, colorTexture, depthTexture, shadowDepthTexture, ambientOcclusionTexture);
+		}
+		
 		BufferBinder.bindBuffer(Buffer.DEFAULT);
 		ShaderManager.getInstance().bind(Shader.DEFERED_LIGHT_PASS);
 

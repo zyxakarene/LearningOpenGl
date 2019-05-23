@@ -13,6 +13,7 @@ layout (binding = 1) uniform sampler2D gNormal;
 layout (binding = 2) uniform sampler2D gAlbedoSpec;
 layout (binding = 3) uniform sampler2D gDepth;
 layout (binding = 4) uniform sampler2D gShadowMap;
+layout (binding = 5) uniform sampler2D gAmbientOcclusion;
 
 uniform int[LIGHT_COUNT] lightPowers;
 uniform vec3[LIGHT_COUNT] lightColors;
@@ -101,6 +102,7 @@ void main()
     vec4 FragPos = texture(gPosition, TexCoords).rgba;
     vec3 Normal = texture(gNormal, TexCoords).rgb;
     vec3 Diffuse = texture(gAlbedoSpec, TexCoords).rgb;
+    float AO = texture(gAmbientOcclusion, TexCoords).r;
     float CascadeDepth = texture(gDepth, TexCoords).r;
 	
 /*
@@ -157,6 +159,6 @@ void main()
 		sunBrightness.b += difuse.b;
 	}
 
-	vec3 outColor = Diffuse * sunBrightness; // * col;
+	vec3 outColor = Diffuse * sunBrightness * AO; // * col;
     FragColor = vec4(outColor, 1.0);
 }

@@ -1,6 +1,7 @@
 package zyx.engine.components.world;
 
 import org.lwjgl.util.vector.Vector3f;
+import zyx.opengl.buffers.AmbientOcclusionRenderer;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
 import zyx.opengl.particles.ParticleManager;
@@ -16,6 +17,7 @@ public final class World3D extends WorldObject
 
 	private DeferredRenderer renderer;
 	private DepthRenderer depth;
+	private AmbientOcclusionRenderer ambientOcclusion;
 
 	private GameSun sun;
 	
@@ -26,6 +28,7 @@ public final class World3D extends WorldObject
 
 		renderer = DeferredRenderer.getInstance();
 		depth = DepthRenderer.getInstance();
+		ambientOcclusion = AmbientOcclusionRenderer.getInstance();
 		
 		sun = new GameSun();
 		Vector3f startSunDir = new Vector3f(-0.0626f, 0.7103f, -0.701f);
@@ -35,11 +38,14 @@ public final class World3D extends WorldObject
 	public void drawScene()
 	{
 		depth.prepareRender();
+		ambientOcclusion.prepareRender();
 		renderer.prepareRender();
 
 		shader.bind();
 		draw();
 
+		ambientOcclusion.drawAmbientOcclusion();
+		
 		renderer.draw();
 
 		ParticleManager.getInstance().draw();
