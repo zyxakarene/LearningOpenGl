@@ -145,7 +145,7 @@ void main()
 	float dirLight = DIRECT_LIGHT * invShadowValue;
 	
     float cosTheta = clamp(dot(Normal, lightDir), 0, 1);
-	vec3 sunBrightness = vec3((dirLight * cosTheta) + ambLight);
+	vec3 sunBrightness = vec3((dirLight * cosTheta) + (ambLight * AO));
     
 	float r = 0;
 	float g = 0;
@@ -159,6 +159,6 @@ void main()
 		sunBrightness.b += difuse.b;
 	}
 
-	vec3 outColor = Diffuse * sunBrightness * AO; // * col;
+	vec3 outColor = Diffuse * sunBrightness; // * col;
     FragColor = vec4(outColor, 1.0);
 }

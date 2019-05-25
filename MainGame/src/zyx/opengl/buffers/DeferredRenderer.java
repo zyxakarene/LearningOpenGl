@@ -23,17 +23,19 @@ public class DeferredRenderer extends BaseFrameBuffer
 	private FrameBufferTexture normalBuffer;
 	private FrameBufferTexture colorBuffer;
 	private FrameBufferTexture depthBuffer;
+	private FrameBufferTexture screenPositionBuffer;
+	private FrameBufferTexture screenNormalBuffer;
 
 	private TextureFromInt positionTexture;
 	private TextureFromInt normalTexture;
 	private TextureFromInt colorTexture;
 	private TextureFromInt depthTexture;
 	private TextureFromInt shadowDepthTexture;
+	private TextureFromInt screenPositionTexture;
+	private TextureFromInt screenNormalTexture;
 	private TextureFromInt ambientOcclusionTexture;
 
 	private FullScreenQuadModel model;
-	
-	private boolean hack = false;
 
 	public static DeferredRenderer getInstance()
 	{
@@ -53,33 +55,32 @@ public class DeferredRenderer extends BaseFrameBuffer
 		normalBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_1);
 		colorBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_2);
 		depthBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_3);
+		screenPositionBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_4);
+		screenNormalBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_5);
 	}
 
 	@Override
-	protected void onBufferCreated()
+	void onBuffersCreated()
 	{
 		int depthInt = DepthRenderer.getInstance().depthInt();
-		
+		int ambientInt = AmbientOcclusionRenderer.getInstance().ambientOcclusionInt();
+
 		positionTexture = new TextureFromInt(w, h, positionBuffer.id, TextureSlot.SLOT_0);
 		normalTexture = new TextureFromInt(w, h, normalBuffer.id, TextureSlot.SLOT_1);
 		colorTexture = new TextureFromInt(w, h, colorBuffer.id, TextureSlot.SLOT_2);
 		depthTexture = new TextureFromInt(w, h, depthBuffer.id, TextureSlot.SLOT_3);
 		shadowDepthTexture = new TextureFromInt(w, h, depthInt, TextureSlot.SLOT_4);
-		
-		model = new FullScreenQuadModel(Shader.DEFERED_LIGHT_PASS, positionTexture, normalTexture, colorTexture, depthTexture, shadowDepthTexture);
+		screenPositionTexture = new TextureFromInt(w, h, screenPositionBuffer.id, TextureSlot.SLOT_5);
+		screenNormalTexture = new TextureFromInt(w, h, screenNormalBuffer.id, TextureSlot.SLOT_6);
+		ambientOcclusionTexture = new TextureFromInt(w, h, ambientInt, TextureSlot.SLOT_7);
+
+		model = new FullScreenQuadModel(Shader.DEFERED_LIGHT_PASS,
+										positionTexture, normalTexture, colorTexture, depthTexture, shadowDepthTexture,
+										screenPositionTexture, screenNormalTexture, ambientOcclusionTexture);
 	}
 
 	public void draw()
 	{
-		if (!hack)
-		{
-			hack = true;
-			int ambientInt = AmbientOcclusionRenderer.getInstance().ambientOcclusionInt();
-			ambientOcclusionTexture = new TextureFromInt(w, h, ambientInt, TextureSlot.SLOT_5);
-
-			model = new FullScreenQuadModel(Shader.DEFERED_LIGHT_PASS, positionTexture, normalTexture, colorTexture, depthTexture, shadowDepthTexture, ambientOcclusionTexture);
-		}
-		
 		BufferBinder.bindBuffer(Buffer.DEFAULT);
 		ShaderManager.getInstance().bind(Shader.DEFERED_LIGHT_PASS);
 
@@ -95,7 +96,12 @@ public class DeferredRenderer extends BaseFrameBuffer
 	{
 		return new int[]
 		{
-			positionBuffer.attachment, normalBuffer.attachment, colorBuffer.attachment, depthBuffer.attachment
+			positionBuffer.attachment,
+			normalBuffer.attachment,
+			colorBuffer.attachment,
+			depthBuffer.attachment,
+			screenPositionBuffer.attachment,
+			screenNormalBuffer.attachment
 		};
 	}
 

@@ -2,6 +2,7 @@
 
 in vec2 Texcoord;
 in vec3 Normal;
+in vec3 ScreenPos;
 in vec4 WorldPos;
 in float Z;
 
@@ -13,6 +14,8 @@ layout (location = 0) out vec4 gPosition;
 layout (location = 1) out vec4 gNormal;
 layout (location = 2) out vec4 gAlbedoSpec;
 layout (location = 3) out vec4 gDepth;
+layout (location = 4) out vec4 gScreenPosition;
+layout (location = 5) out vec4 gScreenNormal;
 
 void main()
 {
@@ -20,8 +23,8 @@ void main()
 	materialColor += (100 * debugColor);
 	
 	float dist = Z;
-
-	gPosition = vec4(WorldPos.xyz, 1);
+	
+	gPosition = vec4(ScreenPos.xyz, 1);
 	gNormal = vec4(Normal, 1);
 	gAlbedoSpec = materialColor;
 	gDepth = vec4(dist, dist, dist, 1);

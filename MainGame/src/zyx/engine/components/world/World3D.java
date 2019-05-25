@@ -2,6 +2,7 @@ package zyx.engine.components.world;
 
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.buffers.AmbientOcclusionRenderer;
+import zyx.opengl.buffers.BufferRenderer;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
 import zyx.opengl.particles.ParticleManager;
@@ -26,6 +27,8 @@ public final class World3D extends WorldObject
 		super(Shader.WORLD);
 		physics = new Physics();
 
+		BufferRenderer.setupBuffers();
+		
 		renderer = DeferredRenderer.getInstance();
 		depth = DepthRenderer.getInstance();
 		ambientOcclusion = AmbientOcclusionRenderer.getInstance();

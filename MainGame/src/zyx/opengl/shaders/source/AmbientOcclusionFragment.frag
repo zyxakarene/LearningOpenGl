@@ -5,36 +5,50 @@ layout (location = 0) out vec4 gAmbientOcclusion;
 
 layout (binding = 0) uniform sampler2D gPosition;
 layout (binding = 1) uniform sampler2D gNormal;
+layout (binding = 2) uniform sampler2D gNoise;
+
+uniform vec3 samples[64];
+uniform mat4 projection;
+
+const vec2 noiseScale = vec2(1920.0 * 0.75 / 4.0, 1080.0 * 0.75 / 4.0); // screen = 1280x720
 
 void main()
 {
-	// retrieve data from gbuffer
-    vec3 FragPos = texture(gPosition, TexCoords).rgb;
-    vec3 Normal = texture(gNormal, TexCoords).rgb;
-	float value = 1;
+	// parameters (you'd probably want to use them as uniforms to more easily tweak the effect)
+	int kernelSize = 16;
+	float radius = 0.5;
+	float bias = 0.025;
 
-	vec3 startOffset = FragPos + (Normal * 2);
-	
-	vec2 texelSize = 1.0 / textureSize(gPosition, 0);
-	texelSize = vec2(0.999,0.999);
-	for(int x = -1; x <= 1; ++x)
-	{
-		for(int y = -1; y <= 1; ++y)
-		{
-			vec3 posSample = texture(gPosition, TexCoords.xy + vec2(x, y) * texelSize).rgb; 
-			vec3 normalSample = texture(gNormal, TexCoords.xy + vec2(x, y) * texelSize).rgb; 
+	// get input for SSAO algorithm
+    vec3 fragPos = texture(gPosition, TexCoords).xyz;
+    vec3 normal = normalize(texture(gNormal, TexCoords).rgb);
+    vec3 randomVec = normalize(texture(gNoise, TexCoords * noiseScale).xyz);
+    // create TBN change-of-basis matrix: from tangent-space to view-space
+    vec3 tangent = normalize(randomVec - normal * dot(randomVec, normal));
+    vec3 bitangent = cross(normal, tangent);
+    mat3 TBN = mat3(tangent, bitangent, normal);
+    // iterate over the sample kernel and calculate occlusion factor
+    float occlusion = 0.0;
+    for(int i = 0; i < kernelSize; ++i)
+    {
+        // get sample position
+        vec3 Sample = TBN * samples[i]; // from tangent to view-space
+        Sample = fragPos + Sample * radius; 
+        
+        // project sample position (to sample texture) (to get position on screen/texture)
+        vec4 offset = vec4(Sample, 1.0);
+        offset = projection * offset; // from view to clip-space
+        offset.xyz /= offset.w; // perspective divide
+        offset.xyz = offset.xyz * 0.5 + 0.5; // transform to range 0.0 - 1.0
+        
+        // get sample depth
+        float sampleDepth = texture(gPosition, offset.xy).z; // get depth value of kernel sample
+        
+        // range check & accumulate
+        float rangeCheck = smoothstep(0.0, 1.0, radius / abs(fragPos.z - sampleDepth));
+        occlusion += (sampleDepth >= Sample.z + bias ? 1.0 : 0.0) * rangeCheck;           
+    }
+    occlusion = 1.0 - (occlusion / kernelSize);
 
-			vec3 offsetSample = posSample + (normalSample * 2);
-			float dist = distance(startOffset, offsetSample);
-
-			if(dist <= 0.3)
-			{
-				value -= 0.1;
-			}
-		}    
-	}
-
-	value = 1 - value;
-
-    gAmbientOcclusion = vec4(value, value, value, 1);
+    gAmbientOcclusion = vec4(occlusion, occlusion, occlusion, 1);
 }

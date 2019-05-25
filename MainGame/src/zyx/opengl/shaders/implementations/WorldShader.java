@@ -7,10 +7,12 @@ import zyx.opengl.shaders.SharedShaderObjects;
 public class WorldShader extends BaseBoneShader
 {
 
+	private static final Matrix4f MATRIX_VIEW = SharedShaderObjects.SHARED_WORLD_VIEW_TRANSFORM;
 	private static final Matrix4f MATRIX_PROJECTION_VIEW = SharedShaderObjects.WORLD_PROJECTION_VIEW_TRANSFORM;
 	private static final Matrix4f MATRIX_MODEL = SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM;
 	private static final Matrix4f MATRIX_MODEL_INVERT_TRANSPOSE = new Matrix4f();
 
+	private int ViewMatrixTrans;
 	private int projectionViewMatrixTrans;
 	private int modelMatrixTrans;
 	private int debugColor;
@@ -28,6 +30,7 @@ public class WorldShader extends BaseBoneShader
 		debugColor = UniformUtils.createUniform(program, "debugColor");
 		modelMatrixTrans = UniformUtils.createUniform(program, "model");
 		projectionViewMatrixTrans = UniformUtils.createUniform(program, "projectionView");
+		ViewMatrixTrans = UniformUtils.createUniform(program, "view");
 
 		modelMatrixTrans_InverseTranspose = UniformUtils.createUniform(program, "modelInverseTranspose");
 	}
@@ -38,6 +41,7 @@ public class WorldShader extends BaseBoneShader
 		UniformUtils.setUniformInt(debugColor, DebugDrawCalls.shouldHighlightWorld() ? 1 : 0);
 		UniformUtils.setUniformMatrix(modelMatrixTrans, MATRIX_MODEL);
 		UniformUtils.setUniformMatrix(projectionViewMatrixTrans, MATRIX_PROJECTION_VIEW);
+		UniformUtils.setUniformMatrix(ViewMatrixTrans, MATRIX_VIEW);
 
 		MATRIX_MODEL_INVERT_TRANSPOSE.load(MATRIX_MODEL);
 		MATRIX_MODEL_INVERT_TRANSPOSE.invert();
