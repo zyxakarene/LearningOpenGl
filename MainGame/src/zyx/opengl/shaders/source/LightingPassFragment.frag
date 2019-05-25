@@ -1,7 +1,7 @@
 #version 420
 const float AMBIENT_LIGHT = 0.25;//The default light everything is receiving
 const float DIRECT_LIGHT = 1.0 - AMBIENT_LIGHT;//The light recieved when facing the light
-const int LIGHT_COUNT = 325;//How many lights do we support
+const int LIGHT_COUNT = 100;//How many lights do we support
 const int SHADOW_QUADRANTS = 4;//Amount of quadrants
 
 in vec2 TexCoords;
@@ -145,7 +145,7 @@ void main()
 	float dirLight = DIRECT_LIGHT * invShadowValue;
 	
     float cosTheta = clamp(dot(Normal, lightDir), 0, 1);
-	vec3 sunBrightness = vec3((dirLight * cosTheta) + (ambLight * AO));
+	vec3 sunBrightness = vec3((dirLight * cosTheta) + (ambLight));
     
 	float r = 0;
 	float g = 0;
@@ -159,6 +159,6 @@ void main()
 		sunBrightness.b += difuse.b;
 	}
 
-	vec3 outColor = Diffuse * sunBrightness; // * col;
+	vec3 outColor = Diffuse * sunBrightness * AO; // * col;
     FragColor = vec4(outColor, 1.0);
 }

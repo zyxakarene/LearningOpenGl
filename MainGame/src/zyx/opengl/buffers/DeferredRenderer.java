@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL30.GL_DRAW_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.GL_READ_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 import static org.lwjgl.opengl.GL30.glBlitFramebuffer;
+import zyx.opengl.GLUtils;
 import zyx.opengl.models.implementations.FullScreenQuadModel;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
@@ -31,8 +32,6 @@ public class DeferredRenderer extends BaseFrameBuffer
 	private TextureFromInt colorTexture;
 	private TextureFromInt depthTexture;
 	private TextureFromInt shadowDepthTexture;
-	private TextureFromInt screenPositionTexture;
-	private TextureFromInt screenNormalTexture;
 	private TextureFromInt ambientOcclusionTexture;
 
 	private FullScreenQuadModel model;
@@ -70,13 +69,11 @@ public class DeferredRenderer extends BaseFrameBuffer
 		colorTexture = new TextureFromInt(w, h, colorBuffer.id, TextureSlot.SLOT_2);
 		depthTexture = new TextureFromInt(w, h, depthBuffer.id, TextureSlot.SLOT_3);
 		shadowDepthTexture = new TextureFromInt(w, h, depthInt, TextureSlot.SLOT_4);
-		screenPositionTexture = new TextureFromInt(w, h, screenPositionBuffer.id, TextureSlot.SLOT_5);
-		screenNormalTexture = new TextureFromInt(w, h, screenNormalBuffer.id, TextureSlot.SLOT_6);
-		ambientOcclusionTexture = new TextureFromInt(w, h, ambientInt, TextureSlot.SLOT_7);
+		ambientOcclusionTexture = new TextureFromInt(w, h, ambientInt, TextureSlot.SLOT_5);
 
 		model = new FullScreenQuadModel(Shader.DEFERED_LIGHT_PASS,
 										positionTexture, normalTexture, colorTexture, depthTexture, shadowDepthTexture,
-										screenPositionTexture, screenNormalTexture, ambientOcclusionTexture);
+										ambientOcclusionTexture);
 	}
 
 	public void draw()
@@ -84,10 +81,15 @@ public class DeferredRenderer extends BaseFrameBuffer
 		BufferBinder.bindBuffer(Buffer.DEFAULT);
 		ShaderManager.getInstance().bind(Shader.DEFERED_LIGHT_PASS);
 
+		GLUtils.disableDepthWrite();
 		model.draw();
+		GLUtils.enableDepthWrite();
+		
+		int readBufferId = AmbientOcclusionRenderer.getInstance().depthBufferId;
+		int writeBufferId = Buffer.DEFAULT.bufferId;
 
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, depthBufferId);
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0); // write to default framebuffer
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, readBufferId);
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, writeBufferId); // write to default framebuffer
 		glBlitFramebuffer(0, 0, w, h, 0, 0, w, h, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 	}
 
@@ -123,5 +125,15 @@ public class DeferredRenderer extends BaseFrameBuffer
 	public int depthInt()
 	{
 		return depthBuffer.id;
+	}
+
+	public int screenPositionInt()
+	{
+		return screenPositionBuffer.id;
+	}
+
+	public int screenNormalInt()
+	{
+		return screenNormalBuffer.id;
 	}
 }

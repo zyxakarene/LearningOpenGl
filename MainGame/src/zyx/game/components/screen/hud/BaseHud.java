@@ -39,6 +39,18 @@ public class BaseHud extends JsonSprite
 		debugNorm.setTexture(new TextureFromInt(SIZE, SIZE, renderer.normalInt(), TextureSlot.SLOT_0));
 		addChild(debugNorm);
 		
+		Image debugScreenPos = new Image();
+		debugScreenPos.setScale(1, -1);
+		debugScreenPos.setPosition(true, SIZE * 0, GameConstants.GAME_HEIGHT - (SIZE * 1));
+		debugScreenPos.setTexture(new TextureFromInt(SIZE, SIZE, renderer.screenPositionInt(), TextureSlot.SLOT_0));
+		addChild(debugScreenPos);
+		
+		Image debugScreenNorm = new Image();
+		debugScreenNorm.setScale(1, -1);
+		debugScreenNorm.setPosition(true, SIZE * 1, GameConstants.GAME_HEIGHT - (SIZE * 1));
+		debugScreenNorm.setTexture(new TextureFromInt(SIZE, SIZE, renderer.screenNormalInt(), TextureSlot.SLOT_0));
+		addChild(debugScreenNorm);
+		
 		Image debugCol = new Image();
 		debugCol.setScale(1, -1);
 		debugCol.setPosition(true, SIZE * 2, GameConstants.GAME_HEIGHT);

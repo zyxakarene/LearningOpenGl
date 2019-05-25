@@ -66,10 +66,10 @@ public class AmbientOcclusionRenderer extends BaseFrameBuffer
 	{
 		createNoiseTexture();
 		
-		int positionTextureId = DeferredRenderer.getInstance().positionInt();
+		int positionTextureId = DeferredRenderer.getInstance().screenPositionInt();
 		positionTexture = new TextureFromInt(w, h, positionTextureId, TextureSlot.SLOT_0);
 
-		int normalTextureId = DeferredRenderer.getInstance().normalInt();
+		int normalTextureId = DeferredRenderer.getInstance().screenNormalInt();
 		normalTexture = new TextureFromInt(w, h, normalTextureId, TextureSlot.SLOT_1);
 
 		noiseTexture = new TextureFromInt(4, 4, noiseTextureId, TextureSlot.SLOT_2);
@@ -84,7 +84,9 @@ public class AmbientOcclusionRenderer extends BaseFrameBuffer
 		AbstractShader aoShader = ShaderManager.getInstance().get(Shader.AMBIENT_OCCLUSION);
 		aoShader.upload();
 		
+		GLUtils.disableDepthWrite();
 		model.draw();
+		GLUtils.enableDepthWrite();
 	}
 
 	@Override

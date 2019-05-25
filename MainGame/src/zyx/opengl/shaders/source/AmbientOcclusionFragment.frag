@@ -15,8 +15,8 @@ const vec2 noiseScale = vec2(1920.0 * 0.75 / 4.0, 1080.0 * 0.75 / 4.0); // scree
 void main()
 {
 	// parameters (you'd probably want to use them as uniforms to more easily tweak the effect)
-	int kernelSize = 16;
-	float radius = 0.5;
+	int kernelSize = 32;
+	float radius = 0.8;
 	float bias = 0.025;
 
 	// get input for SSAO algorithm
