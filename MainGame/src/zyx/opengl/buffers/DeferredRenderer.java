@@ -53,7 +53,7 @@ public class DeferredRenderer extends BaseFrameBuffer
 	{
 		positionBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_0, TextureFormat.FORMAT_3_CHANNEL_16F);
 		normalBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_1, TextureFormat.FORMAT_3_CHANNEL_16F);
-		colorBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_2, TextureFormat.FORMAT_3_CHANNEL_UBYTE);
+		colorBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_2, TextureFormat.FORMAT_4_CHANNEL_UBYTE);
 		depthBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_3, TextureFormat.FORMAT_1_CHANNEL_16F);
 		screenPositionBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_4, TextureFormat.FORMAT_3_CHANNEL_16F);
 		screenNormalBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_5, TextureFormat.FORMAT_3_CHANNEL_16F);
@@ -81,9 +81,12 @@ public class DeferredRenderer extends BaseFrameBuffer
 	{
 		BufferBinder.bindBuffer(Buffer.DEFAULT);
 		ShaderManager.getInstance().bind(Shader.DEFERED_LIGHT_PASS);
+		ShaderManager.getInstance().get(Shader.DEFERED_LIGHT_PASS).upload();
 
 		GLUtils.disableDepthWrite();
+		GLUtils.disableDepthTest();
 		model.draw();
+		GLUtils.enableDepthTest();
 		GLUtils.enableDepthWrite();
 
 		int readBufferId = AmbientOcclusionRenderer.getInstance().depthBufferId;

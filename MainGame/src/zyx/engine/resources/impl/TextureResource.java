@@ -2,6 +2,7 @@ package zyx.engine.resources.impl;
 
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.textures.GameTexture;
+import zyx.opengl.textures.enums.TextureSlot;
 
 public class TextureResource extends Resource
 {
@@ -22,7 +23,7 @@ public class TextureResource extends Resource
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		texture = new GameTexture(data, path);
+		texture = new GameTexture(data, path, TextureSlot.SLOT_0);
 
 		onContentLoaded(texture);
 	}

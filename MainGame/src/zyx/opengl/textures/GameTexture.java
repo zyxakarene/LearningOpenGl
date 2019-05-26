@@ -4,6 +4,7 @@ import java.io.InputStream;
 import zyx.opengl.textures.custom.ITexture;
 import zyx.opengl.textures.custom.Texture;
 import zyx.opengl.textures.enums.TextureFiltering;
+import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.geometry.Rectangle;
 
 public class GameTexture extends AbstractTexture
@@ -11,23 +12,23 @@ public class GameTexture extends AbstractTexture
 
 	protected ITexture texture;
 
-	protected GameTexture(ITexture parent, Rectangle rect, String name)
+	protected GameTexture(ITexture parent, Rectangle rect, String name, TextureSlot textureSlot)
 	{
-		super(rect, name);
+		super(rect, name, textureSlot);
 
 		texture = parent;
 		
 		setSizes();
 	}
 
-	public GameTexture(InputStream stream, String name)
+	public GameTexture(InputStream stream, String name, TextureSlot textureSlot)
 	{
-		this(stream, null, name);
+		this(stream, name, null, textureSlot);
 	}
 
-	public GameTexture(InputStream stream, Rectangle rect, String name)
+	public GameTexture(InputStream stream, String name, Rectangle rect, TextureSlot textureSlot)
 	{
-		super(rect, name);
+		super(rect, name, textureSlot);
 
 		texture = new Texture(stream, TextureFiltering.NEAREST);
 		setSizes();

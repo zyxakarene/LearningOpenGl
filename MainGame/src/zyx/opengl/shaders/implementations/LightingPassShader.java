@@ -18,11 +18,6 @@ public class LightingPassShader extends AbstractShader
 		SharedShaderObjects.SUN_PROJECTION_VIEW_TRANSFORM_CASCADE_4
 	};
 	
-	private int positionTexUniform;
-	private int normalTexUniform;
-	private int albedoTexUniform;
-	private int depthTexUniform;
-
 	private int lightDirectionUniform;
 	private int lightPositionsUniform;
 	private int lightColorsUniform;
@@ -53,11 +48,6 @@ public class LightingPassShader extends AbstractShader
 	@Override
 	protected void postLoading()
 	{
-		positionTexUniform = UniformUtils.createUniform(program, "gPosition");
-		normalTexUniform = UniformUtils.createUniform(program, "gNormal");
-		albedoTexUniform = UniformUtils.createUniform(program, "gAlbedoSpec");
-		depthTexUniform = UniformUtils.createUniform(program, "gDepth");
-
 		lightDirectionUniform = UniformUtils.createUniform(program, "lightDir");
 		lightPositionsUniform = UniformUtils.createUniform(program, "lightPositions");
 		lightColorsUniform = UniformUtils.createUniform(program, "lightColors");
@@ -67,11 +57,6 @@ public class LightingPassShader extends AbstractShader
 		uvQuadrantMinUniform = UniformUtils.createUniform(program, "uvLimitsMinPerQuadrant");
 		uvQuadrantMaxUniform = UniformUtils.createUniform(program, "uvLimitsMaxPerQuadrant");
 		camPosUniform = UniformUtils.createUniform(program, "camPos");
-
-		UniformUtils.setUniformInt(positionTexUniform, 0);
-		UniformUtils.setUniformInt(normalTexUniform, 1);
-		UniformUtils.setUniformInt(albedoTexUniform, 2);
-		UniformUtils.setUniformInt(depthTexUniform, 3);
 		
 		//0  1
 		//2  3

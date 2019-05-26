@@ -5,6 +5,7 @@ import zyx.engine.components.world.GameLight;
 import zyx.engine.scene.Scene;
 import zyx.game.components.GameObject;
 import zyx.game.behavior.misc.JiggleBehavior;
+import zyx.game.behavior.misc.RotateBehavior;
 import zyx.game.components.MeshObject;
 import zyx.opengl.GLUtils;
 import zyx.utils.FloatMath;
@@ -40,7 +41,7 @@ public class DragonScene extends Scene
 		gameObjects.add(dragon);
 		gameObjects.add(platform);
 
-//		dragon.addBehavior(new JiggleBehavior());
+//		dragon.addBehavior(new RotateBehavior());
 		
 		for (int i = 0; i < GameConstants.LIGHT_COUNT; i++)
 		{

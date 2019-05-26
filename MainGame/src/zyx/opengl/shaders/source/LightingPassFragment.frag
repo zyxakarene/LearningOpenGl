@@ -20,6 +20,7 @@ uniform vec3[LIGHT_COUNT] lightColors;
 uniform vec3[LIGHT_COUNT] lightPositions;
 
 uniform vec3 lightDir = vec3(0, 0, -1);
+uniform vec3 camPos = vec3(-1.8, -7.2, 11.1);
 
 uniform vec2 shadowUvOffsetPerQuadrant[SHADOW_QUADRANTS];
 uniform vec2 uvLimitsMinPerQuadrant[SHADOW_QUADRANTS];
@@ -96,6 +97,18 @@ float ShadowCalculation(vec4 fragPosLightSpace, int quadrant)
     return shadow;
 }
 
+float blendLighten(float base, float blend) {
+	return max(blend,base);
+}
+
+vec3 blendLighten(vec3 base, vec3 blend) {
+	return vec3(blendLighten(base.r,blend.r),blendLighten(base.g,blend.g),blendLighten(base.b,blend.b));
+}
+
+vec3 blendLighten(vec3 base, vec3 blend, float opacity) {
+	return (blendLighten(base, blend) * opacity + base * (1.0 - opacity));
+}
+
 void main()
 {
     // retrieve data from gbuffer
@@ -104,7 +117,8 @@ void main()
     vec3 Diffuse = texture(gAlbedoSpec, TexCoords).rgb;
     float AO = texture(gAmbientOcclusion, TexCoords).r;
     float CascadeDepth = texture(gDepth, TexCoords).r;
-	
+    float Shiny = texture(gAlbedoSpec, TexCoords).a;
+
 /*
 			-1f,
 			-50,
@@ -159,6 +173,13 @@ void main()
 		sunBrightness.b += difuse.b;
 	}
 
+	vec3 I = normalize(FragPos.xyz - camPos);
+    vec3 R = reflect(I, normalize(Normal));
+    vec3 Reflect = vec3(0.5, 0.5, 1);
+
+
 	vec3 outColor = Diffuse * sunBrightness * AO; // * col;
+
+	outColor = blendLighten(outColor, Reflect, Shiny);
     FragColor = vec4(outColor, 1.0);
 }
