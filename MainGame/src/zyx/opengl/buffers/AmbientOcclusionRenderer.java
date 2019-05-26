@@ -27,6 +27,7 @@ import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.FrameBufferTexture;
 import zyx.opengl.textures.TextureFromInt;
 import zyx.opengl.textures.enums.TextureAttachment;
+import zyx.opengl.textures.enums.TextureFormat;
 import zyx.opengl.textures.enums.TextureSlot;
 
 public class AmbientOcclusionRenderer extends BaseFrameBuffer
@@ -57,7 +58,7 @@ public class AmbientOcclusionRenderer extends BaseFrameBuffer
 	@Override
 	protected void onCreateFrameBufferTextures()
 	{
-		ambientOcclusionBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_0);
+		ambientOcclusionBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_0, TextureFormat.FORMAT_1_CHANNEL_16F);
 		
 	}
 

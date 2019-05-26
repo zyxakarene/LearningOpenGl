@@ -13,6 +13,7 @@ import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.FrameBufferTexture;
 import zyx.opengl.textures.TextureFromInt;
 import zyx.opengl.textures.enums.TextureAttachment;
+import zyx.opengl.textures.enums.TextureFormat;
 import zyx.opengl.textures.enums.TextureSlot;
 
 public class DeferredRenderer extends BaseFrameBuffer
@@ -50,12 +51,12 @@ public class DeferredRenderer extends BaseFrameBuffer
 	@Override
 	protected void onCreateFrameBufferTextures()
 	{
-		positionBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_0);
-		normalBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_1);
-		colorBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_2);
-		depthBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_3);
-		screenPositionBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_4);
-		screenNormalBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_5);
+		positionBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_0, TextureFormat.FORMAT_3_CHANNEL_16F);
+		normalBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_1, TextureFormat.FORMAT_3_CHANNEL_16F);
+		colorBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_2, TextureFormat.FORMAT_3_CHANNEL_UBYTE);
+		depthBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_3, TextureFormat.FORMAT_1_CHANNEL_16F);
+		screenPositionBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_4, TextureFormat.FORMAT_3_CHANNEL_16F);
+		screenNormalBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_5, TextureFormat.FORMAT_3_CHANNEL_16F);
 	}
 
 	@Override
@@ -84,7 +85,7 @@ public class DeferredRenderer extends BaseFrameBuffer
 		GLUtils.disableDepthWrite();
 		model.draw();
 		GLUtils.enableDepthWrite();
-		
+
 		int readBufferId = AmbientOcclusionRenderer.getInstance().depthBufferId;
 		int writeBufferId = Buffer.DEFAULT.bufferId;
 

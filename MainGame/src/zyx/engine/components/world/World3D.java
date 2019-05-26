@@ -1,6 +1,7 @@
 package zyx.engine.components.world;
 
 import org.lwjgl.util.vector.Vector3f;
+import zyx.opengl.GLUtils;
 import zyx.opengl.buffers.AmbientOcclusionRenderer;
 import zyx.opengl.buffers.BufferRenderer;
 import zyx.opengl.buffers.DeferredRenderer;
@@ -40,6 +41,10 @@ public final class World3D extends WorldObject
 
 	public void drawScene()
 	{
+		GLUtils.enableDepthWrite();
+		GLUtils.enableCulling();
+		GLUtils.setBlendNormal();
+		
 		depth.prepareRender();
 		ambientOcclusion.prepareRender();
 		renderer.prepareRender();

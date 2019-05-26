@@ -78,7 +78,7 @@ public abstract class BaseFrameBuffer
 		// finally check if framebuffer is complete
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		{
-			System.out.println("Framebuffer not complete!");
+			System.err.println("Framebuffer not complete!");
 			System.exit(-1);
 		}
 	}

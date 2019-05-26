@@ -1,7 +1,7 @@
 #version 420
 in vec2 TexCoords;
 
-layout (location = 0) out vec4 gAmbientOcclusion;
+layout (location = 0) out float gAmbientOcclusion;
 
 layout (binding = 0) uniform sampler2D gPosition;
 layout (binding = 1) uniform sampler2D gNormal;
@@ -50,5 +50,5 @@ void main()
     }
     occlusion = 1.0 - (occlusion / kernelSize);
 
-    gAmbientOcclusion = vec4(occlusion, occlusion, occlusion, 1);
+    gAmbientOcclusion = occlusion;
 }
