@@ -8,6 +8,7 @@ import zyx.game.behavior.misc.JiggleBehavior;
 import zyx.game.components.MeshObject;
 import zyx.opengl.GLUtils;
 import zyx.utils.FloatMath;
+import zyx.utils.GameConstants;
 
 public class DragonScene extends Scene
 {
@@ -41,7 +42,7 @@ public class DragonScene extends Scene
 
 //		dragon.addBehavior(new JiggleBehavior());
 		
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < GameConstants.LIGHT_COUNT; i++)
 		{
 			GameObject lightContainer = new GameObject();
 			GameLight light = new GameLight((int) (0xFFFFFF * Math.random()), 100);

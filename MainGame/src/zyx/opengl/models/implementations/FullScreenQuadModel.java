@@ -4,11 +4,11 @@ import zyx.opengl.models.AbstractModel;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.AbstractTexture;
 
-public class DeferredLightModel extends AbstractModel
+public class FullScreenQuadModel extends AbstractModel
 {
-	public DeferredLightModel(AbstractTexture... textures)
+	public FullScreenQuadModel(Shader shader, AbstractTexture... textures)
 	{
-		super(Shader.DEFERED_LIGHT_PASS);
+		super(shader);
 
 		setTextures(textures);
 		setVertexData();

@@ -8,13 +8,17 @@ layout(location = 4) in vec2 weights;
 #include "BonesShaderLibrary.glsl";
 
 out vec2 Texcoord;
-out vec3 Normal;
-out vec4 WorldPos;
+out vec3 WorldPos;
+out vec3 WorldNormal;
+out vec3 ScreenPos;
+out vec3 ScreenNormal;
 out float Z;
 
 uniform mat4 model;
 uniform mat4 modelInverseTranspose;
+uniform mat4 viewModelInverseTranspose;
 uniform mat4 projectionView;
+uniform mat4 view;
 
 void main()
 {
@@ -24,10 +28,16 @@ void main()
     calculateBones(position, normals, indexes, weights, transformedPos, transformedNorm);
 
 	vec4 worldPosition = model * transformedPos;
+	
+	vec4 viewPos = view * worldPosition;
+    
+    ScreenPos = viewPos.xyz; 
+    ScreenNormal = mat3(viewModelInverseTranspose) * normals;
+
+	WorldPos = worldPosition.xyz;
+    WorldNormal = mat3(modelInverseTranspose) * vec3(transformedNorm);
 
     Texcoord = texcoord;
-    Normal = mat3(modelInverseTranspose) * vec3(transformedNorm);
-	WorldPos = worldPosition;
     gl_Position = projectionView * worldPosition;
 	Z = gl_Position.z;
 }

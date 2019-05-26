@@ -2,6 +2,7 @@ package zyx.game.components.screen.hud;
 
 import zyx.engine.components.screen.image.Image;
 import zyx.game.components.screen.json.JsonSprite;
+import zyx.opengl.buffers.AmbientOcclusionRenderer;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
 import zyx.opengl.textures.TextureFromInt;
@@ -22,6 +23,7 @@ public class BaseHud extends JsonSprite
 	{
 		DeferredRenderer renderer = DeferredRenderer.getInstance();
 		DepthRenderer depthRenderer = DepthRenderer.getInstance();
+		AmbientOcclusionRenderer ambientRenderer = AmbientOcclusionRenderer.getInstance();
 		
 		int SIZE = 128;
 		
@@ -36,6 +38,18 @@ public class BaseHud extends JsonSprite
 		debugNorm.setPosition(true, SIZE * 1, GameConstants.GAME_HEIGHT);
 		debugNorm.setTexture(new TextureFromInt(SIZE, SIZE, renderer.normalInt(), TextureSlot.SLOT_0));
 		addChild(debugNorm);
+		
+		Image debugScreenPos = new Image();
+		debugScreenPos.setScale(1, -1);
+		debugScreenPos.setPosition(true, SIZE * 0, GameConstants.GAME_HEIGHT - (SIZE * 1));
+		debugScreenPos.setTexture(new TextureFromInt(SIZE, SIZE, renderer.screenPositionInt(), TextureSlot.SLOT_0));
+		addChild(debugScreenPos);
+		
+		Image debugScreenNorm = new Image();
+		debugScreenNorm.setScale(1, -1);
+		debugScreenNorm.setPosition(true, SIZE * 1, GameConstants.GAME_HEIGHT - (SIZE * 1));
+		debugScreenNorm.setTexture(new TextureFromInt(SIZE, SIZE, renderer.screenNormalInt(), TextureSlot.SLOT_0));
+		addChild(debugScreenNorm);
 		
 		Image debugCol = new Image();
 		debugCol.setScale(1, -1);
@@ -54,5 +68,11 @@ public class BaseHud extends JsonSprite
 		debugShadow.setPosition(true, SIZE * 4, GameConstants.GAME_HEIGHT);
 		debugShadow.setTexture(new TextureFromInt(SIZE, SIZE, depthRenderer.depthInt(), TextureSlot.SLOT_0));
 		addChild(debugShadow);
+		
+		Image debugAmbientOcclusion = new Image();
+		debugAmbientOcclusion.setScale(1, -1);
+		debugAmbientOcclusion.setPosition(true, SIZE * 5, GameConstants.GAME_HEIGHT);
+		debugAmbientOcclusion.setTexture(new TextureFromInt(SIZE, SIZE, ambientRenderer.ambientOcclusionInt(), TextureSlot.SLOT_0));
+		addChild(debugAmbientOcclusion);
 	}
 }

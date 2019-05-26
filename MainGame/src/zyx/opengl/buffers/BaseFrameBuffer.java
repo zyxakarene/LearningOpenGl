@@ -13,7 +13,6 @@ import static org.lwjgl.opengl.GL30.GL_RENDERBUFFER;
 import static org.lwjgl.opengl.GL30.glBindRenderbuffer;
 import static org.lwjgl.opengl.GL30.glCheckFramebufferStatus;
 import static org.lwjgl.opengl.GL30.glFramebufferRenderbuffer;
-import static org.lwjgl.opengl.GL30.glGenRenderbuffers;
 import static org.lwjgl.opengl.GL30.glRenderbufferStorage;
 import zyx.utils.GameConstants;
 import static org.lwjgl.opengl.GL30.glGenRenderbuffers;
@@ -37,6 +36,10 @@ public abstract class BaseFrameBuffer
 
 		bufferId = GL30.glGenFramebuffers();
 		buffer.bufferId = bufferId;
+	}
+
+	void initialize()
+	{
 		BufferBinder.bindBuffer(buffer);
 
 		onCreateFrameBufferTextures();
@@ -44,8 +47,6 @@ public abstract class BaseFrameBuffer
 		setupBufferValues();
 
 		BufferBinder.bindBuffer(Buffer.DEFAULT);
-
-		onBufferCreated();
 	}
 
 	public void prepareRender()
@@ -86,7 +87,7 @@ public abstract class BaseFrameBuffer
 	{
 	}
 
-	protected void onBufferCreated()
+	void onBuffersCreated()
 	{
 	}
 

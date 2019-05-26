@@ -1,8 +1,10 @@
 #version 420
 
 in vec2 Texcoord;
-in vec3 Normal;
-in vec4 WorldPos;
+in vec3 WorldPos;
+in vec3 WorldNormal;
+in vec3 ScreenPos;
+in vec3 ScreenNormal;
 in float Z;
 
 layout (binding = 0) uniform sampler2D tex;
@@ -13,6 +15,8 @@ layout (location = 0) out vec4 gPosition;
 layout (location = 1) out vec4 gNormal;
 layout (location = 2) out vec4 gAlbedoSpec;
 layout (location = 3) out vec4 gDepth;
+layout (location = 4) out vec4 gScreenPosition;
+layout (location = 5) out vec4 gScreenNormal;
 
 void main()
 {
@@ -20,11 +24,13 @@ void main()
 	materialColor += (100 * debugColor);
 	
 	float dist = Z;
-
-	gPosition = vec4(WorldPos.xyz, 1);
-	gNormal = vec4(Normal, 1);
+	
+	gPosition = vec4(WorldPos, 1);
+	gNormal = vec4(WorldNormal, 1);
 	gAlbedoSpec = materialColor;
 	gDepth = vec4(dist, dist, dist, 1);
+	gScreenPosition = vec4(ScreenPos, 1);
+	gScreenNormal = vec4(ScreenNormal, 1);
 
     //Pretty normals
     //outColor = vec4(0.5 + 0.5 * Normal, 1);

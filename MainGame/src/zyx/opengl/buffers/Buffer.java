@@ -5,7 +5,8 @@ public enum Buffer
 	DEFAULT(0),
 	RENDER_TO_TEXTURE(-1),
 	DEFERRED(-1),
-	DEPTH(-1);
+	DEPTH(-1),
+	AMBIENT_OCCLUSION(-1);
 
 	int bufferId;
 

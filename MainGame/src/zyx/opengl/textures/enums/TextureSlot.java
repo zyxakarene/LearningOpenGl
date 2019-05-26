@@ -9,9 +9,11 @@ public enum TextureSlot
 	SLOT_2(2, GL13.GL_TEXTURE2),
 	SLOT_3(3, GL13.GL_TEXTURE3),
 	SLOT_4(4, GL13.GL_TEXTURE4),
-	SLOT_5(5, GL13.GL_TEXTURE5);
+	SLOT_5(5, GL13.GL_TEXTURE5),
+	SLOT_6(6, GL13.GL_TEXTURE6),
+	SLOT_7(7, GL13.GL_TEXTURE7);
 
-	public static final int COUNT = 6;
+	public static final int COUNT = 8;
 	
 	public final int index;
 	public final int glSlot;

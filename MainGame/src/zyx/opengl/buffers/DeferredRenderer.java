@@ -6,7 +6,8 @@ import static org.lwjgl.opengl.GL30.GL_DRAW_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.GL_READ_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 import static org.lwjgl.opengl.GL30.glBlitFramebuffer;
-import zyx.opengl.models.implementations.DeferredLightModel;
+import zyx.opengl.GLUtils;
+import zyx.opengl.models.implementations.FullScreenQuadModel;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.FrameBufferTexture;
@@ -23,14 +24,17 @@ public class DeferredRenderer extends BaseFrameBuffer
 	private FrameBufferTexture normalBuffer;
 	private FrameBufferTexture colorBuffer;
 	private FrameBufferTexture depthBuffer;
+	private FrameBufferTexture screenPositionBuffer;
+	private FrameBufferTexture screenNormalBuffer;
 
 	private TextureFromInt positionTexture;
 	private TextureFromInt normalTexture;
 	private TextureFromInt colorTexture;
 	private TextureFromInt depthTexture;
 	private TextureFromInt shadowDepthTexture;
+	private TextureFromInt ambientOcclusionTexture;
 
-	private DeferredLightModel model;
+	private FullScreenQuadModel model;
 
 	public static DeferredRenderer getInstance()
 	{
@@ -50,20 +54,26 @@ public class DeferredRenderer extends BaseFrameBuffer
 		normalBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_1);
 		colorBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_2);
 		depthBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_3);
+		screenPositionBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_4);
+		screenNormalBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_5);
 	}
 
 	@Override
-	protected void onBufferCreated()
+	void onBuffersCreated()
 	{
 		int depthInt = DepthRenderer.getInstance().depthInt();
-		
+		int ambientInt = AmbientOcclusionRenderer.getInstance().ambientOcclusionInt();
+
 		positionTexture = new TextureFromInt(w, h, positionBuffer.id, TextureSlot.SLOT_0);
 		normalTexture = new TextureFromInt(w, h, normalBuffer.id, TextureSlot.SLOT_1);
 		colorTexture = new TextureFromInt(w, h, colorBuffer.id, TextureSlot.SLOT_2);
 		depthTexture = new TextureFromInt(w, h, depthBuffer.id, TextureSlot.SLOT_3);
 		shadowDepthTexture = new TextureFromInt(w, h, depthInt, TextureSlot.SLOT_4);
-		
-		model = new DeferredLightModel(positionTexture, normalTexture, colorTexture, depthTexture, shadowDepthTexture);
+		ambientOcclusionTexture = new TextureFromInt(w, h, ambientInt, TextureSlot.SLOT_5);
+
+		model = new FullScreenQuadModel(Shader.DEFERED_LIGHT_PASS,
+										positionTexture, normalTexture, colorTexture, depthTexture, shadowDepthTexture,
+										ambientOcclusionTexture);
 	}
 
 	public void draw()
@@ -71,10 +81,15 @@ public class DeferredRenderer extends BaseFrameBuffer
 		BufferBinder.bindBuffer(Buffer.DEFAULT);
 		ShaderManager.getInstance().bind(Shader.DEFERED_LIGHT_PASS);
 
+		GLUtils.disableDepthWrite();
 		model.draw();
+		GLUtils.enableDepthWrite();
+		
+		int readBufferId = AmbientOcclusionRenderer.getInstance().depthBufferId;
+		int writeBufferId = Buffer.DEFAULT.bufferId;
 
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, depthBufferId);
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0); // write to default framebuffer
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, readBufferId);
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, writeBufferId); // write to default framebuffer
 		glBlitFramebuffer(0, 0, w, h, 0, 0, w, h, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 	}
 
@@ -83,7 +98,12 @@ public class DeferredRenderer extends BaseFrameBuffer
 	{
 		return new int[]
 		{
-			positionBuffer.attachment, normalBuffer.attachment, colorBuffer.attachment, depthBuffer.attachment
+			positionBuffer.attachment,
+			normalBuffer.attachment,
+			colorBuffer.attachment,
+			depthBuffer.attachment,
+			screenPositionBuffer.attachment,
+			screenNormalBuffer.attachment
 		};
 	}
 
@@ -105,5 +125,15 @@ public class DeferredRenderer extends BaseFrameBuffer
 	public int depthInt()
 	{
 		return depthBuffer.id;
+	}
+
+	public int screenPositionInt()
+	{
+		return screenPositionBuffer.id;
+	}
+
+	public int screenNormalInt()
+	{
+		return screenNormalBuffer.id;
 	}
 }
