@@ -13,7 +13,9 @@ public class SmdObject
 	private ArrayList<Animation> animations = new ArrayList<>();
 	private PhysInformation phys = new PhysInformation();
 	private ArrayList<Integer> elements;
-	private String texturePath;
+	private String diffuseTexturePath;
+	private String normalTexturePath;
+	private String specularTexturePath;
 	
 	private Vector3f radiusCenter = new Vector3f();
 	private float radius = 0;
@@ -23,9 +25,19 @@ public class SmdObject
 		this.rootBone = bone;
 	}
 
-	public void setTexturePath(String texturePath)
+	public void setDiffuseTexturePath(String diffuseTexturePath)
 	{
-		this.texturePath = texturePath;
+		this.diffuseTexturePath = diffuseTexturePath;
+	}
+
+	public void setNormalTexturePath(String normalTexturePath)
+	{
+		this.normalTexturePath = normalTexturePath;
+	}
+
+	public void setSpecularTexturePath(String specularTexturePath)
+	{
+		this.specularTexturePath = specularTexturePath;
 	}
 
 	public Bone getRootBone()
@@ -136,7 +148,9 @@ public class SmdObject
 		
 		phys.save(out);
 		
-		out.writeUTF(texturePath);
+		out.writeUTF(diffuseTexturePath);
+		out.writeUTF(normalTexturePath);
+		out.writeUTF(specularTexturePath);
 		
 		out.writeFloat(radiusCenter.x);
 		out.writeFloat(radiusCenter.y);

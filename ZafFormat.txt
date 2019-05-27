@@ -13,7 +13,9 @@ zaf
 	
 	physInformation					SmdPhysInformation
 	
-	UtfString						texture
+	UtfString						diffuseTexture
+	UtfString						normalTexture
+	UtfString						specularTexture
 	
 	CenterPosition					Vector3F
 	Radius							float

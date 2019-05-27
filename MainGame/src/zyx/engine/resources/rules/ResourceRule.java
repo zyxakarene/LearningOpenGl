@@ -19,6 +19,8 @@ public enum ResourceRule
 	MESHES_1_FOLDERS	("mesh.#.#",			"assets/models/#/#.zaf",	MeshResource.class),
 	
 	TEXTURES_BASE		("texture.#",			"assets/textures/#.png",	TextureResource.class),
+	TEXTURES_NORMAL		("normal.#",			"assets/textures/#.png",	NormalTextureResource.class),
+	TEXTURES_SPECULAR	("specular.#",			"assets/textures/#.png",	SpecularTextureResource.class),
 	SOUNDS				("sound.#",				"assets/sounds/#.wav",		SoundResource.class),
 	
 	UNKNOWN				("",					"",							GenericResource.class);

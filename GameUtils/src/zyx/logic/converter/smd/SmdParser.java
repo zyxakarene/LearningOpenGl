@@ -13,7 +13,7 @@ public class SmdParser
 	private File bounding;
 	private File[] animations;
 
-	private File output;
+	private File outputModel;
 	private final QcFile qc;
 
 	public SmdParser(QcFile parsedQc)
@@ -23,7 +23,7 @@ public class SmdParser
 		ref = parsedQc.meshFile;
 		phys = parsedQc.physFile;
 		bounding = parsedQc.boundingFile;
-		output = parsedQc.outModel;
+		outputModel = parsedQc.outModel;
 		
 		animations = new File[parsedQc.animations.size()];
 		parsedQc.animations.toArray(animations);
@@ -38,14 +38,16 @@ public class SmdParser
 		importer.importAnimations(animations);
 		
 		SmdObject smd = importer.getSmd();
-		smd.setTexturePath(qc.getTextureName());
+		smd.setDiffuseTexturePath(qc.getDiffuseTextureName());
+		smd.setNormalTexturePath(qc.getNormalTextureName());
+		smd.setSpecularTexturePath(qc.getSpecularTextureName());
 		
-		if (output.exists() == false)
+		if (outputModel.exists() == false)
 		{
-			output.getParentFile().mkdirs();
+			outputModel.getParentFile().mkdirs();
 		}
 		
-		try (DataOutputStream out = new DataOutputStream(new FileOutputStream(output)))
+		try (DataOutputStream out = new DataOutputStream(new FileOutputStream(outputModel)))
 		{
 			smd.save(out);
 			out.flush();

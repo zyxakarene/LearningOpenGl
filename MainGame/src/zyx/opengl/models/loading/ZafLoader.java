@@ -39,7 +39,8 @@ public class ZafLoader
 
 			PhysBox phys = createPhysBox(smd.physInformation);
 
-			return new LoadableWorldModelVO(smd.vertexData, smd.elementData, skeleton, phys, smd.texture, smd.radiusCenter, smd.radius);
+			return new LoadableWorldModelVO(smd.vertexData, smd.elementData, skeleton, phys, smd.diffuseTexture, smd.normalTexture, smd.specularTexture,
+					smd.radiusCenter, smd.radius);
 		}
 		catch (IOException e)
 		{

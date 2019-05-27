@@ -23,9 +23,15 @@ public class TextureResource extends Resource
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		texture = new GameTexture(data, path, TextureSlot.SLOT_0);
+		TextureSlot slot = getTextureSlot();
+		texture = new GameTexture(data, path, slot);
 
 		onContentLoaded(texture);
+	}
+
+	protected TextureSlot getTextureSlot()
+	{
+		return TextureSlot.SLOT_0;
 	}
 	
 	protected void resourceCreated(GameTexture creation)

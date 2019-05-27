@@ -31,8 +31,8 @@ public abstract class BaseBoneShader extends AbstractShader
 	{
 		synchronized (BONES)
 		{
-			UniformUtils.setUniformMatrix(boneMatrixTrans, BONES);
-			UniformUtils.setUniformMatrix(boneMatrixTrans_InverseTranspose, INVERT_BONES);
+				UniformUtils.setUniformMatrix(boneMatrixTrans, BONES);
+				UniformUtils.setUniformMatrix(boneMatrixTrans_InverseTranspose, INVERT_BONES);
 		}
 	}
 	

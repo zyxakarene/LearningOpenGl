@@ -7,6 +7,7 @@ import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.game.controls.resourceloader.requests.ResourceRequestDataInput;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
+import zyx.utils.cheats.Print;
 
 public abstract class Resource implements IResourceLoaded<ResourceDataInputStream>
 {

@@ -9,10 +9,11 @@ public class QcParser
 	private static final String MESH_START = "$mesh";
 	private static final String PHYS_START = "$phys";
 	private static final String TEXTURE_START = "$texture";
+	private static final String NORMAL_START = "$normal";
+	private static final String SPECULAR_START = "$specular";
 	private static final String ANIMATION_START = "$animation";
 	private static final String BOUNDING_START = "$bounding";
 	private static final String OUT_MODEL_START = "$out_model";
-	private static final String OUT_TEXTURE_START = "$out_texture";
 	
 	private QcFile qc;
 	private QcLineReader reader;
@@ -53,6 +54,14 @@ public class QcParser
 		{
 			reader.readTexture(line, qc);
 		}
+		else if (line.startsWith(NORMAL_START))
+		{
+			reader.readNormal(line, qc);
+		}
+		else if (line.startsWith(SPECULAR_START))
+		{
+			reader.readSpecular(line, qc);
+		}
 		else if (line.startsWith(ANIMATION_START))
 		{
 			reader.readAnimation(line, qc);
@@ -60,10 +69,6 @@ public class QcParser
 		else if (line.startsWith(OUT_MODEL_START))
 		{
 			reader.readOutModel(line, qc);
-		}
-		else if (line.startsWith(OUT_TEXTURE_START))
-		{
-			reader.readOutTexture(line, qc);
 		}
 		else if (line.startsWith(BOUNDING_START))
 		{

@@ -49,7 +49,7 @@ public class ParticleResource extends Resource implements IResourceReady
 	{
 		loadedVo = ZpfLoader.loadFromZpf(data);
 
-		textureResource = ResourceManager.getInstance().getResource(loadedVo.getTexture());
+		textureResource = ResourceManager.getInstance().getResource(loadedVo.getDiffuseTextureId());
 		textureResource.registerAndLoad(this);
 	}
 	
@@ -57,7 +57,7 @@ public class ParticleResource extends Resource implements IResourceReady
 	public void onResourceReady(Resource resource)
 	{
 		AbstractTexture texture = (AbstractTexture) resource.content;
-		loadedVo.setGameTexture(texture);
+		loadedVo.setDiffuseTexture(texture);
 		
 		if (loadedVo.worldParticle)
 		{

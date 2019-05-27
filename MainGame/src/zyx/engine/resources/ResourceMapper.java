@@ -33,6 +33,14 @@ class ResourceMapper
 		{
 			return new TextureResource(path);
 		}
+		else if (resourceClass == NormalTextureResource.class)
+		{
+			return new NormalTextureResource(path);
+		}
+		else if (resourceClass == SpecularTextureResource.class)
+		{
+			return new SpecularTextureResource(path);
+		}
 		else if (resourceClass == ParticleResource.class)
 		{
 			return new ParticleResource(path);

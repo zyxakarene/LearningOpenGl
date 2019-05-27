@@ -43,9 +43,9 @@ public class SetupOpenGlCommand implements ICommand
 		}
 		else
 		{
-			contextAtrributes = new ContextAttribs(3, 2);
+			contextAtrributes = new ContextAttribs(4, 2);
 		}
-		contextAtrributes.withForwardCompatible(true);
+		contextAtrributes.withForwardCompatible(false);
 		contextAtrributes.withProfileCore(true);
 
 		Display.setDisplayMode(new DisplayMode(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT));

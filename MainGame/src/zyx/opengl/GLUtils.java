@@ -1,7 +1,9 @@
 package zyx.opengl;
 
+import jdk.nashorn.internal.objects.NativeError;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
+import zyx.utils.cheats.Print;
 
 public class GLUtils
 {
@@ -12,7 +14,9 @@ public class GLUtils
 		while ((errorID = GL11.glGetError()) != GL11.GL_NO_ERROR)
 		{
 			String msg = String.format("GLError: [%s]", GLU.gluErrorString(errorID));
-			throw new RuntimeException(msg);
+			Print.err(msg);
+			new RuntimeException().printStackTrace();
+			System.exit(-1);
 		}
 	}
 

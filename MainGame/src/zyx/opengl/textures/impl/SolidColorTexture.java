@@ -56,7 +56,6 @@ public class SolidColorTexture implements ITexture
 	@Override
 	public void bind()
 	{
-		TextureBinder.unbindTextures();
 		GL11.glBindTexture(GL_TEXTURE_2D, textureId);
 	}
 

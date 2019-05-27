@@ -148,7 +148,7 @@ void main()
 		col = vec3(1, 1, 1);
 		quadrant = 3;
 	}
-
+	
 
 	mat4 sunProjection = sunProjViews[quadrant];
 	vec4 FragPosSunSpace = sunProjection * FragPos;
@@ -175,7 +175,7 @@ void main()
 
 	vec3 I = normalize(FragPos.xyz - camPos);
     vec3 R = reflect(I, normalize(Normal));
-    vec3 Reflect = vec3(0.5, 0.5, 1);
+    vec3 Reflect = vec3(0.5, 0.5, 1); //texture(gCubeArray, vec4(R, quadrant));
 
 
 	vec3 outColor = Diffuse * sunBrightness * AO; // * col;

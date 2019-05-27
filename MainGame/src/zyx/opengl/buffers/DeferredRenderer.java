@@ -88,7 +88,7 @@ public class DeferredRenderer extends BaseFrameBuffer
 		model.draw();
 		GLUtils.enableDepthTest();
 		GLUtils.enableDepthWrite();
-
+GLUtils.errorCheck();
 		int readBufferId = AmbientOcclusionRenderer.getInstance().depthBufferId;
 		int writeBufferId = Buffer.DEFAULT.bufferId;
 

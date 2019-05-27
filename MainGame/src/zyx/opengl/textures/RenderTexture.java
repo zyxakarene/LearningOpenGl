@@ -31,7 +31,6 @@ public class RenderTexture extends AbstractTexture
 	@Override
 	protected void onBind()
 	{
-		TextureBinder.unbindTextures();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, stencilBufferId);
 	}
 

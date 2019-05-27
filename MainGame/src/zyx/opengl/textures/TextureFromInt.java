@@ -8,7 +8,7 @@ public class TextureFromInt extends AbstractTexture
 {
 
 	private final int textureId;
-
+	
 	public TextureFromInt(int width, int height, int id, TextureSlot slot)
 	{
 		super("TextureFromId:" + id, slot);
@@ -21,7 +21,6 @@ public class TextureFromInt extends AbstractTexture
 	@Override
 	protected void onBind()
 	{
-		TextureBinder.unbindTextures();
 		GL11.glBindTexture(GL_TEXTURE_2D, textureId);
 	}
 

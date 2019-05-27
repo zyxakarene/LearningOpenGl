@@ -1,6 +1,5 @@
 package zyx.opengl.models.implementations;
 
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
@@ -12,12 +11,9 @@ import zyx.opengl.models.implementations.bones.animation.AnimationController;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.implementations.physics.PhysBox;
-import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.DepthShader;
 import zyx.opengl.textures.AbstractTexture;
-import zyx.opengl.textures.MissingTexture;
-import zyx.utils.GameConstants;
 import zyx.utils.interfaces.IShadowable;
 
 public class WorldModel extends AbstractModel implements IShadowable
@@ -47,7 +43,7 @@ public class WorldModel extends AbstractModel implements IShadowable
 		setVertexData(vo.vertexData, vo.elementData);
 		AbstractTexture[] texs = new AbstractTexture[]
 		{
-			vo.gameTexture
+			vo.gameTexture, vo.normalTexture, vo.specularTexture
 		};
 		setTextures(texs);
 	}

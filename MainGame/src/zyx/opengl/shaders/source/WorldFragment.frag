@@ -22,11 +22,8 @@ layout (location = 5) out vec3 gScreenNormal;
 
 void main()
 {
-	//vec4 normValue =  texture(norm, vec2(Texcoord.x, -Texcoord.y));
-	//vec4 specValue =  texture(spec, vec2(Texcoord.x, -Texcoord.y));
-
-	vec4 normValue =  vec4(1, 1, 1, 1);
-	vec4 specValue =  vec4(0);
+	vec4 normValue =  texture(norm, vec2(Texcoord.x, -Texcoord.y));
+	vec4 specValue =  texture(spec, vec2(Texcoord.x, -Texcoord.y));
 
 	vec4 materialColor =  texture(tex, vec2(Texcoord.x, -Texcoord.y));
 	materialColor += (100 * debugColor);
@@ -35,7 +32,7 @@ void main()
 	worldNorms = normalize(worldNorms); 
 
 	gPosition = WorldPos;
-	gNormal = WorldNormal;
+	gNormal = worldNorms;
 	gAlbedoSpec = vec4(materialColor.rgb, specValue.r);
 	gDepth = Z;
 	gScreenPosition = ScreenPos;
