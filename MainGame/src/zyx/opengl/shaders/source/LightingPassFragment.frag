@@ -15,12 +15,14 @@ layout (binding = 3) uniform sampler2D gDepth;
 layout (binding = 4) uniform sampler2D gShadowMap;
 layout (binding = 5) uniform sampler2D gAmbientOcclusion;
 
+layout (binding = 10) uniform samplerCubeArray cubemapArray;
+
 uniform int[LIGHT_COUNT] lightPowers;
 uniform vec3[LIGHT_COUNT] lightColors;
 uniform vec3[LIGHT_COUNT] lightPositions;
 
 uniform vec3 lightDir = vec3(0, 0, -1);
-uniform vec3 camPos = vec3(-1.8, -7.2, 11.1);
+uniform vec3 camPos = vec3(0, 0, 0);
 
 uniform vec2 shadowUvOffsetPerQuadrant[SHADOW_QUADRANTS];
 uniform vec2 uvLimitsMinPerQuadrant[SHADOW_QUADRANTS];
@@ -174,9 +176,8 @@ void main()
 	}
 
 	vec3 I = normalize(FragPos.xyz - camPos);
-    vec3 R = reflect(I, normalize(Normal));
-    vec3 Reflect = vec3(0.5, 0.5, 1); //texture(gCubeArray, vec4(R, quadrant));
-
+    vec3 R = reflect(I, Normal);
+    vec3 Reflect = texture(cubemapArray, vec4(R, 0)).rgb;
 
 	vec3 outColor = Diffuse * sunBrightness * AO; // * col;
 

@@ -6,6 +6,7 @@ import zyx.opengl.buffers.AmbientOcclusionRenderer;
 import zyx.opengl.buffers.BufferRenderer;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
+import zyx.opengl.camera.Camera;
 import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.Shader;
@@ -37,6 +38,8 @@ public final class World3D extends WorldObject
 		sun = new GameSun();
 		Vector3f startSunDir = new Vector3f(-0.0626f, 0.7103f, -0.701f);
 		setSunDir(startSunDir);
+		
+		addChild(Camera.getInstance());
 	}
 
 	public void drawScene()

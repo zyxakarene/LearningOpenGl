@@ -61,6 +61,10 @@ class ResourceMapper
 		{
 			return new SpriteSheetJsonResource(path);
 		}
+		else if (resourceClass == CubemapResource.class)
+		{
+			return new CubemapResource(path);
+		}
 		
 		return new GenericResource(path);
 	}

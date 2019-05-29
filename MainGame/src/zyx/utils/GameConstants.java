@@ -11,6 +11,10 @@ public class GameConstants
 
 	public static final int LIGHT_COUNT = 100;
 	
+//	public static final int GAME_WIDTH = 128;
+//	public static final int GAME_HEIGHT = 128;
+//	public static final float FOV = 90f;
+	
 	public static final int GAME_WIDTH = (int) (1920 * 0.75);
 	public static final int GAME_HEIGHT = (int) (1080 * 0.75);
 	public static final float FOV = 70f;

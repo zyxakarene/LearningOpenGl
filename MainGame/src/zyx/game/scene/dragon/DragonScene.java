@@ -1,20 +1,30 @@
 package zyx.game.scene.dragon;
 
 import java.util.ArrayList;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.components.cubemaps.CubemapProcess;
 import zyx.engine.components.world.GameLight;
+import zyx.engine.resources.ResourceManager;
+import zyx.engine.resources.impl.CubemapResource;
 import zyx.engine.scene.Scene;
+import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.components.GameObject;
 import zyx.game.behavior.misc.JiggleBehavior;
-import zyx.game.behavior.misc.RotateBehavior;
 import zyx.game.components.MeshObject;
+import zyx.game.controls.input.KeyboardData;
+import zyx.game.controls.process.ProcessQueue;
 import zyx.opengl.GLUtils;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
+import zyx.utils.cheats.Print;
 
-public class DragonScene extends Scene
+public class DragonScene extends Scene implements ICallback<ProcessQueue>
 {
 	private ArrayList<GameObject> gameObjects;
-
+	private boolean cubemapping;
+	private ProcessQueue processQueue;
+	
 	public DragonScene()
 	{
 		gameObjects = new ArrayList<>();
@@ -23,12 +33,15 @@ public class DragonScene extends Scene
 	@Override
 	protected void onPreloadResources()
 	{
-		preloadResource("flat_bg");
+		preloadResource("cubemap.dragon");
 	}
 
 	@Override
 	protected void onInitialize()
 	{
+		CubemapResource cubemap = ResourceManager.getInstance().<CubemapResource>getResourceAs("cubemap.dragon");
+		cubemap.getContent().bind();
+		
 		MeshObject dragon = new MeshObject();
 		dragon.setScale(0.33f, 0.33f, 0.33f);
 		dragon.load("mesh.dragon");
@@ -61,6 +74,8 @@ public class DragonScene extends Scene
 			
 			gameObjects.add(lightContainer);
 		}
+		
+		world.setSunRotation(new Vector3f(-33, -5, -21));
 	}
 
 	@Override
@@ -70,6 +85,29 @@ public class DragonScene extends Scene
 		{
 			GameObject obj = gameObjects.get(i);
 			obj.update(timestamp, elapsedTime);
+		}
+		
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_E))
+		{
+			Vector3f cameraRot = camera.getRotation(false, null);
+			Print.out(cameraRot);
+		}
+		
+		if (!cubemapping && KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
+		{
+			cubemapping = true;
+			
+			Vector3f cameraPos = camera.getPosition(false, null);
+			
+			processQueue = new ProcessQueue();
+			processQueue.addProcess(new CubemapProcess(cameraPos));
+			
+			processQueue.start(this);
+		}
+		
+		if (processQueue != null)
+		{
+			processQueue.update(timestamp, elapsedTime);
 		}
 	}
 
@@ -84,5 +122,13 @@ public class DragonScene extends Scene
 		
 		gameObjects.clear();
 		gameObjects = null;
+	}
+
+	@Override
+	public void onCallback(ProcessQueue data)
+	{
+		cubemapping = false;
+		processQueue.dispose();
+		processQueue = null;
 	}
 }

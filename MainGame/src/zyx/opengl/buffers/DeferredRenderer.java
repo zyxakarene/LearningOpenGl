@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL30.GL_DRAW_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.GL_READ_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 import static org.lwjgl.opengl.GL30.glBlitFramebuffer;
+import zyx.engine.components.cubemaps.ICubemapRenderer;
 import zyx.opengl.GLUtils;
 import zyx.opengl.models.implementations.FullScreenQuadModel;
 import zyx.opengl.shaders.ShaderManager;
@@ -36,6 +37,8 @@ public class DeferredRenderer extends BaseFrameBuffer
 	private TextureFromInt ambientOcclusionTexture;
 
 	private FullScreenQuadModel model;
+	
+	private ICubemapRenderer cubemapRenderer;
 
 	public static DeferredRenderer getInstance()
 	{
@@ -88,7 +91,12 @@ public class DeferredRenderer extends BaseFrameBuffer
 		model.draw();
 		GLUtils.enableDepthTest();
 		GLUtils.enableDepthWrite();
-GLUtils.errorCheck();
+		
+		if (cubemapRenderer != null)
+		{
+			cubemapRenderer.renderCubemap();
+		}
+		
 		int readBufferId = AmbientOcclusionRenderer.getInstance().depthBufferId;
 		int writeBufferId = Buffer.DEFAULT.bufferId;
 
@@ -111,6 +119,11 @@ GLUtils.errorCheck();
 		};
 	}
 
+	public void setCubemapRenderer(ICubemapRenderer cubemapRenderer)
+	{
+		this.cubemapRenderer = cubemapRenderer;
+	}
+	
 	public int positionInt()
 	{
 		return positionBuffer.id;

@@ -18,6 +18,8 @@ public enum ResourceRule
 	MESHES_0_FOLDERS	("mesh.#",				"assets/models/#.zaf",		MeshResource.class),
 	MESHES_1_FOLDERS	("mesh.#.#",			"assets/models/#/#.zaf",	MeshResource.class),
 	
+	CUBEMAP				("cubemap.#",			"assets/cubemaps/#.cube",	CubemapResource.class),
+	
 	TEXTURES_BASE		("texture.#",			"assets/textures/#.png",	TextureResource.class),
 	TEXTURES_NORMAL		("normal.#",			"assets/textures/#.png",	NormalTextureResource.class),
 	TEXTURES_SPECULAR	("specular.#",			"assets/textures/#.png",	SpecularTextureResource.class),
