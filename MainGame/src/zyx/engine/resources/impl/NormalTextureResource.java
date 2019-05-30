@@ -13,7 +13,7 @@ public class NormalTextureResource extends TextureResource
 	@Override
 	protected TextureSlot getTextureSlot()
 	{
-		return TextureSlot.SLOT_1;
+		return TextureSlot.WORLD_NORMAL;
 	}
 	
 }

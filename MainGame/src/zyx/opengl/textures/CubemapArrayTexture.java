@@ -10,11 +10,10 @@ public class CubemapArrayTexture extends AbstractTexture
 
 	protected ITexture texture;
 
-	public CubemapArrayTexture(InputStream stream, String name)
+	public CubemapArrayTexture(InputStream stream, String name, TextureSlot slot)
 	{
-		super(name, TextureSlot.SLOT_10);
+		super(name, slot);
 
-		
 		texture = new CubeTexture3D(stream);
 
 		setSizes(texture.getWidth(), texture.getHeight());

@@ -31,7 +31,7 @@ public class TextureResource extends Resource
 
 	protected TextureSlot getTextureSlot()
 	{
-		return TextureSlot.SLOT_0;
+		return TextureSlot.SHARED_DIFFUSE;
 	}
 	
 	protected void resourceCreated(GameTexture creation)

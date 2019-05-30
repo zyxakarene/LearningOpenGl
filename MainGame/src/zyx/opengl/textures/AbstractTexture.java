@@ -19,7 +19,7 @@ public abstract class AbstractTexture implements IDisposeable
 
 	AbstractTexture(String name)
 	{
-		this(null, name, TextureSlot.SLOT_0);
+		this(null, name, TextureSlot.SHARED_DIFFUSE);
 	}
 
 	AbstractTexture(String name, TextureSlot slot)
@@ -29,7 +29,7 @@ public abstract class AbstractTexture implements IDisposeable
 
 	AbstractTexture(Rectangle rect, String name)
 	{
-		this(rect, name, TextureSlot.SLOT_0);
+		this(rect, name, TextureSlot.SHARED_DIFFUSE);
 	}
 	AbstractTexture(Rectangle rect, String name, TextureSlot textureSlot)
 	{

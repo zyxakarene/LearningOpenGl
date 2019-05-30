@@ -13,7 +13,6 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
 import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glTexImage2D;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.opengl.GL11.GL_REPEAT;
 import zyx.opengl.GLUtils;
@@ -26,6 +25,7 @@ import zyx.opengl.textures.TextureFromInt;
 import zyx.opengl.textures.enums.TextureAttachment;
 import zyx.opengl.textures.enums.TextureFormat;
 import zyx.opengl.textures.enums.TextureSlot;
+import static org.lwjgl.opengl.GL11.glTexImage2D;
 
 public class AmbientOcclusionRenderer extends BaseFrameBuffer
 {
@@ -65,12 +65,12 @@ public class AmbientOcclusionRenderer extends BaseFrameBuffer
 		createNoiseTexture();
 		
 		int positionTextureId = DeferredRenderer.getInstance().screenPositionInt();
-		positionTexture = new TextureFromInt(w, h, positionTextureId, TextureSlot.SLOT_0);
+		positionTexture = new TextureFromInt(w, h, positionTextureId, TextureSlot.AO_SCREEN_POSITION);
 
 		int normalTextureId = DeferredRenderer.getInstance().screenNormalInt();
-		normalTexture = new TextureFromInt(w, h, normalTextureId, TextureSlot.SLOT_1);
+		normalTexture = new TextureFromInt(w, h, normalTextureId, TextureSlot.AO_SCREEN_NORMAL);
 
-		noiseTexture = new TextureFromInt(4, 4, noiseTextureId, TextureSlot.SLOT_2);
+		noiseTexture = new TextureFromInt(4, 4, noiseTextureId, TextureSlot.AO_NOISE);
 
 		model = new FullScreenQuadModel(Shader.AMBIENT_OCCLUSION, positionTexture, normalTexture, noiseTexture);
 	}

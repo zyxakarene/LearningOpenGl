@@ -23,14 +23,15 @@ public class CubemapResource extends Resource
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		texture = new CubemapArrayTexture(data, path);
+		TextureSlot slot = getTextureSlot();
+		texture = new CubemapArrayTexture(data, path, slot);
 
 		onContentLoaded(texture);
 	}
 
 	protected TextureSlot getTextureSlot()
 	{
-		return TextureSlot.SLOT_0;
+		return TextureSlot.WORLD_CUBEMAPS;
 	}
 
 	@Override

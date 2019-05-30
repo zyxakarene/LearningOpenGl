@@ -13,7 +13,7 @@ public class SpecularTextureResource extends TextureResource
 	@Override
 	protected TextureSlot getTextureSlot()
 	{
-		return TextureSlot.SLOT_2;
+		return TextureSlot.WORLD_SPECULAR;
 	}
 	
 }

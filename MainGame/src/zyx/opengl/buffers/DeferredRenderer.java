@@ -68,12 +68,12 @@ public class DeferredRenderer extends BaseFrameBuffer
 		int depthInt = DepthRenderer.getInstance().depthInt();
 		int ambientInt = AmbientOcclusionRenderer.getInstance().ambientOcclusionInt();
 
-		positionTexture = new TextureFromInt(w, h, positionBuffer.id, TextureSlot.SLOT_0);
-		normalTexture = new TextureFromInt(w, h, normalBuffer.id, TextureSlot.SLOT_1);
-		colorTexture = new TextureFromInt(w, h, colorBuffer.id, TextureSlot.SLOT_2);
-		depthTexture = new TextureFromInt(w, h, depthBuffer.id, TextureSlot.SLOT_3);
-		shadowDepthTexture = new TextureFromInt(w, h, depthInt, TextureSlot.SLOT_4);
-		ambientOcclusionTexture = new TextureFromInt(w, h, ambientInt, TextureSlot.SLOT_5);
+		positionTexture = new TextureFromInt(w, h, positionBuffer.id, TextureSlot.DEFERRED_POSITION);
+		normalTexture = new TextureFromInt(w, h, normalBuffer.id, TextureSlot.DEFERRED_NORMAL);
+		colorTexture = new TextureFromInt(w, h, colorBuffer.id, TextureSlot.DEFERRED_COLOR_SPEC);
+		depthTexture = new TextureFromInt(w, h, depthBuffer.id, TextureSlot.DEFERRED_DEPTH);
+		shadowDepthTexture = new TextureFromInt(w, h, depthInt, TextureSlot.DEFERRED_SHADOW);
+		ambientOcclusionTexture = new TextureFromInt(w, h, ambientInt, TextureSlot.DEFERRED_AO);
 
 		model = new FullScreenQuadModel(Shader.DEFERED_LIGHT_PASS,
 										positionTexture, normalTexture, colorTexture, depthTexture, shadowDepthTexture,

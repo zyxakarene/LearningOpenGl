@@ -22,7 +22,7 @@ public class MissingTexture extends AbstractTexture
 
 	private MissingTexture()
 	{
-		super("MissingTexture", TextureSlot.SLOT_1);
+		super("MissingTexture", TextureSlot.SHARED_DIFFUSE);
 
 		texture = new CheckerdColorTexture(0xFF00FF, 0x000000);
 		setSizes(texture.getWidth(), texture.getHeight());
