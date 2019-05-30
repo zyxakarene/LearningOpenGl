@@ -1,13 +1,13 @@
 package zyx.engine.resources.impl;
 
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
-import zyx.opengl.textures.CubemapArrayTexture;
-import zyx.opengl.textures.enums.TextureSlot;
+import zyx.opengl.reflections.CubeLoader;
+import zyx.opengl.reflections.Cubemap;
 
 public class CubemapResource extends Resource
 {
 
-	private CubemapArrayTexture texture;
+	private Cubemap cubemap;
 
 	public CubemapResource(String path)
 	{
@@ -15,32 +15,25 @@ public class CubemapResource extends Resource
 	}
 
 	@Override
-	public CubemapArrayTexture getContent()
+	public Cubemap getContent()
 	{
-		return texture;
+		return cubemap;
 	}
 
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		TextureSlot slot = getTextureSlot();
-		texture = new CubemapArrayTexture(data, path, slot);
-
-		onContentLoaded(texture);
-	}
-
-	protected TextureSlot getTextureSlot()
-	{
-		return TextureSlot.WORLD_CUBEMAPS;
+		cubemap = CubeLoader.loadFromCube(data);
+		onContentLoaded(cubemap);
 	}
 
 	@Override
 	void onDispose()
 	{
-		if(texture != null)
+		if(cubemap != null)
 		{
-			texture.dispose();
-			texture = null;
+			cubemap.dispose();
+			cubemap = null;
 		}
 	}
 }

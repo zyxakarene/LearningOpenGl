@@ -25,10 +25,4 @@ public class PoolableRectangle extends Rectangle implements IPoolable
 	{
 
 	}
-
-	@Override
-	public void dispose()
-	{
-	}
-
 }

@@ -6,7 +6,7 @@ import static org.lwjgl.opengl.GL30.GL_DRAW_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.GL_READ_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 import static org.lwjgl.opengl.GL30.glBlitFramebuffer;
-import zyx.engine.components.cubemaps.ICubemapRenderer;
+import zyx.engine.components.cubemaps.saving.ICubemapRenderer;
 import zyx.opengl.GLUtils;
 import zyx.opengl.models.implementations.FullScreenQuadModel;
 import zyx.opengl.shaders.ShaderManager;

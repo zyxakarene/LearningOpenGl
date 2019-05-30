@@ -3,10 +3,9 @@ package zyx.game.scene.dragon;
 import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.engine.components.cubemaps.CubemapProcess;
+import zyx.engine.components.cubemaps.CubemapManager;
+import zyx.engine.components.cubemaps.saving.CubemapProcess;
 import zyx.engine.components.world.GameLight;
-import zyx.engine.resources.ResourceManager;
-import zyx.engine.resources.impl.CubemapResource;
 import zyx.engine.scene.Scene;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.components.GameObject;
@@ -33,14 +32,12 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	@Override
 	protected void onPreloadResources()
 	{
-		preloadResource("cubemap.dragon");
 	}
 
 	@Override
 	protected void onInitialize()
 	{
-		CubemapResource cubemap = ResourceManager.getInstance().<CubemapResource>getResourceAs("cubemap.dragon");
-		cubemap.getContent().bind();
+		CubemapManager.getInstance().load("cubemap.dragon");
 		
 		MeshObject dragon = new MeshObject();
 		dragon.setScale(0.33f, 0.33f, 0.33f);
@@ -98,9 +95,13 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 			cubemapping = true;
 			
 			Vector3f cameraPos = camera.getPosition(false, null);
+			Vector3f[] positions = new Vector3f[]
+			{
+				cameraPos
+			};
 			
 			processQueue = new ProcessQueue();
-			processQueue.addProcess(new CubemapProcess(cameraPos));
+			processQueue.addProcess(new CubemapProcess("dragon", positions));
 			
 			processQueue.start(this);
 		}

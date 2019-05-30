@@ -1,0 +1,23 @@
+cube
+{
+	UtfString						name
+	
+	short							faceSize
+	short							cubemapCount
+
+	int								gl_internalFormat
+	int								gl_format
+	int								gl_type
+	
+	int								textureLength
+	byte[textureLength]				gl_textureData
+	
+	Vector3F[cubemapCount]			positions
+}
+
+Vector3F
+{
+	float		x
+	float		y
+	float		z
+}

@@ -1,4 +1,4 @@
-package zyx.engine.components.cubemaps;
+package zyx.engine.components.cubemaps.saving;
 
 public interface ICubemapRenderer
 {

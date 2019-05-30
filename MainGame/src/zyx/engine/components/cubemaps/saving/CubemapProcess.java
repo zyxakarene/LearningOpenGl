@@ -1,4 +1,4 @@
-package zyx.engine.components.cubemaps;
+package zyx.engine.components.cubemaps.saving;
 
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.screen.base.Stage;
@@ -9,11 +9,12 @@ import zyx.opengl.camera.Camera;
 public class CubemapProcess extends BaseProcess
 {
 
-	private Vector3f position;
+	private Vector3f[] positions;
 
-	private Vector3f[] directions;
-	private int index;
-
+	private Vector3f[] rotations;
+	
+	private int positionIndex;
+	private int rotationIndex;
 	private int delay = 0;
 
 	private static final int STATE_SET_ANGLE = 0;
@@ -23,29 +24,21 @@ public class CubemapProcess extends BaseProcess
 	
 	private CubemapRenderer cubemapRenderer;
 
-	public CubemapProcess(Vector3f cameraPos)
+	public CubemapProcess(String name, Vector3f[] positions)
 	{
-		position = new Vector3f(cameraPos);
+		this.positions = positions;
 
-		/*
-			GL_TEXTURE_CUBE_MAP_POSITIVE_X = 0x8515,
-			GL_TEXTURE_CUBE_MAP_NEGATIVE_X = 0x8516,
-			GL_TEXTURE_CUBE_MAP_POSITIVE_Y = 0x8517,
-			GL_TEXTURE_CUBE_MAP_NEGATIVE_Y = 0x8518,
-			GL_TEXTURE_CUBE_MAP_POSITIVE_Z = 0x8519,
-			GL_TEXTURE_CUBE_MAP_NEGATIVE_Z = 0x851A,
-		 */
-		directions = new Vector3f[]
+		rotations = new Vector3f[]
 		{
-			new Vector3f(90, -90, 90), //Seems correct, but with artifact?		Tail
-			new Vector3f(90, 90, -90), //Seems correct, but with artifact?		Face
-			new Vector3f(-90, 0, 0), //Seems correct							Back bend
-			new Vector3f(-90, 180, 180), //										Front bend
-			new Vector3f(-180, 0, 0), //Seems correct							Top
-			new Vector3f(0, 0, 180), //Seems correct							Bottom
+			new Vector3f(90, -90, 90),		//Tail
+			new Vector3f(90, 90, -90),		//Face
+			new Vector3f(-90, 0, 0),		//Back bend
+			new Vector3f(-90, 180, 180),	//Front bend
+			new Vector3f(-180, 0, 0),		//Top
+			new Vector3f(0, 0, 180),		//Bottom
 		};
 		
-		cubemapRenderer = new CubemapRenderer("dragon.cube");
+		cubemapRenderer = new CubemapRenderer(name + ".cube", positions);
 	}
 
 	@Override
@@ -58,8 +51,11 @@ public class CubemapProcess extends BaseProcess
 			switch (state)
 			{
 				case STATE_SET_ANGLE:
-					Vector3f dir = directions[index];
-					Camera.getInstance().setRotation(dir);
+					Vector3f rot = rotations[rotationIndex];
+					Vector3f pos = positions[positionIndex];
+					
+					Camera.getInstance().setPosition(false, pos);
+					Camera.getInstance().setRotation(rot);
 					state = STATE_SNAPSHOT;
 					break;
 				case STATE_SNAPSHOT:
@@ -67,25 +63,30 @@ public class CubemapProcess extends BaseProcess
 					state = STATE_WAIT;
 					break;
 				case STATE_WAIT:
-					index++;
+					rotationIndex++;
 					state = STATE_SET_ANGLE;
 					break;
 			}
 
 			delay = 100;
-
 		}
 
-		if (index >= directions.length)
+		if (rotationIndex >= rotations.length)
 		{
-			finish();
+			rotationIndex = 0;
+			positionIndex++;
+			
+			if (positionIndex >= positions.length)
+			{
+				finish();
+			}
 		}
 	}
 
 	@Override
 	protected void onFinish()
 	{
-		cubemapRenderer.finalizeCubemap();
+		cubemapRenderer.writeToFile();
 		Stage.instance.visible = true;
 	}
 
