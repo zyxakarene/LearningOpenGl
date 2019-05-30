@@ -3,35 +3,40 @@ package zyx.engine.components.cubemaps;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.engine.components.world.WorldObject;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.CubemapResource;
+import zyx.opengl.models.implementations.shapes.Sphere;
 import zyx.opengl.reflections.Cubemap;
+import zyx.utils.FloatMath;
+import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IUpdateable;
 import zyx.utils.pooling.GenericPool;
 import zyx.utils.pooling.ObjectPool;
 
 public class CubemapManager implements IResourceReady<CubemapResource>, IUpdateable
 {
+	private static final Vector3f HELPER_VECTOR = new Vector3f();
 	private static final CubemapManager instance = new CubemapManager();
 
 	public static CubemapManager getInstance()
 	{
 		return instance;
 	}
-	public ObjectPool<CubemapEntry> entryPool = new GenericPool<>(CubemapEntry.class, 10);
 
 	private CubemapResource resource;
-	
+
+	public ObjectPool<CubemapEntry> entryPool;
 	private Vector3f[] positions;
-	private ArrayList<WorldObject> itemsList;
-	private HashMap<WorldObject, CubemapEntry> entryMap;
+	private ArrayList<IReflective> itemsList;
+	private HashMap<IReflective, CubemapEntry> entryMap;
 	
 	public CubemapManager()
 	{
+		positions = new Vector3f[0];
 		itemsList = new ArrayList<>();
 		entryMap = new HashMap<>();
+		entryPool = new GenericPool<>(CubemapEntry.class, 10);
 	}
 	
 	public void load(String id)
@@ -40,7 +45,7 @@ public class CubemapManager implements IResourceReady<CubemapResource>, IUpdatea
 		res.registerAndLoad(this);
 	}
 	
-	public void addItem(WorldObject object)
+	public void addItem(IReflective object)
 	{
 		CubemapEntry entry = entryMap.get(object);
 		if (entry == null)
@@ -53,7 +58,7 @@ public class CubemapManager implements IResourceReady<CubemapResource>, IUpdatea
 		}
 	}
 	
-	public void removeItem(WorldObject object)
+	public void removeItem(IReflective object)
 	{
 		CubemapEntry entry = entryMap.get(object);
 		if (entry != null)
@@ -65,7 +70,7 @@ public class CubemapManager implements IResourceReady<CubemapResource>, IUpdatea
 		}
 	}
 	
-	public void dirtyPosition(WorldObject object)
+	public void dirtyPosition(IReflective object)
 	{
 		CubemapEntry entry = entryMap.get(object);
 		if (entry != null)
@@ -77,15 +82,48 @@ public class CubemapManager implements IResourceReady<CubemapResource>, IUpdatea
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-		for (WorldObject item : itemsList)
+		for (IReflective item : itemsList)
 		{
 			CubemapEntry entry = entryMap.get(item);
+			
+			if (entry.dirty)
+			{
+				entry.dirty = false;
+				updateCubemapIndexFor(entry.object);
+			}
 		}
 	}
 	
-	private void updatePosFor(WorldObject item)
+	private void updateCubemapIndexFor(IReflective object)
 	{
+		if (object instanceof Sphere)
+		{
+			Print.out("Update sphere cubemap!");
+		}
 		
+		object.getPosition(false, HELPER_VECTOR);
+		Vector3f position;
+		
+		int index = 0;
+		float shortestDistance = Float.MAX_VALUE;
+		for (int i = 0; i < positions.length; i++)
+		{
+			position = positions[i];
+			
+			float distance = FloatMath.distance(position, HELPER_VECTOR);
+			if (distance < shortestDistance)
+			{
+				index = i;
+				shortestDistance = distance;
+			}
+		}
+		
+		if (object instanceof Sphere)
+		{
+			Print.out("To", index);
+		}
+		
+		object.setCubemapIndex(index);
 	}
 	
 	@Override
@@ -107,7 +145,7 @@ public class CubemapManager implements IResourceReady<CubemapResource>, IUpdatea
 			resource = null;
 		}
 		
-		for (WorldObject item : itemsList)
+		for (IReflective item : itemsList)
 		{
 			CubemapEntry entry = entryMap.get(item);
 			entryPool.releaseInstance(entry);

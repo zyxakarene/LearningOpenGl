@@ -24,10 +24,11 @@ public class DeferredRenderer extends BaseFrameBuffer
 
 	private FrameBufferTexture positionBuffer;
 	private FrameBufferTexture normalBuffer;
-	private FrameBufferTexture colorBuffer;
+	private FrameBufferTexture colorSpecBuffer;
 	private FrameBufferTexture depthBuffer;
 	private FrameBufferTexture screenPositionBuffer;
 	private FrameBufferTexture screenNormalBuffer;
+	private FrameBufferTexture cubeIndexBuffer;
 
 	private TextureFromInt positionTexture;
 	private TextureFromInt normalTexture;
@@ -35,6 +36,7 @@ public class DeferredRenderer extends BaseFrameBuffer
 	private TextureFromInt depthTexture;
 	private TextureFromInt shadowDepthTexture;
 	private TextureFromInt ambientOcclusionTexture;
+	private TextureFromInt cubeIndexTexture;
 
 	private FullScreenQuadModel model;
 	
@@ -56,10 +58,11 @@ public class DeferredRenderer extends BaseFrameBuffer
 	{
 		positionBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_0, TextureFormat.FORMAT_3_CHANNEL_16F);
 		normalBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_1, TextureFormat.FORMAT_3_CHANNEL_16F);
-		colorBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_2, TextureFormat.FORMAT_4_CHANNEL_UBYTE);
+		colorSpecBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_2, TextureFormat.FORMAT_4_CHANNEL_UBYTE);
 		depthBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_3, TextureFormat.FORMAT_1_CHANNEL_16F);
 		screenPositionBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_4, TextureFormat.FORMAT_3_CHANNEL_16F);
 		screenNormalBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_5, TextureFormat.FORMAT_3_CHANNEL_16F);
+		cubeIndexBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_6, TextureFormat.FORMAT_1_CHANNEL_UBYTE);
 	}
 
 	@Override
@@ -70,14 +73,15 @@ public class DeferredRenderer extends BaseFrameBuffer
 
 		positionTexture = new TextureFromInt(w, h, positionBuffer.id, TextureSlot.DEFERRED_POSITION);
 		normalTexture = new TextureFromInt(w, h, normalBuffer.id, TextureSlot.DEFERRED_NORMAL);
-		colorTexture = new TextureFromInt(w, h, colorBuffer.id, TextureSlot.DEFERRED_COLOR_SPEC);
+		colorTexture = new TextureFromInt(w, h, colorSpecBuffer.id, TextureSlot.DEFERRED_COLOR_SPEC);
 		depthTexture = new TextureFromInt(w, h, depthBuffer.id, TextureSlot.DEFERRED_DEPTH);
 		shadowDepthTexture = new TextureFromInt(w, h, depthInt, TextureSlot.DEFERRED_SHADOW);
 		ambientOcclusionTexture = new TextureFromInt(w, h, ambientInt, TextureSlot.DEFERRED_AO);
+		cubeIndexTexture = new TextureFromInt(w, h, cubeIndexBuffer.id, TextureSlot.DEFERRED_CUBE_INDEX);
 
 		model = new FullScreenQuadModel(Shader.DEFERED_LIGHT_PASS,
 										positionTexture, normalTexture, colorTexture, depthTexture, shadowDepthTexture,
-										ambientOcclusionTexture);
+										ambientOcclusionTexture, cubeIndexTexture);
 	}
 
 	public void draw()
@@ -112,10 +116,11 @@ public class DeferredRenderer extends BaseFrameBuffer
 		{
 			positionBuffer.attachment,
 			normalBuffer.attachment,
-			colorBuffer.attachment,
+			colorSpecBuffer.attachment,
 			depthBuffer.attachment,
 			screenPositionBuffer.attachment,
-			screenNormalBuffer.attachment
+			screenNormalBuffer.attachment,
+			cubeIndexBuffer.attachment
 		};
 	}
 
@@ -136,7 +141,7 @@ public class DeferredRenderer extends BaseFrameBuffer
 
 	public int colorInt()
 	{
-		return colorBuffer.id;
+		return colorSpecBuffer.id;
 	}
 
 	public int depthInt()
@@ -152,5 +157,10 @@ public class DeferredRenderer extends BaseFrameBuffer
 	public int screenNormalInt()
 	{
 		return screenNormalBuffer.id;
+	}
+
+	public int cubeIndexInt()
+	{
+		return cubeIndexBuffer.id;
 	}
 }

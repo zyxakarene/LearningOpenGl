@@ -19,6 +19,7 @@ import zyx.opengl.models.implementations.bones.attachments.AttachmentRequest;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.shaders.implementations.Shader;
+import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.utils.cheats.DebugPhysics;
 import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IPhysbox;
@@ -31,6 +32,7 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 
 	private PhysBox physbox;
 	private Resource modelResource;
+	private int cubemapIndex;
 
 	private CustomCallback<SimpleMesh> onLoaded;
 
@@ -47,6 +49,8 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 
 		attachedObjects = new ArrayList<>();
 		attachments = new ArrayList<>();
+		
+		enableCubemaps();
 	}
 
 	public void load(String resource)
@@ -62,6 +66,7 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	{
 		if (loaded && inView())
 		{
+			WorldShader.cubemapIndex = cubemapIndex;
 			shader.bind();
 			shader.upload();
 
@@ -233,5 +238,11 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	public void disableCubemaps()
 	{
 		CubemapManager.getInstance().removeItem(this);
+	}
+
+	@Override
+	public void setCubemapIndex(int index)
+	{
+		cubemapIndex = index;
 	}
 }

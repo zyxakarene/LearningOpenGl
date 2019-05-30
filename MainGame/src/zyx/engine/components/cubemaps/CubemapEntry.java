@@ -6,15 +6,13 @@ import zyx.utils.pooling.IPoolable;
 public class CubemapEntry implements IPoolable
 {
 
-	WorldObject object;
+	IReflective object;
 	boolean dirty;
-	int cubemapIndex;
 
 	@Override
 	public void initialize(Object[] args)
 	{
 		dirty = true;
-		cubemapIndex = 0;
 	}
 
 	@Override
@@ -28,7 +26,6 @@ public class CubemapEntry implements IPoolable
 	{
 		object = null;
 		dirty = false;
-		cubemapIndex = 0;
 	}
 
 	@Override

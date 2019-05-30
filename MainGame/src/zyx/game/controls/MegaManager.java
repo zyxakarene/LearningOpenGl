@@ -1,6 +1,7 @@
 package zyx.game.controls;
 
 import zyx.engine.components.animations.MeshAnimator;
+import zyx.engine.components.cubemaps.CubemapManager;
 import zyx.engine.touch.MouseTouchManager;
 import zyx.engine.utils.ClickDispatcher;
 import zyx.engine.utils.worldpicker.calculating.RayPicker;
@@ -20,6 +21,7 @@ public class MegaManager
 		ResourceLoader.getInstance().handleReplies();
 		ConnectionHandler.getInstance().handleReplies();
 
+		CubemapManager.getInstance().update(timestamp, elapsed);
 		MeshAnimator.getInstance().update(timestamp, elapsed);
 		InputManager.getInstance().update(timestamp, elapsed);
 		MouseTouchManager.getInstance().update(timestamp, elapsed);

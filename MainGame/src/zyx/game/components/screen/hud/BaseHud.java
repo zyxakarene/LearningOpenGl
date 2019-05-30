@@ -74,5 +74,11 @@ public class BaseHud extends JsonSprite
 		debugAmbientOcclusion.setPosition(true, SIZE * 5, GameConstants.GAME_HEIGHT);
 		debugAmbientOcclusion.setTexture(new TextureFromInt(SIZE, SIZE, ambientRenderer.ambientOcclusionInt(), TextureSlot.SHARED_DIFFUSE));
 		addChild(debugAmbientOcclusion);
+
+		Image debugCubeIndex = new Image();
+		debugCubeIndex.setScale(1, -1);
+		debugCubeIndex.setPosition(true, SIZE * 6, GameConstants.GAME_HEIGHT);
+		debugCubeIndex.setTexture(new TextureFromInt(SIZE, SIZE, renderer.cubeIndexInt(), TextureSlot.SHARED_DIFFUSE));
+		addChild(debugCubeIndex);
 	}
 }
