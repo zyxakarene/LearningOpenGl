@@ -65,6 +65,10 @@ class ResourceMapper
 		{
 			return new CubemapResource(path);
 		}
+		else if (resourceClass == SkyboxResource.class)
+		{
+			return new SkyboxResource(path);
+		}
 		
 		return new GenericResource(path);
 	}

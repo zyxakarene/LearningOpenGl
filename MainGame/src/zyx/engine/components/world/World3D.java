@@ -23,22 +23,26 @@ public final class World3D extends WorldObject
 	private AmbientOcclusionRenderer ambientOcclusion;
 
 	private GameSun sun;
-	
+	private Skybox skybox;
+
 	private World3D()
 	{
 		super(Shader.WORLD);
 		physics = new Physics();
 
 		BufferRenderer.setupBuffers();
-		
+
 		renderer = DeferredRenderer.getInstance();
 		depth = DepthRenderer.getInstance();
 		ambientOcclusion = AmbientOcclusionRenderer.getInstance();
+
+		skybox = new Skybox();
+		skybox.load("skybox.mesh.desert");
 		
 		sun = new GameSun();
 		Vector3f startSunDir = new Vector3f(-0.0626f, 0.7103f, -0.701f);
 		setSunDir(startSunDir);
-		
+
 		addChild(Camera.getInstance());
 	}
 
@@ -47,18 +51,20 @@ public final class World3D extends WorldObject
 		GLUtils.enableDepthWrite();
 		GLUtils.enableCulling();
 		GLUtils.setBlendNormal();
-		
+
 		depth.prepareRender();
 		ambientOcclusion.prepareRender();
 		renderer.prepareRender();
 
+		skybox.draw();
+		
 		shader.bind();
 		draw();
 
 		ambientOcclusion.drawAmbientOcclusion();
-		
-		renderer.draw();
 
+		renderer.draw();
+		
 		ParticleManager.getInstance().draw();
 	}
 
@@ -71,12 +77,12 @@ public final class World3D extends WorldObject
 	{
 		sun.setRotation(rotation);
 	}
-	
+
 	public void setSunEnabled(boolean enabled)
 	{
 		sun.setEnabled(enabled);
 	}
-	
+
 	@Override
 	protected void onDraw()
 	{

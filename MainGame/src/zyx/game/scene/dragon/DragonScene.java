@@ -43,6 +43,10 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	{
 		CubemapManager.getInstance().load("cubemap.dragon");
 		
+//		MeshObject skybox = new MeshObject();
+//		skybox.load("mesh.skybox.desert");
+//		world.addChild(skybox);
+		
 		MeshObject dragon = new MeshObject();
 		dragon.setScale(0.33f, 0.33f, 0.33f);
 		dragon.load("mesh.dragon");
