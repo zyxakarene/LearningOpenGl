@@ -10,7 +10,7 @@ layout (binding = 2) uniform sampler2D gNoise;
 uniform vec3 samples[64];
 uniform mat4 projection;
 
-const vec2 noiseScale = vec2(1920.0 * 0.75 / 4.0, 1080.0 * 0.75 / 4.0); // screen = 1280x720
+const vec2 noiseScale = vec2(1920.0 / 2 * 0.75 / 4.0, 1080.0 / 2 * 0.75 / 4.0); // screen = 1280x720
 
 void main()
 {

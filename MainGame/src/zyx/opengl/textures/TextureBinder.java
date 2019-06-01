@@ -3,6 +3,7 @@ package zyx.opengl.textures;
 import zyx.opengl.textures.enums.TextureSlot;
 import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
+import zyx.utils.cheats.Print;
 
 public class TextureBinder
 {
@@ -14,6 +15,11 @@ public class TextureBinder
 		int index = texture.slot.index;
 		if (activeTextures[index] != texture)
 		{
+			if (texture.slot == TextureSlot.DEFERRED_CUBE_INDEX)
+			{
+				Print.out("Cube index!");
+			}
+			
 			activateTextureSlot(texture.slot);
 			
 			activeTextures[index] = texture;

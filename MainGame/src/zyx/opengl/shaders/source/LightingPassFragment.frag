@@ -188,7 +188,7 @@ void main()
 	int cube = int(cubemapIndex * 255);
 	vec3 I = normalize(FragPos.xyz - camPos);
     vec3 R = reflect(I, Normal);
-    vec3 Reflect = texture(cubemapArray, vec4(R, cube)).rgb;
+    vec3 Reflect = texture(cubemapArray, vec4(R, cube)).rgb * sunBrightness;
 
 	vec3 outColor = Diffuse * sunBrightness * AO; // * col;
 

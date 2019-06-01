@@ -50,7 +50,6 @@ public class DeferredRenderer extends BaseFrameBuffer
 	public DeferredRenderer()
 	{
 		super(Buffer.DEFERRED, 1f);
-
 	}
 
 	@Override
@@ -101,7 +100,7 @@ public class DeferredRenderer extends BaseFrameBuffer
 			cubemapRenderer.renderCubemap();
 		}
 		
-		int readBufferId = AmbientOcclusionRenderer.getInstance().depthBufferId;
+		int readBufferId = depthBufferId;
 		int writeBufferId = Buffer.DEFAULT.bufferId;
 
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, readBufferId);
@@ -162,5 +161,34 @@ public class DeferredRenderer extends BaseFrameBuffer
 	public int cubeIndexInt()
 	{
 		return cubeIndexBuffer.id;
+	}
+
+	@Override
+	protected void onDispose()
+	{
+		if (positionBuffer != null)
+		{
+			positionBuffer.dispose();
+			normalBuffer.dispose();
+			colorSpecBuffer.dispose();
+			depthBuffer.dispose();
+			screenPositionBuffer.dispose();
+			screenNormalBuffer.dispose();
+			cubeIndexBuffer.dispose();
+			
+			positionBuffer = null;
+			normalBuffer = null;
+			colorSpecBuffer = null;
+			depthBuffer = null;
+			screenPositionBuffer = null;
+			screenNormalBuffer = null;
+			cubeIndexBuffer = null;
+		}
+		
+		if (model != null)
+		{
+			model.dispose();
+			model = null;
+		}
 	}
 }

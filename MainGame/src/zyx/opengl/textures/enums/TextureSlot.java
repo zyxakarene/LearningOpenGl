@@ -22,7 +22,7 @@ public enum TextureSlot
 	AO_SCREEN_NORMAL(1, GL13.GL_TEXTURE1),
 	AO_NOISE(2, GL13.GL_TEXTURE2);
 
-	public static final int COUNT = TextureSlot.values().length;
+	public static final int COUNT = 20;
 	
 	public final int index;
 	public final int glSlot;

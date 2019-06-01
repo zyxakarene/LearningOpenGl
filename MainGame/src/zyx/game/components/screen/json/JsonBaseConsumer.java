@@ -6,7 +6,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.components.screen.base.DisplayObject;
-import zyx.utils.GameConstants;
+import zyx.engine.utils.ScreenSize;
 
 class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Object>
 {
@@ -99,12 +99,12 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 
 		if (percentWidth != null)
 		{
-			currentDisplayObject.setWidth(toFloat(percentWidth) * GameConstants.GAME_WIDTH);
+			currentDisplayObject.setWidth(toFloat(percentWidth) * ScreenSize.width);
 		}
 
 		if (percentHeight != null)
 		{
-			currentDisplayObject.setHeight(toFloat(percentHeight) * GameConstants.GAME_HEIGHT);
+			currentDisplayObject.setHeight(toFloat(percentHeight) * ScreenSize.height);
 		}
 
 		Object centerX = json.get(CENTER_OFFSET_X);
@@ -119,7 +119,7 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 			if (centerX != null)
 			{
 				float offsetX = toFloat(centerX);
-				float stageWidth = GameConstants.GAME_WIDTH;
+				float stageWidth = ScreenSize.width;
 				float currentWidth = currentDisplayObject.getWidth();
 
 				posX = (stageWidth / 2) - (currentWidth / 2) + offsetX;
@@ -128,7 +128,7 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 			if (centerY != null)
 			{
 				float offsetY = toFloat(centerY);
-				float stageHeight = GameConstants.GAME_HEIGHT;
+				float stageHeight = ScreenSize.height;
 				float currentHeight = currentDisplayObject.getHeight();
 
 				posY = (stageHeight / 2) - (currentHeight / 2) + offsetY;
@@ -155,7 +155,7 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 			else if (bottomDock != null)
 			{
 				float height = currentDisplayObject.getHeight();
-				posY = GameConstants.GAME_HEIGHT - height - toFloat(bottomDock);
+				posY = ScreenSize.height - height - toFloat(bottomDock);
 			}
 
 			if (leftDock != null)
@@ -165,7 +165,7 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 			else if (rightDock != null)
 			{
 				float width = currentDisplayObject.getWidth();
-				posX = GameConstants.GAME_WIDTH - width - toFloat(rightDock);
+				posX = ScreenSize.width - width - toFloat(rightDock);
 			}
 
 			currentDisplayObject.setPosition(false, posX, posY);

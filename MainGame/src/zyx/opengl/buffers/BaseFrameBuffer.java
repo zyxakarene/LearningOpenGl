@@ -4,6 +4,7 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_COMPONENT;
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import static org.lwjgl.opengl.GL30.GL_DEPTH_ATTACHMENT;
@@ -14,32 +15,40 @@ import static org.lwjgl.opengl.GL30.glBindRenderbuffer;
 import static org.lwjgl.opengl.GL30.glCheckFramebufferStatus;
 import static org.lwjgl.opengl.GL30.glFramebufferRenderbuffer;
 import static org.lwjgl.opengl.GL30.glRenderbufferStorage;
-import zyx.utils.GameConstants;
 import static org.lwjgl.opengl.GL30.glGenRenderbuffers;
+import zyx.engine.utils.ScreenSize;
 
 public abstract class BaseFrameBuffer
 {
+
 	protected int bufferId;
 	protected int depthBufferId;
 
 	protected Buffer buffer;
-	
-	protected final int w;
-	protected final int h;
-	
+
+	protected int w;
+	protected int h;
+	protected float renderScale;
+
 	public BaseFrameBuffer(Buffer bufferEnum, float renderScale)
 	{
 		this.buffer = bufferEnum;
-		
-		w = (int) (GameConstants.GAME_WIDTH * renderScale);
-		h = (int) (GameConstants.GAME_HEIGHT * renderScale);
+		this.renderScale = renderScale;
 
-		bufferId = GL30.glGenFramebuffers();
-		buffer.bufferId = bufferId;
+		resize(ScreenSize.width, ScreenSize.height);
+	}
+
+	void resize(int width, int height)
+	{
+		w = (int) (width * renderScale);
+		h = (int) (height * renderScale);
 	}
 
 	void initialize()
 	{
+		bufferId = GL30.glGenFramebuffers();
+		buffer.bufferId = bufferId;
+		
 		BufferBinder.bindBuffer(buffer);
 
 		onCreateFrameBufferTextures();
@@ -59,7 +68,7 @@ public abstract class BaseFrameBuffer
 	{
 		BufferBinder.bindBuffer(buffer);
 	}
-	
+
 	private void setupBufferValues()
 	{
 		int attachments[] = getAttachments();
@@ -92,4 +101,16 @@ public abstract class BaseFrameBuffer
 	}
 
 	protected abstract int[] getAttachments();
+
+	void dispose()
+	{
+		onDispose();
+
+		buffer.bufferId = BufferBinder.UNKNOWN_BUFFER;
+		
+		GL15.glDeleteBuffers(depthBufferId);
+		GL15.glDeleteBuffers(bufferId);
+	}
+
+	protected abstract void onDispose();
 }

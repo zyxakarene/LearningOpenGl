@@ -7,6 +7,7 @@ import zyx.engine.components.cubemaps.CubemapManager;
 import zyx.engine.components.cubemaps.saving.CubemapProcess;
 import zyx.engine.components.world.GameLight;
 import zyx.engine.scene.Scene;
+import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.components.GameObject;
 import zyx.game.behavior.misc.JiggleBehavior;
@@ -15,6 +16,7 @@ import zyx.game.components.MeshObject;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.process.ProcessQueue;
 import zyx.opengl.GLUtils;
+import zyx.opengl.buffers.BufferRenderer;
 import zyx.opengl.models.implementations.shapes.Sphere;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
@@ -105,6 +107,13 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		{
 			GameObject obj = gameObjects.get(i);
 			obj.update(timestamp, elapsedTime);
+		}
+		
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_R))
+		{
+			int width = (int) (64 + (Math.random() * 1920 * 0.75));
+			int height = (int) (64 + (Math.random() * 1080 * 0.75));
+			ScreenSize.changeScreenSize(width, height);
 		}
 		
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_E))

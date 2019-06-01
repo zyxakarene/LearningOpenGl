@@ -1,6 +1,7 @@
 package zyx.opengl.textures;
 
 import java.nio.ByteBuffer;
+import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
@@ -38,6 +39,11 @@ public class FrameBufferTexture
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 		glFramebufferTexture2D(GL_FRAMEBUFFER, attachment.glAttachment, GL_TEXTURE_2D, id, 0);
+	}
+
+	public void dispose()
+	{
+		GL11.glDeleteTextures(id);
 	}
 
 }

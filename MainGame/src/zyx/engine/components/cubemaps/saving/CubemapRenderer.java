@@ -6,22 +6,22 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.buffers.DeferredRenderer;
-import zyx.utils.GameConstants;
 import zyx.utils.cheats.Print;
 
 public class CubemapRenderer implements ICubemapRenderer
 {
 
+	public static final int FACE_SIZE = 128;
+	
 	private static final int GL_INTERNAL_FORMAT = GL11.GL_RGB;
 	private static final int GL_FORMAT = GL11.GL_RGB;
 	private static final int GL_TYPE = GL11.GL_BYTE;
 	
 	private static final int BYTES_PER_PIXEL = 3;
-
+	
 	private final String name;
 
 	private ByteArrayOutputStream byteData;
-	private short faceSize;
 	private short cubeCount;
 	private Vector3f[] positions;
 
@@ -29,13 +29,12 @@ public class CubemapRenderer implements ICubemapRenderer
 	{
 		this.name = name;
 		this.positions = positions;
-		faceSize = GameConstants.GAME_WIDTH;
 		cubeCount = (short) positions.length;
 		
 
 		int facePerCube = 6;
 
-		int pixelCount = faceSize * faceSize * cubeCount * facePerCube * BYTES_PER_PIXEL;
+		int pixelCount = FACE_SIZE * FACE_SIZE * cubeCount * facePerCube * BYTES_PER_PIXEL;
 		byteData = new ByteArrayOutputStream(pixelCount);
 	}
 
@@ -47,7 +46,7 @@ public class CubemapRenderer implements ICubemapRenderer
 		{
 			out.writeUTF(name);
 			
-			out.writeShort(faceSize);
+			out.writeShort(FACE_SIZE);
 			out.writeShort(cubeCount);
 			
 			out.writeInt(GL_INTERNAL_FORMAT);
@@ -77,7 +76,7 @@ public class CubemapRenderer implements ICubemapRenderer
 	@Override
 	public void renderCubemap()
 	{
-		ByteBuffer bb = BufferUtils.createByteBuffer(faceSize * faceSize * BYTES_PER_PIXEL);
+		ByteBuffer bb = BufferUtils.createByteBuffer(FACE_SIZE * FACE_SIZE * BYTES_PER_PIXEL);
 		GL11.glReadPixels(0, 0, 128, 128, GL_INTERNAL_FORMAT, GL_TYPE, bb);
 
 		while (bb.hasRemaining())

@@ -93,7 +93,7 @@ public class DisplayObjectContainer extends DisplayObject
 	{
 		int len = children.size();
 		DisplayObject child;
-		for (int i = 0; i < len; i++)
+		for (int i = len - 1; i >= 0; i--)
 		{
 			child = children.get(i);
 			removeChild(child);

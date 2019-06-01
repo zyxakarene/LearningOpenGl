@@ -191,6 +191,8 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	@Override
 	protected void onDispose()
 	{
+		disableCubemaps();
+		
 		if (modelResource != null)
 		{
 			modelResource.unregister(this);

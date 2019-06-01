@@ -25,6 +25,7 @@ public class GameEngine
 {
 
 	private SceneManager sceneManager;
+	private DisplaySizeChanger sizeChanger;
 	
 	public GameEngine()
 	{
@@ -35,6 +36,8 @@ public class GameEngine
 	{
 		new SetupOpenGlCommand().execute();
 		GLUtils.enableGLSettings();
+		
+		sizeChanger = new DisplaySizeChanger();
 
 		ShaderManager.getInstance().initialize();
 		CursorManager.getInstance().initialize();

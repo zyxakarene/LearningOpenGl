@@ -129,4 +129,19 @@ public class AmbientOcclusionRenderer extends BaseFrameBuffer
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	}
+
+	@Override
+	protected void onDispose()
+	{
+		if (ambientOcclusionBuffer != null)
+		{
+			ambientOcclusionBuffer.dispose();
+			ambientOcclusionBuffer = null;
+		}
+		
+		if (model != null)
+		{
+			model.dispose();
+		}
+	}
 }

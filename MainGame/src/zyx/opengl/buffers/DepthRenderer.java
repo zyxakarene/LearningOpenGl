@@ -36,7 +36,7 @@ public class DepthRenderer extends BaseFrameBuffer
 		
 		GL11.glViewport(0, 0, w, h);
 		shadowable.drawShadow();
-		GL11.glViewport(0, 0, GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT);
+		GL11.glViewport(0, 0, (int) (w / renderScale), (int) (h / renderScale));
 	}
 
 	@Override
@@ -51,5 +51,15 @@ public class DepthRenderer extends BaseFrameBuffer
 	public int depthInt()
 	{
 		return depthBuffer.id;
+	}
+
+	@Override
+	protected void onDispose()
+	{
+		if (depthBuffer != null)
+		{
+			depthBuffer.dispose();
+			depthBuffer = null;
+		}
 	}
 }

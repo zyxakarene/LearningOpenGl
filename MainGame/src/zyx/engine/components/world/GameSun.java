@@ -4,6 +4,7 @@ import java.util.HashMap;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import zyx.engine.utils.ScreenSize;
 import zyx.game.controls.lights.LightsManager;
 import zyx.opengl.camera.Projection;
 import zyx.opengl.lighs.ISun;
@@ -88,7 +89,7 @@ public class GameSun extends WorldObject implements ISun
 			cascadeLimits[i] = -cascades[i];
 		}
 
-		float ar = (float) GameConstants.GAME_HEIGHT / (float) GameConstants.GAME_WIDTH;
+		float ar = (float) ScreenSize.height / (float) ScreenSize.width;
 		float tanHalfHFOV = FloatMath.tan(FloatMath.DEG_TO_RAD * (GameConstants.FOV / 2f));
 		float tanHalfVFOV = FloatMath.tan(FloatMath.DEG_TO_RAD * ((GameConstants.FOV * ar) / 2f));
 
