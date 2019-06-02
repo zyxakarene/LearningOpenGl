@@ -1,7 +1,6 @@
 package zyx.debug.views.pools;
 
 import javax.swing.table.DefaultTableModel;
-import zyx.utils.cheats.Print;
 
 public class PoolTableModel extends DefaultTableModel
 {
@@ -26,7 +25,6 @@ public class PoolTableModel extends DefaultTableModel
 		}
 		catch (Exception e)
 		{
-			Print.out("adsaihd9asd");
 			//Item is missing.. Somehow?
 		}
 		

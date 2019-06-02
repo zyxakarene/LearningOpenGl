@@ -77,7 +77,7 @@ public class CubemapRenderer implements ICubemapRenderer
 	public void renderCubemap()
 	{
 		ByteBuffer bb = BufferUtils.createByteBuffer(FACE_SIZE * FACE_SIZE * BYTES_PER_PIXEL);
-		GL11.glReadPixels(0, 0, 128, 128, GL_INTERNAL_FORMAT, GL_TYPE, bb);
+		GL11.glReadPixels(0, 0, FACE_SIZE, FACE_SIZE, GL_INTERNAL_FORMAT, GL_TYPE, bb);
 
 		while (bb.hasRemaining())
 		{
