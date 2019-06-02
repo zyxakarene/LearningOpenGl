@@ -6,7 +6,9 @@ import zyx.engine.resources.impl.SkyboxResource;
 import zyx.engine.resources.impl.TextureResource;
 import zyx.opengl.GLUtils;
 import zyx.opengl.models.implementations.SkyboxModel;
+import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
+import zyx.opengl.shaders.implementations.SkyboxShader;
 import zyx.opengl.textures.GameTexture;
 
 public class Skybox extends WorldObject
@@ -21,11 +23,13 @@ public class Skybox extends WorldObject
 	
 	private IResourceReady<SkyboxResource> onMeshLoaded;
 	private IResourceReady<TextureResource> onTextureLoaded;
+	
+	private SkyboxShader shader;
 
 	Skybox()
 	{
-		super(Shader.SKYBOX);
-		
+		shader = ShaderManager.getInstance().<SkyboxShader>get(Shader.SKYBOX);
+
 		onMeshLoaded = (SkyboxResource resource) ->
 		{
 			model = resource.getContent();

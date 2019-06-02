@@ -7,10 +7,7 @@ import org.lwjgl.util.vector.Vector4f;
 import zyx.game.controls.SharedPools;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.camera.IFrustumHideable;
-import zyx.opengl.shaders.AbstractShader;
-import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.SharedShaderObjects;
-import zyx.opengl.shaders.implementations.Shader;
 import zyx.utils.GeometryUtils;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IPositionable;
@@ -40,12 +37,10 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 	private WorldObject parent;
 	private ArrayList<WorldObject> children;
 
-	protected final AbstractShader shader;
-
 	private Collider collider;
 	public boolean drawable = true;
 
-	public WorldObject(Shader type)
+	public WorldObject()
 	{
 		invWorldMatrix = SharedPools.MATRIX_POOL.getInstance();
 		worldMatrix = SharedPools.MATRIX_POOL.getInstance();
@@ -54,7 +49,6 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 
 		children = new ArrayList<>();
 
-		shader = ShaderManager.getInstance().get(type);
 		disposed = false;
 
 		dirty = false;

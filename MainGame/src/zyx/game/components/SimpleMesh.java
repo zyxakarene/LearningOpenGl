@@ -18,6 +18,7 @@ import zyx.opengl.models.implementations.bones.attachments.Attachment;
 import zyx.opengl.models.implementations.bones.attachments.AttachmentRequest;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.physics.PhysBox;
+import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.utils.cheats.DebugPhysics;
@@ -39,11 +40,12 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	private ArrayList<WorldObject> attachedObjects;
 	private ArrayList<Attachment> attachments;
 	private LinkedList<AttachmentRequest> attachmentRequests;
+	
+	private WorldShader shader;
 
 	public SimpleMesh()
 	{
-		super(Shader.WORLD);
-
+		shader = ShaderManager.getInstance().<WorldShader>get(Shader.WORLD);
 		loaded = false;
 		onLoaded = new CustomCallback<>(true);
 

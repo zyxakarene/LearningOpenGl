@@ -6,7 +6,6 @@ import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorBundle;
 import zyx.game.behavior.BehaviorType;
 import zyx.opengl.models.SharedWorldModelTransformation;
-import zyx.opengl.shaders.implementations.Shader;
 import zyx.utils.interfaces.IUpdateable;
 
 public class GameObject extends WorldObject implements IUpdateable
@@ -20,7 +19,6 @@ public class GameObject extends WorldObject implements IUpdateable
 
 	public GameObject()
 	{
-		super(Shader.WORLD);
 		behaviors = new BehaviorBundle(this);
 	}
 
@@ -32,9 +30,6 @@ public class GameObject extends WorldObject implements IUpdateable
 		getScale(true, HELPER_SCALE);
 
 		SharedWorldModelTransformation.transform(HELPER_POS, HELPER_ROT, HELPER_SCALE);
-
-		shader.bind();
-		shader.upload();
 	}
 
 	@Override

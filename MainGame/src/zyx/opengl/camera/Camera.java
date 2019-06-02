@@ -7,7 +7,6 @@ import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.engine.utils.worldpicker.calculating.RayPicker;
 import zyx.opengl.shaders.SharedShaderObjects;
-import zyx.opengl.shaders.implementations.Shader;
 import zyx.utils.GameConstants;
 import zyx.utils.math.Vector2Int;
 
@@ -28,7 +27,6 @@ public class Camera extends WorldObject
 	
 	private Camera()
 	{
-		super(Shader.WORLD);
 		initialized = false;
 		frustum = new ViewFrustum();
 		

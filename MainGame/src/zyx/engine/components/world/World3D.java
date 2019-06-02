@@ -9,7 +9,6 @@ import zyx.opengl.buffers.DepthRenderer;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.shaders.SharedShaderObjects;
-import zyx.opengl.shaders.implementations.Shader;
 
 public final class World3D extends WorldObject
 {
@@ -27,7 +26,6 @@ public final class World3D extends WorldObject
 
 	private World3D()
 	{
-		super(Shader.WORLD);
 		physics = new Physics();
 
 		BufferRenderer.setupBuffers();
@@ -57,7 +55,6 @@ public final class World3D extends WorldObject
 
 		skybox.draw();
 		
-		shader.bind();
 		draw();
 
 		ambientOcclusion.drawAmbientOcclusion();

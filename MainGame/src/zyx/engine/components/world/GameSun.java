@@ -9,7 +9,6 @@ import zyx.game.controls.lights.LightsManager;
 import zyx.opengl.camera.Projection;
 import zyx.opengl.lighs.ISun;
 import zyx.opengl.shaders.SharedShaderObjects;
-import zyx.opengl.shaders.implementations.Shader;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
 import zyx.utils.GeometryUtils;
@@ -34,8 +33,6 @@ public class GameSun extends WorldObject implements ISun
 
 	GameSun()
 	{
-		super(Shader.WORLD);
-
 		globalLightDir = new Vector3f();
 		
 		invertedCamera = new Matrix4f();

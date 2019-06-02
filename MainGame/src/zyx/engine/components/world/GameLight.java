@@ -4,7 +4,6 @@ import org.lwjgl.util.vector.Vector3f;
 import zyx.game.controls.SharedPools;
 import zyx.game.controls.lights.LightsManager;
 import zyx.opengl.lighs.ILight;
-import zyx.opengl.shaders.implementations.Shader;
 import zyx.utils.Color;
 
 public class GameLight extends WorldObject implements ILight
@@ -24,8 +23,6 @@ public class GameLight extends WorldObject implements ILight
 	
 	public GameLight(int color, int power)
 	{
-		super(Shader.WORLD);
-		
 		this.color = color;
 		this.power = power;
 		this.dirtyPos = true;
