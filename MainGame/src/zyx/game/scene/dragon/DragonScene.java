@@ -10,17 +10,13 @@ import zyx.engine.scene.Scene;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.components.GameObject;
-import zyx.game.behavior.misc.JiggleBehavior;
-import zyx.game.behavior.misc.RotateBehavior;
 import zyx.game.components.MeshObject;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.process.ProcessQueue;
 import zyx.opengl.GLUtils;
-import zyx.opengl.buffers.BufferRenderer;
 import zyx.opengl.models.implementations.shapes.Sphere;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
-import zyx.utils.cheats.Print;
 
 public class DragonScene extends Scene implements ICallback<ProcessQueue>
 {
@@ -41,11 +37,8 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	@Override
 	protected void onInitialize()
 	{
+		world.loadSkybox("skybox.texture.desert");
 		CubemapManager.getInstance().load("cubemap.dragon");
-		
-//		MeshObject skybox = new MeshObject();
-//		skybox.load("mesh.skybox.desert");
-//		world.addChild(skybox);
 		
 		MeshObject dragon = new MeshObject();
 		dragon.setScale(0.33f, 0.33f, 0.33f);
@@ -120,13 +113,6 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 			ScreenSize.changeScreenSize(width, height);
 		}
 		
-		if (KeyboardData.data.wasPressed(Keyboard.KEY_E))
-		{
-			Vector3f cameraPos = camera.getPosition(false, null);
-			Vector3f cameraRot = camera.getRotation(false, null);
-			Print.out(cameraPos, cameraRot);
-		}
-		
 		if (!cubemapping && KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
 		{
 			cubemapping = true;
@@ -159,6 +145,9 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 			GameObject obj = gameObjects.get(i);
 			obj.dispose();
 		}
+		
+		world.removeSkybox();
+		CubemapManager.getInstance().clean();
 		
 		gameObjects.clear();
 		gameObjects = null;

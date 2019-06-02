@@ -45,7 +45,7 @@ class SmdObject
 		
 		int animationLength = in.readInt();
 		animations = new SmdAnimation[animationLength];
-		Print.out("↳", elementData.length, "animations");
+		Print.out("↳", animations.length, "animations");
 		for (int i = 0; i < animationLength; i++)
 		{
 			animations[i] = new SmdAnimation();
@@ -55,7 +55,7 @@ class SmdObject
 		physInformation = new SmdPhysInfo();
 		physInformation.read(in);
 		
-		Print.out("↳", physInformation.physBoxes.length, "physboxes\n");
+		Print.out("↳", physInformation.physBoxes.length, "physboxes");
 		
 		diffuseTexture = in.readUTF();
 		normalTexture = in.readUTF();

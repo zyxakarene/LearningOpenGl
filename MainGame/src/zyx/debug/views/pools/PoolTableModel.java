@@ -1,6 +1,7 @@
 package zyx.debug.views.pools;
 
 import javax.swing.table.DefaultTableModel;
+import zyx.utils.cheats.Print;
 
 public class PoolTableModel extends DefaultTableModel
 {
@@ -15,6 +16,23 @@ public class PoolTableModel extends DefaultTableModel
 		setColumnIdentifiers(names);
 	}
 
+	@Override
+	public Object getValueAt(int row, int column)
+	{
+		Object value = null;
+		try
+		{
+			value = super.getValueAt(row, column);
+		}
+		catch (Exception e)
+		{
+			Print.out("adsaihd9asd");
+			//Item is missing.. Somehow?
+		}
+		
+		return value;
+	}
+	
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex)
 	{

@@ -150,6 +150,11 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 		ResourceManager.getInstance().disposeResource(path);
 	}
 
+	public boolean isLoaded()
+	{
+		return loaded;
+	}
+
 	void onDispose()
 	{
 

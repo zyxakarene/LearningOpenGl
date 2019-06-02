@@ -74,6 +74,10 @@ class ResourceIcons
 		{
 			return "assets/debug/resource/cubemap.png";
 		}
+		else if (clazz == SkyboxResource.class)
+		{
+			return "assets/debug/resource/skybox.png";
+		}
 		
 		return "assets/debug/resource/default.png";
 	}

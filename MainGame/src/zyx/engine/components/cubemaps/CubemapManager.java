@@ -6,10 +6,8 @@ import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.CubemapResource;
-import zyx.opengl.models.implementations.shapes.Sphere;
 import zyx.opengl.reflections.Cubemap;
 import zyx.utils.FloatMath;
-import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IUpdateable;
 import zyx.utils.pooling.GenericPool;
 import zyx.utils.pooling.ObjectPool;
@@ -41,8 +39,8 @@ public class CubemapManager implements IResourceReady<CubemapResource>, IUpdatea
 	
 	public void load(String id)
 	{
-		CubemapResource res = ResourceManager.getInstance().<CubemapResource>getResourceAs(id);
-		res.registerAndLoad(this);
+		resource = ResourceManager.getInstance().<CubemapResource>getResourceAs(id);
+		resource.registerAndLoad(this);
 	}
 	
 	public void addItem(IReflective object)
@@ -96,11 +94,6 @@ public class CubemapManager implements IResourceReady<CubemapResource>, IUpdatea
 	
 	private void updateCubemapIndexFor(IReflective object)
 	{
-		if (object instanceof Sphere)
-		{
-			Print.out("Update sphere cubemap!");
-		}
-		
 		object.getPosition(false, HELPER_VECTOR);
 		Vector3f position;
 		
@@ -117,20 +110,13 @@ public class CubemapManager implements IResourceReady<CubemapResource>, IUpdatea
 				shortestDistance = distance;
 			}
 		}
-		
-		if (object instanceof Sphere)
-		{
-			Print.out("To", index);
-		}
-		
+
 		object.setCubemapIndex(index);
 	}
 	
 	@Override
 	public void onResourceReady(CubemapResource resource)
 	{
-		this.resource = resource;
-		
 		Cubemap content = resource.getContent();
 		content.bind();
 		

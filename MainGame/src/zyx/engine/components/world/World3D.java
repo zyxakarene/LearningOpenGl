@@ -37,7 +37,6 @@ public final class World3D extends WorldObject
 		ambientOcclusion = AmbientOcclusionRenderer.getInstance();
 
 		skybox = new Skybox();
-		skybox.load("skybox.mesh.desert");
 		
 		sun = new GameSun();
 		Vector3f startSunDir = new Vector3f(-0.0626f, 0.7103f, -0.701f);
@@ -68,6 +67,16 @@ public final class World3D extends WorldObject
 		ParticleManager.getInstance().draw();
 	}
 
+	public void loadSkybox(String res)
+	{
+		skybox.load(res);
+	}
+
+	public void removeSkybox()
+	{
+		skybox.clean();
+	}
+	
 	public void setSunDir(Vector3f dir)
 	{
 		sun.setDir(true, dir);
