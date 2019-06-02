@@ -14,12 +14,16 @@ layout (binding = 2) uniform sampler2D gAlbedoSpec;
 layout (binding = 3) uniform sampler2D gDepth;
 layout (binding = 4) uniform sampler2D gShadowMap;
 layout (binding = 5) uniform sampler2D gAmbientOcclusion;
+layout (binding = 6) uniform sampler2D gCubeIndex;
+
+layout (binding = 10) uniform samplerCubeArray cubemapArray;
 
 uniform int[LIGHT_COUNT] lightPowers;
 uniform vec3[LIGHT_COUNT] lightColors;
 uniform vec3[LIGHT_COUNT] lightPositions;
 
 uniform vec3 lightDir = vec3(0, 0, -1);
+uniform vec3 camPos = vec3(0, 0, 0);
 
 uniform vec2 shadowUvOffsetPerQuadrant[SHADOW_QUADRANTS];
 uniform vec2 uvLimitsMinPerQuadrant[SHADOW_QUADRANTS];
@@ -96,6 +100,26 @@ float ShadowCalculation(vec4 fragPosLightSpace, int quadrant)
     return shadow;
 }
 
+float blendLighten(float base, float blend)
+{
+	return max(blend,base);
+}
+
+vec3 blendLighten(vec3 base, vec3 blend)
+{
+	return vec3(blendLighten(base.r,blend.r),blendLighten(base.g,blend.g),blendLighten(base.b,blend.b));
+}
+
+vec3 blendLighten(vec3 base, vec3 blend, float opacity)
+{
+	return (blendLighten(base, blend) * opacity + base * (1.0 - opacity));
+}
+
+vec3 blendNormal(vec3 base, vec3 blend, float opacity)
+{
+	return (blend * opacity + base * (1.0 - opacity));
+}
+
 void main()
 {
     // retrieve data from gbuffer
@@ -104,7 +128,9 @@ void main()
     vec3 Diffuse = texture(gAlbedoSpec, TexCoords).rgb;
     float AO = texture(gAmbientOcclusion, TexCoords).r;
     float CascadeDepth = texture(gDepth, TexCoords).r;
-	
+    float cubemapIndex = texture(gCubeIndex, TexCoords).r;
+    float Shiny = texture(gAlbedoSpec, TexCoords).a;
+
 /*
 			-1f,
 			-50,
@@ -134,7 +160,7 @@ void main()
 		col = vec3(1, 1, 1);
 		quadrant = 3;
 	}
-
+	
 
 	mat4 sunProjection = sunProjViews[quadrant];
 	vec4 FragPosSunSpace = sunProjection * FragPos;
@@ -159,6 +185,13 @@ void main()
 		sunBrightness.b += difuse.b;
 	}
 
+	int cube = int(cubemapIndex * 255);
+	vec3 I = normalize(FragPos.xyz - camPos);
+    vec3 R = reflect(I, Normal);
+    vec3 Reflect = texture(cubemapArray, vec4(R, cube)).rgb * sunBrightness;
+
 	vec3 outColor = Diffuse * sunBrightness * AO; // * col;
+
+	outColor = blendNormal(outColor, Reflect, Shiny);
     FragColor = vec4(outColor, 1.0);
 }

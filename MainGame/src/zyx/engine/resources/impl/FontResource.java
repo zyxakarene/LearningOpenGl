@@ -35,7 +35,7 @@ public class FontResource extends BaseTextureRequiredResource
 			generator = new BitmapFontGenerator();
 			generator.setFontData(fontData);
 
-			loadTexture(textureResource);
+			loadTextures(textureResource);
 		}
 		catch (IOException ex)
 		{
@@ -62,9 +62,9 @@ public class FontResource extends BaseTextureRequiredResource
 	}
 
 	@Override
-	protected void onTextureLoaded(AbstractTexture texture)
+	protected void onTexturesLoaded(AbstractTexture[] texture)
 	{
-		generator.setMainTexture(texture);
+		generator.setMainTexture(texture[0]);
 		font = generator.createBitmapFont();
 		
 		onContentLoaded(font);

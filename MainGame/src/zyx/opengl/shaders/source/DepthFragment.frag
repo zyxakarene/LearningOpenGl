@@ -1,9 +1,9 @@
 #version 420
 
-layout (location = 0) out vec4 gDepth;
+layout (location = 0) out float gDepth;
 
 void main()
 {
 	float dist = gl_FragCoord.z;
-	gDepth = vec4(dist, dist, dist, 1);
+	gDepth = dist;
 }

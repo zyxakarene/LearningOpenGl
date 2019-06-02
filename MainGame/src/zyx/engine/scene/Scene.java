@@ -136,6 +136,7 @@ public class Scene
 
 			GLUtils.disableDepthTest();
 			GLUtils.disableCulling();
+			GLUtils.setBlendAlpha();
 			stage.drawStage();
 			GLUtils.enableCulling();
 			GLUtils.enableDepthTest();

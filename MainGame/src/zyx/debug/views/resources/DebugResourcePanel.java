@@ -62,6 +62,8 @@ public class DebugResourcePanel extends BaseDebugPanel
 				list.setSelectedIndex(oldIndex);
 			}
 		}
+		
+		repaint();
 	}
 
 	@Override

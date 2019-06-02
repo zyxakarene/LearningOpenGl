@@ -3,8 +3,8 @@ package zyx.engine.components.screen.base;
 import java.util.LinkedList;
 import org.lwjgl.util.vector.Vector2f;
 import zyx.engine.touch.MouseTouchManager;
+import zyx.engine.utils.ScreenSize;
 import zyx.utils.FloatMath;
-import zyx.utils.GameConstants;
 import zyx.utils.geometry.Rectangle;
 
 public class InteractionCrawler
@@ -33,8 +33,8 @@ public class InteractionCrawler
 		hitTarget = null;
 		clipRect.x = 0;
 		clipRect.y = 0;
-		clipRect.width = GameConstants.GAME_WIDTH;
-		clipRect.height = GameConstants.GAME_HEIGHT;
+		clipRect.width = ScreenSize.width;
+		clipRect.height = ScreenSize.height;
 
 		objects.clear();
 

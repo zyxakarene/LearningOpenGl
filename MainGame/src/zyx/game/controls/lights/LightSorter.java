@@ -67,6 +67,7 @@ class LightSorter implements Comparator<ILight>
 		{
 			posA = posPool.getInstance();
 			a.getLightPosition(posA);
+			posCache.put(a, posA);
 		}
 
 		if (posCache.containsKey(b))
@@ -77,6 +78,7 @@ class LightSorter implements Comparator<ILight>
 		{
 			posB = posPool.getInstance();
 			b.getLightPosition(posB);
+			posCache.put(b, posB);
 		}
 
 		float distanceA = FloatMath.distance(posA, viewerPos);

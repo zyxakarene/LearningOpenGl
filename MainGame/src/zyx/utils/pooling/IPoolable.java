@@ -1,8 +1,6 @@
 package zyx.utils.pooling;
 
-import zyx.utils.interfaces.IDisposeable;
-
-public interface IPoolable extends IDisposeable
+public interface IPoolable
 {
 	public void initialize(Object[] args);
 	public void reset();

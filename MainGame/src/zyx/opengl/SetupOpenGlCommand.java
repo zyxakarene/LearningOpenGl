@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.*;
+import zyx.engine.utils.ScreenSize;
 import zyx.utils.GameConstants;
 import zyx.utils.exceptions.Msg;
 import zyx.utils.exceptions.UncaughtExceptionHandlerImpl;
@@ -43,12 +44,12 @@ public class SetupOpenGlCommand implements ICommand
 		}
 		else
 		{
-			contextAtrributes = new ContextAttribs(3, 2);
+			contextAtrributes = new ContextAttribs(4, 2);
 		}
-		contextAtrributes.withForwardCompatible(true);
+		contextAtrributes.withForwardCompatible(false);
 		contextAtrributes.withProfileCore(true);
 
-		Display.setDisplayMode(new DisplayMode(GameConstants.GAME_WIDTH, GameConstants.GAME_HEIGHT));
+		Display.setDisplayMode(new DisplayMode(ScreenSize.width, ScreenSize.height));
 		Display.create(pixelFormat, contextAtrributes);
 
 		GL11.glClearColor(0.60f, 0.80f, 0.92f, 1);

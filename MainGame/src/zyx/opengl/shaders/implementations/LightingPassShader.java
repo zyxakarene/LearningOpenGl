@@ -3,6 +3,7 @@ package zyx.opengl.shaders.implementations;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.opengl.camera.Camera;
 import zyx.opengl.lighs.ILight;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.SharedShaderObjects;
@@ -17,11 +18,6 @@ public class LightingPassShader extends AbstractShader
 		SharedShaderObjects.SUN_PROJECTION_VIEW_TRANSFORM_CASCADE_4
 	};
 	
-	private int positionTexUniform;
-	private int normalTexUniform;
-	private int albedoTexUniform;
-	private int depthTexUniform;
-
 	private int lightDirectionUniform;
 	private int lightPositionsUniform;
 	private int lightColorsUniform;
@@ -35,6 +31,7 @@ public class LightingPassShader extends AbstractShader
 	private Vector3f[] lightPositions;
 	private Vector3f[] lightColors;
 	private int[] lightPowers;
+	private int camPosUniform;
 
 	public LightingPassShader(Object lock)
 	{
@@ -44,16 +41,13 @@ public class LightingPassShader extends AbstractShader
 	@Override
 	public void upload()
 	{
+		Vector3f pos = Camera.getInstance().getPosition(false, null);
+		UniformUtils.setUniform3F(camPosUniform, pos.x, pos.y, pos.z);
 	}
 
 	@Override
 	protected void postLoading()
 	{
-		positionTexUniform = UniformUtils.createUniform(program, "gPosition");
-		normalTexUniform = UniformUtils.createUniform(program, "gNormal");
-		albedoTexUniform = UniformUtils.createUniform(program, "gAlbedoSpec");
-		depthTexUniform = UniformUtils.createUniform(program, "gDepth");
-
 		lightDirectionUniform = UniformUtils.createUniform(program, "lightDir");
 		lightPositionsUniform = UniformUtils.createUniform(program, "lightPositions");
 		lightColorsUniform = UniformUtils.createUniform(program, "lightColors");
@@ -62,11 +56,7 @@ public class LightingPassShader extends AbstractShader
 		uvQuadrantOffsetUniform = UniformUtils.createUniform(program, "shadowUvOffsetPerQuadrant");
 		uvQuadrantMinUniform = UniformUtils.createUniform(program, "uvLimitsMinPerQuadrant");
 		uvQuadrantMaxUniform = UniformUtils.createUniform(program, "uvLimitsMaxPerQuadrant");
-
-		UniformUtils.setUniformInt(positionTexUniform, 0);
-		UniformUtils.setUniformInt(normalTexUniform, 1);
-		UniformUtils.setUniformInt(albedoTexUniform, 2);
-		UniformUtils.setUniformInt(depthTexUniform, 3);
+		camPosUniform = UniformUtils.createUniform(program, "camPos");
 		
 		//0  1
 		//2  3

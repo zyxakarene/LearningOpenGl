@@ -5,31 +5,54 @@ import java.util.ArrayList;
 
 public class QcFile
 {
+
 	public File meshFile;
 	public File physFile;
 	public File boundingFile;
-	public File textureFile;
-	
+	public String diffuseTextureResource;
+	public String normalTextureResource;
+	public String specularTextureResource;
+
 	public ArrayList<File> animations = new ArrayList<>();
-	
+
 	public File outModel;
-	public File outTexture;
 
 	@Override
 	public String toString()
 	{
-		return "QcFile{" + "meshFile=" + meshFile + ", textureFile=" + textureFile + ", animations=" + animations + ", outModel=" + outModel + ", outTexture=" + outTexture + '}';
+		return "QcFile{" + "meshFile=" + meshFile + ", physFile=" + physFile + ", boundingFile=" + boundingFile + ", diffuseTextureResource=" + diffuseTextureResource + 
+				", normalTextureResource=" + normalTextureResource + ", specularTextureResource=" + specularTextureResource + ", animations=" + animations + 
+				", outModel=" + outModel + "}";
 	}
-	
-	public String getTextureName()
+
+	public String getDiffuseTextureName()
 	{
-		if (textureFile != null)
+		if (diffuseTextureResource != null)
 		{
-			return textureFile.getName();
+			return diffuseTextureResource;
 		}
-		
-		return "";
+
+		return "texture.default_diffuse";
 	}
-	
-	
+
+	public String getNormalTextureName()
+	{
+		if (normalTextureResource != null)
+		{
+			return normalTextureResource;
+		}
+
+		return "normal.default_normal";
+	}
+
+	public String getSpecularTextureName()
+	{
+		if (specularTextureResource != null)
+		{
+			return specularTextureResource;
+		}
+
+		return "specular.default_specular";
+	}
+
 }

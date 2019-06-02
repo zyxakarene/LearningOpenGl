@@ -12,7 +12,9 @@ class SmdObject
 	int[] elementData;
 	SmdAnimation[] animations;
 	SmdPhysInfo physInformation;
-	String texture;
+	String diffuseTexture;
+	String normalTexture;
+	String specularTexture;
 	
 	Vector3f radiusCenter;
 	float radius;
@@ -43,7 +45,7 @@ class SmdObject
 		
 		int animationLength = in.readInt();
 		animations = new SmdAnimation[animationLength];
-		Print.out("↳", elementData.length, "animations");
+		Print.out("↳", animations.length, "animations");
 		for (int i = 0; i < animationLength; i++)
 		{
 			animations[i] = new SmdAnimation();
@@ -53,9 +55,12 @@ class SmdObject
 		physInformation = new SmdPhysInfo();
 		physInformation.read(in);
 		
-		Print.out("↳", physInformation.physBoxes.length, "physboxes\n");
+		Print.out("↳", physInformation.physBoxes.length, "physboxes");
 		
-		texture = in.readUTF();
+		diffuseTexture = in.readUTF();
+		normalTexture = in.readUTF();
+		specularTexture = in.readUTF();
+		Print.out("↳", "Textures:", diffuseTexture, normalTexture, specularTexture, "\n");
 		
 		radiusCenter = new Vector3f();
 		radiusCenter.x = in.readFloat();

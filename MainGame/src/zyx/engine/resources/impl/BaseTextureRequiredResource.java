@@ -1,5 +1,6 @@
 package zyx.engine.resources.impl;
 
+import java.util.HashMap;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.opengl.textures.AbstractTexture;
@@ -7,7 +8,10 @@ import zyx.opengl.textures.AbstractTexture;
 public abstract class BaseTextureRequiredResource extends Resource implements IResourceReady<TextureResource>
 {
 
-	private Resource textureResource;
+	private Resource[] textureResources;
+	
+	private HashMap<Resource, Integer> resourceToIndexMap;
+	private AbstractTexture[] loadedTextures;
 
 	public BaseTextureRequiredResource(String path)
 	{
@@ -19,25 +23,48 @@ public abstract class BaseTextureRequiredResource extends Resource implements IR
 	{
 		super.onDispose();
 		
-		if(textureResource != null)
+		if(textureResources != null)
 		{
-			textureResource.unregister(this);
-			textureResource = null;
+			for (Resource resource : textureResources)
+			{
+				resource.unregister(this);
+			}
+			
+			textureResources = null;
 		}
 	}
 
-	protected void loadTexture(String resource)
+	protected void loadTextures(String... resources)
 	{
-		textureResource = ResourceManager.getInstance().getResource(resource);
-		textureResource.registerAndLoad(this);
+		resourceToIndexMap = new HashMap<>();
+		textureResources = new TextureResource[resources.length];
+		loadedTextures = new AbstractTexture[resources.length];
+		
+		for (int i = 0; i < textureResources.length; i++)
+		{
+			String resource = resources[i];
+			
+			Resource textureResource = ResourceManager.getInstance().getResource(resource);
+			
+			textureResources[i] = textureResource;
+			
+			resourceToIndexMap.put(textureResource, i);
+			textureResource.registerAndLoad(this);
+		}
 	}
 	
 	@Override
 	public void onResourceReady(TextureResource resource)
 	{
-		AbstractTexture texture = resource.getContent();
-		onTextureLoaded(texture);
+		int index = resourceToIndexMap.remove(resource);
+		
+		loadedTextures[index] = resource.getContent();
+		
+		if (resourceToIndexMap.isEmpty())
+		{
+			onTexturesLoaded(loadedTextures);
+		}
 	}
 
-	protected abstract void onTextureLoaded(AbstractTexture texture);
+	protected abstract void onTexturesLoaded(AbstractTexture[] texture);
 }

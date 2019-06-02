@@ -1,10 +1,9 @@
 package zyx.game.controls.input;
 
-import java.awt.event.KeyEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.CustomCallback;
-import zyx.utils.GameConstants;
 import zyx.utils.interfaces.IUpdateable;
 
 public class InputManager implements IUpdateable
@@ -57,13 +56,13 @@ public class InputManager implements IUpdateable
 			//Position
 			if (mouseData.grabbed)
 			{
-				mouseData.x = GameConstants.GAME_WIDTH / 2;
-				mouseData.y = GameConstants.GAME_HEIGHT / 2;
+				mouseData.x = ScreenSize.width / 2;
+				mouseData.y = ScreenSize.height / 2;
 			}
 			else
 			{
 				mouseData.x = Mouse.getX();
-				mouseData.y = GameConstants.GAME_HEIGHT - Mouse.getY();
+				mouseData.y = ScreenSize.height - Mouse.getY();
 			}
 
 			//Movements

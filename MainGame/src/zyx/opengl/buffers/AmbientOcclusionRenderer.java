@@ -3,7 +3,7 @@ package zyx.opengl.buffers;
 import java.nio.FloatBuffer;
 import java.util.Random;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.*;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_RGB;
@@ -13,12 +13,8 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
 import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glTexImage2D;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.opengl.GL11.GL_REPEAT;
-import org.lwjgl.opengl.GL30;
-import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
-import static org.lwjgl.opengl.GL30.glFramebufferTexture2D;
 import zyx.opengl.GLUtils;
 import zyx.opengl.models.implementations.FullScreenQuadModel;
 import zyx.opengl.shaders.AbstractShader;
@@ -27,7 +23,9 @@ import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.FrameBufferTexture;
 import zyx.opengl.textures.TextureFromInt;
 import zyx.opengl.textures.enums.TextureAttachment;
+import zyx.opengl.textures.enums.TextureFormat;
 import zyx.opengl.textures.enums.TextureSlot;
+import static org.lwjgl.opengl.GL11.glTexImage2D;
 
 public class AmbientOcclusionRenderer extends BaseFrameBuffer
 {
@@ -57,7 +55,7 @@ public class AmbientOcclusionRenderer extends BaseFrameBuffer
 	@Override
 	protected void onCreateFrameBufferTextures()
 	{
-		ambientOcclusionBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_0);
+		ambientOcclusionBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_0, TextureFormat.FORMAT_1_CHANNEL_16F);
 		
 	}
 
@@ -67,12 +65,12 @@ public class AmbientOcclusionRenderer extends BaseFrameBuffer
 		createNoiseTexture();
 		
 		int positionTextureId = DeferredRenderer.getInstance().screenPositionInt();
-		positionTexture = new TextureFromInt(w, h, positionTextureId, TextureSlot.SLOT_0);
+		positionTexture = new TextureFromInt(w, h, positionTextureId, TextureSlot.AO_SCREEN_POSITION);
 
 		int normalTextureId = DeferredRenderer.getInstance().screenNormalInt();
-		normalTexture = new TextureFromInt(w, h, normalTextureId, TextureSlot.SLOT_1);
+		normalTexture = new TextureFromInt(w, h, normalTextureId, TextureSlot.AO_SCREEN_NORMAL);
 
-		noiseTexture = new TextureFromInt(4, 4, noiseTextureId, TextureSlot.SLOT_2);
+		noiseTexture = new TextureFromInt(4, 4, noiseTextureId, TextureSlot.AO_NOISE);
 
 		model = new FullScreenQuadModel(Shader.AMBIENT_OCCLUSION, positionTexture, normalTexture, noiseTexture);
 	}
@@ -130,5 +128,20 @@ public class AmbientOcclusionRenderer extends BaseFrameBuffer
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	}
+
+	@Override
+	protected void onDispose()
+	{
+		if (ambientOcclusionBuffer != null)
+		{
+			ambientOcclusionBuffer.dispose();
+			ambientOcclusionBuffer = null;
+		}
+		
+		if (model != null)
+		{
+			model.dispose();
+		}
 	}
 }

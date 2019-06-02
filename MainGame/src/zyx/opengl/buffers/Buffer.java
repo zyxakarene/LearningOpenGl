@@ -2,11 +2,12 @@ package zyx.opengl.buffers;
 
 public enum Buffer
 {
+	
 	DEFAULT(0),
-	RENDER_TO_TEXTURE(-1),
-	DEFERRED(-1),
-	DEPTH(-1),
-	AMBIENT_OCCLUSION(-1);
+	RENDER_TO_TEXTURE(BufferBinder.UNKNOWN_BUFFER),
+	DEFERRED(BufferBinder.UNKNOWN_BUFFER),
+	DEPTH(BufferBinder.UNKNOWN_BUFFER),
+	AMBIENT_OCCLUSION(BufferBinder.UNKNOWN_BUFFER);
 
 	int bufferId;
 
