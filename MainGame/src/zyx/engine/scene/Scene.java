@@ -109,7 +109,6 @@ public class Scene
 			hud.update(timestamp, elapsedTime);
 		}
 		
-		MegaManager.update(timestamp, elapsedTime);
 		camera.update(timestamp, elapsedTime);
 		
 		if (ready)
@@ -117,6 +116,7 @@ public class Scene
 			onUpdate(timestamp, elapsedTime);
 		}
 
+		MegaManager.update(timestamp, elapsedTime);
 		CursorManager.getInstance().update();
 
 		GLUtils.errorCheck();

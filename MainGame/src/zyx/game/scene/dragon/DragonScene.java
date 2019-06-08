@@ -5,10 +5,13 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.cubemaps.CubemapManager;
 import zyx.engine.components.cubemaps.saving.CubemapProcess;
+import zyx.engine.components.tooltips.TestTooltip;
+import zyx.engine.components.tooltips.TooltipManager;
 import zyx.engine.components.world.GameLight;
 import zyx.engine.scene.Scene;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
+import zyx.game.behavior.misc.RotateBehavior;
 import zyx.game.components.GameObject;
 import zyx.game.components.MeshObject;
 import zyx.game.controls.input.KeyboardData;
@@ -76,7 +79,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		world.setSunRotation(new Vector3f(-33, -5, -21));
 		
 		GameObject spinner = new GameObject();
-//		spinner.addBehavior(new RotateBehavior());
+		//spinner.addBehavior(new RotateBehavior());
 		
 		Sphere sphere1 = new Sphere(5);
 		Sphere sphere2 = new Sphere(5);
@@ -95,6 +98,11 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		world.addChild(spinner);
 		
 		gameObjects.add(spinner);
+		
+		TooltipManager.getInstance().register(new TestTooltip(sphere1));
+		TooltipManager.getInstance().register(new TestTooltip(sphere2));
+		TooltipManager.getInstance().register(new TestTooltip(sphere3));
+		TooltipManager.getInstance().register(new TestTooltip(sphere4));
 	}
 
 	@Override

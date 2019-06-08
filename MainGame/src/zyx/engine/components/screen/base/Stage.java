@@ -19,6 +19,8 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 	
 	private ICallback<Vector2Int> screenSizeChanged;
 	
+	public final DisplayObjectContainer tooltipLayer;
+	
 	private Stage()
 	{
 		crawler = new InteractionCrawler(this);
@@ -32,6 +34,9 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 		};
 		
 		ScreenSize.addListener(screenSizeChanged);
+		
+		tooltipLayer = new DisplayObjectContainer();
+		addChild(tooltipLayer);
 	}
 
 	public final void drawStage()
