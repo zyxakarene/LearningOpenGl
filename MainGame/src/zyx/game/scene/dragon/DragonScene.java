@@ -1,6 +1,7 @@
 package zyx.game.scene.dragon;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.cubemaps.CubemapManager;
@@ -12,6 +13,7 @@ import zyx.engine.components.world.GameLight;
 import zyx.engine.scene.Scene;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
+import zyx.game.behavior.freefly.OnlinePositionSender;
 import zyx.game.behavior.misc.RotateBehavior;
 import zyx.game.components.GameObject;
 import zyx.game.components.MeshObject;
@@ -27,13 +29,19 @@ import zyx.utils.GameConstants;
 
 public class DragonScene extends Scene implements ICallback<ProcessQueue>
 {
+	public static DragonScene current;
+	
+	public int myId;
+	public HashMap<Integer, GameObject> players = new HashMap<>();
+
 	private ArrayList<GameObject> gameObjects;
 	private boolean cubemapping;
 	private ProcessQueue processQueue;
-	
+
 	public DragonScene()
 	{
 		gameObjects = new ArrayList<>();
+		current = this;
 	}
 
 	@Override
@@ -46,7 +54,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	{
 		world.loadSkybox("skybox.texture.desert");
 		CubemapManager.getInstance().load("cubemap.dragon");
-		
+
 		MeshObject dragon = new MeshObject();
 		dragon.setScale(0.33f, 0.33f, 0.33f);
 		dragon.load("mesh.dragon");
@@ -60,7 +68,6 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		gameObjects.add(platform);
 
 //		dragon.addBehavior(new RotateBehavior());
-		
 		for (int i = 0; i < GameConstants.LIGHT_COUNT; i++)
 		{
 			GameObject lightContainer = new GameObject();
@@ -74,35 +81,34 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 			float z = (25f * FloatMath.random());
 			lightContainer.setPosition(true, x, y, z);
 			GLUtils.errorCheck();
-			
+
 //			lightContainer.addBehavior(new JiggleBehavior());
-			
 			gameObjects.add(lightContainer);
 		}
-		
+
 		world.setSunRotation(new Vector3f(-33, -5, -21));
-		
+
 		GameObject spinner = new GameObject();
 		//spinner.addBehavior(new RotateBehavior());
-		
+
 		Sphere sphere1 = new Sphere(5);
 		Sphere sphere2 = new Sphere(5);
 		Sphere sphere3 = new Sphere(5);
 		Sphere sphere4 = new Sphere(5);
-		
+
 		sphere1.setPosition(false, -20, -20, 10);
 		sphere2.setPosition(false, 20, -20, 10);
 		sphere3.setPosition(false, 20, 20, 10);
 		sphere4.setPosition(false, -20, 20, 10);
-		
+
 		spinner.addChild(sphere1);
 		spinner.addChild(sphere2);
 		spinner.addChild(sphere3);
 		spinner.addChild(sphere4);
 		world.addChild(spinner);
-		
+
 		gameObjects.add(spinner);
-		
+
 		TooltipManager.getInstance().register(new TestTooltip(sphere1));
 		TooltipManager.getInstance().register(new TestTooltip(sphere2));
 		TooltipManager.getInstance().register(new TestTooltip(sphere3));
@@ -117,23 +123,23 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 			GameObject obj = gameObjects.get(i);
 			obj.update(timestamp, elapsedTime);
 		}
-		
+
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_R))
 		{
 			int width = (int) (64 + (Math.random() * 1920 * 0.75));
 			int height = (int) (64 + (Math.random() * 1080 * 0.75));
 			ScreenSize.changeScreenSize(width, height);
 		}
-		
+
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_C))
 		{
 			NetworkChannel.sendRequest(NetworkCommands.LOGIN, "Zyx");
 		}
-		
+
 		if (!cubemapping && KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
 		{
 			cubemapping = true;
-			
+
 			Vector3f[] positions = new Vector3f[]
 			{
 				new Vector3f(-20, -20, 10),
@@ -141,13 +147,13 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 				new Vector3f(20, 20, 10),
 				new Vector3f(-20, 20, 10),
 			};
-			
+
 			processQueue = new ProcessQueue();
 			processQueue.addProcess(new CubemapProcess("dragon", positions));
-			
+
 			processQueue.start(this);
 		}
-		
+
 		if (processQueue != null)
 		{
 			processQueue.update(timestamp, elapsedTime);
@@ -159,7 +165,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	{
 		return new GameNetworkController();
 	}
-	
+
 	@Override
 	protected void onDispose()
 	{
@@ -168,10 +174,10 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 			GameObject obj = gameObjects.get(i);
 			obj.dispose();
 		}
-		
+
 		world.removeSkybox();
 		CubemapManager.getInstance().clean();
-		
+
 		gameObjects.clear();
 		gameObjects = null;
 	}
@@ -182,5 +188,21 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		cubemapping = false;
 		processQueue.dispose();
 		processQueue = null;
+	}
+
+	public void addPlayer(int id)
+	{
+		GameObject player = new GameObject();
+		player.addChild(new Sphere(2f));
+		
+		players.put(id, player);
+		world.addChild(player);
+	}
+
+	public void onAuthed(int id)
+	{
+		myId = id;
+		
+		camera.addBehavior(new OnlinePositionSender(id));
 	}
 }

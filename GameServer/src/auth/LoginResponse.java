@@ -23,7 +23,7 @@ public class LoginResponse extends BaseNetworkResponse<String>
 		
 		WriteableDataObject loginData = new WriteableDataObject();
 		loginData.addInteger("id", idCounter);
-		sendReply(NetworkCommands.AUTH, loginData);
+		sendReply(NetworkCommands.LOGIN, loginData);
 		
 		return playerName;
 	}

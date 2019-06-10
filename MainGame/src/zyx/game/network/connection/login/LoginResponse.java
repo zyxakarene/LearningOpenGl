@@ -9,7 +9,7 @@ public class LoginResponse extends BaseNetworkResponse<Integer>
 
 	public LoginResponse()
 	{
-		super(NetworkCommands.AUTH);
+		super(NetworkCommands.LOGIN);
 	}
 	
 	@Override

@@ -38,6 +38,11 @@ public class WriteableDataObject implements IWriteableObject
 		addInner(name, value, Serializers.TYPE_CHARACTER);
 	}
 
+	public void addFloat(String name, float value)
+	{
+		addInner(name, value, Serializers.TYPE_FLOAT);
+	}
+
 	public void addInteger(String name, int value)
 	{
 		addInner(name, value, Serializers.TYPE_INTEGER);

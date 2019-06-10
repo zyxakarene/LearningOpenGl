@@ -1,5 +1,6 @@
 package zyx.net.io.requests;
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
 import zyx.net.io.connections.ConnectionData;
@@ -46,15 +47,26 @@ public class NetworkRequestDispatcher
 			requestWithCommand(command, params, connection);
 		}
 	}
-	
-	public void requestWithCommand(String command, Object[] params, ConnectionData connections)
+
+	public void requestWithCommand(String command, Object[] params, ConnectionData connection)
 	{
 		ArrayList<BaseNetworkRequest> handlers = requestHandlerMap.get(command);
+
+		InetAddress host = null;
+		int port = -1;
+		if (connection != null)
+		{
+			host = connection.address;
+			port = connection.port;
+		}
 
 		if (handlers != null)
 		{
 			for (BaseNetworkRequest handler : handlers)
 			{
+				handler.host = host;
+				handler.port = port;
+				
 				handler.sendRequest(params);
 			}
 		}

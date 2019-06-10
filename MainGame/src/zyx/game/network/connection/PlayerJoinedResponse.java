@@ -10,7 +10,7 @@ public class PlayerJoinedResponse extends BaseNetworkResponse<Integer>
 
 	public PlayerJoinedResponse()
 	{
-		super(NetworkCommands.PLAYER_JOINED);
+		super(NetworkCommands.PLAYER_JOINED_GAME);
 	}
 
 	@Override

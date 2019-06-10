@@ -1,14 +1,14 @@
-package zyx.game.network.movement;
+package pos;
 
-import org.lwjgl.util.vector.Vector3f;
+import com.sun.javafx.geom.Vec4f;
 import zyx.net.data.WriteableDataObject;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.requests.BaseNetworkRequest;
 
-public class UpdatePlayerPositionRequest extends BaseNetworkRequest
+public class PlayerPosRequest extends BaseNetworkRequest
 {
 
-	public UpdatePlayerPositionRequest()
+	public PlayerPosRequest()
 	{
 		super(NetworkCommands.PLAYER_UPDATE_POSITION);
 	}
@@ -16,8 +16,8 @@ public class UpdatePlayerPositionRequest extends BaseNetworkRequest
 	@Override
 	protected void getDataObject(WriteableDataObject data, Object[] params)
 	{
-		Vector3f pos = (Vector3f) params[0];
-		int id = (int) params[1];
+		Vec4f pos = (Vec4f) params[0];
+		int id = (int) pos.w;
 		
 		float x = pos.x;
 		float y = pos.y;
@@ -28,5 +28,4 @@ public class UpdatePlayerPositionRequest extends BaseNetworkRequest
 		data.addFloat("z", z);
 		data.addInteger("id", id);
 	}
-
 }
