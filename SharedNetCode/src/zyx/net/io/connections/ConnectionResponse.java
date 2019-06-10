@@ -1,4 +1,4 @@
-package zyx.net.io.requests;
+package zyx.net.io.connections;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

@@ -17,6 +17,7 @@ import zyx.game.components.screen.hud.BaseHud;
 import zyx.game.controls.input.MouseData;
 import zyx.game.controls.lights.LightsManager;
 import zyx.game.controls.process.ProcessQueue;
+import zyx.net.io.controllers.BaseNetworkController;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.cheats.DebugContainer;
@@ -32,6 +33,7 @@ public class Scene
 	protected CameraController camera;
 	
 	protected BaseHud hud;
+	protected BaseNetworkController networkController;
 
 	private ProcessQueue preloadQueue;
 	private boolean ready;
@@ -66,10 +68,10 @@ public class Scene
 	{
 		world.addChild(debugContainer);
 		hud = createHud();
-		if (hud != null)
-		{
-			stage.addChild(hud);
-		}
+		stage.addChild(hud);
+		
+		networkController = createNetworkDispatcher();
+		networkController.addListeners();
 		
 //		debugPanel = new DebugPanel();
 //		stage.addChild(debugPanel);
@@ -152,6 +154,11 @@ public class Scene
 	protected BaseHud createHud()
 	{
 		return new BaseHud();
+	}
+	
+	protected BaseNetworkController createNetworkDispatcher()
+	{
+		return new BaseNetworkController();
 	}
 	
 	protected void onDraw()

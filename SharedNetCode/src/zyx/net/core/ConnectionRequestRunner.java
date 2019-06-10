@@ -2,8 +2,8 @@ package zyx.net.core;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
-import zyx.net.io.requests.ConnectionRequest;
-import zyx.net.io.requests.ConnectionResponse;
+import zyx.net.io.connections.ConnectionRequest;
+import zyx.net.io.connections.ConnectionResponse;
 import zyx.synchronizer.BaseRunner;
 
 public class ConnectionRequestRunner extends BaseRunner<ConnectionRequest, ConnectionResponse>

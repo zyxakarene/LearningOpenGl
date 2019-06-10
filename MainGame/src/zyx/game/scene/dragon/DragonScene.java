@@ -5,6 +5,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.cubemaps.CubemapManager;
 import zyx.engine.components.cubemaps.saving.CubemapProcess;
+import zyx.engine.components.network.GameNetworkController;
 import zyx.engine.components.tooltips.TestTooltip;
 import zyx.engine.components.tooltips.TooltipManager;
 import zyx.engine.components.world.GameLight;
@@ -16,6 +17,9 @@ import zyx.game.components.GameObject;
 import zyx.game.components.MeshObject;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.process.ProcessQueue;
+import zyx.net.io.controllers.BaseNetworkController;
+import zyx.net.io.controllers.NetworkChannel;
+import zyx.net.io.controllers.NetworkCommands;
 import zyx.opengl.GLUtils;
 import zyx.opengl.models.implementations.shapes.Sphere;
 import zyx.utils.FloatMath;
@@ -121,6 +125,11 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 			ScreenSize.changeScreenSize(width, height);
 		}
 		
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_C))
+		{
+			NetworkChannel.sendRequest(NetworkCommands.LOGIN, "Zyx");
+		}
+		
 		if (!cubemapping && KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
 		{
 			cubemapping = true;
@@ -145,6 +154,12 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		}
 	}
 
+	@Override
+	protected BaseNetworkController createNetworkDispatcher()
+	{
+		return new GameNetworkController();
+	}
+	
 	@Override
 	protected void onDispose()
 	{
