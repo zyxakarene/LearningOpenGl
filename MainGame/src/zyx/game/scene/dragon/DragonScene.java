@@ -1,7 +1,6 @@
 package zyx.game.scene.dragon;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.cubemaps.CubemapManager;
@@ -14,7 +13,6 @@ import zyx.engine.scene.Scene;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.behavior.freefly.OnlinePositionSender;
-import zyx.game.behavior.misc.RotateBehavior;
 import zyx.game.components.GameObject;
 import zyx.game.components.MeshObject;
 import zyx.game.controls.input.KeyboardData;
@@ -32,7 +30,6 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	public static DragonScene current;
 	
 	public int myId;
-	public HashMap<Integer, GameObject> players = new HashMap<>();
 
 	private ArrayList<GameObject> gameObjects;
 	private boolean cubemapping;
@@ -163,7 +160,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	@Override
 	protected BaseNetworkController createNetworkDispatcher()
 	{
-		return new GameNetworkController();
+		return new GameNetworkController(playerHandler);
 	}
 
 	@Override
@@ -188,15 +185,6 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		cubemapping = false;
 		processQueue.dispose();
 		processQueue = null;
-	}
-
-	public void addPlayer(int id)
-	{
-		GameObject player = new GameObject();
-		player.addChild(new Sphere(2f));
-		
-		players.put(id, player);
-		world.addChild(player);
 	}
 
 	public void onAuthed(int id)

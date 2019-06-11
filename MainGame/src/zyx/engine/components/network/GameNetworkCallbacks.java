@@ -1,9 +1,13 @@
 package zyx.engine.components.network;
 
 import org.lwjgl.util.vector.Vector3f;
+import zyx.game.behavior.Behavior;
+import zyx.game.behavior.BehaviorType;
+import zyx.game.behavior.freefly.OnlinePositionInterpolator;
 import zyx.game.components.GameObject;
-import zyx.game.network.movement.UpdatePlayerPositionResponse;
+import zyx.game.scene.PlayerHandler;
 import zyx.game.scene.dragon.DragonScene;
+import zyx.game.vo.PlayerPositionData;
 import zyx.net.io.controllers.NetworkCallbacks;
 import zyx.net.io.controllers.NetworkChannel;
 import zyx.net.io.controllers.NetworkCommands;
@@ -17,8 +21,12 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 	private INetworkCallback onPlayerJoined;
 	private INetworkCallback onPlayerPos;
 
-	public GameNetworkCallbacks()
+	private PlayerHandler playerHandler;
+	
+	public GameNetworkCallbacks(PlayerHandler playerHandler)
 	{
+		this.playerHandler = playerHandler;
+		
 		createCallbacks();
 		
 		registerCallback(NetworkCommands.LOGIN, onLogin);
@@ -38,16 +46,19 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 	{
 		Print.out("User", id, "joined my game!");
 		
-		DragonScene.current.addPlayer(id);
+		playerHandler.addPlayer(id, new Vector3f(0, 0, 10));
 	}
 	
-	private void onPosition(UpdatePlayerPositionResponse.PlayerPosData posData)
+	private void onPosition(PlayerPositionData data)
 	{
-		GameObject player = DragonScene.current.players.get(posData.playerId);
+		GameObject player = playerHandler.getPlayerById(data.id);
 		if (player != null)
 		{
-			Vector3f pos = posData.vec;
-			player.setPosition(false, pos);
+			OnlinePositionInterpolator moveBehavior = (OnlinePositionInterpolator) player.getBehaviorById(BehaviorType.ONLINE_POSITION);
+			if (moveBehavior != null)
+			{
+				moveBehavior.setPosition(data.position, data.rotation);
+			}
 		}
 	}
 	
@@ -63,7 +74,7 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 			onJoin(playerId);
 		};
 		
-		onPlayerPos = (INetworkCallback<UpdatePlayerPositionResponse.PlayerPosData>) (UpdatePlayerPositionResponse.PlayerPosData position) ->
+		onPlayerPos = (INetworkCallback<PlayerPositionData>) (PlayerPositionData position) ->
 		{
 			onPosition(position);
 		};

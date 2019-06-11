@@ -70,9 +70,9 @@ public class MatrixUtils
 
 	public static void getDirFrom(Matrix4f matrix, Vector3f out)
 	{
-		out.x = matrix.m20;
+		out.x = -matrix.m20;
 		out.y = matrix.m21;
-		out.z = matrix.m22;
+		out.z = -matrix.m22;
 	}
 
 	public static void setDirTo(Matrix4f matrix, Vector3f dir, Vector3f up)
