@@ -21,6 +21,9 @@ public class CameraUpdateLightbehavior extends Behavior
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_E))
 		{
 			Vector3f camDir = gameObject.getDir(false, null);
+			camDir.x *= -1;
+			camDir.z *= -1;
+			
 			World3D.instance.setSunDir(camDir);
 		}
 	}

@@ -59,4 +59,10 @@ public class TooltipManager implements IUpdateable
 			tooltip.setPosition(false, outVector.x, outVector.y);
 		}
 	}
+
+	public void clean()
+	{
+		Stage.instance.tooltipLayer.removeChildren(true);
+		tooltips.clear();
+	}
 }
