@@ -35,8 +35,8 @@ class DataObjectDeserializer
 		
 		stream.close();
 	}
-
-	void deserializeArray(ArrayList<Object> list) throws IOException
+	
+	<T> void deserializeArray(ArrayList<T> list) throws IOException
 	{
 		Serializers serializers = Serializers.getInstance();
 		int length = stream.readShort();
@@ -48,7 +48,7 @@ class DataObjectDeserializer
 			
 			AbstractSerializer serializer = serializers.getFromType(type);
 			
-			Object data = serializer.read(stream);
+			T data = (T) serializer.read(stream);
 			list.add(data);
 		}
 		

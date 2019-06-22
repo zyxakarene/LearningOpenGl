@@ -1,6 +1,7 @@
 package zyx.net.io.responses;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import zyx.net.io.connections.ConnectionResponse;
 
 public class ResponseManager
@@ -9,6 +10,9 @@ public class ResponseManager
 	private static final ResponseManager INSTANCE = new ResponseManager();
 	
 	private final ArrayList<NetworkResponseDispatcher> dispatchers;
+	
+	private static final LinkedList<NetworkResponseDispatcher> LIST_HELPER = new LinkedList<>();
+	
 	
 	private ResponseManager()
 	{
@@ -44,9 +48,15 @@ public class ResponseManager
 			{
 				if (dispatcher.containsKey(response.name))
 				{
-					dispatcher.dispatchWithKey(response);
+					LIST_HELPER.addLast(dispatcher);
 				}
 			}
+		}
+		
+		while (!LIST_HELPER.isEmpty())
+		{			
+			NetworkResponseDispatcher dispatcher = LIST_HELPER.removeFirst();
+			dispatcher.dispatchWithKey(response);
 		}
 	}
 }

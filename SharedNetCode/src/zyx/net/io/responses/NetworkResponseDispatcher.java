@@ -46,6 +46,11 @@ public class NetworkResponseDispatcher
 	{
 		ArrayList<BaseNetworkResponse> responses = responseMap.get(connectionResponse.name);
 		
+		if (responses.isEmpty())
+		{
+			System.out.println("[WARNING] Incoming message, but no listeners: " + connectionResponse.name);
+		}
+		
 		for (BaseNetworkResponse response : responses)
 		{
 			response.onMessage(connectionResponse.object, connectionResponse.senderHost, connectionResponse.senderPort);

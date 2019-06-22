@@ -5,7 +5,7 @@ import java.net.*;
 
 class PersistentConnection
 {
-	static final int BUFFER_SIZE = 512;
+	static final int BUFFER_SIZE = 2048;
 	
 	private static PersistentConnection INSTANCE = new PersistentConnection();
 

@@ -1,11 +1,9 @@
-package udp;
-
-import java.io.IOException;
+package zyx.server;
 
 public class ServerMain
 {
 
-    public static void main(String[] args) throws IOException
+    public static void main(String[] args)
     {
 		System.out.println("Starting server");
         Server server = new Server();

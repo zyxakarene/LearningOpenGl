@@ -3,10 +3,10 @@ package zyx.net.data;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ReadableDataArray
+public class ReadableDataArray<T>
 {
 
-	private ArrayList<Object> dataList;
+	private ArrayList<T> dataList;
 
 	public ReadableDataArray(byte[] data)
 	{
@@ -21,7 +21,7 @@ public class ReadableDataArray
 		}
 	}
 
-	public Object get(int index)
+	public T get(int index)
 	{
 		return dataList.get(index);
 	}

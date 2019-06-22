@@ -60,6 +60,11 @@ public class NetworkRequestDispatcher
 			port = connection.port;
 		}
 
+		if (handlers == null)
+		{
+			System.out.println("[WARNING] Outgoing message, but no handlers: " + command);
+		}
+		
 		if (handlers != null)
 		{
 			for (BaseNetworkRequest handler : handlers)

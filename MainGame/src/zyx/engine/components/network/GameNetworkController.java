@@ -1,9 +1,12 @@
 package zyx.engine.components.network;
 
-import zyx.game.network.connection.JoinGameRequest;
-import zyx.game.network.connection.PlayerJoinedResponse;
-import zyx.game.network.connection.login.LoginResponse;
-import zyx.game.network.connection.login.LoginRequest;
+import zyx.game.joining.PlayerJoinGameRequest;
+import zyx.game.joining.PlayerJoinGameResponse;
+import zyx.game.login.AuthenticateRequest;
+import zyx.game.login.AuthenticateResponse;
+import zyx.game.login.LoginRequest;
+import zyx.game.login.LoginResponse;
+import zyx.game.network.joining.SetupGameResponse;
 import zyx.game.position.PlayerPosRequest;
 import zyx.game.position.PlayerPosResponse;
 import zyx.game.scene.PlayerHandler;
@@ -23,7 +26,8 @@ public class GameNetworkController extends BaseNetworkController
 	protected void addRequestsHandlersTo(NetworkRequestDispatcher dispatcher)
 	{
 		dispatcher.addRequestHandler(new LoginRequest());
-		dispatcher.addRequestHandler(new JoinGameRequest());
+		dispatcher.addRequestHandler(new AuthenticateRequest());
+		dispatcher.addRequestHandler(new PlayerJoinGameRequest());
 		dispatcher.addRequestHandler(new PlayerPosRequest());
 	}
 
@@ -31,7 +35,9 @@ public class GameNetworkController extends BaseNetworkController
 	protected void addResponseHandlersTo(NetworkResponseDispatcher dispatcher)
 	{
 		dispatcher.addResponseCallback(new LoginResponse());
-		dispatcher.addResponseCallback(new PlayerJoinedResponse());
+		dispatcher.addResponseCallback(new AuthenticateResponse());
+		dispatcher.addResponseCallback(new SetupGameResponse());
+		dispatcher.addResponseCallback(new PlayerJoinGameResponse());
 		dispatcher.addResponseCallback(new PlayerPosResponse());
 	}
 

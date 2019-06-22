@@ -3,11 +3,11 @@ package zyx.game.behavior.freefly;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
+import zyx.game.models.GameModels;
 import zyx.net.io.controllers.NetworkChannel;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
-import zyx.utils.cheats.DebugPoint;
 
 public class OnlinePositionSender extends Behavior
 {
@@ -25,10 +25,10 @@ public class OnlinePositionSender extends Behavior
 	private float lastDirY;
 	private float lastDirZ;
 	
-	public OnlinePositionSender(int id)
+	public OnlinePositionSender()
 	{
 		super(BehaviorType.ONLINE_POSITION);
-		this.id = id;
+		this.id = GameModels.player.playerId;
 		
 		lastX = -999;
 		lastY = -999;

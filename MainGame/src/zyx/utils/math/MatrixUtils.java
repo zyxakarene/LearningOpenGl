@@ -77,6 +77,13 @@ public class MatrixUtils
 
 	public static void setDirTo(Matrix4f matrix, Vector3f dir, Vector3f up)
 	{
+		if (dir.z >= 0.9999f)
+		{
+			dir.z = 0.9f;
+			dir.x = 0.1f;
+			dir.normalise();
+		}
+		
 		Vector3f right = Vector3f.cross(up, dir, null);
 		right.normalise();
 		

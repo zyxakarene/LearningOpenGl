@@ -28,8 +28,6 @@ import zyx.utils.GameConstants;
 public class DragonScene extends Scene implements ICallback<ProcessQueue>
 {
 	public static DragonScene current;
-	
-	public int myId;
 
 	private ArrayList<GameObject> gameObjects;
 	private boolean cubemapping;
@@ -188,10 +186,8 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		processQueue = null;
 	}
 
-	public void onAuthed(int id)
+	public void onAuthed()
 	{
-		myId = id;
-		
-		camera.addBehavior(new OnlinePositionSender(id));
+		camera.addBehavior(new OnlinePositionSender());
 	}
 }

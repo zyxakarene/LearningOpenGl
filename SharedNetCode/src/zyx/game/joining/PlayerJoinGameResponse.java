@@ -1,14 +1,13 @@
-package zyx.game.network.connection;
+package zyx.game.joining;
 
 import zyx.net.data.ReadableDataObject;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.BaseNetworkResponse;
-import zyx.utils.cheats.Print;
 
-public class PlayerJoinedResponse extends BaseNetworkResponse<Integer>
+public class PlayerJoinGameResponse extends BaseNetworkResponse<Integer>
 {
 
-	public PlayerJoinedResponse()
+	public PlayerJoinGameResponse()
 	{
 		super(NetworkCommands.PLAYER_JOINED_GAME);
 	}
@@ -16,8 +15,6 @@ public class PlayerJoinedResponse extends BaseNetworkResponse<Integer>
 	@Override
 	protected Integer onMessageRecieved(ReadableDataObject data)
 	{
-		Print.out(data);
-		
 		return data.getInteger("id");
 	}
 

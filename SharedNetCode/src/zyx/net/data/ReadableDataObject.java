@@ -23,47 +23,56 @@ public class ReadableDataObject
 
 	public byte getByte(String name)
 	{
-		return (byte) dataMap.get(name);
+		Object value = dataMap.get(name);
+		return value == null ? 0 : (byte) value;
 	}
 
 	public boolean getBoolean(String name)
 	{
-		return (boolean) dataMap.get(name);
+		Object value = dataMap.get(name);
+		return value == null ? false : (boolean) value;
 	}
 
 	public short getShort(String name)
 	{
-		return (short) dataMap.get(name);
+		Object value = dataMap.get(name);
+		return value == null ? 0 : (short) value;
 	}
 
 	public char getCharacter(String name)
 	{
-		return (char) dataMap.get(name);
+		Object value = dataMap.get(name);
+		return value == null ? null : (char) value;
 	}
 
 	public int getInteger(String name)
 	{
-		return (int) dataMap.get(name);
+		Object value = dataMap.get(name);
+		return value == null ? 0 : (int) value;
 	}
 
 	public long getLong(String name)
 	{
-		return (long) dataMap.get(name);
+		Object value = dataMap.get(name);
+		return value == null ? 0L : (long) value;
 	}
 
 	public float getFloat(String name)
 	{
-		return (float) dataMap.get(name);
+		Object value = dataMap.get(name);
+		return value == null ? 0f : (float) value;
 	}
 
 	public double getDouble(String name)
 	{
-		return (double) dataMap.get(name);
+		Object value = dataMap.get(name);
+		return value == null ? 0d : (double) value;
 	}
 
 	public String getString(String name)
 	{
-		return (String) dataMap.get(name);
+		Object value = dataMap.get(name);
+		return value == null ? null : (String) value;
 	}
 
 	public ReadableDataObject getObject(String name)
@@ -71,9 +80,9 @@ public class ReadableDataObject
 		return (ReadableDataObject) dataMap.get(name);
 	}
 
-	public ReadableDataArray getArray(String name)
+	public <T> ReadableDataArray<T> getArray(String name)
 	{
-		return (ReadableDataArray) dataMap.get(name);
+		return (ReadableDataArray<T>) dataMap.get(name);
 	}
 
 	public ByteArrayObject getByteArray(String name)

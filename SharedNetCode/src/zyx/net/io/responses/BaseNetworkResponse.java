@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import zyx.net.core.ConnectionHandler;
 import zyx.net.data.ReadableDataObject;
 import zyx.net.data.WriteableDataObject;
+import zyx.net.io.connections.ConnectionData;
 import zyx.net.io.connections.ConnectionRequest;
 
 public abstract class BaseNetworkResponse<T>
@@ -57,4 +58,9 @@ public abstract class BaseNetworkResponse<T>
 		return senderPort;
 	}
 
+	protected ConnectionData asConnectionData()
+	{
+		return new ConnectionData(senderHost, senderPort);
+	}
+	
 }

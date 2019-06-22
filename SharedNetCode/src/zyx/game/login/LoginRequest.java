@@ -1,12 +1,12 @@
-package zyx.game.network.connection.login;
+package zyx.game.login;
 
 import zyx.net.data.WriteableDataObject;
 import zyx.net.io.requests.BaseNetworkRequest;
 import zyx.net.io.controllers.NetworkCommands;
+import static zyx.game.login.LoginConstants.*;
 
 public class LoginRequest extends BaseNetworkRequest
 {
-	private static final String NAME = "name";
 	
 	public LoginRequest()
 	{
