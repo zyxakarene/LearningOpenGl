@@ -28,33 +28,33 @@ public class Scene
 
 	private WorldPicker picker;
 	protected DebugContainer debugContainer;
-	
+
 	protected Stage stage;
 	protected World3D world;
 	protected CameraController camera;
-	
+
 	protected PlayerHandler playerHandler;
 	protected BaseHud hud;
 	protected BaseNetworkController networkController;
 
 	private ProcessQueue preloadQueue;
 	private boolean ready;
-	
+
 	public DebugPanel debugPanel;
-	
+
 	public Scene()
 	{
 		picker = new WorldPicker();
-		
+
 		playerHandler = new PlayerHandler();
-		
+
 		world = World3D.instance;
 		stage = Stage.instance;
 		camera = new CameraController();
-		
+
 		debugContainer = DebugContainer.getInstance();
 		preloadQueue = new ProcessQueue();
-		
+
 		ready = false;
 	}
 
@@ -67,46 +67,51 @@ public class Scene
 	{
 		picker.removeObject(object, clickCallback);
 	}
-	
+
+	protected void enablePing()
+	{
+		
+	}
+
 	final void initialize()
 	{
 		world.addChild(debugContainer);
 		hud = createHud();
 		stage.addChild(hud);
-		
+
 		networkController = createNetworkDispatcher();
 		networkController.addListeners();
-		
+
 //		debugPanel = new DebugPanel();
 //		stage.addChild(debugPanel);
-		
 		onPreloadResources();
-		
-		ICallback<ProcessQueue> onCompleted = (ProcessQueue data) ->
-		{
-			onInitialize();
-			ready = true;
+
+		ICallback<ProcessQueue> onCompleted = (ProcessQueue data)
+				-> 
+				{
+					onInitialize();
+					ready = true;
 		};
-		
+
 		preloadQueue.start(onCompleted);
 	}
 
 	protected void onPreloadResources()
 	{
 	}
-	
+
 	protected final void preloadResource(String resource)
 	{
 		preloadQueue.addProcess(new ResourcePreloadProcess(resource));
 	}
-	
+
 	final void update(long timestamp, int elapsedTime)
 	{
 		GLUtils.errorCheck();
-		
+
 		CursorManager.getInstance().setCursor(GameCursor.POINTER);
 		stage.checkStageMouseInteractions(MouseData.data.x, MouseData.data.y);
-		
+
 		debugContainer.update(timestamp, elapsedTime);
 		picker.update();
 
@@ -114,13 +119,13 @@ public class Scene
 		{
 			hud.update(timestamp, elapsedTime);
 		}
-		
+
 		camera.update(timestamp, elapsedTime);
-		
+
 		if (ready)
 		{
 			playerHandler.update(timestamp, elapsedTime);
-			
+
 			onUpdate(timestamp, elapsedTime);
 		}
 
@@ -136,7 +141,7 @@ public class Scene
 		{
 			SharedShaderObjects.combineMatrices();
 			Camera.getInstance().setViewFrustum(SharedShaderObjects.WORLD_PROJECTION_VIEW_TRANSFORM);
-			
+
 			LightsManager.getInstane().uploadLights();
 			world.drawScene();
 
@@ -156,17 +161,17 @@ public class Scene
 	protected void onUpdate(long timestamp, int elapsedTime)
 	{
 	}
-	
+
 	protected BaseHud createHud()
 	{
 		return new BaseHud();
 	}
-	
+
 	protected BaseNetworkController createNetworkDispatcher()
 	{
 		return new BaseNetworkController();
 	}
-	
+
 	protected void onDraw()
 	{
 	}
@@ -183,7 +188,7 @@ public class Scene
 	{
 		camera.dispose();
 		picker.dispose();
-		
+
 		onDispose();
 
 		if (hud != null)
@@ -191,19 +196,19 @@ public class Scene
 			hud.dispose();
 			hud = null;
 		}
-		
+
 		if (preloadQueue != null)
 		{
 			preloadQueue.dispose();
 			preloadQueue = null;
 		}
-		
-		if(debugPanel != null)
+
+		if (debugPanel != null)
 		{
 			debugPanel.dispose();
 			debugPanel = null;
 		}
-		
+
 		stage = null;
 		world = null;
 		camera = null;

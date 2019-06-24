@@ -17,6 +17,8 @@ import zyx.game.components.GameObject;
 import zyx.game.components.MeshObject;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.process.ProcessQueue;
+import zyx.game.network.PingManager;
+import zyx.game.ping.PingController;
 import zyx.net.io.controllers.BaseNetworkController;
 import zyx.net.io.controllers.NetworkChannel;
 import zyx.net.io.controllers.NetworkCommands;
@@ -129,6 +131,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_C))
 		{
 			NetworkChannel.sendRequest(NetworkCommands.LOGIN, "Zyx");
+			PingManager.getInstance().addEntity(0);
 		}
 
 		if (!cubemapping && KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))

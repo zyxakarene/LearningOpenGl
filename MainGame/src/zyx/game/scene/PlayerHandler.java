@@ -61,4 +61,15 @@ public class PlayerHandler implements IUpdateable
 			player.update(timestamp, elapsedTime);
 		}
 	}
+
+	public void clean()
+	{
+		for (GameObject player : playerList)
+		{
+			player.dispose();
+		}
+		
+		playerMap.clear();
+		playerList.clear();
+	}
 }

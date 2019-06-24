@@ -2,6 +2,8 @@ package zyx.net.io.controllers;
 
 public final class NetworkCommands
 {
+	public static final String PING = "Ping";
+	
 	public static final String LOGIN = "Login";
 	public static final String AUTHENTICATE = "Authenticate";
 	

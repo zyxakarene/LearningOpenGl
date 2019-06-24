@@ -20,6 +20,7 @@ public class LoginResponse extends BaseNetworkResponse<LoginData>
 	{
 		OUT.name = data.getString(NAME);
 		OUT.connection = asConnectionData();
+		OUT.uniqueId = getSenderUniqueId();
 		
 		return OUT;
 	}

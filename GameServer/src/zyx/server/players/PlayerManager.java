@@ -14,7 +14,6 @@ public class PlayerManager
 	}
 	
 	
-	private static int playerCounter;
 	private HashMap<Integer, Player> playersById;
 	private ArrayList<Player> players;
 	private ArrayList<ConnectionData> connections;
@@ -40,10 +39,9 @@ public class PlayerManager
 		allButOneConnections = new ConnectionData[lenMinusOne];
 	}
 	
-	public Player createPlayer(String name, ConnectionData connection)
+	public Player createPlayer(int playerId, String name, ConnectionData connection)
 	{
-		playerCounter++;
-		Player player = new Player(playerCounter, name, connection);
+		Player player = new Player(playerId, name, connection);
 		
 		players.add(player);
 		connections.add(player.connection);
@@ -52,6 +50,16 @@ public class PlayerManager
 		createConnectionArrays();
 		
 		return player;
+	}
+	
+	public void removePlayer(int id)
+	{
+		Player player = playersById.get(id);
+		
+		if (player != null)
+		{
+			removePlayer(player);
+		}
 	}
 	
 	public void removePlayer(Player player)

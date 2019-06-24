@@ -16,7 +16,7 @@ import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.INetworkCallback;
 import zyx.utils.cheats.Print;
 
-public class GameNetworkCallbacks extends NetworkCallbacks
+public class GameNetworkCallbacks extends PingPongNetworkCallbacks
 {
 
 	private INetworkCallback onAuthenticate;
@@ -28,6 +28,8 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 	
 	public GameNetworkCallbacks(PlayerHandler playerHandler)
 	{
+		super(playerHandler);
+		
 		this.playerHandler = playerHandler;
 		
 		createCallbacks();

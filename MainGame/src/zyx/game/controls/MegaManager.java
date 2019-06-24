@@ -10,6 +10,7 @@ import zyx.game.controls.input.InputManager;
 import zyx.game.controls.input.MouseData;
 import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.sound.SoundManager;
+import zyx.game.network.PingManager;
 import zyx.net.core.ConnectionHandler;
 import zyx.utils.tasks.TaskScheduler;
 
@@ -28,6 +29,7 @@ public class MegaManager
 		InputManager.getInstance().update(timestamp, elapsed);
 		MouseTouchManager.getInstance().update(timestamp, elapsed);
 		ClickDispatcher.getInstance().dispatchEvents();
+		PingManager.getInstance().update(timestamp, elapsed);
 
 		SoundManager.getInstance().update(timestamp, elapsed);
 

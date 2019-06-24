@@ -7,6 +7,8 @@ import zyx.game.login.AuthenticateResponse;
 import zyx.game.login.LoginRequest;
 import zyx.game.login.LoginResponse;
 import zyx.game.network.joining.SetupGameResponse;
+import zyx.game.ping.PingRequest;
+import zyx.game.ping.PingResponse;
 import zyx.game.position.PlayerPosRequest;
 import zyx.game.position.PlayerPosResponse;
 import zyx.game.scene.PlayerHandler;
@@ -29,6 +31,7 @@ public class GameNetworkController extends BaseNetworkController
 		dispatcher.addRequestHandler(new AuthenticateRequest());
 		dispatcher.addRequestHandler(new PlayerJoinGameRequest());
 		dispatcher.addRequestHandler(new PlayerPosRequest());
+		dispatcher.addRequestHandler(new PingRequest());
 	}
 
 	@Override
@@ -39,6 +42,7 @@ public class GameNetworkController extends BaseNetworkController
 		dispatcher.addResponseCallback(new SetupGameResponse());
 		dispatcher.addResponseCallback(new PlayerJoinGameResponse());
 		dispatcher.addResponseCallback(new PlayerPosResponse());
+		dispatcher.addResponseCallback(new PingResponse());
 	}
 
 }

@@ -14,6 +14,7 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 	private INetworkCallback onPlayerJoin;
 	private INetworkCallback onPlayerPos;
 	private INetworkCallback onPlayerLogin;
+	private INetworkCallback onPlayerPing;
 
 	public ServerNetworkCallbacks()
 	{
@@ -22,20 +23,23 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 		registerCallback(NetworkCommands.LOGIN, onPlayerLogin);
 		registerCallback(NetworkCommands.PLAYER_JOINED_GAME, onPlayerJoin);
 		registerCallback(NetworkCommands.PLAYER_UPDATE_POSITION, onPlayerPos);
+		registerCallback(NetworkCommands.PING, onPlayerPing);
 	}
 
 	private void onPlayerLogin(LoginData data)
 	{
-		Player player = PlayerManager.getInstance().createPlayer(data.name, data.connection);
+		Player player = PlayerManager.getInstance().createPlayer(data.uniqueId, data.name, data.connection);
 		System.out.println("Player: " + player.id + " joined the game");
-		
+
 		ServerSender.sendToSingle(NetworkCommands.AUTHENTICATE, player.connection, player.name, player.id);
-		
+
 		onPlayerJoin(player);
 	}
 
 	private void onPlayerJoin(Player player)
 	{
+		PingManager.getInstance().addEntity(player.id);
+
 		//Tell everyone that new guy joined
 		ServerSender.sendToAllBut(NetworkCommands.PLAYER_JOINED_GAME, player.connection, player.id);
 
@@ -46,8 +50,7 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 	private void onPlayerPos(PlayerPositionData data)
 	{
 		int id = data.id;
-		System.out.println("Server got position from " + id + ": " + data);
-		
+
 		Player player = PlayerManager.getInstance().getPlayer(id);
 		player.updateFrom(data);
 
@@ -56,22 +59,24 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 
 	private void createCallbacks()
 	{
-		onPlayerJoin = (INetworkCallback<Player>) (Player data)
-				-> 
-				{
-					onPlayerJoin(data);
+		onPlayerJoin = (INetworkCallback<Player>) (Player data) -> 
+		{
+			onPlayerJoin(data);
 		};
 
-		onPlayerPos = (INetworkCallback<PlayerPositionData>) (PlayerPositionData data)
-				-> 
-				{
-					onPlayerPos(data);
+		onPlayerPos = (INetworkCallback<PlayerPositionData>) (PlayerPositionData data) -> 
+		{
+			onPlayerPos(data);
 		};
 
-		onPlayerLogin = (INetworkCallback<LoginData>) (LoginData data)
-				-> 
-				{
-					onPlayerLogin(data);
+		onPlayerLogin = (INetworkCallback<LoginData>) (LoginData data) -> 
+		{
+			onPlayerLogin(data);
+		};
+
+		onPlayerPing = (INetworkCallback<Integer>) (Integer data) -> 
+		{
+			PingManager.getInstance().onPing(data);
 		};
 	}
 }
