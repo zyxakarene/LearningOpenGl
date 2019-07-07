@@ -2,7 +2,6 @@ package zyx.server.controller;
 
 import zyx.game.ping.PingController;
 import zyx.net.io.controllers.NetworkCommands;
-import zyx.net.io.controllers.NetworkServerChannel;
 import zyx.server.players.Player;
 import zyx.server.players.PlayerManager;
 
@@ -20,7 +19,10 @@ public class PingManager extends PingController
 	protected void onPingTimeout(int id)
 	{
 		System.out.println(id + " was kicked from the server");
-		PlayerManager.getInstance().removePlayer(id);
+		Player player = PlayerManager.getInstance().getPlayer(id);
+		ServerSender.sendToAllBut(NetworkCommands.PLAYER_LEFT_GAME, player.connection, id);
+		
+		PlayerManager.getInstance().removePlayer(player);
 	}
 
 	@Override

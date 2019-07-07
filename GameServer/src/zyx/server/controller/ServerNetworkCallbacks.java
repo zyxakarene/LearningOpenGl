@@ -11,7 +11,7 @@ import zyx.server.players.PlayerManager;
 public class ServerNetworkCallbacks extends NetworkCallbacks
 {
 
-	private INetworkCallback onPlayerJoin;
+	private INetworkCallback onPlayerLeave;
 	private INetworkCallback onPlayerPos;
 	private INetworkCallback onPlayerLogin;
 	private INetworkCallback onPlayerPing;
@@ -21,7 +21,7 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 		createCallbacks();
 
 		registerCallback(NetworkCommands.LOGIN, onPlayerLogin);
-		registerCallback(NetworkCommands.PLAYER_JOINED_GAME, onPlayerJoin);
+		registerCallback(NetworkCommands.PLAYER_LEFT_GAME, onPlayerLeave);
 		registerCallback(NetworkCommands.PLAYER_UPDATE_POSITION, onPlayerPos);
 		registerCallback(NetworkCommands.PING, onPlayerPing);
 	}
@@ -47,21 +47,30 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 		ServerSender.sendToSingle(NetworkCommands.SETUP_GAME, player.connection, player);
 	}
 
+	private void onPlayerLeave(int playerId)
+	{
+		Player player = PlayerManager.getInstance().getPlayer(playerId);
+		PingManager.getInstance().removeEntity(playerId);
+
+		//Tell everyone that the guy left
+		ServerSender.sendToAllBut(NetworkCommands.PLAYER_LEFT_GAME, player.connection, playerId);
+
+		PlayerManager.getInstance().removePlayer(player);
+	}
+
 	private void onPlayerPos(PlayerPositionData data)
 	{
 		int id = data.id;
 
 		Player player = PlayerManager.getInstance().getPlayer(id);
 		player.updateFrom(data);
-
-		ServerSender.sendToAllBut(NetworkCommands.PLAYER_UPDATE_POSITION, player.connection, data.position, data.rotation, data.id);
 	}
 
 	private void createCallbacks()
 	{
-		onPlayerJoin = (INetworkCallback<Player>) (Player data) -> 
+		onPlayerLeave = (INetworkCallback<Integer>) (Integer data) -> 
 		{
-			onPlayerJoin(data);
+			onPlayerLeave(data);
 		};
 
 		onPlayerPos = (INetworkCallback<PlayerPositionData>) (PlayerPositionData data) -> 

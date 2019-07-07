@@ -1,28 +1,27 @@
 package zyx.server;
 
-import zyx.server.controller.ServerNetworkController;
 import zyx.net.core.ConnectionEstablisher;
 import zyx.net.core.ConnectionHandler;
-import zyx.net.io.controllers.BaseNetworkController;
 import zyx.server.controller.PingManager;
 import zyx.server.utils.DeltaTime;
+import zyx.server.world.GameWorld;
 
 public class Server
 {
 
-	private BaseNetworkController networkController;
-
+	private GameWorld world;
+	
 	public void start()
 	{
 		ConnectionEstablisher.getInstance().listen(8888);
 		ConnectionHandler.getInstance().addThreads(1);
 
-		networkController = new ServerNetworkController();
-		networkController.addListeners();
-
 		DeltaTime.start();
 		System.out.println("Server setup");
 		System.out.println("Start listening..");
+		
+		world = new GameWorld();
+		
 		while (true)
 		{
 			DeltaTime.update();
@@ -32,6 +31,8 @@ public class Server
 			ConnectionHandler.getInstance().handleReplies();
 			PingManager.getInstance().update(timeStamp, elapsedTime);
 
+			world.update(timeStamp, elapsedTime);
+			
 			try
 			{
 				Thread.sleep(16);

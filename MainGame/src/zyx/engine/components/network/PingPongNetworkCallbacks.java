@@ -1,31 +1,21 @@
 package zyx.engine.components.network;
 
 import zyx.game.network.PingManager;
-import zyx.game.ping.PingController;
-import zyx.game.scene.PlayerHandler;
 import zyx.net.io.controllers.NetworkCallbacks;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.INetworkCallback;
 
-public class PingPongNetworkCallbacks extends NetworkCallbacks
+public class PingPongNetworkCallbacks extends NetworkCallbacks implements INetworkCallback<Integer>
 {
 
-	private INetworkCallback onPing;
-	private PlayerHandler playerHandler;
-
-	public PingPongNetworkCallbacks(PlayerHandler playerHandler)
+	public PingPongNetworkCallbacks()
 	{
-		this.playerHandler = playerHandler;
-		createCallbacks();
-
-		registerCallback(NetworkCommands.PING, onPing);
+		registerCallback(NetworkCommands.PING, this);
 	}
 
-	private void createCallbacks()
+	@Override
+	public void onNetworkResponse(Integer id)
 	{
-		onPing = (INetworkCallback<Integer>) (Integer id)
-		-> {
-			PingManager.getInstance().onPing(id);
-		};
+		PingManager.getInstance().onPing(id);
 	}
 }

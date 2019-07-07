@@ -8,18 +8,19 @@ import zyx.net.io.controllers.NetworkCallbacks;
 public class NetworkResponseDispatcher
 {
 	private HashMap<String, ArrayList<BaseNetworkResponse>> responseMap;
-	private NetworkCallbacks responseCallbacks;
+	private ArrayList<NetworkCallbacks> responseCallbacks;
 	
 	public NetworkResponseDispatcher()
 	{
 		responseMap = new HashMap<>();
+		responseCallbacks = new ArrayList<>();
 		
 		ResponseManager.getInstance().registerDispatcher(this);
 	}
 	
-	public void setCallbackMap(NetworkCallbacks callbackMap)
+	public void addCallbackMap(NetworkCallbacks callbacks)
 	{
-		this.responseCallbacks = callbackMap;
+		responseCallbacks.add(callbacks);
 	}
 	
 	public void addResponseCallback(BaseNetworkResponse response)
@@ -37,7 +38,16 @@ public class NetworkResponseDispatcher
 			responseMap.put(command, responses);
 		}
 		
-		response.callback = responseCallbacks.getCallback(command);
+		response.callback = null;
+		for (NetworkCallbacks networkResponse : responseCallbacks)
+		{
+			INetworkCallback iCallback = networkResponse.getCallback(command);
+			if (iCallback != null)
+			{
+				response.callback = iCallback;
+				break;
+			}
+		}
 		
 		responses.add(response);
 	}

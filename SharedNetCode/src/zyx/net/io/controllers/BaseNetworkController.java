@@ -8,17 +8,15 @@ public class BaseNetworkController
 {	
 	NetworkResponseDispatcher responseDispatcher;
 	NetworkRequestDispatcher requestDispatcher;
-	NetworkCallbacks responseCallbacks;
 	
 	public BaseNetworkController()
 	{
-		this(new NetworkCallbacks());
+		initialize();
 	}
 	
-	public BaseNetworkController(NetworkCallbacks callbacks)
+	protected void addCallbackMap(NetworkCallbacks callbacks)
 	{
-		initialize();
-		responseCallbacks = callbacks;
+		responseDispatcher.addCallbackMap(callbacks);
 	}
 	
 	protected void initialize()
@@ -32,8 +30,6 @@ public class BaseNetworkController
 	
 	public final void addListeners()
 	{
-		responseDispatcher.setCallbackMap(responseCallbacks);
-		
 		addResponseHandlersTo(responseDispatcher);
 		addRequestsHandlersTo(requestDispatcher);
 	}

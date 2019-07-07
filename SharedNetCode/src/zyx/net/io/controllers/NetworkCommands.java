@@ -12,4 +12,5 @@ public final class NetworkCommands
 	public static final String PLAYER_LEFT_GAME = "LeaveGame";
 	
 	public static final String PLAYER_UPDATE_POSITION = "PlayerPos";
+	public static final String PLAYER_MASS_POSITION = "PlayerMassPos";
 }

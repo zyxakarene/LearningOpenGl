@@ -13,6 +13,8 @@ public class Player
 	public final ConnectionData connection;
 	public final int id;
 	public final String name;
+	
+	public boolean updatedPosition;
 
 	public Player(int id, String name, ConnectionData connection)
 	{
@@ -31,6 +33,7 @@ public class Player
 
 	public void updateFrom(PlayerPositionData data)
 	{
+		updatedPosition = true;
 		Vector3f pos = data.position;
 		Vector3f rot = data.rotation;
 		

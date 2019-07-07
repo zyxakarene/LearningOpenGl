@@ -10,26 +10,25 @@ import zyx.game.network.joining.GameSetupVo;
 import zyx.game.scene.PlayerHandler;
 import zyx.game.scene.game.DragonScene;
 import zyx.game.vo.AuthenticationData;
-import zyx.game.vo.PlayerPositionData;
+import zyx.game.vo.PlayerMassPositionData;
 import zyx.net.io.controllers.NetworkCallbacks;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.INetworkCallback;
 import zyx.utils.cheats.Print;
 
-public class GameNetworkCallbacks extends PingPongNetworkCallbacks
+public class GameNetworkCallbacks extends NetworkCallbacks
 {
 
 	private INetworkCallback onAuthenticate;
 	private INetworkCallback onPlayerJoined;
-	private INetworkCallback onPlayerPos;
+	private INetworkCallback onPlayerLeft;
+	private INetworkCallback onPlayerMassPos;
 	private INetworkCallback onGameSetup;
 
 	private PlayerHandler playerHandler;
 	
 	public GameNetworkCallbacks(PlayerHandler playerHandler)
 	{
-		super(playerHandler);
-		
 		this.playerHandler = playerHandler;
 		
 		createCallbacks();
@@ -37,7 +36,8 @@ public class GameNetworkCallbacks extends PingPongNetworkCallbacks
 		registerCallback(NetworkCommands.AUTHENTICATE, onAuthenticate);
 		registerCallback(NetworkCommands.SETUP_GAME, onGameSetup);
 		registerCallback(NetworkCommands.PLAYER_JOINED_GAME, onPlayerJoined);
-		registerCallback(NetworkCommands.PLAYER_UPDATE_POSITION, onPlayerPos);
+		registerCallback(NetworkCommands.PLAYER_LEFT_GAME, onPlayerLeft);
+		registerCallback(NetworkCommands.PLAYER_MASS_POSITION, onPlayerMassPos);
 	}
 
 	private void onAuthenticate(AuthenticationData data)
@@ -55,16 +55,32 @@ public class GameNetworkCallbacks extends PingPongNetworkCallbacks
 		
 		playerHandler.addPlayer(id, new Vector3f(0, 0, 10), new Vector3f(0, 0, 1));
 	}
-	
-	private void onPosition(PlayerPositionData data)
+
+	private void onLeave(int id)
 	{
-		GameObject player = playerHandler.getPlayerById(data.id);
-		if (player != null)
+		Print.out("User", id, "left my game!");
+		
+		playerHandler.removePlayer(id);
+	}
+	
+	private void onPosition(PlayerMassPositionData data)
+	{
+		int[] ids = data.ids;
+		Vector3f[] positions = data.positions;
+		Vector3f[] rotations = data.rotations;
+		
+		int count = data.count;
+		for (int i = 0; i < count; i++)
 		{
-			OnlinePositionInterpolator moveBehavior = (OnlinePositionInterpolator) player.getBehaviorById(BehaviorType.ONLINE_POSITION);
-			if (moveBehavior != null)
+			GameObject player = playerHandler.getPlayerById(ids[i]);
+			
+			if (player != null)
 			{
-				moveBehavior.setPosition(data.position, data.rotation);
+				OnlinePositionInterpolator moveBehavior = (OnlinePositionInterpolator) player.getBehaviorById(BehaviorType.ONLINE_POSITION);
+				if (moveBehavior != null)
+				{
+					moveBehavior.setPosition(positions[i], rotations[i]);
+				}
 			}
 		}
 	}
@@ -81,7 +97,12 @@ public class GameNetworkCallbacks extends PingPongNetworkCallbacks
 			onJoin(playerId);
 		};
 		
-		onPlayerPos = (INetworkCallback<PlayerPositionData>) (PlayerPositionData position) ->
+		onPlayerLeft = (INetworkCallback<Integer>) (Integer playerId) ->
+		{
+			onLeave(playerId);
+		};
+		
+		onPlayerMassPos = (INetworkCallback<PlayerMassPositionData>) (PlayerMassPositionData position) ->
 		{
 			onPosition(position);
 		};
