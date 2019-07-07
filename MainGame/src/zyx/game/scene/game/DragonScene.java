@@ -1,4 +1,4 @@
-package zyx.game.scene.dragon;
+package zyx.game.scene.game;
 
 import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
@@ -12,13 +12,13 @@ import zyx.engine.components.world.GameLight;
 import zyx.engine.scene.Scene;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
+import zyx.game.behavior.BehaviorType;
 import zyx.game.behavior.freefly.OnlinePositionSender;
 import zyx.game.components.GameObject;
 import zyx.game.components.MeshObject;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.process.ProcessQueue;
 import zyx.game.network.PingManager;
-import zyx.game.ping.PingController;
 import zyx.net.io.controllers.BaseNetworkController;
 import zyx.net.io.controllers.NetworkChannel;
 import zyx.net.io.controllers.NetworkCommands;
@@ -29,6 +29,7 @@ import zyx.utils.GameConstants;
 
 public class DragonScene extends Scene implements ICallback<ProcessQueue>
 {
+
 	public static DragonScene current;
 
 	private ArrayList<GameObject> gameObjects;
@@ -49,6 +50,9 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	@Override
 	protected void onInitialize()
 	{
+		NetworkChannel.sendRequest(NetworkCommands.LOGIN, "Zyx" + Math.random());
+		PingManager.getInstance().addEntity(0);
+		
 		world.loadSkybox("skybox.texture.desert");
 		CubemapManager.getInstance().load("cubemap.dragon");
 
@@ -128,12 +132,6 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 			ScreenSize.changeScreenSize(width, height);
 		}
 
-		if (KeyboardData.data.wasPressed(Keyboard.KEY_C))
-		{
-			NetworkChannel.sendRequest(NetworkCommands.LOGIN, "Zyx");
-			PingManager.getInstance().addEntity(0);
-		}
-
 		if (!cubemapping && KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
 		{
 			cubemapping = true;
@@ -176,9 +174,11 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		world.removeSkybox();
 		CubemapManager.getInstance().clean();
 		TooltipManager.getInstance().clean();
-		
+
 		gameObjects.clear();
 		gameObjects = null;
+		
+		camera.removeBehavior(BehaviorType.ONLINE_POSITION);
 	}
 
 	@Override

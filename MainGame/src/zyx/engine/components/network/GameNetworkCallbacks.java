@@ -8,7 +8,7 @@ import zyx.game.models.GameModels;
 import zyx.game.network.joining.GameSetupPlayerInfo;
 import zyx.game.network.joining.GameSetupVo;
 import zyx.game.scene.PlayerHandler;
-import zyx.game.scene.dragon.DragonScene;
+import zyx.game.scene.game.DragonScene;
 import zyx.game.vo.AuthenticationData;
 import zyx.game.vo.PlayerPositionData;
 import zyx.net.io.controllers.NetworkCallbacks;

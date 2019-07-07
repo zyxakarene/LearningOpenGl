@@ -21,10 +21,6 @@ public class PingPongNetworkCallbacks extends NetworkCallbacks
 		registerCallback(NetworkCommands.PING, onPing);
 	}
 
-	private void onPing(boolean data)
-	{
-	}
-
 	private void createCallbacks()
 	{
 		onPing = (INetworkCallback<Integer>) (Integer id)

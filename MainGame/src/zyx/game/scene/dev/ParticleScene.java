@@ -1,4 +1,4 @@
-package zyx.game.scene.particle;
+package zyx.game.scene.dev;
 
 import zyx.game.behavior.misc.JiggleBehavior;
 import java.util.ArrayList;

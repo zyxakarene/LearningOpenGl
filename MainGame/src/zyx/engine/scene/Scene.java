@@ -186,10 +186,10 @@ public class Scene
 
 	final void dispose()
 	{
+		onDispose();
+
 		camera.dispose();
 		picker.dispose();
-
-		onDispose();
 
 		if (hud != null)
 		{

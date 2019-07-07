@@ -2,12 +2,7 @@ package zyx;
 
 import zyx.debug.DebugController;
 import zyx.engine.GameStarter;
-import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.scene.SceneType;
-import zyx.utils.cheats.Print;
-import zyx.utils.tasks.ScheduledTask;
-import zyx.utils.tasks.TaskScheduler;
-import zyx.utils.tasks.dev.HeavyTask;
 
 public class SceneMain
 {
@@ -18,7 +13,7 @@ public class SceneMain
 	{
 		if (SHOW_DEBUG_RESOURCES)
 		{
-			GameStarter starter = new GameStarter(SceneType.DRAGON);
+			GameStarter starter = new GameStarter(SceneType.MENU);
 			Thread gameThread = new Thread(starter);
 
 			gameThread.start();
@@ -27,7 +22,7 @@ public class SceneMain
 		}
 		else
 		{
-			java.awt.EventQueue.invokeLater(new GameStarter(SceneType.DRAGON));
+			java.awt.EventQueue.invokeLater(new GameStarter(SceneType.MENU));
 		}
 	}
 
