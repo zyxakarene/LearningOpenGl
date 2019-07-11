@@ -32,9 +32,9 @@ public class SetupGameResponse extends BaseNetworkResponse<GameSetupVo>
 			playerInfo.pos.x = playerData.getFloat(PLAYER_X);
 			playerInfo.pos.y = playerData.getFloat(PLAYER_Y);
 			playerInfo.pos.z = playerData.getFloat(PLAYER_Z);
-			playerInfo.rot.x = playerData.getFloat(PLAYER_ROT_X);
-			playerInfo.rot.y = playerData.getFloat(PLAYER_ROT_Y);
-			playerInfo.rot.z = playerData.getFloat(PLAYER_ROT_Z);
+			playerInfo.lookAt.x = playerData.getFloat(PLAYER_LOOK_X);
+			playerInfo.lookAt.y = playerData.getFloat(PLAYER_LOOK_Y);
+			playerInfo.lookAt.z = playerData.getFloat(PLAYER_LOOK_Z);
 			
 			OUT.players[i] = playerInfo;
 		}

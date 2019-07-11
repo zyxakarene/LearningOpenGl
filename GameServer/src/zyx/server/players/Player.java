@@ -8,7 +8,7 @@ public class Player
 {
 
 	public float x, y, z;
-	public float rx, ry, rz;
+	public float lx, ly, lz;
 	
 	public final ConnectionData connection;
 	public final int id;
@@ -26,23 +26,23 @@ public class Player
 		y = 0;
 		z = 0;
 		
-		rx = 0;
-		ry = 0;
-		rz = 0;
+		lx = 0;
+		ly = 0;
+		lz = 100;
 	}
 
 	public void updateFrom(PlayerPositionData data)
 	{
 		updatedPosition = true;
 		Vector3f pos = data.position;
-		Vector3f rot = data.rotation;
+		Vector3f rot = data.lookAt;
 		
 		x = pos.x;
 		y = pos.y;
 		z = pos.z;
 		
-		rx = rot.x;
-		ry = rot.y;
-		rz = rot.z;
+		lx = rot.x;
+		ly = rot.y;
+		lz = rot.z;
 	}
 }

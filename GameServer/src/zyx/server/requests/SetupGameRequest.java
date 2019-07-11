@@ -37,9 +37,9 @@ public class SetupGameRequest extends BaseNetworkRequest
 				playerData.addFloat(PLAYER_X, otherPlayer.x);
 				playerData.addFloat(PLAYER_Y, otherPlayer.y);
 				playerData.addFloat(PLAYER_Z, otherPlayer.z);
-				playerData.addFloat(PLAYER_ROT_X, otherPlayer.rx);
-				playerData.addFloat(PLAYER_ROT_Y, otherPlayer.ry);
-				playerData.addFloat(PLAYER_ROT_Z, otherPlayer.rx);
+				playerData.addFloat(PLAYER_LOOK_X, otherPlayer.lx);
+				playerData.addFloat(PLAYER_LOOK_Y, otherPlayer.ly);
+				playerData.addFloat(PLAYER_LOOK_Z, otherPlayer.lx);
 
 				playerDataArray.add(playerData);
 			}

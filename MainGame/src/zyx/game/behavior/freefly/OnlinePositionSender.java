@@ -1,6 +1,5 @@
 package zyx.game.behavior.freefly;
 
-import org.lwjgl.util.vector.Vector3f;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.models.GameModels;
@@ -48,23 +47,31 @@ public class OnlinePositionSender extends Behavior
 		{
 			waitTime = MAX_WAIT;
 			
-			Vector3f pos = gameObject.getPosition(false, null);
-			Vector3f dir = gameObject.getDir(true, null);
+			gameObject.getPosition(false, HELPER_POS);
+			gameObject.getDir(false, HELPER_DIR);
 			
-			float distanceMoved = FloatMath.distance(lastX, lastY, lastZ, pos.x, pos.y, pos.z);
-			float distanceRotated = FloatMath.distance(lastDirX, lastDirY, lastDirZ, dir.x, dir.y, dir.z);
+			//While using directions of the camera!
+			HELPER_DIR.x *= -1;
+			HELPER_DIR.z *= -1;
+			
+			float distanceMoved = FloatMath.distance(lastX, lastY, lastZ, HELPER_POS.x, HELPER_POS.y, HELPER_POS.z);
+			float distanceRotated = FloatMath.distance(lastDirX, lastDirY, lastDirZ, HELPER_DIR.x, HELPER_DIR.y, HELPER_DIR.z);
 			
 			if (distanceMoved >= MIN_DISTANCE || distanceRotated >= MIN_ROTATION)
 			{
-				lastX = pos.x;
-				lastY = pos.y;
-				lastZ = pos.z;
+				lastX = HELPER_POS.x;
+				lastY = HELPER_POS.y;
+				lastZ = HELPER_POS.z;
 				
-				lastDirX = dir.x;
-				lastDirY = dir.y;
-				lastDirZ = dir.z;
+				lastDirX = HELPER_DIR.x;
+				lastDirY = HELPER_DIR.y;
+				lastDirZ = HELPER_DIR.z;
 				
-				NetworkChannel.sendRequest(NetworkCommands.PLAYER_UPDATE_POSITION, pos, dir, id);
+				HELPER_DIR.x = lastX + (HELPER_DIR.x * 100); 
+				HELPER_DIR.y = lastY + (HELPER_DIR.y * 100); 
+				HELPER_DIR.z = lastZ + (HELPER_DIR.z * 100); 
+				
+				NetworkChannel.sendRequest(NetworkCommands.PLAYER_UPDATE_POSITION, HELPER_POS, HELPER_DIR, id);
 			}
 		}
 	}

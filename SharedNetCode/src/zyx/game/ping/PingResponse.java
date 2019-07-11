@@ -14,7 +14,7 @@ public class PingResponse extends BaseNetworkResponse<Integer>
 	@Override
 	protected Integer onMessageRecieved(ReadableDataObject data)
 	{
-		System.out.println("Received a ping!!");
+		//System.out.println("Received a ping!!");
 		return getSenderUniqueId();
 	}
 

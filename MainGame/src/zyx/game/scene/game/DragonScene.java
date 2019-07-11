@@ -23,9 +23,11 @@ import zyx.net.io.controllers.BaseNetworkController;
 import zyx.net.io.controllers.NetworkChannel;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.opengl.GLUtils;
+import zyx.opengl.camera.Camera;
 import zyx.opengl.models.implementations.shapes.Sphere;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
+import zyx.utils.cheats.Print;
 
 public class DragonScene extends Scene implements ICallback<ProcessQueue>
 {
@@ -35,6 +37,8 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	private ArrayList<GameObject> gameObjects;
 	private boolean cubemapping;
 	private ProcessQueue processQueue;
+	
+	private MeshObject testDragon;
 
 	public DragonScene()
 	{
@@ -60,6 +64,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		dragon.setScale(0.33f, 0.33f, 0.33f);
 		dragon.load("mesh.dragon");
 		world.addChild(dragon);
+		testDragon = dragon;
 
 		MeshObject platform = new MeshObject();
 		platform.load("mesh.platform");
@@ -132,6 +137,24 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 			ScreenSize.changeScreenSize(width, height);
 		}
 
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_Q))
+		{
+			Vector3f dir = testDragon.getDir(false, null);
+			Vector3f pos = testDragon.getPosition(false, null);
+			Print.out("Dragon dir:", dir);
+			Print.out("Dragon pos:", pos);
+			float x = pos.x + (dir.x * 100);
+			float y = pos.y + (dir.y * 100);
+			float z = pos.z + (dir.z * 100);
+			
+			testDragon.lookAt(x, y, z);
+			Vector3f postDir = testDragon.getDir(false, null);
+			Print.out("Dragon PostDir:", postDir);
+		}
+
+		//Vector3f camPos = Camera.getInstance().getPosition(false, null);
+		//testDragon.lookAt(camPos.x + 0.01f, camPos.y, camPos.z);
+		
 		if (!cubemapping && KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
 		{
 			cubemapping = true;

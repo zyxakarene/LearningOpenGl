@@ -8,7 +8,7 @@ public class GameSetupPlayerInfo
 	public int id;
 	public String name;
 	public Vector3f pos = new Vector3f();
-	public Vector3f rot = new Vector3f();
+	public Vector3f lookAt = new Vector3f();
 	
 	GameSetupPlayerInfo()
 	{

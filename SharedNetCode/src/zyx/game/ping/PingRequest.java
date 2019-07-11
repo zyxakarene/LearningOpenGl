@@ -15,7 +15,7 @@ public class PingRequest extends BaseNetworkRequest
 	@Override
 	protected void getDataObject(WriteableDataObject data, Object... params)
 	{
-		System.out.println("Sending ping!");
+//		System.out.println("Sending ping!");
 	}
 
 }

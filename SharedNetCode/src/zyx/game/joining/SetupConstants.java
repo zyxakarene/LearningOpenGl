@@ -8,9 +8,9 @@ public final class SetupConstants
 	public static final String PLAYER_Y = "y";
 	public static final String PLAYER_Z = "z";
 	
-	public static final String PLAYER_ROT_X = "Rx";
-	public static final String PLAYER_ROT_Y = "Ry";
-	public static final String PLAYER_ROT_Z = "Rz";
+	public static final String PLAYER_LOOK_X = "Rx";
+	public static final String PLAYER_LOOK_Y = "Ry";
+	public static final String PLAYER_LOOK_Z = "Rz";
 	
 	public static final String PLAYER_COUNT = "count";
 	public static final String PLAYERS = "players";

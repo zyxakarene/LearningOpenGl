@@ -53,7 +53,7 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 	{
 		Print.out("User", id, "joined my game!");
 		
-		playerHandler.addPlayer(id, new Vector3f(0, 0, 10), new Vector3f(0, 0, 1));
+		playerHandler.addPlayer(id, new Vector3f(0, 0, 0), new Vector3f(0, 100, 0));
 	}
 
 	private void onLeave(int id)
@@ -67,7 +67,7 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 	{
 		int[] ids = data.ids;
 		Vector3f[] positions = data.positions;
-		Vector3f[] rotations = data.rotations;
+		Vector3f[] rotations = data.lookAts;
 		
 		int count = data.count;
 		for (int i = 0; i < count; i++)
@@ -119,7 +119,7 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 		
 		for (GameSetupPlayerInfo player : setup.players)
 		{
-			playerHandler.addPlayer(player.id, player.pos, player.rot);
+			playerHandler.addPlayer(player.id, player.pos, player.lookAt);
 		}
 	}
 }

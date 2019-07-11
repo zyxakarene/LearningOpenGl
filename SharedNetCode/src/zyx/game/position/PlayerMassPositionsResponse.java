@@ -39,13 +39,13 @@ public class PlayerMassPositionsResponse extends BaseNetworkResponse<PlayerMassP
 			float py = player.getFloat(POS_Y);
 			float pz = player.getFloat(POS_Z);
 
-			float rx = player.getFloat(ROT_X);
-			float ry = player.getFloat(ROT_Y);
-			float rz = player.getFloat(ROT_Z);
+			float lx = player.getFloat(LOOK_AT_X);
+			float ly = player.getFloat(LOOK_AT_Y);
+			float lz = player.getFloat(LOOK_AT_Z);
 
 			OUT.ids[i] = id;
 			OUT.positions[i].set(px, py, pz);
-			OUT.rotations[i].set(rx, ry, rz);
+			OUT.lookAts[i].set(lx, ly, lz);
 		}
 
 		return OUT;
@@ -56,12 +56,12 @@ public class PlayerMassPositionsResponse extends BaseNetworkResponse<PlayerMassP
 		OUT.count = count;
 		OUT.ids = new int[count];
 		OUT.positions = new Vector3f[count];
-		OUT.rotations = new Vector3f[count];
+		OUT.lookAts = new Vector3f[count];
 
 		for (int i = 0; i < count; i++)
 		{
 			OUT.positions[i] = new Vector3f();
-			OUT.rotations[i] = new Vector3f();
+			OUT.lookAts[i] = new Vector3f();
 		}
 	}
 

@@ -9,5 +9,5 @@ public class PlayerMassPositionData
 	public int[] ids = new int[count];
 	
 	public Vector3f[] positions = new Vector3f[count];
-	public Vector3f[] rotations = new Vector3f[count];
+	public Vector3f[] lookAts = new Vector3f[count];
 }

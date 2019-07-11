@@ -24,13 +24,13 @@ public class PlayerPosResponse extends BaseNetworkResponse<PlayerPositionData>
 		float py = data.getFloat(POS_Y);
 		float pz = data.getFloat(POS_Z);
 		
-		float rx = data.getFloat(ROT_X);
-		float ry = data.getFloat(ROT_Y);
-		float rz = data.getFloat(ROT_Z);
+		float lx = data.getFloat(LOOK_AT_X);
+		float ly = data.getFloat(LOOK_AT_Y);
+		float lz = data.getFloat(LOOK_AT_Z);
 
 		OUT.id = id;
 		OUT.position.set(px, py, pz);
-		OUT.rotation.set(rx, ry, rz);
+		OUT.lookAt.set(lx, ly, lz);
 		
 		return OUT;
 	}

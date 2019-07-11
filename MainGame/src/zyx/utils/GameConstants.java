@@ -22,6 +22,6 @@ public class GameConstants
 	public static final float ANIMATION_MS_PER_FRAME = 1000f / ANIMATION_FRAMERATE;
 
 	public static final int PLAYER_POSITION_DELAY = 50;
-	public static final float PLAYER_MIN_MOVEMENT = 0.1f;
-	public static final float PLAYER_MIN_ROTATION = 0.01f;
+	public static final float PLAYER_MIN_MOVEMENT = 0.01f;
+	public static final float PLAYER_MIN_ROTATION = 0.001f;
 }

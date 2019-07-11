@@ -17,18 +17,18 @@ public class PlayerPosRequest extends BaseNetworkRequest
 	@Override
 	protected void getDataObject(WriteableDataObject data, Object[] params)
 	{
-		Vector3f pos = (Vector3f) params[0];
-		Vector3f rot = (Vector3f) params[1];
+		Vector3f position = (Vector3f) params[0];
+		Vector3f lookAt = (Vector3f) params[1];
 		int id = (int) params[2];
 
 		data.addInteger(ID, id);
 		
-		data.addFloat(POS_X, pos.x);
-		data.addFloat(POS_Y, pos.y);
-		data.addFloat(POS_Z, pos.z);
+		data.addFloat(POS_X, position.x);
+		data.addFloat(POS_Y, position.y);
+		data.addFloat(POS_Z, position.z);
 		
-		data.addFloat(ROT_X, rot.x);
-		data.addFloat(ROT_Y, rot.y);
-		data.addFloat(ROT_Z, rot.z);
+		data.addFloat(LOOK_AT_X, lookAt.x);
+		data.addFloat(LOOK_AT_Y, lookAt.y);
+		data.addFloat(LOOK_AT_Z, lookAt.z);
 	}
 }

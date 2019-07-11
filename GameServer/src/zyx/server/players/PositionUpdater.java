@@ -71,7 +71,7 @@ public class PositionUpdater implements IUpdateable
 			Player movingPlayer = movingPlayers.get(i);
 			idArray[i] = movingPlayer.id;
 			posArray[i].set(movingPlayer.x, movingPlayer.y, movingPlayer.z);
-			rotArray[i].set(movingPlayer.rx, movingPlayer.ry, movingPlayer.rz);
+			rotArray[i].set(movingPlayer.lx, movingPlayer.ly, movingPlayer.lz);
 		}
 
 		ServerSender.sendToAll(NetworkCommands.PLAYER_MASS_POSITION, posArray, rotArray, idArray);

@@ -19,7 +19,7 @@ public class PlayerMassPositionsRequest extends BaseNetworkRequest
 	protected void getDataObject(WriteableDataObject data, Object[] params)
 	{
 		Vector3f[] positions = (Vector3f[]) params[0];
-		Vector3f[] rotations = (Vector3f[]) params[1];
+		Vector3f[] lookAts = (Vector3f[]) params[1];
 		int[] ids = (int[]) params[2];
 
 		int count = ids.length;
@@ -34,7 +34,7 @@ public class PlayerMassPositionsRequest extends BaseNetworkRequest
 			
 			int id = ids[i];
 			Vector3f pos = positions[i];
-			Vector3f rot = rotations[i];
+			Vector3f lookAt = lookAts[i];
 			
 			player.addInteger(ID, id);
 
@@ -42,9 +42,9 @@ public class PlayerMassPositionsRequest extends BaseNetworkRequest
 			player.addFloat(POS_Y, pos.y);
 			player.addFloat(POS_Z, pos.z);
 
-			player.addFloat(ROT_X, rot.x);
-			player.addFloat(ROT_Y, rot.y);
-			player.addFloat(ROT_Z, rot.z);
+			player.addFloat(LOOK_AT_X, lookAt.x);
+			player.addFloat(LOOK_AT_Y, lookAt.y);
+			player.addFloat(LOOK_AT_Z, lookAt.z);
 		}
 
 		data.addArray(PLAYERS, arrayData);

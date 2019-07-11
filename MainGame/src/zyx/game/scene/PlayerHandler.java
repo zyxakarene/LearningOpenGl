@@ -24,13 +24,13 @@ public class PlayerHandler implements IUpdateable
 		playerList = new ArrayList<>();
 	}
 	
-	public void addPlayer(int playerId, Vector3f startPos, Vector3f startDir)
+	public void addPlayer(int playerId, Vector3f startPos, Vector3f startLookAt)
 	{
 		GameObject player = new GameObject();
 		player.addChild(new Box(2, 2, 2));
 		
 		player.setPosition(false, startPos);
-		player.setDir(false, startDir);
+		player.lookAt(startLookAt.x, startLookAt.y, startLookAt.z);
 		
 		player.addBehavior(new OnlinePositionInterpolator());
 		

@@ -11,7 +11,7 @@ class PositionConstants
 	static final String POS_Y = "py";
 	static final String POS_Z = "pz";
 	
-	static final String ROT_X = "rx";
-	static final String ROT_Y = "ry";
-	static final String ROT_Z = "rz";
+	static final String LOOK_AT_X = "rx";
+	static final String LOOK_AT_Y = "ry";
+	static final String LOOK_AT_Z = "rz";
 }
