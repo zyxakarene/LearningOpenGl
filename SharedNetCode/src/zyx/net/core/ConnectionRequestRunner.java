@@ -15,6 +15,8 @@ public class ConnectionRequestRunner extends BaseRunner<ConnectionRequest, Conne
 		byte[] byteData = entry.getData();
 		DatagramPacket packet = new DatagramPacket(byteData, byteData.length, entry.host, entry.port);
 
+		DebugNetworkList.addRequest(byteData);
+		
 		try
 		{
 			PersistentConnection.getInstance().send(packet);

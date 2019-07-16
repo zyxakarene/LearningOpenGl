@@ -21,6 +21,11 @@ public class ReadableDataArray<T>
 		}
 	}
 
+	public int size()
+	{
+		return dataList.size();
+	}
+	
 	public T get(int index)
 	{
 		return dataList.get(index);

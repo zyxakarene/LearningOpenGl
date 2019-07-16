@@ -16,6 +16,14 @@ public class ConnectionResponse
 	public final InetAddress senderHost;
 	public final int senderPort;
 
+	public ConnectionResponse(byte[] data) throws IOException
+	{
+		this.senderHost = null;
+		this.senderPort = -1;
+		
+		loadFrom(data, data.length);
+	}
+	
 	public ConnectionResponse(DatagramPacket packet) throws IOException
 	{
 		this.senderHost = packet.getAddress();
@@ -24,6 +32,11 @@ public class ConnectionResponse
 		byte[] data = packet.getData();
 		int dataLength = packet.getLength();
 		
+		loadFrom(data, dataLength);
+	}
+	
+	public void loadFrom(byte[] data, int dataLength) throws IOException
+	{
 		ByteArrayInputStream in = new ByteArrayInputStream(data, 0, dataLength);
 		try (ObjectInputStream stream = new ObjectInputStream(in))
 		{

@@ -18,6 +18,8 @@ public class ConnectionResponseRunner extends ResponseRunner<ConnectionRequest, 
 
 			ConnectionResponse response = new ConnectionResponse(packet);
 
+			DebugNetworkList.addResponse(response.object, response.name);
+			
 			return response;
 		}
 		catch (IOException ex)

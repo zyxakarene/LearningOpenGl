@@ -2,6 +2,7 @@ package zyx.net.data;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ReadableDataObject
 {
@@ -19,6 +20,31 @@ public class ReadableDataObject
 		{
 			throw new RuntimeException("Could not deserialize data", ex);
 		}
+	}
+
+	public String[] getAllKeys()
+	{
+		String[] keys = new String[dataMap.size()];
+
+		int i = 0;
+		for (Map.Entry<String, Object> entry : dataMap.entrySet())
+		{
+			keys[i] = entry.getKey();
+			i++;
+		}
+
+		return keys;
+	}
+
+	public String getToString(String name)
+	{
+		Object value = dataMap.get(name);
+		return value == null ? "null" : value.toString();
+	}
+
+	public Object getRaw(String name)
+	{
+		return dataMap.get(name);
 	}
 
 	public byte getByte(String name)
