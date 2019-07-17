@@ -6,12 +6,12 @@ import zyx.utils.DeltaTime;
 
 public class NetworkInfo
 {
-	String command;
-	ArrayList<ReadableDataObject> data;
-	ArrayList<Long> timestamps;
-	long lastTimestamp;
+	public String command;
+	public ArrayList<ReadableDataObject> data;
+	public ArrayList<Long> timestamps;
+	public long lastTimestamp;
 	
-	int count;
+	public int count;
 
 	public NetworkInfo(String name)
 	{

@@ -1,5 +1,6 @@
 package zyx.debug.views.network;
 
+import zyx.debug.views.network.tree.DebugNetworkTree;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.DefaultListModel;
@@ -102,19 +103,20 @@ public class DebugNetworkPanel extends BaseDebugPanel implements INetworkListCli
 		synchronized(list)
 		{
 			NetworkInfo selectedValue = list.getSelectedValue();
-			System.out.println(selectedValue);
 			
-			JFrame frame = new JFrame("Network View");
-			
-			JScrollPane treePane = new JScrollPane();
-			frame.add(treePane);
-			
-			treePane.setViewportView(new DebugNetworkTree(selectedValue));
-			frame.setSize(getSize());
-			frame.setLocation(getLocation());
-			
-			frame.setVisible(true);
+			if (selectedValue != null)
+			{
+				JFrame frame = new JFrame("Network View");
+
+				JScrollPane treePane = new JScrollPane();
+				frame.add(treePane);
+
+				treePane.setViewportView(new DebugNetworkTree(selectedValue));
+				frame.setSize(getSize());
+				frame.setLocation(getLocation());
+
+				frame.setVisible(true);
+			}
 		}
 	}
-
 }

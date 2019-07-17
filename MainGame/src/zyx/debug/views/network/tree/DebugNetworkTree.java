@@ -1,9 +1,10 @@
-package zyx.debug.views.network;
+package zyx.debug.views.network.tree;
 
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
+import zyx.debug.views.network.NetworkInfo;
 import zyx.net.data.ReadableDataArray;
 import zyx.net.data.ReadableDataObject;
 
@@ -18,6 +19,10 @@ public class DebugNetworkTree extends JTree
 
 		model = new DefaultTreeModel(rootNode);
 		setModel(model);
+		
+		setCellRenderer(new NetworkTreeCellRenderer());
+		
+		setRowHeight(17);
 	}
 
 	private TreeNode createTree(NetworkInfo info)
@@ -29,7 +34,7 @@ public class DebugNetworkTree extends JTree
 			ReadableDataObject obj = info.data.get(i);
 			long timestamp = info.timestamps.get(i);
 
-			DefaultMutableTreeNode readNode = new DefaultMutableTreeNode(timestamp, true);
+			DefaultMutableTreeNode readNode = new DefaultMutableTreeNode(new TreeItemWrapper(info, timestamp), true);
 			addReadableToNode(readNode, obj);
 
 			root.add(readNode);
@@ -44,32 +49,45 @@ public class DebugNetworkTree extends JTree
 
 		for (String key : keys)
 		{
+			if (key.equals("obj"))
+			{
+				System.out.println(key);
+			}
+			
 			Object objData = obj.getRaw(key);
 
 			if (objData instanceof ReadableDataObject)
 			{
-				DefaultMutableTreeNode dataNode = new DefaultMutableTreeNode(key, true);
+				DefaultMutableTreeNode dataNode = new DefaultMutableTreeNode(new TreeItemWrapper(objData, key), true);
 				addReadableToNode(dataNode, (ReadableDataObject) objData);
+				
+				readNode.add(dataNode);
 			}
 			else if (objData instanceof ReadableDataArray)
 			{
 				ReadableDataArray array = (ReadableDataArray) objData;
-				DefaultMutableTreeNode arrayNode = new DefaultMutableTreeNode(key + "[" + array.size() + "]", true);
+				DefaultMutableTreeNode arrayNode = new DefaultMutableTreeNode(new TreeItemWrapper(array, key), true);
 
 				for (int i = 0; i < array.size(); i++)
 				{
 					Object item = array.get(i);
 					
-					DefaultMutableTreeNode dataNode = new DefaultMutableTreeNode(i, true);
+					DefaultMutableTreeNode dataNode = new DefaultMutableTreeNode(new TreeItemWrapper(item, i), true);
 					addObjectToNode(dataNode, item);
 					arrayNode.add(dataNode);
 				}
 				readNode.add(arrayNode);
 			}
+			else if (objData instanceof byte[])
+			{
+				byte[] byteData = (byte[]) objData;
+				String nodeText = key + ": ByteArray[" + byteData.length + "]";
+				addObjectToNode(readNode, new TreeItemWrapper(objData, nodeText));
+			}
 			else
 			{
-				String value = key + ": " + obj.getToString(key);
-				addObjectToNode(readNode, value);
+				String nodeText = key + ": " + objData;
+				addObjectToNode(readNode, new TreeItemWrapper(objData, nodeText));
 			}
 		}
 	}
@@ -82,7 +100,7 @@ public class DebugNetworkTree extends JTree
 		}
 		else
 		{
-			DefaultMutableTreeNode leafNode = new DefaultMutableTreeNode(item.toString(), false);
+			DefaultMutableTreeNode leafNode = new DefaultMutableTreeNode(item, false);
 			dataNode.add(leafNode);
 		}
 	}

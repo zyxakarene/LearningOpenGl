@@ -111,8 +111,8 @@ public class ReadableDataObject
 		return (ReadableDataArray<T>) dataMap.get(name);
 	}
 
-	public ByteArrayObject getByteArray(String name)
+	public byte[] getByteArray(String name)
 	{
-		return (ByteArrayObject) dataMap.get(name);
+		return (byte[]) dataMap.get(name);
 	}
 }

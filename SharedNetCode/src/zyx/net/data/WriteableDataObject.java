@@ -68,9 +68,10 @@ public class WriteableDataObject implements IWriteableObject
 		addInner(name, value, Serializers.TYPE_ARRAY);
 	}
 
-	public void addByteArray(String name, ByteArrayObject value)
+	public void addByteArray(String name, byte[] value)
 	{
-		addInner(name, value, Serializers.TYPE_BYTE_ARRAY);
+		ByteArrayObject wrapper = new ByteArrayObject(value);
+		addInner(name, wrapper, Serializers.TYPE_BYTE_ARRAY);
 	}
 
 	private void addInner(String name, Object value, short type)
