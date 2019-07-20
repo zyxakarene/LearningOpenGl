@@ -14,7 +14,7 @@ public class ReadableDataObject
 		dataMap = new HashMap<>();
 		try
 		{
-			new DataObjectDeserializer(data).deserializeMap(dataMap);
+			DataObjectDeserializer.deserializeToMap(data, dataMap);
 		}
 		catch (IOException ex)
 		{

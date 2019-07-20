@@ -54,4 +54,9 @@ public class ConnectionRequest
 			return new byte[0];
 		}
 	}
+
+	public void dispose()
+	{
+		data.dispose();
+	}
 }

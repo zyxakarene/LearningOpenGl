@@ -13,7 +13,7 @@ public class ReadableDataArray<T>
 		dataList = new ArrayList<>();
 		try
 		{
-			new DataObjectDeserializer(data).deserializeArray(dataList);
+			DataObjectDeserializer.deserializeToArray(data, dataList);
 		}
 		catch (IOException ex)
 		{

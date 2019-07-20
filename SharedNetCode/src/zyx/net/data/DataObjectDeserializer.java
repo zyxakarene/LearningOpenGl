@@ -9,49 +9,47 @@ import zyx.net.writers.Serializers;
 class DataObjectDeserializer
 {
 
-	private ObjectInputStream stream;
+	private static final Serializers SERIALIZERS = Serializers.getInstance();
 
-	DataObjectDeserializer(byte[] data) throws IOException
+	static void deserializeToMap(byte[] inputData, HashMap<String, Object> outputMap) throws IOException
 	{
-		ByteArrayInputStream in = new ByteArrayInputStream(data);
-		stream = new ObjectInputStream(in);
+		ByteArrayInputStream in = new ByteArrayInputStream(inputData);
+		try (ObjectInputStream stream = new ObjectInputStream(in))
+		{
+			int length = stream.readShort();
+
+			for (int i = 0; i < length; i++)
+			{
+				String name = stream.readUTF();
+				short type = stream.readShort();
+
+				AbstractSerializer serializer = SERIALIZERS.getFromType(type);
+
+				Object data = serializer.read(stream);
+				outputMap.put(name, data);
+			}
+		}
 	}
 
-	void deserializeMap(HashMap<String, Object> map) throws IOException
+	static <T> void deserializeToArray(byte[] inputData, ArrayList<T> list) throws IOException
 	{
-		Serializers serializers = Serializers.getInstance();
-		int length = stream.readShort();
-		
-		for (int i = 0; i < length; i++)
+		ByteArrayInputStream in = new ByteArrayInputStream(inputData);
+		try (ObjectInputStream stream = new ObjectInputStream(in))
 		{
-			String name = stream.readUTF();
-			short type = stream.readShort();
-			
-			AbstractSerializer serializer = serializers.getFromType(type);
-			
-			Object data = serializer.read(stream);
-			map.put(name, data);
+			int length = stream.readShort();
+
+			for (int i = 0; i < length; i++)
+			{
+				String unusedName = stream.readUTF();
+				short type = stream.readShort();
+
+				AbstractSerializer serializer = SERIALIZERS.getFromType(type);
+
+				T data = (T) serializer.read(stream);
+				list.add(data);
+			}
+
+			stream.close();
 		}
-		
-		stream.close();
-	}
-	
-	<T> void deserializeArray(ArrayList<T> list) throws IOException
-	{
-		Serializers serializers = Serializers.getInstance();
-		int length = stream.readShort();
-		
-		for (int i = 0; i < length; i++)
-		{
-			String name = stream.readUTF();
-			short type = stream.readShort();
-			
-			AbstractSerializer serializer = serializers.getFromType(type);
-			
-			T data = (T) serializer.read(stream);
-			list.add(data);
-		}
-		
-		stream.close();
 	}
 }

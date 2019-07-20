@@ -27,6 +27,8 @@ public class ConnectionRequestRunner extends BaseRunner<ConnectionRequest, Conne
 			System.out.println("Error at sending data: " + ex);
 		}
 		
+		entry.dispose();
+		
 		return null;
 	}
 	
