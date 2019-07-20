@@ -12,6 +12,5 @@ public final class SetupConstants
 	public static final String PLAYER_LOOK_Y = "Ry";
 	public static final String PLAYER_LOOK_Z = "Rz";
 	
-	public static final String PLAYER_COUNT = "count";
 	public static final String PLAYERS = "players";
 }

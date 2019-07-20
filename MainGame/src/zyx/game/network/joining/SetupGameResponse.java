@@ -18,8 +18,8 @@ public class SetupGameResponse extends BaseNetworkResponse<GameSetupVo>
 	@Override
 	protected GameSetupVo onMessageRecieved(ReadableDataObject data)
 	{
-		int playerCount = data.getInteger(PLAYER_COUNT);
 		ReadableDataArray<ReadableDataObject> array = data.<ReadableDataObject>getArray(PLAYERS);
+		int playerCount = array.size();
 		
 		OUT.players = new GameSetupPlayerInfo[playerCount];
 		for (int i = 0; i < playerCount; i++)

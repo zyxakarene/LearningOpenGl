@@ -21,15 +21,15 @@ public class PlayerMassPositionsResponse extends BaseNetworkResponse<PlayerMassP
 	@Override
 	protected PlayerMassPositionData onMessageRecieved(ReadableDataObject data)
 	{
-		int count = data.getInteger(COUNT);
-
-		if (count != OUT.count)
+		ReadableDataArray<ReadableDataObject> players = data.getArray(PLAYERS);
+		int len = players.size();
+		
+		if (len != OUT.count)
 		{
-			updateResponseLength(count);
+			updateResponseLength(len);
 		}
 
-		ReadableDataArray<ReadableDataObject> players = data.getArray(PLAYERS);
-		for (int i = 0; i < count; i++)
+		for (int i = 0; i < len; i++)
 		{
 			ReadableDataObject player = players.get(i);
 			

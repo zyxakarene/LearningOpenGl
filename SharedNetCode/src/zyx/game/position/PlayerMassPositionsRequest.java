@@ -22,12 +22,10 @@ public class PlayerMassPositionsRequest extends BaseNetworkRequest
 		Vector3f[] lookAts = (Vector3f[]) params[1];
 		int[] ids = (int[]) params[2];
 
-		int count = ids.length;
-		data.addInteger(COUNT, count);
-
 		WriteableDataArray<WriteableDataObject> arrayData = new WriteableDataArray(WriteableDataObject.class);
 
-		for (int i = 0; i < count; i++)
+		int length = ids.length;
+		for (int i = 0; i < length; i++)
 		{
 			WriteableDataObject player = new WriteableDataObject();
 			arrayData.add(player);

@@ -45,7 +45,6 @@ public class SetupGameRequest extends BaseNetworkRequest
 			}
 		}
 		
-		data.addInteger(PLAYER_COUNT, playerDataArray.length());
 		data.addArray(PLAYERS, playerDataArray);
 	}
 

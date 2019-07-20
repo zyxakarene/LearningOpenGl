@@ -2,7 +2,6 @@ package zyx.game.position;
 
 class PositionConstants
 {
-	static final String COUNT = "count";
 	static final String PLAYERS = "players";
 	
 	static final String ID = "id";

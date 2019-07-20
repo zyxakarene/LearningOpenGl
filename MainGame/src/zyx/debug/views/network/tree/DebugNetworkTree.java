@@ -33,7 +33,7 @@ public class DebugNetworkTree extends JTree
 		{
 			ReadableDataObject obj = info.data.get(i);
 			long timestamp = info.timestamps.get(i);
-
+			
 			DefaultMutableTreeNode readNode = new DefaultMutableTreeNode(new TreeItemWrapper(info, timestamp), true);
 			addReadableToNode(readNode, obj);
 
@@ -49,11 +49,6 @@ public class DebugNetworkTree extends JTree
 
 		for (String key : keys)
 		{
-			if (key.equals("obj"))
-			{
-				System.out.println(key);
-			}
-			
 			Object objData = obj.getRaw(key);
 
 			if (objData instanceof ReadableDataObject)
