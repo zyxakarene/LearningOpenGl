@@ -61,11 +61,11 @@ public class GameEngine
 			
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_1))
 			{
-				sceneManager.changeScene(SceneType.GAME);
+				sceneManager.changeScene(SceneType.MENU);
 			}
 			else if (KeyboardData.data.wasPressed(Keyboard.KEY_2))
 			{
-				sceneManager.changeScene(SceneType.TEST);
+				sceneManager.changeScene(SceneType.GAME);
 			}
 			else if (KeyboardData.data.wasPressed(Keyboard.KEY_3))
 			{
@@ -73,11 +73,7 @@ public class GameEngine
 			}
 			else if (KeyboardData.data.wasPressed(Keyboard.KEY_4))
 			{
-				sceneManager.changeScene(SceneType.MATRIX);
-			}
-			else if (KeyboardData.data.wasPressed(Keyboard.KEY_5))
-			{
-				sceneManager.changeScene(SceneType.DRAGON);
+				sceneManager.changeScene(SceneType.TEST);
 			}
 			else if (KeyboardData.data.wasPressed(Keyboard.KEY_6))
 			{

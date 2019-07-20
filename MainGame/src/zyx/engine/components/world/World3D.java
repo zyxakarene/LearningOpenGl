@@ -76,7 +76,7 @@ public final class World3D extends WorldObject
 	
 	public void setSunDir(Vector3f dir)
 	{
-		sun.setDir(true, dir);
+		sun.setDir(false, dir);
 	}
 
 	public void setSunRotation(Vector3f rotation)

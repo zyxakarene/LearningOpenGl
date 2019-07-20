@@ -29,6 +29,19 @@ public class BehaviorBundle implements IUpdateable, IDisposeable
 		behavior.initialize();
 	}
 
+	public void removeBehavior(BehaviorType type)
+	{
+		Behavior behavior = behaviorMap.get(type);
+	
+		if (behavior != null)
+		{
+			behaviorMap.remove(type);
+			behaviors.remove(behavior);
+			
+			behavior.dispose();
+		}
+	}
+	
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{

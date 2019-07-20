@@ -8,7 +8,6 @@ import zyx.game.controls.SharedPools;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.camera.IFrustumHideable;
 import zyx.opengl.shaders.SharedShaderObjects;
-import zyx.utils.GeometryUtils;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IPositionable;
 import zyx.utils.math.DecomposedMatrix;
@@ -520,14 +519,16 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 	public void lookAt(float x, float y, float z)
 	{
 		HELPER_POSITION.set(x, y, z);
-		parent.globalToLocal(HELPER_POSITION, HELPER_POSITION);
+		if (parent != null)
+		{
+			parent.globalToLocal(HELPER_POSITION, HELPER_POSITION);
+		}
 
 		getPosition(true, HELPER_DIR);
 
 		Vector3f.sub(HELPER_POSITION, HELPER_DIR, HELPER_DIR);
-		HELPER_DIR.normalise();
 
-		MatrixUtils.setDirTo(localMatrix, HELPER_DIR, GeometryUtils.ROTATION_Z);
+		MatrixUtils.setDirTo(localMatrix, HELPER_DIR);
 		updateTransforms(true);
 	}
 
@@ -536,7 +537,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 	{
 		if (local || parent == null)
 		{
-			MatrixUtils.setDirTo(localMatrix, dir, GeometryUtils.ROTATION_Z);
+			MatrixUtils.setDirTo(localMatrix, dir);
 			updateTransforms(true);
 		}
 		else

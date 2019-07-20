@@ -2,8 +2,8 @@ package zyx.net.core;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
-import zyx.net.io.requests.ConnectionRequest;
-import zyx.net.io.requests.ConnectionResponse;
+import zyx.net.io.connections.ConnectionRequest;
+import zyx.net.io.connections.ConnectionResponse;
 import zyx.synchronizer.BaseRunner;
 
 public class ConnectionRequestRunner extends BaseRunner<ConnectionRequest, ConnectionResponse>
@@ -15,6 +15,8 @@ public class ConnectionRequestRunner extends BaseRunner<ConnectionRequest, Conne
 		byte[] byteData = entry.getData();
 		DatagramPacket packet = new DatagramPacket(byteData, byteData.length, entry.host, entry.port);
 
+		DebugNetworkList.addRequest(byteData);
+		
 		try
 		{
 			PersistentConnection.getInstance().send(packet);
@@ -24,6 +26,8 @@ public class ConnectionRequestRunner extends BaseRunner<ConnectionRequest, Conne
 			dispose();
 			System.out.println("Error at sending data: " + ex);
 		}
+		
+		entry.dispose();
 		
 		return null;
 	}

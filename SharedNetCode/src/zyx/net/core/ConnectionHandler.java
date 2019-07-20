@@ -1,7 +1,7 @@
 package zyx.net.core;
 
-import zyx.net.io.requests.ConnectionRequest;
-import zyx.net.io.requests.ConnectionResponse;
+import zyx.net.io.connections.ConnectionRequest;
+import zyx.net.io.connections.ConnectionResponse;
 import zyx.synchronizer.BaseAsyncSynchronizer;
 
 public class ConnectionHandler extends BaseAsyncSynchronizer<ConnectionRequest, ConnectionResponse>

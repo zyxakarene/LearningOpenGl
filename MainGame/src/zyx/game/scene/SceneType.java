@@ -1,20 +1,17 @@
 package zyx.game.scene;
 
 import zyx.engine.scene.Scene;
-import zyx.game.scene.dragon.DragonScene;
-import zyx.game.scene.gamescene.GameScene;
-import zyx.game.scene.gamescene.StackScene;
-import zyx.game.scene.gamescene.TestScene;
-import zyx.game.scene.matrix.MatrixScene;
-import zyx.game.scene.particle.ParticleScene;
+import zyx.game.scene.game.DragonScene;
+import zyx.game.scene.dev.TestScene;
+import zyx.game.scene.dev.ParticleScene;
+import zyx.game.scene.menu.MenuScene;
 
 public enum SceneType
 {
 	
-	DRAGON(DragonScene.class),
-	MATRIX(MatrixScene.class),
-	STACK(StackScene.class),
-	GAME(GameScene.class),
+	MENU(MenuScene.class),
+	GAME(DragonScene.class),
+	
 	TEST(TestScene.class),
 	PARTICLE(ParticleScene.class),
 	EMPTY(EmptyScene.class);

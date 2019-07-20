@@ -1,22 +1,25 @@
 package zyx.net.io.responses;
 
 import java.util.ArrayList;
-import zyx.net.data.ReadableDataObject;
-import zyx.net.io.requests.ConnectionResponse;
+import java.util.LinkedList;
+import zyx.net.io.connections.ConnectionResponse;
 
 public class ResponseManager
 {
 
 	private static final ResponseManager INSTANCE = new ResponseManager();
 	
-	private final ArrayList<ResponseDispatcher> dispatchers;
+	private final ArrayList<NetworkResponseDispatcher> dispatchers;
+	
+	private static final LinkedList<NetworkResponseDispatcher> LIST_HELPER = new LinkedList<>();
+	
 	
 	private ResponseManager()
 	{
 		dispatchers = new ArrayList<>();
 	}
 	
-	public void registerDispatcher(ResponseDispatcher dispatcher)
+	void registerDispatcher(NetworkResponseDispatcher dispatcher)
 	{
 		synchronized(dispatchers)
 		{
@@ -24,7 +27,7 @@ public class ResponseManager
 		}
 	}
 	
-	public void unregisterDispatcher(ResponseDispatcher dispatcher)
+	void unregisterDispatcher(NetworkResponseDispatcher dispatcher)
 	{
 		synchronized(dispatchers)
 		{
@@ -41,13 +44,19 @@ public class ResponseManager
 	{
 		synchronized(dispatchers)
 		{
-			for (ResponseDispatcher dispatcher : dispatchers)
+			for (NetworkResponseDispatcher dispatcher : dispatchers)
 			{
 				if (dispatcher.containsKey(response.name))
 				{
-					dispatcher.dispatchWithKey(response);
+					LIST_HELPER.addLast(dispatcher);
 				}
 			}
+		}
+		
+		while (!LIST_HELPER.isEmpty())
+		{			
+			NetworkResponseDispatcher dispatcher = LIST_HELPER.removeFirst();
+			dispatcher.dispatchWithKey(response);
 		}
 	}
 }

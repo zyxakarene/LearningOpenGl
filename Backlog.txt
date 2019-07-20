@@ -2,9 +2,7 @@
 
 
 =Engine=
-Bump mapping
 Terrain/Displacements
-Skybox
 
 =Core=
 UI overhaul
@@ -21,6 +19,9 @@ Particles
 Shadows
 Difuse lighting
 Direct lighting
+Bump mapping
+Tooltips
+Skybox
 
 =Notes=
 Physics: When two colliders intersect, push them away from each others center until they no longer overlap.

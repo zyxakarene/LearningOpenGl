@@ -3,6 +3,8 @@ package zyx.utils.math;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.utils.FloatMath;
+import zyx.utils.GeometryUtils;
 
 public class MatrixUtils
 {
@@ -75,8 +77,20 @@ public class MatrixUtils
 		out.z = matrix.m22;
 	}
 
-	public static void setDirTo(Matrix4f matrix, Vector3f dir, Vector3f up)
+	public static void setDirTo(Matrix4f matrix, Vector3f dir)
 	{
+		Vector3f up;
+		if (dir.x == 0 && FloatMath.abs(dir.y) == 1 && dir.z == 0)
+		{
+			up = GeometryUtils.ROTATION_Y;
+		}
+		else
+		{
+			up = GeometryUtils.ROTATION_Z;
+		}
+
+		dir.normalise();
+
 		Vector3f right = Vector3f.cross(up, dir, null);
 		right.normalise();
 		
