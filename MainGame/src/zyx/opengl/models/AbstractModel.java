@@ -102,6 +102,19 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 		}
 	}
 
+	protected void debugDraw()
+	{
+		if (elementCount > 0)
+		{
+			if (canDraw())
+			{
+				bindTextures();
+
+				ModelUtils.drawElements(vao, elementCount);
+			}
+		}
+	}
+	
 	protected void bindTextures()
 	{
 		for (AbstractTexture texture : textures)

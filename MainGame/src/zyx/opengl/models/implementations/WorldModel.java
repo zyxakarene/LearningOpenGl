@@ -1,6 +1,7 @@
 package zyx.opengl.models.implementations;
 
 import org.lwjgl.util.vector.Vector3f;
+import zyx.opengl.GLUtils;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
 import zyx.opengl.models.AbstractModel;
@@ -19,10 +20,10 @@ import zyx.utils.interfaces.IShadowable;
 public class WorldModel extends AbstractModel implements IShadowable
 {
 
-	private WorldShader shader;
-	private DepthShader shadowShader;
+	protected WorldShader shader;
+	protected DepthShader shadowShader;
 
-	private Skeleton skeleton;
+	protected Skeleton skeleton;
 
 	private PhysBox physBox;
 

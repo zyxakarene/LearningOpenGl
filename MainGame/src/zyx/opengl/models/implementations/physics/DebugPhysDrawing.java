@@ -9,6 +9,7 @@ import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.textures.ColorTexture;
+import zyx.utils.cheats.PhysicsModel;
 import zyx.utils.geometry.Box;
 import zyx.utils.interfaces.IPhysbox;
 
@@ -90,7 +91,9 @@ public class DebugPhysDrawing
 		Skeleton skeleton = new Skeleton(getMeshJoint("root", 0), getMeshJoint("dummy", 0));
 		LoadableWorldModelVO vo = new LoadableWorldModelVO(vertexData, elementData, skeleton, null, "", "", "", new Vector3f(), 1000);
 		vo.setDiffuseTexture(new ColorTexture(0xFF0000));
-		WorldModel model = new WorldModel(vo);
+		vo.setNormalTexture(new ColorTexture(0x000000));
+		vo.setSpecularTexture(new ColorTexture(0xFFFFFF));
+		PhysicsModel model = new PhysicsModel(vo);
 
 		return model;
 	}
@@ -188,7 +191,9 @@ public class DebugPhysDrawing
 		Skeleton skeleton = new Skeleton(getMeshJoint("root11", 0), getMeshJoint("dummy22", 0));
 		LoadableWorldModelVO vo = new LoadableWorldModelVO(vertexData, elementData, skeleton, null, "", "", "", new Vector3f(), 1000);
 		vo.setDiffuseTexture(new ColorTexture(0x00FF00));
-		WorldModel model = new WorldModel(vo);
+		vo.setNormalTexture(new ColorTexture(0xFFFFFF));
+		vo.setSpecularTexture(new ColorTexture(0xFFFFFF));
+		PhysicsModel model = new PhysicsModel(vo);
 
 		return model;
 	}

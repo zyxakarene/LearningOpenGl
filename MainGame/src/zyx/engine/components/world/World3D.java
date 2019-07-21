@@ -10,6 +10,7 @@ import zyx.opengl.buffers.DepthRenderer;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.utils.cheats.DebugPhysics;
 
 public final class World3D extends WorldObject
 {
@@ -61,7 +62,7 @@ public final class World3D extends WorldObject
 		ambientOcclusion.drawAmbientOcclusion();
 
 		renderer.draw();
-		
+				
 		ParticleManager.getInstance().draw();
 	}
 
