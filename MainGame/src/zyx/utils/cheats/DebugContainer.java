@@ -3,8 +3,6 @@ package zyx.utils.cheats;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import zyx.engine.components.world.WorldObject;
-import zyx.game.components.GameObject;
-import zyx.opengl.shaders.implementations.Shader;
 
 public class DebugContainer extends WorldObject
 {
@@ -16,7 +14,6 @@ public class DebugContainer extends WorldObject
 
 	public DebugContainer()
 	{
-		super(Shader.WORLD);
 		points = new ArrayList<>();
 		removedPoints = new LinkedList<>();
 	}

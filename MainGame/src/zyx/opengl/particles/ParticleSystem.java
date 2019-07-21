@@ -9,7 +9,6 @@ import zyx.engine.resources.impl.Resource;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.models.implementations.IParticleModel;
 import zyx.opengl.shaders.SharedShaderObjects;
-import zyx.opengl.shaders.implementations.Shader;
 import zyx.utils.FloatMath;
 
 public class ParticleSystem extends WorldObject implements IResourceReady<ParticleResource>
@@ -27,8 +26,6 @@ public class ParticleSystem extends WorldObject implements IResourceReady<Partic
 
 	public ParticleSystem()
 	{
-		super(Shader.WORLD);
-
 		loaded = false;
 		ParticleManager.getInstance().add(this);
 	}
@@ -93,7 +90,7 @@ public class ParticleSystem extends WorldObject implements IResourceReady<Partic
 	{
 		if (loaded && inView())
 		{
-			SharedShaderObjects.SHARED_MODEL_TRANSFORM.load(worldMatrix());
+			SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM.load(worldMatrix());
 			
 			model.draw();
 		}

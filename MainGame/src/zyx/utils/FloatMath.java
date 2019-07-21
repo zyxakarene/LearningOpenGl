@@ -4,9 +4,11 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class FloatMath
 {
+
     public static final float PI = (float) Math.PI;
 
-	public  static final float RAD_TO_DEG = 180.0f / PI;
+	public static final float RAD_TO_DEG = 180f / PI;
+	public static final float DEG_TO_RAD = PI / 180f;
 	
 	public static boolean isAlmost(float value, float target, float epsilon)
 	{
@@ -18,6 +20,11 @@ public class FloatMath
 		return false;
 	}
 	
+	public static float pow(float a, float b)
+	{
+		return (float) Math.pow(a, b);
+	}
+
 	public static float clamp(float val, float minimum, float maximum)
 	{
 		return max(minimum, min(maximum, val));

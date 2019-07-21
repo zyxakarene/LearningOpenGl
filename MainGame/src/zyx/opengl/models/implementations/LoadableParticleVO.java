@@ -5,7 +5,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.opengl.textures.AbstractTexture;
 
-public class LoadableParticleVO implements ILoadableVO
+public class LoadableParticleVO
 {
 
 	public int instanceCount = 10;
@@ -43,14 +43,12 @@ public class LoadableParticleVO implements ILoadableVO
 	{
 	}
 
-	@Override
-	public String getTexture()
+	public String getDiffuseTextureId()
 	{
 		return texture;
 	}
 	
-	@Override
-	public void setGameTexture(AbstractTexture gameTexture)
+	public void setDiffuseTexture(AbstractTexture gameTexture)
 	{
 		this.gameTexture = gameTexture;
 	}

@@ -51,26 +51,15 @@ public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer imp
 		onDataChanged();
 	}
 
-	@Override
-	protected void onDraw()
-	{
-		shader.getClipRect(CLIP_HELPER);
-		shader.setClipRect(clipRect.x, clipRect.width, clipRect.y, clipRect.height);
-		
-		super.onDraw();
-		
-		shader.setClipRect(CLIP_HELPER.x, CLIP_HELPER.width, CLIP_HELPER.y, CLIP_HELPER.height);
-	}
-
-	@Override
-	protected void onWorldMatrixUpdated()
-	{
-		getPosition(false, HELPER_VEC2);
-		clipRect.x = HELPER_VEC2.x;
-		clipRect.y = HELPER_VEC2.y;
-		clipRect.width = clipRect.x + background.getWidth();
-		clipRect.height = clipRect.y + background.getHeight();
-	}
+//	@Override
+//	protected void onWorldMatrixUpdated()
+//	{
+//		getPosition(false, HELPER_VEC2);
+//		clipRect.x = HELPER_VEC2.x;
+//		clipRect.y = HELPER_VEC2.y;
+//		clipRect.width = clipRect.x + background.getWidth();
+//		clipRect.height = clipRect.y + background.getHeight();
+//	}
 	
 	private void onDataChanged()
 	{
@@ -79,7 +68,6 @@ public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer imp
 		for (Object data : rendererData)
 		{
 			T renderer = ListRendererFactory.createFrom(itemRenderer);
-			renderer.setClipRect(clipRect);
 			itemRenderers.add(renderer);
 			
 			renderer.setData(data);
@@ -95,12 +83,14 @@ public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer imp
 	public void setWidth(float value)
 	{
 		background.setWidth(value);
+		clipRect.width = value;
 	}
 
 	@Override
 	public void setHeight(float value)
 	{
 		background.setHeight(value);
+		clipRect.height = value;
 	}
 
 	@Override

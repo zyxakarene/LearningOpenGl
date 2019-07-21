@@ -23,7 +23,7 @@ public class CameraUpdateViewBehavior extends Behavior
 	{
 		super(BehaviorType.CAMERA_UPDATE_VIEW);
 		
-		viewMatrix = SharedShaderObjects.SHARED_VIEW_TRANSFORM;
+		viewMatrix = SharedShaderObjects.SHARED_WORLD_VIEW_TRANSFORM;
 		tempMovement = new Vector3f();
 	}
 

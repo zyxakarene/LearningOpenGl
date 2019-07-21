@@ -7,7 +7,7 @@ public class SubTexture extends GameTexture
 
 	public SubTexture(GameTexture parent, Rectangle rect, String name)
 	{
-		super(parent.texture, rect, name);
+		super(parent.texture, rect, name, parent.slot);
 	}
 	
 	@Override

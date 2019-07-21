@@ -1,10 +1,9 @@
 package zyx.game.controls.resourceloader;
 
 import zyx.game.controls.resourceloader.requests.ResourceRequest;
-import java.util.ArrayList;
-import zyx.utils.interfaces.IDisposeable;
+import zyx.synchronizer.BaseAsyncSynchronizer;
 
-public class ResourceLoader implements IDisposeable
+public class ResourceLoader extends BaseAsyncSynchronizer<ResourceRequest, ResourceRequest>
 {
 
 	private static final ResourceLoader INSTANCE = new ResourceLoader();
@@ -14,54 +13,21 @@ public class ResourceLoader implements IDisposeable
 		return INSTANCE;
 	}
 
-	private final ArrayList<ResourceRunner> runners = new ArrayList<>();
-
-	private ResourceLoader()
+	private ResourceExchange exchange;
+	
+	public ResourceLoader()
 	{
-	}
-
-	public void addThreads(int numThreads)
-	{
-		Thread loader;
-		ResourceRunner runner;
-		for (int i = 0; i < numThreads; i++)
-		{
-			runner = new ResourceRunner();
-			loader = new Thread(runner);
-			loader.setName("ResourceLoaderRunner#" + (i + 1));
-			loader.setDaemon(true);
-
-			runners.add(runner);
-
-			loader.start();
-		}
-	}
-
-	public void handleResourceReplies()
-	{
-		ResourceExchange.sendReplies();
-	}
-
-	public void addRequest(ResourceRequest request)
-	{
-		ResourceExchange.addLoad(request);
-	}
-
-	public void cancelRequest(ResourceRequest request)
-	{
-		ResourceExchange.removeLoad(request);
-	}
+		exchange = new ResourceExchange();
+		setExchange(exchange);
+	}	
 
 	@Override
-	public void dispose()
+	public void addThreads(int count)
 	{
-		for (ResourceRunner runner : runners)
+		for (int i = 0; i < count; i++)
 		{
-			runner.dispose();
+			ResourceRunner runner = new ResourceRunner();
+			addRunner(runner);
 		}
-
-		runners.clear();
-		
-		ResourceExchange.dispose();
 	}
 }

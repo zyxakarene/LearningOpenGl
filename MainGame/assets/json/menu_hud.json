@@ -1,0 +1,16 @@
+{
+	"name":"dummy_container",
+	"type":"container",
+	"children":
+	[
+		{
+			"name":"play_button",
+			"type":"scale9button",
+			"percentWidth":0.5,
+			"percentHeight":0.5,
+			"centerOffsetX":0,
+			"centerOffsetY":0,
+			"texture":["BtnUp", "BtnHover", "BtnDown"]
+		}
+	]
+}

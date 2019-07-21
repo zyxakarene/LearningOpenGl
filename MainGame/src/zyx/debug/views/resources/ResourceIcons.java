@@ -42,6 +42,14 @@ class ResourceIcons
 		{
 			return "assets/debug/resource/texture.png";
 		}
+		else if (clazz == NormalTextureResource.class)
+		{
+			return "assets/debug/resource/normal.png";
+		}
+		else if (clazz == SpecularTextureResource.class)
+		{
+			return "assets/debug/resource/specular.png";
+		}
 		else if (clazz == ParticleResource.class)
 		{
 			return "assets/debug/resource/particle.png";
@@ -61,6 +69,14 @@ class ResourceIcons
 		else if (clazz == SpriteSheetResource.class)
 		{
 			return "assets/debug/resource/spritesheet.png";
+		}
+		else if (clazz == CubemapResource.class)
+		{
+			return "assets/debug/resource/cubemap.png";
+		}
+		else if (clazz == SkyboxResource.class)
+		{
+			return "assets/debug/resource/skybox.png";
 		}
 		
 		return "assets/debug/resource/default.png";

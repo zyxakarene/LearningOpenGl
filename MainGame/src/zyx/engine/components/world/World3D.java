@@ -1,8 +1,15 @@
 package zyx.engine.components.world;
 
 import zyx.engine.components.world.complexphysics.ComplexPhysics;
+import org.lwjgl.util.vector.Vector3f;
+import zyx.opengl.GLUtils;
+import zyx.opengl.buffers.AmbientOcclusionRenderer;
+import zyx.opengl.buffers.BufferRenderer;
+import zyx.opengl.buffers.DeferredRenderer;
+import zyx.opengl.buffers.DepthRenderer;
+import zyx.opengl.camera.Camera;
+import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.shaders.SharedShaderObjects;
-import zyx.opengl.shaders.implementations.Shader;
 
 public final class World3D extends WorldObject
 {
@@ -11,16 +18,76 @@ public final class World3D extends WorldObject
 	
 	public final ComplexPhysics physics;
 
+	private DeferredRenderer renderer;
+	private DepthRenderer depth;
+	private AmbientOcclusionRenderer ambientOcclusion;
+
+	private GameSun sun;
+	private Skybox skybox;
+
 	private World3D()
 	{
-		super(Shader.WORLD);
 		physics = new ComplexPhysics();
+
+		BufferRenderer.setupBuffers();
+
+		renderer = DeferredRenderer.getInstance();
+		depth = DepthRenderer.getInstance();
+		ambientOcclusion = AmbientOcclusionRenderer.getInstance();
+
+		skybox = new Skybox();
+		
+		sun = new GameSun();
+		Vector3f startSunDir = new Vector3f(-0.0626f, 0.7103f, -0.701f);
+		setSunDir(startSunDir);
+
+		addChild(Camera.getInstance());
 	}
 
 	public void drawScene()
 	{
-		shader.bind();
+		GLUtils.enableDepthWrite();
+		GLUtils.enableCulling();
+		GLUtils.setBlendNormal();
+
+		depth.prepareRender();
+		ambientOcclusion.prepareRender();
+		renderer.prepareRender();
+
+		skybox.draw();
+		
 		draw();
+
+		ambientOcclusion.drawAmbientOcclusion();
+
+		renderer.draw();
+		
+		ParticleManager.getInstance().draw();
+	}
+
+	public void loadSkybox(String res)
+	{
+		skybox.load(res);
+	}
+
+	public void removeSkybox()
+	{
+		skybox.clean();
+	}
+	
+	public void setSunDir(Vector3f dir)
+	{
+		sun.setDir(false, dir);
+	}
+
+	public void setSunRotation(Vector3f rotation)
+	{
+		sun.setRotation(rotation);
+	}
+
+	public void setSunEnabled(boolean enabled)
+	{
+		sun.setEnabled(enabled);
 	}
 
 	@Override
@@ -31,7 +98,7 @@ public final class World3D extends WorldObject
 	@Override
 	protected void onTransform()
 	{
-		SharedShaderObjects.SHARED_MODEL_TRANSFORM.setIdentity();
+		SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM.setIdentity();
 	}
 
 	@Override

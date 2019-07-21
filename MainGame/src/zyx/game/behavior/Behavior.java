@@ -9,6 +9,7 @@ public abstract class Behavior implements IUpdateable, IDisposeable
 {
 
 	protected final static Vector3f HELPER_DIR = new Vector3f();
+	protected final static Vector3f HELPER_POS = new Vector3f();
 	
 	BehaviorType type;
 	boolean active;

@@ -3,9 +3,8 @@ package zyx.game.components.screen.hud;
 import java.util.ArrayList;
 import zyx.engine.components.screen.image.AbstractImage;
 import zyx.engine.components.screen.list.ItemList;
-import zyx.game.components.screen.json.JsonSprite;
 
-public class MainHud extends JsonSprite
+public class MainHud extends BaseHud
 {
 
 	private AbstractImage image;
@@ -29,6 +28,8 @@ public class MainHud extends JsonSprite
 	@Override
 	protected void onComponentsCreated()
 	{
+		super.onComponentsCreated();
+		
 		image = this.<AbstractImage>getComponentByName("test_image_1");
 		list = this.<ItemList>getComponentByName("list_test");
 	}

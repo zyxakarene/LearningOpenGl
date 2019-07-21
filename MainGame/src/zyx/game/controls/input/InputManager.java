@@ -1,10 +1,10 @@
 package zyx.game.controls.input;
 
-import java.awt.event.KeyEvent;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.CustomCallback;
-import zyx.utils.GameConstants;
+import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IUpdateable;
 
 public class InputManager implements IUpdateable
@@ -52,29 +52,40 @@ public class InputManager implements IUpdateable
 	{
 		mouseData.grabbed = Mouse.isGrabbed();
 
+		int minX = 0;
+		int maxX = 0;
+
+		int minY = 0;
+		int maxY = 0;
+
 		while (Mouse.next())
 		{
 			//Position
 			if (mouseData.grabbed)
 			{
-				mouseData.x = GameConstants.GAME_WIDTH / 2;
-				mouseData.y = GameConstants.GAME_HEIGHT / 2;
+				mouseData.x = ScreenSize.width / 2;
+				mouseData.y = ScreenSize.height / 2;
 			}
 			else
 			{
 				mouseData.x = Mouse.getX();
-				mouseData.y = GameConstants.GAME_HEIGHT - Mouse.getY();
+				mouseData.y = ScreenSize.height - Mouse.getY();
 			}
 
 			//Movements
-			mouseData.dX = Mouse.getEventDX();
-			mouseData.dY = Mouse.getEventDY();
-
+			int x = Mouse.getEventDX();
+			int y = Mouse.getEventDY();
+			minX = x < minX ? x : minX;
+			minY = y < minY ? y : minY;
+			
+			maxX = x > maxX ? x : maxX;
+			maxY = y > maxY ? y : maxY;
+			
 			if (mouseData.dX != 0 || mouseData.dY != 0)
 			{
 				onMouseMoved.dispatch(mouseData);
 			}
-
+			
 			//Clicking
 			int button = Mouse.getEventButton();
 			if (button != -1)
@@ -97,6 +108,15 @@ public class InputManager implements IUpdateable
 					OnMouseClicked.dispatch(mouseData);
 				}
 			}
+		}
+
+		//Movements
+		mouseData.dX = minX + maxX;
+		mouseData.dY = minY + maxY;
+
+		if (mouseData.dX != 0 || mouseData.dY != 0)
+		{
+			onMouseMoved.dispatch(mouseData);
 		}
 	}
 

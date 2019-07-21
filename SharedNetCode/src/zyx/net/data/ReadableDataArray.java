@@ -3,17 +3,17 @@ package zyx.net.data;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ReadableDataArray
+public class ReadableDataArray<T>
 {
 
-	private ArrayList<Object> dataList;
+	private ArrayList<T> dataList;
 
 	public ReadableDataArray(byte[] data)
 	{
 		dataList = new ArrayList<>();
 		try
 		{
-			new DataObjectDeserializer(data).deserializeArray(dataList);
+			DataObjectDeserializer.deserializeToArray(data, dataList);
 		}
 		catch (IOException ex)
 		{
@@ -21,7 +21,12 @@ public class ReadableDataArray
 		}
 	}
 
-	public Object get(int index)
+	public int size()
+	{
+		return dataList.size();
+	}
+	
+	public T get(int index)
 	{
 		return dataList.get(index);
 	}

@@ -25,6 +25,7 @@ public class GameEngine
 {
 
 	private SceneManager sceneManager;
+	private DisplaySizeChanger sizeChanger;
 	
 	public GameEngine()
 	{
@@ -35,8 +36,10 @@ public class GameEngine
 	{
 		new SetupOpenGlCommand().execute();
 		GLUtils.enableGLSettings();
+		
+		sizeChanger = new DisplaySizeChanger();
 
-		ShaderManager.INSTANCE.initialize();
+		ShaderManager.getInstance().initialize();
 		CursorManager.getInstance().initialize();
 		Camera.getInstance().initialize();
 
@@ -58,11 +61,11 @@ public class GameEngine
 			
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_1))
 			{
-				sceneManager.changeScene(SceneType.GAME);
+				sceneManager.changeScene(SceneType.MENU);
 			}
 			else if (KeyboardData.data.wasPressed(Keyboard.KEY_2))
 			{
-				sceneManager.changeScene(SceneType.TEST);
+				sceneManager.changeScene(SceneType.GAME);
 			}
 			else if (KeyboardData.data.wasPressed(Keyboard.KEY_3))
 			{
@@ -70,9 +73,9 @@ public class GameEngine
 			}
 			else if (KeyboardData.data.wasPressed(Keyboard.KEY_4))
 			{
-				sceneManager.changeScene(SceneType.MATRIX);
+				sceneManager.changeScene(SceneType.TEST);
 			}
-			else if (KeyboardData.data.wasPressed(Keyboard.KEY_5))
+			else if (KeyboardData.data.wasPressed(Keyboard.KEY_6))
 			{
 				sceneManager.changeScene(SceneType.PHYS);
 			}

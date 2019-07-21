@@ -24,10 +24,4 @@ public class PoolableQuaternion extends Quaternion implements IPoolable
 	public void release()
 	{
 	}
-
-	@Override
-	public void dispose()
-	{
-	}
-
 }

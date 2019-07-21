@@ -8,11 +8,7 @@ import zyx.engine.components.world.complexphysics.EntityCollider;
 import zyx.game.controls.SharedPools;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.camera.IFrustumHideable;
-import zyx.opengl.shaders.AbstractShader;
-import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.SharedShaderObjects;
-import zyx.opengl.shaders.implementations.Shader;
-import zyx.utils.GeometryUtils;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IPositionable;
 import zyx.utils.math.DecomposedMatrix;
@@ -31,7 +27,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 
 	public boolean disposed;
 
-	private boolean dirty;
+	boolean dirty;
 	private boolean dirtyInv;
 	protected Matrix4f invWorldMatrix;
 	protected Matrix4f worldMatrix;
@@ -41,12 +37,10 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 	private WorldObject parent;
 	private ArrayList<WorldObject> children;
 
-	protected final AbstractShader shader;
-
 	private EntityCollider collider;
 	public boolean drawable = true;
 
-	public WorldObject(Shader type)
+	public WorldObject()
 	{
 		invWorldMatrix = SharedPools.MATRIX_POOL.getInstance();
 		worldMatrix = SharedPools.MATRIX_POOL.getInstance();
@@ -55,7 +49,6 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 
 		children = new ArrayList<>();
 
-		shader = ShaderManager.INSTANCE.get(type);
 		disposed = false;
 
 		dirty = false;
@@ -213,7 +206,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 			return;
 		}
 
-		SharedShaderObjects.SHARED_MODEL_TRANSFORM.load(worldMatrix());
+		SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM.load(worldMatrix());
 
 		onDraw();
 
@@ -537,23 +530,25 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 	public void lookAt(float x, float y, float z)
 	{
 		HELPER_POSITION.set(x, y, z);
+		if (parent != null)
+		{
 		parent.globalToLocal(HELPER_POSITION, HELPER_POSITION);
+		}
 
 		getPosition(true, HELPER_DIR);
 
 		Vector3f.sub(HELPER_POSITION, HELPER_DIR, HELPER_DIR);
-		HELPER_DIR.normalise();
 
-		MatrixUtils.setDirTo(localMatrix, HELPER_DIR, GeometryUtils.ROTATION_Z);
+		MatrixUtils.setDirTo(localMatrix, HELPER_DIR);
 		updateTransforms(true);
 	}
 
 	@Override
 	public void setDir(boolean local, Vector3f dir)
 	{
-		if (local)
+		if (local || parent == null)
 		{
-			MatrixUtils.setDirTo(localMatrix, dir, GeometryUtils.ROTATION_Z);
+			MatrixUtils.setDirTo(localMatrix, dir);
 			updateTransforms(true);
 		}
 		else

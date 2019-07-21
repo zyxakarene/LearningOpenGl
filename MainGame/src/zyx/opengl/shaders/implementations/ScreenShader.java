@@ -2,19 +2,19 @@ package zyx.opengl.shaders.implementations;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
+import zyx.engine.utils.ScreenSize;
+import zyx.engine.utils.callbacks.ICallback;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.SharedShaderObjects;
-import zyx.utils.DeltaTime;
-import zyx.utils.FloatMath;
-import zyx.utils.GameConstants;
 import zyx.utils.geometry.Rectangle;
+import zyx.utils.math.Vector2Int;
 
-public class ScreenShader extends AbstractShader
+public class ScreenShader extends AbstractShader implements ICallback<Vector2Int>
 {
 
-	private static final Matrix4f MATRIX_PROJECTION = SharedShaderObjects.SHARED_ORTHOGRAPHIC_TRANSFORM;
+	private static final Matrix4f MATRIX_PROJECTION = SharedShaderObjects.UI_ORTHOGRAPHIC_PROJECTION;
 	private static final Matrix4f MATRIX_VIEW = new Matrix4f();
-	private static final Matrix4f MATRIX_MODEL = SharedShaderObjects.SHARED_MODEL_TRANSFORM;
+	private static final Matrix4f MATRIX_MODEL = SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM;
 
 	private int modelMatrixTrans;
 	private int viewMatrixTrans;
@@ -23,8 +23,8 @@ public class ScreenShader extends AbstractShader
 	private int ClipXVecTrans;
 	private int ClipYVecTrans;
 
-	private Vector2f clipX = new Vector2f(0, GameConstants.GAME_WIDTH);
-	private Vector2f clipY = new Vector2f(0, GameConstants.GAME_HEIGHT);
+	private Vector2f clipX = new Vector2f(0, ScreenSize.width);
+	private Vector2f clipY = new Vector2f(0, ScreenSize.height);
 	
 	public ScreenShader(Object lock)
 	{
@@ -40,10 +40,16 @@ public class ScreenShader extends AbstractShader
 		ClipXVecTrans = UniformUtils.createUniform(program, "clipX");
 		ClipYVecTrans = UniformUtils.createUniform(program, "clipY");
 		
-		MATRIX_VIEW.setIdentity();
-		MATRIX_VIEW.translate(new Vector2f(-GameConstants.GAME_WIDTH / 2, GameConstants.GAME_HEIGHT / 2));
+		ScreenSize.addListener(this);
+		onScreenSizeChanged();
 	}
 
+	private void onScreenSizeChanged()
+	{
+		MATRIX_VIEW.setIdentity();
+		MATRIX_VIEW.translate(new Vector2f(-ScreenSize.width / 2, ScreenSize.height / 2));
+	}
+	
 	@Override
 	public void upload()
 	{
@@ -54,7 +60,7 @@ public class ScreenShader extends AbstractShader
 		UniformUtils.setUniformMatrix(projectionMatrixTrans, MATRIX_PROJECTION);
 		
 		UniformUtils.setUniform2F(ClipXVecTrans, clipX.x - 1, clipX.y + 1);
-		UniformUtils.setUniform2F(ClipYVecTrans, GameConstants.GAME_HEIGHT - clipY.x + 1, GameConstants.GAME_HEIGHT - clipY.y - 1);
+		UniformUtils.setUniform2F(ClipYVecTrans, ScreenSize.height - clipY.x + 1, ScreenSize.height - clipY.y - 1);
 	}
 
 	public void setClipRect(float left, float right, float upper, float lower)
@@ -89,5 +95,11 @@ public class ScreenShader extends AbstractShader
 	public String getName()
 	{
 		return "ScreenShader";
+	}
+
+	@Override
+	public void onCallback(Vector2Int data)
+	{
+		onScreenSizeChanged();
 	}
 }

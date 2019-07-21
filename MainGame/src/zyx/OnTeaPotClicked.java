@@ -11,10 +11,6 @@ import zyx.utils.cheats.DebugPoint;
 public class OnTeaPotClicked implements IHoveredItem
 {
 
-	public OnTeaPotClicked()
-	{
-	}
-
 	@Override
 	public void onClicked(ClickedInfo data)
 	{
@@ -28,9 +24,8 @@ public class OnTeaPotClicked implements IHoveredItem
 		if (MouseData.data.isLeftClicked())
 		{
 			DebugPoint.addToScene(data.position, 1000);
-			
+
 			SoundManager.getInstance().playSound("sound.Explosion", data.gameObject);
 		}
 	}
-
 }

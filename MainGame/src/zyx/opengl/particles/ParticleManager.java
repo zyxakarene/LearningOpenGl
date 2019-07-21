@@ -48,9 +48,6 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 			WorldParticleShader.parentScale = system.parentScale;
 			system.drawParticle();
 		}
-		GLUtils.enableDepthWrite();
-		GLUtils.enableCulling();
-		GLUtils.setBlendAlpha();
 	}
 
 	@Override

@@ -154,7 +154,7 @@ class ModelUtils
 		else
 		{
 			String msg = "[Warning] Vertex attribute \"%s\" was not found in %s - (It might be unused)";
-			String shader = ShaderManager.INSTANCE.getNameFromProgram(shaderProgram);
+			String shader = ShaderManager.getInstance().getNameFromProgram(shaderProgram);
 			Print.out(String.format(msg, attributeName, shader));
 		}
 		

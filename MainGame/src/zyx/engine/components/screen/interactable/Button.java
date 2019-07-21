@@ -18,21 +18,17 @@ public class Button extends InteractableContainer
 	protected AbstractImage upImg;
 	protected AbstractImage hoverImg;
 	protected AbstractImage downImg;
+	protected boolean loaded;
 
 	private Vector4f colors;
 
 	public CustomCallback<InteractableContainer> onButtonClicked;
-	
-	private boolean loaded;
-	private boolean scale9;
 	
 	private ICallback<AbstractImage> onUpImageLoaded;
 
 	public Button(boolean scale9)
 	{
 		colors = new Vector4f(1, 1, 1, 1);
-
-		this.scale9 = scale9;
 		
 		if (scale9)
 		{
@@ -72,11 +68,11 @@ public class Button extends InteractableContainer
 
 	public void load(String upResource, String hoverResource, String downResource)
 	{
+		upImg.onLoaded.addCallback(onUpImageLoaded);
+		
 		upImg.load(upResource);
 		hoverImg.load(hoverResource);
 		downImg.load(downResource);
-		
-		upImg.onLoaded.addCallback(onUpImageLoaded);
 	}
 
 	private void onUpImageLoaded()

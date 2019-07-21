@@ -21,7 +21,7 @@ public class WriteableDataArray<T> implements IWriteableObject
 
 	public void add(T value)
 	{
-		DataEntry entry = new DataEntry(EMMPTY_STRING, value, serializer);
+		DataEntry entry = DataEntry.getInstance(EMMPTY_STRING, value, serializer);
 		dataList.add(entry);
 	}
 
@@ -63,5 +63,16 @@ public class WriteableDataArray<T> implements IWriteableObject
 		}
 
 		return size;
+	}
+
+	void dispose()
+	{
+		for (DataEntry entry : dataList)
+		{
+			entry.releaseInstance();
+		}
+		
+		dataList.clear();
+		dataList = null;
 	}
 }

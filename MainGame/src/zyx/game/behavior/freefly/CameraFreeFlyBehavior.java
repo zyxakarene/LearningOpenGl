@@ -78,7 +78,7 @@ public class CameraFreeFlyBehavior extends Behavior
 	private void rotate(int x, int y, int z, int elapsedTime)
 	{
 		float multiplier = elapsedTime * 0.008f;
-
+		
         cameraRotation.x += (x * multiplier);
         cameraRotation.y += (y * multiplier);
         cameraRotation.z += (z * multiplier);
@@ -106,6 +106,16 @@ public class CameraFreeFlyBehavior extends Behavior
 	{
 		float multiplier = elapsedTime * 0.15f;
 
+		if (KeyboardData.data.isDown(Keyboard.KEY_LSHIFT))
+		{
+			multiplier *= 5;
+		}
+		
+		if (KeyboardData.data.isDown(Keyboard.KEY_LCONTROL))
+		{
+			multiplier /= 5;
+		}
+		
         float dX = FloatMath.sin(FloatMath.toRadians(cameraRotation.z)) * FloatMath.cos(FloatMath.toRadians(cameraRotation.x + 90)) * MOVE_SPEED * multiplier;
         float dY = FloatMath.cos(FloatMath.toRadians(cameraRotation.z)) * FloatMath.cos(FloatMath.toRadians(cameraRotation.x + 90)) * MOVE_SPEED * multiplier;
         float dZ = FloatMath.cos(FloatMath.toRadians(cameraRotation.x)) * MOVE_SPEED * multiplier;

@@ -2,12 +2,7 @@
 
 
 =Engine=
-Difuse lighting
-Direct lighting
-Bump mapping
-Shadows
 Terrain/Displacements
-Skybox
 
 =Core=
 UI overhaul
@@ -21,6 +16,12 @@ Load required textures with zaf model
 Cursor icons
 Ray picking
 Particles
+Shadows
+Difuse lighting
+Direct lighting
+Bump mapping
+Tooltips
+Skybox
 
 =Notes=
 Physics: When two colliders intersect, push them away from each others center until they no longer overlap.

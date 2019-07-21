@@ -1,38 +1,36 @@
 package zyx.opengl.textures;
 
 import java.io.InputStream;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
-import static org.lwjgl.opengl.GL13.glActiveTexture;
-import org.newdawn.slick.opengl.Texture;
-import zyx.opengl.GLUtils;
+import zyx.opengl.textures.custom.ITexture;
+import zyx.opengl.textures.custom.Texture;
+import zyx.opengl.textures.enums.TextureFiltering;
+import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.geometry.Rectangle;
 
 public class GameTexture extends AbstractTexture
 {
 
-	private static final int BUFFER_ID = 0;
+	protected ITexture texture;
 
-	protected Texture texture;
-
-	protected GameTexture(Texture parent, Rectangle rect, String name)
+	protected GameTexture(ITexture parent, Rectangle rect, String name, TextureSlot textureSlot)
 	{
-		super(rect, name);
+		super(rect, name, textureSlot);
 
 		texture = parent;
+		
 		setSizes();
 	}
 
-	public GameTexture(InputStream stream, String name)
+	public GameTexture(InputStream stream, String name, TextureSlot textureSlot)
 	{
-		this(stream, null, name);
+		this(stream, name, null, textureSlot);
 	}
 
-	public GameTexture(InputStream stream, Rectangle rect, String name)
+	public GameTexture(InputStream stream, String name, Rectangle rect, TextureSlot textureSlot)
 	{
-		super(rect, name);
+		super(rect, name, textureSlot);
 
-		texture = TextureUtils.createTexture(stream);
+		texture = new Texture(stream, TextureFiltering.NEAREST);
 		setSizes();
 	}
 
@@ -41,19 +39,13 @@ public class GameTexture extends AbstractTexture
 		float w = u - x;
 		float h = v - y;
 
-		setSizes(texture.getImageWidth() * w, texture.getImageHeight() * h);
+		setSizes(texture.getWidth()* w, texture.getHeight()* h);
 	}
 
 	@Override
 	protected void onBind()
 	{
-		BufferBinder.bindBuffer(BUFFER_ID);
-		glActiveTexture(GL13.GL_TEXTURE0);
 		texture.bind();
-
-		//Swallow some error in Slick-Utils
-		//Or maybe I suck at this, who knows!
-		GL11.glGetError();
 	}
 
 	@Override
@@ -61,10 +53,8 @@ public class GameTexture extends AbstractTexture
 	{
 		if (texture != null)
 		{
-			texture.release();
+			texture.dispose();
 			texture = null;
-
-			GLUtils.errorCheck();
 		}
 	}
 }

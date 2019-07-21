@@ -24,10 +24,4 @@ public class PoolableVector3f extends Vector3f implements IPoolable
 	{
 
 	}
-
-	@Override
-	public void dispose()
-	{
-	}
-
 }

@@ -16,6 +16,22 @@ public class PoolTableModel extends DefaultTableModel
 	}
 
 	@Override
+	public Object getValueAt(int row, int column)
+	{
+		Object value = null;
+		try
+		{
+			value = super.getValueAt(row, column);
+		}
+		catch (Exception e)
+		{
+			//Item is missing.. Somehow?
+		}
+		
+		return value;
+	}
+	
+	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex)
 	{
 		return false;

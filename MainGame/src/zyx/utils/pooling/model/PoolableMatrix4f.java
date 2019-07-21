@@ -21,10 +21,4 @@ public class PoolableMatrix4f extends Matrix4f implements IPoolable
 	public void release()
 	{
 	}
-
-	@Override
-	public void dispose()
-	{
-	}
-
 }

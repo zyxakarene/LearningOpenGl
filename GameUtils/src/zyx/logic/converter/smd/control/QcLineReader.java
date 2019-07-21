@@ -33,7 +33,19 @@ class QcLineReader
 	void readTexture(String line, QcFile qc)
 	{
 		String[] split = line.split(REGEX);
-		qc.textureFile = new File(root.getAbsolutePath() + File.separator +  split[1]);
+		qc.diffuseTextureResource = split[1];
+	}
+
+	void readNormal(String line, QcFile qc)
+	{
+		String[] split = line.split(REGEX);
+		qc.normalTextureResource = split[1];
+	}
+
+	void readSpecular(String line, QcFile qc)
+	{
+		String[] split = line.split(REGEX);
+		qc.specularTextureResource = split[1];
 	}
 
 	void readBoundingBox(String line, QcFile qc)
@@ -57,14 +69,5 @@ class QcLineReader
 		path = path.replace("$assets$", UtilConstants.ASSETS_OUTPUT);
 		
 		qc.outModel = new File(path);
-	}
-
-	void readOutTexture(String line, QcFile qc)
-	{
-		String[] split = line.split(REGEX);
-		String path = split[1];
-		path = path.replace("$assets$", UtilConstants.ASSETS_OUTPUT);
-		
-		qc.outTexture = new File(path);
 	}
 }

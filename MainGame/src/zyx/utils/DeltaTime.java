@@ -1,9 +1,5 @@
 package zyx.utils;
 
-import org.lwjgl.input.Keyboard;
-import zyx.game.controls.input.KeyboardData;
-
-
 public class DeltaTime
 {
 
@@ -17,15 +13,6 @@ public class DeltaTime
 
 	public static void update()
 	{
-//		if (KeyboardData.data.wasPressed(Keyboard.KEY_2))
-//		{
-//			long newTimestamp = lastTimestamp + 16;
-//
-//			lastDeltaTime = (int) (newTimestamp - lastTimestamp);
-//			lastTimestamp = newTimestamp;
-//
-//			lastDeltaVariant = MS_PER_FRAME / lastDeltaTime;
-//		}
 		long newTimestamp = System.currentTimeMillis();
 
 		lastDeltaTime = (int) (newTimestamp - timestampCounter);

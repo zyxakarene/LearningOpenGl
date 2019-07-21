@@ -4,8 +4,8 @@ public class ByteArrayObject
 {
 	public final byte[] data;
 
-	public ByteArrayObject(int length)
+	ByteArrayObject(byte[] value)
 	{
-		data = new byte[length];
+		data = value;
 	}
 }

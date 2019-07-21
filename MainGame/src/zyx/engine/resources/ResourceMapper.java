@@ -33,6 +33,14 @@ class ResourceMapper
 		{
 			return new TextureResource(path);
 		}
+		else if (resourceClass == NormalTextureResource.class)
+		{
+			return new NormalTextureResource(path);
+		}
+		else if (resourceClass == SpecularTextureResource.class)
+		{
+			return new SpecularTextureResource(path);
+		}
 		else if (resourceClass == ParticleResource.class)
 		{
 			return new ParticleResource(path);
@@ -52,6 +60,14 @@ class ResourceMapper
 		else if (resourceClass == SpriteSheetJsonResource.class)
 		{
 			return new SpriteSheetJsonResource(path);
+		}
+		else if (resourceClass == CubemapResource.class)
+		{
+			return new CubemapResource(path);
+		}
+		else if (resourceClass == SkyboxResource.class)
+		{
+			return new SkyboxResource(path);
 		}
 		
 		return new GenericResource(path);

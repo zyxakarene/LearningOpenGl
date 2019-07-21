@@ -1,5 +1,6 @@
 package zyx.opengl.textures;
 
+import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.geometry.Rectangle;
 import zyx.utils.interfaces.IDisposeable;
 
@@ -9,6 +10,7 @@ public abstract class AbstractTexture implements IDisposeable
 	private static final Rectangle SIMPLE_TEXTURE_MAPPING = new Rectangle(0, 0, 1, 1);
 
 	public final float x, y, u, v;
+	public final TextureSlot slot;
 
 	private float width;
 	private float height;
@@ -17,10 +19,19 @@ public abstract class AbstractTexture implements IDisposeable
 
 	AbstractTexture(String name)
 	{
-		this(null, name);
+		this(null, name, TextureSlot.SHARED_DIFFUSE);
+	}
+
+	AbstractTexture(String name, TextureSlot slot)
+	{
+		this(null, name, slot);
 	}
 
 	AbstractTexture(Rectangle rect, String name)
+	{
+		this(rect, name, TextureSlot.SHARED_DIFFUSE);
+	}
+	AbstractTexture(Rectangle rect, String name, TextureSlot textureSlot)
 	{
 		if (rect == null)
 		{
@@ -33,6 +44,8 @@ public abstract class AbstractTexture implements IDisposeable
 		y = rect.y;
 		u = rect.width;
 		v = rect.height;
+		
+		slot = textureSlot;
 	}
 
 	protected final void setSizes(float w, float h)
@@ -64,11 +77,16 @@ public abstract class AbstractTexture implements IDisposeable
 	@Override
 	public final void dispose()
 	{
-		TextureBinder.dispose(this);
+		TextureBinder.unbindTexture(this);
 
 		onDispose();
 	}
 
+	public final String currentTexture()
+	{
+		return TextureBinder.currentTexture();
+	}
+	
 	abstract protected void onBind();
 
 	abstract protected void onDispose();

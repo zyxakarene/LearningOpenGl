@@ -3,8 +3,8 @@ package zyx.engine.utils.worldpicker.calculating;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import zyx.engine.utils.ScreenSize;
 import zyx.opengl.camera.Camera;
-import zyx.utils.GameConstants;
 
 public class RayPicker
 {
@@ -62,8 +62,8 @@ public class RayPicker
 
 	private void getClipCoords(int x, int y, Vector4f out)
 	{
-		float deviceX = (2.0f * x) / GameConstants.GAME_WIDTH - 1f;
-		float deviceY = 1f - (2.0f * y) / GameConstants.GAME_HEIGHT;
+		float deviceX = (2.0f * x) / ScreenSize.width - 1f;
+		float deviceY = 1f - (2.0f * y) / ScreenSize.height;
 		
 		out.set(deviceX, deviceY, -1, 1);
 	}

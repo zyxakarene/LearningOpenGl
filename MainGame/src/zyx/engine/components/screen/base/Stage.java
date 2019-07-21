@@ -2,9 +2,12 @@ package zyx.engine.components.screen.base;
 
 import java.awt.event.KeyEvent;
 import zyx.engine.components.animations.IFocusable;
+import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.controls.input.InputManager;
-import zyx.utils.GameConstants;
+import zyx.opengl.buffers.Buffer;
+import zyx.opengl.buffers.BufferBinder;
+import zyx.utils.math.Vector2Int;
 
 public final class Stage extends DisplayObjectContainer implements ICallback<Character>, IFocusable
 {
@@ -14,17 +17,34 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 	private InteractionCrawler crawler;
 	private IFocusable focusedTarget;
 	
+	private ICallback<Vector2Int> screenSizeChanged;
+	
+	public final DisplayObjectContainer tooltipLayer;
+	
 	private Stage()
 	{
 		crawler = new InteractionCrawler(this);
 		stage = this;
 		
 		InputManager.getInstance().OnKeyPressed.addCallback(this);
+		
+		screenSizeChanged = (Vector2Int data) ->
+		{
+			updateTransforms(true);
+		};
+		
+		ScreenSize.addListener(screenSizeChanged);
+		
+		tooltipLayer = new DisplayObjectContainer();
+		addChild(tooltipLayer);
 	}
 
 	public final void drawStage()
 	{
+		BufferBinder.bindBuffer(Buffer.DEFAULT);
+
 		shader.bind();
+		shader.setClipRect(0, ScreenSize.width, 0, ScreenSize.height);
 		draw();
 	}
 
@@ -51,13 +71,13 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 	@Override
 	public float getWidth()
 	{
-		return GameConstants.GAME_WIDTH;
+		return ScreenSize.width;
 	}
 
 	@Override
 	public float getHeight()
 	{
-		return GameConstants.GAME_HEIGHT;
+		return ScreenSize.height;
 	}
 	
 	@Override

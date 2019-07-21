@@ -1,5 +1,6 @@
 package zyx.opengl.shaders;
 
+import java.util.Scanner;
 import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
@@ -72,7 +73,7 @@ public class ShaderUtils
 		glShaderSource(shader, source);
 		glCompileShader(shader);
 
-		checkCompileStatus(shader);
+		checkCompileStatus(shader, source);
 
 		return shader;
 	}
@@ -82,7 +83,7 @@ public class ShaderUtils
 	 *
 	 * @param shaderId The shaderId to test for compilation errors
 	 */
-	private static void checkCompileStatus(int shaderId)
+	private static void checkCompileStatus(int shaderId, String source)
 	{
 		int shaderCompileStatus = glGetShaderi(shaderId, GL_COMPILE_STATUS);
 		if (shaderCompileStatus == GL11.GL_TRUE)
@@ -92,8 +93,23 @@ public class ShaderUtils
 		}
 		else
 		{
+			Scanner scan = new Scanner(source);
+			StringBuilder formatSource = new StringBuilder();
+			int lineCount = 1;
+			String lineTemplate = "(%s)\t";
+			String lineBreak = "\n";
+			while (scan.hasNextLine())
+			{				
+				String line = scan.nextLine();
+				formatSource.append(String.format(lineTemplate, lineCount));
+				formatSource.append(line);
+				formatSource.append(lineBreak);
+				
+				lineCount++;
+			}
+			
 			String error = glGetShaderInfoLog(shaderId, 512);
-			String errorMsg = String.format("A shader was not compiled correctly:\n%s", error);
+			String errorMsg = String.format("A shader was not compiled correctly:\n%s\n%s", error, formatSource);
 			
 			Print.err(errorMsg);
 

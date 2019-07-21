@@ -23,8 +23,7 @@ public abstract class ResourceRequest implements IDisposeable
 		if (obj instanceof ResourceRequest)
 		{
 			ResourceRequest other = (ResourceRequest) obj;
-			
-			return this.path.equals(other.path);
+			return this.path != null && this.path.equals(other.path);
 		}
 		
 		return false;

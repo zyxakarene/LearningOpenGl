@@ -46,13 +46,18 @@ public class MeshResource extends BaseTextureRequiredResource
 	{
 		loadedVo = ZafLoader.loadFromZaf(data);
 
-		loadTexture(loadedVo.getTexture());
+		String diffuse = loadedVo.getDiffuseTextureId();
+		String normal = loadedVo.getNormalTextureId();
+		String specular = loadedVo.getSpecularTextureId();
+		loadTextures(diffuse, normal, specular);
 	}
 
 	@Override
-	protected void onTextureLoaded(AbstractTexture texture)
+	protected void onTexturesLoaded(AbstractTexture[] texture)
 	{
-		loadedVo.setGameTexture(texture);
+		loadedVo.setDiffuseTexture(texture[0]);
+		loadedVo.setNormalTexture(texture[1]);
+		loadedVo.setSpecularTexture(texture[2]);
 		
 		model = new WorldModel(loadedVo);
 		

@@ -3,9 +3,12 @@ package zyx.opengl.camera;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.WorldObject;
+import zyx.engine.utils.ScreenSize;
+import zyx.engine.utils.callbacks.ICallback;
 import zyx.engine.utils.worldpicker.calculating.RayPicker;
 import zyx.opengl.shaders.SharedShaderObjects;
-import zyx.opengl.shaders.implementations.Shader;
+import zyx.utils.GameConstants;
+import zyx.utils.math.Vector2Int;
 
 public class Camera extends WorldObject
 {
@@ -20,11 +23,17 @@ public class Camera extends WorldObject
 	private boolean initialized;
 	private ViewFrustum frustum;
 	
+	private ICallback<Vector2Int> onScreenSizeChanged;
+	
 	private Camera()
 	{
-		super(Shader.WORLD);
 		initialized = false;
 		frustum = new ViewFrustum();
+		
+		onScreenSizeChanged = (Vector2Int data) ->
+		{
+			createMatrices();
+		};
 	}
 
 	public void initialize()
@@ -35,24 +44,33 @@ public class Camera extends WorldObject
 		}
 		
 		initialized = true;
-		Projection.createPerspective(70f, 0.001f, 2f, SharedShaderObjects.SHARED_PROJECTION_TRANSFORM);
-		Projection.createOrthographic(1f, 2f, SharedShaderObjects.SHARED_ORTHOGRAPHIC_TRANSFORM, 2);
-		
-//		Projection.createOrthographic(0.01f, 1000f, WorldShader.MATRIX_PROJECTION, 16);
-		
-		RayPicker.getInstance().setProjectionMatrix(SharedShaderObjects.SHARED_PROJECTION_TRANSFORM);
+		createMatrices();
 		
 		setRotation(-90, 0, 0);
+		
+		ScreenSize.addListener(onScreenSizeChanged);
+	}
+
+	protected void createMatrices()
+	{
+		float w = ScreenSize.width;
+		float h = ScreenSize.height;
+		Projection.createPerspective(w, h, GameConstants.FOV, 1f, 1000f, SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION);
+		Projection.createOrthographic(1f, 2f, 2, SharedShaderObjects.UI_ORTHOGRAPHIC_PROJECTION);
+		
+		Projection.createOrthographic(0.1f, 200f, 4f, SharedShaderObjects.SUN_ORTHOGRAPHIC_PROJECTION_CASCADE_1);
+		
+		RayPicker.getInstance().setProjectionMatrix(SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION);
 	}
 	
 	public void getProjectionMatrix(Matrix4f out)
 	{
-		out.load(SharedShaderObjects.SHARED_PROJECTION_TRANSFORM);
+		out.load(SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION);
 	}
 	
 	public void getViewMatrix(Matrix4f out)
 	{
-		out.load(SharedShaderObjects.SHARED_VIEW_TRANSFORM);
+		out.load(SharedShaderObjects.SHARED_WORLD_VIEW_TRANSFORM);
 	}
 
 	public void setViewFrustum(Matrix4f matrix)

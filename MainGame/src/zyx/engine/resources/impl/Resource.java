@@ -7,6 +7,7 @@ import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.game.controls.resourceloader.requests.ResourceRequestDataInput;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
+import zyx.utils.cheats.Print;
 
 public abstract class Resource implements IResourceLoaded<ResourceDataInputStream>
 {
@@ -69,7 +70,7 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 	protected void beginLoad()
 	{
 		resourceRequest = new ResourceRequestDataInput(path, this);
-		ResourceLoader.getInstance().addRequest(resourceRequest);
+		ResourceLoader.getInstance().addEntry(resourceRequest);
 		
 		for (Resource dependency : dependencies)
 		{
@@ -125,7 +126,7 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 	{
 		if (loading && !loaded && resourceRequest != null)
 		{
-			ResourceLoader.getInstance().cancelRequest(resourceRequest);
+			ResourceLoader.getInstance().cancelEntry(resourceRequest);
 			resourceRequest.dispose();
 			resourceRequest = null;
 		}
@@ -147,6 +148,11 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 		DebugResourceList.removeResource(this);
 		
 		ResourceManager.getInstance().disposeResource(path);
+	}
+
+	public boolean isLoaded()
+	{
+		return loaded;
 	}
 
 	void onDispose()

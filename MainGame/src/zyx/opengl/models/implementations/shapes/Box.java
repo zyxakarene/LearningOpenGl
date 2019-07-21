@@ -1,6 +1,7 @@
 package zyx.opengl.models.implementations.shapes;
 
 import zyx.game.components.SimpleMesh;
+import zyx.opengl.GLUtils;
 
 public class Box extends SimpleMesh
 {

@@ -3,6 +3,8 @@ package zyx.utils.math;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.utils.FloatMath;
+import zyx.utils.GeometryUtils;
 
 public class MatrixUtils
 {
@@ -63,40 +65,51 @@ public class MatrixUtils
 
 	public static void getUpFrom(Matrix4f matrix, Vector3f out)
 	{
-		out.x = matrix.m20;
-		out.y = matrix.m21;
-		out.z = matrix.m22;
-	}
-
-	public static void getDirFrom(Matrix4f matrix, Vector3f out)
-	{
 		out.x = matrix.m10;
 		out.y = matrix.m11;
 		out.z = matrix.m12;
 	}
 
-	public static void setDirTo(Matrix4f matrix, Vector3f dir, Vector3f up)
+	public static void getDirFrom(Matrix4f matrix, Vector3f out)
 	{
-		HELPER_Z.set(dir);
-		
-		Vector3f.cross(HELPER_Z, up, HELPER_X);
-		HELPER_X.normalise();
-		
-		Vector3f.cross(HELPER_X, HELPER_Z, HELPER_Y);
+		out.x = matrix.m20;
+		out.y = matrix.m21;
+		out.z = matrix.m22;
+	}
 
+	public static void setDirTo(Matrix4f matrix, Vector3f dir)
+	{
+		Vector3f up;
+		if (dir.x == 0 && FloatMath.abs(dir.y) == 1 && dir.z == 0)
+		{
+			up = GeometryUtils.ROTATION_Y;
+		}
+		else
+		{
+			up = GeometryUtils.ROTATION_Z;
+		}
+
+		dir.normalise();
+
+		Vector3f right = Vector3f.cross(up, dir, null);
+		right.normalise();
+		
+		Vector3f upCalc = Vector3f.cross(dir, right, null);
+		upCalc.normalise();
+		
 		getScaleFrom(matrix, HELPER_SCALE);
 
-		matrix.m00 = HELPER_X.x * HELPER_SCALE.x;
-		matrix.m01 = HELPER_X.y * HELPER_SCALE.x;
-		matrix.m02 = HELPER_X.z * HELPER_SCALE.x;
+		matrix.m00 = right.x * HELPER_SCALE.x;
+		matrix.m01 = right.y * HELPER_SCALE.x;
+		matrix.m02 = right.z * HELPER_SCALE.x;
 
-		matrix.m10 = HELPER_Z.x * HELPER_SCALE.y;
-		matrix.m11 = HELPER_Z.y * HELPER_SCALE.y;
-		matrix.m12 = HELPER_Z.z * HELPER_SCALE.y;
+		matrix.m10 = upCalc.x * HELPER_SCALE.y;
+		matrix.m11 = upCalc.y * HELPER_SCALE.y;
+		matrix.m12 = upCalc.z * HELPER_SCALE.y;
 
-		matrix.m20 = HELPER_Y.x * HELPER_SCALE.z;
-		matrix.m21 = HELPER_Y.y * HELPER_SCALE.z;
-		matrix.m22 = HELPER_Y.z * HELPER_SCALE.z;
+		matrix.m20 = dir.x * HELPER_SCALE.z;
+		matrix.m21 = dir.y * HELPER_SCALE.z;
+		matrix.m22 = dir.z * HELPER_SCALE.z;
 		
 	}
 

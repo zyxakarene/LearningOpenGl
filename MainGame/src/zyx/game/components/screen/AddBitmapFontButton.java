@@ -6,8 +6,6 @@ import zyx.engine.components.screen.base.Quad;
 import zyx.engine.components.screen.base.Stage;
 import zyx.engine.components.screen.text.Textfield;
 import zyx.engine.utils.callbacks.ICallback;
-import zyx.net.io.responses.ResponseDispatcher;
-import zyx.net.io.responses.ResponseManager;
 import zyx.utils.FloatMath;
 
 public class AddBitmapFontButton extends Button
@@ -27,11 +25,6 @@ public class AddBitmapFontButton extends Button
 		};
 		
 		onButtonClicked.addCallback(btnClick);
-
-		ResponseDispatcher serverDispatcher = new ResponseDispatcher();
-		serverDispatcher.addResponseCallback("login", new LoginResponse());
-
-		ResponseManager.getInstance().registerDispatcher(serverDispatcher);
 	}
 
 	@Override
@@ -50,11 +43,6 @@ public class AddBitmapFontButton extends Button
 
 	private void onBtnClicked()
 	{
-//		WriteableDataObject data = new WriteableDataObject();
-//		data.addString("name", "Zyx");
-//		ConnectionRequest request = new ConnectionRequest("auth", data);
-//
-//		ConnectionLoader.getInstance().addRequest(request);
 		if (field == null)
 		{
 			field = new Textfield("Lorem ipsum?");

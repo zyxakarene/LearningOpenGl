@@ -37,13 +37,16 @@ public class Checkbox extends Button
 
 	private void onCheckImageLoaded()
 	{
-		if (originalWidth != 0)
+		if (loaded)
+		{
+			float width = getWidth();
+			float height = getHeight();
+			checkImg.setWidth(width);
+			checkImg.setHeight(height);
+		}
+		else
 		{
 			checkImg.setWidth(originalWidth);
-		}
-		
-		if (originalHeight != 0)
-		{
 			checkImg.setHeight(originalHeight);
 		}
 	}
