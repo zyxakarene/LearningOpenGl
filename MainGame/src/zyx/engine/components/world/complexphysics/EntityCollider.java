@@ -9,6 +9,7 @@ import zyx.utils.interfaces.IUpdateable;
 public class EntityCollider implements IUpdateable, IDisposeable
 {
 
+	public Vector3f lastHitNormal;
 	public Vector3f velocity;
 	private float height;
 	
@@ -22,6 +23,7 @@ public class EntityCollider implements IUpdateable, IDisposeable
 		
 		this.height = height;
 		
+		lastHitNormal = new Vector3f(0, 0, 1);
 		World3D.instance.physics.addCollider(this);
 	}
 	

@@ -8,6 +8,16 @@ public class FloatMath
 
 	public  static final float RAD_TO_DEG = 180.0f / PI;
 	
+	public static boolean isAlmost(float value, float target, float epsilon)
+	{
+		if (value - epsilon <= target && value + epsilon >= target)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
 	public static float clamp(float val, float minimum, float maximum)
 	{
 		return max(minimum, min(maximum, val));

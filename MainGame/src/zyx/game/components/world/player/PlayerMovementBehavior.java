@@ -70,7 +70,7 @@ class PlayerMovementBehavior extends Behavior
 
 		if (keyboard.wasPressed(Keyboard.KEY_RETURN))
 		{
-			collider.velocity.z = 3;
+			collider.velocity.z = 1;
 		}
 	}
 

@@ -49,7 +49,7 @@ public class PhysScene extends Scene
 		{
 			object.update(timestamp, elapsedTime);
 		}
-		
+
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
 		{
 			if (player != null)

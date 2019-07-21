@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.utils.worldpicker.ColliderInfo;
 import zyx.engine.utils.worldpicker.calculating.PhysPicker;
+import zyx.utils.FloatMath;
 import zyx.utils.cheats.DebugPoint;
 import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IPhysbox;
@@ -78,13 +79,18 @@ public final class ComplexPhysics implements IUpdateable
 		for (i = 0; i < physLen; i++)
 		{
 			collider = colliders.get(i);
-			collider.velocity.z -= 0.1f;
+			collider.velocity.z -= 0.05f;
 
 			collider.getPosition(HELPER_FROM);
-			Print.out("Checking from", HELPER_FROM);
+			HELPER_FROM.x += (collider.lastHitNormal.x * 0.1f);
+			HELPER_FROM.y += (collider.lastHitNormal.y * 0.1f);
+			HELPER_FROM.z += (collider.lastHitNormal.z * 0.1f);
 
 			HELPER_DIR.set(collider.velocity);
 			HELPER_DIR.normalise();
+
+			Vector3f originalVelocity = new Vector3f(collider.velocity);
+			originalVelocity.scale(-1);
 
 			picker.maxDistance = collider.velocity.length() * elapsedTime;
 			picker.maxDistance = picker.maxDistance * picker.maxDistance;
@@ -106,9 +112,15 @@ public final class ComplexPhysics implements IUpdateable
 					collider.velocity.y = 0;
 					collider.velocity.z = 0;
 
-					if (out.triangleAngle >= -0.5)
+					float rads = FloatMath.acos(out.triangleAngle);
+					float degrees = FloatMath.toDegrees(rads);
+					Print.out("cosTheta:", out.triangleAngle, "-", degrees, "angles");
+					if (out.triangleAngle < 0.707 && out.triangleAngle > -0.707)
 					{
-						Print.out("On a slooope");
+						ColliderInfo testOut = new ColliderInfo();
+						picker.collided(HELPER_FROM, HELPER_DIR, mesh, testOut);
+						
+						System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 						Vector3f slideDir = new Vector3f(out.triangle.normal);
 						slideDir.normalise();
 
@@ -134,23 +146,44 @@ public final class ComplexPhysics implements IUpdateable
 							collider.setPosition(out.intersectPoint);
 						}
 					}
-					else
+					else if (FloatMath.isAlmost(out.triangleAngle, 1, 0.0001f))
 					{
+						Print.out("ON FLAT");
 						HELPER_FROM.x = out.intersectPoint.x;
 						HELPER_FROM.y = out.intersectPoint.y;
 						HELPER_FROM.z = out.intersectPoint.z;
+					}
+					else
+					{
+						Vector3f start = new Vector3f(HELPER_FROM);
+						Vector3f to = new Vector3f(Vector3f.add(start, originalVelocity, null));
+
+						float xyDistance = FloatMath.distance(start.x, start.y, 0, to.x, to.y, 0);
+
+						float z = xyDistance * FloatMath.tan(degrees) * -1;
+						
+						Print.out("Moving Z:", z);
+						if (z < 0)
+						{
+							Print.out("But it was canceled!");
+							z = 0;
+						}
+						
+						HELPER_FROM.x = out.intersectPoint.x;
+						HELPER_FROM.y = out.intersectPoint.y;
+						HELPER_FROM.z = out.intersectPoint.z + z;
 					}
 				}
 			}
 
 			if (!collided)
 			{
-				HELPER_FROM.x = HELPER_FROM.x + (collider.velocity.x * elapsedTime);
-				HELPER_FROM.y = HELPER_FROM.y + (collider.velocity.y * elapsedTime);
-				HELPER_FROM.z = HELPER_FROM.z + (collider.velocity.z * elapsedTime);
+				HELPER_FROM.x = HELPER_FROM.x + (collider.velocity.x * elapsedTime) - (collider.lastHitNormal.x * 0.1f);
+				HELPER_FROM.y = HELPER_FROM.y + (collider.velocity.y * elapsedTime) - (collider.lastHitNormal.y * 0.1f);
+				HELPER_FROM.z = HELPER_FROM.z + (collider.velocity.z * elapsedTime) - (collider.lastHitNormal.z * 0.1f);
 			}
+
 			collider.setPosition(HELPER_FROM);
-			Print.out("Final setting pos to", HELPER_FROM);
 		}
 	}
 }

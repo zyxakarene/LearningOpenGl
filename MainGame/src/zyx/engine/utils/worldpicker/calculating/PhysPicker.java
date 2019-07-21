@@ -204,7 +204,7 @@ public class PhysPicker extends AbstractPicker
 			out.intersectPoint.y += dir.y * t;
 			out.intersectPoint.z += dir.z * t;
 
-			out.triangleAngle = diff;
+			out.triangleAngle = Vector3f.dot(NORMAL, new Vector3f(0, 0, 1));
 			return true;
 		}
 		else // This means that there is a line intersection but not a ray intersection.
