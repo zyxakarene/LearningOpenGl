@@ -5,6 +5,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.cubemaps.CubemapManager;
 import zyx.engine.components.cubemaps.saving.CubemapProcess;
+import zyx.engine.components.meshbatch.MeshBatchEntity;
+import zyx.engine.components.meshbatch.MeshBatchManager;
 import zyx.engine.components.network.GameNetworkController;
 import zyx.engine.components.tooltips.TestTooltip;
 import zyx.engine.components.tooltips.TooltipManager;
@@ -119,6 +121,17 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		TooltipManager.getInstance().register(new TestTooltip(sphere2));
 		TooltipManager.getInstance().register(new TestTooltip(sphere3));
 		TooltipManager.getInstance().register(new TestTooltip(sphere4));
+		
+		for (int i = 0; i < 5000; i++)
+		{
+			MeshBatchEntity entityA = new MeshBatchEntity("meshbatch.sphere");
+			entityA.position.x = (FloatMath.random() * 200) - 100;
+			entityA.position.y = (FloatMath.random() * 200) - 100;
+			entityA.position.z = (FloatMath.random() * 200) - 100;
+			entityA.scale = 3;
+			
+			MeshBatchManager.getInstance().addEntity(entityA);
+		}
 	}
 
 	@Override

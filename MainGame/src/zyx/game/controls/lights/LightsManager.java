@@ -8,6 +8,7 @@ import zyx.opengl.lighs.ISun;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.DepthShader;
 import zyx.opengl.shaders.implementations.LightingPassShader;
+import zyx.opengl.shaders.implementations.MeshBatchDepthShader;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.utils.GameConstants;
 
@@ -30,6 +31,7 @@ public class LightsManager
 	private LightSorter lightSorter;
 	private LightingPassShader lightShader;
 	private DepthShader depthShader;
+	private MeshBatchDepthShader batchedDepthShader;
 	
 	private Vector3f sunDir;
 
@@ -51,6 +53,7 @@ public class LightsManager
 		lightSorter.setViewer(viewer);
 		lightShader = ShaderManager.getInstance().<LightingPassShader>get(Shader.DEFERED_LIGHT_PASS);
 		depthShader = ShaderManager.getInstance().<DepthShader>get(Shader.DEPTH);
+		batchedDepthShader = ShaderManager.getInstance().<MeshBatchDepthShader>get(Shader.MESH_BATCH_DEPTH);
 	}
 
 	public void addLight(ILight light)
@@ -101,6 +104,7 @@ public class LightsManager
 			lightShader.uploadSunMatrix();
 			
 			depthShader.uploadSunMatrix();
+			batchedDepthShader.uploadSunMatrix();
 		}
 	}
 }

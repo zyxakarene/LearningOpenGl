@@ -2,6 +2,7 @@ package zyx.game.controls;
 
 import zyx.engine.components.animations.MeshAnimator;
 import zyx.engine.components.cubemaps.CubemapManager;
+import zyx.engine.components.meshbatch.MeshBatchManager;
 import zyx.engine.components.tooltips.TooltipManager;
 import zyx.engine.touch.MouseTouchManager;
 import zyx.engine.utils.ClickDispatcher;
@@ -30,6 +31,7 @@ public class MegaManager
 		MouseTouchManager.getInstance().update(timestamp, elapsed);
 		ClickDispatcher.getInstance().dispatchEvents();
 		PingManager.getInstance().update(timestamp, elapsed);
+		MeshBatchManager.getInstance().update(timestamp, elapsed);
 
 		SoundManager.getInstance().update(timestamp, elapsed);
 

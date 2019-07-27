@@ -1,6 +1,7 @@
 package zyx.engine.components.world;
 
 import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.components.meshbatch.MeshBatchManager;
 import zyx.opengl.GLUtils;
 import zyx.opengl.buffers.AmbientOcclusionRenderer;
 import zyx.opengl.buffers.BufferRenderer;
@@ -57,6 +58,8 @@ public final class World3D extends WorldObject
 		
 		draw();
 
+		MeshBatchManager.getInstance().draw();
+		
 		ambientOcclusion.drawAmbientOcclusion();
 
 		renderer.draw();

@@ -41,8 +41,6 @@ public abstract class AbstractInstancedModel extends AbstractModel
 		{
 			if (canDraw())
 			{
-				meshShader.bind();
-
 				bindTextures();
 				ModelUtils.drawInstancedElements(vao, elementCount, instanceCount);
 			}

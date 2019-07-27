@@ -34,7 +34,9 @@ public class ShaderManager implements IUpdateable
 		shaderMap.put(Shader.SKYBOX, new SkyboxShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.SCREEN, new ScreenShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.PARTICLE, new ParticleShader(AbstractShader.LOCK));
+		shaderMap.put(Shader.MESH_BATCH, new MeshBatchShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.WORLD_PARTICLE, new WorldParticleShader(AbstractShader.LOCK));
+		shaderMap.put(Shader.MESH_BATCH_DEPTH, new MeshBatchDepthShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.AMBIENT_OCCLUSION, new AmbientOcclusionShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.DEFERED_LIGHT_PASS, new LightingPassShader(AbstractShader.LOCK));
 
@@ -43,7 +45,7 @@ public class ShaderManager implements IUpdateable
 		for (int i = 0; i < length; i++)
 		{
 			shader = shaderMap.get(shaders[i]);
-			String shaderName = null;
+			String shaderName;
 			if (shader != null)
 			{
 				shaderName = shader.getName();
@@ -53,9 +55,12 @@ public class ShaderManager implements IUpdateable
 				shaderName = shaders[i].toString();
 			}
 			Print.out("Loading shader:", shaderName);
-			shader.load();
-
-			shaderArray[i] = shader;
+			
+			if (shader != null)
+			{
+				shader.load();
+				shaderArray[i] = shader;
+			}
 		}
 	}
 
