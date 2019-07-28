@@ -14,7 +14,7 @@ import zyx.utils.interfaces.IShadowable;
 public class MeshBatchModel extends AbstractInstancedModel implements IShadowable
 {
 
-	private static final int INSTANCE_DATA_AMOUNT = 8;
+	public static final int INSTANCE_DATA_AMOUNT = 9;
 	
 	private MeshBatchShader shader;
 	private MeshBatchDepthShader shadowShader;
@@ -60,20 +60,20 @@ public class MeshBatchModel extends AbstractInstancedModel implements IShadowabl
 	@Override
 	public void drawShadow()
 	{
-//		shadowShader.bind();
-//		shadowShader.upload();
-//
-//		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_0);
-//		super.draw();
-//
-//		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_1);
-//		super.draw();
-//
-//		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_2);
-//		super.draw();
-//
-//		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_3);
-//		super.draw();
+		shadowShader.bind();
+		shadowShader.upload();
+
+		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_0);
+		super.draw();
+
+		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_1);
+		super.draw();
+
+		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_2);
+		super.draw();
+
+		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_3);
+		super.draw();
 	}
 
 	public Vector3f getRadiusCenter()
@@ -95,9 +95,12 @@ public class MeshBatchModel extends AbstractInstancedModel implements IShadowabl
 //		addAttribute("indexes", 2, 12, 8);
 //		addAttribute("weights", 2, 12, 10);
 
-		addInstanceAttribute("insPosition", 3, 8, 0);
-		addInstanceAttribute("insRotation", 4, 8, 3);
-		addInstanceAttribute("insScale", 1, 8, 7);
+		addInstanceAttribute("insPosition", 3, 9, 0);
+		addInstanceAttribute("insRotation", 4, 9, 3);
+		addInstanceAttribute("insScale", 1, 9, 7);
+		addInstanceAttribute("insCubemap", 1, 9, 8);
+		
+		
 	}
 
 }

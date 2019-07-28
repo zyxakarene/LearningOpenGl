@@ -29,7 +29,9 @@ import zyx.opengl.camera.Camera;
 import zyx.opengl.models.implementations.shapes.Sphere;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
+import zyx.utils.cheats.DebugPoint;
 import zyx.utils.cheats.Print;
+import zyx.utils.math.QuaternionUtils;
 
 public class DragonScene extends Scene implements ICallback<ProcessQueue>
 {
@@ -122,13 +124,18 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		TooltipManager.getInstance().register(new TestTooltip(sphere3));
 		TooltipManager.getInstance().register(new TestTooltip(sphere4));
 		
-		for (int i = 0; i < 5000; i++)
+		for (int i = 0; i < 0; i++)
 		{
-			MeshBatchEntity entityA = new MeshBatchEntity("meshbatch.sphere");
+			MeshBatchEntity entityA = new MeshBatchEntity("meshbatch.simple.sphere");
 			entityA.position.x = (FloatMath.random() * 200) - 100;
 			entityA.position.y = (FloatMath.random() * 200) - 100;
 			entityA.position.z = (FloatMath.random() * 200) - 100;
 			entityA.scale = 3;
+			
+			float x = FloatMath.random() * 6.28319f;
+			float y = FloatMath.random() * 6.28319f;
+			float z = FloatMath.random() * 6.28319f;
+			entityA.rotation = QuaternionUtils.toQuat(new Vector3f(x, y, z), null);
 			
 			MeshBatchManager.getInstance().addEntity(entityA);
 		}
@@ -179,7 +186,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 				new Vector3f(20, 20, 10),
 				new Vector3f(-20, 20, 10),
 			};
-
+			
 			processQueue = new ProcessQueue();
 			processQueue.addProcess(new CubemapProcess("dragon", positions));
 

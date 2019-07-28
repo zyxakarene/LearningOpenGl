@@ -6,8 +6,9 @@ layout(location = 1) in vec3 normals;
 layout(location = 2) in vec2 texcoord;
 
 layout(location = 3) in vec3 insPosition;
-layout(location = 4) in vec4 intRotation;
+layout(location = 4) in vec4 insRotation;
 layout(location = 5) in float insScale;
+layout(location = 5) in float insCubemap;
 
 uniform mat4 projectionViews[SHADOW_QUADRANTS];
 
@@ -18,7 +19,11 @@ uniform vec2 shadowOffsetMax;
 
 void main()
 {
-	vec3 totalPosition = (position * insScale) + insPosition;
+	vec3 totalPosition = (position * insScale);
+	
+	vec3 t = 2 * cross(insRotation.xyz, totalPosition);
+	totalPosition = insPosition + totalPosition + insRotation.w * t + cross(insRotation.xyz, t);
+
 	vec4 worldPosition = vec4(totalPosition, 1);
 
 	mat4 projection = projectionViews[currentQuadrant];

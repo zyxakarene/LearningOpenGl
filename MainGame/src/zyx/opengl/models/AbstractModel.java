@@ -34,7 +34,7 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 	{
 		vao = ModelUtils.generateVertexArray();
 		ModelUtils.bindVertexArray(vao);
-
+		
 		vbo = ModelUtils.generateBufferObject();
 		ModelUtils.bindBufferObject_Array(vbo);
 

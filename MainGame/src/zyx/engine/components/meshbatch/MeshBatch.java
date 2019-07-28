@@ -41,20 +41,20 @@ class MeshBatch<E extends MeshBatchEntity> implements IResourceReady<MeshBatchRe
 	{
 		entities.add(entity);
 		entityCount = entities.size();
-		batchData = new float[entityCount * MeshBatchEntity.INSTANCE_DATA_AMOUNT];
+		batchData = new float[entityCount * MeshBatchModel.INSTANCE_DATA_AMOUNT];
 	}
 
 	public void removeEntity(E entity)
 	{
 		entities.remove(entity);
 		entityCount = entities.size();
-		batchData = new float[entityCount * MeshBatchEntity.INSTANCE_DATA_AMOUNT];
+		batchData = new float[entityCount * MeshBatchModel.INSTANCE_DATA_AMOUNT];
 	}
 	
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-		final int offset = MeshBatchEntity.INSTANCE_DATA_AMOUNT;
+		final int offset = MeshBatchModel.INSTANCE_DATA_AMOUNT;
 		E entity;
 		Vector3f pos;
 		Quaternion rot;
@@ -75,6 +75,7 @@ class MeshBatch<E extends MeshBatchEntity> implements IResourceReady<MeshBatchRe
 			batchData[entryOffset + 5] = rot.z;
 			batchData[entryOffset + 6] = rot.w;
 			batchData[entryOffset + 7] = entity.scale;
+			batchData[entryOffset + 8] = entity.cubemapIndex / 255f;
 		}
 	}
 

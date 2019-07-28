@@ -6,6 +6,7 @@ in vec3 WorldNormal;
 in vec3 ScreenPos;
 in vec3 ScreenNormal;
 in float Z;
+in float CubemapAddition;
 
 layout (binding = 0) uniform sampler2D tex;
 layout (binding = 1) uniform sampler2D norm;
@@ -39,7 +40,7 @@ void main()
 	gDepth = Z;
 	gScreenPosition = ScreenPos;
 	gScreenNormal = ScreenNormal;
-	gCubeIndex = cubemapColor;
+	gCubeIndex = (cubemapColor + CubemapAddition);
 
     //Pretty normals
     //outColor = vec4(0.5 + 0.5 * Normal, 1);

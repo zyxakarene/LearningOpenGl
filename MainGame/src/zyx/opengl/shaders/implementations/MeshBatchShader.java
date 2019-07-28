@@ -10,19 +10,14 @@ public class MeshBatchShader extends AbstractShader
 
 	private static final Matrix4f MATRIX_VIEW = SharedShaderObjects.SHARED_WORLD_VIEW_TRANSFORM;
 	private static final Matrix4f MATRIX_PROJECTION_VIEW = SharedShaderObjects.WORLD_PROJECTION_VIEW_TRANSFORM;
-	private static final Matrix4f MATRIX_MODEL = new Matrix4f();
-	private static final Matrix4f MATRIX_MODEL_INVERT_TRANSPOSE = new Matrix4f();
-	private static final Matrix4f MATRIX_VIEW_MODEL_INVERT_TRANSPOSE = new Matrix4f();
+	private static final Matrix4f MATRIX_VIEW_INVERT_TRANSPOSE = new Matrix4f();
 
-	public static int cubemapIndex = 0;
-	
 	private int ViewMatrixTrans;
 	private int projectionViewMatrixTrans;
 	private int debugColor;
 	private int cubemapColor;
 
-	private int modelMatrixTrans_InverseTranspose;
-	private int viewModelMatrixTrans_InverseTranspose;
+	private int viewMatrixTrans_InverseTranspose;
 
 	public MeshBatchShader(Object lock)
 	{
@@ -38,8 +33,9 @@ public class MeshBatchShader extends AbstractShader
 		projectionViewMatrixTrans = UniformUtils.createUniform(program, "projectionView");
 		ViewMatrixTrans = UniformUtils.createUniform(program, "view");
 
-		modelMatrixTrans_InverseTranspose = UniformUtils.createUniform(program, "modelInverseTranspose");
-		viewModelMatrixTrans_InverseTranspose = UniformUtils.createUniform(program, "viewModelInverseTranspose");
+		viewMatrixTrans_InverseTranspose = UniformUtils.createUniform(program, "viewInverseTranspose");
+		
+		UniformUtils.setUniformFloat(cubemapColor, 0f);
 	}
 
 	@Override
@@ -49,19 +45,10 @@ public class MeshBatchShader extends AbstractShader
 		UniformUtils.setUniformMatrix(projectionViewMatrixTrans, MATRIX_PROJECTION_VIEW);
 		UniformUtils.setUniformMatrix(ViewMatrixTrans, MATRIX_VIEW);
 
-		MATRIX_MODEL_INVERT_TRANSPOSE.load(MATRIX_MODEL);
-		MATRIX_MODEL_INVERT_TRANSPOSE.invert();
-		MATRIX_MODEL_INVERT_TRANSPOSE.transpose();
-		UniformUtils.setUniformMatrix(modelMatrixTrans_InverseTranspose, MATRIX_MODEL_INVERT_TRANSPOSE);
-
-		Matrix4f.mul(MATRIX_VIEW, MATRIX_MODEL, MATRIX_VIEW_MODEL_INVERT_TRANSPOSE);
-		MATRIX_VIEW_MODEL_INVERT_TRANSPOSE.invert();
-		MATRIX_VIEW_MODEL_INVERT_TRANSPOSE.transpose();
-		UniformUtils.setUniformMatrix(viewModelMatrixTrans_InverseTranspose, MATRIX_VIEW_MODEL_INVERT_TRANSPOSE);
-
-		float cubemapColorFloat = cubemapIndex / 255f;
-		UniformUtils.setUniformFloat(cubemapColor, cubemapColorFloat);
-		//uploadBones();
+		MATRIX_VIEW_INVERT_TRANSPOSE.load(MATRIX_VIEW);
+		MATRIX_VIEW_INVERT_TRANSPOSE.invert();
+		MATRIX_VIEW_INVERT_TRANSPOSE.transpose();
+		UniformUtils.setUniformMatrix(viewMatrixTrans_InverseTranspose, MATRIX_VIEW_INVERT_TRANSPOSE);
 	}
 
 	@Override
