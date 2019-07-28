@@ -124,9 +124,9 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		TooltipManager.getInstance().register(new TestTooltip(sphere3));
 		TooltipManager.getInstance().register(new TestTooltip(sphere4));
 		
-		for (int i = 0; i < 0; i++)
+		for (int i = 0; i < 50000; i++)
 		{
-			MeshBatchEntity entityA = new MeshBatchEntity("meshbatch.simple.sphere");
+			MeshBatchEntity entityA = new MeshBatchEntity("meshbatch.simple.box");
 			entityA.position.x = (FloatMath.random() * 200) - 100;
 			entityA.position.y = (FloatMath.random() * 200) - 100;
 			entityA.position.z = (FloatMath.random() * 200) - 100;

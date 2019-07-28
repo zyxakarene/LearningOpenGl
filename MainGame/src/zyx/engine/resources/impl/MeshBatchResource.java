@@ -48,9 +48,9 @@ public class MeshBatchResource extends BaseTextureRequiredResource
 
 		String diffuse = loadedVo.getDiffuseTextureId();
 		String normal = loadedVo.getNormalTextureId();
-		String specular = loadedVo.getSpecularTextureId();
+//		String specular = loadedVo.getSpecularTextureId();
 //		String normal = "normal.default_normal";
-//		String specular = "specular.default_specular";
+		String specular = "specular.mirror_specular";
 		loadTextures(diffuse, normal, specular);
 	}
 
