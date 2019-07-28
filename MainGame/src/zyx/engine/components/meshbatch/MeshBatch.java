@@ -93,7 +93,16 @@ class MeshBatch<E extends MeshBatchEntity> implements IResourceReady<MeshBatchRe
 			meshResource = null;
 		}
 		
+		if (entities != null)
+		{
+			entities.clear();
+			entities = null;
+		}
+		
+		entityCount = 0;
+		entities = null;
 		model = null;
+		batchData = null;
 	}
 
 	@Override

@@ -18,6 +18,7 @@ import zyx.game.behavior.BehaviorType;
 import zyx.game.behavior.freefly.OnlinePositionSender;
 import zyx.game.components.GameObject;
 import zyx.game.components.MeshObject;
+import zyx.game.components.world.meshbatch.CubeEntity;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.process.ProcessQueue;
 import zyx.game.network.PingManager;
@@ -25,11 +26,9 @@ import zyx.net.io.controllers.BaseNetworkController;
 import zyx.net.io.controllers.NetworkChannel;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.opengl.GLUtils;
-import zyx.opengl.camera.Camera;
 import zyx.opengl.models.implementations.shapes.Sphere;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
-import zyx.utils.cheats.DebugPoint;
 import zyx.utils.cheats.Print;
 import zyx.utils.math.QuaternionUtils;
 
@@ -41,7 +40,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	private ArrayList<GameObject> gameObjects;
 	private boolean cubemapping;
 	private ProcessQueue processQueue;
-	
+
 	private MeshObject testDragon;
 
 	public DragonScene()
@@ -60,7 +59,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	{
 		NetworkChannel.sendRequest(NetworkCommands.LOGIN, "Zyx" + Math.random());
 		PingManager.getInstance().addEntity(0);
-		
+
 		world.loadSkybox("skybox.texture.desert");
 		CubemapManager.getInstance().load("cubemap.dragon");
 
@@ -123,20 +122,20 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		TooltipManager.getInstance().register(new TestTooltip(sphere2));
 		TooltipManager.getInstance().register(new TestTooltip(sphere3));
 		TooltipManager.getInstance().register(new TestTooltip(sphere4));
-		
+
 		for (int i = 0; i < 50000; i++)
 		{
-			MeshBatchEntity entityA = new MeshBatchEntity("meshbatch.simple.box");
+			MeshBatchEntity entityA = new CubeEntity();
 			entityA.position.x = (FloatMath.random() * 200) - 100;
 			entityA.position.y = (FloatMath.random() * 200) - 100;
 			entityA.position.z = (FloatMath.random() * 200) - 100;
 			entityA.scale = 3;
-			
+
 			float x = FloatMath.random() * 6.28319f;
 			float y = FloatMath.random() * 6.28319f;
 			float z = FloatMath.random() * 6.28319f;
 			entityA.rotation = QuaternionUtils.toQuat(new Vector3f(x, y, z), null);
-			
+
 			MeshBatchManager.getInstance().addEntity(entityA);
 		}
 	}
@@ -166,7 +165,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 			float x = pos.x + (dir.x * 100);
 			float y = pos.y + (dir.y * 100);
 			float z = pos.z + (dir.z * 100);
-			
+
 			testDragon.lookAt(x, y, z);
 			Vector3f postDir = testDragon.getDir(false, null);
 			Print.out("Dragon PostDir:", postDir);
@@ -174,7 +173,6 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 
 		//Vector3f camPos = Camera.getInstance().getPosition(false, null);
 		//testDragon.lookAt(camPos.x + 0.01f, camPos.y, camPos.z);
-		
 		if (!cubemapping && KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
 		{
 			cubemapping = true;
@@ -186,7 +184,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 				new Vector3f(20, 20, 10),
 				new Vector3f(-20, 20, 10),
 			};
-			
+
 			processQueue = new ProcessQueue();
 			processQueue.addProcess(new CubemapProcess("dragon", positions));
 
@@ -217,10 +215,11 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		world.removeSkybox();
 		CubemapManager.getInstance().clean();
 		TooltipManager.getInstance().clean();
-
+		MeshBatchManager.getInstance().clean();
+		
 		gameObjects.clear();
 		gameObjects = null;
-		
+
 		camera.removeBehavior(BehaviorType.ONLINE_POSITION);
 	}
 

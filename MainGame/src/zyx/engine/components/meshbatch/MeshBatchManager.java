@@ -58,6 +58,17 @@ public class MeshBatchManager implements IUpdateable, IDrawable
 		}
 	}
 
+	public void clean()
+	{
+		for (MeshBatch batch : meshBatchesList)
+		{
+			batch.dispose();
+		}
+		
+		meshBatchesList.clear();
+		meshBatchesMap.clear();
+	}
+	
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
