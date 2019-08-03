@@ -15,11 +15,11 @@ import zyx.utils.pooling.ObjectPool;
 public class CubemapManager implements IResourceReady<CubemapResource>, IUpdateable
 {
 	private static final Vector3f HELPER_VECTOR = new Vector3f();
-	private static final CubemapManager instance = new CubemapManager();
+	private static final CubemapManager INSTANCE = new CubemapManager();
 
 	public static CubemapManager getInstance()
 	{
-		return instance;
+		return INSTANCE;
 	}
 
 	private CubemapResource resource;

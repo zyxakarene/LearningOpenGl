@@ -69,6 +69,10 @@ class ResourceMapper
 		{
 			return new SkyboxResource(path);
 		}
+		else if (resourceClass == MeshBatchResource.class)
+		{
+			return new MeshBatchResource(path);
+		}
 		
 		return new GenericResource(path);
 	}
