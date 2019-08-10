@@ -11,6 +11,8 @@ public abstract class BaseNpc<T extends Enum> extends HumanoidEntity implements 
 	private HashMap<T, BaseNpcBehavior> behaviors;
 	private BaseNpcBehavior currentBehavior;
 	
+	private T currentState;
+	
 	public BaseNpc(NpcSetup setup)
 	{
 		super(setup.name, setup.gender);
@@ -23,9 +25,14 @@ public abstract class BaseNpc<T extends Enum> extends HumanoidEntity implements 
 		behaviors.put(behavior.type, behavior);
 	}
 	
-	protected void requestBehavior(T type)
+	public void requestBehavior(T type)
 	{
 		currentBehavior = behaviors.get(type);
+	}
+
+	public T getCurrentState()
+	{
+		return currentState;
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
-import zyx.utils.cheats.Print;
 
 public class OnlinePositionInterpolator extends Behavior
 {
@@ -36,13 +35,11 @@ public class OnlinePositionInterpolator extends Behavior
 
 	public void setPosition(Vector3f position, Vector3f lookAt)
 	{
-		Print.out("Target lookat:", lookAt);
 		gameObject.getPosition(false, startPos);
 		gameObject.getDir(false, startLook);
 		startLook.x = startPos.x + (startLook.x * 100);
 		startLook.y = startPos.y + (startLook.y * 100);
 		startLook.z = startPos.z + (startLook.z * 100);
-		Print.out("Start lookat:", startLook);
 		
 		float moveDistance = FloatMath.distance(position, startPos, true);
 		float lookDistance = FloatMath.distance(lookAt, startLook, true);
@@ -62,7 +59,6 @@ public class OnlinePositionInterpolator extends Behavior
 			Vector3f.sub(lookAt, startLook, lookAtDir);
 			lookAtDir.normalise();
 		}
-		Print.out("LookDir", lookAtDir);
 		moveTime = 0;
 	}
 	
@@ -88,7 +84,6 @@ public class OnlinePositionInterpolator extends Behavior
 			float x = startLook.x + (lookAtDir.x * moveTime * lookFract);
 			float y = startLook.y + (lookAtDir.y * moveTime * lookFract);
 			float z = startLook.z + (lookAtDir.z * moveTime * lookFract);
-			Print.out("After", moveTime, "ms, now looking at", x, y, z);
 			gameObject.lookAt(x, y, z);
 		}
 		
