@@ -5,6 +5,7 @@ import zyx.net.io.responses.BaseNetworkResponse;
 import zyx.net.io.controllers.NetworkCommands;
 import static zyx.game.login.LoginConstants.*;
 import zyx.game.vo.AuthenticationData;
+import zyx.game.vo.Gender;
 
 public class AuthenticateResponse extends BaseNetworkResponse<AuthenticationData>
 {
@@ -20,6 +21,7 @@ public class AuthenticateResponse extends BaseNetworkResponse<AuthenticationData
 	{
 		OUT.name = data.getString(NAME);
 		OUT.id = data.getInteger(ID);
+		OUT.gender = Gender.valueOf(data.getString(GENDER));
 		
 		return OUT;
 	}

@@ -1,12 +1,12 @@
 package zyx.server.controller;
 
 import zyx.game.vo.LoginData;
-import zyx.server.players.Player;
-import zyx.game.vo.PlayerPositionData;
+import zyx.server.world.humanoids.players.Player;
+import zyx.game.vo.PositionData;
 import zyx.net.io.controllers.NetworkCallbacks;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.INetworkCallback;
-import zyx.server.players.PlayerManager;
+import zyx.server.world.humanoids.players.PlayerManager;
 
 public class ServerNetworkCallbacks extends NetworkCallbacks
 {
@@ -28,10 +28,10 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 
 	private void onPlayerLogin(LoginData data)
 	{
-		Player player = PlayerManager.getInstance().createPlayer(data.uniqueId, data.name, data.connection);
-		System.out.println("Player: " + player.id + " joined the game");
+		Player player = PlayerManager.getInstance().createPlayer(data.name, data.gender, data.connection);
+		System.out.println("Player: " + player.id + " - " + player.gender + " joined the game");
 
-		ServerSender.sendToSingle(NetworkCommands.AUTHENTICATE, player.connection, player.name, player.id);
+		ServerSender.sendToSingle(NetworkCommands.AUTHENTICATE, player.connection, player.name, player.id, player.gender);
 
 		onPlayerJoin(player);
 	}
@@ -49,20 +49,20 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 
 	private void onPlayerLeave(int playerId)
 	{
-		Player player = PlayerManager.getInstance().getPlayer(playerId);
+		Player player = PlayerManager.getInstance().getEntity(playerId);
 		PingManager.getInstance().removeEntity(playerId);
 
 		//Tell everyone that the guy left
 		ServerSender.sendToAllBut(NetworkCommands.PLAYER_LEFT_GAME, player.connection, playerId);
 
-		PlayerManager.getInstance().removePlayer(player);
+		PlayerManager.getInstance().removeEntity(player);
 	}
 
-	private void onPlayerPos(PlayerPositionData data)
+	private void onPlayerPos(PositionData data)
 	{
 		int id = data.id;
 
-		Player player = PlayerManager.getInstance().getPlayer(id);
+		Player player = PlayerManager.getInstance().getEntity(id);
 		player.updateFrom(data);
 	}
 
@@ -73,7 +73,7 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 			onPlayerLeave(data);
 		};
 
-		onPlayerPos = (INetworkCallback<PlayerPositionData>) (PlayerPositionData data) -> 
+		onPlayerPos = (INetworkCallback<PositionData>) (PositionData data) -> 
 		{
 			onPlayerPos(data);
 		};

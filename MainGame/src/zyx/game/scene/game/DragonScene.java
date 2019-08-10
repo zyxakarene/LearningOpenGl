@@ -21,7 +21,7 @@ import zyx.game.components.MeshObject;
 import zyx.game.components.world.meshbatch.CubeEntity;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.process.ProcessQueue;
-import zyx.game.network.PingManager;
+import zyx.game.vo.Gender;
 import zyx.net.io.controllers.BaseNetworkController;
 import zyx.net.io.controllers.NetworkChannel;
 import zyx.net.io.controllers.NetworkCommands;
@@ -57,8 +57,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	@Override
 	protected void onInitialize()
 	{
-		NetworkChannel.sendRequest(NetworkCommands.LOGIN, "Zyx" + Math.random());
-		PingManager.getInstance().addEntity(0);
+		NetworkChannel.sendRequest(NetworkCommands.LOGIN, "Zyx" + Math.random(), Gender.MALE);
 
 		world.loadSkybox("skybox.texture.desert");
 		CubemapManager.getInstance().load("cubemap.dragon");
@@ -123,7 +122,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		TooltipManager.getInstance().register(new TestTooltip(sphere3));
 		TooltipManager.getInstance().register(new TestTooltip(sphere4));
 
-		for (int i = 0; i < 50000; i++)
+		for (int i = 0; i < 100; i++)
 		{
 			MeshBatchEntity entityA = new CubeEntity();
 			entityA.position.x = (FloatMath.random() * 200) - 100;

@@ -1,84 +1,58 @@
-package zyx.server.players;
+package zyx.server.world.humanoids.players;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import zyx.game.vo.Gender;
 import zyx.net.io.connections.ConnectionData;
+import zyx.server.world.entity.WorldEntityManager;
 
-public class PlayerManager
+public class PlayerManager extends WorldEntityManager<Player>
 {
-	private static final PlayerManager instance = new PlayerManager();
+	private static final PlayerManager INSTANCE = new PlayerManager();
 
 	public static PlayerManager getInstance()
 	{
-		return instance;
+		return INSTANCE;
 	}
 	
-	
-	private HashMap<Integer, Player> playersById;
-	private ArrayList<Player> players;
 	private ArrayList<ConnectionData> connections;
 	
 	private ConnectionData[] allConnections;
 	private ConnectionData[] allButOneConnections;
 
-	public PlayerManager()
+	private PlayerManager()
 	{
-		playersById = new HashMap<>();
-		players = new ArrayList<>();
 		connections = new ArrayList<>();
-		
 		createConnectionArrays();
 	}
 	
 	private void createConnectionArrays()
 	{
-		int length = players.size();
+		int length = entities.size();
 		allConnections = new ConnectionData[length];
 		
 		int lenMinusOne = length <= 0 ? 0 : length - 1;
 		allButOneConnections = new ConnectionData[lenMinusOne];
 	}
 	
-	public Player createPlayer(int playerId, String name, ConnectionData connection)
+	public Player createPlayer(String name, Gender gender, ConnectionData connection)
 	{
-		Player player = new Player(playerId, name, connection);
+		Player player = new Player(name, gender, connection);
+		addEntity(player);
 		
-		players.add(player);
 		connections.add(player.connection);
-		playersById.put(player.id, player);
-		
 		createConnectionArrays();
 		
 		return player;
 	}
-	
-	public void removePlayer(int id)
+
+	@Override
+	public void removeEntity(Player player)
 	{
-		Player player = playersById.get(id);
+		super.removeEntity(player);
 		
-		if (player != null)
-		{
-			removePlayer(player);
-		}
-	}
-	
-	public void removePlayer(Player player)
-	{
-		players.remove(player);
 		connections.remove(player.connection);
-		playersById.remove(player.id);
 		
 		createConnectionArrays();
-	}
-
-	public ArrayList<Player> getAllPlayers()
-	{
-		return players;
-	}
-	
-	public Player getPlayer(int id)
-	{
-		return playersById.get(id);
 	}
 
 	public ConnectionData[] getAllConnections()

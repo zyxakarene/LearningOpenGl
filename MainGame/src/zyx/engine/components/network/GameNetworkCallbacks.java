@@ -5,6 +5,7 @@ import zyx.game.behavior.BehaviorType;
 import zyx.game.behavior.freefly.OnlinePositionInterpolator;
 import zyx.game.components.GameObject;
 import zyx.game.models.GameModels;
+import zyx.game.network.PingManager;
 import zyx.game.network.joining.GameSetupPlayerInfo;
 import zyx.game.network.joining.GameSetupVo;
 import zyx.game.scene.PlayerHandler;
@@ -42,6 +43,8 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 
 	private void onAuthenticate(AuthenticationData data)
 	{
+		PingManager.getInstance().addEntity(data.id);
+		
 		GameModels.player.playerId = data.id;
 		GameModels.player.playerName = data.name;
 		DragonScene.current.onAuthed();

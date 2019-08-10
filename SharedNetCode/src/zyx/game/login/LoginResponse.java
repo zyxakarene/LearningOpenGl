@@ -4,6 +4,7 @@ import zyx.net.data.ReadableDataObject;
 import zyx.net.io.responses.BaseNetworkResponse;
 import zyx.net.io.controllers.NetworkCommands;
 import static zyx.game.login.LoginConstants.*;
+import zyx.game.vo.Gender;
 import zyx.game.vo.LoginData;
 
 public class LoginResponse extends BaseNetworkResponse<LoginData>
@@ -19,8 +20,8 @@ public class LoginResponse extends BaseNetworkResponse<LoginData>
 	protected LoginData onMessageRecieved(ReadableDataObject data)
 	{
 		OUT.name = data.getString(NAME);
+		OUT.gender =  Gender.valueOf(data.getString(GENDER));
 		OUT.connection = asConnectionData();
-		OUT.uniqueId = getSenderUniqueId();
 		
 		return OUT;
 	}

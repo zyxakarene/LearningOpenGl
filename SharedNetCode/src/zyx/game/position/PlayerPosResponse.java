@@ -4,11 +4,11 @@ import zyx.net.data.ReadableDataObject;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.BaseNetworkResponse;
 import static zyx.game.position.PositionConstants.*;
-import zyx.game.vo.PlayerPositionData;
+import zyx.game.vo.PositionData;
 
-public class PlayerPosResponse extends BaseNetworkResponse<PlayerPositionData>
+public class PlayerPosResponse extends BaseNetworkResponse<PositionData>
 {
-	private static final PlayerPositionData OUT = new PlayerPositionData();
+	private static final PositionData OUT = new PositionData();
 	
 	public PlayerPosResponse()
 	{
@@ -16,7 +16,7 @@ public class PlayerPosResponse extends BaseNetworkResponse<PlayerPositionData>
 	}
 
 	@Override
-	protected PlayerPositionData onMessageRecieved(ReadableDataObject data)
+	protected PositionData onMessageRecieved(ReadableDataObject data)
 	{
 		int id = data.getInteger(ID);
 		

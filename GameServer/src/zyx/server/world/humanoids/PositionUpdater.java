@@ -1,10 +1,14 @@
-package zyx.server.players;
+package zyx.server.world.humanoids;
 
 import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.server.controller.ServerSender;
 import zyx.server.utils.IUpdateable;
+import zyx.server.world.entity.WorldEntity;
+import zyx.server.world.entity.WorldEntityManager;
+import zyx.server.world.humanoids.npc.NpcManager;
+import zyx.server.world.humanoids.players.PlayerManager;
 
 public class PositionUpdater implements IUpdateable
 {
@@ -13,8 +17,9 @@ public class PositionUpdater implements IUpdateable
 
 	private int time;
 	private PlayerManager playerManager;
+	private NpcManager npcManager;
 
-	private ArrayList<Player> movingPlayers;
+	private ArrayList<WorldEntity> movingEntities;
 
 	private int arrayLength;
 	private int[] idArray;
@@ -28,9 +33,10 @@ public class PositionUpdater implements IUpdateable
 		posArray = new Vector3f[arrayLength];
 		rotArray = new Vector3f[arrayLength];
 
-		movingPlayers = new ArrayList<>();
+		movingEntities = new ArrayList<>();
 		time = 0;
 		playerManager = PlayerManager.getInstance();
+		npcManager = NpcManager.getInstance();
 	}
 
 	@Override
@@ -41,20 +47,13 @@ public class PositionUpdater implements IUpdateable
 		if (time >= TIME_BETWEEN_UPDATES)
 		{
 			time = 0;
-			ArrayList<Player> allPlayers = playerManager.getAllPlayers();
+			
+			addFrom(playerManager);
+			addFrom(npcManager);
 
-			for (Player player : allPlayers)
+			if (!movingEntities.isEmpty())
 			{
-				if (player.updatedPosition)
-				{
-					player.updatedPosition = false;
-					movingPlayers.add(player);
-				}
-			}
-
-			if (!movingPlayers.isEmpty())
-			{
-				if (arrayLength != movingPlayers.size())
+				if (arrayLength != movingEntities.size())
 				{
 					updateArrayCache();
 				}
@@ -64,11 +63,25 @@ public class PositionUpdater implements IUpdateable
 		}
 	}
 
+	protected void addFrom(WorldEntityManager<? extends WorldEntity> manager)
+	{
+		ArrayList<? extends WorldEntity> allEntities = manager.getAllEntities();
+		
+		for (WorldEntity entity : allEntities)
+		{
+			if (entity.updatedPosition)
+			{
+				entity.updatedPosition = false;
+				movingEntities.add(entity);
+			}
+		}
+	}
+
 	private void sendUpdates()
 	{
 		for (int i = 0; i < arrayLength; i++)
 		{
-			Player movingPlayer = movingPlayers.get(i);
+			WorldEntity movingPlayer = movingEntities.get(i);
 			idArray[i] = movingPlayer.id;
 			posArray[i].set(movingPlayer.x, movingPlayer.y, movingPlayer.z);
 			rotArray[i].set(movingPlayer.lx, movingPlayer.ly, movingPlayer.lz);
@@ -76,12 +89,12 @@ public class PositionUpdater implements IUpdateable
 
 		ServerSender.sendToAll(NetworkCommands.PLAYER_MASS_POSITION, posArray, rotArray, idArray);
 
-		movingPlayers.clear();
+		movingEntities.clear();
 	}
 
 	private void updateArrayCache()
 	{
-		arrayLength = movingPlayers.size();
+		arrayLength = movingEntities.size();
 		idArray = new int[arrayLength];
 		posArray = new Vector3f[arrayLength];
 		rotArray = new Vector3f[arrayLength];

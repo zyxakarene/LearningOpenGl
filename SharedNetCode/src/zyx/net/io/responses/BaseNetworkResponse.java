@@ -57,11 +57,6 @@ public abstract class BaseNetworkResponse<T>
 	{
 		return senderPort;
 	}
-	
-	public int getSenderUniqueId()
-	{
-		return InetAddressToId.getIdFromAddress(senderHost, senderPort);
-	}
 
 	protected ConnectionData asConnectionData()
 	{

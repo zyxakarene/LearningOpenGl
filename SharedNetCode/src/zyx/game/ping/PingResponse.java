@@ -6,16 +6,21 @@ import zyx.net.io.controllers.NetworkCommands;
 
 public class PingResponse extends BaseNetworkResponse<Integer>
 {
+
+	private static String ID = "id";
+
 	public PingResponse()
 	{
 		super(NetworkCommands.PING);
 	}
-	
+
 	@Override
 	protected Integer onMessageRecieved(ReadableDataObject data)
 	{
-		//System.out.println("Received a ping!!");
-		return getSenderUniqueId();
+		
+		int id = data.getInteger(ID);
+		System.out.println(id + " Received a ping!!");
+		return id;
 	}
 
 }

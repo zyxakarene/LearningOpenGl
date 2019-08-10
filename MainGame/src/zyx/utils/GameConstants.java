@@ -11,8 +11,8 @@ public class GameConstants
 
 	public static final int LIGHT_COUNT = 100;
 	
-	public static final int DEFAULT_GAME_WIDTH = (int) (1920 * 0.75);
-	public static final int DEFAULT_GAME_HEIGHT = (int) (1080 * 0.75);
+	public static final int DEFAULT_GAME_WIDTH = (int) (1920 * 0.2);
+	public static final int DEFAULT_GAME_HEIGHT = (int) (1080 * 0.2);
 	public static final float FOV = 70f;
 	
 	public static final Logger LOGGER = Logger.getGlobal();

@@ -2,7 +2,7 @@ package zyx.server.controller;
 
 import zyx.net.io.connections.ConnectionData;
 import zyx.net.io.controllers.NetworkServerChannel;
-import zyx.server.players.PlayerManager;
+import zyx.server.world.humanoids.players.PlayerManager;
 
 public class ServerSender
 {

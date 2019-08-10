@@ -2,7 +2,7 @@ package zyx.game.vo;
 
 import org.lwjgl.util.vector.Vector3f;
 
-public class PlayerPositionData
+public class PositionData
 {
 	public int id;
 	
