@@ -1,5 +1,6 @@
 package zyx.server.world.humanoids.npc;
 
+import java.awt.Color;
 import zyx.server.world.humanoids.handheld.food.DishRecipeItem;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
 import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
@@ -35,5 +36,11 @@ public class Chef extends BaseNpc<ChefBehaviorType>
 		}
 		
 		return null;
+	}
+
+	@Override
+	public Color getColor()
+	{
+		return Color.BLUE;
 	}
 }

@@ -1,5 +1,6 @@
 package zyx.server.world.interactable.common;
 
+import java.awt.Color;
 import zyx.server.world.humanoids.handheld.HandheldItem;
 import zyx.server.world.humanoids.npc.Chef;
 import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
@@ -25,5 +26,11 @@ public class FoodTable extends CommonTable<Chef>
 		{
 			chef.requestBehavior(ChefBehaviorType.IDLE);
 		}
+	}
+
+	@Override
+	public Color getColor()
+	{
+		return Color.GREEN;
 	}
 }

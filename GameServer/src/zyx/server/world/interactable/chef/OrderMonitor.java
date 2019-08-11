@@ -1,5 +1,7 @@
 package zyx.server.world.interactable.chef;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.LinkedList;
 import zyx.server.world.humanoids.handheld.HandheldItem;
 import zyx.server.world.humanoids.handheld.food.DishRecipeItem;
@@ -52,4 +54,9 @@ public class OrderMonitor extends ChefItem
 		return !queue.isEmpty();
 	}
 
+	@Override
+	public Color getColor()
+	{
+		return Color.LIGHT_GRAY;
+	}
 }

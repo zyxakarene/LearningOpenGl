@@ -1,5 +1,7 @@
 package zyx.server.world.interactable.chef;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
 import zyx.server.world.humanoids.npc.Chef;
 import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
@@ -38,6 +40,12 @@ public class ChefStove extends ChefItem
 		currentUser.pickupItem(foodItem);
 		
 		currentUser.requestBehavior(ChefBehaviorType.FINDING_TABLE);
+	}
+	
+	@Override
+	public Color getColor()
+	{
+		return Color.DARK_GRAY;
 	}
 
 }

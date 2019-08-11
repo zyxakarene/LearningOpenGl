@@ -1,5 +1,7 @@
 package zyx.server.world.humanoids.npc;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.HashMap;
 import zyx.server.utils.IUpdateable;
 import zyx.server.world.humanoids.HumanoidEntity;
@@ -86,5 +88,17 @@ public abstract class BaseNpc<T extends Enum> extends HumanoidEntity implements 
 	{
 		String clazz = getClass().getSimpleName();
 		return String.format(TOSTRING_TEMPLATE, clazz, name);
+	}
+
+	@Override
+	public int getSize()
+	{
+		return 20;
+	}
+	
+	@Override
+	public boolean isRound()
+	{
+		return true;
 	}
 }

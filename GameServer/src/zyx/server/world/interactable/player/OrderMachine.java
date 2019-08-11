@@ -1,5 +1,6 @@
 package zyx.server.world.interactable.player;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import zyx.server.world.RoomItems;
 import zyx.server.world.humanoids.handheld.food.DishType;
@@ -28,5 +29,11 @@ public class OrderMachine extends BaseInteractableItem<Player>
 				monitor.addDish(dish);
 			}
 		}
+	}
+	
+	@Override
+	public Color getColor()
+	{
+		return Color.RED;
 	}
 }

@@ -1,5 +1,7 @@
 package zyx.server.world.interactable;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import zyx.server.world.entity.WorldEntity;
 import zyx.server.world.humanoids.HumanoidEntity;
 
@@ -30,4 +32,18 @@ public abstract class BaseInteractableItem<User extends HumanoidEntity> extends 
 	}
 
 	public abstract void interactWith(User user);
+	
+	@Override
+	protected void onDraw(Graphics g)
+	{
+		String name = getClass().getSimpleName().toLowerCase();
+		name = name.replace("chef", "");
+		if (name.length() > 6)
+		{
+			name = name.substring(0, 6);
+		}
+		
+		g.setColor(Color.BLACK);
+		g.drawString(name, (int)x - (getSize() / 2), (int)y);
+	}
 }

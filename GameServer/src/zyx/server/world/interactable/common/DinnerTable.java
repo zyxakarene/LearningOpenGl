@@ -1,5 +1,6 @@
 package zyx.server.world.interactable.common;
 
+import java.awt.Color;
 import zyx.server.world.humanoids.handheld.HandheldItem;
 import zyx.server.world.humanoids.handheld.HandheldItemType;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
@@ -85,5 +86,11 @@ public class DinnerTable extends CommonTable<Guest>
 				return;
 			}
 		}
+	}
+	
+	@Override
+	public Color getColor()
+	{
+		return new Color(255, 160, 50);
 	}
 }

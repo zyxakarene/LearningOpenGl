@@ -1,5 +1,6 @@
 package zyx.server.world.interactable.chef;
 
+import java.awt.Color;
 import zyx.server.world.humanoids.handheld.food.DishRecipeItem;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
 import zyx.server.world.humanoids.npc.Chef;
@@ -37,5 +38,11 @@ public class ChefFridge extends ChefItem
 		FoodItem ingredients = new FoodItem(recipe.dish);
 		currentUser.pickupItem(ingredients);
 		currentUser.requestBehavior(ChefBehaviorType.FINDING_STOVE);
+	}
+
+	@Override
+	public Color getColor()
+	{
+		return Color.PINK;
 	}
 }

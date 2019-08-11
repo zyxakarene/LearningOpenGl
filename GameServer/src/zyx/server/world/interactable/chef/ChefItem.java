@@ -46,6 +46,6 @@ public abstract class ChefItem extends BaseInteractableItem<Chef> implements IUp
 			}
 		}
 	}
-
+	
 	protected abstract void onUsingCompleted();
 }

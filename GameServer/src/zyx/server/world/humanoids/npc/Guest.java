@@ -1,5 +1,6 @@
 package zyx.server.world.humanoids.npc;
 
+import java.awt.Color;
 import zyx.server.world.humanoids.handheld.HandheldItem;
 import zyx.server.world.humanoids.handheld.food.DishType;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
@@ -62,4 +63,9 @@ public class Guest extends BaseNpc<GuestBehaviorType>
 		return (item instanceof BillItem) == false;
 	}
 
+	@Override
+	public Color getColor()
+	{
+		return Color.RED;
+	}
 }

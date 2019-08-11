@@ -1,5 +1,7 @@
 package zyx.server.world.entity;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.vo.PositionData;
 
@@ -41,11 +43,60 @@ public abstract class WorldEntity
 		ly = rot.y;
 		lz = rot.z;
 	}
+	
+	public void updatePosition(float x, float y, float z)
+	{
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		
+		updatedPosition = true;
+	}
 
+	public final void draw(Graphics g)
+	{
+		int size = getSize();
+		int sizeHalf = size / 2;
+		
+		int xPos = (int) (x - sizeHalf);
+		int yPos = (int) (y - sizeHalf);
+	
+		g.setColor(getColor());
+		if (isRound())
+		{
+			g.fillOval(xPos, yPos, size, size);
+		}
+		else
+		{
+			g.fillRect(xPos, yPos, size, size);
+		}
+		
+		onDraw(g);
+	}
+	
 	@Override
 	public String toString()
 	{
 		String clazz = getClass().getSimpleName();
 		return String.format("%s[%s]", clazz, id);
+	}
+	
+	public Color getColor()
+	{
+		return Color.BLACK;
+	}
+	
+	public int getSize()
+	{
+		return 40;
+	}
+	
+	public boolean isRound()
+	{
+		return false;
+	}
+
+	protected void onDraw(Graphics g)
+	{
 	}
 }

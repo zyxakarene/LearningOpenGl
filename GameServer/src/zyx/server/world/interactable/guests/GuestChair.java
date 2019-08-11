@@ -1,5 +1,6 @@
 package zyx.server.world.interactable.guests;
 
+import java.awt.Color;
 import zyx.server.world.humanoids.handheld.guests.GuestOrder;
 import zyx.server.world.humanoids.npc.Guest;
 import zyx.server.world.humanoids.npc.behavior.guest.GuestBehaviorType;
@@ -59,5 +60,11 @@ public class GuestChair extends GuestItem implements PlayerInteractable
 				currentUser.requestBehavior(GuestBehaviorType.WAITING_FOR_FOOD);
 			}
 		}
+	}
+	
+	@Override
+	public Color getColor()
+	{
+		return new Color(255, 235, 150);
 	}
 }
