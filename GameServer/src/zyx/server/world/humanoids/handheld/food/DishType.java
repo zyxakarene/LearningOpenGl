@@ -5,5 +5,13 @@ public enum DishType
 	STEAK,
 	SOUP,
 	SALAD,
-	FISH
+	FISH;
+	
+	
+	private static final DishType[] values = values();
+	
+	public static DishType getRandomDish()
+	{
+        return values[(int) (Math.random() * values.length)];
+    }
 }

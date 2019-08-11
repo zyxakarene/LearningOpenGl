@@ -22,6 +22,16 @@ public class HumanoidEntity extends WorldEntity
 		return heldItem;
 	}
 	
+	public boolean isHoldingAnything()
+	{
+		return heldItem != null;
+	}
+	
+	public boolean canHoldItem()
+	{
+		return heldItem == null;
+	}
+	
 	public HandheldItem removeItem()
 	{
 		HandheldItem item = heldItem;
@@ -33,5 +43,10 @@ public class HumanoidEntity extends WorldEntity
 	public void pickupItem(HandheldItem item)
 	{
 		heldItem = item;
+	}
+	
+	public boolean wantsToHold(HandheldItem item)
+	{
+		return true;
 	}
 }

@@ -18,12 +18,15 @@ public class ChefStove extends ChefItem
 	@Override
 	public void interactWith(Chef chef)
 	{
-		foodItem = chef.getHeldAsFood();
-
-		if (foodItem != null)
+		if (canUse(chef))
 		{
-			chef.removeItem();
-			startUsing(chef);
+			foodItem = chef.getHeldAsFood();
+
+			if (foodItem != null)
+			{
+				chef.removeItem();
+				startUsing(chef);
+			}
 		}
 	}
 
@@ -31,9 +34,9 @@ public class ChefStove extends ChefItem
 	protected void onUsingCompleted()
 	{
 		foodItem.process();
-		currentChef.pickupItem(foodItem);
+		currentUser.pickupItem(foodItem);
 		
-		currentChef.requestBehavior(ChefBehaviorType.WALKING_TO_TABLE);
+		currentUser.requestBehavior(ChefBehaviorType.WALKING_TO_TABLE);
 	}
 
 }

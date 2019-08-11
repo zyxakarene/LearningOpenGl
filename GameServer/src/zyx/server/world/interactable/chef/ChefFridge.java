@@ -19,12 +19,15 @@ public class ChefFridge extends ChefItem
 	@Override
 	public void interactWith(Chef chef)
 	{
-		recipe = chef.getHeldAsRecipe();
-		
-		if (recipe != null)
+		if (canUse(chef))
 		{
-			chef.removeItem();
-			startUsing(chef);
+			recipe = chef.getHeldAsRecipe();
+
+			if (recipe != null)
+			{
+				chef.removeItem();
+				startUsing(chef);
+			}
 		}
 	}
 
@@ -32,7 +35,7 @@ public class ChefFridge extends ChefItem
 	protected void onUsingCompleted()
 	{
 		FoodItem ingredients = new FoodItem(recipe.dish);
-		currentChef.pickupItem(ingredients);
-		currentChef.requestBehavior(ChefBehaviorType.WALKING_TO_STOVE);
+		currentUser.pickupItem(ingredients);
+		currentUser.requestBehavior(ChefBehaviorType.WALKING_TO_STOVE);
 	}
 }

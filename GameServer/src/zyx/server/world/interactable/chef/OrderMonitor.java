@@ -23,10 +23,13 @@ public class OrderMonitor extends ChefItem
 	@Override
 	public void interactWith(Chef chef)
 	{
-		HandheldItem heldItem = chef.heldItem();
-		if (heldItem == null && !queue.isEmpty())
+		if (canUse(chef))
 		{
-			startUsing(chef);
+			HandheldItem heldItem = chef.heldItem();
+			if (heldItem == null && !queue.isEmpty())
+			{
+				startUsing(chef);
+			}
 		}
 	}
 
@@ -34,8 +37,8 @@ public class OrderMonitor extends ChefItem
 	protected void onUsingCompleted()
 	{
 		DishRecipeItem recipe = queue.removeFirst();
-		currentChef.pickupItem(recipe);
-		currentChef.requestBehavior(ChefBehaviorType.WALKING_TO_FRIDGE);
+		currentUser.pickupItem(recipe);
+		currentUser.requestBehavior(ChefBehaviorType.WALKING_TO_FRIDGE);
 	}
 	
 	public void addDish(DishType dish)

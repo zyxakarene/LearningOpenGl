@@ -24,12 +24,17 @@ public class NpcManager extends WorldEntityManager<BaseNpc> implements IUpdateab
 		return chef;
 	}
 
-	public Guest addGuest()
+	public GuestGroup addGuestGroup()
 	{
-		Guest guest = NpcFactory.createGuest();
-		addEntity(guest);
+		int size = 1;
+		GuestGroup group = new GuestGroup(size);
 		
-		return guest;
+		for (Guest guest : group.groupMembers)
+		{
+			addEntity(guest);
+		}
+		
+		return group;
 	}
 
 	@Override

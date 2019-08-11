@@ -1,5 +1,6 @@
 package zyx.server.world.interactable.player;
 
+import java.util.ArrayList;
 import zyx.server.world.RoomItems;
 import zyx.server.world.humanoids.handheld.food.DishType;
 import zyx.server.world.humanoids.handheld.guests.GuestOrder;
@@ -19,7 +20,7 @@ public class OrderMachine extends BaseInteractableItem<Player>
 		{
 			OrderMonitor monitor = RoomItems.instance.orderMonitor();
 			
-			DishType[] dishes = order.getDishes();
+			ArrayList<DishType> dishes = order.getDishes();
 			for (DishType dish : dishes)
 			{
 				monitor.addDish(dish);

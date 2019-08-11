@@ -35,7 +35,7 @@ public class GameWorld implements IUpdateable
 		networkController.addListeners();
 		
 		npcManager.addChef();
-		npcManager.addGuest();
+		npcManager.addGuestGroup();
 	}
 
 	@Override
