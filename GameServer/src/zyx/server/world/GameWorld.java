@@ -1,6 +1,7 @@
 package zyx.server.world;
 
 import zyx.net.io.controllers.BaseNetworkController;
+import zyx.server.DebugServerForm;
 import zyx.server.controller.ServerNetworkController;
 import zyx.server.world.humanoids.players.PlayerManager;
 import zyx.server.world.humanoids.PositionUpdater;
@@ -18,6 +19,7 @@ public class GameWorld implements IUpdateable
 	private PlayerManager playerManager;
 	private NpcManager npcManager;
 
+	private RoomItems room;
 	private BaseNetworkController networkController;
 	
 	public DinnerTable dinnerTable;
@@ -34,6 +36,9 @@ public class GameWorld implements IUpdateable
 		networkController = new ServerNetworkController();
 		networkController.addListeners();
 		
+		room = new RoomItems();
+		DebugServerForm.room = room;
+		
 		npcManager.addChef();
 		npcManager.addGuestGroup();
 	}
@@ -44,5 +49,7 @@ public class GameWorld implements IUpdateable
 		npcManager.update(timestamp, elapsedTime);
 		
 		posUpdater.update(timestamp, elapsedTime);
+		
+		room.update(timestamp, elapsedTime);
 	}
 }

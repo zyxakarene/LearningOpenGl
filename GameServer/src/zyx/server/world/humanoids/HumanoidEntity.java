@@ -36,12 +36,18 @@ public class HumanoidEntity extends WorldEntity
 	{
 		HandheldItem item = heldItem;
 		
+		if (item != null)
+		{
+			System.out.println(item + " was removed from " + this);
+		}
+		
 		heldItem = null;
 		return item;
 	}
 
 	public void pickupItem(HandheldItem item)
 	{
+		System.out.println(this + " picked up " + item);
 		heldItem = item;
 	}
 	

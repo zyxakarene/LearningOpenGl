@@ -2,7 +2,6 @@ package zyx.server.world.humanoids.npc;
 
 import zyx.server.world.humanoids.handheld.food.DishRecipeItem;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
-import zyx.server.world.humanoids.handheld.guests.GuestOrder;
 import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
 import zyx.server.world.humanoids.npc.naming.NpcSetup;
 

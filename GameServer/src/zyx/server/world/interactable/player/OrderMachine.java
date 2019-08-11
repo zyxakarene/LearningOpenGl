@@ -18,11 +18,13 @@ public class OrderMachine extends BaseInteractableItem<Player>
 		
 		if (order != null)
 		{
+			player.removeItem();
 			OrderMonitor monitor = RoomItems.instance.orderMonitor();
 			
 			ArrayList<DishType> dishes = order.getDishes();
 			for (DishType dish : dishes)
 			{
+				System.out.println("The dish " + dish + " was punched in");
 				monitor.addDish(dish);
 			}
 		}

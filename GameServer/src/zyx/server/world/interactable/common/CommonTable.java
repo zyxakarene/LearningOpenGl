@@ -21,6 +21,16 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 		this.maxItemsOnTable = maxItemsOnTable;
 	}
 
+	public int debug_GetFirstItemOnTable()
+	{
+		return itemsOnTable.isEmpty() ? -1 : itemsOnTable.get(0).id;
+	}
+	
+	public boolean canCarryMoreItems()
+	{
+		return itemsOnTable.size() < maxItemsOnTable;
+	}
+	
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
@@ -39,7 +49,7 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 		}
 		else if (interaction.isGive())
 		{
-			onPlayerGive(player, interaction.itemToGive);
+			onPlayerGive(player);
 		}
 	}
 	
@@ -47,7 +57,9 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 	{
 		if (itemsOnTable.size() < maxItemsOnTable)
 		{
+			System.out.println(item + " was placed on " + this);
 			//There is room on the table, so put it down
+			item.inUse = false;
 			itemsOnTable.add(item);
 			return true;
 		}
@@ -66,6 +78,7 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 			
 			if (!item.inUse && item.id == id)
 			{
+				System.out.println(item + " was removed from " + this);
 				itemsOnTable.remove(i);
 				return item;
 			}
@@ -116,7 +129,9 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 		}
 	}
 
-	protected void onPlayerGive(Player player, HandheldItem itemToGive)
+	protected void onPlayerGive(Player player)
 	{
 	}
+	
+	
 }

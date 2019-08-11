@@ -41,4 +41,11 @@ public abstract class WorldEntity
 		ly = rot.y;
 		lz = rot.z;
 	}
+
+	@Override
+	public String toString()
+	{
+		String clazz = getClass().getSimpleName();
+		return String.format("Entity(%s [%s])", clazz, id);
+	}
 }

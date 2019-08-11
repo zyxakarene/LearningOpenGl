@@ -1,8 +1,11 @@
 package zyx.server.world.humanoids.npc;
 
+import zyx.server.world.interactable.common.DinnerTable;
+
 public class GuestGroup
 {
 	public Guest[] groupMembers;
+	public DinnerTable table;
 
 	public GuestGroup(int size)
 	{
@@ -12,6 +15,7 @@ public class GuestGroup
 		{
 			Guest guest = NpcFactory.createGuest();
 			guest.group = this;
+			guest.isLeader = (i == 0);
 			
 			groupMembers[i] = guest;
 		}

@@ -1,21 +1,28 @@
 package zyx.server.world.humanoids.npc.behavior.chef;
 
-import zyx.server.world.humanoids.npc.BaseNpc;
+import zyx.server.world.humanoids.npc.Chef;
 import zyx.server.world.humanoids.npc.behavior.BaseNpcBehavior;
+import zyx.server.world.interactable.chef.OrderMonitor;
 
-public class ChefIdleBehavior extends BaseNpcBehavior<ChefBehaviorType>
+public class ChefIdleBehavior extends BaseNpcBehavior<Chef, ChefBehaviorType, Object>
 {
 
-	public ChefIdleBehavior(BaseNpc npc)
+	private OrderMonitor orderMonitor;
+
+	public ChefIdleBehavior(Chef npc)
 	{
 		super(npc, ChefBehaviorType.IDLE);
+		orderMonitor = items.orderMonitor();
 	}
 
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-		npc.x = (float) (Math.sin(timestamp * 0.001) * 10);
-		npc.y = (float) (Math.cos(timestamp * 0.001) * 10);
-		npc.updatedPosition = true;
+		boolean hasOrders = orderMonitor.hasOrders();
+		
+		if (hasOrders)
+		{
+			npc.requestBehavior(ChefBehaviorType.FINDING_MONITOR);
+		}
 	}
 }

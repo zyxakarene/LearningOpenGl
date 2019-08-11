@@ -13,20 +13,24 @@ public class DinnerTable extends CommonTable<Guest>
 
 	private static final int MAX_GUEST_TABLE_ITEM_COUNT = 5;
 
-	private GuestChair[] chairs;
-	
 	public boolean hasGottenBill;
+	
+	public final GuestChair[] chairs;
+	public final int chairCount;
 
 	public DinnerTable(GuestChair[] connectedChairs)
 	{
 		super(MAX_GUEST_TABLE_ITEM_COUNT);
 		chairs = connectedChairs;
+		chairCount = connectedChairs.length;
 	}
 
 	@Override
-	protected void onPlayerGive(Player player, HandheldItem itemToGive)
+	protected void onPlayerGive(Player player)
 	{
-		boolean wasGiven = tryAddItem(itemToGive);
+		HandheldItem itemToGive = player.heldItem();
+		
+		boolean wasGiven = itemToGive != null && tryAddItem(itemToGive);
 
 		if (wasGiven)
 		{
@@ -65,8 +69,6 @@ public class DinnerTable extends CommonTable<Guest>
 			{
 				//Guest wants the food and haven't eaten yet
 				guestInChair.pickupItem(food);
-				guestInChair.requestBehavior(GuestBehaviorType.EATING);
-				
 				return;
 			}
 		}
@@ -79,7 +81,6 @@ public class DinnerTable extends CommonTable<Guest>
 			{
 				//Guest haven't eaten yet, and might not want the food
 				guestInChair.pickupItem(food);
-				guestInChair.requestBehavior(GuestBehaviorType.EATING);
 				return;
 			}
 		}

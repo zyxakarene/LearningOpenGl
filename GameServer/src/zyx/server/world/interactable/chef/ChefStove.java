@@ -24,6 +24,7 @@ public class ChefStove extends ChefItem
 
 			if (foodItem != null)
 			{
+				foodItem.process();
 				chef.removeItem();
 				startUsing(chef);
 			}
@@ -36,7 +37,7 @@ public class ChefStove extends ChefItem
 		foodItem.process();
 		currentUser.pickupItem(foodItem);
 		
-		currentUser.requestBehavior(ChefBehaviorType.WALKING_TO_TABLE);
+		currentUser.requestBehavior(ChefBehaviorType.FINDING_TABLE);
 	}
 
 }

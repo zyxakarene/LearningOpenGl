@@ -13,6 +13,7 @@ public class Guest extends BaseNpc<GuestBehaviorType>
 	public final DishType dishRequest;
 	public DishType servedDish;
 	
+	public boolean isLeader;
 	public boolean hasEaten;
 	public boolean hasBill;
 	public boolean gotRightDish;
@@ -26,6 +27,7 @@ public class Guest extends BaseNpc<GuestBehaviorType>
 		
 		hasEaten = false;
 		hasBill = false;
+		isLeader = false;
 	}
 
 	@Override

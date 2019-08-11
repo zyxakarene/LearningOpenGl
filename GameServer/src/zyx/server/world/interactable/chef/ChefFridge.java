@@ -36,6 +36,6 @@ public class ChefFridge extends ChefItem
 	{
 		FoodItem ingredients = new FoodItem(recipe.dish);
 		currentUser.pickupItem(ingredients);
-		currentUser.requestBehavior(ChefBehaviorType.WALKING_TO_STOVE);
+		currentUser.requestBehavior(ChefBehaviorType.FINDING_STOVE);
 	}
 }

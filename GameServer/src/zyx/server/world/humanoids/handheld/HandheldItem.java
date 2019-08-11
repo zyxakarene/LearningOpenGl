@@ -25,5 +25,12 @@ public abstract class HandheldItem implements IUpdateable
 	}
 
 	public abstract void process();
+	
+	@Override
+	public String toString()
+	{
+		String clazz = getClass().getSimpleName();
+		return String.format("%s[%s]", clazz, id);
+	}
 
 }

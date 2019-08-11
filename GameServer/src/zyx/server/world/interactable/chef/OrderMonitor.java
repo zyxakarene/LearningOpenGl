@@ -38,13 +38,18 @@ public class OrderMonitor extends ChefItem
 	{
 		DishRecipeItem recipe = queue.removeFirst();
 		currentUser.pickupItem(recipe);
-		currentUser.requestBehavior(ChefBehaviorType.WALKING_TO_FRIDGE);
+		currentUser.requestBehavior(ChefBehaviorType.FINDING_FRIDGE);
 	}
 	
 	public void addDish(DishType dish)
 	{
 		DishRecipeItem recipe = new DishRecipeItem(dish);
 		queue.addLast(recipe);
+	}
+	
+	public boolean hasOrders()
+	{
+		return !queue.isEmpty();
 	}
 
 }

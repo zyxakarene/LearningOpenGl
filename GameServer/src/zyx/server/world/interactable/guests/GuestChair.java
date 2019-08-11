@@ -10,35 +10,37 @@ import zyx.server.world.interactable.common.player.PlayerInteraction;
 
 public class GuestChair extends GuestItem implements PlayerInteractable
 {
-	private Guest currentGuest;
 	private DinnerTable table;
+	private boolean guestSitting;
 	
-	public GuestChair(DinnerTable table)
+	public GuestChair()
+	{
+	}
+
+	public void linkToTable(DinnerTable table)
 	{
 		this.table = table;
 	}
-
+	
 	@Override
 	public void interactWith(Guest guest)
 	{
 		if (canUse(guest))
 		{
-			currentGuest = guest;
-			inUse = true;
-
-			currentGuest.requestBehavior(GuestBehaviorType.WAITING_TO_ORDER);
+			guestSitting = true;
+			currentUser.requestBehavior(GuestBehaviorType.WAITING_TO_ORDER);
 		}
 	}
 
 	public Guest getCurrentGuest()
 	{
-		return currentGuest;
+		return currentUser;
 	}
 	
 	@Override
 	public void interactWith(Player player, PlayerInteraction interaction)
 	{
-		if (interaction.isTake() && currentGuest != null)
+		if (interaction.isTake() && guestSitting)
 		{
 			boolean canHold = player.canHoldItem();
 			GuestOrder currentOrders = player.getHeldAsOrders();
@@ -48,10 +50,13 @@ public class GuestChair extends GuestItem implements PlayerInteractable
 				if (currentOrders == null)
 				{
 					currentOrders = new GuestOrder(table);
+					player.pickupItem(currentOrders);
 				}
 
-				currentOrders.addDish(currentGuest.dishRequest);
-				currentGuest.requestBehavior(GuestBehaviorType.WAITING_FOR_FOOD);
+				System.out.println(currentUser + " ordered the dish: " + currentUser.dishRequest);
+				
+				currentOrders.addDish(currentUser.dishRequest);
+				currentUser.requestBehavior(GuestBehaviorType.WAITING_FOR_FOOD);
 			}
 		}
 	}
