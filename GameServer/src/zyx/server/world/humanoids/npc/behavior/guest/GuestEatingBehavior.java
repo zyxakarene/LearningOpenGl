@@ -10,7 +10,7 @@ public class GuestEatingBehavior extends GuestBehavior<Object>
 	{
 		super(npc, GuestBehaviorType.EATING);
 		
-		eatingTime = 2000;
+		eatingTime = 100;
 	}
 
 	@Override
@@ -22,7 +22,8 @@ public class GuestEatingBehavior extends GuestBehavior<Object>
 			
 			if (eatingTime <= 0)
 			{
-				System.out.println(this + " has finished eating");
+				System.out.println(npc + " has finished eating");
+				npc.stopEating();
 				npc.requestBehavior(GuestBehaviorType.WAITING_FOR_BILL);
 			}
 		}

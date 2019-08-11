@@ -26,9 +26,19 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 		return itemsOnTable.isEmpty() ? -1 : itemsOnTable.get(0).id;
 	}
 	
+	public void debug_CleanTable()
+	{
+		itemsOnTable.clear();
+	}
+	
 	public boolean canCarryMoreItems()
 	{
 		return itemsOnTable.size() < maxItemsOnTable;
+	}
+	
+	public boolean isEmpty()
+	{
+		return itemsOnTable.isEmpty();
 	}
 	
 	@Override

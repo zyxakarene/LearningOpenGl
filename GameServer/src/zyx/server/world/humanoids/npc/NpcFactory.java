@@ -39,6 +39,8 @@ class NpcFactory
 		guest.addBehavior(new GuestWaitingForOrderBehavior(guest));
 		guest.addBehavior(new GuestWaitingForFoodBehavior(guest));
 		guest.addBehavior(new GuestEatingBehavior(guest));
+		guest.addBehavior(new GuestWaitingForBillBehavior(guest));
+		guest.addBehavior(new GuestWalkingOutBehavior(guest));
 		guest.requestBehavior(GuestBehaviorType.IDLE);
 		
 		return guest;

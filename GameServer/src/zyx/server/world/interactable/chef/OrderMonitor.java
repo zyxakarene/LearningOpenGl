@@ -9,7 +9,7 @@ import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
 
 public class OrderMonitor extends ChefItem
 {
-	private static final int LOOK_TIME = 800;
+	private static final int LOOK_TIME = 50;
 	
 	private LinkedList<DishRecipeItem> queue;
 

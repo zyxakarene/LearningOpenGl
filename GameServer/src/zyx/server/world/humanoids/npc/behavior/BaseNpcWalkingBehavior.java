@@ -21,7 +21,7 @@ public abstract class BaseNpcWalkingBehavior<NPC extends BaseNpc, T extends Enum
 	protected void setTarget(float x, float y, float z)
 	{
 		target.set(x, y, z);
-		timeToWalk = 2000;
+		timeToWalk = 100;
 	}
 
 	@Override

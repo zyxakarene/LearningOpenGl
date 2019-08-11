@@ -30,7 +30,8 @@ public abstract class HandheldItem implements IUpdateable
 	public String toString()
 	{
 		String clazz = getClass().getSimpleName();
-		return String.format("%s[%s]", clazz, id);
+		String typeName = type.name().toLowerCase();
+		return String.format("%s-%s[%s]", clazz, typeName, id);
 	}
 
 }

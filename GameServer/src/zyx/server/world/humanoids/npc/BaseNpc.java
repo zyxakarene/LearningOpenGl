@@ -40,6 +40,7 @@ public abstract class BaseNpc<T extends Enum> extends HumanoidEntity implements 
 		
 		if (requestedBehavior != null)
 		{
+			currentState = type;
 			requestedBehavior.setParams(params);
 		}
 		else

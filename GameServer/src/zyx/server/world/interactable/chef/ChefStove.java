@@ -6,7 +6,7 @@ import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
 
 public class ChefStove extends ChefItem
 {
-	private static final int COOK_TIME = 2000;
+	private static final int COOK_TIME = 50;
 
 	private FoodItem foodItem;
 

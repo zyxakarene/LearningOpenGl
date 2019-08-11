@@ -31,6 +31,7 @@
                   <Component id="takeFoodBtn" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="deliverFoodBtn" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="deliverBiillBtn" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="addGuestBtn" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="287" max="32767" attributes="0"/>
           </Group>
@@ -40,6 +41,8 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
+              <Component id="addGuestBtn" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
               <Component id="getOrderBtn" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="addOrderBtn" min="-2" max="-2" attributes="0"/>
@@ -49,7 +52,7 @@
               <Component id="deliverFoodBtn" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="deliverBiillBtn" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="150" max="32767" attributes="0"/>
+              <EmptySpace pref="90" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -93,6 +96,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deliverBiillBtnActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="addGuestBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Add Guest"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addGuestBtnActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

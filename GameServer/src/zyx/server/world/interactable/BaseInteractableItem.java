@@ -17,6 +17,12 @@ public abstract class BaseInteractableItem<User extends HumanoidEntity> extends 
 			currentUser = user;
 		}
 	}
+	
+	public void makeAvailible()
+	{
+		inUse = false;
+		currentUser = null;
+	}
 
 	public boolean canUse(User user)
 	{

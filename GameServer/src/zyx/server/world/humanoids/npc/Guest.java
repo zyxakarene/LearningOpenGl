@@ -12,47 +12,54 @@ public class Guest extends BaseNpc<GuestBehaviorType>
 
 	public final DishType dishRequest;
 	public DishType servedDish;
-	
+	public FoodItem servedFood;
+
 	public boolean isLeader;
 	public boolean hasEaten;
 	public boolean hasBill;
 	public boolean gotRightDish;
 	public GuestGroup group;
-	
+
 	public Guest(NpcSetup setup)
 	{
 		super(setup);
-		
+
 		dishRequest = DishType.getRandomDish();
-		
+
 		hasEaten = false;
 		hasBill = false;
 		isLeader = false;
 	}
 
-	@Override
-	public void pickupItem(HandheldItem item)
+	public void serveFood(FoodItem food)
 	{
-		super.pickupItem(item);
+		servedFood = food;
+		servedFood.inUse = true;
 		
-		if (item instanceof FoodItem)
+		servedDish = food.dish;
+		hasEaten = true;
+
+		gotRightDish = (servedDish == dishRequest);
+		if (!gotRightDish)
 		{
-			FoodItem food = (FoodItem) item;
-			servedDish = food.dish;
-			hasEaten = true;
-			
-			gotRightDish = (servedDish == dishRequest);
-			if (!gotRightDish)
-			{
-				//Get angry!
-			}
+			//Get angry!
 		}
 	}
 	
+	public void stopEating()
+	{
+		if (servedFood != null)
+		{
+			servedFood.inUse = false;
+			servedFood = null;
+		}
+	}
+
 	@Override
 	public boolean wantsToHold(HandheldItem item)
 	{
 		//Guests do not want to take bills.. For now??
 		return (item instanceof BillItem) == false;
 	}
+
 }

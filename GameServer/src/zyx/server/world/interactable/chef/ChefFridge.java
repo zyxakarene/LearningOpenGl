@@ -7,7 +7,7 @@ import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
 
 public class ChefFridge extends ChefItem
 {
-	private static final int PICKUP_TIME = 500;
+	private static final int PICKUP_TIME = 50;
 	
 	private DishRecipeItem recipe;
 	

@@ -18,5 +18,12 @@ public class GuestWaitingForFoodBehavior extends GuestBehavior<Object>
 			System.out.println(npc + " has been given their food. Was it correct? " + npc.gotRightDish);
 			npc.requestBehavior(GuestBehaviorType.EATING);
 		}
+		else if (npc.group.table.hasGottenBill)
+		{
+			//Got a bill too early, refuse to eat!
+			npc.hasEaten = true;
+			System.out.println(npc.group.table + " was given the bill too early!!");
+			npc.requestBehavior(GuestBehaviorType.WAITING_FOR_BILL);
+		}
 	}
 }

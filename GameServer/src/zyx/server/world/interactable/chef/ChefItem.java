@@ -42,8 +42,7 @@ public abstract class ChefItem extends BaseInteractableItem<Chef> implements IUp
 				onUsingCompleted();
 
 				actionStarted = false;
-				inUse = false;
-				currentUser = null;
+				makeAvailible();
 			}
 		}
 	}

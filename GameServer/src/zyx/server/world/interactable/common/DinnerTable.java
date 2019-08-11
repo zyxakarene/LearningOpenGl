@@ -4,7 +4,6 @@ import zyx.server.world.humanoids.handheld.HandheldItem;
 import zyx.server.world.humanoids.handheld.HandheldItemType;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
 import zyx.server.world.humanoids.npc.Guest;
-import zyx.server.world.humanoids.npc.behavior.guest.GuestBehaviorType;
 import zyx.server.world.humanoids.players.Player;
 import zyx.server.world.interactable.guests.GuestChair;
 
@@ -42,6 +41,8 @@ public class DinnerTable extends CommonTable<Guest>
 			{
 				giveFood((FoodItem) itemToGive);
 			}
+			
+			player.removeItem();
 		}
 	}
 
@@ -68,7 +69,7 @@ public class DinnerTable extends CommonTable<Guest>
 			if (guestInChair != null && !guestInChair.hasEaten && guestInChair.dishRequest == food.dish)
 			{
 				//Guest wants the food and haven't eaten yet
-				guestInChair.pickupItem(food);
+				guestInChair.serveFood(food);
 				return;
 			}
 		}
@@ -80,7 +81,7 @@ public class DinnerTable extends CommonTable<Guest>
 			if (guestInChair != null && !guestInChair.hasEaten)
 			{
 				//Guest haven't eaten yet, and might not want the food
-				guestInChair.pickupItem(food);
+				guestInChair.serveFood(food);
 				return;
 			}
 		}

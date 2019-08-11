@@ -28,7 +28,7 @@ public class GuestIdleBehavior extends GuestBehavior<Object>
 			
 			for (DinnerTable table : allTables)
 			{
-				if (!table.inUse && table.chairCount <= groupSize)
+				if (!table.inUse && table.chairCount <= groupSize && table.isEmpty())
 				{
 					claimTable(table);
 					return;

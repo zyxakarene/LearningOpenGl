@@ -3,6 +3,7 @@ package zyx.server;
 import zyx.game.vo.Gender;
 import zyx.server.world.RoomItems;
 import zyx.server.world.humanoids.handheld.guests.BillItem;
+import zyx.server.world.humanoids.npc.NpcManager;
 import zyx.server.world.humanoids.players.Player;
 import zyx.server.world.interactable.common.DinnerTable;
 import zyx.server.world.interactable.common.FoodTable;
@@ -34,6 +35,7 @@ public class DebugServerForm extends javax.swing.JFrame
         takeFoodBtn = new javax.swing.JButton();
         deliverFoodBtn = new javax.swing.JButton();
         deliverBiillBtn = new javax.swing.JButton();
+        addGuestBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,6 +84,15 @@ public class DebugServerForm extends javax.swing.JFrame
             }
         });
 
+        addGuestBtn.setText("Add Guest");
+        addGuestBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                addGuestBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -93,13 +104,16 @@ public class DebugServerForm extends javax.swing.JFrame
                     .addComponent(addOrderBtn)
                     .addComponent(takeFoodBtn)
                     .addComponent(deliverFoodBtn)
-                    .addComponent(deliverBiillBtn))
+                    .addComponent(deliverBiillBtn)
+                    .addComponent(addGuestBtn))
                 .addContainerGap(287, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(addGuestBtn)
+                .addGap(37, 37, 37)
                 .addComponent(getOrderBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(addOrderBtn)
@@ -109,7 +123,7 @@ public class DebugServerForm extends javax.swing.JFrame
                 .addComponent(deliverFoodBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(deliverBiillBtn)
-                .addContainerGap(150, Short.MAX_VALUE))
+                .addContainerGap(90, Short.MAX_VALUE))
         );
 
         pack();
@@ -147,8 +161,14 @@ public class DebugServerForm extends javax.swing.JFrame
 		table.interactWith(player, PlayerInteraction.give());
     }//GEN-LAST:event_deliverBiillBtnActionPerformed
 
+    private void addGuestBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_addGuestBtnActionPerformed
+    {//GEN-HEADEREND:event_addGuestBtnActionPerformed
+        NpcManager.getInstance().addGuestGroup();
+    }//GEN-LAST:event_addGuestBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addGuestBtn;
     private javax.swing.JButton addOrderBtn;
     private javax.swing.JButton deliverBiillBtn;
     private javax.swing.JButton deliverFoodBtn;

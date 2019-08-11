@@ -46,6 +46,6 @@ public abstract class WorldEntity
 	public String toString()
 	{
 		String clazz = getClass().getSimpleName();
-		return String.format("Entity(%s [%s])", clazz, id);
+		return String.format("%s[%s]", clazz, id);
 	}
 }
