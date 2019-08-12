@@ -24,26 +24,40 @@ public class FoodItem extends HandheldItem
 	@Override
 	public void process()
 	{
-		lifeSpan = FOOD_LIFESPAN_MS;
-		
 		switch (type)
 		{
 			case INGREDIENTS:
+			{
 				type = HandheldItemType.POT;
 				break;
+			}
 			case POT:
+			{
 				type = HandheldItemType.FOOD;
 				break;
+			}
 			case FOOD:
+			{
 				type = HandheldItemType.DIRTY_PLATE;
 				break;
+			}
 		}
+	}
+
+	public boolean isEdible()
+	{
+		return !spoiled && type == HandheldItemType.FOOD;
+	}
+
+	public boolean isSpoiled()
+	{
+		return spoiled;
 	}
 
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-		if (!spoiled && type != HandheldItemType.DIRTY_PLATE)
+		if (!spoiled && type == HandheldItemType.FOOD)
 		{
 			lifeSpan -= elapsedTime;
 			
@@ -51,6 +65,21 @@ public class FoodItem extends HandheldItem
 			{
 				spoiled = true;
 			}
+		}
+	}
+	
+	@Override
+	public String getVisualName()
+	{
+		String typeName = super.getVisualName();
+		
+		if (type == HandheldItemType.FOOD)
+		{
+			return typeName + String.format("(%s)", spoiled ? "rotten" : "fresh");
+		}
+		else
+		{
+			return typeName;
 		}
 	}
 }

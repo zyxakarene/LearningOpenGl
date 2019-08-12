@@ -33,5 +33,10 @@ public abstract class HandheldItem implements IUpdateable
 		String typeName = type.name().toLowerCase();
 		return String.format("%s-%s[%s]", clazz, typeName, id);
 	}
+	
+	public String getVisualName()
+	{
+		return type.name();
+	}
 
 }

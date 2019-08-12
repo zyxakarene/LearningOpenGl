@@ -33,18 +33,18 @@ public class RoomItems implements IUpdateable
 	public OrderMonitor orderMonitor;
 
 	public GuestExitPoint exitPoint;
-
+	
 	public RoomItems()
 	{
 		instance = this;
 
 		fridges = new ChefFridge[1];
 		fridges[0] = new ChefFridge();
-		fridges[0].updatePosition(200, 15, 0);
+		fridges[0].updatePosition(200, 25, 0);
 
 		stoves = new ChefStove[1];
 		stoves[0] = new ChefStove();
-		stoves[0].updatePosition(250, 25, 0);
+		stoves[0].updatePosition(250, 35, 0);
 
 		foodTables = new FoodTable[1];
 		foodTables[0] = new FoodTable();
@@ -52,18 +52,18 @@ public class RoomItems implements IUpdateable
 
 		chairs = new GuestChair[1];
 		chairs[0] = new GuestChair();
-		chairs[0].updatePosition(25, 150, 0);
+		chairs[0].updatePosition(50, 150, 0);
 
 		dinnerTables = new DinnerTable[1];
 		dinnerTables[0] = new DinnerTable(chairs);
-		dinnerTables[0].updatePosition(25, 100, 0);
+		dinnerTables[0].updatePosition(50, 100, 0);
 
 		chairs[0].linkToTable(dinnerTables[0]);
 
 		orderMachine = new OrderMachine();
 		orderMachine.updatePosition(200, 200, 0);
 		orderMonitor = new OrderMonitor();
-		orderMonitor.updatePosition(150, 25, 0);
+		orderMonitor.updatePosition(150, 35, 0);
 
 		exitPoint = new GuestExitPoint();
 		exitPoint.updatePosition(0, 0, 0);

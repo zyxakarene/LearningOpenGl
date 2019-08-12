@@ -3,9 +3,10 @@ package zyx.server.world.humanoids.players;
 import java.util.ArrayList;
 import zyx.game.vo.Gender;
 import zyx.net.io.connections.ConnectionData;
+import zyx.server.utils.IUpdateable;
 import zyx.server.world.entity.WorldEntityManager;
 
-public class PlayerManager extends WorldEntityManager<Player>
+public class PlayerManager extends WorldEntityManager<Player> implements IUpdateable
 {
 	private static final PlayerManager INSTANCE = new PlayerManager();
 
@@ -82,5 +83,14 @@ public class PlayerManager extends WorldEntityManager<Player>
 		}
 		
 		return allButOneConnections;
+	}
+	
+	@Override
+	public void update(long timestamp, int elapsedTime)
+	{
+		for (Player player : entities)
+		{
+			player.update(timestamp, elapsedTime);
+		}
 	}
 }

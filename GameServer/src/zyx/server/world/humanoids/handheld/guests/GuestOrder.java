@@ -38,5 +38,12 @@ public class GuestOrder extends HandheldItem
 	public void process()
 	{
 	}
+	
+	@Override
+	public String getVisualName()
+	{
+		String typeName = super.getVisualName();
+		return typeName + String.format(" - %s", dishes);
+	}
 
 }

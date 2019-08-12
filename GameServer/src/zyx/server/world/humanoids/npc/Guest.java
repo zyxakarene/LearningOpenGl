@@ -51,6 +51,7 @@ public class Guest extends BaseNpc<GuestBehaviorType>
 	{
 		if (servedFood != null)
 		{
+			servedFood.process();
 			servedFood.inUse = false;
 			servedFood = null;
 		}

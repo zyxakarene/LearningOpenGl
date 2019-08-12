@@ -22,6 +22,14 @@ public class GuestChair extends GuestItem implements PlayerInteractable
 	{
 		this.table = table;
 	}
+
+	@Override
+	public void makeAvailible()
+	{
+		super.makeAvailible();
+		guestSitting = false;
+		currentUser = null;
+	}
 	
 	@Override
 	public void interactWith(Guest guest)
@@ -31,6 +39,11 @@ public class GuestChair extends GuestItem implements PlayerInteractable
 			guestSitting = true;
 			currentUser.requestBehavior(GuestBehaviorType.WAITING_TO_ORDER);
 		}
+	}
+
+	public boolean isCurrentGuestSitting()
+	{
+		return currentUser != null && guestSitting;
 	}
 
 	public Guest getCurrentGuest()

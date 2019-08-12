@@ -14,7 +14,7 @@ public class DinnerTable extends CommonTable<Guest>
 	private static final int MAX_GUEST_TABLE_ITEM_COUNT = 5;
 
 	public boolean hasGottenBill;
-	
+
 	public final GuestChair[] chairs;
 	public final int chairCount;
 
@@ -29,10 +29,10 @@ public class DinnerTable extends CommonTable<Guest>
 	protected void onPlayerGive(Player player)
 	{
 		HandheldItem itemToGive = player.heldItem();
-		
+
 		boolean wasGiven = itemToGive != null && tryAddItem(itemToGive);
 
-		if (wasGiven)
+		if (wasGiven && itemToGive != null)
 		{
 			if (itemToGive.type == HandheldItemType.BILL)
 			{
@@ -42,23 +42,37 @@ public class DinnerTable extends CommonTable<Guest>
 			{
 				giveFood((FoodItem) itemToGive);
 			}
-			
+
 			player.removeItem();
 		}
 	}
 
 	private void giveBill()
 	{
-		hasGottenBill = true;
-		
-		for (GuestChair chair : chairs)
+		if (inUse)
 		{
-			Guest guestInChair = chair.getCurrentGuest();
-			if (guestInChair != null)
+			hasGottenBill = true;
+
+			for (GuestChair chair : chairs)
 			{
-				guestInChair.hasBill = true;
+				Guest guestInChair = chair.getCurrentGuest();
+				if (guestInChair != null)
+				{
+					guestInChair.hasBill = true;
+				}
 			}
 		}
+	}
+
+	public boolean canReceiveBill()
+	{
+		boolean allGuestsArrived = true;
+		for (GuestChair chair : chairs)
+		{
+			allGuestsArrived = allGuestsArrived && chair.isCurrentGuestSitting();
+		}
+		
+		return allGuestsArrived;
 	}
 
 	private void giveFood(FoodItem food)
@@ -69,25 +83,31 @@ public class DinnerTable extends CommonTable<Guest>
 			Guest guestInChair = chair.getCurrentGuest();
 			if (guestInChair != null && !guestInChair.hasEaten && guestInChair.dishRequest == food.dish)
 			{
-				//Guest wants the food and haven't eaten yet
-				guestInChair.serveFood(food);
-				return;
+				if (food.isEdible())
+				{
+					//Guest wants the food and haven't eaten yet
+					guestInChair.serveFood(food);
+					return;
+				}
 			}
 		}
-		
+
 		//Nobody wanted the food, force someone to take it!
 		for (GuestChair chair : chairs)
 		{
 			Guest guestInChair = chair.getCurrentGuest();
 			if (guestInChair != null && !guestInChair.hasEaten)
 			{
-				//Guest haven't eaten yet, and might not want the food
-				guestInChair.serveFood(food);
-				return;
+				if (food.isEdible())
+				{
+					//Guest haven't eaten yet, and might not want the food
+					guestInChair.serveFood(food);
+					return;
+				}
 			}
 		}
 	}
-	
+
 	@Override
 	public Color getColor()
 	{

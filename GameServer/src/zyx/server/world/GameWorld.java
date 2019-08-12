@@ -47,6 +47,7 @@ public class GameWorld implements IUpdateable
 	public void update(long timestamp, int elapsedTime)
 	{
 		npcManager.update(timestamp, elapsedTime);
+		playerManager.update(timestamp, elapsedTime);
 		
 		posUpdater.update(timestamp, elapsedTime);
 		

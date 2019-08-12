@@ -1,11 +1,14 @@
 package zyx.server;
 
 import java.awt.Graphics;
+import java.net.InetAddress;
 import zyx.game.vo.Gender;
+import zyx.net.io.connections.ConnectionData;
 import zyx.server.world.RoomItems;
 import zyx.server.world.humanoids.handheld.guests.BillItem;
 import zyx.server.world.humanoids.npc.NpcManager;
 import zyx.server.world.humanoids.players.Player;
+import zyx.server.world.humanoids.players.PlayerManager;
 import zyx.server.world.interactable.common.DinnerTable;
 import zyx.server.world.interactable.common.FoodTable;
 import zyx.server.world.interactable.common.player.PlayerInteraction;
@@ -23,7 +26,9 @@ public class DebugServerForm extends javax.swing.JFrame
 	{
 		initComponents();
 
-		player = new Player("Test", Gender.MALE, null);
+		ConnectionData dummyData = new ConnectionData(InetAddress.getLoopbackAddress(), 9999);
+		player = PlayerManager.getInstance().createPlayer("Test", Gender.MALE, dummyData);
+		player.updatePosition(100, 200, 0);
 
 		Thread repainter = new Thread()
 		{
@@ -31,7 +36,7 @@ public class DebugServerForm extends javax.swing.JFrame
 			public void run()
 			{
 				while (true)
-				{					
+				{
 					repaint();
 
 					try
@@ -214,8 +219,12 @@ public class DebugServerForm extends javax.swing.JFrame
     private void deliverBiillBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_deliverBiillBtnActionPerformed
     {//GEN-HEADEREND:event_deliverBiillBtnActionPerformed
 		DinnerTable table = room.dinnerTables[0];
-		player.pickupItem(new BillItem());
-		table.interactWith(player, PlayerInteraction.give());
+		
+		if (table.canReceiveBill())
+		{
+			player.pickupItem(new BillItem());
+			table.interactWith(player, PlayerInteraction.give());
+		}
     }//GEN-LAST:event_deliverBiillBtnActionPerformed
 
     private void addGuestBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_addGuestBtnActionPerformed

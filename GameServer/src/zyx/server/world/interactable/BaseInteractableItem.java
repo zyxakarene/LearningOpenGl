@@ -1,6 +1,7 @@
 package zyx.server.world.interactable;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import zyx.server.world.entity.WorldEntity;
 import zyx.server.world.humanoids.HumanoidEntity;
@@ -44,6 +45,7 @@ public abstract class BaseInteractableItem<User extends HumanoidEntity> extends 
 		}
 		
 		g.setColor(Color.BLACK);
+		g.setFont(new Font("TimesRoman", Font.PLAIN, 10)); 
 		g.drawString(name, (int)x - (getSize() / 2), (int)y);
 	}
 }

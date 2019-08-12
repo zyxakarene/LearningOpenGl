@@ -1,6 +1,7 @@
 package zyx.server.world.interactable.chef;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.LinkedList;
 import zyx.server.world.humanoids.handheld.HandheldItem;
@@ -11,17 +12,18 @@ import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
 
 public class OrderMonitor extends ChefItem
 {
-	private static final int LOOK_TIME = 50;
-	
+
+	private static final int LOOK_TIME = 250;
+
 	private LinkedList<DishRecipeItem> queue;
 
 	public OrderMonitor()
 	{
 		super(LOOK_TIME);
-		
+
 		queue = new LinkedList<>();
 	}
-	
+
 	@Override
 	public void interactWith(Chef chef)
 	{
@@ -42,13 +44,13 @@ public class OrderMonitor extends ChefItem
 		currentUser.pickupItem(recipe);
 		currentUser.requestBehavior(ChefBehaviorType.FINDING_FRIDGE);
 	}
-	
+
 	public void addDish(DishType dish)
 	{
 		DishRecipeItem recipe = new DishRecipeItem(dish);
 		queue.addLast(recipe);
 	}
-	
+
 	public boolean hasOrders()
 	{
 		return !queue.isEmpty();
@@ -58,5 +60,19 @@ public class OrderMonitor extends ChefItem
 	public Color getColor()
 	{
 		return Color.LIGHT_GRAY;
+	}
+
+	@Override
+	protected void onDraw(Graphics g)
+	{
+		super.onDraw(g);
+
+		int size = getSize();
+		int sizeHalf = size / 2;
+
+		int xPos = (int) (x - sizeHalf);
+		int yPos = (int) (y - sizeHalf);
+
+		g.drawString("Orders: " + queue.size(), xPos, yPos + size - 1);
 	}
 }

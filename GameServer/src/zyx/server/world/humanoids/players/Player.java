@@ -1,5 +1,6 @@
 package zyx.server.world.humanoids.players;
 
+import java.awt.Color;
 import zyx.game.vo.Gender;
 import zyx.net.io.connections.ConnectionData;
 import zyx.server.utils.IUpdateable;
@@ -35,5 +36,17 @@ public class Player extends HumanoidEntity implements IUpdateable
 		}
 		
 		return null;
+	}
+
+	@Override
+	public boolean isRound()
+	{
+		return true;
+	}
+
+	@Override
+	public Color getColor()
+	{
+		return Color.ORANGE;
 	}
 }

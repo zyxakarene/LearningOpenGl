@@ -1,5 +1,8 @@
 package zyx.server.world.interactable.common;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import zyx.server.utils.IUpdateable;
 import zyx.server.world.humanoids.HumanoidEntity;
@@ -142,6 +145,32 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 	protected void onPlayerGive(Player player)
 	{
 	}
-	
-	
+
+	@Override
+	protected void onDraw(Graphics g)
+	{
+		super.onDraw(g);
+		
+		int offsetY = 0;
+		for (HandheldItem heldItem : itemsOnTable)
+		{
+			int size = getSize();
+			int sizeHalf = size / 2;
+
+			int xPos = (int) (x - sizeHalf);
+			int yPos = (int) (y - sizeHalf) + offsetY;
+
+			g.setColor(Color.MAGENTA);
+			g.fillRect(xPos, yPos, 10, 10);
+			
+			g.setColor(Color.WHITE);
+			g.fillRect(xPos - 30, yPos-8, 60, 8);
+			g.setColor(Color.BLACK);
+			g.setFont(new Font("Arial", Font.BOLD, 8)); 
+			g.drawString(heldItem.getVisualName(), xPos - 30, yPos - 1);
+			g.drawRect(xPos - 31, yPos-9, 61, 9);
+			
+			offsetY += 10;
+		}
+	}
 }
