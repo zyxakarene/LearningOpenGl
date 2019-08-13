@@ -2,12 +2,12 @@ package zyx.server.world.humanoids.npc.behavior.chef;
 
 import zyx.server.world.humanoids.npc.Chef;
 import zyx.server.world.humanoids.npc.behavior.BaseNpcBehavior;
-import zyx.server.world.interactable.chef.OrderMonitor;
+import zyx.server.world.interactable.chef.Monitor;
 
 public class ChefIdleBehavior extends BaseNpcBehavior<Chef, ChefBehaviorType, Object>
 {
 
-	private OrderMonitor orderMonitor;
+	private Monitor orderMonitor;
 
 	public ChefIdleBehavior(Chef npc)
 	{

@@ -5,16 +5,16 @@ import zyx.server.world.humanoids.handheld.guests.GuestOrder;
 import zyx.server.world.humanoids.npc.Guest;
 import zyx.server.world.humanoids.npc.behavior.guest.GuestBehaviorType;
 import zyx.server.world.humanoids.players.Player;
-import zyx.server.world.interactable.common.player.PlayerInteractable;
 import zyx.server.world.interactable.common.DinnerTable;
 import zyx.server.world.interactable.common.player.PlayerInteraction;
+import zyx.server.world.interactable.common.player.IPlayerInteractable;
 
-public class GuestChair extends GuestItem implements PlayerInteractable
+public class Chair extends GuestItem implements IPlayerInteractable
 {
 	private DinnerTable table;
 	private boolean guestSitting;
 	
-	public GuestChair()
+	public Chair()
 	{
 	}
 

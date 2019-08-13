@@ -5,15 +5,16 @@ import java.awt.Graphics;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
 import zyx.server.world.humanoids.npc.Chef;
 import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
+import zyx.server.world.interactable.common.useable.UseableItem;
 
-public class ChefStove extends ChefItem
+public class Stove extends UseableItem<Chef>
 {
 
 	private static final int COOK_TIME = 1000;
 
 	private FoodItem foodItem;
 
-	public ChefStove()
+	public Stove()
 	{
 		super(COOK_TIME);
 	}

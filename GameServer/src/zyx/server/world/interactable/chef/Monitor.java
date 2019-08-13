@@ -1,7 +1,6 @@
 package zyx.server.world.interactable.chef;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.util.LinkedList;
 import zyx.server.world.humanoids.handheld.HandheldItem;
@@ -9,15 +8,16 @@ import zyx.server.world.humanoids.handheld.food.DishRecipeItem;
 import zyx.server.world.humanoids.handheld.food.DishType;
 import zyx.server.world.humanoids.npc.Chef;
 import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
+import zyx.server.world.interactable.common.useable.UseableItem;
 
-public class OrderMonitor extends ChefItem
+public class Monitor extends UseableItem<Chef>
 {
 
 	private static final int LOOK_TIME = 250;
 
 	private LinkedList<DishRecipeItem> queue;
 
-	public OrderMonitor()
+	public Monitor()
 	{
 		super(LOOK_TIME);
 

@@ -12,7 +12,7 @@ import zyx.server.world.humanoids.players.PlayerManager;
 import zyx.server.world.interactable.common.DinnerTable;
 import zyx.server.world.interactable.common.FoodTable;
 import zyx.server.world.interactable.common.player.PlayerInteraction;
-import zyx.server.world.interactable.guests.GuestChair;
+import zyx.server.world.interactable.guests.Chair;
 import zyx.server.world.interactable.player.OrderMachine;
 
 public class DebugServerForm extends javax.swing.JFrame
@@ -193,7 +193,7 @@ public class DebugServerForm extends javax.swing.JFrame
 
     private void getOrderBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_getOrderBtnActionPerformed
     {//GEN-HEADEREND:event_getOrderBtnActionPerformed
-		GuestChair chair = room.chairs[0];
+		Chair chair = room.chairs[0];
 		chair.interactWith(player, PlayerInteraction.take());
     }//GEN-LAST:event_getOrderBtnActionPerformed
 

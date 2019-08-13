@@ -7,7 +7,7 @@ import zyx.server.world.humanoids.handheld.food.DishType;
 import zyx.server.world.humanoids.handheld.guests.GuestOrder;
 import zyx.server.world.humanoids.players.Player;
 import zyx.server.world.interactable.BaseInteractableItem;
-import zyx.server.world.interactable.chef.OrderMonitor;
+import zyx.server.world.interactable.chef.Monitor;
 
 public class OrderMachine extends BaseInteractableItem<Player>
 {
@@ -20,7 +20,7 @@ public class OrderMachine extends BaseInteractableItem<Player>
 		if (order != null)
 		{
 			player.removeItem();
-			OrderMonitor monitor = RoomItems.instance.orderMonitor();
+			Monitor monitor = RoomItems.instance.orderMonitor();
 			
 			ArrayList<DishType> dishes = order.getDishes();
 			for (DishType dish : dishes)

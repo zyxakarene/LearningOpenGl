@@ -53,6 +53,16 @@ public class FoodItem extends HandheldItem
 	{
 		return spoiled;
 	}
+	
+	public boolean cleanableByCleaner()
+	{
+		return !inUse && 
+						(
+							(type == HandheldItemType.DIRTY_PLATE)
+							|| 
+							(spoiled && type == HandheldItemType.FOOD)
+						);
+	}
 
 	@Override
 	public void update(long timestamp, int elapsedTime)

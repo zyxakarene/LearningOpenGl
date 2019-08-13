@@ -3,7 +3,7 @@ package zyx.server.world.humanoids.npc.behavior.guest;
 import zyx.server.world.RoomItems;
 import zyx.server.world.humanoids.npc.Guest;
 import zyx.server.world.interactable.common.DinnerTable;
-import zyx.server.world.interactable.guests.GuestChair;
+import zyx.server.world.interactable.guests.Chair;
 
 public class GuestIdleBehavior extends GuestBehavior<Object>
 {
@@ -51,7 +51,7 @@ public class GuestIdleBehavior extends GuestBehavior<Object>
 
 	private void findSeat(DinnerTable table)
 	{
-		for (GuestChair chair : table.chairs)
+		for (Chair chair : table.chairs)
 		{
 			if (!chair.inUse)
 			{

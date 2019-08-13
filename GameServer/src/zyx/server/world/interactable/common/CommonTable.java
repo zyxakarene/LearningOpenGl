@@ -5,14 +5,18 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import zyx.server.utils.IUpdateable;
+import zyx.server.world.RoomItems;
 import zyx.server.world.humanoids.HumanoidEntity;
 import zyx.server.world.humanoids.handheld.HandheldItem;
+import zyx.server.world.humanoids.handheld.food.FoodItem;
+import zyx.server.world.humanoids.npc.Cleaner;
+import zyx.server.world.humanoids.npc.behavior.cleaner.CleanerBehaviorType;
 import zyx.server.world.humanoids.players.Player;
 import zyx.server.world.interactable.BaseInteractableItem;
-import zyx.server.world.interactable.common.player.PlayerInteractable;
 import zyx.server.world.interactable.common.player.PlayerInteraction;
+import zyx.server.world.interactable.common.player.IPlayerInteractable;
 
-public abstract class CommonTable<User extends HumanoidEntity> extends BaseInteractableItem<User> implements IUpdateable, PlayerInteractable
+public abstract class CommonTable<User extends HumanoidEntity> extends BaseInteractableItem<User> implements IUpdateable, IPlayerInteractable, ICleanable
 {
 
 	private ArrayList<HandheldItem> itemsOnTable;
@@ -28,22 +32,17 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 	{
 		return itemsOnTable.isEmpty() ? -1 : itemsOnTable.get(0).id;
 	}
-	
-	public void debug_CleanTable()
-	{
-		itemsOnTable.clear();
-	}
-	
+
 	public boolean canCarryMoreItems()
 	{
 		return itemsOnTable.size() < maxItemsOnTable;
 	}
-	
+
 	public boolean isEmpty()
 	{
 		return itemsOnTable.isEmpty();
 	}
-	
+
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
@@ -65,7 +64,7 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 			onPlayerGive(player);
 		}
 	}
-	
+
 	public boolean tryAddItem(HandheldItem item)
 	{
 		if (itemsOnTable.size() < maxItemsOnTable)
@@ -76,19 +75,19 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 			itemsOnTable.add(item);
 			return true;
 		}
-		
+
 		return false;
 	}
 
 	protected HandheldItem removeItemById(int id)
 	{
 		HandheldItem item;
-		
+
 		int len = itemsOnTable.size();
 		for (int i = 0; i < len; i++)
 		{
 			item = itemsOnTable.get(i);
-			
+
 			if (!item.inUse && item.id == id)
 			{
 				System.out.println(item + " was removed from " + this);
@@ -96,10 +95,10 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 				return item;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	@Override
 	public void interactWith(User user)
 	{
@@ -150,7 +149,7 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 	protected void onDraw(Graphics g)
 	{
 		super.onDraw(g);
-		
+
 		int offsetY = 0;
 		for (HandheldItem heldItem : itemsOnTable)
 		{
@@ -162,15 +161,63 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 
 			g.setColor(Color.MAGENTA);
 			g.fillRect(xPos, yPos, 10, 10);
-			
+
 			g.setColor(Color.WHITE);
-			g.fillRect(xPos - 30, yPos-8, 60, 8);
+			g.fillRect(xPos - 30, yPos - 8, 60, 8);
 			g.setColor(Color.BLACK);
-			g.setFont(new Font("Arial", Font.BOLD, 8)); 
+			g.setFont(new Font("Arial", Font.BOLD, 8));
 			g.drawString(heldItem.getVisualName(), xPos - 30, yPos - 1);
-			g.drawRect(xPos - 31, yPos-9, 61, 9);
-			
+			g.drawRect(xPos - 31, yPos - 9, 61, 9);
+
 			offsetY += 10;
 		}
+	}
+
+	@Override
+	public void clean(Cleaner cleaner)
+	{
+		FoodItem itemToClean = null;
+
+		for (HandheldItem item : itemsOnTable)
+		{
+			if (item instanceof FoodItem)
+			{
+				FoodItem food = (FoodItem) item;
+				if (food.cleanableByCleaner())
+				{
+					itemToClean = food;
+					break;
+				}
+			}
+		}
+
+		if (itemToClean != null)
+		{
+			removeItemById(itemToClean.id);
+			cleaner.pickupItem(itemToClean);
+			cleaner.requestBehavior(CleanerBehaviorType.GOING_TO_DISH_WASHER, RoomItems.instance.dishWasher);
+
+		}
+		else
+		{
+			cleaner.requestBehavior(CleanerBehaviorType.GOING_TO_IDLE);
+		}
+	}
+
+	@Override
+	public boolean canBeCleaned()
+	{
+		for (HandheldItem item : itemsOnTable)
+		{
+			if (item instanceof FoodItem)
+			{
+				FoodItem food = (FoodItem) item;
+				if (food.cleanableByCleaner())
+				{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

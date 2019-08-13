@@ -1,12 +1,13 @@
-package zyx.server.world.interactable.chef;
+package zyx.server.world.interactable.common.useable;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import zyx.server.utils.IUpdateable;
-import zyx.server.world.humanoids.npc.Chef;
+import zyx.server.world.humanoids.HumanoidEntity;
+import zyx.server.world.humanoids.players.Player;
 import zyx.server.world.interactable.BaseInteractableItem;
 
-public abstract class ChefItem extends BaseInteractableItem<Chef> implements IUpdateable
+public abstract class UseableItem<User extends HumanoidEntity> extends BaseInteractableItem<User> implements IUpdateable
 {
 
 	private float timeToComplete;
@@ -14,7 +15,7 @@ public abstract class ChefItem extends BaseInteractableItem<Chef> implements IUp
 
 	private boolean actionStarted;
 
-	public ChefItem(int completionTime)
+	public UseableItem(int completionTime)
 	{
 		inUse = false;
 		currentUser = null;
@@ -23,7 +24,7 @@ public abstract class ChefItem extends BaseInteractableItem<Chef> implements IUp
 		timeToComplete = completionTime;
 	}
 
-	protected void startUsing(Chef user)
+	protected void startUsing(User user)
 	{
 		if (currentUser == user)
 		{
@@ -32,10 +33,20 @@ public abstract class ChefItem extends BaseInteractableItem<Chef> implements IUp
 		}
 	}
 
+	protected void startUsing(Player player)
+	{
+		if (!inUse)
+		{
+			currentUser = null;
+			actionStarted = true;
+			completeTimeRemaining = timeToComplete;
+		}
+	}
+
 	@Override
 	public final void update(long timestamp, int elapsedTime)
 	{
-		if (actionStarted && currentUser != null)
+		if (actionStarted)
 		{
 			completeTimeRemaining -= elapsedTime;
 

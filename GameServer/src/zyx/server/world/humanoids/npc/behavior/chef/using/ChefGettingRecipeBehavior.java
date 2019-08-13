@@ -3,9 +3,9 @@ package zyx.server.world.humanoids.npc.behavior.chef.using;
 import zyx.server.world.humanoids.npc.Chef;
 import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
 import zyx.server.world.humanoids.npc.behavior.chef.ChefWalkingBehavior;
-import zyx.server.world.interactable.chef.OrderMonitor;
+import zyx.server.world.interactable.chef.Monitor;
 
-public class ChefGettingRecipeBehavior extends ChefWalkingBehavior<OrderMonitor>
+public class ChefGettingRecipeBehavior extends ChefWalkingBehavior<Monitor>
 {
 
 	public ChefGettingRecipeBehavior(Chef npc)

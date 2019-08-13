@@ -1,11 +1,13 @@
 package zyx.server.world.humanoids.npc;
 
+import zyx.server.world.humanoids.handheld.guests.BillItem;
 import zyx.server.world.interactable.common.DinnerTable;
 
 public class GuestGroup
 {
 	public Guest[] groupMembers;
 	public DinnerTable table;
+	public BillItem bill;
 
 	public GuestGroup(int size)
 	{

@@ -1,12 +1,12 @@
 package zyx.server.world.humanoids.npc.behavior.guest;
 
 import zyx.server.world.humanoids.npc.Guest;
-import zyx.server.world.interactable.guests.GuestChair;
+import zyx.server.world.interactable.guests.Chair;
 
 public class GuestWaitingForBillBehavior extends GuestBehavior<Object>
 {
 
-	private GuestChair[] groupChairs;
+	private Chair[] groupChairs;
 
 	public GuestWaitingForBillBehavior(Guest npc)
 	{
@@ -25,7 +25,7 @@ public class GuestWaitingForBillBehavior extends GuestBehavior<Object>
 		if (npc.isLeader && npc.group.table.hasGottenBill)
 		{
 			boolean isAllReady = true;
-			for (GuestChair chair : groupChairs)
+			for (Chair chair : groupChairs)
 			{
 				if (chair != null && chair.currentUser != null)
 				{
@@ -49,10 +49,9 @@ public class GuestWaitingForBillBehavior extends GuestBehavior<Object>
 	private void finishVisit()
 	{
 		npc.group.table.makeAvailible();
-		npc.group.table.hasGottenBill = false;
-		npc.group.table.debug_CleanTable();
+		npc.group.table.removeBill(npc.group.bill.id);
 		
-		for (GuestChair chair : groupChairs)
+		for (Chair chair : groupChairs)
 		{
 			if (chair != null && chair.currentUser != null)
 			{

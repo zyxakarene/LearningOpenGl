@@ -3,11 +3,11 @@ package zyx.server.world.humanoids.npc.behavior.chef.finding;
 import zyx.server.world.humanoids.npc.Chef;
 import zyx.server.world.humanoids.npc.behavior.BaseNpcBehavior;
 import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
-import zyx.server.world.interactable.chef.ChefFridge;
+import zyx.server.world.interactable.chef.Fridge;
 
 public class ChefFindingFridgeBehavior extends BaseNpcBehavior<Chef, ChefBehaviorType, Object>
 {
-	private ChefFridge[] fridges;
+	private Fridge[] fridges;
 	
 	public ChefFindingFridgeBehavior(Chef npc)
 	{
@@ -19,7 +19,7 @@ public class ChefFindingFridgeBehavior extends BaseNpcBehavior<Chef, ChefBehavio
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-		for (ChefFridge fridge : fridges)
+		for (Fridge fridge : fridges)
 		{
 			if (!fridge.inUse)
 			{

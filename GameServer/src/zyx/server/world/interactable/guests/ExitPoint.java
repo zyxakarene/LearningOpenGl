@@ -2,7 +2,7 @@ package zyx.server.world.interactable.guests;
 
 import zyx.server.world.humanoids.npc.Guest;
 
-public class GuestExitPoint extends GuestItem
+public class ExitPoint extends GuestItem
 {
 
 	@Override

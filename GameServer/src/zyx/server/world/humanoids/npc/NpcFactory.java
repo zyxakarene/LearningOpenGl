@@ -3,12 +3,29 @@ package zyx.server.world.humanoids.npc;
 import zyx.server.world.humanoids.npc.behavior.chef.*;
 import zyx.server.world.humanoids.npc.behavior.chef.finding.*;
 import zyx.server.world.humanoids.npc.behavior.chef.using.*;
+import zyx.server.world.humanoids.npc.behavior.cleaner.*;
 import zyx.server.world.humanoids.npc.behavior.guest.*;
 import zyx.server.world.humanoids.npc.naming.NpcNameGenerator;
 import zyx.server.world.humanoids.npc.naming.NpcSetup;
 
 class NpcFactory
 {
+	static Cleaner createCleaner()
+	{
+		NpcSetup setup = NpcNameGenerator.generateSetup();
+		Cleaner cleaner = new Cleaner(setup);
+		
+		cleaner.addBehavior(new CleanerIdleBehavior(cleaner));
+		cleaner.addBehavior(new CleanerGoingToTableBehavior(cleaner));
+		cleaner.addBehavior(new CleanerGoingToDishWasherBehavior(cleaner));
+		cleaner.addBehavior(new CleanerWaitingForDishWasherBehavior(cleaner));
+		cleaner.addBehavior(new CleanerGoingToIdleBehavior(cleaner));
+		
+		cleaner.requestBehavior(CleanerBehaviorType.GOING_TO_IDLE);
+		
+		return cleaner;
+	}
+	
 	static Chef createChef()
 	{
 		NpcSetup setup = NpcNameGenerator.generateSetup();

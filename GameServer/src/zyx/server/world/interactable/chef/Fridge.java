@@ -5,14 +5,15 @@ import zyx.server.world.humanoids.handheld.food.DishRecipeItem;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
 import zyx.server.world.humanoids.npc.Chef;
 import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
+import zyx.server.world.interactable.common.useable.UseableItem;
 
-public class ChefFridge extends ChefItem
+public class Fridge extends UseableItem<Chef>
 {
 	private static final int PICKUP_TIME = 800;
 	
 	private DishRecipeItem recipe;
 	
-	public ChefFridge()
+	public Fridge()
 	{
 		super(PICKUP_TIME);
 	}

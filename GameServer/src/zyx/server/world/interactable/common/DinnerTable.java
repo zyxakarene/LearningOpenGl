@@ -4,9 +4,10 @@ import java.awt.Color;
 import zyx.server.world.humanoids.handheld.HandheldItem;
 import zyx.server.world.humanoids.handheld.HandheldItemType;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
+import zyx.server.world.humanoids.handheld.guests.BillItem;
 import zyx.server.world.humanoids.npc.Guest;
 import zyx.server.world.humanoids.players.Player;
-import zyx.server.world.interactable.guests.GuestChair;
+import zyx.server.world.interactable.guests.Chair;
 
 public class DinnerTable extends CommonTable<Guest>
 {
@@ -15,10 +16,10 @@ public class DinnerTable extends CommonTable<Guest>
 
 	public boolean hasGottenBill;
 
-	public final GuestChair[] chairs;
+	public final Chair[] chairs;
 	public final int chairCount;
 
-	public DinnerTable(GuestChair[] connectedChairs)
+	public DinnerTable(Chair[] connectedChairs)
 	{
 		super(MAX_GUEST_TABLE_ITEM_COUNT);
 		chairs = connectedChairs;
@@ -36,7 +37,7 @@ public class DinnerTable extends CommonTable<Guest>
 		{
 			if (itemToGive.type == HandheldItemType.BILL)
 			{
-				giveBill();
+				giveBill((BillItem) itemToGive);
 			}
 			else if (itemToGive.type == HandheldItemType.FOOD)
 			{
@@ -47,17 +48,18 @@ public class DinnerTable extends CommonTable<Guest>
 		}
 	}
 
-	private void giveBill()
+	private void giveBill(BillItem bill)
 	{
 		if (inUse)
 		{
 			hasGottenBill = true;
 
-			for (GuestChair chair : chairs)
+			for (Chair chair : chairs)
 			{
 				Guest guestInChair = chair.getCurrentGuest();
 				if (guestInChair != null)
 				{
+					guestInChair.group.bill = bill;
 					guestInChair.hasBill = true;
 				}
 			}
@@ -67,7 +69,7 @@ public class DinnerTable extends CommonTable<Guest>
 	public boolean canReceiveBill()
 	{
 		boolean allGuestsArrived = true;
-		for (GuestChair chair : chairs)
+		for (Chair chair : chairs)
 		{
 			allGuestsArrived = allGuestsArrived && chair.isCurrentGuestSitting();
 		}
@@ -78,7 +80,7 @@ public class DinnerTable extends CommonTable<Guest>
 	private void giveFood(FoodItem food)
 	{
 		//Try to find the correct guest
-		for (GuestChair chair : chairs)
+		for (Chair chair : chairs)
 		{
 			Guest guestInChair = chair.getCurrentGuest();
 			if (guestInChair != null && !guestInChair.hasEaten && guestInChair.dishRequest == food.dish)
@@ -93,7 +95,7 @@ public class DinnerTable extends CommonTable<Guest>
 		}
 
 		//Nobody wanted the food, force someone to take it!
-		for (GuestChair chair : chairs)
+		for (Chair chair : chairs)
 		{
 			Guest guestInChair = chair.getCurrentGuest();
 			if (guestInChair != null && !guestInChair.hasEaten)
@@ -112,5 +114,11 @@ public class DinnerTable extends CommonTable<Guest>
 	public Color getColor()
 	{
 		return new Color(255, 160, 50);
+	}
+
+	public void removeBill(int billID)
+	{
+		hasGottenBill = false;
+		removeItemById(billID);
 	}
 }

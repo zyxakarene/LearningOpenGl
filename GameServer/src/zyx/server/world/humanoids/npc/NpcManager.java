@@ -16,6 +16,14 @@ public class NpcManager extends WorldEntityManager<BaseNpc> implements IUpdateab
 	{
 	}
 
+	public Cleaner addCleaner()
+	{
+		Cleaner cleaner = NpcFactory.createCleaner();
+		addEntity(cleaner);
+		
+		return cleaner;
+	}
+
 	public Chef addChef()
 	{
 		Chef chef = NpcFactory.createChef();

@@ -3,12 +3,12 @@ package zyx.server.world.humanoids.npc.behavior.chef.finding;
 import zyx.server.world.humanoids.npc.Chef;
 import zyx.server.world.humanoids.npc.behavior.BaseNpcBehavior;
 import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
-import zyx.server.world.interactable.chef.OrderMonitor;
+import zyx.server.world.interactable.chef.Monitor;
 
 public class ChefFindingMonitorBehavior extends BaseNpcBehavior<Chef, ChefBehaviorType, Object>
 {
 
-	private OrderMonitor monitor;
+	private Monitor monitor;
 
 	public ChefFindingMonitorBehavior(Chef npc)
 	{
