@@ -1,5 +1,6 @@
 package zyx.server.world;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
@@ -17,6 +18,9 @@ import zyx.server.world.interactable.common.FoodTable;
 import zyx.server.world.interactable.guests.Chair;
 import zyx.server.world.interactable.guests.ExitPoint;
 import zyx.server.world.interactable.player.OrderMachine;
+import zyx.server.world.pathfanding.AStarPathFinder;
+import zyx.server.world.pathfanding.GraphBuilder;
+import zyx.server.world.pathfanding.NodeGraph;
 
 public class RoomItems implements IUpdateable
 {
@@ -35,7 +39,10 @@ public class RoomItems implements IUpdateable
 	public Monitor orderMonitor;
 
 	public ExitPoint exitPoint;
-	
+
+	public NodeGraph graph;
+	private final ArrayList<Vector3f> path;
+
 	public RoomItems()
 	{
 		instance = this;
@@ -69,9 +76,15 @@ public class RoomItems implements IUpdateable
 
 		exitPoint = new ExitPoint();
 		exitPoint.updatePosition(0, 0, 0);
-		
+
 		dishWasher = new DishWasher();
 		dishWasher.updatePosition(200, 250, 0);
+
+		graph = GraphBuilder.getGraph();
+		
+		AStarPathFinder p = new AStarPathFinder();
+		p.getPath(new Vector3f(0, 0, 0), new Vector3f(300, 0, 0));
+		path = p.path;
 	}
 
 	public Fridge getNearestFridge(Vector3f from)
@@ -113,9 +126,11 @@ public class RoomItems implements IUpdateable
 
 		orderMachine.draw(g);
 		orderMonitor.draw(g);
-		
+
 		dishWasher.draw(g);
-		
+
+		graph.draw(g);
+
 		ArrayList<BaseNpc> npcs = NpcManager.getInstance().getAllEntities();
 		for (BaseNpc npc : npcs)
 		{
@@ -127,5 +142,14 @@ public class RoomItems implements IUpdateable
 		{
 			player.draw(g);
 		}
+		
+		g.setColor(Color.GREEN);
+		for (Vector3f v : path)
+		{
+			int x = (int) v.x;
+			int y = (int) v.y;
+			g.fillOval(x, y, 8, 8);
+		}
+
 	}
 }
