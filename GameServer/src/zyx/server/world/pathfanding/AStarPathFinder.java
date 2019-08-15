@@ -7,9 +7,12 @@ import org.lwjgl.util.vector.Vector3f;
 public class AStarPathFinder
 {
 
+	private int currentNodeIndex;
+	private int nodeCount;
+
 	private NodeGraph graph;
 
-	public ArrayList<Vector3f> path;
+	private ArrayList<Vector3f> path;
 	private ArrayList<Node> closedList;
 	private ArrayList<Node> openList;
 
@@ -22,14 +25,52 @@ public class AStarPathFinder
 		openList = new ArrayList<>();
 	}
 
-	public void getPath(Vector3f from, Vector3f to)
+	public void preparePath(float fromX, float fromY, float fromZ, float toX, float toY, float toZ)
 	{
 		path.clear();
 
-		Node nodeFrom = graph.getClosetsTo(from.x, from.y, from.z);
-		Node nodeTo = graph.getClosetsTo(to.x, to.y, to.z);
+		Node nodeFrom = graph.getClosetsTo(fromX, fromY, fromZ);
+		Node nodeTo = graph.getClosetsTo(toX, toY, toZ);
+
+		path.add(new Vector3f(toX, toY, toZ));
 
 		createPathBetween(nodeFrom, nodeTo);
+		currentNodeIndex = 0;
+	}
+
+	public void getCurrentTarget(Vector3f out)
+	{
+		Vector3f current = path.get(currentNodeIndex);
+		out.set(current);
+	}
+
+	public void getNextTarget(Vector3f out)
+	{
+		if (hasNextNode())
+		{
+			int nextIndex = currentNodeIndex + 1;
+			Vector3f current = path.get(nextIndex);
+			out.set(current);
+		}
+		else
+		{
+			getCurrentTarget(out);
+		}
+	}
+
+	public boolean hasMoreNodes()
+	{
+		return currentNodeIndex < nodeCount;
+	}
+
+	public boolean hasNextNode()
+	{
+		return currentNodeIndex + 1 < nodeCount;
+	}
+
+	public void onHitNode()
+	{
+		currentNodeIndex++;
 	}
 
 	private void createPathBetween(Node from, Node to)
@@ -81,6 +122,8 @@ public class AStarPathFinder
 			node = node.getParent();
 		}
 		path.add(new Vector3f(node.x, node.y, node.z));
+
+		nodeCount = path.size();
 
 		Collections.reverse(path);
 		graph.clearParents();

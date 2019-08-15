@@ -52,6 +52,15 @@ public abstract class WorldEntity
 		
 		updatedPosition = true;
 	}
+	
+	public void updateLook(float lx, float ly, float lz)
+	{
+		this.lx = lx;
+		this.ly = ly;
+		this.lz = lz;
+		
+		updatedPosition = true;
+	}
 
 	public final void draw(Graphics g)
 	{

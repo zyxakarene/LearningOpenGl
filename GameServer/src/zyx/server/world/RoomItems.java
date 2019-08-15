@@ -41,7 +41,6 @@ public class RoomItems implements IUpdateable
 	public ExitPoint exitPoint;
 
 	public NodeGraph graph;
-	private final ArrayList<Vector3f> path;
 
 	public RoomItems()
 	{
@@ -81,10 +80,6 @@ public class RoomItems implements IUpdateable
 		dishWasher.updatePosition(200, 250, 0);
 
 		graph = GraphBuilder.getGraph();
-		
-		AStarPathFinder p = new AStarPathFinder();
-		p.getPath(new Vector3f(0, 0, 0), new Vector3f(300, 0, 0));
-		path = p.path;
 	}
 
 	public Fridge getNearestFridge(Vector3f from)
@@ -142,14 +137,5 @@ public class RoomItems implements IUpdateable
 		{
 			player.draw(g);
 		}
-		
-		g.setColor(Color.GREEN);
-		for (Vector3f v : path)
-		{
-			int x = (int) v.x;
-			int y = (int) v.y;
-			g.fillOval(x, y, 8, 8);
-		}
-
 	}
 }
