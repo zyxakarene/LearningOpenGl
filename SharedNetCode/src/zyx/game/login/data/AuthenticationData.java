@@ -1,4 +1,6 @@
-package zyx.game.vo;
+package zyx.game.login.data;
+
+import zyx.game.vo.Gender;
 
 public class AuthenticationData
 {

@@ -1,8 +1,8 @@
 package zyx.server.controller;
 
-import zyx.game.vo.LoginData;
+import zyx.game.login.data.LoginData;
 import zyx.server.world.humanoids.players.Player;
-import zyx.game.vo.PositionData;
+import zyx.game.position.data.PositionData;
 import zyx.net.io.controllers.NetworkCallbacks;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.INetworkCallback;

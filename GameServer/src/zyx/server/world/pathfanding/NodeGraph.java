@@ -72,11 +72,11 @@ public class NodeGraph
 	
 	public void draw(Graphics g)
 	{
-//		g.setColor(Color.BLACK);
-//		for (Node node : nodes)
-//		{
-//			node.draw(g);
-//		}
+		g.setColor(Color.BLACK);
+		for (Node node : nodes)
+		{
+			node.draw(g);
+		}
 	}
 
 	void clearParents()

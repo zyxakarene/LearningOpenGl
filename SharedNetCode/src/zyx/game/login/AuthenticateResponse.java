@@ -1,10 +1,10 @@
 package zyx.game.login;
 
+import zyx.game.login.data.AuthenticationData;
 import zyx.net.data.ReadableDataObject;
 import zyx.net.io.responses.BaseNetworkResponse;
 import zyx.net.io.controllers.NetworkCommands;
 import static zyx.game.login.LoginConstants.*;
-import zyx.game.vo.AuthenticationData;
 import zyx.game.vo.Gender;
 
 public class AuthenticateResponse extends BaseNetworkResponse<AuthenticationData>

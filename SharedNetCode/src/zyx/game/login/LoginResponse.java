@@ -1,11 +1,11 @@
 package zyx.game.login;
 
+import zyx.game.login.data.LoginData;
 import zyx.net.data.ReadableDataObject;
 import zyx.net.io.responses.BaseNetworkResponse;
 import zyx.net.io.controllers.NetworkCommands;
 import static zyx.game.login.LoginConstants.*;
 import zyx.game.vo.Gender;
-import zyx.game.vo.LoginData;
 
 public class LoginResponse extends BaseNetworkResponse<LoginData>
 {

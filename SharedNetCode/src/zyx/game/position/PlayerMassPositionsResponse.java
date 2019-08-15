@@ -1,11 +1,11 @@
 package zyx.game.position;
 
+import zyx.game.position.data.PlayerMassPositionData;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.net.data.ReadableDataObject;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.BaseNetworkResponse;
 import static zyx.game.position.PositionConstants.*;
-import zyx.game.vo.PlayerMassPositionData;
 import zyx.net.data.ReadableDataArray;
 
 public class PlayerMassPositionsResponse extends BaseNetworkResponse<PlayerMassPositionData>

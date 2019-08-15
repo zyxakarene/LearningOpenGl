@@ -3,7 +3,7 @@ package zyx.server.world.entity;
 import java.awt.Color;
 import java.awt.Graphics;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.game.vo.PositionData;
+import zyx.game.position.data.PositionData;
 
 public abstract class WorldEntity
 {

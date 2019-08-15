@@ -1,4 +1,4 @@
-package zyx.game.vo;
+package zyx.game.position.data;
 
 import org.lwjgl.util.vector.Vector3f;
 

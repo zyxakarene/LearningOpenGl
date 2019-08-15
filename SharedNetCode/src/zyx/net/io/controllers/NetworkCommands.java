@@ -13,4 +13,11 @@ public final class NetworkCommands
 	
 	public static final String PLAYER_UPDATE_POSITION = "PlayerPos";
 	public static final String PLAYER_MASS_POSITION = "PlayerMassPos";
+	
+	public static final String ITEM_CREATE = "itemCreate";
+	public static final String ITEM_DESTROY = "itemDestroy";
+	public static final String ITEM_SET_OWNER = "itemOwner";
+	public static final String ITEM_SET_TYPE = "itemType";
+	
+	public static final String ENTITY_INTERACT = "entityInteract";
 }

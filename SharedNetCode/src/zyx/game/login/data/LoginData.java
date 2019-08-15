@@ -1,5 +1,6 @@
-package zyx.game.vo;
+package zyx.game.login.data;
 
+import zyx.game.vo.Gender;
 import zyx.net.io.connections.ConnectionData;
 
 public class LoginData
