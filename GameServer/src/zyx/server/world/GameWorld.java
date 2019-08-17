@@ -6,6 +6,7 @@ import zyx.server.controller.ServerNetworkController;
 import zyx.server.world.humanoids.players.PlayerManager;
 import zyx.server.world.humanoids.PositionUpdater;
 import zyx.server.utils.IUpdateable;
+import zyx.server.world.humanoids.npc.Chef;
 import zyx.server.world.humanoids.npc.NpcManager;
 import zyx.server.world.interactable.chef.Fridge;
 import zyx.server.world.interactable.common.DinnerTable;
@@ -33,13 +34,15 @@ public class GameWorld implements IUpdateable
 		playerManager = PlayerManager.getInstance();
 		npcManager = NpcManager.getInstance();
 
-		networkController = new ServerNetworkController();
-		networkController.addListeners();
-		
 		room = new RoomItems();
 		DebugServerForm.room = room;
 		
-		npcManager.addChef();
+		networkController = new ServerNetworkController();
+		networkController.addListeners();
+		
+		Chef chef = npcManager.addChef();
+		chef.x = 20;
+		chef.y = 20;
 		npcManager.addGuestGroup();
 		npcManager.addCleaner();
 	}

@@ -5,8 +5,9 @@ public class ItemChangedData
 	public static final ItemChangedData INSTANCE = new ItemChangedData();
 	
 	public int itemId;
-	public int typeId;
 	public int ownerId;
+	public String dishType;
+	public int typeId;
 
 	private ItemChangedData()
 	{

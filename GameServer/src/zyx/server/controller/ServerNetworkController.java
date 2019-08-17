@@ -12,6 +12,8 @@ import zyx.game.ping.PingRequest;
 import zyx.game.ping.PingResponse;
 import zyx.game.position.PlayerMassPositionsRequest;
 import zyx.game.position.PlayerPosResponse;
+import zyx.game.world.entities.EntityInteractWithRequest;
+import zyx.game.world.items.*;
 import zyx.net.io.controllers.BaseNetworkController;
 import zyx.net.io.requests.NetworkRequestDispatcher;
 import zyx.net.io.responses.NetworkResponseDispatcher;
@@ -23,6 +25,7 @@ public class ServerNetworkController extends BaseNetworkController
 	public ServerNetworkController()
 	{
 		addCallbackMap(new ServerNetworkCallbacks());
+		addCallbackMap(new PlayerNetworkCallbacks());
 	}
 
 	@Override
@@ -35,6 +38,16 @@ public class ServerNetworkController extends BaseNetworkController
 		dispatcher.addRequestHandler(new SetupGameRequest());
 		dispatcher.addRequestHandler(new AuthenticateRequest());
 		dispatcher.addRequestHandler(new PingRequest());
+		
+		dispatcher.addRequestHandler(new ItemCreateFoodRequest());
+		dispatcher.addRequestHandler(new ItemCreateBillRequest());
+		dispatcher.addRequestHandler(new ItemCreateOrdersRequest());
+		dispatcher.addRequestHandler(new ItemAddOrderRequest());
+		dispatcher.addRequestHandler(new ItemDestroyRequest());
+		dispatcher.addRequestHandler(new ItemSetOwnerRequest());
+		dispatcher.addRequestHandler(new ItemSetTypeRequest());
+		
+		dispatcher.addRequestHandler(new EntityInteractWithRequest());
 	}
 
 	@Override
@@ -46,6 +59,9 @@ public class ServerNetworkController extends BaseNetworkController
 		dispatcher.addResponseCallback(new PlayerPosResponse());
 		dispatcher.addResponseCallback(new AuthenticateResponse());
 		dispatcher.addResponseCallback(new PingResponse());
+		
+		dispatcher.addResponseCallback(new ItemCreateFoodResponse());
+		dispatcher.addResponseCallback(new ItemSetOwnerResponse());
 	}
 
 }

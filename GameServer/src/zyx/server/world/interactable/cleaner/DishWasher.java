@@ -39,7 +39,7 @@ public class DishWasher extends UseableItem<Cleaner> implements IPlayerInteracta
 		inUse = false;
 		if (currentUser != null)
 		{
-			currentUser.removeItem();
+			currentUser.removeItem(true);
 			currentUser.requestBehavior(CleanerBehaviorType.IDLE);
 		}
 	}

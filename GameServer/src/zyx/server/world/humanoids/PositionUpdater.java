@@ -2,8 +2,7 @@ package zyx.server.world.humanoids;
 
 import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.net.io.controllers.NetworkCommands;
-import zyx.server.controller.ServerSender;
+import zyx.server.controller.services.PlayerService;
 import zyx.server.utils.IUpdateable;
 import zyx.server.world.entity.WorldEntity;
 import zyx.server.world.entity.WorldEntityManager;
@@ -24,14 +23,14 @@ public class PositionUpdater implements IUpdateable
 	private int arrayLength;
 	private int[] idArray;
 	private Vector3f[] posArray;
-	private Vector3f[] rotArray;
+	private Vector3f[] lookArray;
 
 	public PositionUpdater()
 	{
 		arrayLength = 0;
 		idArray = new int[arrayLength];
 		posArray = new Vector3f[arrayLength];
-		rotArray = new Vector3f[arrayLength];
+		lookArray = new Vector3f[arrayLength];
 
 		movingEntities = new ArrayList<>();
 		time = 0;
@@ -84,10 +83,10 @@ public class PositionUpdater implements IUpdateable
 			WorldEntity movingPlayer = movingEntities.get(i);
 			idArray[i] = movingPlayer.id;
 			posArray[i].set(movingPlayer.x, movingPlayer.y, movingPlayer.z);
-			rotArray[i].set(movingPlayer.lx, movingPlayer.ly, movingPlayer.lz);
+			lookArray[i].set(movingPlayer.lx, movingPlayer.ly, movingPlayer.lz);
 		}
 
-		ServerSender.sendToAll(NetworkCommands.PLAYER_MASS_POSITION, posArray, rotArray, idArray);
+		PlayerService.setPositions(idArray, posArray, lookArray);
 
 		movingEntities.clear();
 	}
@@ -97,12 +96,12 @@ public class PositionUpdater implements IUpdateable
 		arrayLength = movingEntities.size();
 		idArray = new int[arrayLength];
 		posArray = new Vector3f[arrayLength];
-		rotArray = new Vector3f[arrayLength];
+		lookArray = new Vector3f[arrayLength];
 
 		for (int i = 0; i < arrayLength; i++)
 		{
 			posArray[i] = new Vector3f();
-			rotArray[i] = new Vector3f();
+			lookArray[i] = new Vector3f();
 		}
 	}
 

@@ -55,7 +55,10 @@ public class DebugServerForm extends javax.swing.JFrame
 
 	private void onDrawPanel(Graphics g)
 	{
-		room.draw(g);
+		if (room != null)
+		{
+			room.draw(g);
+		}
 	}
 
 	@SuppressWarnings("unchecked")

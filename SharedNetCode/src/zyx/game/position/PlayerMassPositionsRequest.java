@@ -18,9 +18,9 @@ public class PlayerMassPositionsRequest extends BaseNetworkRequest
 	@Override
 	protected void getDataObject(WriteableDataObject data, Object[] params)
 	{
-		Vector3f[] positions = (Vector3f[]) params[0];
-		Vector3f[] lookAts = (Vector3f[]) params[1];
-		int[] ids = (int[]) params[2];
+		int[] ids = (int[]) params[0];
+		Vector3f[] positions = (Vector3f[]) params[1];
+		Vector3f[] lookAts = (Vector3f[]) params[2];
 
 		WriteableDataArray<WriteableDataObject> arrayData = new WriteableDataArray(WriteableDataObject.class);
 

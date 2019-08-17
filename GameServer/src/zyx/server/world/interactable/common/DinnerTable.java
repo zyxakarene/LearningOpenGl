@@ -1,6 +1,7 @@
 package zyx.server.world.interactable.common;
 
 import java.awt.Color;
+import zyx.server.controller.services.ItemService;
 import zyx.server.world.humanoids.handheld.HandheldItem;
 import zyx.server.world.humanoids.handheld.HandheldItemType;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
@@ -44,16 +45,18 @@ public class DinnerTable extends CommonTable<Guest>
 				giveFood((FoodItem) itemToGive);
 			}
 
-			player.removeItem();
+			player.removeItem(false);
 		}
 	}
 
 	private void giveBill(BillItem bill)
 	{
-		if (inUse)
+		if (inUse && !hasGottenBill)
 		{
 			hasGottenBill = true;
 
+			ItemService.createBill(bill, id);
+			
 			for (Chair chair : chairs)
 			{
 				Guest guestInChair = chair.getCurrentGuest();
@@ -119,6 +122,10 @@ public class DinnerTable extends CommonTable<Guest>
 	public void removeBill(int billID)
 	{
 		hasGottenBill = false;
-		removeItemById(billID);
+		HandheldItem bill = removeItemById(billID);
+		if (bill != null)
+		{
+			ItemService.destroyItem(bill);
+		}
 	}
 }

@@ -1,11 +1,11 @@
 package zyx.server.world;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.server.utils.IUpdateable;
 import zyx.server.world.humanoids.npc.BaseNpc;
+import zyx.server.world.humanoids.npc.Guest;
 import zyx.server.world.humanoids.npc.NpcManager;
 import zyx.server.world.humanoids.players.Player;
 import zyx.server.world.humanoids.players.PlayerManager;
@@ -15,10 +15,11 @@ import zyx.server.world.interactable.chef.Monitor;
 import zyx.server.world.interactable.cleaner.DishWasher;
 import zyx.server.world.interactable.common.DinnerTable;
 import zyx.server.world.interactable.common.FoodTable;
+import zyx.server.world.interactable.common.player.IPlayerInteractable;
+import zyx.server.world.interactable.floor.Floor;
 import zyx.server.world.interactable.guests.Chair;
 import zyx.server.world.interactable.guests.ExitPoint;
 import zyx.server.world.interactable.player.OrderMachine;
-import zyx.server.world.pathfanding.AStarPathFinder;
 import zyx.server.world.pathfanding.GraphBuilder;
 import zyx.server.world.pathfanding.NodeGraph;
 
@@ -37,6 +38,7 @@ public class RoomItems implements IUpdateable
 	public DishWasher dishWasher;
 	public OrderMachine orderMachine;
 	public Monitor orderMonitor;
+	public Floor floor;
 
 	public ExitPoint exitPoint;
 
@@ -46,6 +48,8 @@ public class RoomItems implements IUpdateable
 	{
 		instance = this;
 
+		floor = new Floor();
+		
 		fridges = new Fridge[1];
 		fridges[0] = new Fridge();
 		fridges[0].updatePosition(200, 25, 0);
@@ -108,10 +112,14 @@ public class RoomItems implements IUpdateable
 
 		orderMonitor.update(timestamp, elapsedTime);
 		dishWasher.update(timestamp, elapsedTime);
+		
+		floor.update(timestamp, elapsedTime);
 	}
 
 	public void draw(Graphics g)
 	{
+		floor.draw(g);
+		
 		fridges[0].draw(g);
 		stoves[0].draw(g);
 		foodTables[0].draw(g);
@@ -123,6 +131,7 @@ public class RoomItems implements IUpdateable
 		orderMonitor.draw(g);
 
 		dishWasher.draw(g);
+		
 
 		graph.draw(g);
 
@@ -137,5 +146,75 @@ public class RoomItems implements IUpdateable
 		{
 			player.draw(g);
 		}
+	}
+
+	public OrderMachine getOrderMachine()
+	{
+		return orderMachine;
+	}
+	
+	public Chair getChairWithGuest(Guest guest)
+	{
+		for (Chair chair : chairs)
+		{
+			if (chair.isCurrentGuestSitting() && chair.currentUser == guest)
+			{
+				return chair;
+			}
+		}
+		
+		return null;
+	}
+
+	public IPlayerInteractable getEntityWithItem(int itemId)
+	{
+		for (FoodTable table : foodTables)
+		{
+			if (table.containsItem(itemId))
+			{
+				return table;
+			}
+		}
+		
+		for (DinnerTable table : dinnerTables)
+		{
+			if (table.containsItem(itemId))
+			{
+				return table;
+			}
+		}
+		
+		if (floor.containsItem(itemId))
+		{
+			return floor;
+		}
+		
+		return null;
+	}
+
+	public IPlayerInteractable getEntityWithId(int ownerId)
+	{
+		for (FoodTable table : foodTables)
+		{
+			if (table.id == ownerId)
+			{
+				return table;
+			}
+		}
+		
+		for (DinnerTable table : dinnerTables)
+		{
+			if (table.id == ownerId)
+			{
+				return table;
+			}
+		}
+		
+		if (floor.id == ownerId)
+		{
+			return floor;
+		}
+		
+		return null;
 	}
 }

@@ -1,11 +1,13 @@
 package zyx.server.controller;
 
+import zyx.server.controller.sending.ServerSender;
 import zyx.game.login.data.LoginData;
 import zyx.server.world.humanoids.players.Player;
 import zyx.game.position.data.PositionData;
 import zyx.net.io.controllers.NetworkCallbacks;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.INetworkCallback;
+import zyx.server.controller.services.PlayerService;
 import zyx.server.world.humanoids.players.PlayerManager;
 
 public class ServerNetworkCallbacks extends NetworkCallbacks
@@ -31,7 +33,7 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 		Player player = PlayerManager.getInstance().createPlayer(data.name, data.gender, data.connection);
 		System.out.println("Player: " + player.id + " - " + player.gender + " joined the game");
 
-		ServerSender.sendToSingle(NetworkCommands.AUTHENTICATE, player.connection, player.name, player.id, player.gender);
+		PlayerService.authenticate(player);
 
 		onPlayerJoin(player);
 	}
@@ -41,10 +43,10 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 		PingManager.getInstance().addEntity(player.id);
 
 		//Tell everyone that new guy joined
-		ServerSender.sendToAllBut(NetworkCommands.PLAYER_JOINED_GAME, player.connection, player.id);
+		PlayerService.playerJoined(player);
 
 		//Telling new guy about everyone
-		ServerSender.sendToSingle(NetworkCommands.SETUP_GAME, player.connection, player);
+		PlayerService.setupGame(player);
 	}
 
 	private void onPlayerLeave(int playerId)
@@ -53,7 +55,7 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 		PingManager.getInstance().removeEntity(playerId);
 
 		//Tell everyone that the guy left
-		ServerSender.sendToAllBut(NetworkCommands.PLAYER_LEFT_GAME, player.connection, playerId);
+		PlayerService.playerLeft(player);
 
 		PlayerManager.getInstance().removeEntity(player);
 	}

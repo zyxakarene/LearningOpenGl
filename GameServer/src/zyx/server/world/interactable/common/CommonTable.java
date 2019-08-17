@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import zyx.server.controller.services.ItemService;
 import zyx.server.utils.IUpdateable;
 import zyx.server.world.RoomItems;
 import zyx.server.world.humanoids.HumanoidEntity;
@@ -33,6 +34,19 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 		return itemsOnTable.isEmpty() ? -1 : itemsOnTable.get(0).id;
 	}
 
+	public boolean containsItem(int itemId)
+	{
+		for (HandheldItem item : itemsOnTable)
+		{
+			if (item.id == itemId)
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	public boolean canCarryMoreItems()
 	{
 		return itemsOnTable.size() < maxItemsOnTable;
@@ -73,6 +87,9 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 			//There is room on the table, so put it down
 			item.inUse = false;
 			itemsOnTable.add(item);
+
+			ItemService.setOwner(item, id);
+
 			return true;
 		}
 
@@ -111,7 +128,7 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 			boolean wasAdded = tryAddItem(heldItem);
 			if (wasAdded)
 			{
-				user.removeItem();
+				user.removeItem(false);
 			}
 		}
 		else

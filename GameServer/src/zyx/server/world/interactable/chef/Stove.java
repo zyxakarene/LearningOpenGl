@@ -2,6 +2,7 @@ package zyx.server.world.interactable.chef;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import zyx.server.controller.services.ItemService;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
 import zyx.server.world.humanoids.npc.Chef;
 import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
@@ -29,7 +30,8 @@ public class Stove extends UseableItem<Chef>
 			if (foodItem != null)
 			{
 				foodItem.process();
-				chef.removeItem();
+				chef.removeItem(false);
+				ItemService.setOwner(foodItem, id);
 				startUsing(chef);
 			}
 		}

@@ -7,10 +7,14 @@ public class GuestWaitingForBillBehavior extends GuestBehavior<Object>
 {
 
 	private Chair[] groupChairs;
+	private boolean hasGottenBill;
+	private int delayTimer;
 
 	public GuestWaitingForBillBehavior(Guest npc)
 	{
 		super(npc, GuestBehaviorType.WAITING_FOR_BILL);
+
+		delayTimer = 2000;
 	}
 
 	@Override
@@ -24,24 +28,34 @@ public class GuestWaitingForBillBehavior extends GuestBehavior<Object>
 	{
 		if (npc.isLeader && npc.group.table.hasGottenBill)
 		{
-			boolean isAllReady = true;
-			for (Chair chair : groupChairs)
+			hasGottenBill = true;
+		}
+
+		if (hasGottenBill)
+		{
+			delayTimer -= elapsedTime;
+
+			if (delayTimer <= 0)
 			{
-				if (chair != null && chair.currentUser != null)
+				boolean isAllReady = true;
+				for (Chair chair : groupChairs)
 				{
-					Guest friend = chair.currentUser;
-					if (friend.hasBill && friend.getCurrentState() != GuestBehaviorType.WAITING_FOR_BILL)
+					if (chair != null && chair.currentUser != null)
 					{
-						//Someone is still not done eating yet
-						isAllReady = false;
-						break;
+						Guest friend = chair.currentUser;
+						if (friend.hasBill && friend.getCurrentState() != GuestBehaviorType.WAITING_FOR_BILL)
+						{
+							//Someone is still not done eating yet
+							isAllReady = false;
+							break;
+						}
 					}
 				}
-			}
 
-			if (isAllReady)
-			{
-				finishVisit();
+				if (isAllReady)
+				{
+					finishVisit();
+				}
 			}
 		}
 	}
@@ -50,14 +64,14 @@ public class GuestWaitingForBillBehavior extends GuestBehavior<Object>
 	{
 		npc.group.table.makeAvailible();
 		npc.group.table.removeBill(npc.group.bill.id);
-		
+
 		for (Chair chair : groupChairs)
 		{
 			if (chair != null && chair.currentUser != null)
 			{
 				Guest friend = chair.currentUser;
 				friend.requestBehavior(GuestBehaviorType.WALKING_OUT, items.exitPoint);
-				
+
 				chair.makeAvailible();
 			}
 		}

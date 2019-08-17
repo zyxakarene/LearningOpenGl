@@ -2,25 +2,22 @@ package zyx.game.world.items;
 
 import zyx.net.data.WriteableDataObject;
 import zyx.net.io.requests.BaseNetworkRequest;
-import zyx.net.io.controllers.NetworkCommands;
 import static zyx.game.world.items.ItemConstants.*;
 
 public class ItemCreateRequest extends BaseNetworkRequest
 {
-	public ItemCreateRequest()
+	public ItemCreateRequest(String command)
 	{
-		super(NetworkCommands.ITEM_CREATE);
+		super(command);
 	}
 	
 	@Override
 	protected void getDataObject(WriteableDataObject data, Object... params)
 	{
 		int itemID = (int) params[0];
-		int itemType = (int) params[1];
-		int containerID = (int) params[2];
+		int containerID = (int) params[1];
 		
 		data.addInteger(ITEM_ID, itemID);
-		data.addInteger(ITEM_TYPE, itemType);
 		data.addInteger(CONTAINER_ID, containerID);
 	}
 

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import zyx.game.vo.Gender;
+import zyx.server.controller.services.ItemService;
 import zyx.server.world.entity.WorldEntity;
 import zyx.server.world.humanoids.handheld.HandheldItem;
 
@@ -36,13 +37,18 @@ public class HumanoidEntity extends WorldEntity
 		return heldItem == null;
 	}
 
-	public HandheldItem removeItem()
+	public HandheldItem removeItem(boolean dispose)
 	{
 		HandheldItem item = heldItem;
 
 		if (item != null)
 		{
 			System.out.println(item + " was removed from " + this);
+
+			if (dispose)
+			{
+				item.dispose();
+			}
 		}
 
 		heldItem = null;
@@ -50,6 +56,13 @@ public class HumanoidEntity extends WorldEntity
 	}
 
 	public void pickupItem(HandheldItem item)
+	{
+		ItemService.setOwner(item, id);
+		System.out.println(this + " picked up " + item);
+		heldItem = item;
+	}
+
+	public void pickupItemSilent(HandheldItem item)
 	{
 		System.out.println(this + " picked up " + item);
 		heldItem = item;

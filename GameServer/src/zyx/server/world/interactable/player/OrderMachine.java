@@ -19,7 +19,7 @@ public class OrderMachine extends BaseInteractableItem<Player>
 		
 		if (order != null)
 		{
-			player.removeItem();
+			player.removeItem(true);
 			Monitor monitor = RoomItems.instance.orderMonitor();
 			
 			ArrayList<DishType> dishes = order.getDishes();

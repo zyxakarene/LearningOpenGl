@@ -1,5 +1,6 @@
 package zyx.server.world.humanoids.handheld;
 
+import zyx.server.controller.services.ItemService;
 import zyx.server.utils.IUpdateable;
 
 public abstract class HandheldItem implements IUpdateable
@@ -24,6 +25,11 @@ public abstract class HandheldItem implements IUpdateable
 	{
 	}
 
+	public void dispose()
+	{
+		ItemService.destroyItem(this);
+	}
+	
 	public abstract void process();
 	
 	@Override
