@@ -4,8 +4,10 @@ import java.awt.Graphics;
 import java.net.InetAddress;
 import zyx.game.vo.Gender;
 import zyx.net.io.connections.ConnectionData;
+import zyx.server.controller.services.NpcService;
 import zyx.server.world.RoomItems;
 import zyx.server.world.humanoids.handheld.guests.BillItem;
+import zyx.server.world.humanoids.npc.GuestGroup;
 import zyx.server.world.humanoids.npc.NpcManager;
 import zyx.server.world.humanoids.players.Player;
 import zyx.server.world.humanoids.players.PlayerManager;
@@ -232,7 +234,8 @@ public class DebugServerForm extends javax.swing.JFrame
 
     private void addGuestBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_addGuestBtnActionPerformed
     {//GEN-HEADEREND:event_addGuestBtnActionPerformed
-		NpcManager.getInstance().addGuestGroup();
+		GuestGroup group = NpcManager.getInstance().addGuestGroup();
+		NpcService.addGuestGroup(group);
     }//GEN-LAST:event_addGuestBtnActionPerformed
 
 

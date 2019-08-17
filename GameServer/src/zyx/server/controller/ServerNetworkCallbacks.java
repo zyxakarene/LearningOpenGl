@@ -23,7 +23,7 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 		createCallbacks();
 
 		registerCallback(NetworkCommands.LOGIN, onPlayerLogin);
-		registerCallback(NetworkCommands.PLAYER_LEFT_GAME, onPlayerLeave);
+		registerCallback(NetworkCommands.CHARACTER_LEFT_GAME, onPlayerLeave);
 		registerCallback(NetworkCommands.PLAYER_UPDATE_POSITION, onPlayerPos);
 		registerCallback(NetworkCommands.PING, onPlayerPing);
 	}

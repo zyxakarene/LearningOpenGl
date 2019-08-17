@@ -48,8 +48,10 @@ public class NpcManager extends WorldEntityManager<BaseNpc> implements IUpdateab
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-		for (BaseNpc npc : entities)
+		int count = entities.size() - 1;
+		for (int i = count; i >= 0; i--)
 		{
+			BaseNpc npc = entities.get(i);
 			npc.update(timestamp, elapsedTime);
 		}
 	}

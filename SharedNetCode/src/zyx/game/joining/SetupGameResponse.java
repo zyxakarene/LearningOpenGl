@@ -1,5 +1,7 @@
-package zyx.game.network.joining;
+package zyx.game.joining;
 
+import zyx.game.joining.data.GameSetupVo;
+import zyx.game.joining.data.GameSetupPlayerInfo;
 import zyx.net.data.ReadableDataObject;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.BaseNetworkResponse;
@@ -8,7 +10,7 @@ import zyx.net.data.ReadableDataArray;
 
 public class SetupGameResponse extends BaseNetworkResponse<GameSetupVo>
 {
-	private static final GameSetupVo OUT = new GameSetupVo();
+	private static final GameSetupVo OUT = GameSetupVo.INSTANCE;
 	
 	public SetupGameResponse()
 	{
@@ -18,7 +20,7 @@ public class SetupGameResponse extends BaseNetworkResponse<GameSetupVo>
 	@Override
 	protected GameSetupVo onMessageRecieved(ReadableDataObject data)
 	{
-		ReadableDataArray<ReadableDataObject> array = data.<ReadableDataObject>getArray(PLAYERS);
+		ReadableDataArray<ReadableDataObject> array = data.<ReadableDataObject>getArray(CHARACTERS);
 		int playerCount = array.size();
 		
 		OUT.players = new GameSetupPlayerInfo[playerCount];
@@ -27,14 +29,14 @@ public class SetupGameResponse extends BaseNetworkResponse<GameSetupVo>
 			ReadableDataObject playerData = array.get(i);
 			
 			GameSetupPlayerInfo playerInfo = new GameSetupPlayerInfo();
-			playerInfo.id = playerData.getInteger(PLAYER_ID);
-			playerInfo.name = playerData.getString(PLAYER_NAME);
-			playerInfo.pos.x = playerData.getFloat(PLAYER_X);
-			playerInfo.pos.y = playerData.getFloat(PLAYER_Y);
-			playerInfo.pos.z = playerData.getFloat(PLAYER_Z);
-			playerInfo.lookAt.x = playerData.getFloat(PLAYER_LOOK_X);
-			playerInfo.lookAt.y = playerData.getFloat(PLAYER_LOOK_Y);
-			playerInfo.lookAt.z = playerData.getFloat(PLAYER_LOOK_Z);
+			playerInfo.id = playerData.getInteger(CHARACTER_ID);
+			playerInfo.name = playerData.getString(CHARACTER_NAME);
+			playerInfo.pos.x = playerData.getFloat(CHARACTER_X);
+			playerInfo.pos.y = playerData.getFloat(CHARACTER_Y);
+			playerInfo.pos.z = playerData.getFloat(CHARACTER_Z);
+			playerInfo.lookAt.x = playerData.getFloat(CHARACTER_LOOK_X);
+			playerInfo.lookAt.y = playerData.getFloat(CHARACTER_LOOK_Y);
+			playerInfo.lookAt.z = playerData.getFloat(CHARACTER_LOOK_Z);
 			
 			OUT.players[i] = playerInfo;
 		}

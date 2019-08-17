@@ -74,7 +74,6 @@ public abstract class UseableItem<User extends HumanoidEntity> extends BaseInter
 			int yPos = (int) (y - sizeHalf);
 
 			float percent = (timeToComplete - completeTimeRemaining) / timeToComplete;
-			System.out.println(percent);
 			
 			g.setColor(Color.GREEN);
 			g.fillRect(xPos, yPos + size, (int)(size * percent), 20);

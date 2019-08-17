@@ -41,7 +41,7 @@ public class Monitor extends UseableItem<Chef>
 	protected void onUsingCompleted()
 	{
 		DishRecipeItem recipe = queue.removeFirst();
-		currentUser.pickupItem(recipe);
+		currentUser.pickupItemSilent(recipe);
 		currentUser.requestBehavior(ChefBehaviorType.FINDING_FRIDGE);
 	}
 

@@ -77,7 +77,7 @@ public class DinnerTable extends CommonTable<Guest>
 			allGuestsArrived = allGuestsArrived && chair.isCurrentGuestSitting();
 		}
 		
-		return allGuestsArrived;
+		return !hasGottenBill && allGuestsArrived;
 	}
 
 	private void giveFood(FoodItem food)

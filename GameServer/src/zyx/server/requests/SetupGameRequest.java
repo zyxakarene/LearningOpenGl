@@ -34,7 +34,7 @@ public class SetupGameRequest extends BaseNetworkRequest
 		addFromList(allPlayers, player, playerDataArray);
 		addFromList(allNpcs, player, playerDataArray);
 		
-		data.addArray(PLAYERS, playerDataArray);
+		data.addArray(CHARACTERS, playerDataArray);
 	}
 
 	protected void addFromList(ArrayList<? extends HumanoidEntity> entities, Player player, WriteableDataArray<WriteableDataObject> dataArray)
@@ -44,14 +44,14 @@ public class SetupGameRequest extends BaseNetworkRequest
 			if (entity != player)
 			{
 				WriteableDataObject playerData = new WriteableDataObject();
-				playerData.addInteger(PLAYER_ID, entity.id);
-				playerData.addString(PLAYER_NAME, entity.name);
-				playerData.addFloat(PLAYER_X, entity.x);
-				playerData.addFloat(PLAYER_Y, entity.y);
-				playerData.addFloat(PLAYER_Z, entity.z);
-				playerData.addFloat(PLAYER_LOOK_X, entity.lx);
-				playerData.addFloat(PLAYER_LOOK_Y, entity.ly);
-				playerData.addFloat(PLAYER_LOOK_Z, entity.lz);
+				playerData.addInteger(CHARACTER_ID, entity.id);
+				playerData.addString(CHARACTER_NAME, entity.name);
+				playerData.addFloat(CHARACTER_X, entity.x);
+				playerData.addFloat(CHARACTER_Y, entity.y);
+				playerData.addFloat(CHARACTER_Z, entity.z);
+				playerData.addFloat(CHARACTER_LOOK_X, entity.lx);
+				playerData.addFloat(CHARACTER_LOOK_Y, entity.ly);
+				playerData.addFloat(CHARACTER_LOOK_Z, entity.lz);
 
 				dataArray.add(playerData);
 			}

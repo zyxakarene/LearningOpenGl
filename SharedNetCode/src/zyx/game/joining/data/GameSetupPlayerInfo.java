@@ -1,4 +1,4 @@
-package zyx.game.network.joining;
+package zyx.game.joining.data;
 
 import org.lwjgl.util.vector.Vector3f;
 
@@ -10,7 +10,7 @@ public class GameSetupPlayerInfo
 	public Vector3f pos = new Vector3f();
 	public Vector3f lookAt = new Vector3f();
 	
-	GameSetupPlayerInfo()
+	public GameSetupPlayerInfo()
 	{
 	}
  

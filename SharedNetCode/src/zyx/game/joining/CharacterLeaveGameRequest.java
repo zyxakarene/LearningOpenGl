@@ -1,17 +1,16 @@
 package zyx.game.joining;
 
+import static zyx.game.joining.SetupConstants.*;
 import zyx.net.data.WriteableDataObject;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.requests.BaseNetworkRequest;
 
-public class PlayerLeaveGameRequest extends BaseNetworkRequest
+public class CharacterLeaveGameRequest extends BaseNetworkRequest
 {
 
-	private static final String PLAYER_ID = "id";
-
-	public PlayerLeaveGameRequest()
+	public CharacterLeaveGameRequest()
 	{
-		super(NetworkCommands.PLAYER_LEFT_GAME);
+		super(NetworkCommands.CHARACTER_LEFT_GAME);
 	}
 
 	@Override
@@ -19,7 +18,7 @@ public class PlayerLeaveGameRequest extends BaseNetworkRequest
 	{
 		int id = (int) params[0];
 		
-		data.addInteger(PLAYER_ID, id);
+		data.addInteger(CHARACTER_ID, id);
 	}
 
 }

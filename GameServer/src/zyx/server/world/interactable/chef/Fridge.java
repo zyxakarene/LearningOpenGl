@@ -1,6 +1,7 @@
 package zyx.server.world.interactable.chef;
 
 import java.awt.Color;
+import zyx.server.controller.services.ItemService;
 import zyx.server.world.humanoids.handheld.food.DishRecipeItem;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
 import zyx.server.world.humanoids.npc.Chef;
@@ -37,8 +38,10 @@ public class Fridge extends UseableItem<Chef>
 	protected void onUsingCompleted()
 	{
 		FoodItem ingredients = new FoodItem(recipe.dish);
-		currentUser.pickupItem(ingredients);
+		currentUser.pickupItemSilent(ingredients);
 		currentUser.requestBehavior(ChefBehaviorType.FINDING_STOVE);
+		
+		ItemService.createFood(ingredients, currentUser.id);
 	}
 
 	@Override

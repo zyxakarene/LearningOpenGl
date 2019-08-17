@@ -5,18 +5,22 @@ import zyx.game.vo.Gender;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.server.controller.sending.SendType;
 import zyx.server.controller.sending.ServerSender;
+import zyx.server.world.humanoids.HumanoidEntity;
 import zyx.server.world.humanoids.players.Player;
 
 public class PlayerService
 {
 	public static void playerLeft(Player leavingPlayer)
 	{
-		ServerSender.sendWithType(SendType.toAllBut(leavingPlayer.connection), NetworkCommands.PLAYER_LEFT_GAME, leavingPlayer.id);
+		ServerSender.sendWithType(SendType.toAllBut(leavingPlayer.connection), NetworkCommands.CHARACTER_LEFT_GAME, leavingPlayer.id);
 	}
 	
 	public static void playerJoined(Player joinedPlayer)
 	{
-		ServerSender.sendWithType(SendType.toAllBut(joinedPlayer.connection), NetworkCommands.PLAYER_JOINED_GAME, joinedPlayer.id);
+		HumanoidEntity[] humans = new HumanoidEntity[1];
+		humans[0] = joinedPlayer;
+		
+		ServerSender.sendWithType(SendType.toAllBut(joinedPlayer.connection), NetworkCommands.CHARACTER_JOINED_GAME, (Object) humans);
 	}
 	
 	public static void setupGame(Player joinedPlayer)

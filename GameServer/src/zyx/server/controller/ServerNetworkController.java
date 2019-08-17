@@ -1,9 +1,8 @@
 package zyx.server.controller;
 
-import zyx.game.joining.PlayerJoinGameRequest;
-import zyx.game.joining.PlayerJoinGameResponse;
-import zyx.game.joining.PlayerLeaveGameRequest;
-import zyx.game.joining.PlayerLeaveGameResponse;
+import zyx.server.requests.CharacterJoinGameRequest;
+import zyx.game.joining.CharacterLeaveGameRequest;
+import zyx.game.joining.CharacterLeaveGameResponse;
 import zyx.game.login.AuthenticateRequest;
 import zyx.game.login.AuthenticateResponse;
 import zyx.game.login.LoginRequest;
@@ -31,9 +30,9 @@ public class ServerNetworkController extends BaseNetworkController
 	@Override
 	protected void addRequestsHandlersTo(NetworkRequestDispatcher dispatcher)
 	{
-		dispatcher.addRequestHandler(new PlayerJoinGameRequest());
+		dispatcher.addRequestHandler(new CharacterJoinGameRequest());
 		dispatcher.addRequestHandler(new PlayerMassPositionsRequest());
-		dispatcher.addRequestHandler(new PlayerLeaveGameRequest());
+		dispatcher.addRequestHandler(new CharacterLeaveGameRequest());
 		dispatcher.addRequestHandler(new LoginRequest());
 		dispatcher.addRequestHandler(new SetupGameRequest());
 		dispatcher.addRequestHandler(new AuthenticateRequest());
@@ -54,8 +53,7 @@ public class ServerNetworkController extends BaseNetworkController
 	protected void addResponseHandlersTo(NetworkResponseDispatcher dispatcher)
 	{
 		dispatcher.addResponseCallback(new LoginResponse());
-		dispatcher.addResponseCallback(new PlayerJoinGameResponse());
-		dispatcher.addResponseCallback(new PlayerLeaveGameResponse());
+		dispatcher.addResponseCallback(new CharacterLeaveGameResponse());
 		dispatcher.addResponseCallback(new PlayerPosResponse());
 		dispatcher.addResponseCallback(new AuthenticateResponse());
 		dispatcher.addResponseCallback(new PingResponse());
