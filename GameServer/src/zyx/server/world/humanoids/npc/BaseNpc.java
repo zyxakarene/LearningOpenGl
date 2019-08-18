@@ -1,7 +1,5 @@
 package zyx.server.world.humanoids.npc;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.util.HashMap;
 import zyx.server.utils.IUpdateable;
 import zyx.server.world.humanoids.HumanoidEntity;

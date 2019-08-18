@@ -17,6 +17,7 @@ class NpcFactory
 		
 		cleaner.addBehavior(new CleanerIdleBehavior(cleaner));
 		cleaner.addBehavior(new CleanerGoingToTableBehavior(cleaner));
+		cleaner.addBehavior(new CleanerGoingToFloorPosBehavior(cleaner));
 		cleaner.addBehavior(new CleanerGoingToDishWasherBehavior(cleaner));
 		cleaner.addBehavior(new CleanerWaitingForDishWasherBehavior(cleaner));
 		cleaner.addBehavior(new CleanerGoingToIdleBehavior(cleaner));

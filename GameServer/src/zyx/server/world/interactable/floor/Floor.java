@@ -4,15 +4,21 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import zyx.server.utils.Distance;
 import zyx.server.utils.IUpdateable;
+import zyx.server.world.RoomItems;
 import zyx.server.world.entity.WorldEntity;
 import zyx.server.world.humanoids.HumanoidEntity;
 import zyx.server.world.humanoids.handheld.HandheldItem;
+import zyx.server.world.humanoids.handheld.food.FoodItem;
+import zyx.server.world.humanoids.npc.Cleaner;
+import zyx.server.world.humanoids.npc.behavior.cleaner.CleanerBehaviorType;
 import zyx.server.world.humanoids.players.Player;
+import zyx.server.world.interactable.common.ICleanable;
 import zyx.server.world.interactable.common.player.IPlayerInteractable;
 import zyx.server.world.interactable.common.player.PlayerInteraction;
 
-public class Floor extends WorldEntity implements IPlayerInteractable, IUpdateable
+public class Floor extends WorldEntity implements IPlayerInteractable, IUpdateable, ICleanable
 {
 
 	private ArrayList<FloorItem> floorItems;
@@ -60,6 +66,7 @@ public class Floor extends WorldEntity implements IPlayerInteractable, IUpdateab
 			HandheldItem heldItem = player.heldItem();
 			if (heldItem != null)
 			{
+				player.removeItem(false);
 				itemDropped(heldItem, player);
 			}
 		}
@@ -123,5 +130,76 @@ public class Floor extends WorldEntity implements IPlayerInteractable, IUpdateab
 		}
 		
 		return false;
+	}
+
+	@Override
+	public boolean canBeCleaned()
+	{
+		for (FloorItem floorItem : floorItems)
+		{
+			if (floorItem.item instanceof FoodItem)
+			{
+				FoodItem food = (FoodItem) floorItem.item;
+				if (food.cleanableByCleaner())
+				{
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	@Override
+	public void clean(Cleaner cleaner)
+	{
+		float closestDistance = Float.MAX_VALUE;
+		FoodItem closestItem = null;
+		
+		for (FloorItem floorItem : floorItems)
+		{
+			if (floorItem.item instanceof FoodItem)
+			{
+				FoodItem food = (FoodItem) floorItem.item;
+				if (food.cleanableByCleaner())
+				{
+					float distance = Distance.between(cleaner, floorItem.x, floorItem.y, floorItem.z);
+					if (distance < closestDistance)
+					{
+						closestDistance = distance;
+						closestItem = food;
+					}
+				}
+			}
+		}
+		
+		if (closestItem != null && closestDistance <= 10)
+		{
+			itemTaken(closestItem.id);
+			
+			cleaner.pickupItem(closestItem);
+			cleaner.requestBehavior(CleanerBehaviorType.GOING_TO_DISH_WASHER, RoomItems.instance.dishWasher);
+		}
+		else
+		{
+			cleaner.requestBehavior(CleanerBehaviorType.GOING_TO_IDLE);
+		}
+	}
+
+	public FloorItem getCleanableItem()
+	{
+		for (FloorItem floorItem : floorItems)
+		{
+			if (floorItem.item instanceof FoodItem)
+			{
+				FoodItem food = (FoodItem) floorItem.item;
+				if (food.cleanableByCleaner())
+				{
+					return floorItem;
+				}
+			}
+		}
+		
+		return null;
 	}
 }

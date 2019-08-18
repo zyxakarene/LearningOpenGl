@@ -6,23 +6,30 @@ import zyx.server.world.humanoids.npc.behavior.BaseNpcBehavior;
 import zyx.server.world.interactable.common.CommonTable;
 import zyx.server.world.interactable.common.DinnerTable;
 import zyx.server.world.interactable.common.FoodTable;
+import zyx.server.world.interactable.floor.Floor;
+import zyx.server.world.interactable.floor.FloorItem;
 
 public class CleanerIdleBehavior extends BaseNpcBehavior<Cleaner, CleanerBehaviorType, Object>
 {
+
 	private static final int MAX_GOOF_TIME = 100;
-	
+
 	private final DinnerTable[] dinnerTables;
 	private final FoodTable[] foodTables;
-	
+	private final Floor floor;
+
 	private int goofTimer;
 
 	public CleanerIdleBehavior(Cleaner npc)
 	{
 		super(npc, CleanerBehaviorType.IDLE);
-		
-		dinnerTables = RoomItems.instance.dinnerTables;
-		foodTables = RoomItems.instance.foodTables;
-		
+
+		RoomItems room = RoomItems.instance;
+
+		dinnerTables = room.dinnerTables;
+		foodTables = room.foodTables;
+		floor = room.floor;
+
 		goofTimer = (int) (1000 + (MAX_GOOF_TIME * Math.random()));
 	}
 
@@ -30,18 +37,25 @@ public class CleanerIdleBehavior extends BaseNpcBehavior<Cleaner, CleanerBehavio
 	public void update(long timestamp, int elapsedTime)
 	{
 		goofTimer -= elapsedTime;
-		
+
 		if (goofTimer <= 0)
 		{
 			System.out.println(npc + " is checking for dirty plates");
 			goofTimer = (int) (1000 + (MAX_GOOF_TIME * Math.random()));
-			
+
 			CommonTable table = findTable();
-			
+
 			if (table != null)
 			{
 				System.out.println("Found plates on " + table);
-				npc.requestBehavior(CleanerBehaviorType.GETTING_DIRTY_PLATE, table);
+				npc.requestBehavior(CleanerBehaviorType.GETTING_DIRTY_PLATE_TABLE, table);
+			}
+			else if (floor.canBeCleaned())
+			{
+				System.out.println("Found plates on the floor");
+				FloorItem floorItem = floor.getCleanableItem();
+				npc.requestBehavior(CleanerBehaviorType.GETTING_DIRTY_PLATE_FLOOR, floorItem);
+				
 			}
 		}
 	}
@@ -55,7 +69,7 @@ public class CleanerIdleBehavior extends BaseNpcBehavior<Cleaner, CleanerBehavio
 				return table;
 			}
 		}
-		
+
 		for (FoodTable table : foodTables)
 		{
 			if (table.canBeCleaned())
@@ -63,7 +77,7 @@ public class CleanerIdleBehavior extends BaseNpcBehavior<Cleaner, CleanerBehavio
 				return table;
 			}
 		}
-		
+
 		return null;
 	}
 }

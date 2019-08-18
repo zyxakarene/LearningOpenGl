@@ -2,12 +2,12 @@ package zyx.server.world.interactable.floor;
 
 import zyx.server.world.humanoids.handheld.HandheldItem;
 
-class FloorItem
+public class FloorItem
 {
-	HandheldItem item;
-	float x;
-	float y;
-	float z;
+	public final HandheldItem item;
+	public final float x;
+	public final float y;
+	public final float z;
 
 	public FloorItem(HandheldItem item, float x, float y, float z)
 	{

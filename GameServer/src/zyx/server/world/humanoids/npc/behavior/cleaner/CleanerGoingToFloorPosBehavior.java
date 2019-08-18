@@ -2,14 +2,14 @@ package zyx.server.world.humanoids.npc.behavior.cleaner;
 
 import zyx.server.world.humanoids.npc.Cleaner;
 import zyx.server.world.humanoids.npc.behavior.BaseNpcWalkingBehavior;
-import zyx.server.world.interactable.common.CommonTable;
+import zyx.server.world.interactable.floor.FloorItem;
 
-public class CleanerGoingToTableBehavior extends BaseNpcWalkingBehavior<Cleaner, CleanerBehaviorType, CommonTable>
+public class CleanerGoingToFloorPosBehavior extends BaseNpcWalkingBehavior<Cleaner, CleanerBehaviorType, FloorItem>
 {
-
-	public CleanerGoingToTableBehavior(Cleaner npc)
+	
+	public CleanerGoingToFloorPosBehavior(Cleaner npc)
 	{
-		super(npc, CleanerBehaviorType.GETTING_DIRTY_PLATE_TABLE);
+		super(npc, CleanerBehaviorType.GETTING_DIRTY_PLATE_FLOOR);
 	}
 	
 	@Override
@@ -21,6 +21,6 @@ public class CleanerGoingToTableBehavior extends BaseNpcWalkingBehavior<Cleaner,
 	@Override
 	protected void onArrivedAtDestination()
 	{
-		params.clean(npc);
+		items.floor.clean(npc);
 	}
 }

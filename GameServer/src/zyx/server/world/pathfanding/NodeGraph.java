@@ -25,6 +25,7 @@ public class NodeGraph
 		Node dishwasher = addNodeAt(180, 250, 0);
 		
 		connectNodes(monitor, midTop);
+		connectNodes(dishwasher, foodTable);
 		
 		connectNodes(monitor, fridge);
 		connectNodes(fridge, stove);

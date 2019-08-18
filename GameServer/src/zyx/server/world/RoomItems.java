@@ -117,9 +117,7 @@ public class RoomItems implements IUpdateable
 	}
 
 	public void draw(Graphics g)
-	{
-		floor.draw(g);
-		
+	{		
 		fridges[0].draw(g);
 		stoves[0].draw(g);
 		foodTables[0].draw(g);
@@ -132,6 +130,7 @@ public class RoomItems implements IUpdateable
 
 		dishWasher.draw(g);
 		
+		floor.draw(g);
 
 		graph.draw(g);
 

@@ -56,12 +56,12 @@ public class Chair extends GuestItem implements IPlayerInteractable
 	@Override
 	public void interactWith(Player player, PlayerInteraction interaction)
 	{
-		if (interaction.isTake() && guestSitting)
+		if (interaction.isTake() && guestSitting && !table.hasGottenBill && !currentUser.hasEaten)
 		{
 			boolean canHold = player.canHoldItem();
 			GuestOrder currentOrders = player.getHeldAsOrders();
 
-			if (canHold || currentOrders.isMatchingTable(table))
+			if (canHold || (currentOrders != null && currentOrders.isMatchingTable(table)))
 			{
 				boolean isNew = false;
 				if (currentOrders == null)

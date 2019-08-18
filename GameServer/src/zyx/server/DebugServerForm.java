@@ -6,6 +6,8 @@ import zyx.game.vo.Gender;
 import zyx.net.io.connections.ConnectionData;
 import zyx.server.controller.services.NpcService;
 import zyx.server.world.RoomItems;
+import zyx.server.world.humanoids.handheld.food.DishType;
+import zyx.server.world.humanoids.handheld.food.FoodItem;
 import zyx.server.world.humanoids.handheld.guests.BillItem;
 import zyx.server.world.humanoids.npc.GuestGroup;
 import zyx.server.world.humanoids.npc.NpcManager;
@@ -83,6 +85,7 @@ public class DebugServerForm extends javax.swing.JFrame
             }
         }
         ;
+        playerDropFloorBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -154,6 +157,15 @@ public class DebugServerForm extends javax.swing.JFrame
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
+        playerDropFloorBtn.setText("Drop Item");
+        playerDropFloorBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                playerDropFloorBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -166,7 +178,8 @@ public class DebugServerForm extends javax.swing.JFrame
                     .addComponent(addGuestBtn)
                     .addComponent(takeFoodBtn)
                     .addComponent(deliverFoodBtn)
-                    .addComponent(deliverBiillBtn))
+                    .addComponent(deliverBiillBtn)
+                    .addComponent(playerDropFloorBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(drawPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
@@ -188,7 +201,8 @@ public class DebugServerForm extends javax.swing.JFrame
                         .addComponent(deliverFoodBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(deliverBiillBtn)
-                        .addGap(0, 79, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                        .addComponent(playerDropFloorBtn))
                     .addComponent(drawPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -225,7 +239,7 @@ public class DebugServerForm extends javax.swing.JFrame
     {//GEN-HEADEREND:event_deliverBiillBtnActionPerformed
 		DinnerTable table = room.dinnerTables[0];
 		
-		if (table.canReceiveBill())
+		if (table.canReceiveBill() && player.canHoldItem())
 		{
 			player.pickupItem(new BillItem());
 			table.interactWith(player, PlayerInteraction.give());
@@ -238,6 +252,26 @@ public class DebugServerForm extends javax.swing.JFrame
 		NpcService.addGuestGroup(group);
     }//GEN-LAST:event_addGuestBtnActionPerformed
 
+    private void playerDropFloorBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_playerDropFloorBtnActionPerformed
+    {//GEN-HEADEREND:event_playerDropFloorBtnActionPerformed
+		float oldX = player.x;
+		float oldY = player.y;
+		
+		player.x = (float) (Math.random() * 300);
+		player.y = (float) (Math.random() * 300);
+		FoodItem food = new FoodItem(DishType.SALAD);
+		food.inUse = false;
+		food.process();
+		food.process();
+		food.process();
+		
+		player.pickupItem(food);
+		room.floor.interactWith(player, PlayerInteraction.give());
+		
+		player.x = oldX;
+		player.y = oldY;
+    }//GEN-LAST:event_playerDropFloorBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addGuestBtn;
@@ -246,6 +280,7 @@ public class DebugServerForm extends javax.swing.JFrame
     private javax.swing.JButton deliverFoodBtn;
     private javax.swing.JPanel drawPanel;
     private javax.swing.JButton getOrderBtn;
+    private javax.swing.JButton playerDropFloorBtn;
     private javax.swing.JButton takeFoodBtn;
     // End of variables declaration//GEN-END:variables
 }
