@@ -32,7 +32,7 @@ void main()
 	vec4 viewPos = view * worldPosition;
     
     ScreenPos = viewPos.xyz; 
-    ScreenNormal = mat3(viewModelInverseTranspose) * normals;
+    ScreenNormal = mat3(viewModelInverseTranspose) * vec3(transformedNorm);
 
 	WorldPos = worldPosition.xyz;
     WorldNormal = mat3(modelInverseTranspose) * vec3(transformedNorm);

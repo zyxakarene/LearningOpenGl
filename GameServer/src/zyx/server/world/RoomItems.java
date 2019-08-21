@@ -132,7 +132,7 @@ public class RoomItems implements IUpdateable
 		
 		floor.draw(g);
 
-		graph.draw(g);
+//		graph.draw(g);
 
 		ArrayList<BaseNpc> npcs = NpcManager.getInstance().getAllEntities();
 		for (BaseNpc npc : npcs)
