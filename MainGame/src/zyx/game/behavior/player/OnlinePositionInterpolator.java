@@ -1,4 +1,4 @@
-package zyx.game.behavior.freefly;
+package zyx.game.behavior.player;
 
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.behavior.Behavior;

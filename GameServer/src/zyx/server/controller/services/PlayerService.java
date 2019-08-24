@@ -39,7 +39,7 @@ public class PlayerService
 
 	public static void setPositions(int[] ids, Vector3f[] positions, Vector3f[] lookAts)
 	{
-		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.PLAYER_MASS_POSITION, ids, positions, lookAts);
+		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.CHARACTER_MASS_POSITION, ids, positions, lookAts);
 	}
 	
 	

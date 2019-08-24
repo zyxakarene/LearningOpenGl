@@ -12,7 +12,7 @@ public class PlayerMassPositionsRequest extends BaseNetworkRequest
 
 	public PlayerMassPositionsRequest()
 	{
-		super(NetworkCommands.PLAYER_MASS_POSITION);
+		super(NetworkCommands.CHARACTER_MASS_POSITION);
 	}
 
 	@Override

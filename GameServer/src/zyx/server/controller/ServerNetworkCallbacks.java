@@ -24,7 +24,7 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 
 		registerCallback(NetworkCommands.LOGIN, onPlayerLogin);
 		registerCallback(NetworkCommands.CHARACTER_LEFT_GAME, onPlayerLeave);
-		registerCallback(NetworkCommands.PLAYER_UPDATE_POSITION, onPlayerPos);
+		registerCallback(NetworkCommands.CHARACTER_UPDATE_POSITION, onPlayerPos);
 		registerCallback(NetworkCommands.PING, onPlayerPing);
 	}
 

@@ -11,7 +11,7 @@ public class PlayerPosRequest extends BaseNetworkRequest
 
 	public PlayerPosRequest()
 	{
-		super(NetworkCommands.PLAYER_UPDATE_POSITION);
+		super(NetworkCommands.CHARACTER_UPDATE_POSITION);
 	}
 
 	@Override

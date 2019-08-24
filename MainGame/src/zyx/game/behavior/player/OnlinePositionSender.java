@@ -1,4 +1,4 @@
-package zyx.game.behavior.freefly;
+package zyx.game.behavior.player;
 
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
@@ -71,7 +71,7 @@ public class OnlinePositionSender extends Behavior
 				HELPER_DIR.y = lastY + (HELPER_DIR.y * 100); 
 				HELPER_DIR.z = lastZ + (HELPER_DIR.z * 100); 
 				
-				NetworkChannel.sendRequest(NetworkCommands.PLAYER_UPDATE_POSITION, HELPER_POS, HELPER_DIR, id);
+				NetworkChannel.sendRequest(NetworkCommands.CHARACTER_UPDATE_POSITION, HELPER_POS, HELPER_DIR, id);
 			}
 		}
 	}

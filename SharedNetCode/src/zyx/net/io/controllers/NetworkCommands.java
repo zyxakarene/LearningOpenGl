@@ -11,8 +11,8 @@ public final class NetworkCommands
 	public static final String CHARACTER_JOINED_GAME = "JoinGame";
 	public static final String CHARACTER_LEFT_GAME = "LeaveGame";
 	
-	public static final String PLAYER_UPDATE_POSITION = "PlayerPos";
-	public static final String PLAYER_MASS_POSITION = "PlayerMassPos";
+	public static final String CHARACTER_UPDATE_POSITION = "CharacterPos";
+	public static final String CHARACTER_MASS_POSITION = "CharacterMassPos";
 	
 	public static final String ITEM_CREATE_FOOD = "itemCreateFood";
 	public static final String ITEM_CREATE_BILL = "itemCreateBill";

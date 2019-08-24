@@ -3,6 +3,7 @@ package zyx.game.behavior;
 
 public enum BehaviorType
 {
+	FIRST_PERSON,
 	ONLINE_POSITION,
 	JIGGLE,
 	ROTATE,

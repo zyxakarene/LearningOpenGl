@@ -11,7 +11,7 @@ import zyx.game.ping.PingRequest;
 import zyx.game.ping.PingResponse;
 import zyx.game.position.PlayerMassPositionsResponse;
 import zyx.game.position.PlayerPosRequest;
-import zyx.game.scene.PlayerHandler;
+import zyx.game.scene.CharacterHandler;
 import zyx.net.io.controllers.BaseNetworkController;
 import zyx.net.io.requests.NetworkRequestDispatcher;
 import zyx.net.io.responses.NetworkResponseDispatcher;
@@ -19,7 +19,7 @@ import zyx.net.io.responses.NetworkResponseDispatcher;
 public class GameNetworkController extends BaseNetworkController
 {
 
-	public GameNetworkController(PlayerHandler playerHandler)
+	public GameNetworkController(CharacterHandler playerHandler)
 	{
 		addCallbackMap(new PingPongNetworkCallbacks());
 		addCallbackMap(new GameNetworkCallbacks(playerHandler));

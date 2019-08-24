@@ -5,7 +5,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
-import zyx.game.components.world.player.Player;
+import zyx.game.components.GameObject;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.input.MouseData;
 import zyx.utils.DeltaTime;
@@ -18,9 +18,9 @@ public class FirstPersonBehavior extends Behavior
 	
 	private final Vector3f playerPosition;
 	private final Vector3f playerRotation;
-	private final Player player;
+	private final GameObject player;
 
-	public FirstPersonBehavior(Player player)
+	public FirstPersonBehavior(GameObject player)
 	{
 		super(BehaviorType.CAMERA_FIRST_PERSON);
 				

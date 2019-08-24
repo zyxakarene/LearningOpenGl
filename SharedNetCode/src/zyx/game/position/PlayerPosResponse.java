@@ -12,7 +12,7 @@ public class PlayerPosResponse extends BaseNetworkResponse<PositionData>
 	
 	public PlayerPosResponse()
 	{
-		super(NetworkCommands.PLAYER_UPDATE_POSITION);
+		super(NetworkCommands.CHARACTER_UPDATE_POSITION);
 	}
 
 	@Override

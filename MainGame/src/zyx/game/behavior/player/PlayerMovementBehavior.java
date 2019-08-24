@@ -1,4 +1,4 @@
-package zyx.game.components.world.player;
+package zyx.game.behavior.player;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
@@ -9,7 +9,7 @@ import zyx.game.controls.input.KeyboardData;
 import zyx.opengl.camera.Camera;
 import zyx.utils.FloatMath;
 
-class PlayerMovementBehavior extends Behavior
+public class PlayerMovementBehavior extends Behavior
 {
 
 	private static final int FORWARD = 1;

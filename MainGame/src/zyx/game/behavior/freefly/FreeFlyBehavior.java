@@ -9,8 +9,9 @@ import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.input.MouseData;
 import zyx.utils.DeltaTime;
 import zyx.utils.FloatMath;
+import zyx.utils.cheats.Print;
 
-public class CameraFreeFlyBehavior extends Behavior
+public class FreeFlyBehavior extends Behavior
 {
 
 	private static final int FORWARD = 1;
@@ -23,7 +24,7 @@ public class CameraFreeFlyBehavior extends Behavior
 	private Vector3f cameraPosition;
 	private Vector3f cameraRotation;
 
-	public CameraFreeFlyBehavior()
+	public FreeFlyBehavior()
 	{
 		super(BehaviorType.CAMERA_FREE_FLY);
 	}
@@ -44,6 +45,7 @@ public class CameraFreeFlyBehavior extends Behavior
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_Z))
 		{
 			Mouse.setGrabbed(!Mouse.isGrabbed());
+			Print.out(Mouse.isGrabbed());
 		}
 
 		if (Mouse.isGrabbed())

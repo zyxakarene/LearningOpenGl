@@ -15,8 +15,10 @@ import zyx.engine.scene.Scene;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.behavior.BehaviorType;
-import zyx.game.behavior.freefly.OnlinePositionSender;
+import zyx.game.behavior.camera.CameraUpdateViewBehavior;
+import zyx.game.behavior.freefly.FreeFlyBehavior;
 import zyx.game.behavior.misc.JiggleBehavior;
+import zyx.game.behavior.player.OnlinePositionSender;
 import zyx.game.components.AnimatedMesh;
 import zyx.game.components.GameObject;
 import zyx.game.components.MeshObject;
@@ -46,6 +48,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 
 	private MeshObject testDragon;
 	private AnimatedMesh fridge;
+	private GameObject player;
 
 	public DragonScene()
 	{
@@ -145,7 +148,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		SimpleMesh steak = new SimpleMesh();
 		SimpleMesh steakRaw = new SimpleMesh();
 		SimpleMesh steakCooking = new SimpleMesh();
-		
+
 		SimpleMesh table = new SimpleMesh();
 		SimpleMesh chair = new SimpleMesh();
 		SimpleMesh machine = new SimpleMesh();
@@ -177,7 +180,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		monitor.setPosition(true, 0, 100, 0);
 		fridge.setPosition(true, 0, 150, 0);
 		oven.setPosition(true, 0, 220, 0);
-		
+
 		steak.setPosition(true, 0, 0, 0);
 		steakRaw.setPosition(true, 15, 0, 0);
 		steakCooking.setPosition(true, 30, 0, 0);
@@ -248,7 +251,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	@Override
 	protected BaseNetworkController createNetworkDispatcher()
 	{
-		return new GameNetworkController(playerHandler);
+		return new GameNetworkController(characterHandler);
 	}
 
 	@Override
@@ -281,6 +284,12 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 
 	public void onAuthed()
 	{
-		camera.addBehavior(new OnlinePositionSender());
+		player = new GameObject();
+
+		player.addBehavior(new FreeFlyBehavior());
+		player.addBehavior(new CameraUpdateViewBehavior());
+		player.addBehavior(new OnlinePositionSender());
+		
+		gameObjects.add(player);
 	}
 }

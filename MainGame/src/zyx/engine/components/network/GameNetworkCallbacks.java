@@ -2,14 +2,14 @@ package zyx.engine.components.network;
 
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.behavior.BehaviorType;
-import zyx.game.behavior.freefly.OnlinePositionInterpolator;
+import zyx.game.behavior.player.OnlinePositionInterpolator;
 import zyx.game.components.GameObject;
 import zyx.game.joining.data.CharacterJoinedData;
 import zyx.game.models.GameModels;
 import zyx.game.network.PingManager;
 import zyx.game.joining.data.GameSetupPlayerInfo;
 import zyx.game.joining.data.GameSetupVo;
-import zyx.game.scene.PlayerHandler;
+import zyx.game.scene.CharacterHandler;
 import zyx.game.scene.game.DragonScene;
 import zyx.game.login.data.AuthenticationData;
 import zyx.game.position.data.PlayerMassPositionData;
@@ -27,11 +27,11 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 	private INetworkCallback onCharacterMassPos;
 	private INetworkCallback onGameSetup;
 
-	private PlayerHandler playerHandler;
+	private CharacterHandler characterHandler;
 
-	public GameNetworkCallbacks(PlayerHandler playerHandler)
+	public GameNetworkCallbacks(CharacterHandler playerHandler)
 	{
-		this.playerHandler = playerHandler;
+		this.characterHandler = playerHandler;
 
 		createCallbacks();
 
@@ -39,7 +39,7 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 		registerCallback(NetworkCommands.SETUP_GAME, onGameSetup);
 		registerCallback(NetworkCommands.CHARACTER_JOINED_GAME, onCharacterJoined);
 		registerCallback(NetworkCommands.CHARACTER_LEFT_GAME, onCharacterLeft);
-		registerCallback(NetworkCommands.PLAYER_MASS_POSITION, onCharacterMassPos);
+		registerCallback(NetworkCommands.CHARACTER_MASS_POSITION, onCharacterMassPos);
 	}
 
 	private void onAuthenticate(AuthenticationData data)
@@ -60,7 +60,7 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 		{
 			int id = data.ids[i];
 			Print.out("Character", id, "joined my game!");
-			playerHandler.addPlayer(id, data.positions[i], data.lookAts[i]);
+			characterHandler.addCharacter(id, data.positions[i], data.lookAts[i]);
 		}
 
 	}
@@ -69,7 +69,7 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 	{
 		Print.out("User", id, "left my game!");
 
-		playerHandler.removePlayer(id);
+		characterHandler.removeCharacter(id);
 	}
 
 	private void onPosition(PlayerMassPositionData data)
@@ -81,7 +81,7 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 		int count = data.count;
 		for (int i = 0; i < count; i++)
 		{
-			GameObject player = playerHandler.getPlayerById(ids[i]);
+			GameObject player = characterHandler.getCharacterById(ids[i]);
 
 			if (player != null)
 			{
@@ -133,7 +133,7 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 
 		for (GameSetupPlayerInfo player : setup.players)
 		{
-			playerHandler.addPlayer(player.id, player.pos, player.lookAt);
+			characterHandler.addCharacter(player.id, player.pos, player.lookAt);
 		}
 	}
 }

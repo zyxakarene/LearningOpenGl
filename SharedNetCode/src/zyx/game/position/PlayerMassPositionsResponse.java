@@ -15,7 +15,7 @@ public class PlayerMassPositionsResponse extends BaseNetworkResponse<PlayerMassP
 
 	public PlayerMassPositionsResponse()
 	{
-		super(NetworkCommands.PLAYER_MASS_POSITION);
+		super(NetworkCommands.CHARACTER_MASS_POSITION);
 	}
 
 	@Override
