@@ -28,7 +28,6 @@ public class PlayerMassPositionsRequest extends BaseNetworkRequest
 		for (int i = 0; i < length; i++)
 		{
 			WriteableDataObject player = new WriteableDataObject();
-			arrayData.add(player);
 			
 			int id = ids[i];
 			Vector3f pos = positions[i];
@@ -43,6 +42,8 @@ public class PlayerMassPositionsRequest extends BaseNetworkRequest
 			player.addFloat(LOOK_AT_X, lookAt.x);
 			player.addFloat(LOOK_AT_Y, lookAt.y);
 			player.addFloat(LOOK_AT_Z, lookAt.z);
+			
+			arrayData.add(player);
 		}
 
 		data.addArray(PLAYERS, arrayData);

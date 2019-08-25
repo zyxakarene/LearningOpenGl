@@ -29,7 +29,7 @@ class ArraySerializer extends AbstractSerializer
 		int length = in.readInt();
 		byte[] buffer = new byte[length];
 		
-		in.read(buffer);
+		in.readFully(buffer);
 		ReadableDataArray data = new ReadableDataArray(buffer);
 		
 		return data;

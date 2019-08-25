@@ -29,7 +29,7 @@ class ObjectSerializer extends AbstractSerializer
 		int length = in.readInt();
 		byte[] buffer = new byte[length];
 		
-		in.read(buffer);
+		in.readFully(buffer);
 		ReadableDataObject data = new ReadableDataObject(buffer);
 		
 		return data;
