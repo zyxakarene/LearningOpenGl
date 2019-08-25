@@ -3,7 +3,7 @@ package zyx.server.world.interactable.common;
 import java.awt.Color;
 import zyx.server.controller.services.ItemService;
 import zyx.server.world.humanoids.handheld.HandheldItem;
-import zyx.server.world.humanoids.handheld.HandheldItemType;
+import zyx.game.vo.HandheldItemType;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
 import zyx.server.world.humanoids.handheld.guests.BillItem;
 import zyx.server.world.humanoids.npc.Guest;
@@ -45,7 +45,7 @@ public class DinnerTable extends CommonTable<Guest>
 				giveFood((FoodItem) itemToGive);
 			}
 
-			player.removeItem(false);
+			player.removeItemSilent();
 		}
 	}
 

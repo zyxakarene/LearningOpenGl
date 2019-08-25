@@ -4,7 +4,8 @@ import zyx.net.io.controllers.NetworkCommands;
 import zyx.server.controller.sending.SendType;
 import zyx.server.controller.sending.ServerSender;
 import zyx.server.world.humanoids.handheld.HandheldItem;
-import zyx.server.world.humanoids.handheld.food.DishType;
+import zyx.game.vo.DishType;
+import zyx.game.vo.HandheldItemType;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
 import zyx.server.world.humanoids.handheld.guests.BillItem;
 import zyx.server.world.humanoids.handheld.guests.GuestOrder;
@@ -42,8 +43,8 @@ public class ItemService
 		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_SET_OWNER, item.id, ownerId);
 	}
 
-	public static void setType(HandheldItem item, int typeId)
+	public static void setType(HandheldItem item, HandheldItemType type)
 	{
-		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_SET_TYPE, item.id, typeId);
+		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_SET_TYPE, item.id, type);
 	}
 }

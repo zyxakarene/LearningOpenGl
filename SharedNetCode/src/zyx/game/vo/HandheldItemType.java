@@ -1,4 +1,4 @@
-package zyx.server.world.humanoids.handheld;
+package zyx.game.vo;
 
 public enum HandheldItemType
 {
@@ -11,5 +11,5 @@ public enum HandheldItemType
 	
 	//Players & Guests
 	ORDERS,
-	BILL,
+	BILL;
 }

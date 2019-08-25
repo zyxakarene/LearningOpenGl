@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 import zyx.server.world.humanoids.handheld.HandheldItem;
 import zyx.server.world.humanoids.handheld.food.DishRecipeItem;
-import zyx.server.world.humanoids.handheld.food.DishType;
+import zyx.game.vo.DishType;
 import zyx.server.world.humanoids.npc.Chef;
 import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
 import zyx.server.world.interactable.common.useable.UseableItem;

@@ -63,7 +63,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 		float scale = HELPER_VEC3.x > HELPER_VEC3.y ? HELPER_VEC3.x : HELPER_VEC3.y;
 		scale = scale > HELPER_VEC3.z ? scale : HELPER_VEC3.z;
 
-		float radius = getRadius()* scale;
+		float radius = getRadius() * scale;
 
 		boolean visible = Camera.getInstance().isInView(HELPER_POSITION, radius);
 		return visible;
@@ -524,12 +524,18 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 			parent.globalToLocal(HELPER_POSITION, HELPER_POSITION);
 		}
 
-		getPosition(true, HELPER_DIR);
+		getPosition(false, HELPER_DIR);
 
 		Vector3f.sub(HELPER_POSITION, HELPER_DIR, HELPER_DIR);
 
 		MatrixUtils.setDirTo(localMatrix, HELPER_DIR);
+//		rotate(-90, 0, 0);
 		updateTransforms(true);
+	}
+
+	public void lookAt(Vector3f pos)
+	{
+		lookAt(pos.x, pos.y, pos.z);
 	}
 
 	@Override

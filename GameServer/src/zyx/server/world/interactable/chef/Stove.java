@@ -31,7 +31,7 @@ public class Stove extends UseableItem<Chef>
 			if (foodItem != null)
 			{
 				foodItem.process();
-				chef.removeItem(false);
+				chef.removeItemSilent();
 				ItemService.setOwner(foodItem, id);
 				startUsing(chef);
 			}

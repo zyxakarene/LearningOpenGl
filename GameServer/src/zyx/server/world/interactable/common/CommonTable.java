@@ -128,7 +128,7 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 			boolean wasAdded = tryAddItem(heldItem);
 			if (wasAdded)
 			{
-				user.removeItem(false);
+				user.removeItemSilent();
 			}
 		}
 		else

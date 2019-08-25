@@ -1,7 +1,7 @@
 package zyx.server.world.humanoids.handheld.guests;
 
 import zyx.server.world.humanoids.handheld.HandheldItem;
-import zyx.server.world.humanoids.handheld.HandheldItemType;
+import zyx.game.vo.HandheldItemType;
 
 public class BillItem extends HandheldItem
 {

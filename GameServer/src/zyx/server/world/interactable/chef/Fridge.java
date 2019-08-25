@@ -28,7 +28,7 @@ public class Fridge extends UseableItem<Chef>
 
 			if (recipe != null)
 			{
-				chef.removeItem(true);
+				chef.removeItem();
 				startUsing(chef);
 			}
 		}

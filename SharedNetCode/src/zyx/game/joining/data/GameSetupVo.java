@@ -5,9 +5,10 @@ public class GameSetupVo
 
 	public static final GameSetupVo INSTANCE = new GameSetupVo();
 
-	public GameSetupPlayerInfo[] players;
+	public final CharacterJoinedData players;
 
 	private GameSetupVo()
 	{
+		players = CharacterJoinedData.INSTANCE;
 	}
 }

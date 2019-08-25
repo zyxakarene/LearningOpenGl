@@ -1,7 +1,8 @@
 package zyx.server.world.humanoids.handheld.food;
 
+import zyx.game.vo.DishType;
 import zyx.server.world.humanoids.handheld.HandheldItem;
-import zyx.server.world.humanoids.handheld.HandheldItemType;
+import zyx.game.vo.HandheldItemType;
 
 public class DishRecipeItem extends HandheldItem
 {

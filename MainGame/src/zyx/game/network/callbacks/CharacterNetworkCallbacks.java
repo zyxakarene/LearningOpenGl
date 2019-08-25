@@ -1,15 +1,18 @@
-package zyx.engine.components.network;
+package zyx.game.network.callbacks;
 
+import java.util.HashMap;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.components.world.World3D;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.behavior.player.OnlinePositionInterpolator;
 import zyx.game.components.GameObject;
+import zyx.game.components.world.characters.CharacterSetupVo;
+import zyx.game.components.world.characters.GameCharacter;
 import zyx.game.joining.data.CharacterJoinedData;
 import zyx.game.models.GameModels;
 import zyx.game.network.PingManager;
-import zyx.game.joining.data.GameSetupPlayerInfo;
 import zyx.game.joining.data.GameSetupVo;
-import zyx.game.scene.CharacterHandler;
+import zyx.game.scene.ItemHolderHandler;
 import zyx.game.scene.game.DragonScene;
 import zyx.game.login.data.AuthenticationData;
 import zyx.game.position.data.PlayerMassPositionData;
@@ -18,7 +21,7 @@ import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.INetworkCallback;
 import zyx.utils.cheats.Print;
 
-public class GameNetworkCallbacks extends NetworkCallbacks
+public class CharacterNetworkCallbacks extends NetworkCallbacks
 {
 
 	private INetworkCallback onAuthenticate;
@@ -27,12 +30,15 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 	private INetworkCallback onCharacterMassPos;
 	private INetworkCallback onGameSetup;
 
-	private CharacterHandler characterHandler;
+	private ItemHolderHandler itemHolderHandler;
+	
+	private HashMap<Integer, GameCharacter> characterMap;
 
-	public GameNetworkCallbacks(CharacterHandler playerHandler)
+	public CharacterNetworkCallbacks(ItemHolderHandler playerHandler)
 	{
-		this.characterHandler = playerHandler;
-
+		this.itemHolderHandler = playerHandler;
+		this.characterMap = new HashMap<>();
+		
 		createCallbacks();
 
 		registerCallback(NetworkCommands.AUTHENTICATE, onAuthenticate);
@@ -55,12 +61,22 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 
 	private void onJoin(CharacterJoinedData data)
 	{
+		CharacterSetupVo vo = new CharacterSetupVo();
+		
 		Print.out(data.joinCount, "new characters joined my game!");
 		for (int i = 0; i < data.joinCount; i++)
 		{
+			vo.fromData(data, i);
+			
+			GameCharacter character = new GameCharacter();
+			character.load(vo);
+			
 			int id = data.ids[i];
 			Print.out("Character", id, "joined my game!");
-			characterHandler.addCharacter(id, data.positions[i], data.lookAts[i]);
+			itemHolderHandler.addItemHolder(id, character);
+			characterMap.put(id, character);
+			
+			World3D.instance.addChild(character);
 		}
 
 	}
@@ -69,26 +85,26 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 	{
 		Print.out("User", id, "left my game!");
 
-		characterHandler.removeCharacter(id);
+		itemHolderHandler.remove(id);
 	}
 
 	private void onPosition(PlayerMassPositionData data)
 	{
 		int[] ids = data.ids;
 		Vector3f[] positions = data.positions;
-		Vector3f[] rotations = data.lookAts;
+		Vector3f[] lookAts = data.lookAts;
 
 		int count = data.count;
 		for (int i = 0; i < count; i++)
 		{
-			GameObject player = characterHandler.getCharacterById(ids[i]);
+			GameObject player = characterMap.get(ids[i]);
 
 			if (player != null)
 			{
 				OnlinePositionInterpolator moveBehavior = (OnlinePositionInterpolator) player.getBehaviorById(BehaviorType.ONLINE_POSITION);
 				if (moveBehavior != null)
 				{
-					moveBehavior.setPosition(positions[i], rotations[i]);
+					moveBehavior.setPosition(positions[i], lookAts[i]);
 				}
 			}
 		}
@@ -129,11 +145,7 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 
 	private void onGameSetup(GameSetupVo setup)
 	{
-		Print.out("There's already", setup.players.length, "other players in this game");
-
-		for (GameSetupPlayerInfo player : setup.players)
-		{
-			characterHandler.addCharacter(player.id, player.pos, player.lookAt);
-		}
+		Print.out("There's already", setup.players.joinCount, "other players in this game");
+		onJoin(setup.players);
 	}
 }

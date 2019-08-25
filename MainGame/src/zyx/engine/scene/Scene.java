@@ -17,7 +17,8 @@ import zyx.game.components.screen.hud.BaseHud;
 import zyx.game.controls.input.MouseData;
 import zyx.game.controls.lights.LightsManager;
 import zyx.game.controls.process.ProcessQueue;
-import zyx.game.scene.CharacterHandler;
+import zyx.game.scene.ItemHolderHandler;
+import zyx.game.scene.ItemHandler;
 import zyx.net.io.controllers.BaseNetworkController;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.shaders.SharedShaderObjects;
@@ -33,7 +34,8 @@ public class Scene
 	protected World3D world;
 	protected CameraController camera;
 
-	protected CharacterHandler characterHandler;
+	protected ItemHandler itemHandler;
+	protected ItemHolderHandler characterHandler;
 	protected BaseHud hud;
 	protected BaseNetworkController networkController;
 
@@ -46,7 +48,8 @@ public class Scene
 	{
 		picker = new WorldPicker();
 
-		characterHandler = new CharacterHandler();
+		characterHandler = new ItemHolderHandler();
+		itemHandler = new ItemHandler(characterHandler);
 
 		world = World3D.instance;
 		stage = Stage.instance;

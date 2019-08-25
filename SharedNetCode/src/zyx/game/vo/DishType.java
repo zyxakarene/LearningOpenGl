@@ -1,4 +1,4 @@
-package zyx.server.world.humanoids.handheld.food;
+package zyx.game.vo;
 
 public enum DishType
 {

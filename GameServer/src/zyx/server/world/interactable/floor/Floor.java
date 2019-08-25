@@ -66,7 +66,7 @@ public class Floor extends WorldEntity implements IPlayerInteractable, IUpdateab
 			HandheldItem heldItem = player.heldItem();
 			if (heldItem != null)
 			{
-				player.removeItem(false);
+				player.removeItemSilent();
 				itemDropped(heldItem, player);
 			}
 		}

@@ -23,4 +23,8 @@ public class NpcService
 	{
 		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.CHARACTER_LEFT_GAME, guest.id);
 	}
+
+	public static void guestGetFood(int guestId, int foodId, boolean correctDish)
+	{
+	}
 }

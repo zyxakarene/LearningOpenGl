@@ -5,6 +5,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
+import zyx.opengl.camera.Camera;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.FloatMath;
 import zyx.utils.GeometryUtils;
@@ -51,6 +52,9 @@ public class CameraUpdateViewBehavior extends Behavior
 		viewMatrix.rotate(cameraRotationRad.y, GeometryUtils.ROTATION_Y);
 		viewMatrix.rotate(cameraRotationRad.z, GeometryUtils.ROTATION_Z);
 
+		Camera.getInstance().setPosition(false, cameraPosition);
+		Camera.getInstance().setRotation(cameraRotation);
+		
 		cameraPosition.negate();
 		viewMatrix.translate(cameraPosition);
 
@@ -59,7 +63,8 @@ public class CameraUpdateViewBehavior extends Behavior
 		float dZ = FloatMath.cos(cameraRotationRad.x) * 0.1f;
 		tempMovement.set(-dX * 10, -dY * 10, dZ * 10);
 		viewMatrix.translate(tempMovement);
-
+		
+		
 	}
 
 }

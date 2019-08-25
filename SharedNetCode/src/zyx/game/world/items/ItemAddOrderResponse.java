@@ -1,5 +1,6 @@
 package zyx.game.world.items;
 
+import zyx.game.vo.DishType;
 import zyx.net.data.ReadableDataObject;
 import zyx.net.io.responses.BaseNetworkResponse;
 import zyx.net.io.controllers.NetworkCommands;
@@ -20,7 +21,8 @@ public class ItemAddOrderResponse extends BaseNetworkResponse<ItemChangedData>
 	protected ItemChangedData onMessageRecieved(ReadableDataObject data)
 	{
 		OUT.itemId = data.getInteger(ITEM_ID);
-		OUT.dishType = data.getString(DISH_TYPE);
+		String dish = data.getString(DISH_TYPE);
+		OUT.dishType = DishType.valueOf(dish);
 
 		return OUT;
 	}

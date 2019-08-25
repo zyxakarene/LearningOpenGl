@@ -7,7 +7,7 @@ import zyx.engine.components.cubemaps.CubemapManager;
 import zyx.engine.components.cubemaps.saving.CubemapProcess;
 import zyx.engine.components.meshbatch.MeshBatchEntity;
 import zyx.engine.components.meshbatch.MeshBatchManager;
-import zyx.engine.components.network.GameNetworkController;
+import zyx.game.network.GameNetworkController;
 import zyx.engine.components.tooltips.TestTooltip;
 import zyx.engine.components.tooltips.TooltipManager;
 import zyx.engine.components.world.GameLight;
@@ -34,6 +34,7 @@ import zyx.opengl.GLUtils;
 import zyx.opengl.models.implementations.shapes.Sphere;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
+import zyx.utils.GeometryUtils;
 import zyx.utils.cheats.Print;
 import zyx.utils.math.QuaternionUtils;
 
@@ -47,8 +48,9 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	private ProcessQueue processQueue;
 
 	private MeshObject testDragon;
-	private AnimatedMesh fridge;
+	private F fridge;
 	private GameObject player;
+	private SimpleMesh gameCharMesh;
 
 	public DragonScene()
 	{
@@ -69,9 +71,14 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		world.loadSkybox("skybox.texture.desert");
 		CubemapManager.getInstance().load("cubemap.dragon");
 
+		gameCharMesh = new SimpleMesh();
+		gameCharMesh.load("mesh.player");
+		world.addChild(gameCharMesh);
+		
 		MeshObject dragon = new MeshObject();
-		dragon.setScale(0.033f, 0.033f, 0.033f);
+		dragon.setScale(0.33f, 0.33f, 0.33f);
 		dragon.load("mesh.dragon");
+		dragon.setPosition(false, 100, 100, 100);
 		world.addChild(dragon);
 		testDragon = dragon;
 
@@ -179,6 +186,8 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		machine.setPosition(true, 0, 50, 0);
 		monitor.setPosition(true, 0, 100, 0);
 		fridge.setPosition(true, 0, 150, 0);
+		fridge.setDir(true, GeometryUtils.ROTATION_X);
+
 		oven.setPosition(true, 0, 220, 0);
 
 		steak.setPosition(true, 0, 0, 0);
@@ -186,12 +195,52 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		steakCooking.setPosition(true, 30, 0, 0);
 	}
 
+	private float xRot;
+	private float yRot;
+	private float zRot;
+
 	@Override
 	protected void onUpdate(long timestamp, int elapsedTime)
 	{
+		boolean update = false;
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_NUMPAD7))
+		{
+			xRot += 15;
+			update = true;
+		}
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_NUMPAD4))
+		{
+			xRot -= 15;
+			update = true;
+		}
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_NUMPAD8))
+		{
+			yRot += 15;
+			update = true;
+		}
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_NUMPAD5))
+		{
+			yRot -= 15;
+			update = true;
+		}
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_NUMPAD9))
+		{
+			zRot += 15;
+			update = true;
+		}
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_NUMPAD6))
+		{
+			zRot -= 15;
+			update = true;
+		}
+
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_F))
 		{
 			fridge.setAnimation("open");
+			Vector3f camPos = player.getPosition(false, null);
+			gameCharMesh.lookAt(camPos);
+
+			update = true;
 		}
 
 		for (int i = 0; i < gameObjects.size(); i++)
@@ -251,7 +300,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	@Override
 	protected BaseNetworkController createNetworkDispatcher()
 	{
-		return new GameNetworkController(characterHandler);
+		return new GameNetworkController(characterHandler, itemHandler);
 	}
 
 	@Override
@@ -289,7 +338,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		player.addBehavior(new FreeFlyBehavior());
 		player.addBehavior(new CameraUpdateViewBehavior());
 		player.addBehavior(new OnlinePositionSender());
-		
+
 		gameObjects.add(player);
 	}
 }

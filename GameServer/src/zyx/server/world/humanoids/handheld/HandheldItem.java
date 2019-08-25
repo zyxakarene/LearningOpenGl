@@ -1,5 +1,6 @@
 package zyx.server.world.humanoids.handheld;
 
+import zyx.game.vo.HandheldItemType;
 import zyx.server.controller.services.ItemService;
 import zyx.server.utils.IUpdateable;
 

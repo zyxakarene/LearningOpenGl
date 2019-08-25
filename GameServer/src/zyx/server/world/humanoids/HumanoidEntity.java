@@ -37,18 +37,27 @@ public class HumanoidEntity extends WorldEntity
 		return heldItem == null;
 	}
 
-	public HandheldItem removeItem(boolean dispose)
+	public HandheldItem removeItem()
 	{
 		HandheldItem item = heldItem;
 
 		if (item != null)
 		{
 			System.out.println(item + " was removed from " + this);
+			item.dispose();
+		}
 
-			if (dispose)
-			{
-				item.dispose();
-			}
+		heldItem = null;
+		return item;
+	}
+
+	public HandheldItem removeItemSilent()
+	{
+		HandheldItem item = heldItem;
+
+		if (item != null)
+		{
+			System.out.println(item + " was removed from " + this);
 		}
 
 		heldItem = null;

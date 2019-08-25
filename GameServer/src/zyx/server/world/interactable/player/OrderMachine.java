@@ -3,7 +3,7 @@ package zyx.server.world.interactable.player;
 import java.awt.Color;
 import java.util.ArrayList;
 import zyx.server.world.RoomItems;
-import zyx.server.world.humanoids.handheld.food.DishType;
+import zyx.game.vo.DishType;
 import zyx.server.world.humanoids.handheld.guests.GuestOrder;
 import zyx.server.world.humanoids.players.Player;
 import zyx.server.world.interactable.BaseInteractableItem;
@@ -19,7 +19,7 @@ public class OrderMachine extends BaseInteractableItem<Player>
 		
 		if (order != null)
 		{
-			player.removeItem(true);
+			player.removeItem();
 			Monitor monitor = RoomItems.instance.orderMonitor();
 			
 			ArrayList<DishType> dishes = order.getDishes();

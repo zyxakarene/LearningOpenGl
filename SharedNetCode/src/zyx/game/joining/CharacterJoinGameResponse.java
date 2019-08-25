@@ -1,4 +1,4 @@
-package zyx.game.network.connection;
+package zyx.game.joining;
 
 import static zyx.game.joining.SetupConstants.*;
 import zyx.game.joining.data.CharacterJoinedData;

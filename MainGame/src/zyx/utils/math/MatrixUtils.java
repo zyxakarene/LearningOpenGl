@@ -89,6 +89,10 @@ public class MatrixUtils
 			up = GeometryUtils.ROTATION_Z;
 		}
 
+		if (dir.length() <= 0)
+		{
+			return;
+		}
 		dir.normalise();
 
 		Vector3f right = Vector3f.cross(up, dir, null);

@@ -2,17 +2,19 @@ package zyx.game.components;
 
 import org.lwjgl.util.vector.Matrix4f;
 import zyx.opengl.models.implementations.physics.PhysBox;
+import zyx.utils.GeometryUtils;
 import zyx.utils.interfaces.IPhysbox;
 
 public class MeshObject extends GameObject implements IPhysbox
 {
+
 	public SimpleMesh mesh;
 
 	public MeshObject()
 	{
 		this(false);
 	}
-	
+
 	public MeshObject(boolean animated)
 	{
 		if (animated)
@@ -25,7 +27,7 @@ public class MeshObject extends GameObject implements IPhysbox
 		}
 		addChild(mesh);
 	}
-	
+
 	public void load(String resource)
 	{
 		mesh.load(resource);
@@ -35,7 +37,7 @@ public class MeshObject extends GameObject implements IPhysbox
 	protected void onDispose()
 	{
 		super.onDispose();
-		
+
 		mesh.dispose();
 		mesh = null;
 	}
@@ -57,6 +59,5 @@ public class MeshObject extends GameObject implements IPhysbox
 	{
 		return mesh.getBoneMatrix(boneId);
 	}
-	
-	
+
 }

@@ -6,7 +6,7 @@ import zyx.game.vo.Gender;
 import zyx.net.io.connections.ConnectionData;
 import zyx.server.controller.services.NpcService;
 import zyx.server.world.RoomItems;
-import zyx.server.world.humanoids.handheld.food.DishType;
+import zyx.game.vo.DishType;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
 import zyx.server.world.humanoids.handheld.guests.BillItem;
 import zyx.server.world.humanoids.npc.GuestGroup;

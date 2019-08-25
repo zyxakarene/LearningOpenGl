@@ -164,6 +164,32 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 			attachmentRequests.add(request);
 		}
 	}
+	
+	public void removeChildAsAttachment(SimpleMesh child)
+	{
+		attachedObjects.remove(child);
+		
+		for (Attachment attachment : attachments)
+		{
+			if (attachment.child == child)
+			{
+				attachments.remove(attachment);
+				break;
+			}
+		}
+		
+		if (attachmentRequests != null)
+		{
+			for (AttachmentRequest attachmentRequest : attachmentRequests)
+			{
+				if (attachmentRequest.child == child)
+				{
+					attachmentRequests.remove(attachmentRequest);
+					break;
+				}
+			}
+		}
+	}
 
 	@Override
 	public void onResourceReady(MeshResource resource)

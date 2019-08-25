@@ -2,7 +2,8 @@ package zyx.server.world.humanoids.npc;
 
 import java.awt.Color;
 import zyx.server.world.humanoids.handheld.HandheldItem;
-import zyx.server.world.humanoids.handheld.food.DishType;
+import zyx.game.vo.DishType;
+import zyx.server.controller.services.NpcService;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
 import zyx.server.world.humanoids.handheld.guests.BillItem;
 import zyx.server.world.humanoids.npc.behavior.guest.GuestBehaviorType;
@@ -41,10 +42,7 @@ public class Guest extends BaseNpc<GuestBehaviorType>
 		hasEaten = true;
 
 		gotRightDish = (servedDish == dishRequest);
-		if (!gotRightDish)
-		{
-			//Get angry!
-		}
+		NpcService.guestGetFood(id, food.id, gotRightDish);
 	}
 	
 	public void stopEating()

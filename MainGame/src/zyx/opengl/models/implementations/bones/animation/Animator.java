@@ -31,13 +31,22 @@ public class Animator implements IDisposeable
 	public void update()
 	{
 		if (currentAnimation != null)
-		{			
+		{
 			float timeSinceStart = timeSinceStarted;
 
 			int animationLength = currentAnimation.length;
 
-			float currentFrame = (timeSinceStart / GameConstants.ANIMATION_MS_PER_FRAME) % animationLength;
+			float currentFrame = (timeSinceStart / GameConstants.ANIMATION_MS_PER_FRAME);
 
+			if (currentAnimation.loopable)
+			{
+				currentFrame = currentFrame % animationLength;
+			}
+			else if (currentFrame >= animationLength)
+			{
+				currentFrame = animationLength - 1;
+			}
+			
 			int prevFrame = FloatMath.floor(currentFrame);
 			int nextFrame = FloatMath.ceil(currentFrame);
 

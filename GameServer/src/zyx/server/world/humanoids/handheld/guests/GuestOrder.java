@@ -2,8 +2,8 @@ package zyx.server.world.humanoids.handheld.guests;
 
 import java.util.ArrayList;
 import zyx.server.world.humanoids.handheld.HandheldItem;
-import zyx.server.world.humanoids.handheld.HandheldItemType;
-import zyx.server.world.humanoids.handheld.food.DishType;
+import zyx.game.vo.HandheldItemType;
+import zyx.game.vo.DishType;
 import zyx.server.world.interactable.common.DinnerTable;
 
 public class GuestOrder extends HandheldItem

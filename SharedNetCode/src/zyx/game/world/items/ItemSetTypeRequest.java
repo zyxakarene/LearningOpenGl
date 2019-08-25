@@ -16,9 +16,9 @@ public class ItemSetTypeRequest extends BaseNetworkRequest
 	protected void getDataObject(WriteableDataObject data, Object... params)
 	{
 		int itemID = (int) params[0];
-		int typeID = (int) params[1];
+		String type = (String) params[1];
 		
 		data.addInteger(ITEM_ID, itemID);
-		data.addInteger(ITEM_TYPE, typeID);
+		data.addString(ITEM_TYPE, type);
 	}
 }
