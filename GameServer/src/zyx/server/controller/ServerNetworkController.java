@@ -9,8 +9,8 @@ import zyx.game.login.LoginRequest;
 import zyx.game.login.LoginResponse;
 import zyx.game.ping.PingRequest;
 import zyx.game.ping.PingResponse;
-import zyx.game.position.PlayerMassPositionsRequest;
-import zyx.game.position.PlayerPosResponse;
+import zyx.game.position.CharacterMassPositionsRequest;
+import zyx.game.position.CharacterPosResponse;
 import zyx.game.world.entities.EntityInteractWithRequest;
 import zyx.game.world.items.*;
 import zyx.net.io.controllers.BaseNetworkController;
@@ -31,7 +31,7 @@ public class ServerNetworkController extends BaseNetworkController
 	protected void addRequestsHandlersTo(NetworkRequestDispatcher dispatcher)
 	{
 		dispatcher.addRequestHandler(new CharacterJoinGameRequest());
-		dispatcher.addRequestHandler(new PlayerMassPositionsRequest());
+		dispatcher.addRequestHandler(new CharacterMassPositionsRequest());
 		dispatcher.addRequestHandler(new CharacterLeaveGameRequest());
 		dispatcher.addRequestHandler(new LoginRequest());
 		dispatcher.addRequestHandler(new SetupGameRequest());
@@ -54,7 +54,7 @@ public class ServerNetworkController extends BaseNetworkController
 	{
 		dispatcher.addResponseCallback(new LoginResponse());
 		dispatcher.addResponseCallback(new CharacterLeaveGameResponse());
-		dispatcher.addResponseCallback(new PlayerPosResponse());
+		dispatcher.addResponseCallback(new CharacterPosResponse());
 		dispatcher.addResponseCallback(new AuthenticateResponse());
 		dispatcher.addResponseCallback(new PingResponse());
 		

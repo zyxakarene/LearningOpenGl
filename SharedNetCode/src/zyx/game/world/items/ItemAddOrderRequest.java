@@ -1,5 +1,6 @@
 package zyx.game.world.items;
 
+import zyx.game.vo.DishType;
 import zyx.net.data.WriteableDataObject;
 import zyx.net.io.requests.BaseNetworkRequest;
 import zyx.net.io.controllers.NetworkCommands;
@@ -16,9 +17,9 @@ public class ItemAddOrderRequest extends BaseNetworkRequest
 	protected void getDataObject(WriteableDataObject data, Object... params)
 	{
 		int orderID = (int) params[0];
-		int dishType = (int) params[1];
+		DishType dishType = (DishType) params[1];
 		
 		data.addInteger(ITEM_ID, orderID);
-		data.addInteger(DISH_TYPE, dishType);
+		data.addString(DISH_TYPE, dishType.toString());
 	}
 }

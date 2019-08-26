@@ -18,7 +18,7 @@ public class CharacterLeaveGameRequest extends BaseNetworkRequest
 	{
 		int id = (int) params[0];
 		
-		data.addInteger(CHARACTER_ID, id);
+		data.addInteger(ID, id);
 	}
 
 }

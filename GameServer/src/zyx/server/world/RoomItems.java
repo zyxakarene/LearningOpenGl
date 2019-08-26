@@ -9,6 +9,7 @@ import zyx.server.world.humanoids.npc.Guest;
 import zyx.server.world.humanoids.npc.NpcManager;
 import zyx.server.world.humanoids.players.Player;
 import zyx.server.world.humanoids.players.PlayerManager;
+import zyx.server.world.interactable.BaseInteractableItem;
 import zyx.server.world.interactable.chef.Fridge;
 import zyx.server.world.interactable.chef.Stove;
 import zyx.server.world.interactable.chef.Monitor;
@@ -49,7 +50,7 @@ public class RoomItems implements IUpdateable
 		instance = this;
 
 		floor = new Floor();
-		
+
 		fridges = new Fridge[1];
 		fridges[0] = new Fridge();
 		fridges[0].updatePosition(200, 25, 0);
@@ -112,12 +113,12 @@ public class RoomItems implements IUpdateable
 
 		orderMonitor.update(timestamp, elapsedTime);
 		dishWasher.update(timestamp, elapsedTime);
-		
+
 		floor.update(timestamp, elapsedTime);
 	}
 
 	public void draw(Graphics g)
-	{		
+	{
 		fridges[0].draw(g);
 		stoves[0].draw(g);
 		foodTables[0].draw(g);
@@ -129,11 +130,10 @@ public class RoomItems implements IUpdateable
 		orderMonitor.draw(g);
 
 		dishWasher.draw(g);
-		
+
 		floor.draw(g);
 
 //		graph.draw(g);
-
 		ArrayList<BaseNpc> npcs = NpcManager.getInstance().getAllEntities();
 		for (BaseNpc npc : npcs)
 		{
@@ -151,7 +151,7 @@ public class RoomItems implements IUpdateable
 	{
 		return orderMachine;
 	}
-	
+
 	public Chair getChairWithGuest(Guest guest)
 	{
 		for (Chair chair : chairs)
@@ -161,7 +161,7 @@ public class RoomItems implements IUpdateable
 				return chair;
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -174,7 +174,7 @@ public class RoomItems implements IUpdateable
 				return table;
 			}
 		}
-		
+
 		for (DinnerTable table : dinnerTables)
 		{
 			if (table.containsItem(itemId))
@@ -182,12 +182,12 @@ public class RoomItems implements IUpdateable
 				return table;
 			}
 		}
-		
+
 		if (floor.containsItem(itemId))
 		{
 			return floor;
 		}
-		
+
 		return null;
 	}
 
@@ -200,7 +200,7 @@ public class RoomItems implements IUpdateable
 				return table;
 			}
 		}
-		
+
 		for (DinnerTable table : dinnerTables)
 		{
 			if (table.id == ownerId)
@@ -208,12 +208,30 @@ public class RoomItems implements IUpdateable
 				return table;
 			}
 		}
-		
+
 		if (floor.id == ownerId)
 		{
 			return floor;
 		}
-		
+
 		return null;
+	}
+
+	public ArrayList<BaseInteractableItem> getAllItems()
+	{
+		ArrayList<BaseInteractableItem> items = new ArrayList<>();
+
+		items.add(floor);
+		items.add(fridges[0]);
+		items.add(stoves[0]);
+		items.add(foodTables[0]);
+		items.add(orderMonitor);
+		items.add(orderMachine);
+		items.add(dishWasher);
+		items.add(chairs[0]);
+		items.add(dinnerTables[0]);
+		items.add(exitPoint);
+		
+		return items;
 	}
 }

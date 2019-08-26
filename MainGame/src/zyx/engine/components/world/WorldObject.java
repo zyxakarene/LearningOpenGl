@@ -144,7 +144,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 		}
 		else
 		{
-			String msg = String.format("Cannot remove child %s when its parent %s != this %s", child, child.parent, this);
+			String msg = String.format("Cannot remove child %s when its parent '%s' != this '%s'", child, child.parent, this);
 			throw new RuntimeException(msg);
 		}
 	}

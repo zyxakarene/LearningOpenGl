@@ -37,13 +37,17 @@ public class GameCharacter extends GameObject implements IItemHolder
 	@Override
 	public void hold(GameItem item)
 	{
-		info.holdingItem = true;
+		info.heldItem = item;
 		addChild(item);
 	}
 
 	@Override
-	public void removeItem()
+	public void removeItem(GameItem item)
 	{
-		info.holdingItem = false;
+		if (info.heldItem != null)
+		{
+			removeChild(info.heldItem);
+			info.heldItem = null;
+		}
 	}
 }

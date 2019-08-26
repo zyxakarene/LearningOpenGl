@@ -48,7 +48,7 @@ public class ItemHandler
 			IItemHolder oldHolder = itemHolderHandler.getById(oldOwnerId);
 			if (oldHolder != null)
 			{
-				oldHolder.removeItem();
+				oldHolder.removeItem(item);
 			}
 
 			IItemHolder newHolder = itemHolderHandler.getById(ownerId);
@@ -70,6 +70,12 @@ public class ItemHandler
 		GameItem item = itemMap.remove(uniqueId);
 		if (item != null)
 		{
+			IItemHolder currentOwner = itemHolderHandler.getById(item.getOwnerId());
+			if (currentOwner != null)
+			{
+				currentOwner.removeItem(item);
+			}
+			
 			itemList.remove(item);
 			item.dispose();
 		}
@@ -88,7 +94,10 @@ public class ItemHandler
 
 	public void setType(int uniqueId, HandheldItemType type)
 	{
-		GameItem item = itemMap.remove(uniqueId);
-		item.setType(type);
+		GameItem item = itemMap.get(uniqueId);
+		if (item != null)
+		{
+			item.setType(type);
+		}
 	}
 }

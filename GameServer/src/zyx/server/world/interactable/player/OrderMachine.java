@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import zyx.server.world.RoomItems;
 import zyx.game.vo.DishType;
+import zyx.game.vo.FurnitureType;
 import zyx.server.world.humanoids.handheld.guests.GuestOrder;
 import zyx.server.world.humanoids.players.Player;
 import zyx.server.world.interactable.BaseInteractableItem;
@@ -11,6 +12,11 @@ import zyx.server.world.interactable.chef.Monitor;
 
 public class OrderMachine extends BaseInteractableItem<Player>
 {
+
+	public OrderMachine()
+	{
+		super(FurnitureType.ORDER_MACHINE);
+	}
 
 	@Override
 	public void interactWith(Player player)

@@ -1,6 +1,7 @@
 package zyx.server.world.interactable.common;
 
 import java.awt.Color;
+import zyx.game.vo.FurnitureType;
 import zyx.server.world.humanoids.handheld.HandheldItem;
 import zyx.server.world.humanoids.npc.Chef;
 import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
@@ -12,7 +13,7 @@ public class FoodTable extends CommonTable<Chef>
 
 	public FoodTable()
 	{
-		super(MAX_CHEF_TABLE_ITEM_COUNT);
+		super(MAX_CHEF_TABLE_ITEM_COUNT, FurnitureType.FOOD_TABLE);
 	}
 
 	@Override

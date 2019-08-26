@@ -20,7 +20,6 @@ public class FoodItem extends GameItem
 		load();
 	}
 	
-	
 	@Override
 	protected String getItemResource()
 	{
@@ -43,6 +42,9 @@ public class FoodItem extends GameItem
 				break;
 		}
 		
+		System.out.println("====");
+		System.out.println("Loading " + "mesh.furniture." + foodBase + foodState);
+		System.out.println("====");
 		return "mesh.furniture." + foodBase + foodState;
 	}
 }

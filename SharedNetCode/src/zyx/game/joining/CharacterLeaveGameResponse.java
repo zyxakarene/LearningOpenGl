@@ -18,7 +18,7 @@ public class CharacterLeaveGameResponse extends BaseNetworkResponse<Integer>
 	@Override
 	protected Integer onMessageRecieved(ReadableDataObject data)
 	{
-		return data.getInteger(CHARACTER_ID);
+		return data.getInteger(ID);
 	}
 
 }

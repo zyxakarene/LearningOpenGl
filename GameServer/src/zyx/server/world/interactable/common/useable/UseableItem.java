@@ -2,6 +2,7 @@ package zyx.server.world.interactable.common.useable;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import zyx.game.vo.FurnitureType;
 import zyx.server.utils.IUpdateable;
 import zyx.server.world.humanoids.HumanoidEntity;
 import zyx.server.world.humanoids.players.Player;
@@ -15,8 +16,10 @@ public abstract class UseableItem<User extends HumanoidEntity> extends BaseInter
 
 	private boolean actionStarted;
 
-	public UseableItem(int completionTime)
+	public UseableItem(int completionTime, FurnitureType type)
 	{
+		super(type);
+		
 		inUse = false;
 		currentUser = null;
 		actionStarted = false;

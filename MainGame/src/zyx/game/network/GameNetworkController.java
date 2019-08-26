@@ -2,7 +2,7 @@ package zyx.game.network;
 
 import zyx.engine.components.network.PingPongNetworkCallbacks;
 import zyx.game.network.callbacks.ItemNetworkCallbacks;
-import zyx.game.network.callbacks.CharacterNetworkCallbacks;
+import zyx.game.network.callbacks.GameNetworkCallbacks;
 import zyx.game.joining.CharacterJoinGameResponse;
 import zyx.game.joining.CharacterLeaveGameRequest;
 import zyx.game.joining.CharacterLeaveGameResponse;
@@ -12,8 +12,8 @@ import zyx.game.login.LoginResponse;
 import zyx.game.joining.SetupGameResponse;
 import zyx.game.ping.PingRequest;
 import zyx.game.ping.PingResponse;
-import zyx.game.position.PlayerMassPositionsResponse;
-import zyx.game.position.PlayerPosRequest;
+import zyx.game.position.CharacterMassPositionsResponse;
+import zyx.game.position.CharacterPosRequest;
 import zyx.game.scene.ItemHolderHandler;
 import zyx.game.scene.ItemHandler;
 import zyx.game.world.items.*;
@@ -27,7 +27,7 @@ public class GameNetworkController extends BaseNetworkController
 	public GameNetworkController(ItemHolderHandler playerHandler, ItemHandler itemHandler)
 	{
 		addCallbackMap(new PingPongNetworkCallbacks());
-		addCallbackMap(new CharacterNetworkCallbacks(playerHandler));
+		addCallbackMap(new GameNetworkCallbacks(playerHandler));
 		addCallbackMap(new ItemNetworkCallbacks(itemHandler));
 	}
 
@@ -36,7 +36,7 @@ public class GameNetworkController extends BaseNetworkController
 	{
 		dispatcher.addRequestHandler(new LoginRequest());
 		dispatcher.addRequestHandler(new CharacterLeaveGameRequest());
-		dispatcher.addRequestHandler(new PlayerPosRequest());
+		dispatcher.addRequestHandler(new CharacterPosRequest());
 		dispatcher.addRequestHandler(new PingRequest());
 	}
 
@@ -48,7 +48,7 @@ public class GameNetworkController extends BaseNetworkController
 		dispatcher.addResponseCallback(new SetupGameResponse());
 		dispatcher.addResponseCallback(new CharacterJoinGameResponse());
 		dispatcher.addResponseCallback(new CharacterLeaveGameResponse());
-		dispatcher.addResponseCallback(new PlayerMassPositionsResponse());
+		dispatcher.addResponseCallback(new CharacterMassPositionsResponse());
 		dispatcher.addResponseCallback(new PingResponse());
 		
 		dispatcher.addResponseCallback(new ItemCreateBillResponse());

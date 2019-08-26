@@ -7,18 +7,18 @@ import zyx.game.vo.Gender;
 public class CharacterSetupVo
 {
 
+	int id;
 	Vector3f pos;
 	Vector3f look;
 	Gender gender;
-	int id;
 	String name;
 
 	public void fromData(CharacterJoinedData data, int index)
 	{
+		id = data.ids[index];
 		pos = data.positions[index];
 		look = data.lookAts[index];
 		gender = data.genders[index];
-		id = data.ids[index];
 		name = data.names[index];
 	}
 }

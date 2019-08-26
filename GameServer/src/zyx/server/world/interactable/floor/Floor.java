@@ -4,27 +4,30 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import zyx.game.vo.FurnitureType;
 import zyx.server.utils.Distance;
 import zyx.server.utils.IUpdateable;
 import zyx.server.world.RoomItems;
-import zyx.server.world.entity.WorldEntity;
 import zyx.server.world.humanoids.HumanoidEntity;
 import zyx.server.world.humanoids.handheld.HandheldItem;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
 import zyx.server.world.humanoids.npc.Cleaner;
 import zyx.server.world.humanoids.npc.behavior.cleaner.CleanerBehaviorType;
 import zyx.server.world.humanoids.players.Player;
+import zyx.server.world.interactable.BaseInteractableItem;
 import zyx.server.world.interactable.common.ICleanable;
 import zyx.server.world.interactable.common.player.IPlayerInteractable;
 import zyx.server.world.interactable.common.player.PlayerInteraction;
 
-public class Floor extends WorldEntity implements IPlayerInteractable, IUpdateable, ICleanable
+public class Floor extends BaseInteractableItem implements IPlayerInteractable, IUpdateable, ICleanable
 {
 
 	private ArrayList<FloorItem> floorItems;
 
 	public Floor()
 	{
+		super(FurnitureType.FLOOR);
+		
 		floorItems = new ArrayList<>();
 	}
 
@@ -201,5 +204,11 @@ public class Floor extends WorldEntity implements IPlayerInteractable, IUpdateab
 		}
 		
 		return null;
+	}
+
+	@Override
+	public void interactWith(HumanoidEntity user)
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 }

@@ -23,12 +23,6 @@ public abstract class WorldEntity
 		lx = 100;
 	}
 	
-	protected WorldEntity(int id)
-	{
-		idCounter++;
-		this.id = id;
-	}
-	
 	public void updateFrom(PositionData data)
 	{
 		updatedPosition = true;

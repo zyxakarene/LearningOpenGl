@@ -20,12 +20,12 @@ public class ItemService
 	
 	public static void createOrders(GuestOrder orders, DishType type, int ownerId)
 	{
-		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_CREATE_ORDER, orders.id, ownerId, type.name());
+		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_CREATE_ORDER, orders.id, ownerId, type);
 	}
 	
 	public static void addToOrders(GuestOrder orders, DishType type)
 	{
-		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_ADD_ORDER, orders.id, type.name());
+		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_ADD_ORDER, orders.id, type);
 	}
 	
 	public static void createFood(FoodItem food, int ownerId)
@@ -46,5 +46,10 @@ public class ItemService
 	public static void setType(HandheldItem item, HandheldItemType type)
 	{
 		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_SET_TYPE, item.id, type);
+	}
+
+	public static void spoilFood(FoodItem aThis)
+	{
+		//TODO
 	}
 }

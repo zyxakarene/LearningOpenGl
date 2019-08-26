@@ -8,20 +8,23 @@ import zyx.game.behavior.player.OnlinePositionInterpolator;
 import zyx.game.components.GameObject;
 import zyx.game.components.world.characters.CharacterSetupVo;
 import zyx.game.components.world.characters.GameCharacter;
+import zyx.game.components.world.furniture.BaseFurnitureItem;
+import zyx.game.components.world.furniture.FurnitureSetupVo;
 import zyx.game.joining.data.CharacterJoinedData;
+import zyx.game.joining.data.FurnitureSetupData;
 import zyx.game.models.GameModels;
 import zyx.game.network.PingManager;
 import zyx.game.joining.data.GameSetupVo;
 import zyx.game.scene.ItemHolderHandler;
 import zyx.game.scene.game.DragonScene;
 import zyx.game.login.data.AuthenticationData;
-import zyx.game.position.data.PlayerMassPositionData;
+import zyx.game.position.data.CharacterMassPositionData;
 import zyx.net.io.controllers.NetworkCallbacks;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.INetworkCallback;
 import zyx.utils.cheats.Print;
 
-public class CharacterNetworkCallbacks extends NetworkCallbacks
+public class GameNetworkCallbacks extends NetworkCallbacks
 {
 
 	private INetworkCallback onAuthenticate;
@@ -31,14 +34,14 @@ public class CharacterNetworkCallbacks extends NetworkCallbacks
 	private INetworkCallback onGameSetup;
 
 	private ItemHolderHandler itemHolderHandler;
-	
+
 	private HashMap<Integer, GameCharacter> characterMap;
 
-	public CharacterNetworkCallbacks(ItemHolderHandler playerHandler)
+	public GameNetworkCallbacks(ItemHolderHandler playerHandler)
 	{
 		this.itemHolderHandler = playerHandler;
 		this.characterMap = new HashMap<>();
-		
+
 		createCallbacks();
 
 		registerCallback(NetworkCommands.AUTHENTICATE, onAuthenticate);
@@ -59,36 +62,54 @@ public class CharacterNetworkCallbacks extends NetworkCallbacks
 		Print.out("User authenticated as ID:", data.id);
 	}
 
-	private void onJoin(CharacterJoinedData data)
+	private void onCharacterJoined(CharacterJoinedData data)
 	{
 		CharacterSetupVo vo = new CharacterSetupVo();
-		
+
 		Print.out(data.joinCount, "new characters joined my game!");
 		for (int i = 0; i < data.joinCount; i++)
 		{
 			vo.fromData(data, i);
-			
+
 			GameCharacter character = new GameCharacter();
 			character.load(vo);
-			
+
 			int id = data.ids[i];
 			Print.out("Character", id, "joined my game!");
 			itemHolderHandler.addItemHolder(id, character);
 			characterMap.put(id, character);
-			
+
 			World3D.instance.addChild(character);
 		}
+	}
+	
+	private void onFurnitureAdded(FurnitureSetupData data)
+	{
+		FurnitureSetupVo vo = new FurnitureSetupVo();
 
+		for (int i = 0; i < data.furnitureCount; i++)
+		{
+			vo.fromData(data, i);
+
+			BaseFurnitureItem furniture = vo.createFurniture();
+			furniture.load(vo);
+
+			int id = data.ids[i];
+			Print.out("Furniture", id, "was added to the world");
+			itemHolderHandler.addItemHolder(id, furniture);
+
+			World3D.instance.addChild(furniture);
+		}
 	}
 
-	private void onLeave(int id)
+	private void onCharacterLeft(int id)
 	{
 		Print.out("User", id, "left my game!");
 
 		itemHolderHandler.remove(id);
 	}
 
-	private void onPosition(PlayerMassPositionData data)
+	private void onCharacterMassPosition(CharacterMassPositionData data)
 	{
 		int[] ids = data.ids;
 		Vector3f[] positions = data.positions;
@@ -97,11 +118,11 @@ public class CharacterNetworkCallbacks extends NetworkCallbacks
 		int count = data.count;
 		for (int i = 0; i < count; i++)
 		{
-			GameObject player = characterMap.get(ids[i]);
+			GameObject character = characterMap.get(ids[i]);
 
-			if (player != null)
+			if (character != null)
 			{
-				OnlinePositionInterpolator moveBehavior = (OnlinePositionInterpolator) player.getBehaviorById(BehaviorType.ONLINE_POSITION);
+				OnlinePositionInterpolator moveBehavior = (OnlinePositionInterpolator) character.getBehaviorById(BehaviorType.ONLINE_POSITION);
 				if (moveBehavior != null)
 				{
 					moveBehavior.setPosition(positions[i], lookAts[i]);
@@ -112,40 +133,19 @@ public class CharacterNetworkCallbacks extends NetworkCallbacks
 
 	private void createCallbacks()
 	{
-		onAuthenticate = (INetworkCallback<AuthenticationData>) (AuthenticationData data)
-				-> 
-				{
-					onAuthenticate(data);
-		};
-
-		onCharacterJoined = (INetworkCallback<CharacterJoinedData>) (CharacterJoinedData data)
-				-> 
-				{
-					onJoin(data);
-		};
-
-		onCharacterLeft = (INetworkCallback<Integer>) (Integer playerId)
-				-> 
-				{
-					onLeave(playerId);
-		};
-
-		onCharacterMassPos = (INetworkCallback<PlayerMassPositionData>) (PlayerMassPositionData position)
-				-> 
-				{
-					onPosition(position);
-		};
-
-		onGameSetup = (INetworkCallback<GameSetupVo>) (GameSetupVo data)
-				-> 
-				{
-					onGameSetup(data);
-		};
+		onAuthenticate = (INetworkCallback<AuthenticationData>) this::onAuthenticate;
+		onCharacterJoined = (INetworkCallback<CharacterJoinedData>) this::onCharacterJoined;
+		onCharacterLeft = (INetworkCallback<Integer>) this::onCharacterLeft;
+		onCharacterMassPos = (INetworkCallback<CharacterMassPositionData>) this::onCharacterMassPosition;
+		onGameSetup = (INetworkCallback<GameSetupVo>) this::onGameSetup;
 	}
 
 	private void onGameSetup(GameSetupVo setup)
 	{
 		Print.out("There's already", setup.players.joinCount, "other players in this game");
-		onJoin(setup.players);
+		Print.out("There's", setup.furniture.furnitureCount, "items in this game");
+		
+		onCharacterJoined(setup.players);
+		onFurnitureAdded(setup.furniture);
 	}
 }

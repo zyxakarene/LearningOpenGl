@@ -1,6 +1,6 @@
 package zyx.game.position;
 
-import zyx.game.position.data.PlayerMassPositionData;
+import zyx.game.position.data.CharacterMassPositionData;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.net.data.ReadableDataObject;
 import zyx.net.io.controllers.NetworkCommands;
@@ -8,20 +8,20 @@ import zyx.net.io.responses.BaseNetworkResponse;
 import static zyx.game.position.PositionConstants.*;
 import zyx.net.data.ReadableDataArray;
 
-public class PlayerMassPositionsResponse extends BaseNetworkResponse<PlayerMassPositionData>
+public class CharacterMassPositionsResponse extends BaseNetworkResponse<CharacterMassPositionData>
 {
 
-	private static final PlayerMassPositionData OUT = new PlayerMassPositionData();
+	private static final CharacterMassPositionData OUT = new CharacterMassPositionData();
 
-	public PlayerMassPositionsResponse()
+	public CharacterMassPositionsResponse()
 	{
 		super(NetworkCommands.CHARACTER_MASS_POSITION);
 	}
 
 	@Override
-	protected PlayerMassPositionData onMessageRecieved(ReadableDataObject data)
+	protected CharacterMassPositionData onMessageRecieved(ReadableDataObject data)
 	{
-		ReadableDataArray<ReadableDataObject> players = data.getArray(PLAYERS);
+		ReadableDataArray<ReadableDataObject> players = data.getArray(CHARACTERS);
 		int len = players.size();
 		
 		if (len != OUT.count)

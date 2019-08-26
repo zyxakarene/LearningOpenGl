@@ -25,13 +25,13 @@ public class CharacterJoinGameRequest extends BaseNetworkRequest
 		for (HumanoidEntity entity : entites)
 		{
 			WriteableDataObject character = new WriteableDataObject();
-			character.addInteger(CHARACTER_ID, entity.id);
-			character.addFloat(CHARACTER_X, entity.x);
-			character.addFloat(CHARACTER_Y, entity.y);
-			character.addFloat(CHARACTER_Z, entity.z);
-			character.addFloat(CHARACTER_LOOK_X, entity.lx);
-			character.addFloat(CHARACTER_LOOK_Y, entity.ly);
-			character.addFloat(CHARACTER_LOOK_Z, entity.lz);
+			character.addInteger(ID, entity.id);
+			character.addFloat(X, entity.x);
+			character.addFloat(Y, entity.y);
+			character.addFloat(Z, entity.z);
+			character.addFloat(LOOK_X, entity.lx);
+			character.addFloat(LOOK_Y, entity.ly);
+			character.addFloat(LOOK_Z, entity.lz);
 			character.addString(CHARACTER_NAME, entity.name);
 			
 			characters.add(character);

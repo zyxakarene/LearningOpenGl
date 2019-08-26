@@ -3,6 +3,7 @@ package zyx.server.world.interactable.chef;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import zyx.game.vo.FurnitureType;
 import zyx.server.controller.services.ItemService;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
 import zyx.server.world.humanoids.npc.Chef;
@@ -18,7 +19,7 @@ public class Stove extends UseableItem<Chef>
 
 	public Stove()
 	{
-		super(COOK_TIME);
+		super(COOK_TIME, FurnitureType.STOVE);
 	}
 
 	@Override

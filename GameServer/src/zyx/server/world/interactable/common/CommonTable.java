@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import zyx.game.vo.FurnitureType;
 import zyx.server.controller.services.ItemService;
 import zyx.server.utils.IUpdateable;
 import zyx.server.world.RoomItems;
@@ -23,8 +24,9 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 	private ArrayList<HandheldItem> itemsOnTable;
 	private final int maxItemsOnTable;
 
-	public CommonTable(int maxItemsOnTable)
+	public CommonTable(int maxItemsOnTable, FurnitureType type)
 	{
+		super(type);
 		itemsOnTable = new ArrayList<>();
 		this.maxItemsOnTable = maxItemsOnTable;
 	}

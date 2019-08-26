@@ -5,7 +5,6 @@ import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
-import zyx.utils.cheats.Print;
 
 public class OnlinePositionInterpolator extends Behavior
 {
@@ -58,10 +57,6 @@ public class OnlinePositionInterpolator extends Behavior
 
 		if (hasLookChange)
 		{
-			Print.out("===Got new position!===");
-			Print.out("Start Look", startLook);
-			Print.out("Look Dir", lookAtDir);
-			Print.out("===");
 			Vector3f.sub(lookAt, startLook, lookAtDir);
 			lookAtDir.normalise();
 		}
@@ -90,7 +85,6 @@ public class OnlinePositionInterpolator extends Behavior
 			float x = startLook.x + (lookAtDir.x * moveTime * lookFract);
 			float y = startLook.y + (lookAtDir.y * moveTime * lookFract);
 			float z = startLook.z + (lookAtDir.z * moveTime * lookFract);
-			Print.out("Now looking at", x, y, z);
 			gameObject.lookAt(x, y, z);
 		}
 

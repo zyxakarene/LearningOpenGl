@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import zyx.server.world.humanoids.handheld.HandheldItem;
 import zyx.server.world.humanoids.handheld.food.DishRecipeItem;
 import zyx.game.vo.DishType;
+import zyx.game.vo.FurnitureType;
 import zyx.server.world.humanoids.npc.Chef;
 import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
 import zyx.server.world.interactable.common.useable.UseableItem;
@@ -19,7 +20,7 @@ public class Monitor extends UseableItem<Chef>
 
 	public Monitor()
 	{
-		super(LOOK_TIME);
+		super(LOOK_TIME, FurnitureType.MONITOR);
 
 		queue = new LinkedList<>();
 	}

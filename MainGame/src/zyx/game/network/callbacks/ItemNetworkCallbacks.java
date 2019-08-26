@@ -80,17 +80,11 @@ public class ItemNetworkCallbacks extends NetworkCallbacks
 	private void createCallbacks()
 	{
 		onCreateFood = (INetworkCallback<ItemChangedData>) this::onCreateFood;
-
 		onCreateOrder = (INetworkCallback<ItemChangedData>) this::onCreateOrder;
-
 		onDestroy = (INetworkCallback<Integer>) this::onDestroyItem;
-
 		onAddOrder = (INetworkCallback<ItemChangedData>) this::onAddOrder;
-
 		onCreateBill = (INetworkCallback<ItemChangedData>) this::onCreateBill;
-
 		onSetOwner = (INetworkCallback<ItemChangedData>) this::onSetItemOwner;
-
 		onSetType = (INetworkCallback<ItemChangedData>) this::onSetItemType;
 	}
 }

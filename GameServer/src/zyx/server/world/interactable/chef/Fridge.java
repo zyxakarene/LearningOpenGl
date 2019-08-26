@@ -1,6 +1,7 @@
 package zyx.server.world.interactable.chef;
 
 import java.awt.Color;
+import zyx.game.vo.FurnitureType;
 import zyx.server.controller.services.ItemService;
 import zyx.server.world.humanoids.handheld.food.DishRecipeItem;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
@@ -16,7 +17,7 @@ public class Fridge extends UseableItem<Chef>
 	
 	public Fridge()
 	{
-		super(PICKUP_TIME);
+		super(PICKUP_TIME, FurnitureType.FRIDGE);
 	}
 	
 	@Override

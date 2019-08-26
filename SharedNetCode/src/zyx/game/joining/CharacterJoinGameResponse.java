@@ -26,13 +26,13 @@ public class CharacterJoinGameResponse extends BaseNetworkResponse<CharacterJoin
 		for (int i = 0; i < joinCoint; i++)
 		{
 			ReadableDataObject charData = array.get(i);
-			OUT.ids[i] = charData.getInteger(CHARACTER_ID);
-			OUT.positions[i].x = charData.getFloat(CHARACTER_X);
-			OUT.positions[i].y = charData.getFloat(CHARACTER_Y);
-			OUT.positions[i].z = charData.getFloat(CHARACTER_Z);
-			OUT.lookAts[i].x = charData.getFloat(CHARACTER_LOOK_X);
-			OUT.lookAts[i].y = charData.getFloat(CHARACTER_LOOK_Y);
-			OUT.lookAts[i].z = charData.getFloat(CHARACTER_LOOK_Z);
+			OUT.ids[i] = charData.getInteger(ID);
+			OUT.positions[i].x = charData.getFloat(X);
+			OUT.positions[i].y = charData.getFloat(Y);
+			OUT.positions[i].z = charData.getFloat(Z);
+			OUT.lookAts[i].x = charData.getFloat(LOOK_X);
+			OUT.lookAts[i].y = charData.getFloat(LOOK_Y);
+			OUT.lookAts[i].z = charData.getFloat(LOOK_Z);
 			OUT.names[i] = charData.getString(CHARACTER_NAME);
 		}
 		

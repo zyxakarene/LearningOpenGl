@@ -7,10 +7,10 @@ import zyx.net.io.requests.BaseNetworkRequest;
 import static zyx.game.position.PositionConstants.*;
 import zyx.net.data.WriteableDataArray;
 
-public class PlayerMassPositionsRequest extends BaseNetworkRequest
+public class CharacterMassPositionsRequest extends BaseNetworkRequest
 {
 
-	public PlayerMassPositionsRequest()
+	public CharacterMassPositionsRequest()
 	{
 		super(NetworkCommands.CHARACTER_MASS_POSITION);
 	}
@@ -46,6 +46,6 @@ public class PlayerMassPositionsRequest extends BaseNetworkRequest
 			arrayData.add(player);
 		}
 
-		data.addArray(PLAYERS, arrayData);
+		data.addArray(CHARACTERS, arrayData);
 	}
 }

@@ -2,10 +2,10 @@ package zyx.game.vo;
 
 public enum DishType
 {
-	STEAK,
-	SOUP,
-	SALAD,
-	FISH;
+	STEAK;
+//	SOUP,
+//	SALAD,
+//	FISH;
 	
 	
 	private static final DishType[] values = values();

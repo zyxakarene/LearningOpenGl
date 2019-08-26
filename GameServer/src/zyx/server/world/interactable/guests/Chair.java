@@ -1,6 +1,7 @@
 package zyx.server.world.interactable.guests;
 
 import java.awt.Color;
+import zyx.game.vo.FurnitureType;
 import zyx.server.controller.services.ItemService;
 import zyx.server.world.humanoids.handheld.guests.GuestOrder;
 import zyx.server.world.humanoids.npc.Guest;
@@ -18,6 +19,7 @@ public class Chair extends GuestItem implements IPlayerInteractable
 
 	public Chair()
 	{
+		super(FurnitureType.CHAIR);
 	}
 
 	public void linkToTable(DinnerTable table)

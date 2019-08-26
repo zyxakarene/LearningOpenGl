@@ -3,6 +3,7 @@ package zyx.server.world.interactable;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import zyx.game.vo.FurnitureType;
 import zyx.server.world.entity.WorldEntity;
 import zyx.server.world.humanoids.HumanoidEntity;
 
@@ -11,7 +12,14 @@ public abstract class BaseInteractableItem<User extends HumanoidEntity> extends 
 
 	public boolean inUse;
 	public User currentUser;
+	
+	public final FurnitureType type;
 
+	public BaseInteractableItem(FurnitureType type)
+	{
+		this.type = type;
+	}
+	
 	public void claimOwnership(User user)
 	{
 		if (!inUse)

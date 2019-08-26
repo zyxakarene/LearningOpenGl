@@ -6,10 +6,10 @@ import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.requests.BaseNetworkRequest;
 import static zyx.game.position.PositionConstants.*;
 
-public class PlayerPosRequest extends BaseNetworkRequest
+public class CharacterPosRequest extends BaseNetworkRequest
 {
 
-	public PlayerPosRequest()
+	public CharacterPosRequest()
 	{
 		super(NetworkCommands.CHARACTER_UPDATE_POSITION);
 	}

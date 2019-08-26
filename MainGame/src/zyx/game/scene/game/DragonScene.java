@@ -23,6 +23,7 @@ import zyx.game.components.AnimatedMesh;
 import zyx.game.components.GameObject;
 import zyx.game.components.MeshObject;
 import zyx.game.components.SimpleMesh;
+import zyx.game.components.world.furniture.Fridge;
 import zyx.game.components.world.meshbatch.CubeEntity;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.process.ProcessQueue;
@@ -48,7 +49,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	private ProcessQueue processQueue;
 
 	private MeshObject testDragon;
-	private F fridge;
+	private Fridge fridge;
 	private GameObject player;
 	private SimpleMesh gameCharMesh;
 
@@ -160,13 +161,12 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		SimpleMesh chair = new SimpleMesh();
 		SimpleMesh machine = new SimpleMesh();
 		SimpleMesh monitor = new SimpleMesh();
-		fridge = new AnimatedMesh();
+		fridge = new Fridge();
 		SimpleMesh oven = new SimpleMesh();
 		table.load("mesh.furniture.table");
 		chair.load("mesh.furniture.chair");
 		machine.load("mesh.furniture.order_machine");
 		monitor.load("mesh.furniture.monitor");
-		fridge.load("mesh.furniture.fridge");
 		oven.load("mesh.furniture.oven");
 		steak.load("mesh.furniture.steak");
 		steakRaw.load("mesh.furniture.steak_raw");
@@ -236,7 +236,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_F))
 		{
-			fridge.setAnimation("open");
+			fridge.open();
 			Vector3f camPos = player.getPosition(false, null);
 			gameCharMesh.lookAt(camPos);
 

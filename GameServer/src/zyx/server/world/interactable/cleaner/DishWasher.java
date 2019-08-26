@@ -1,6 +1,7 @@
 package zyx.server.world.interactable.cleaner;
 
 import java.awt.Color;
+import zyx.game.vo.FurnitureType;
 import zyx.server.world.humanoids.npc.Cleaner;
 import zyx.server.world.humanoids.npc.behavior.cleaner.CleanerBehaviorType;
 import zyx.server.world.humanoids.players.Player;
@@ -14,7 +15,7 @@ public class DishWasher extends UseableItem<Cleaner> implements IPlayerInteracta
 	
 	public DishWasher()
 	{
-		super(WASHING_TIME);
+		super(WASHING_TIME, FurnitureType.DISHWASHER);
 	}
 
 	@Override

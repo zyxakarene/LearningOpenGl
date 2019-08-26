@@ -3,6 +3,7 @@ package zyx.server.world.humanoids.handheld.food;
 import zyx.game.vo.DishType;
 import zyx.server.world.humanoids.handheld.HandheldItem;
 import zyx.game.vo.HandheldItemType;
+import zyx.server.controller.services.ItemService;
 
 public class FoodItem extends HandheldItem
 {
@@ -43,6 +44,8 @@ public class FoodItem extends HandheldItem
 				break;
 			}
 		}
+		
+		ItemService.setType(this, type);
 	}
 
 	public boolean isEdible()
@@ -74,6 +77,7 @@ public class FoodItem extends HandheldItem
 			
 			if (lifeSpan <= 0)
 			{
+				ItemService.spoilFood(this);
 				spoiled = true;
 			}
 		}

@@ -8,5 +8,5 @@ public interface IItemHolder extends IDisposeable, IUpdateable
 {
 
 	public void hold(GameItem item);
-	public void removeItem();
+	public void removeItem(GameItem item);
 }

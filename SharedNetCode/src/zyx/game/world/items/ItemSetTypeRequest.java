@@ -1,5 +1,6 @@
 package zyx.game.world.items;
 
+import zyx.game.vo.HandheldItemType;
 import zyx.net.data.WriteableDataObject;
 import zyx.net.io.requests.BaseNetworkRequest;
 import zyx.net.io.controllers.NetworkCommands;
@@ -16,9 +17,9 @@ public class ItemSetTypeRequest extends BaseNetworkRequest
 	protected void getDataObject(WriteableDataObject data, Object... params)
 	{
 		int itemID = (int) params[0];
-		String type = (String) params[1];
+		HandheldItemType type = (HandheldItemType) params[1];
 		
 		data.addInteger(ITEM_ID, itemID);
-		data.addString(ITEM_TYPE, type);
+		data.addString(ITEM_TYPE, type.toString());
 	}
 }

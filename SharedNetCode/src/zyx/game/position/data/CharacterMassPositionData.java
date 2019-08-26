@@ -2,7 +2,7 @@ package zyx.game.position.data;
 
 import org.lwjgl.util.vector.Vector3f;
 
-public class PlayerMassPositionData
+public class CharacterMassPositionData
 {
 	public int count = 0;
 	

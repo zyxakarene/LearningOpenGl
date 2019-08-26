@@ -6,11 +6,11 @@ import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.BaseNetworkResponse;
 import static zyx.game.position.PositionConstants.*;
 
-public class PlayerPosResponse extends BaseNetworkResponse<PositionData>
+public class CharacterPosResponse extends BaseNetworkResponse<PositionData>
 {
 	private static final PositionData OUT = new PositionData();
 	
-	public PlayerPosResponse()
+	public CharacterPosResponse()
 	{
 		super(NetworkCommands.CHARACTER_UPDATE_POSITION);
 	}

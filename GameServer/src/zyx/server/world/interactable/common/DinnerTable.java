@@ -1,6 +1,7 @@
 package zyx.server.world.interactable.common;
 
 import java.awt.Color;
+import zyx.game.vo.FurnitureType;
 import zyx.server.controller.services.ItemService;
 import zyx.server.world.humanoids.handheld.HandheldItem;
 import zyx.game.vo.HandheldItemType;
@@ -22,7 +23,7 @@ public class DinnerTable extends CommonTable<Guest>
 
 	public DinnerTable(Chair[] connectedChairs)
 	{
-		super(MAX_GUEST_TABLE_ITEM_COUNT);
+		super(MAX_GUEST_TABLE_ITEM_COUNT, FurnitureType.DINNER_TABLE);
 		chairs = connectedChairs;
 		chairCount = connectedChairs.length;
 	}

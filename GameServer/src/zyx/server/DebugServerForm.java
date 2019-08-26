@@ -259,7 +259,7 @@ public class DebugServerForm extends javax.swing.JFrame
 		
 		player.x = (float) (Math.random() * 300);
 		player.y = (float) (Math.random() * 300);
-		FoodItem food = new FoodItem(DishType.SALAD);
+		FoodItem food = new FoodItem(DishType.STEAK);
 		food.inUse = false;
 		food.process();
 		food.process();
