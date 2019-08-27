@@ -28,6 +28,15 @@ public class FurnitureSetupVo
 				return new Fridge();
 			case STOVE:
 				return new Stove();
+			case CHAIR:
+				return new Chair();
+			case FOOD_TABLE:
+			case DINNER_TABLE:
+				return new Table();
+			case MONITOR:
+				return new Monitor();
+			case ORDER_MACHINE:
+				return new OrderMachine();
 		}
 		
 		return new DummyFurnitureItem();

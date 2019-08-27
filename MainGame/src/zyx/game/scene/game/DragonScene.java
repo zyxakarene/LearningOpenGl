@@ -19,11 +19,9 @@ import zyx.game.behavior.camera.CameraUpdateViewBehavior;
 import zyx.game.behavior.freefly.FreeFlyBehavior;
 import zyx.game.behavior.misc.JiggleBehavior;
 import zyx.game.behavior.player.OnlinePositionSender;
-import zyx.game.components.AnimatedMesh;
 import zyx.game.components.GameObject;
 import zyx.game.components.MeshObject;
 import zyx.game.components.SimpleMesh;
-import zyx.game.components.world.furniture.Fridge;
 import zyx.game.components.world.meshbatch.CubeEntity;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.process.ProcessQueue;
@@ -35,7 +33,6 @@ import zyx.opengl.GLUtils;
 import zyx.opengl.models.implementations.shapes.Sphere;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
-import zyx.utils.GeometryUtils;
 import zyx.utils.cheats.Print;
 import zyx.utils.math.QuaternionUtils;
 
@@ -49,7 +46,6 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	private ProcessQueue processQueue;
 
 	private MeshObject testDragon;
-	private Fridge fridge;
 	private GameObject player;
 	private SimpleMesh gameCharMesh;
 
@@ -152,47 +148,6 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 
 			MeshBatchManager.getInstance().addEntity(entityA);
 		}
-
-		SimpleMesh steak = new SimpleMesh();
-		SimpleMesh steakRaw = new SimpleMesh();
-		SimpleMesh steakCooking = new SimpleMesh();
-
-		SimpleMesh table = new SimpleMesh();
-		SimpleMesh chair = new SimpleMesh();
-		SimpleMesh machine = new SimpleMesh();
-		SimpleMesh monitor = new SimpleMesh();
-		fridge = new Fridge();
-		SimpleMesh oven = new SimpleMesh();
-		table.load("mesh.furniture.table");
-		chair.load("mesh.furniture.chair");
-		machine.load("mesh.furniture.order_machine");
-		monitor.load("mesh.furniture.monitor");
-		oven.load("mesh.furniture.oven");
-		steak.load("mesh.furniture.steak");
-		steakRaw.load("mesh.furniture.steak_raw");
-		steakCooking.load("mesh.furniture.steak_cooking");
-		world.addChild(table);
-		world.addChild(chair);
-		world.addChild(machine);
-		world.addChild(monitor);
-		world.addChild(fridge);
-		world.addChild(oven);
-		world.addChild(steak);
-		world.addChild(steakCooking);
-		world.addChild(steakRaw);
-
-		table.setPosition(true, 0, 0, 0);
-		chair.setPosition(true, 40, 0, 0);
-		machine.setPosition(true, 0, 50, 0);
-		monitor.setPosition(true, 0, 100, 0);
-		fridge.setPosition(true, 0, 150, 0);
-		fridge.setDir(true, GeometryUtils.ROTATION_X);
-
-		oven.setPosition(true, 0, 220, 0);
-
-		steak.setPosition(true, 0, 0, 0);
-		steakRaw.setPosition(true, 15, 0, 0);
-		steakCooking.setPosition(true, 30, 0, 0);
 	}
 
 	private float xRot;
@@ -236,7 +191,6 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_F))
 		{
-			fridge.open();
 			Vector3f camPos = player.getPosition(false, null);
 			gameCharMesh.lookAt(camPos);
 

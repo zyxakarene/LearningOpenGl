@@ -38,7 +38,7 @@ public class GameCharacter extends GameObject implements IItemHolder
 	public void hold(GameItem item)
 	{
 		info.heldItem = item;
-		addChild(item);
+		mesh.addChildAsAttachment(item, "Character_hand");
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class GameCharacter extends GameObject implements IItemHolder
 	{
 		if (info.heldItem != null)
 		{
-			removeChild(info.heldItem);
+			mesh.removeChildAsAttachment(item);
 			info.heldItem = null;
 		}
 	}

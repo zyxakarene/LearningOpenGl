@@ -14,7 +14,7 @@ public class Stove extends BaseFurnitureItem<SimpleMesh>
 	@Override
 	protected void onGotItem(GameItem item)
 	{
-		view.addChildAsAttachment(item, "Oven_plate");
+		view.addChildAsAttachment(item, "Stove_plate");
 	}
 
 	@Override

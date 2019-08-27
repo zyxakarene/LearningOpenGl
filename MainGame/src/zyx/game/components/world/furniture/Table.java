@@ -6,14 +6,16 @@ import zyx.game.components.world.items.GameItem;
 public class Table extends BaseFurnitureItem<SimpleMesh>
 {
 
-	public Table(boolean animated)
+	public Table()
 	{
-		super(animated);
+		super(false);
 	}
 
 	@Override
 	protected void onGotItem(GameItem item)
 	{
+		item.setPosition(true, 0, 43, 0);
+		item.setRotation(0, 0, 0);
 		addChild(item);
 	}
 
@@ -26,7 +28,7 @@ public class Table extends BaseFurnitureItem<SimpleMesh>
 	@Override
 	protected String getResource()
 	{
-		return "mesh.simple.box";
+		return "mesh.furniture.table";
 	}
 
 }
