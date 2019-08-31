@@ -15,4 +15,10 @@ public class Vector2Int
 		this.x = x;
 		this.y = y;
 	}
+
+	@Override
+	public String toString()
+	{
+		return String.format("Vector2Int{%s, %s}", x, y);
+	}
 }

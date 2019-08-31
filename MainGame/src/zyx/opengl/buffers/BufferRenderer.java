@@ -1,10 +1,5 @@
 package zyx.opengl.buffers;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.opengl.textures.TextureBinder;
@@ -29,14 +24,17 @@ public class BufferRenderer
 		AmbientOcclusionRenderer ao = AmbientOcclusionRenderer.getInstance();
 		DeferredRenderer deferred = DeferredRenderer.getInstance();
 		DepthRenderer depth = DepthRenderer.getInstance();
+		DrawingRenderer draw = DrawingRenderer.getInstance();
 
 		depth.initialize();
 		ao.initialize();
 		deferred.initialize();
+		draw.initialize();
 
 		depth.onBuffersCreated();
 		ao.onBuffersCreated();
 		deferred.onBuffersCreated();
+		draw.onBuffersCreated();
 		
 		TextureBinder.unbindTextures();
 	}
@@ -46,14 +44,17 @@ public class BufferRenderer
 		AmbientOcclusionRenderer ao = AmbientOcclusionRenderer.getInstance();
 		DeferredRenderer deferred = DeferredRenderer.getInstance();
 		DepthRenderer depth = DepthRenderer.getInstance();
+		DrawingRenderer draw = DrawingRenderer.getInstance();
 
 		depth.dispose();
 		ao.dispose();
 		deferred.dispose();
+		draw.dispose();
 
 		depth.resize(width, height);
 		ao.resize(width, height);
 		deferred.resize(width, height);
+		draw.resize(width, height);
 
 		setupBuffers();
 	}

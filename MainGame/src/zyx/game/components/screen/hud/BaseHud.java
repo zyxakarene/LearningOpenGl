@@ -7,6 +7,7 @@ import zyx.game.components.screen.json.JsonSprite;
 import zyx.opengl.buffers.AmbientOcclusionRenderer;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
+import zyx.opengl.buffers.DrawingRenderer;
 import zyx.opengl.textures.TextureFromInt;
 import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.math.Vector2Int;
@@ -31,6 +32,7 @@ public class BaseHud extends JsonSprite implements ICallback<Vector2Int>
 		DeferredRenderer renderer = DeferredRenderer.getInstance();
 		DepthRenderer depthRenderer = DepthRenderer.getInstance();
 		AmbientOcclusionRenderer ambientRenderer = AmbientOcclusionRenderer.getInstance();
+		DrawingRenderer drawRenderer = DrawingRenderer.getInstance();
 
 		int screenWidth = ScreenSize.width;
 		int screenHeight = ScreenSize.height;
@@ -90,6 +92,12 @@ public class BaseHud extends JsonSprite implements ICallback<Vector2Int>
 		debugCubeIndex.setPosition(true, sizeX * 6, screenHeight);
 		debugCubeIndex.setTexture(new TextureFromInt(sizeX, sizeY, renderer.cubeIndexInt(), TextureSlot.SHARED_DIFFUSE));
 		addChild(debugCubeIndex);
+
+		Image debugDrawUnder = new Image();
+		debugDrawUnder.setScale(10, -5);
+		debugDrawUnder.setPosition(true, sizeX * 0, screenHeight - (sizeY * 0));
+		debugDrawUnder.setTexture(new TextureFromInt(sizeX, sizeY, drawRenderer.underlayInt(), TextureSlot.SHARED_DIFFUSE));
+		addChild(debugDrawUnder);
 	}
 	
 	@Override

@@ -29,6 +29,7 @@ public class ShaderManager implements IUpdateable
 
 	public void initialize()
 	{
+		shaderMap.put(Shader.DRAW, new DrawShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.DEPTH, new DepthShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.WORLD, new WorldShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.SKYBOX, new SkyboxShader(AbstractShader.LOCK));
