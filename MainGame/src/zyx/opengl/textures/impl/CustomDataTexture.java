@@ -3,23 +3,18 @@ package zyx.opengl.textures.impl;
 import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import static org.lwjgl.opengl.GL11.GL_FLOAT;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
-import static org.lwjgl.opengl.GL11.GL_LINEAR;
 import static org.lwjgl.opengl.GL11.GL_REPEAT;
-import static org.lwjgl.opengl.GL11.GL_CLAMP;
-import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
-import static org.lwjgl.opengl.GL11.GL_REPEAT;
-import static org.lwjgl.opengl.GL11.GL_RGB;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
-import org.lwjgl.opengl.GL12;
 import zyx.opengl.textures.TextureBinder;
 import zyx.opengl.textures.custom.ITexture;
+import zyx.opengl.textures.enums.TextureFormat;
+import zyx.utils.cheats.Print;
 
 public class CustomDataTexture implements ITexture
 {
@@ -59,7 +54,8 @@ public class CustomDataTexture implements ITexture
 		buffer.put(pixels);
 		buffer.flip();
 
-		GL11.glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureW, textureH, 0, GL_RGB, GL_FLOAT, buffer);
+		TextureFormat format = TextureFormat.FORMAT_4_CHANNEL_16F;
+		GL11.glTexImage2D(GL_TEXTURE_2D, 0, format.glInternalFormat, textureW, textureH, 0, format.glFormat, format.glType, buffer);
 	}
 
 	@Override
@@ -78,12 +74,12 @@ public class CustomDataTexture implements ITexture
 	@Override
 	public int getHeight()
 	{
-		return 2;
+		return textureH;
 	}
 
 	@Override
 	public int getWidth()
 	{
-		return 2;
+		return textureW;
 	}
 }

@@ -2,7 +2,9 @@ package zyx.game.scene.game;
 
 import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.components.cubemaps.CubemapManager;
 import zyx.engine.components.cubemaps.saving.CubemapProcess;
 import zyx.engine.components.meshbatch.MeshBatchEntity;
@@ -14,6 +16,8 @@ import zyx.engine.components.world.GameLight;
 import zyx.engine.scene.Scene;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
+import zyx.engine.utils.worldpicker.ClickedInfo;
+import zyx.engine.utils.worldpicker.IHoveredItem;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.behavior.camera.CameraUpdateViewBehavior;
 import zyx.game.behavior.freefly.FreeFlyBehavior;
@@ -24,13 +28,21 @@ import zyx.game.components.MeshObject;
 import zyx.game.components.SimpleMesh;
 import zyx.game.components.world.meshbatch.CubeEntity;
 import zyx.game.controls.input.KeyboardData;
+import zyx.game.controls.input.MouseData;
 import zyx.game.controls.process.ProcessQueue;
 import zyx.game.vo.Gender;
 import zyx.net.io.controllers.BaseNetworkController;
 import zyx.net.io.controllers.NetworkChannel;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.opengl.GLUtils;
+import zyx.opengl.buffers.DrawingRenderer;
+import zyx.opengl.models.implementations.shapes.Box;
 import zyx.opengl.models.implementations.shapes.Sphere;
+import zyx.opengl.textures.AbstractTexture;
+import zyx.opengl.textures.ColorTexture;
+import zyx.opengl.textures.MissingTexture;
+import zyx.opengl.textures.TextureFromInt;
+import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
 import zyx.utils.cheats.Print;
@@ -49,6 +61,8 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	private GameObject player;
 	private SimpleMesh gameCharMesh;
 
+	private Box drawBox;
+
 	public DragonScene()
 	{
 		gameObjects = new ArrayList<>();
@@ -60,6 +74,9 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	{
 	}
 
+	private boolean isDrawing = false;
+	private boolean changed = false;
+	
 	@Override
 	protected void onInitialize()
 	{
@@ -67,11 +84,48 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 
 		world.loadSkybox("skybox.texture.desert");
 		CubemapManager.getInstance().load("cubemap.dragon");
+		IHoveredItem onBoxClick = new IHoveredItem()
+		{
+			@Override
+			public void onClicked(ClickedInfo info)
+			{
+				boolean wasDrawing = isDrawing;
+				isDrawing = MouseData.data.isLeftDown();
+				
+				if (!changed && isDrawing)
+				{
+					changed = true;
+					int id = DrawingRenderer.getInstance().underlayInt();
+					AbstractTexture tex = new TextureFromInt(256, 256, id, TextureSlot.SHARED_DIFFUSE);
+					drawBox.setTexture(tex);
+				}
+
+				if (wasDrawing != isDrawing)
+				{
+					DrawingRenderer.getInstance().toggleDraw(isDrawing);
+				}
+
+				if (isDrawing)
+				{
+					Vector4f pos = new Vector4f(info.position.x, info.position.y, info.position.z, 1);
+					Matrix4f invWorld = Matrix4f.invert(drawBox.worldMatrix(), null);
+					Matrix4f.transform(invWorld, pos, pos);
+
+					DrawingRenderer.getInstance().drawAt(pos.x, pos.z, !wasDrawing);
+				}
+			}
+		};
+
+		drawBox = new Box(10, 10, 10);
+		drawBox.setPosition(true, 0, 0, 100);
+		drawBox.setRotation(33, 24, 58);
+		world.addChild(drawBox);
+		addPickedObject(drawBox, onBoxClick);
 
 		gameCharMesh = new SimpleMesh();
 		gameCharMesh.load("mesh.player");
 		world.addChild(gameCharMesh);
-		
+
 		MeshObject dragon = new MeshObject();
 		dragon.setScale(0.33f, 0.33f, 0.33f);
 		dragon.load("mesh.dragon");

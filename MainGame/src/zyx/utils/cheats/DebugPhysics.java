@@ -4,6 +4,9 @@ import java.util.HashMap;
 import zyx.opengl.GLUtils;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.physics.DebugPhysDrawing;
+import zyx.opengl.shaders.ShaderManager;
+import zyx.opengl.shaders.implementations.Shader;
+import zyx.utils.GameConstants;
 import zyx.utils.interfaces.IPhysbox;
 
 public class DebugPhysics
@@ -47,8 +50,13 @@ public class DebugPhysics
 			GLUtils.disableCulling();
 			WorldModel[] models = entryMap.get(parent);
 			
-			models[DebugPhysDrawing.INDEX_BOUNDING].draw();
-			models[DebugPhysDrawing.INDEX_MESH].draw();
+			if (GameConstants.DRAW_PHYSICS)
+			{
+				ShaderManager.getInstance().bind(Shader.WORLD);
+				models[DebugPhysDrawing.INDEX_BOUNDING].draw();
+				ShaderManager.getInstance().bind(Shader.WORLD);
+				models[DebugPhysDrawing.INDEX_MESH].draw();
+			}
 			
 			GLUtils.enableCulling();
 			GLUtils.setWireframe(false);

@@ -36,6 +36,7 @@ public class DrawingRenderer extends BaseFrameBuffer
 	private float b;
 	private float g;
 	private float r;
+	private int textureSize;
 
 	public DrawingRenderer()
 	{
@@ -51,60 +52,27 @@ public class DrawingRenderer extends BaseFrameBuffer
 	@Override
 	void onBuffersCreated()
 	{
-		int textureSize = 256;
-		
+		textureSize = 256;
+
 		overlayTexture = new DrawingTexture(textureSize, textureSize, TextureSlot.DRAW_OVERLAY);
 		underlayTexture = new DrawingTexture(textureSize, textureSize, TextureSlot.DRAW_UNDERLAY);
+
+		overlayTexture.setBrushColor(1, 0, 0, 0.15f, 0.05f);
 
 		model = new FullScreenQuadModel(Shader.DRAW, underlayTexture, overlayTexture);
 	}
 
-	private boolean isDrawing = false;
-
 	public void draw()
 	{
-		boolean wasDrawing = isDrawing;
-		isDrawing = MouseData.data.isLeftDown();
-
-		if (!wasDrawing && isDrawing)
-		{
-			r = FloatMath.random();
-			g = FloatMath.random();
-			b = FloatMath.random();
-		}
-		
-		if (isDrawing)
-		{
-			int x = MouseData.data.x;
-			int y = MouseData.data.y;
-			int dx = MouseData.data.dX;
-			int dy = MouseData.data.dY;
-
-			ArrayList<Vector2Int> line = Bresenham2D.getLineBetween(x + dx, y + dy, x, y);
-			for (Vector2Int point : line)
-			{
-				overlayTexture.setPixelColor(point.x, point.y, 0.25f, 0, 0);
-			}
-		}
-
-		if (wasDrawing && !isDrawing)
-		{
-			float[] over = overlayTexture.getPixelData();
-			float[] under = underlayTexture.getPixelData();
-
-			blendDarken(under, over, under);
-
-			underlayTexture.setPixelColor(under);
-			overlayTexture.setPixelColor(1, 1, 1);
-		}
-
 		bindBuffer();
 		ShaderManager.getInstance().bind(Shader.DRAW);
 		AbstractShader drawShader = ShaderManager.getInstance().get(Shader.DRAW);
 		drawShader.upload();
 
 		GLUtils.disableDepthWrite();
+		GLUtils.disableDepthTest();
 		model.draw();
+		GLUtils.enableDepthTest();
 		GLUtils.enableDepthWrite();
 	}
 
@@ -120,11 +88,6 @@ public class DrawingRenderer extends BaseFrameBuffer
 	public int underlayInt()
 	{
 		return underlayBuffer.id;
-	}
-
-	public int overlayInt()
-	{
-		return 0;
 	}
 
 	@Override
@@ -145,34 +108,83 @@ public class DrawingRenderer extends BaseFrameBuffer
 
 	private void blendDarken(float[] base, float[] blend, float[] out)
 	{
-		float opacity = 0.33f;
 		int len = base.length;
-		for (int i = 0; i < len; i++)
+		for (int i = 0; i < len; i += 4)
 		{
-			float baseValue = base[i];
-			float blendValue = blend[i];
-			
-			out[i] = FloatMath.min(baseValue, blendValue) * opacity + baseValue * (1f - opacity);
+			float baseR = base[i + 0];
+			float baseG = base[i + 1];
+			float baseB = base[i + 2];
+			float blendR = blend[i + 0];
+			float blendG = blend[i + 1];
+			float blendB = blend[i + 2];
+			float blendA = blend[i + 3];
+
+			float blendResultR = FloatMath.min(baseR, blendR) * blendA + baseR * (1f - blendA);
+			float blendResultG = FloatMath.min(baseG, blendG) * blendA + baseG * (1f - blendA);
+			float blendResultB = FloatMath.min(baseB, blendB) * blendA + baseB * (1f - blendA);
+			out[i + 0] = blendResultR;
+			out[i + 1] = blendResultG;
+			out[i + 2] = blendResultB;
+			out[i + 3] = 1;
+		}
+	}
+
+	private int lastX = -999;
+	private int lastY = -999;
+
+	public void toggleDraw(boolean isDrawing)
+	{
+		if (isDrawing)
+		{
+			r = FloatMath.random();
+			g = FloatMath.random();
+			b = FloatMath.random();
+			overlayTexture.setBrushColor(r, g, b, 0.33f, 0.15f);
+		}
+		else
+		{
+			float[] over = overlayTexture.getPixelData();
+			float[] under = underlayTexture.getPixelData();
+
+			blendDarken(under, over, under);
+
+			underlayTexture.setPixelColor(under);
+			overlayTexture.setPixelColor(1, 1, 1, 1);
+
+			lastX = -999;
+			lastY = -999;
+		}
+	}
+
+	public void drawAt(float x, float y, boolean firstClick)
+	{
+		int xPos = (int) ((x + 0.5f) * textureSize);
+		int yPos = (int) ((y + 0.5f) * textureSize);
+		yPos = textureSize - yPos;
+		
+		if (firstClick)
+		{
+			lastX = xPos;
+			lastY = yPos;
 		}
 		
-		/*
-		float blendDarken(float base, float blend)
-		{
-			return min(blend,base);
-		}
+		int dx = lastX - xPos;
+		int dy = lastY - yPos;
+		lastX = xPos;
+		lastY = yPos;
 
-		vec3 blendDarken(vec3 base, vec3 blend)
+		ArrayList<Vector2Int> line = Bresenham2D.getLineBetween(xPos + dx, yPos + dy, xPos, yPos);
+		for (Vector2Int point : line)
 		{
-			float r = blendDarken(base.r, blend.r);
-			float g = blendDarken(base.g, blend.g);
-			float b = blendDarken(base.b, blend.b);
-			return vec3(r, g ,b);
+			overlayTexture.setPixelColor(point.x, point.y, 1);
+			overlayTexture.setPixelColor(point.x + 1, point.y, 0.5f);
+			overlayTexture.setPixelColor(point.x - 1, point.y, 0.5f);
+			overlayTexture.setPixelColor(point.x, point.y + 1, 0.5f);
+			overlayTexture.setPixelColor(point.x, point.y - 1, 0.5f);
+			overlayTexture.setPixelColor(point.x + 1, point.y + 1, 0.33f);
+			overlayTexture.setPixelColor(point.x + 1, point.y - 1, 0.33f);
+			overlayTexture.setPixelColor(point.x - 1, point.y + 1, 0.33f);
+			overlayTexture.setPixelColor(point.x - 1, point.y - 1, 0.33f);
 		}
-
-		vec3 blendDarken(vec3 base, vec3 blend, float opacity)
-		{
-			return blendDarken(base, blend) * opacity + base * (1.0 - opacity);
-		}
-		 */
 	}
 }

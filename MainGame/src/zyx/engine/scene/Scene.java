@@ -89,11 +89,10 @@ public class Scene
 //		stage.addChild(debugPanel);
 		onPreloadResources();
 
-		ICallback<ProcessQueue> onCompleted = (ProcessQueue data)
-				-> 
-				{
-					onInitialize();
-					ready = true;
+		ICallback<ProcessQueue> onCompleted = (ProcessQueue data) ->
+		{
+			onInitialize();
+			ready = true;
 		};
 
 		preloadQueue.start(onCompleted);

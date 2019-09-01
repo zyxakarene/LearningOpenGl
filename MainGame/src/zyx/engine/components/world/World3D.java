@@ -49,19 +49,19 @@ public final class World3D extends WorldObject
 		GLUtils.enableCulling();
 		GLUtils.setBlendNormal();
 
+		drawing.prepareRender();
 		depth.prepareRender();
 		ambientOcclusion.prepareRender();
-		drawing.prepareRender();
 		renderer.prepareRender();
 
 		skybox.draw();
 		
+		drawing.draw();
 		draw();
 
 		MeshBatchManager.getInstance().draw();
 		
 		
-		drawing.draw();
 		ambientOcclusion.drawAmbientOcclusion();
 
 		renderer.draw();

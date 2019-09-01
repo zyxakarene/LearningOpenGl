@@ -27,10 +27,10 @@ vec3 blendDarken(vec3 base, vec3 blend, float opacity)
 
 void main()
 {
-	vec4 overColor = texture(overTex, vec2(Texcoord.x, -Texcoord.y));
-	vec4 underColor = texture(underTex, vec2(Texcoord.x, -Texcoord.y));
+	vec4 overColor = texture(overTex, vec2(Texcoord.x, Texcoord.y));
+	vec4 underColor = texture(underTex, vec2(Texcoord.x, Texcoord.y));
 
-	vec3 blendColor = blendDarken(underColor.rgb, overColor.rgb, 0.33);
+	vec3 blendColor = blendDarken(underColor.rgb, overColor.rgb, overColor.a);
 
 	gOutput = blendColor.rgb;
 }

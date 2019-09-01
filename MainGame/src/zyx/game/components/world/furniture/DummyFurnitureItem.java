@@ -9,12 +9,14 @@ public class DummyFurnitureItem extends BaseFurnitureItem<SimpleMesh>
 	public DummyFurnitureItem()
 	{
 		super(false);
+		
+		setScale(0.02f, 0.02f, 0.02f);
 	}
 
 	@Override
 	protected String getResource()
 	{
-		return "mesh.simple.box";
+		return "mesh.box";
 	}
 
 	@Override

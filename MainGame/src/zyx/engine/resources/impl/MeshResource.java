@@ -5,6 +5,8 @@ import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.loading.ZafLoader;
 import zyx.opengl.textures.AbstractTexture;
+import zyx.opengl.textures.TextureFromInt;
+import zyx.opengl.textures.enums.TextureSlot;
 
 public class MeshResource extends BaseTextureRequiredResource
 {
