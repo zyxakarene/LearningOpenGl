@@ -1,5 +1,6 @@
 package zyx.game.world.player;
 
+import zyx.game.vo.DishType;
 import zyx.net.data.WriteableDataObject;
 import zyx.net.io.requests.BaseNetworkRequest;
 import zyx.net.io.controllers.NetworkCommands;
@@ -15,8 +16,7 @@ public class PlayerEnterOrderRequest extends BaseNetworkRequest
 	@Override
 	protected void getDataObject(WriteableDataObject data, Object... params)
 	{
-		int playerId = (int) params[0];
-		
-		data.addInteger(PLAYER_ID, playerId);
+		DishType dish = (DishType) params[0];
+		data.addString(DISH_TYPE, dish.toString());
 	}
 }

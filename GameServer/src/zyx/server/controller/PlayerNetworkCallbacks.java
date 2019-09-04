@@ -1,5 +1,6 @@
 package zyx.server.controller;
 
+import zyx.game.vo.DishType;
 import zyx.server.world.humanoids.players.Player;
 import zyx.game.world.player.data.PlayerRequestData;
 import zyx.net.io.controllers.NetworkCallbacks;
@@ -61,14 +62,10 @@ public class PlayerNetworkCallbacks extends NetworkCallbacks
 		}
 	}
 
-	private void onPlayerEnterOrder(int playerId)
+	private void onPlayerEnterOrder(DishType dish)
 	{
-		Player player = PlayerManager.getInstance().getEntity(playerId);
-		if (player != null)
-		{
-			OrderMachine machine = room.getOrderMachine();
-			machine.interactWith(player);
-		}
+		OrderMachine machine = room.getOrderMachine();
+		machine.addOrder(dish);
 	}
 
 	private void onPlayerPickupItem(PlayerRequestData data)
@@ -112,34 +109,10 @@ public class PlayerNetworkCallbacks extends NetworkCallbacks
 
 	private void createCallbacks()
 	{
-		onPlayerGetOrder = (INetworkCallback<PlayerRequestData>) (PlayerRequestData data)
-				-> 
-				{
-					onPlayerGetOrder(data);
-		};
-
-		onPlayerEnterOrder = (INetworkCallback<Integer>) (Integer data)
-				-> 
-				{
-					onPlayerEnterOrder(data);
-		};
-
-		onPlayerPickupItem = (INetworkCallback<PlayerRequestData>) (PlayerRequestData data)
-				-> 
-				{
-					onPlayerPickupItem(data);
-		};
-
-		onPlayerGiveItem = (INetworkCallback<PlayerRequestData>) (PlayerRequestData data)
-				-> 
-				{
-					onPlayerGiveItem(data);
-		};
-
-		onPlayerGiveBill = (INetworkCallback<PlayerRequestData>) (PlayerRequestData data)
-				-> 
-				{
-					onPlayerGiveBill(data);
-		};
+		onPlayerGetOrder = (INetworkCallback<PlayerRequestData>) this::onPlayerGetOrder;
+		onPlayerEnterOrder = (INetworkCallback<DishType>) this::onPlayerEnterOrder;
+		onPlayerPickupItem = (INetworkCallback<PlayerRequestData>) this::onPlayerPickupItem;
+		onPlayerGiveItem = (INetworkCallback<PlayerRequestData>) this::onPlayerGiveItem;
+		onPlayerGiveBill = (INetworkCallback<PlayerRequestData>) this::onPlayerGiveBill;
 	}
 }

@@ -14,7 +14,6 @@ public class GuestIdleBehavior extends GuestBehavior<Object>
 	{
 		super(npc, GuestBehaviorType.IDLE);
 		
-		RoomItems items = RoomItems.instance;
 		allTables = items.dinnerTables;
 	}
 

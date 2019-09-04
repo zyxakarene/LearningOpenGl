@@ -5,7 +5,6 @@ import zyx.game.vo.Gender;
 import zyx.net.io.connections.ConnectionData;
 import zyx.server.utils.IUpdateable;
 import zyx.server.world.humanoids.HumanoidEntity;
-import zyx.server.world.humanoids.handheld.guests.GuestOrder;
 
 public class Player extends HumanoidEntity implements IUpdateable
 {
@@ -26,16 +25,6 @@ public class Player extends HumanoidEntity implements IUpdateable
 		{
 			heldItem.update(timestamp, elapsedTime);
 		}
-	}
-	
-	public GuestOrder getHeldAsOrders()
-	{
-		if (heldItem instanceof GuestOrder)
-		{
-			return (GuestOrder) heldItem;
-		}
-		
-		return null;
 	}
 
 	@Override

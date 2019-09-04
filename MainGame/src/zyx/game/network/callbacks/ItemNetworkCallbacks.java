@@ -2,7 +2,6 @@ package zyx.game.network.callbacks;
 
 import zyx.game.components.world.items.BillItem;
 import zyx.game.components.world.items.FoodItem;
-import zyx.game.components.world.items.OrderItem;
 import zyx.game.scene.ItemHandler;
 import zyx.game.world.items.data.ItemChangedData;
 import zyx.net.io.controllers.NetworkCallbacks;
@@ -13,9 +12,7 @@ public class ItemNetworkCallbacks extends NetworkCallbacks
 {
 
 	private INetworkCallback onCreateFood;
-	private INetworkCallback onCreateOrder;
 	private INetworkCallback onDestroy;
-	private INetworkCallback onAddOrder;
 	private INetworkCallback onCreateBill;
 	private INetworkCallback onSetOwner;
 	private INetworkCallback onSetType;
@@ -30,9 +27,7 @@ public class ItemNetworkCallbacks extends NetworkCallbacks
 
 		registerCallback(NetworkCommands.ITEM_CREATE_FOOD, onCreateFood);
 		registerCallback(NetworkCommands.ITEM_CREATE_BILL, onCreateBill);
-		registerCallback(NetworkCommands.ITEM_CREATE_ORDER, onCreateOrder);
 		registerCallback(NetworkCommands.ITEM_DESTROY, onDestroy);
-		registerCallback(NetworkCommands.ITEM_ADD_ORDER, onAddOrder);
 		registerCallback(NetworkCommands.ITEM_SET_OWNER, onSetOwner);
 		registerCallback(NetworkCommands.ITEM_SET_TYPE, onSetType);
 	}
@@ -40,13 +35,6 @@ public class ItemNetworkCallbacks extends NetworkCallbacks
 	private void onCreateFood(ItemChangedData data)
 	{
 		FoodItem item = new FoodItem(data.dishType);
-		item.load();
-		itemHandler.addItem(data.itemId, item, data.ownerId);
-	}
-
-	private void onCreateOrder(ItemChangedData data)
-	{
-		OrderItem item = new OrderItem();
 		item.load();
 		itemHandler.addItem(data.itemId, item, data.ownerId);
 	}
@@ -63,10 +51,6 @@ public class ItemNetworkCallbacks extends NetworkCallbacks
 		itemHandler.removeItem(uniqueId);
 	}
 
-	private void onAddOrder(ItemChangedData data)
-	{
-	}
-
 	private void onSetItemOwner(ItemChangedData data)
 	{
 		itemHandler.setOwner(data.itemId, data.ownerId);
@@ -80,9 +64,7 @@ public class ItemNetworkCallbacks extends NetworkCallbacks
 	private void createCallbacks()
 	{
 		onCreateFood = (INetworkCallback<ItemChangedData>) this::onCreateFood;
-		onCreateOrder = (INetworkCallback<ItemChangedData>) this::onCreateOrder;
 		onDestroy = (INetworkCallback<Integer>) this::onDestroyItem;
-		onAddOrder = (INetworkCallback<ItemChangedData>) this::onAddOrder;
 		onCreateBill = (INetworkCallback<ItemChangedData>) this::onCreateBill;
 		onSetOwner = (INetworkCallback<ItemChangedData>) this::onSetItemOwner;
 		onSetType = (INetworkCallback<ItemChangedData>) this::onSetItemType;

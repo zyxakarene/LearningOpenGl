@@ -19,6 +19,7 @@ import zyx.game.scene.ItemHolderHandler;
 import zyx.game.scene.game.DragonScene;
 import zyx.game.login.data.AuthenticationData;
 import zyx.game.position.data.CharacterMassPositionData;
+import zyx.game.world.guests.data.GuestOrderData;
 import zyx.net.io.controllers.NetworkCallbacks;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.INetworkCallback;
@@ -32,6 +33,7 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 	private INetworkCallback onCharacterLeft;
 	private INetworkCallback onCharacterMassPos;
 	private INetworkCallback onGameSetup;
+	private INetworkCallback onGiveOrders;
 
 	private ItemHolderHandler itemHolderHandler;
 
@@ -49,6 +51,7 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 		registerCallback(NetworkCommands.CHARACTER_JOINED_GAME, onCharacterJoined);
 		registerCallback(NetworkCommands.CHARACTER_LEFT_GAME, onCharacterLeft);
 		registerCallback(NetworkCommands.CHARACTER_MASS_POSITION, onCharacterMassPos);
+		registerCallback(NetworkCommands.GUEST_GIVE_ORDER, onGiveOrders);
 	}
 
 	private void onAuthenticate(AuthenticationData data)
@@ -82,7 +85,7 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 			World3D.instance.addChild(character);
 		}
 	}
-	
+
 	private void onFurnitureAdded(FurnitureSetupData data)
 	{
 		FurnitureSetupVo vo = new FurnitureSetupVo();
@@ -131,6 +134,26 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 		}
 	}
 
+	private void onGameSetup(GameSetupVo setup)
+	{
+		Print.out("There's already", setup.players.joinCount, "other players in this game");
+		Print.out("There's", setup.furniture.furnitureCount, "items in this game");
+
+		onCharacterJoined(setup.players);
+		onFurnitureAdded(setup.furniture);
+	}
+
+	private void onGiveOrder(GuestOrderData data)
+	{
+		GameCharacter guest = characterMap.get(data.characterId);
+		
+		if (guest != null)
+		{
+//			guest.TellDishAnimation();
+			Print.out("Guest", guest, "wanted the dish", data.dishType);
+		}
+	}
+
 	private void createCallbacks()
 	{
 		onAuthenticate = (INetworkCallback<AuthenticationData>) this::onAuthenticate;
@@ -138,14 +161,6 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 		onCharacterLeft = (INetworkCallback<Integer>) this::onCharacterLeft;
 		onCharacterMassPos = (INetworkCallback<CharacterMassPositionData>) this::onCharacterMassPosition;
 		onGameSetup = (INetworkCallback<GameSetupVo>) this::onGameSetup;
-	}
-
-	private void onGameSetup(GameSetupVo setup)
-	{
-		Print.out("There's already", setup.players.joinCount, "other players in this game");
-		Print.out("There's", setup.furniture.furnitureCount, "items in this game");
-		
-		onCharacterJoined(setup.players);
-		onFurnitureAdded(setup.furniture);
+		onGiveOrders = (INetworkCallback<GuestOrderData>) this::onGiveOrder;
 	}
 }

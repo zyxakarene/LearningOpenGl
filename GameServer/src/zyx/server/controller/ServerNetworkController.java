@@ -1,5 +1,6 @@
 package zyx.server.controller;
 
+import zyx.game.world.guests.GuestGiveOrdersRequest;
 import zyx.server.requests.CharacterJoinGameRequest;
 import zyx.game.joining.CharacterLeaveGameRequest;
 import zyx.game.joining.CharacterLeaveGameResponse;
@@ -40,8 +41,7 @@ public class ServerNetworkController extends BaseNetworkController
 		
 		dispatcher.addRequestHandler(new ItemCreateFoodRequest());
 		dispatcher.addRequestHandler(new ItemCreateBillRequest());
-		dispatcher.addRequestHandler(new ItemCreateOrdersRequest());
-		dispatcher.addRequestHandler(new ItemAddOrderRequest());
+		dispatcher.addRequestHandler(new GuestGiveOrdersRequest());
 		dispatcher.addRequestHandler(new ItemDestroyRequest());
 		dispatcher.addRequestHandler(new ItemSetOwnerRequest());
 		dispatcher.addRequestHandler(new ItemSetTypeRequest());

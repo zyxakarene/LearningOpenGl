@@ -8,5 +8,6 @@ class PlayerRequestConstants
 	static final String ITEM_TYPE = "typeId";
 	static final String PLAYER_ID = "playerId";
 	static final String OWNER_ID = "ownerId";
+	static final String DISH_TYPE = "dishType";
 
 }

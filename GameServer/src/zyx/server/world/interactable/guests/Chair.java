@@ -2,8 +2,7 @@ package zyx.server.world.interactable.guests;
 
 import java.awt.Color;
 import zyx.game.vo.FurnitureType;
-import zyx.server.controller.services.ItemService;
-import zyx.server.world.humanoids.handheld.guests.GuestOrder;
+import zyx.server.controller.services.NpcService;
 import zyx.server.world.humanoids.npc.Guest;
 import zyx.server.world.humanoids.npc.behavior.guest.GuestBehaviorType;
 import zyx.server.world.humanoids.players.Player;
@@ -61,32 +60,12 @@ public class Chair extends GuestItem implements IPlayerInteractable
 		if (interaction.isTake() && guestSitting && !table.hasGottenBill && !currentUser.hasEaten)
 		{
 			boolean canHold = player.canHoldItem();
-			GuestOrder currentOrders = player.getHeldAsOrders();
-
-			if (canHold || (currentOrders != null && currentOrders.isMatchingTable(table)))
+			if (canHold)
 			{
-				boolean isNew = false;
-				if (currentOrders == null)
-				{
-					isNew = true;
-					currentOrders = new GuestOrder(table);
-					player.pickupItemSilent(currentOrders);
-				}
-
-				System.out.println(currentUser + " ordered the dish: " + currentUser.dishRequest);
-
-				currentOrders.addDish(currentUser.dishRequest);
 				currentUser.requestBehavior(GuestBehaviorType.WAITING_FOR_FOOD);
-
-				if (isNew)
-				{
-					ItemService.createOrders(currentOrders, currentUser.dishRequest, player.id);
-				}
-				else
-				{
-					ItemService.addToOrders(currentOrders, currentUser.dishRequest);
-
-				}
+				
+				currentUser.hasOrdered = true;
+				NpcService.guestGiveOrderTo(currentUser, player);
 			}
 		}
 	}

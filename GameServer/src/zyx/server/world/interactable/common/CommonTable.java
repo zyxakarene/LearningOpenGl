@@ -83,7 +83,7 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 
 	public boolean tryAddItem(HandheldItem item)
 	{
-		if (itemsOnTable.size() < maxItemsOnTable)
+		if (itemsOnTable.size() < maxItemsOnTable && canAcceptItem(item))
 		{
 			System.out.println(item + " was placed on " + this);
 			//There is room on the table, so put it down
@@ -98,6 +98,11 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 		return false;
 	}
 
+	protected boolean canAcceptItem(HandheldItem item)
+	{
+		return true;
+	}
+	
 	protected HandheldItem removeItemById(int id)
 	{
 		HandheldItem item;

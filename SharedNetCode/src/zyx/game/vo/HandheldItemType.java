@@ -10,6 +10,5 @@ public enum HandheldItemType
 	DIRTY_PLATE,
 	
 	//Players & Guests
-	ORDERS,
 	BILL;
 }

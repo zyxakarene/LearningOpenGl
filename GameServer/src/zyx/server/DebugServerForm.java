@@ -219,7 +219,7 @@ public class DebugServerForm extends javax.swing.JFrame
     private void addOrderBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_addOrderBtnActionPerformed
     {//GEN-HEADEREND:event_addOrderBtnActionPerformed
 		OrderMachine machine = room.orderMachine;
-		machine.interactWith(player);
+		machine.addOrder(DishType.STEAK);
     }//GEN-LAST:event_addOrderBtnActionPerformed
 
     private void takeFoodBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_takeFoodBtnActionPerformed

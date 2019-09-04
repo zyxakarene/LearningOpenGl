@@ -1,5 +1,6 @@
 package zyx.game.network;
 
+import zyx.game.world.guests.GuestGiveOrdersResponse;
 import zyx.engine.components.network.PingPongNetworkCallbacks;
 import zyx.game.network.callbacks.ItemNetworkCallbacks;
 import zyx.game.network.callbacks.GameNetworkCallbacks;
@@ -53,8 +54,7 @@ public class GameNetworkController extends BaseNetworkController
 		
 		dispatcher.addResponseCallback(new ItemCreateBillResponse());
 		dispatcher.addResponseCallback(new ItemCreateFoodResponse());
-		dispatcher.addResponseCallback(new ItemCreateOrdersResponse());
-		dispatcher.addResponseCallback(new ItemAddOrderResponse());
+		dispatcher.addResponseCallback(new GuestGiveOrdersResponse());
 		dispatcher.addResponseCallback(new ItemDestroyResponse());
 		dispatcher.addResponseCallback(new ItemSetOwnerResponse());
 		dispatcher.addResponseCallback(new ItemSetTypeResponse());

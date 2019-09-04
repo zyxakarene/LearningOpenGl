@@ -19,6 +19,7 @@ public class Guest extends BaseNpc<GuestBehaviorType>
 	public boolean isLeader;
 	public boolean hasEaten;
 	public boolean hasBill;
+	public boolean hasOrdered;
 	public boolean gotRightDish;
 	public GuestGroup group;
 

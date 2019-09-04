@@ -16,11 +16,11 @@ public final class NetworkCommands
 	
 	public static final String ITEM_CREATE_FOOD = "itemCreateFood";
 	public static final String ITEM_CREATE_BILL = "itemCreateBill";
-	public static final String ITEM_CREATE_ORDER = "itemCreateOrder";
-	public static final String ITEM_ADD_ORDER = "itemAddOrder";
 	public static final String ITEM_DESTROY = "itemDestroy";
 	public static final String ITEM_SET_OWNER = "itemOwner";
 	public static final String ITEM_SET_TYPE = "itemType";
+	
+	public static final String GUEST_GIVE_ORDER = "guestGiveOrder";
 	
 	public static final String ENTITY_INTERACT = "entityInteract";
 	

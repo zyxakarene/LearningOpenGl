@@ -6,6 +6,7 @@ import zyx.server.controller.sending.ServerSender;
 import zyx.server.world.humanoids.HumanoidEntity;
 import zyx.server.world.humanoids.npc.Guest;
 import zyx.server.world.humanoids.npc.GuestGroup;
+import zyx.server.world.humanoids.players.Player;
 
 public class NpcService
 {
@@ -26,5 +27,17 @@ public class NpcService
 
 	public static void guestGetFood(int guestId, int foodId, boolean correctDish)
 	{
+		//TODO - When a guest grabs food from center of table
+	}
+
+	public static void guestGiveOrderTo(Guest guest, Player player)
+	{
+		ServerSender.sendWithType(SendType.toSingle(player.connection), NetworkCommands.GUEST_GIVE_ORDER, guest.id, guest.dishRequest);
+	}
+
+	public static void reportNoOrdersTo(Player player, Guest currentUser)
+	{
+		//TODO - When trying to put food if nobody has ordered yet
+		System.out.println("No orders yet, yo!");
 	}
 }
