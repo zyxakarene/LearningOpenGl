@@ -27,36 +27,37 @@ public class GameNetworkController extends BaseNetworkController
 
 	public GameNetworkController(ItemHolderHandler playerHandler, ItemHandler itemHandler)
 	{
-		addCallbackMap(new PingPongNetworkCallbacks());
 		addCallbackMap(new GameNetworkCallbacks(playerHandler));
 		addCallbackMap(new ItemNetworkCallbacks(itemHandler));
+		addCallbackMap(new PingPongNetworkCallbacks());
 	}
 
 	@Override
 	protected void addRequestsHandlersTo(NetworkRequestDispatcher dispatcher)
 	{
-		dispatcher.addRequestHandler(new LoginRequest());
 		dispatcher.addRequestHandler(new CharacterLeaveGameRequest());
 		dispatcher.addRequestHandler(new CharacterPosRequest());
+		dispatcher.addRequestHandler(new LoginRequest());
 		dispatcher.addRequestHandler(new PingRequest());
 	}
 
 	@Override
 	protected void addResponseHandlersTo(NetworkResponseDispatcher dispatcher)
 	{
-		dispatcher.addResponseCallback(new LoginResponse());
+		dispatcher.addResponseCallback(new CharacterMassPositionsResponse());
+		dispatcher.addResponseCallback(new CharacterLeaveGameResponse());
+		dispatcher.addResponseCallback(new CharacterJoinGameResponse());
 		dispatcher.addResponseCallback(new AuthenticateResponse());
 		dispatcher.addResponseCallback(new SetupGameResponse());
-		dispatcher.addResponseCallback(new CharacterJoinGameResponse());
-		dispatcher.addResponseCallback(new CharacterLeaveGameResponse());
-		dispatcher.addResponseCallback(new CharacterMassPositionsResponse());
+		dispatcher.addResponseCallback(new LoginResponse());
 		dispatcher.addResponseCallback(new PingResponse());
 		
+		dispatcher.addResponseCallback(new GuestGiveOrdersResponse());
 		dispatcher.addResponseCallback(new ItemCreateBillResponse());
 		dispatcher.addResponseCallback(new ItemCreateFoodResponse());
-		dispatcher.addResponseCallback(new GuestGiveOrdersResponse());
-		dispatcher.addResponseCallback(new ItemDestroyResponse());
+		dispatcher.addResponseCallback(new ItemSpoilFoodResponse());
 		dispatcher.addResponseCallback(new ItemSetOwnerResponse());
+		dispatcher.addResponseCallback(new ItemDestroyResponse());
 		dispatcher.addResponseCallback(new ItemSetTypeResponse());
 	}
 

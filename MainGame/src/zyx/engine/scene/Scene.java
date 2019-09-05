@@ -21,6 +21,7 @@ import zyx.game.scene.ItemHolderHandler;
 import zyx.game.scene.ItemHandler;
 import zyx.net.io.controllers.BaseNetworkController;
 import zyx.opengl.camera.Camera;
+import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.cheats.DebugContainer;
 
@@ -193,6 +194,8 @@ public class Scene
 		camera.dispose();
 		picker.dispose();
 
+		ParticleManager.getInstance().clear();
+		
 		if (hud != null)
 		{
 			hud.dispose();

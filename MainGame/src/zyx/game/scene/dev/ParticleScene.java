@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import zyx.engine.scene.Scene;
 import zyx.game.components.MeshObject;
 import zyx.opengl.GLUtils;
-import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.particles.ParticleSystem;
 import zyx.utils.FloatMath;
 
@@ -75,8 +74,6 @@ public class ParticleScene extends Scene
 	@Override
 	protected void onUpdate(long timestamp, int elapsedTime)
 	{
-		ParticleManager.getInstance().update(timestamp, elapsedTime);
-		
 		for (MeshObject object : objects)
 		{
 			object.update(timestamp, elapsedTime);
@@ -86,8 +83,6 @@ public class ParticleScene extends Scene
 	@Override
 	protected void onDispose()
 	{
-		ParticleManager.getInstance().dispose();
-		
 		for (MeshObject object : objects)
 		{
 			object.dispose();

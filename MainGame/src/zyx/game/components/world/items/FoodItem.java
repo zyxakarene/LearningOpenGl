@@ -2,10 +2,13 @@ package zyx.game.components.world.items;
 
 import zyx.game.vo.DishType;
 import zyx.game.vo.HandheldItemType;
+import zyx.opengl.particles.ParticleSystem;
 
 public class FoodItem extends GameItem
 {
 	private DishType dish;
+		
+	private ParticleSystem rottenEffect;
 	
 	public FoodItem(DishType dish)
 	{
@@ -18,6 +21,17 @@ public class FoodItem extends GameItem
 	{
 		super.setType(type);
 		load();
+	}
+	
+	public void spoil()
+	{
+		if(rottenEffect == null)
+		{
+			rottenEffect = new ParticleSystem();
+			rottenEffect.load("particles.rotten");
+			
+			addChild(rottenEffect);
+		}
 	}
 	
 	@Override
@@ -46,5 +60,17 @@ public class FoodItem extends GameItem
 		System.out.println("Loading " + "mesh.furniture." + foodBase + foodState);
 		System.out.println("====");
 		return "mesh.furniture." + foodBase + foodState;
+	}
+
+	@Override
+	protected void onDispose()
+	{
+		super.onDispose();
+		
+		if (rottenEffect != null)
+		{
+			rottenEffect.dispose();
+			rottenEffect = null;
+		}
 	}
 }

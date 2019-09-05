@@ -2,6 +2,7 @@ package zyx.game.network.callbacks;
 
 import zyx.game.components.world.items.BillItem;
 import zyx.game.components.world.items.FoodItem;
+import zyx.game.components.world.items.GameItem;
 import zyx.game.scene.ItemHandler;
 import zyx.game.world.items.data.ItemChangedData;
 import zyx.net.io.controllers.NetworkCallbacks;
@@ -16,6 +17,7 @@ public class ItemNetworkCallbacks extends NetworkCallbacks
 	private INetworkCallback onCreateBill;
 	private INetworkCallback onSetOwner;
 	private INetworkCallback onSetType;
+	private INetworkCallback onFoodSpoiled;
 
 	private ItemHandler itemHandler;
 
@@ -30,6 +32,7 @@ public class ItemNetworkCallbacks extends NetworkCallbacks
 		registerCallback(NetworkCommands.ITEM_DESTROY, onDestroy);
 		registerCallback(NetworkCommands.ITEM_SET_OWNER, onSetOwner);
 		registerCallback(NetworkCommands.ITEM_SET_TYPE, onSetType);
+		registerCallback(NetworkCommands.ITEM_SPOIL_FOOD, onFoodSpoiled);
 	}
 
 	private void onCreateFood(ItemChangedData data)
@@ -51,6 +54,16 @@ public class ItemNetworkCallbacks extends NetworkCallbacks
 		itemHandler.removeItem(uniqueId);
 	}
 
+	private void onFoodSpoiled(Integer uniqueId)
+	{
+		GameItem item = itemHandler.getItemById(uniqueId);
+		if (item instanceof FoodItem)
+		{
+			FoodItem food = (FoodItem) item;
+			food.spoil();
+		}
+	}
+
 	private void onSetItemOwner(ItemChangedData data)
 	{
 		itemHandler.setOwner(data.itemId, data.ownerId);
@@ -65,6 +78,7 @@ public class ItemNetworkCallbacks extends NetworkCallbacks
 	{
 		onCreateFood = (INetworkCallback<ItemChangedData>) this::onCreateFood;
 		onDestroy = (INetworkCallback<Integer>) this::onDestroyItem;
+		onFoodSpoiled = (INetworkCallback<Integer>) this::onFoodSpoiled;
 		onCreateBill = (INetworkCallback<ItemChangedData>) this::onCreateBill;
 		onSetOwner = (INetworkCallback<ItemChangedData>) this::onSetItemOwner;
 		onSetType = (INetworkCallback<ItemChangedData>) this::onSetItemType;

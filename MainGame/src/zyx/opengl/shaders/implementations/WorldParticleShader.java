@@ -24,6 +24,9 @@ public class WorldParticleShader extends AbstractShader
 	private int instancesUniform;
 	private int gravityUniform;
 	private int speedUniform;
+	private int areaXUniform;
+	private int areaYUniform;
+	private int areaZUniform;
 	private int speedVarianceUniform;
 	private int startColorUniform;
 	private int endColorUniform;
@@ -37,6 +40,9 @@ public class WorldParticleShader extends AbstractShader
 	{
 		UniformUtils.setUniformFloat(instancesUniform, vo.instanceCount);
 		UniformUtils.setUniform3F(gravityUniform, vo.gravity.x, vo.gravity.y, vo.gravity.z);
+		UniformUtils.setUniform2F(areaXUniform, vo.areaX.x, vo.areaX.y);
+		UniformUtils.setUniform2F(areaYUniform, vo.areaY.x, vo.areaY.y);
+		UniformUtils.setUniform2F(areaZUniform, vo.areaZ.x, vo.areaZ.y);
 		UniformUtils.setUniform3F(speedUniform, vo.speed.x, vo.speed.y, vo.speed.z);
 		UniformUtils.setUniform3F(speedVarianceUniform, vo.speedVariance.x, vo.speedVariance.y, vo.speedVariance.z);
 		UniformUtils.setUniform4F(startColorUniform, vo.startColor.x, vo.startColor.y, vo.startColor.z, vo.startColor.w);
@@ -65,6 +71,9 @@ public class WorldParticleShader extends AbstractShader
 		instancesUniform = UniformUtils.createUniform(program, "instances");
 		gravityUniform = UniformUtils.createUniform(program, "gravity");
 		speedUniform = UniformUtils.createUniform(program, "speed");
+		areaXUniform = UniformUtils.createUniform(program, "areaX");
+		areaYUniform = UniformUtils.createUniform(program, "areaY");
+		areaZUniform = UniformUtils.createUniform(program, "areaZ");
 		speedVarianceUniform = UniformUtils.createUniform(program, "speedVariance");
 		startColorUniform = UniformUtils.createUniform(program, "startColor");
 		endColorUniform = UniformUtils.createUniform(program, "endColor");

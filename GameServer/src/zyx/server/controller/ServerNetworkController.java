@@ -45,6 +45,7 @@ public class ServerNetworkController extends BaseNetworkController
 		dispatcher.addRequestHandler(new ItemDestroyRequest());
 		dispatcher.addRequestHandler(new ItemSetOwnerRequest());
 		dispatcher.addRequestHandler(new ItemSetTypeRequest());
+		dispatcher.addRequestHandler(new ItemSpoilFoodRequest());
 		
 		dispatcher.addRequestHandler(new EntityInteractWithRequest());
 	}
@@ -57,9 +58,5 @@ public class ServerNetworkController extends BaseNetworkController
 		dispatcher.addResponseCallback(new CharacterPosResponse());
 		dispatcher.addResponseCallback(new AuthenticateResponse());
 		dispatcher.addResponseCallback(new PingResponse());
-		
-		dispatcher.addResponseCallback(new ItemCreateFoodResponse());
-		dispatcher.addResponseCallback(new ItemSetOwnerResponse());
 	}
-
 }

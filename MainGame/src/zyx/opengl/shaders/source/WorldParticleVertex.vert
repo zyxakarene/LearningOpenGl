@@ -10,6 +10,7 @@ in vec3 worldRot_2;
 in float spawnTime;
 in float lifespan;
 in vec3 speedRandom;
+in vec3 areaRandom;
 in float scaleRandom;
 in float rotRandom;
 
@@ -24,6 +25,10 @@ uniform float instances = 200;
 uniform float time;
 uniform vec3 gravity = vec3(0, 0, 0); //xyz
 
+uniform vec2 areaX = vec2(-1, 1); //min, max
+uniform vec2 areaY = vec2(-1, 1); //min, max
+uniform vec2 areaZ = vec2(0, 0); //min, max
+
 uniform vec3 speed = vec3(0, 0, -2); //xyz
 uniform vec3 speedVariance = vec3(0.2, 0.2, 0.2); //xyz
 
@@ -35,6 +40,7 @@ uniform float parentScale = 0.1;
 uniform float startScale = 1;
 uniform float endScale = 0.1;
 uniform float scaleVariance = 0.5;
+uniform vec3 areaVariance = vec3(0, 0, 0);
 
 uniform float rotation = 0;
 uniform float rotationVariance = 0;
@@ -53,6 +59,11 @@ mat4 getRotMatrix(float angle)
 float applySpeed(in float speed, in float variance, in float random, in float localTime)
 {
 	return localTime * 0.0025 * (speed + ((variance) - (variance * 2 * random)));
+}
+
+float applyArea(in vec2 area, in float random)
+{
+	return area.x + ((area.y - area.x) * random);
 }
 
 float applyGravity(in float localTime, in float power, in float gravity)
@@ -84,6 +95,11 @@ void main(void)
 	float x = worldPos.x;
 	float y = worldPos.y;
 	float z = worldPos.z;
+
+	//Applying area
+	x += applyArea(areaX, areaRandom.x);
+	y += applyArea(areaY, areaRandom.y);
+	z += applyArea(areaZ, areaRandom.z);
 
 	//Applying gravity
 	x += applyGravity(localTime, 1.5, gravity.x);

@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import zyx.opengl.GLUtils;
 import zyx.opengl.shaders.implementations.ParticleShader;
 import zyx.opengl.shaders.implementations.WorldParticleShader;
-import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IDrawable;
 import zyx.utils.interfaces.IUpdateable;
 
-public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
+public class ParticleManager implements IDrawable, IUpdateable
 {
 	private static ParticleManager instance = new ParticleManager();
 
@@ -59,8 +58,7 @@ public class ParticleManager implements IDrawable, IUpdateable, IDisposeable
 		}
 	}
 
-	@Override
-	public void dispose()
+	public void clear()
 	{
 		systems.clear();
 		

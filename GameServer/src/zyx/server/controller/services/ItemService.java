@@ -36,8 +36,8 @@ public class ItemService
 		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_SET_TYPE, item.id, type);
 	}
 
-	public static void spoilFood(FoodItem aThis)
+	public static void spoilFood(FoodItem food)
 	{
-		//TODO
+		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_SPOIL_FOOD, food.id);
 	}
 }
