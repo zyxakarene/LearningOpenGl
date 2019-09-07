@@ -20,6 +20,6 @@ public class ItemSetTypeRequest extends BaseNetworkRequest
 		HandheldItemType type = (HandheldItemType) params[1];
 		
 		data.addInteger(ITEM_ID, itemID);
-		data.addString(ITEM_TYPE, type.toString());
+		data.addInteger(ITEM_TYPE, type.id);
 	}
 }

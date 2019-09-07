@@ -1,5 +1,6 @@
 package zyx.server.controller.services;
 
+import org.lwjgl.util.vector.Vector3f;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.server.controller.sending.SendType;
 import zyx.server.controller.sending.ServerSender;
@@ -18,7 +19,7 @@ public class ItemService
 	
 	public static void createFood(FoodItem food, int ownerId)
 	{
-		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_CREATE_FOOD, food.id, ownerId, food.dish.name());
+		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_CREATE_FOOD, food.id, ownerId, food.dish);
 	}
 
 	public static void destroyItem(HandheldItem item)
@@ -29,6 +30,11 @@ public class ItemService
 	public static void setOwner(HandheldItem item, int ownerId)
 	{
 		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_SET_OWNER, item.id, ownerId);
+	}
+
+	public static void dropOnFloor(HandheldItem item, int ownerId, Vector3f position)
+	{
+		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_PUT_ON_FOOR, item.id, ownerId, position);
 	}
 
 	public static void setType(HandheldItem item, HandheldItemType type)

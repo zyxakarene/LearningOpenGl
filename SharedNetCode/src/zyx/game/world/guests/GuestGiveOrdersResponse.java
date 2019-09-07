@@ -19,10 +19,10 @@ public class GuestGiveOrdersResponse extends BaseNetworkResponse<GuestOrderData>
 	@Override
 	protected GuestOrderData onMessageRecieved(ReadableDataObject data)
 	{
-		String dish = data.getString(DISH_TYPE);
+		int dish = data.getInteger(DISH_TYPE);
 		
 		OUT.characterId = data.getInteger(GUEST_ID);
-		OUT.dishType = DishType.valueOf(dish);
+		OUT.dishType = DishType.getFromId(dish);
 
 		return OUT;
 	}

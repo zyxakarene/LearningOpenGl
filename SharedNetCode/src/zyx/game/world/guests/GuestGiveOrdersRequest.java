@@ -20,6 +20,6 @@ public class GuestGiveOrdersRequest extends ItemCreateRequest
 		DishType dishType = (DishType) params[1];
 		
 		data.addInteger(GUEST_ID, guestId);
-		data.addString(DISH_TYPE, dishType.toString());
+		data.addInteger(DISH_TYPE, dishType.id);
 	}
 }

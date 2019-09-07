@@ -37,6 +37,8 @@ public class FurnitureSetupVo
 				return new Monitor();
 			case ORDER_MACHINE:
 				return new OrderMachine();
+			case FLOOR:
+				return new Floor();
 		}
 		
 		return new DummyFurnitureItem();

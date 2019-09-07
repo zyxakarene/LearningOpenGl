@@ -2,6 +2,7 @@ package zyx.game.scene;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.World3D;
 import zyx.game.components.world.IItemHolder;
 import zyx.game.components.world.items.GameItem;
@@ -40,6 +41,11 @@ public class ItemHandler
 
 	public void setOwner(int uniqueId, int ownerId)
 	{
+		setOwner(uniqueId, ownerId, null);
+	}
+	
+	public void setOwner(int uniqueId, int ownerId, Vector3f position)
+	{
 		GameItem item = itemMap.get(uniqueId);
 
 		if (item != null)
@@ -57,6 +63,13 @@ public class ItemHandler
 				newHolder.hold(item);
 			}
 			item.setOwnerId(ownerId);
+			
+			if (position != null)
+			{
+				item.setPosition(false, position);
+			}
+			
+			System.out.println(item.getPosition(false, null));
 		}
 	}
 

@@ -8,6 +8,7 @@ public final class SetupConstants
 
 	public static final String OWNER_ID = "ownerId";
 	public static final String SPOILED = "spoiled";
+	public static final String GENDER = "gender";
 	public static final String NAME = "name";
 	public static final String DISH = "dish";
 	public static final String TYPE = "type";

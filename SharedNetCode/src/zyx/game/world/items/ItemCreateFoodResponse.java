@@ -19,8 +19,8 @@ public class ItemCreateFoodResponse extends ItemCreateResponse
 	{
 		ItemChangedData out = super.onMessageRecieved(data);
 
-		String dish = data.getString(DISH_TYPE);
-		out.dishType = DishType.valueOf(dish);
+		int dishId = data.getInteger(DISH_TYPE);
+		out.dishType = DishType.getFromId(dishId);
 
 		return out;
 	}

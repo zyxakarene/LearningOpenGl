@@ -55,6 +55,7 @@ public class SetupGameRequest extends BaseNetworkRequest
 				WriteableDataObject playerData = new WriteableDataObject();
 				playerData.addInteger(ID, entity.id);
 				playerData.addString(NAME, entity.name);
+				playerData.addInteger(GENDER, entity.gender.id);
 				playerData.addFloat(X, entity.x);
 				playerData.addFloat(Y, entity.y);
 				playerData.addFloat(Z, entity.z);
@@ -81,7 +82,7 @@ public class SetupGameRequest extends BaseNetworkRequest
 			furnitureData.addFloat(LOOK_X, item.lx);
 			furnitureData.addFloat(LOOK_Y, item.ly);
 			furnitureData.addFloat(LOOK_Z, item.lz);
-			furnitureData.addString(TYPE, item.type.toString());
+			furnitureData.addInteger(TYPE, item.type.id);
 
 			dataArray.add(furnitureData);
 		}
@@ -96,12 +97,12 @@ public class SetupGameRequest extends BaseNetworkRequest
 			WriteableDataObject itemData = new WriteableDataObject();
 			itemData.addInteger(ID, item.id);
 			itemData.addInteger(OWNER_ID, item.ownerId);
-			itemData.addString(TYPE, item.type.toString());
+			itemData.addInteger(TYPE, item.type.id);
 			
 			if (item instanceof FoodItem)
 			{
 				FoodItem food = (FoodItem) item;
-				itemData.addString(DISH, food.dish.toString());
+				itemData.addInteger(DISH, food.dish.id);
 				itemData.addBoolean(SPOILED, food.isSpoiled());
 			}
 

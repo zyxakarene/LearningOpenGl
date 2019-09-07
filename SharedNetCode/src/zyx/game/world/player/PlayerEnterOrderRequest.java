@@ -17,6 +17,6 @@ public class PlayerEnterOrderRequest extends BaseNetworkRequest
 	protected void getDataObject(WriteableDataObject data, Object... params)
 	{
 		DishType dish = (DishType) params[0];
-		data.addString(DISH_TYPE, dish.toString());
+		data.addInteger(DISH_TYPE, dish.id);
 	}
 }

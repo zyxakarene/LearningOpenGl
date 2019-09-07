@@ -52,6 +52,7 @@ public class GameNetworkController extends BaseNetworkController
 		dispatcher.addResponseCallback(new LoginResponse());
 		dispatcher.addResponseCallback(new PingResponse());
 		
+		dispatcher.addResponseCallback(new ItemDropOnFloorResponse());
 		dispatcher.addResponseCallback(new GuestGiveOrdersResponse());
 		dispatcher.addResponseCallback(new ItemCreateBillResponse());
 		dispatcher.addResponseCallback(new ItemCreateFoodResponse());

@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import org.lwjgl.util.vector.Vector3f;
 import zyx.game.vo.FurnitureType;
+import zyx.server.controller.services.ItemService;
 import zyx.server.utils.Distance;
 import zyx.server.utils.IUpdateable;
 import zyx.server.world.RoomItems;
@@ -21,7 +23,8 @@ import zyx.server.world.interactable.common.player.PlayerInteraction;
 
 public class Floor extends BaseInteractableItem implements IPlayerInteractable, IUpdateable, ICleanable
 {
-
+	private static final Vector3f HELPER_POS = new Vector3f();
+	
 	private ArrayList<FloorItem> floorItems;
 
 	public Floor()
@@ -37,6 +40,9 @@ public class Floor extends BaseInteractableItem implements IPlayerInteractable, 
 		floorItems.add(floorItem);
 
 		item.ownerId = id;
+		
+		HELPER_POS.set(prevOwner.x, prevOwner.y, prevOwner.z);
+		ItemService.dropOnFloor(item, id, HELPER_POS);
 	}
 
 	public HandheldItem itemTaken(int itemId)

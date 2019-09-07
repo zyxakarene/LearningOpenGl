@@ -50,6 +50,7 @@ public class RoomItems implements IUpdateable
 		instance = this;
 
 		floor = new Floor();
+		floor.updateLook(0, 0, 100);
 
 		fridges = new Fridge[1];
 		fridges[0] = new Fridge();

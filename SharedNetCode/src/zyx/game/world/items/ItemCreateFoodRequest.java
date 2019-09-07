@@ -1,5 +1,6 @@
 package zyx.game.world.items;
 
+import zyx.game.vo.DishType;
 import zyx.net.data.WriteableDataObject;
 import zyx.net.io.controllers.NetworkCommands;
 import static zyx.game.world.items.ItemConstants.*;
@@ -16,8 +17,8 @@ public class ItemCreateFoodRequest extends ItemCreateRequest
 	{
 		super.getDataObject(data, params);
 		
-		String dishType = (String) params[2];
+		DishType dish = (DishType) params[2];
 		
-		data.addString(DISH_TYPE, dishType);
+		data.addInteger(DISH_TYPE, dish.id);
 	}
 }

@@ -46,6 +46,7 @@ public class ServerNetworkController extends BaseNetworkController
 		dispatcher.addRequestHandler(new ItemSetOwnerRequest());
 		dispatcher.addRequestHandler(new ItemSetTypeRequest());
 		dispatcher.addRequestHandler(new ItemSpoilFoodRequest());
+		dispatcher.addRequestHandler(new ItemDropOnFloorRequest());
 		
 		dispatcher.addRequestHandler(new EntityInteractWithRequest());
 	}

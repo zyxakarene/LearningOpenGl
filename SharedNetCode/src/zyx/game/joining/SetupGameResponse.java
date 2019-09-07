@@ -70,8 +70,8 @@ public class SetupGameResponse extends BaseNetworkResponse<GameSetupVo>
 			OUT.furniture.lookAts[i].x = furnitureData.getFloat(LOOK_X);
 			OUT.furniture.lookAts[i].y = furnitureData.getFloat(LOOK_Y);
 			OUT.furniture.lookAts[i].z = furnitureData.getFloat(LOOK_Z);
-			String type = furnitureData.getString(TYPE);
-			OUT.furniture.types[i] = FurnitureType.valueOf(type);
+			int type = furnitureData.getInteger(TYPE);
+			OUT.furniture.types[i] = FurnitureType.getFromId(type);
 		}
 	}
 
@@ -84,20 +84,20 @@ public class SetupGameResponse extends BaseNetworkResponse<GameSetupVo>
 		{
 			ReadableDataObject itemData = array.get(i);
 
-			String type = itemData.getString(TYPE);
-			String dish = itemData.getString(DISH);
+			int type = itemData.getInteger(TYPE);
+			int dish = itemData.getInteger(DISH);
 			
 			OUT.items.ids[i] = itemData.getInteger(ID);
 			OUT.items.ownerIds[i] = itemData.getInteger(OWNER_ID);
 			
-			if (type != null)
+			if (type > 0)
 			{
-				OUT.items.types[i] = HandheldItemType.valueOf(type);
+				OUT.items.types[i] = HandheldItemType.getFromId(type);
 			}
 			
-			if (dish != null)
+			if (dish > 0)
 			{
-				OUT.items.dishTypes[i] = DishType.valueOf(dish);
+				OUT.items.dishTypes[i] = DishType.getFromId(dish);
 				OUT.items.dishSpoiled[i] = itemData.getBoolean(SPOILED);
 			}
 		}
