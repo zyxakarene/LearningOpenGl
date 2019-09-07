@@ -13,6 +13,7 @@ import zyx.game.network.GameNetworkController;
 import zyx.engine.components.tooltips.TestTooltip;
 import zyx.engine.components.tooltips.TooltipManager;
 import zyx.engine.components.world.GameLight;
+import zyx.engine.components.world.WorldObject;
 import zyx.engine.scene.Scene;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
@@ -25,11 +26,12 @@ import zyx.game.behavior.misc.JiggleBehavior;
 import zyx.game.behavior.player.OnlinePositionSender;
 import zyx.game.components.GameObject;
 import zyx.game.components.MeshObject;
-import zyx.game.components.SimpleMesh;
 import zyx.game.components.world.meshbatch.CubeEntity;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.input.MouseData;
 import zyx.game.controls.process.ProcessQueue;
+import zyx.game.models.GameModels;
+import zyx.game.network.PingManager;
 import zyx.game.vo.Gender;
 import zyx.net.io.controllers.BaseNetworkController;
 import zyx.net.io.controllers.NetworkChannel;
@@ -38,10 +40,7 @@ import zyx.opengl.GLUtils;
 import zyx.opengl.buffers.DrawingRenderer;
 import zyx.opengl.models.implementations.shapes.Box;
 import zyx.opengl.models.implementations.shapes.Sphere;
-import zyx.opengl.particles.ParticleSystem;
 import zyx.opengl.textures.AbstractTexture;
-import zyx.opengl.textures.ColorTexture;
-import zyx.opengl.textures.MissingTexture;
 import zyx.opengl.textures.TextureFromInt;
 import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.FloatMath;
@@ -60,9 +59,9 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 
 	private MeshObject testDragon;
 	private GameObject player;
-	private SimpleMesh gameCharMesh;
 
 	private Box drawBox;
+	private IHoveredItem onBoxClick;
 
 	public DragonScene()
 	{
@@ -77,27 +76,22 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 
 	private boolean isDrawing = false;
 	private boolean changed = false;
-	
+
 	@Override
 	protected void onInitialize()
 	{
-		ParticleSystem localSystem1 = new ParticleSystem();
-		localSystem1.load("particles.rotten");
-		world.addChild(localSystem1);
-
-		
 		NetworkChannel.sendRequest(NetworkCommands.LOGIN, "Zyx" + Math.random(), Gender.MALE);
 
 		world.loadSkybox("skybox.texture.desert");
 		CubemapManager.getInstance().load("cubemap.dragon");
-		IHoveredItem onBoxClick = new IHoveredItem()
+		onBoxClick = new IHoveredItem()
 		{
 			@Override
 			public void onClicked(ClickedInfo info)
 			{
 				boolean wasDrawing = isDrawing;
 				isDrawing = MouseData.data.isLeftDown();
-				
+
 				if (!changed && isDrawing)
 				{
 					changed = true;
@@ -127,10 +121,6 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		drawBox.setRotation(33, 24, 58);
 		world.addChild(drawBox);
 		addPickedObject(drawBox, onBoxClick);
-
-		gameCharMesh = new SimpleMesh();
-		gameCharMesh.load("mesh.player");
-		world.addChild(gameCharMesh);
 
 		MeshObject dragon = new MeshObject();
 		dragon.setScale(0.33f, 0.33f, 0.33f);
@@ -210,53 +200,9 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		}
 	}
 
-	private float xRot;
-	private float yRot;
-	private float zRot;
-
 	@Override
 	protected void onUpdate(long timestamp, int elapsedTime)
-	{
-		boolean update = false;
-		if (KeyboardData.data.wasPressed(Keyboard.KEY_NUMPAD7))
-		{
-			xRot += 15;
-			update = true;
-		}
-		if (KeyboardData.data.wasPressed(Keyboard.KEY_NUMPAD4))
-		{
-			xRot -= 15;
-			update = true;
-		}
-		if (KeyboardData.data.wasPressed(Keyboard.KEY_NUMPAD8))
-		{
-			yRot += 15;
-			update = true;
-		}
-		if (KeyboardData.data.wasPressed(Keyboard.KEY_NUMPAD5))
-		{
-			yRot -= 15;
-			update = true;
-		}
-		if (KeyboardData.data.wasPressed(Keyboard.KEY_NUMPAD9))
-		{
-			zRot += 15;
-			update = true;
-		}
-		if (KeyboardData.data.wasPressed(Keyboard.KEY_NUMPAD6))
-		{
-			zRot -= 15;
-			update = true;
-		}
-
-		if (KeyboardData.data.wasPressed(Keyboard.KEY_F))
-		{
-			Vector3f camPos = player.getPosition(false, null);
-			gameCharMesh.lookAt(camPos);
-
-			update = true;
-		}
-
+	{		
 		for (int i = 0; i < gameObjects.size(); i++)
 		{
 			GameObject obj = gameObjects.get(i);
@@ -314,7 +260,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	@Override
 	protected BaseNetworkController createNetworkDispatcher()
 	{
-		return new GameNetworkController(characterHandler, itemHandler);
+		return new GameNetworkController(itemHolderHandler, itemHandler);
 	}
 
 	@Override
@@ -331,10 +277,19 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		TooltipManager.getInstance().clean();
 		MeshBatchManager.getInstance().clean();
 
+		itemHandler.clean();
+		itemHolderHandler.clean();
+
 		gameObjects.clear();
 		gameObjects = null;
 
+		drawBox.dispose();
+		removePickedObject(drawBox, onBoxClick);
+		drawBox = null;
+
 		camera.removeBehavior(BehaviorType.ONLINE_POSITION);
+
+		PingManager.getInstance().removeEntity(GameModels.player.playerId);
 	}
 
 	@Override
@@ -349,10 +304,19 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	{
 		player = new GameObject();
 
+		WorldObject box = new Box(1, 1, 1);
+		WorldObject p = new Box(3f, 0.01f, 3f);
+		p.setPosition(true, 0, -1f, 0);
+		box.setPosition(true, 0, 0, -5);
+		player.addChild(p);
+		player.addChild(box);
+
 		player.addBehavior(new FreeFlyBehavior());
 		player.addBehavior(new CameraUpdateViewBehavior());
 		player.addBehavior(new OnlinePositionSender());
 
 		gameObjects.add(player);
+
+		world.addChild(player);
 	}
 }

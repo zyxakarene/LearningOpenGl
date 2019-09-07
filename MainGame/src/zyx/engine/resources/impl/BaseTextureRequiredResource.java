@@ -40,6 +40,8 @@ public abstract class BaseTextureRequiredResource extends Resource implements IR
 		textureResources = new TextureResource[resources.length];
 		loadedTextures = new AbstractTexture[resources.length];
 		
+		Resource[] toLoad = new Resource[resources.length];
+		
 		for (int i = 0; i < textureResources.length; i++)
 		{
 			String resource = resources[i];
@@ -49,7 +51,12 @@ public abstract class BaseTextureRequiredResource extends Resource implements IR
 			textureResources[i] = textureResource;
 			
 			resourceToIndexMap.put(textureResource, i);
-			textureResource.registerAndLoad(this);
+			toLoad[i] = textureResource;
+		}
+		
+		for (Resource resource : toLoad)
+		{
+			resource.registerAndLoad(this);
 		}
 	}
 	

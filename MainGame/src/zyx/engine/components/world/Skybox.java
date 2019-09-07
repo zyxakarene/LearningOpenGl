@@ -73,11 +73,18 @@ public class Skybox extends WorldObject
 			textureResource = null;
 		}
 		
+		if (meshResource != null)
+		{
+			meshResource.unregister(onMeshLoaded);
+			meshResource = null;
+		}
+		
 		texture = null;
 		
 		if (model != null)
 		{
 			model.removeSkyboxTexture();
+			model = null;
 		}
 	}
 	
@@ -102,11 +109,5 @@ public class Skybox extends WorldObject
 	protected void onDispose()
 	{
 		clean();
-		
-		if (meshResource != null)
-		{
-			meshResource.unregister(onMeshLoaded);
-			meshResource = null;
-		}
 	}
 }

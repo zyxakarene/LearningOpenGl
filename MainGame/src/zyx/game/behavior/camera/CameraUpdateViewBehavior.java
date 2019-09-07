@@ -42,10 +42,10 @@ public class CameraUpdateViewBehavior extends Behavior
 		gameObject.getPosition(false, cameraPosition);
 		gameObject.getRotation(false, cameraRotation);
 		
-		cameraRotationRad.x = FloatMath.toRadians(cameraRotation.x);
+		cameraRotationRad.x = FloatMath.toRadians(-cameraRotation.x);
 		cameraRotationRad.y = FloatMath.toRadians(cameraRotation.y);
-		cameraRotationRad.z = FloatMath.toRadians(cameraRotation.z);
-		cameraRotationRad.w = FloatMath.toRadians(cameraRotation.x + 90);
+		cameraRotationRad.z = FloatMath.toRadians(-cameraRotation.z);
+		cameraRotationRad.w = FloatMath.toRadians(-cameraRotation.x + 90);
 		
 		viewMatrix.setIdentity();
 		viewMatrix.rotate(cameraRotationRad.x, GeometryUtils.ROTATION_X);
@@ -57,14 +57,5 @@ public class CameraUpdateViewBehavior extends Behavior
 		
 		cameraPosition.negate();
 		viewMatrix.translate(cameraPosition);
-
-		float dX = FloatMath.sin(cameraRotationRad.z) * FloatMath.cos(cameraRotationRad.w) * 0.1f;
-		float dY = FloatMath.cos(cameraRotationRad.z) * FloatMath.cos(cameraRotationRad.w) * 0.1f;
-		float dZ = FloatMath.cos(cameraRotationRad.x) * 0.1f;
-		tempMovement.set(-dX * 10, -dY * 10, dZ * 10);
-		viewMatrix.translate(tempMovement);
-		
-		
 	}
-
 }

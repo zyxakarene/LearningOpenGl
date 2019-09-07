@@ -36,7 +36,7 @@ public class Scene
 	protected CameraController camera;
 
 	protected ItemHandler itemHandler;
-	protected ItemHolderHandler characterHandler;
+	protected ItemHolderHandler itemHolderHandler;
 	protected BaseHud hud;
 	protected BaseNetworkController networkController;
 
@@ -49,8 +49,8 @@ public class Scene
 	{
 		picker = new WorldPicker();
 
-		characterHandler = new ItemHolderHandler();
-		itemHandler = new ItemHandler(characterHandler);
+		itemHolderHandler = new ItemHolderHandler();
+		itemHandler = new ItemHandler(itemHolderHandler);
 
 		world = World3D.instance;
 		stage = Stage.instance;
@@ -127,7 +127,7 @@ public class Scene
 
 		if (ready)
 		{
-			characterHandler.update(timestamp, elapsedTime);
+			itemHolderHandler.update(timestamp, elapsedTime);
 
 			onUpdate(timestamp, elapsedTime);
 		}
@@ -213,7 +213,13 @@ public class Scene
 			debugPanel.dispose();
 			debugPanel = null;
 		}
-
+		
+		if(networkController != null)
+		{
+			networkController.dispose();
+			networkController = null;
+		}
+		
 		stage = null;
 		world = null;
 		camera = null;

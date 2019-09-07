@@ -81,26 +81,26 @@ public class FreeFlyBehavior extends Behavior
 	{
 		float multiplier = elapsedTime * 0.008f;
 		
-        cameraRotation.x += (x * multiplier);
-        cameraRotation.y += (y * multiplier);
-        cameraRotation.z += (z * multiplier);
+        cameraRotation.x -= (x * multiplier);
+        cameraRotation.y -= (y * multiplier);
+        cameraRotation.z -= (z * multiplier);
 
-        if (cameraRotation.x > 0)
+        if (cameraRotation.x < 0)
         {
             cameraRotation.x = 0;
         }
-        else if (cameraRotation.x < -179.99f)
+        else if (cameraRotation.x > 179.99f)
         {
-            cameraRotation.x = -179.99f;
+            cameraRotation.x = 179.99f;
         }
 
-        if (cameraRotation.z > 360)
+        if (cameraRotation.z < -360)
         {
-            cameraRotation.z = cameraRotation.z - 360;
+            cameraRotation.z = cameraRotation.z + 360;
         }
         else if (cameraRotation.z < 0)
         {
-            cameraRotation.z = cameraRotation.z + 360;
+            cameraRotation.z = cameraRotation.z - 360;
         }
 	}
 	
@@ -118,9 +118,9 @@ public class FreeFlyBehavior extends Behavior
 			multiplier /= 5;
 		}
 		
-        float dX = FloatMath.sin(FloatMath.toRadians(cameraRotation.z)) * FloatMath.cos(FloatMath.toRadians(cameraRotation.x + 90)) * MOVE_SPEED * multiplier;
-        float dY = FloatMath.cos(FloatMath.toRadians(cameraRotation.z)) * FloatMath.cos(FloatMath.toRadians(cameraRotation.x + 90)) * MOVE_SPEED * multiplier;
-        float dZ = FloatMath.cos(FloatMath.toRadians(cameraRotation.x)) * MOVE_SPEED * multiplier;
+        float dX = FloatMath.sin(FloatMath.toRadians(-cameraRotation.z)) * FloatMath.cos(FloatMath.toRadians(-cameraRotation.x + 90)) * MOVE_SPEED * multiplier;
+        float dY = FloatMath.cos(FloatMath.toRadians(-cameraRotation.z)) * FloatMath.cos(FloatMath.toRadians(-cameraRotation.x + 90)) * MOVE_SPEED * multiplier;
+        float dZ = FloatMath.cos(FloatMath.toRadians(-cameraRotation.x)) * MOVE_SPEED * multiplier;
 
         switch (direction)
         {
@@ -140,8 +140,8 @@ public class FreeFlyBehavior extends Behavior
             }
             case (RIGHT):
             {
-                dX = FloatMath.sin(FloatMath.toRadians(cameraRotation.z + 90)) * MOVE_SPEED * multiplier;
-                dY = FloatMath.cos(FloatMath.toRadians(cameraRotation.z + 90)) * MOVE_SPEED * multiplier;
+                dX = FloatMath.sin(FloatMath.toRadians(-cameraRotation.z + 90)) * MOVE_SPEED * multiplier;
+                dY = FloatMath.cos(FloatMath.toRadians(-cameraRotation.z + 90)) * MOVE_SPEED * multiplier;
 
 				cameraPosition.x += dX;
                 cameraPosition.y += dY;
@@ -149,8 +149,8 @@ public class FreeFlyBehavior extends Behavior
             }
             case (LEFT):
             {
-                dX = FloatMath.sin(FloatMath.toRadians(cameraRotation.z - 90)) * MOVE_SPEED * multiplier;
-                dY = FloatMath.cos(FloatMath.toRadians(cameraRotation.z - 90)) * MOVE_SPEED * multiplier;
+                dX = FloatMath.sin(FloatMath.toRadians(-cameraRotation.z - 90)) * MOVE_SPEED * multiplier;
+                dY = FloatMath.cos(FloatMath.toRadians(-cameraRotation.z - 90)) * MOVE_SPEED * multiplier;
 
 				cameraPosition.x += dX;
                 cameraPosition.y += dY;

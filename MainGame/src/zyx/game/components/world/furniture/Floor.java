@@ -11,6 +11,7 @@ public class Floor extends BaseFurnitureItem<SimpleMesh>
 	public Floor()
 	{
 		super(false);
+		setScale(0.01f, 0.01f, 0.01f);
 	}
 
 	@Override
