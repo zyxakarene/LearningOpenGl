@@ -11,7 +11,7 @@ public class DishRecipeItem extends HandheldItem
 
 	public DishRecipeItem(DishType dish)
 	{
-		super(HandheldItemType.DISH_RECIPE);
+		super(HandheldItemType.DISH_RECIPE, true);
 		
 		this.dish = dish;
 	}

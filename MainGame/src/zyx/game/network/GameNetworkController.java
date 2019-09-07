@@ -27,7 +27,7 @@ public class GameNetworkController extends BaseNetworkController
 
 	public GameNetworkController(ItemHolderHandler playerHandler, ItemHandler itemHandler)
 	{
-		addCallbackMap(new GameNetworkCallbacks(playerHandler));
+		addCallbackMap(new GameNetworkCallbacks(playerHandler, itemHandler));
 		addCallbackMap(new ItemNetworkCallbacks(itemHandler));
 		addCallbackMap(new PingPongNetworkCallbacks());
 	}

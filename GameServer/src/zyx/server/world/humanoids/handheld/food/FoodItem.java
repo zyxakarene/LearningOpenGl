@@ -17,7 +17,7 @@ public class FoodItem extends HandheldItem
 	
 	public FoodItem(DishType resultDish)
 	{
-		super(HandheldItemType.INGREDIENTS);
+		super(HandheldItemType.INGREDIENTS, false);
 		lifeSpan = FOOD_LIFESPAN_MS;
 		spoiled = false;
 		dish = resultDish;

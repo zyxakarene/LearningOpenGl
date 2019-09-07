@@ -27,7 +27,7 @@ public class Floor extends BaseInteractableItem implements IPlayerInteractable, 
 	public Floor()
 	{
 		super(FurnitureType.FLOOR);
-		
+
 		floorItems = new ArrayList<>();
 	}
 
@@ -35,12 +35,14 @@ public class Floor extends BaseInteractableItem implements IPlayerInteractable, 
 	{
 		FloorItem floorItem = new FloorItem(item, prevOwner.x, prevOwner.y, prevOwner.z);
 		floorItems.add(floorItem);
+
+		item.ownerId = id;
 	}
 
 	public HandheldItem itemTaken(int itemId)
 	{
 		FloorItem foundItem = null;
-		
+
 		for (FloorItem floorItem : floorItems)
 		{
 			if (floorItem.item.id == itemId)
@@ -49,10 +51,11 @@ public class Floor extends BaseInteractableItem implements IPlayerInteractable, 
 				break;
 			}
 		}
-		
+
 		if (foundItem != null)
 		{
 			floorItems.remove(foundItem);
+			foundItem.item.ownerId = -1;
 			return foundItem.item;
 		}
 		else
@@ -106,7 +109,7 @@ public class Floor extends BaseInteractableItem implements IPlayerInteractable, 
 	{
 		return Color.WHITE;
 	}
-	
+
 	@Override
 	public int getSize()
 	{
@@ -131,7 +134,7 @@ public class Floor extends BaseInteractableItem implements IPlayerInteractable, 
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -149,7 +152,7 @@ public class Floor extends BaseInteractableItem implements IPlayerInteractable, 
 				}
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -158,7 +161,7 @@ public class Floor extends BaseInteractableItem implements IPlayerInteractable, 
 	{
 		float closestDistance = Float.MAX_VALUE;
 		FoodItem closestItem = null;
-		
+
 		for (FloorItem floorItem : floorItems)
 		{
 			if (floorItem.item instanceof FoodItem)
@@ -175,11 +178,11 @@ public class Floor extends BaseInteractableItem implements IPlayerInteractable, 
 				}
 			}
 		}
-		
+
 		if (closestItem != null && closestDistance <= 10)
 		{
 			itemTaken(closestItem.id);
-			
+
 			cleaner.pickupItem(closestItem);
 			cleaner.requestBehavior(CleanerBehaviorType.GOING_TO_DISH_WASHER, RoomItems.instance.dishWasher);
 		}
@@ -202,7 +205,7 @@ public class Floor extends BaseInteractableItem implements IPlayerInteractable, 
 				}
 			}
 		}
-		
+
 		return null;
 	}
 

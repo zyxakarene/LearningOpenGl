@@ -33,7 +33,7 @@ public class CharacterJoinGameResponse extends BaseNetworkResponse<CharacterJoin
 			OUT.lookAts[i].x = charData.getFloat(LOOK_X);
 			OUT.lookAts[i].y = charData.getFloat(LOOK_Y);
 			OUT.lookAts[i].z = charData.getFloat(LOOK_Z);
-			OUT.names[i] = charData.getString(CHARACTER_NAME);
+			OUT.names[i] = charData.getString(NAME);
 		}
 		
 		return OUT;

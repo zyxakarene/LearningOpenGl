@@ -8,7 +8,7 @@ public class BillItem extends HandheldItem
 
 	public BillItem()
 	{
-		super(HandheldItemType.BILL);
+		super(HandheldItemType.BILL, false);
 	}
 
 	@Override

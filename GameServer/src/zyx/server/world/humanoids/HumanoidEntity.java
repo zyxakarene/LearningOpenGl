@@ -43,6 +43,9 @@ public class HumanoidEntity extends WorldEntity
 
 		if (item != null)
 		{
+			heldItem.ownerId = -1;
+			heldItem.inUse = false;
+			
 			System.out.println(item + " was removed from " + this);
 			item.dispose();
 		}
@@ -69,12 +72,14 @@ public class HumanoidEntity extends WorldEntity
 		ItemService.setOwner(item, id);
 		System.out.println(this + " picked up " + item);
 		heldItem = item;
+		heldItem.ownerId = id;
 	}
 
 	public void pickupItemSilent(HandheldItem item)
 	{
 		System.out.println(this + " picked up " + item);
 		heldItem = item;
+		heldItem.ownerId = id;
 	}
 
 	@Override

@@ -7,10 +7,12 @@ public class GameSetupVo
 
 	public final CharacterJoinedData players;
 	public final FurnitureSetupData furniture;
+	public final ItemSetupData items;
 
 	private GameSetupVo()
 	{
 		players = CharacterJoinedData.INSTANCE;
 		furniture = FurnitureSetupData.INSTANCE;
+		items = ItemSetupData.INSTANCE;
 	}
 }

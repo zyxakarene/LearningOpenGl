@@ -31,11 +31,6 @@ public abstract class GameItem extends SimpleMesh
 	public void setType(HandheldItemType type)
 	{
 		this.type = type;
-		if (type == HandheldItemType.DIRTY_PLATE)
-		{
-			System.out.println(getPosition(true, null));
-			System.out.println(getPosition(false, null));
-		}
 	}
 	
 	protected abstract String getItemResource();

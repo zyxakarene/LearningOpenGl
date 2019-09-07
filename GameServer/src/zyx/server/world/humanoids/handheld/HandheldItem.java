@@ -12,13 +12,19 @@ public abstract class HandheldItem implements IUpdateable
 	public final int id;
 	public HandheldItemType type;
 	public boolean inUse;
+	public int ownerId;
 
-	public HandheldItem(HandheldItemType initialType)
+	public HandheldItem(HandheldItemType initialType, boolean invisible)
 	{
 		this.id = idCounter++;
 
 		this.type = initialType;
 		this.inUse = true;
+		
+		if (!invisible)
+		{
+			HandheldItemList.addItem(this);
+		}
 	}
 
 	@Override
@@ -28,6 +34,7 @@ public abstract class HandheldItem implements IUpdateable
 
 	public void dispose()
 	{
+		HandheldItemList.removeItem(this);
 		ItemService.destroyItem(this);
 	}
 	

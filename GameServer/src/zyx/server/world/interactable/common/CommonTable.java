@@ -88,6 +88,7 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 			System.out.println(item + " was placed on " + this);
 			//There is room on the table, so put it down
 			item.inUse = false;
+			item.ownerId = id;
 			itemsOnTable.add(item);
 
 			ItemService.setOwner(item, id);
@@ -116,6 +117,7 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 			{
 				System.out.println(item + " was removed from " + this);
 				itemsOnTable.remove(i);
+				item.ownerId = -1;
 				return item;
 			}
 		}

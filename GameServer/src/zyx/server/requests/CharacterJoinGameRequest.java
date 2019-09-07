@@ -32,7 +32,7 @@ public class CharacterJoinGameRequest extends BaseNetworkRequest
 			character.addFloat(LOOK_X, entity.lx);
 			character.addFloat(LOOK_Y, entity.ly);
 			character.addFloat(LOOK_Z, entity.lz);
-			character.addString(CHARACTER_NAME, entity.name);
+			character.addString(NAME, entity.name);
 			
 			characters.add(character);
 		}

@@ -5,7 +5,9 @@ import zyx.net.data.ReadableDataObject;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.BaseNetworkResponse;
 import static zyx.game.joining.SetupConstants.*;
+import zyx.game.vo.DishType;
 import zyx.game.vo.FurnitureType;
+import zyx.game.vo.HandheldItemType;
 import zyx.net.data.ReadableDataArray;
 
 public class SetupGameResponse extends BaseNetworkResponse<GameSetupVo>
@@ -23,9 +25,11 @@ public class SetupGameResponse extends BaseNetworkResponse<GameSetupVo>
 	{
 		ReadableDataArray<ReadableDataObject> array = data.<ReadableDataObject>getArray(CHARACTERS);
 		ReadableDataArray<ReadableDataObject> furniture = data.<ReadableDataObject>getArray(FURNITURE);
+		ReadableDataArray<ReadableDataObject> items = data.<ReadableDataObject>getArray(ITEMS);
 
 		addPlayers(array);
 		addFurniture(furniture);
+		addItems(items);
 
 		return OUT;
 	}
@@ -40,7 +44,7 @@ public class SetupGameResponse extends BaseNetworkResponse<GameSetupVo>
 			ReadableDataObject playerData = array.get(i);
 
 			OUT.players.ids[i] = playerData.getInteger(ID);
-			OUT.players.names[i] = playerData.getString(CHARACTER_NAME);
+			OUT.players.names[i] = playerData.getString(NAME);
 			OUT.players.positions[i].x = playerData.getFloat(X);
 			OUT.players.positions[i].y = playerData.getFloat(Y);
 			OUT.players.positions[i].z = playerData.getFloat(Z);
@@ -66,9 +70,36 @@ public class SetupGameResponse extends BaseNetworkResponse<GameSetupVo>
 			OUT.furniture.lookAts[i].x = furnitureData.getFloat(LOOK_X);
 			OUT.furniture.lookAts[i].y = furnitureData.getFloat(LOOK_Y);
 			OUT.furniture.lookAts[i].z = furnitureData.getFloat(LOOK_Z);
-			String type = furnitureData.getString(FURNITURE_TYPE);
+			String type = furnitureData.getString(TYPE);
 			OUT.furniture.types[i] = FurnitureType.valueOf(type);
 		}
 	}
 
+	private void addItems(ReadableDataArray<ReadableDataObject> array)
+	{
+		int itemCount = array.size();
+
+		OUT.items.itemCount = itemCount;
+		for (int i = 0; i < itemCount; i++)
+		{
+			ReadableDataObject itemData = array.get(i);
+
+			String type = itemData.getString(TYPE);
+			String dish = itemData.getString(DISH);
+			
+			OUT.items.ids[i] = itemData.getInteger(ID);
+			OUT.items.ownerIds[i] = itemData.getInteger(OWNER_ID);
+			
+			if (type != null)
+			{
+				OUT.items.types[i] = HandheldItemType.valueOf(type);
+			}
+			
+			if (dish != null)
+			{
+				OUT.items.dishTypes[i] = DishType.valueOf(dish);
+				OUT.items.dishSpoiled[i] = itemData.getBoolean(SPOILED);
+			}
+		}
+	}
 }

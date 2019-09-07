@@ -38,6 +38,7 @@ import zyx.opengl.GLUtils;
 import zyx.opengl.buffers.DrawingRenderer;
 import zyx.opengl.models.implementations.shapes.Box;
 import zyx.opengl.models.implementations.shapes.Sphere;
+import zyx.opengl.particles.ParticleSystem;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.ColorTexture;
 import zyx.opengl.textures.MissingTexture;
@@ -80,6 +81,11 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	@Override
 	protected void onInitialize()
 	{
+		ParticleSystem localSystem1 = new ParticleSystem();
+		localSystem1.load("particles.rotten");
+		world.addChild(localSystem1);
+
+		
 		NetworkChannel.sendRequest(NetworkCommands.LOGIN, "Zyx" + Math.random(), Gender.MALE);
 
 		world.loadSkybox("skybox.texture.desert");
