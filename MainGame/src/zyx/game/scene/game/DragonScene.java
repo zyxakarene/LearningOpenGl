@@ -45,6 +45,7 @@ import zyx.opengl.textures.TextureFromInt;
 import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
+import zyx.utils.cheats.DebugPoint;
 import zyx.utils.cheats.Print;
 import zyx.utils.math.QuaternionUtils;
 
@@ -202,7 +203,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 
 	@Override
 	protected void onUpdate(long timestamp, int elapsedTime)
-	{		
+	{
 		for (int i = 0; i < gameObjects.size(); i++)
 		{
 			GameObject obj = gameObjects.get(i);

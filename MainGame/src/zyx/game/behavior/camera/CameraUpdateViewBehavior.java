@@ -57,5 +57,11 @@ public class CameraUpdateViewBehavior extends Behavior
 		
 		cameraPosition.negate();
 		viewMatrix.translate(cameraPosition);
+		
+		float dX = FloatMath.sin(cameraRotationRad.z) * FloatMath.cos(cameraRotationRad.w) * 0.1f;
+		float dY = FloatMath.cos(cameraRotationRad.z) * FloatMath.cos(cameraRotationRad.w) * 0.1f;
+		float dZ = FloatMath.cos(cameraRotationRad.x) * 0.1f;
+		tempMovement.set(-dX * 10, -dY * 10, dZ * 10);
+		viewMatrix.translate(tempMovement);
 	}
 }

@@ -1,7 +1,10 @@
 package zyx.server.world.humanoids.npc.behavior.guest;
 
+import zyx.server.controller.services.NpcService;
 import zyx.server.world.humanoids.npc.Guest;
 import zyx.server.world.interactable.guests.Chair;
+import zyx.server.world.wallet.MoneyJar;
+import zyx.server.world.wallet.TipCalculator;
 
 public class GuestWaitingForBillBehavior extends GuestBehavior<Object>
 {
@@ -65,6 +68,10 @@ public class GuestWaitingForBillBehavior extends GuestBehavior<Object>
 		npc.group.table.makeAvailible();
 		npc.group.table.removeBill(npc.group.bill.id);
 
+		int[] guestIds = new int[npc.group.size];
+		int[] payAmounts = new int[npc.group.size];
+		int index = 0;
+
 		for (Chair chair : groupChairs)
 		{
 			if (chair != null && chair.currentUser != null)
@@ -73,7 +80,24 @@ public class GuestWaitingForBillBehavior extends GuestBehavior<Object>
 				friend.requestBehavior(GuestBehaviorType.WALKING_OUT, items.exitPoint);
 
 				chair.makeAvailible();
+
+				int payAmount = friend.gotRightDish ? friend.servedDish.sellValue : (friend.servedDish.sellValue / 2);
+				if (payAmount > friend.dishRequest.sellValue)
+				{
+					payAmount = friend.dishRequest.sellValue;
+				}
+
+				int tipAmount = TipCalculator.calculateTip(friend);
+
+				MoneyJar.getInstance().payEarning(payAmount);
+				MoneyJar.getInstance().addTip(tipAmount);
+
+				guestIds[index] = friend.id;
+				payAmounts[index] = payAmount + tipAmount;
+				index++;
 			}
 		}
+		
+		NpcService.guestPays(guestIds, payAmounts);
 	}
 }

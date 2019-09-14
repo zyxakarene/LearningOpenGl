@@ -48,6 +48,11 @@ public class WriteableDataObject implements IWriteableObject
 		addInner(name, value, Serializers.TYPE_INTEGER);
 	}
 
+	public void addIntegerArray(String name, int[] value)
+	{
+		addInner(name, value, Serializers.TYPE_INT_ARRAY);
+	}
+
 	public void addLong(String name, long value)
 	{
 		addInner(name, value, Serializers.TYPE_LONG);

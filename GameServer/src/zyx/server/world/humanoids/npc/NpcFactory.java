@@ -47,10 +47,16 @@ class NpcFactory
 		return chef;
 	}
 	
+	private static final int MS_PER_MIN = 1000 * 60;
+	private static final int GUEST_MIN_TIP = 100;
+	
 	static Guest createGuest()
 	{
 		NpcSetup setup = NpcNameGenerator.generateSetup();
 		Guest guest = new Guest(setup);
+		
+		guest.maxWaitTime = (int) ((MS_PER_MIN * 5) + (MS_PER_MIN * 2 * Math.random()));
+		guest.baseTip = (int) (GUEST_MIN_TIP + (GUEST_MIN_TIP * Math.random()));
 		
 		guest.addBehavior(new GuestIdleBehavior(guest));
 		guest.addBehavior(new GuestWalkToChairBehavior(guest));

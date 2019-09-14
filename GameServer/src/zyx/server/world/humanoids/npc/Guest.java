@@ -22,6 +22,10 @@ public class Guest extends BaseNpc<GuestBehaviorType>
 	public boolean hasOrdered;
 	public boolean gotRightDish;
 	public GuestGroup group;
+	
+	public int baseTip;
+	public int maxWaitTime;
+	public int waitTime;
 
 	public Guest(NpcSetup setup)
 	{
@@ -53,6 +57,17 @@ public class Guest extends BaseNpc<GuestBehaviorType>
 			servedFood.process();
 			servedFood.inUse = false;
 			servedFood = null;
+		}
+	}
+
+	@Override
+	public void update(long timestamp, int elapsedTime)
+	{
+		super.update(timestamp, elapsedTime);
+		
+		if (!hasBill)
+		{
+			waitTime += elapsedTime;
 		}
 	}
 

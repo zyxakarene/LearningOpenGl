@@ -27,7 +27,7 @@ public class NpcService
 
 	public static void guestGetFood(int guestId, int foodId, boolean correctDish)
 	{
-		//TODO - When a guest grabs food from center of table
+		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.GUEST_GRAB_FOOD, guestId, foodId, correctDish);
 	}
 
 	public static void guestGiveOrderTo(Guest guest, Player player)
@@ -35,9 +35,14 @@ public class NpcService
 		ServerSender.sendWithType(SendType.toSingle(player.connection), NetworkCommands.GUEST_GIVE_ORDER, guest.id, guest.dishRequest);
 	}
 
-	public static void reportNoOrdersTo(Player player, Guest currentUser)
+	public static void guestPays(int[] guestIds, int[] payAmounts)
 	{
-		//TODO - When trying to put food if nobody has ordered yet
-		System.out.println("No orders yet, yo!");
+		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.GUEST_PAY, guestIds, payAmounts);
 	}
+	
+	public static void reportNoOrdersTo(Player player, Guest guest)
+	{
+		ServerSender.sendWithType(SendType.toSingle(player.connection), NetworkCommands.GUEST_NO_ORDERS, guest.id);
+	}
+
 }

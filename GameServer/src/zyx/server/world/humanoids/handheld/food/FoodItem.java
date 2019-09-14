@@ -4,6 +4,7 @@ import zyx.game.vo.DishType;
 import zyx.server.world.humanoids.handheld.HandheldItem;
 import zyx.game.vo.HandheldItemType;
 import zyx.server.controller.services.ItemService;
+import zyx.server.world.wallet.MoneyJar;
 
 public class FoodItem extends HandheldItem
 {
@@ -21,6 +22,8 @@ public class FoodItem extends HandheldItem
 		lifeSpan = FOOD_LIFESPAN_MS;
 		spoiled = false;
 		dish = resultDish;
+		
+		MoneyJar.getInstance().addCost(dish.productionCost);
 	}
 
 	@Override

@@ -8,9 +8,11 @@ public class GuestGroup
 	public Guest[] groupMembers;
 	public DinnerTable table;
 	public BillItem bill;
+	public int size;
 
-	public GuestGroup(int size)
+	public GuestGroup(int groupSize)
 	{
+		size = groupSize;
 		groupMembers = new Guest[size];
 		
 		for (int i = 0; i < size; i++)

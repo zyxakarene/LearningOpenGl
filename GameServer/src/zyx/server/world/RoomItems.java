@@ -23,6 +23,7 @@ import zyx.server.world.interactable.guests.ExitPoint;
 import zyx.server.world.interactable.player.OrderMachine;
 import zyx.server.world.pathfanding.GraphBuilder;
 import zyx.server.world.pathfanding.NodeGraph;
+import zyx.server.world.wallet.MoneyJar;
 
 public class RoomItems implements IUpdateable
 {
@@ -43,11 +44,15 @@ public class RoomItems implements IUpdateable
 
 	public ExitPoint exitPoint;
 
+	public MoneyJar moneyJar;
+	
 	public NodeGraph graph;
 
 	public RoomItems()
 	{
 		instance = this;
+		
+		moneyJar = MoneyJar.getInstance();
 
 		floor = new Floor();
 		floor.updateLook(0, 0, 100);

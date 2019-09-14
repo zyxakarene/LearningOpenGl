@@ -23,6 +23,9 @@ public final class NetworkCommands
 	public static final String ITEM_PUT_ON_FOOR = "itemPutOnFloor";
 	
 	public static final String GUEST_GIVE_ORDER = "guestGiveOrder";
+	public static final String GUEST_NO_ORDERS = "guestNoOrders";
+	public static final String GUEST_GRAB_FOOD = "guestGrabFood";
+	public static final String GUEST_PAY = "guestPay";
 	
 	public static final String ENTITY_INTERACT = "entityInteract";
 	
