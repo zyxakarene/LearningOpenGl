@@ -69,7 +69,7 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 
 		GameModels.player.playerId = data.id;
 		GameModels.player.playerName = data.name;
-		DragonScene.current.onAuthed();
+		DragonScene.getCurrent().onAuthed();
 
 		Print.out("User authenticated as ID:", data.id);
 	}

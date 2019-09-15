@@ -19,7 +19,7 @@ public class SpriteSheetResource extends TextureResource implements IResourceRea
 	}
 
 	@Override
-	public void beginLoad()
+	public void onBeginLoad()
 	{
 		resourceLoaded(null);
 	}

@@ -8,7 +8,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import zyx.utils.GameConstants;
 
-public class JsonResource extends Resource
+public class JsonResource extends ExternalResource
 {
 
 	private JSONObject json;

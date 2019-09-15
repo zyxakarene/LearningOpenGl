@@ -73,6 +73,10 @@ class ResourceMapper
 		{
 			return new MeshBatchResource(path);
 		}
+		else if (resourceClass == DrawableTextureResource.class)
+		{
+			return new DrawableTextureResource(path);
+		}
 		
 		return new GenericResource(path);
 	}

@@ -158,8 +158,8 @@ public class DrawingRenderer extends BaseFrameBuffer
 
 	public void drawAt(float x, float y, boolean firstClick)
 	{
-		int xPos = (int) ((x + 0.5f) * textureSize);
-		int yPos = (int) ((y + 0.5f) * textureSize);
+		int xPos = (int) (x * textureSize);
+		int yPos = (int) (y * textureSize);
 		yPos = textureSize - yPos;
 		
 		if (firstClick)

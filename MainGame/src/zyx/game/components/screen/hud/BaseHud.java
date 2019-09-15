@@ -29,6 +29,10 @@ public class BaseHud extends JsonSprite implements ICallback<Vector2Int>
 
 	private void addDebugImages()
 	{
+		if (Math.random() > 0)
+		{
+			return;
+		}
 		DeferredRenderer renderer = DeferredRenderer.getInstance();
 		DepthRenderer depthRenderer = DepthRenderer.getInstance();
 		AmbientOcclusionRenderer ambientRenderer = AmbientOcclusionRenderer.getInstance();

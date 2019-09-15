@@ -4,7 +4,7 @@ import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.reflections.CubeLoader;
 import zyx.opengl.reflections.Cubemap;
 
-public class CubemapResource extends Resource
+public class CubemapResource extends ExternalResource
 {
 
 	private Cubemap cubemap;

@@ -27,7 +27,8 @@ import zyx.utils.cheats.DebugContainer;
 
 public class Scene
 {
-
+	private static Scene current;
+	
 	private WorldPicker picker;
 	protected DebugContainer debugContainer;
 
@@ -60,14 +61,20 @@ public class Scene
 		preloadQueue = new ProcessQueue();
 
 		ready = false;
+		current = this;
 	}
 
-	protected void addPickedObject(IPhysbox object, IHoveredItem clickCallback)
+	public static Scene getCurrent()
+	{
+		return current;
+	}
+
+	public void addPickedObject(IPhysbox object, IHoveredItem clickCallback)
 	{
 		picker.addObject(object, clickCallback);
 	}
 
-	protected void removePickedObject(IPhysbox object, IHoveredItem clickCallback)
+	public void removePickedObject(IPhysbox object, IHoveredItem clickCallback)
 	{
 		picker.removeObject(object, clickCallback);
 	}
@@ -224,6 +231,7 @@ public class Scene
 		world = null;
 		camera = null;
 		picker = null;
+		current = null;
 	}
 
 	boolean isReady()

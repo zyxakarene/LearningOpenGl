@@ -2,7 +2,7 @@ package zyx.engine.resources.impl;
 
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 
-public class GenericResource extends Resource
+public class GenericResource extends ExternalResource
 {
 
 	public GenericResource(String path)

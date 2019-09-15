@@ -4,7 +4,7 @@ import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.textures.GameTexture;
 import zyx.opengl.textures.enums.TextureSlot;
 
-public class TextureResource extends Resource
+public class TextureResource extends ExternalResource
 {
 
 	private GameTexture texture;

@@ -2,9 +2,7 @@ package zyx.game.scene.game;
 
 import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.components.cubemaps.CubemapManager;
 import zyx.engine.components.cubemaps.saving.CubemapProcess;
 import zyx.engine.components.meshbatch.MeshBatchEntity;
@@ -13,12 +11,9 @@ import zyx.game.network.GameNetworkController;
 import zyx.engine.components.tooltips.TestTooltip;
 import zyx.engine.components.tooltips.TooltipManager;
 import zyx.engine.components.world.GameLight;
-import zyx.engine.components.world.WorldObject;
 import zyx.engine.scene.Scene;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
-import zyx.engine.utils.worldpicker.ClickedInfo;
-import zyx.engine.utils.worldpicker.IHoveredItem;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.behavior.camera.CameraUpdateViewBehavior;
 import zyx.game.behavior.freefly.FreeFlyBehavior;
@@ -27,8 +22,10 @@ import zyx.game.behavior.player.OnlinePositionSender;
 import zyx.game.components.GameObject;
 import zyx.game.components.MeshObject;
 import zyx.game.components.world.meshbatch.CubeEntity;
+import zyx.game.components.world.player.ClipboardDrawBehavior;
+import zyx.game.components.world.player.ClipboardViewerBehavior;
+import zyx.game.components.world.player.PlayerClipboard;
 import zyx.game.controls.input.KeyboardData;
-import zyx.game.controls.input.MouseData;
 import zyx.game.controls.process.ProcessQueue;
 import zyx.game.models.GameModels;
 import zyx.game.network.PingManager;
@@ -37,22 +34,16 @@ import zyx.net.io.controllers.BaseNetworkController;
 import zyx.net.io.controllers.NetworkChannel;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.opengl.GLUtils;
-import zyx.opengl.buffers.DrawingRenderer;
-import zyx.opengl.models.implementations.shapes.Box;
 import zyx.opengl.models.implementations.shapes.Sphere;
-import zyx.opengl.textures.AbstractTexture;
-import zyx.opengl.textures.TextureFromInt;
-import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
-import zyx.utils.cheats.DebugPoint;
 import zyx.utils.cheats.Print;
 import zyx.utils.math.QuaternionUtils;
 
 public class DragonScene extends Scene implements ICallback<ProcessQueue>
 {
 
-	public static DragonScene current;
+	private static DragonScene current;
 
 	private ArrayList<GameObject> gameObjects;
 	private boolean cubemapping;
@@ -60,9 +51,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 
 	private MeshObject testDragon;
 	private GameObject player;
-
-	private Box drawBox;
-	private IHoveredItem onBoxClick;
+	private PlayerClipboard board;
 
 	public DragonScene()
 	{
@@ -70,59 +59,30 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		current = this;
 	}
 
+	public static DragonScene getCurrent()
+	{
+		return current;
+	}
+	
 	@Override
 	protected void onPreloadResources()
 	{
 	}
 
-	private boolean isDrawing = false;
-	private boolean changed = false;
-
 	@Override
 	protected void onInitialize()
 	{
 		NetworkChannel.sendRequest(NetworkCommands.LOGIN, "Zyx" + Math.random(), Gender.MALE);
-
+		
+		board = new PlayerClipboard();
+		board.setup();
+		board.addBehavior(new ClipboardDrawBehavior());
+		board.addBehavior(new ClipboardViewerBehavior());
+		world.addChild(board);
+		
 		world.loadSkybox("skybox.texture.desert");
 		CubemapManager.getInstance().load("cubemap.dragon");
-		onBoxClick = new IHoveredItem()
-		{
-			@Override
-			public void onClicked(ClickedInfo info)
-			{
-				boolean wasDrawing = isDrawing;
-				isDrawing = MouseData.data.isLeftDown();
-
-				if (!changed && isDrawing)
-				{
-					changed = true;
-					int id = DrawingRenderer.getInstance().underlayInt();
-					AbstractTexture tex = new TextureFromInt(256, 256, id, TextureSlot.SHARED_DIFFUSE);
-					drawBox.setTexture(tex);
-				}
-
-				if (wasDrawing != isDrawing)
-				{
-					DrawingRenderer.getInstance().toggleDraw(isDrawing);
-				}
-
-				if (isDrawing)
-				{
-					Vector4f pos = new Vector4f(info.position.x, info.position.y, info.position.z, 1);
-					Matrix4f invWorld = Matrix4f.invert(drawBox.worldMatrix(), null);
-					Matrix4f.transform(invWorld, pos, pos);
-
-					DrawingRenderer.getInstance().drawAt(pos.x, pos.z, !wasDrawing);
-				}
-			}
-		};
-
-		drawBox = new Box(10, 10, 10);
-		drawBox.setPosition(true, 0, 0, 100);
-		drawBox.setRotation(33, 24, 58);
-		world.addChild(drawBox);
-		addPickedObject(drawBox, onBoxClick);
-
+		
 		MeshObject dragon = new MeshObject();
 		dragon.setScale(0.33f, 0.33f, 0.33f);
 		dragon.load("mesh.dragon");
@@ -199,11 +159,18 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 
 			MeshBatchManager.getInstance().addEntity(entityA);
 		}
+		
+		onAuthed();
 	}
 
 	@Override
 	protected void onUpdate(long timestamp, int elapsedTime)
 	{
+		if (board != null)
+		{
+			board.update(timestamp, elapsedTime);
+		}
+		
 		for (int i = 0; i < gameObjects.size(); i++)
 		{
 			GameObject obj = gameObjects.get(i);
@@ -234,7 +201,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 
 		//Vector3f camPos = Camera.getInstance().getPosition(false, null);
 		//testDragon.lookAt(camPos.x + 0.01f, camPos.y, camPos.z);
-		if (!cubemapping && KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
+		if (!cubemapping && KeyboardData.data.wasPressed(Keyboard.KEY_C))
 		{
 			cubemapping = true;
 
@@ -284,10 +251,6 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		gameObjects.clear();
 		gameObjects = null;
 
-		drawBox.dispose();
-		removePickedObject(drawBox, onBoxClick);
-		drawBox = null;
-
 		camera.removeBehavior(BehaviorType.ONLINE_POSITION);
 
 		PingManager.getInstance().removeEntity(GameModels.player.playerId);
@@ -305,12 +268,14 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	{
 		player = new GameObject();
 
-		WorldObject box = new Box(1, 1, 1);
-		WorldObject p = new Box(3f, 0.01f, 3f);
-		p.setPosition(true, 0, -1f, 0);
-		box.setPosition(true, 0, 0, -5);
-		player.addChild(p);
-		player.addChild(box);
+//		WorldObject box = new Box(1, 1, 1);
+//		WorldObject p = new Box(3f, 0.01f, 3f);
+//		p.setPosition(true, 0, -1f, 0);
+//		box.setPosition(true, 0, 0, -5);
+//		player.addChild(p);
+//		player.addChild(box);		
+
+		player.addChild(board);
 
 		player.addBehavior(new FreeFlyBehavior());
 		player.addBehavior(new CameraUpdateViewBehavior());
