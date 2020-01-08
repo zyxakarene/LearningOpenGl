@@ -252,4 +252,13 @@ public class DisplayObjectContainer extends DisplayObject
 	{
 		
 	}
+
+	public void flipChildren(int indexA, int indexB)
+	{
+		DisplayObject a = children.get(indexA);
+		DisplayObject b = children.get(indexB);
+		
+		children.set(indexA, b);
+		children.set(indexB, a);
+	}
 }

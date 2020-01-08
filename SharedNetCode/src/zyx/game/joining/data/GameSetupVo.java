@@ -5,13 +5,13 @@ public class GameSetupVo
 
 	public static final GameSetupVo INSTANCE = new GameSetupVo();
 
-	public final CharacterJoinedData players;
+	public final CharacterJoinedData characters;
 	public final FurnitureSetupData furniture;
 	public final ItemSetupData items;
 
 	private GameSetupVo()
 	{
-		players = CharacterJoinedData.INSTANCE;
+		characters = CharacterJoinedData.INSTANCE;
 		furniture = FurnitureSetupData.INSTANCE;
 		items = ItemSetupData.INSTANCE;
 	}

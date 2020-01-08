@@ -9,7 +9,7 @@ public class TestTooltip extends AbstractTooltip
 	{
 		super(target);
 		
-		minScale = 0.05f;
+		minScale = 0.1f;
 		hideAtMinScale = true;
 	}
 

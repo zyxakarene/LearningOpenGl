@@ -38,19 +38,19 @@ public class SetupGameResponse extends BaseNetworkResponse<GameSetupVo>
 	{
 		int playerCount = array.size();
 
-		OUT.players.joinCount = playerCount;
+		OUT.characters.joinCount = playerCount;
 		for (int i = 0; i < playerCount; i++)
 		{
 			ReadableDataObject playerData = array.get(i);
 
-			OUT.players.ids[i] = playerData.getInteger(ID);
-			OUT.players.names[i] = playerData.getString(NAME);
-			OUT.players.positions[i].x = playerData.getFloat(X);
-			OUT.players.positions[i].y = playerData.getFloat(Y);
-			OUT.players.positions[i].z = playerData.getFloat(Z);
-			OUT.players.lookAts[i].x = playerData.getFloat(LOOK_X);
-			OUT.players.lookAts[i].y = playerData.getFloat(LOOK_Y);
-			OUT.players.lookAts[i].z = playerData.getFloat(LOOK_Z);
+			OUT.characters.ids[i] = playerData.getInteger(ID);
+			OUT.characters.names[i] = playerData.getString(NAME);
+			OUT.characters.positions[i].x = playerData.getFloat(X);
+			OUT.characters.positions[i].y = playerData.getFloat(Y);
+			OUT.characters.positions[i].z = playerData.getFloat(Z);
+			OUT.characters.lookAts[i].x = playerData.getFloat(LOOK_X);
+			OUT.characters.lookAts[i].y = playerData.getFloat(LOOK_Y);
+			OUT.characters.lookAts[i].z = playerData.getFloat(LOOK_Z);
 		}
 	}
 

@@ -17,8 +17,6 @@ import zyx.game.components.screen.hud.BaseHud;
 import zyx.game.controls.input.MouseData;
 import zyx.game.controls.lights.LightsManager;
 import zyx.game.controls.process.ProcessQueue;
-import zyx.game.scene.ItemHolderHandler;
-import zyx.game.scene.ItemHandler;
 import zyx.net.io.controllers.BaseNetworkController;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.particles.ParticleManager;
@@ -27,19 +25,15 @@ import zyx.utils.cheats.DebugContainer;
 
 public class Scene
 {
-	private static Scene current;
+	protected static Scene current;
 	
-	private WorldPicker picker;
 	protected DebugContainer debugContainer;
 
 	protected Stage stage;
 	protected World3D world;
 	protected CameraController camera;
 
-	protected ItemHandler itemHandler;
-	protected ItemHolderHandler itemHolderHandler;
 	protected BaseHud hud;
-	protected BaseNetworkController networkController;
 
 	private ProcessQueue preloadQueue;
 	private boolean ready;
@@ -48,11 +42,6 @@ public class Scene
 
 	public Scene()
 	{
-		picker = new WorldPicker();
-
-		itemHolderHandler = new ItemHolderHandler();
-		itemHandler = new ItemHandler(itemHolderHandler);
-
 		world = World3D.instance;
 		stage = Stage.instance;
 		camera = new CameraController();
@@ -69,16 +58,6 @@ public class Scene
 		return current;
 	}
 
-	public void addPickedObject(IPhysbox object, IHoveredItem clickCallback)
-	{
-		picker.addObject(object, clickCallback);
-	}
-
-	public void removePickedObject(IPhysbox object, IHoveredItem clickCallback)
-	{
-		picker.removeObject(object, clickCallback);
-	}
-
 	protected void enablePing()
 	{
 		
@@ -89,9 +68,6 @@ public class Scene
 		world.addChild(debugContainer);
 		hud = createHud();
 		stage.addChild(hud);
-
-		networkController = createNetworkDispatcher();
-		networkController.addListeners();
 
 //		debugPanel = new DebugPanel();
 //		stage.addChild(debugPanel);
@@ -123,7 +99,6 @@ public class Scene
 		stage.checkStageMouseInteractions(MouseData.data.x, MouseData.data.y);
 
 		debugContainer.update(timestamp, elapsedTime);
-		picker.update();
 
 		if (hud != null)
 		{
@@ -134,8 +109,6 @@ public class Scene
 
 		if (ready)
 		{
-			itemHolderHandler.update(timestamp, elapsedTime);
-
 			onUpdate(timestamp, elapsedTime);
 		}
 
@@ -199,7 +172,6 @@ public class Scene
 		onDispose();
 
 		camera.dispose();
-		picker.dispose();
 
 		ParticleManager.getInstance().clear();
 		
@@ -221,16 +193,9 @@ public class Scene
 			debugPanel = null;
 		}
 		
-		if(networkController != null)
-		{
-			networkController.dispose();
-			networkController = null;
-		}
-		
 		stage = null;
 		world = null;
 		camera = null;
-		picker = null;
 		current = null;
 	}
 

@@ -2,7 +2,6 @@ package zyx.game.components.world.player;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
-import zyx.engine.scene.Scene;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.engine.utils.worldpicker.ClickedInfo;
 import zyx.engine.utils.worldpicker.IHoveredItem;
@@ -10,7 +9,7 @@ import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.controls.input.InputManager;
 import zyx.game.controls.input.MouseData;
-import zyx.game.scene.game.DragonScene;
+import zyx.game.scene.game.GameScene;
 import zyx.opengl.buffers.DrawingRenderer;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.TextureFromInt;
@@ -21,7 +20,7 @@ public class ClipboardDrawBehavior extends Behavior implements ICallback<Charact
 
 	private static final Character TOGGLE_CHARACTER = 'z';
 
-	private Scene scene;
+	private GameScene scene;
 	private boolean active;
 	private PlayerClipboard clipboard;
 
@@ -34,7 +33,7 @@ public class ClipboardDrawBehavior extends Behavior implements ICallback<Charact
 	public void initialize()
 	{
 		active = !MouseData.data.grabbed;
-		scene = Scene.getCurrent();
+		scene = GameScene.getCurrent();
 
 		InputManager.getInstance().OnKeyPressed.addCallback(this);
 		clipboard = (PlayerClipboard) gameObject;

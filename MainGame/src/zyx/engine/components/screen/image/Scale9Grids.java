@@ -15,6 +15,10 @@ class Scale9Grids
 	private static final String BTN_UP = "BtnUp";
 	private static final String FLAT_BG = "flat_bg";
 	private static final String SAMPLE = "sample";
+	
+	private static final String PANEL_1_A = "panel_01_center";
+	private static final String PANEL_1_B = "panel_01_downright";
+	private static final String PANEL_1_C = "panel_01_upleft";
 
 	public static Rectangle getGridFor(String name)
 	{
@@ -40,6 +44,12 @@ class Scale9Grids
 			case SAMPLE:
 				grid = new Rectangle(25, 25, 14, 14);
 				keys = new String[] {BTN_DOWN, BTN_HOVER, BTN_UP, FLAT_BG, SAMPLE};
+				break;
+			case PANEL_1_A:
+			case PANEL_1_B:
+			case PANEL_1_C:
+				grid = new Rectangle(12, 12, 8, 8);
+				keys = new String[] {PANEL_1_A, PANEL_1_B, PANEL_1_C};
 				break;
 			default:
 				grid = new Rectangle(22, 22, 20, 20);

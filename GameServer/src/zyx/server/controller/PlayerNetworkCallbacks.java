@@ -6,7 +6,6 @@ import zyx.game.world.player.data.PlayerRequestData;
 import zyx.net.io.controllers.NetworkCallbacks;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.INetworkCallback;
-import static zyx.server.DebugServerForm.room;
 import zyx.server.world.RoomItems;
 import zyx.server.world.humanoids.handheld.guests.BillItem;
 import zyx.server.world.humanoids.npc.BaseNpc;
@@ -64,14 +63,14 @@ public class PlayerNetworkCallbacks extends NetworkCallbacks
 
 	private void onPlayerEnterOrder(DishType dish)
 	{
-		OrderMachine machine = room.getOrderMachine();
+		OrderMachine machine = roomItems.getOrderMachine();
 		machine.addOrder(dish);
 	}
 
 	private void onPlayerPickupItem(PlayerRequestData data)
 	{
 		Player player = PlayerManager.getInstance().getEntity(data.playerId);
-		IPlayerInteractable entity = room.getEntityWithItem(data.itemId);
+		IPlayerInteractable entity = roomItems.getEntityWithItem(data.itemId);
 
 		if (player != null && entity != null)
 		{
@@ -82,7 +81,7 @@ public class PlayerNetworkCallbacks extends NetworkCallbacks
 	private void onPlayerGiveItem(PlayerRequestData data)
 	{
 		Player player = PlayerManager.getInstance().getEntity(data.playerId);
-		IPlayerInteractable entity = room.getEntityWithId(data.ownerId);
+		IPlayerInteractable entity = roomItems.getEntityWithId(data.ownerId);
 
 		if (player != null && entity != null)
 		{
@@ -93,7 +92,7 @@ public class PlayerNetworkCallbacks extends NetworkCallbacks
 	private void onPlayerGiveBill(PlayerRequestData data)
 	{
 		Player player = PlayerManager.getInstance().getEntity(data.playerId);
-		IPlayerInteractable entity = room.getEntityWithId(data.ownerId);
+		IPlayerInteractable entity = roomItems.getEntityWithId(data.ownerId);
 
 		if (entity instanceof DinnerTable)
 		{

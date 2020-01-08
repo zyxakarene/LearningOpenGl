@@ -40,7 +40,7 @@ import zyx.utils.GameConstants;
 import zyx.utils.cheats.Print;
 import zyx.utils.math.QuaternionUtils;
 
-public class DragonScene extends Scene implements ICallback<ProcessQueue>
+public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 {
 
 	private static DragonScene current;
@@ -72,6 +72,8 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	@Override
 	protected void onInitialize()
 	{
+		super.onInitialize();
+		
 		NetworkChannel.sendRequest(NetworkCommands.LOGIN, "Zyx" + Math.random(), Gender.MALE);
 		
 		board = new PlayerClipboard();
@@ -164,6 +166,8 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	@Override
 	protected void onUpdate(long timestamp, int elapsedTime)
 	{
+		super.onUpdate(timestamp, elapsedTime);
+		
 		if (board != null)
 		{
 			board.update(timestamp, elapsedTime);
@@ -232,6 +236,8 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	@Override
 	protected void onDispose()
 	{
+		super.onDispose();
+		
 		for (int i = 0; i < gameObjects.size(); i++)
 		{
 			GameObject obj = gameObjects.get(i);

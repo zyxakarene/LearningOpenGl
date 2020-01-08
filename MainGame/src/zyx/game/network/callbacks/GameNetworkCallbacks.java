@@ -2,6 +2,8 @@ package zyx.game.network.callbacks;
 
 import java.util.HashMap;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.components.tooltips.TestTooltip;
+import zyx.engine.components.tooltips.TooltipManager;
 import zyx.engine.components.world.World3D;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.behavior.player.OnlinePositionInterpolator;
@@ -146,13 +148,13 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 	private void onItemAdded(ItemSetupData items)
 	{
 		GameItem item;
-		
+
 		for (int i = 0; i < items.itemCount; i++)
 		{
 			int itemId = items.ids[i];
 			int ownerId = items.ownerIds[i];
 			HandheldItemType type = items.types[i];
-			
+
 			if (type == HandheldItemType.BILL)
 			{
 				item = new BillItem();
@@ -165,10 +167,10 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 				{
 					food.spoil();
 				}
-				
+
 				item = food;
 			}
-			
+
 			item.setType(type);
 			item.load();
 			itemHandler.addItem(itemId, item, ownerId);
@@ -177,11 +179,11 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 
 	private void onGameSetup(GameSetupVo setup)
 	{
-		Print.out("There's already", setup.players.joinCount, "other players in this game");
+		Print.out("There's already", setup.characters.joinCount, "other players in this game");
 		Print.out("There's", setup.furniture.furnitureCount, "furniture items in this game");
 		Print.out("There's", setup.items.itemCount, "held items in this game");
 
-		onCharacterJoined(setup.players);
+		onCharacterJoined(setup.characters);
 		onFurnitureAdded(setup.furniture);
 		onItemAdded(setup.items);
 	}
