@@ -272,6 +272,8 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 
 	public void setPosition(boolean local, float x, float y)
 	{
+		x = (int)x;
+		y = (int)y;
 		HELPER_VEC2.set(x, y);
 
 		if (!local && parent != null)

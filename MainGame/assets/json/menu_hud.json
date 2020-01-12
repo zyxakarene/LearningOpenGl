@@ -5,12 +5,13 @@
 	[
 		{
 			"name":"play_button",
-			"type":"scale9button",
+			"type":"composedScale9Button",
 			"percentWidth":0.5,
 			"percentHeight":0.5,
 			"centerOffsetX":0,
 			"centerOffsetY":0,
-			"texture":["BtnUp", "BtnHover", "BtnDown"]
+			"colorScheme":"green",
+			"style":"panel_01"
 		}
 	]
 }

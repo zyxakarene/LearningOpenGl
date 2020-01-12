@@ -6,44 +6,14 @@
 	"children":
 	[
 		{
-			"name":"button",
-			"type":"scale9button",
+			"name":"image44",
+			"type":"composedScale9Button",
 			"width":300,
 			"height":300,
 			"x":-150,
 			"y":-150,
-			"color":"0x0000FF",
-			"texture":["BtnUp", "BtnHover", "BtnDown"]
-		},
-		{
-			"name":"image",
-			"type":"scale9image",
-			"width":300,
-			"height":300,
-			"x":-150,
-			"y":-150,
-			"color":"0xa6fcdb",
-			"texture":"panel_01_upleft"
-		},
-		{
-			"name":"image",
-			"type":"scale9image",
-			"width":300,
-			"height":300,
-			"x":-150,
-			"y":-150,
-			"color":"0x249fde",
-			"texture":"panel_01_downright"
-		},
-		{
-			"name":"image",
-			"type":"scale9image",
-			"width":300,
-			"height":300,
-			"x":-150,
-			"y":-150,
-			"color":"0x20d6c7",
-			"texture":"panel_01_center"
+			"colorScheme":"green",
+			"style":"panel_01"
 		}
 	]
 }

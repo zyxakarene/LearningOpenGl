@@ -8,6 +8,7 @@ import zyx.engine.components.screen.image.Scale9Image;
 import zyx.engine.components.screen.base.DisplayObject;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
 import org.json.simple.JSONObject;
+import zyx.engine.components.screen.composed.ComposedImage;
 import zyx.engine.components.screen.list.ItemList;
 import zyx.engine.components.screen.text.Textfield;
 
@@ -28,6 +29,10 @@ class JsonSpriteParser
 	static final String TYPE_SCALE_NINE_CHECKBOX = "scale9checkbox";
 	static final String TYPE_ITEM_LIST = "itemList";
 	static final String TYPE_TEXTFIELD = "textfield";
+	static final String TYPE_COMPOSED_IMAGE = "composedImage";
+	static final String TYPE_COMPOSED_BUTTON = "composedButton";
+	static final String TYPE_COMPOSED_SCALE_NINE_IMAGE = "composedScale9Image";
+	static final String TYPE_COMPOSED_SCALE_NINE_BUTTON = "composedScale9Button";
 
 	private ConsumerFactory factory;
 	private int currentChildDepth;
@@ -67,9 +72,11 @@ class JsonSpriteParser
 			case TYPE_SCALE_NINE_IMAGE:
 				child = new Scale9Image();
 				break;
+			case TYPE_COMPOSED_BUTTON:
 			case TYPE_BUTTON:
 				child = new Button(false);
 				break;
+			case TYPE_COMPOSED_SCALE_NINE_BUTTON:
 			case TYPE_SCALE_NINE_BUTTON:
 				child = new Button(true);
 				break;
@@ -87,6 +94,12 @@ class JsonSpriteParser
 				break;
 			case TYPE_TEXTFIELD:
 				child = new Textfield();
+				break;
+			case TYPE_COMPOSED_IMAGE:
+				child = new ComposedImage(false);
+				break;
+			case TYPE_COMPOSED_SCALE_NINE_IMAGE:
+				child = new ComposedImage(true);
 				break;
 			default:
 				throw new AssertionError("Unknown type:" + type);

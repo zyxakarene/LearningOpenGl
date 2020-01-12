@@ -52,8 +52,11 @@ public abstract class AbstractImage extends AbstractQuad implements ILoadable, I
 			textureResource = null;
 		}
 
-		onLoaded.dispose();
-		onLoaded = null;
+		if (onLoaded != null)
+		{
+			onLoaded.dispose();
+			onLoaded = null;
+		}
 	}
 
 	protected abstract void onTextureResourceReady(GameTexture texture);

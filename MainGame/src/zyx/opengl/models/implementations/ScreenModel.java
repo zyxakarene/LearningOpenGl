@@ -16,10 +16,12 @@ public class ScreenModel extends AbstractModel
 {
 	private static final int FLOATS_PER_QUAD = 32;
 	private static final int INTS_PER_QUAD = 6;
+	private static final int VERTECES_PER_QUAD = 4;
 	
 	private ArrayList<Float> tempVertexData = new ArrayList<>();
 	private ArrayList<Integer> tempElementData = new ArrayList<>();
-	private int quadCount;
+	private int currentVertexCount;
+	private int tempVertexCount;
 	
 	public final ScreenShader shader;
 
@@ -50,9 +52,10 @@ public class ScreenModel extends AbstractModel
 		
 		setVertexData(vertexData, elementData);
 		
+		currentVertexCount = tempVertexCount;
 		tempVertexData = new ArrayList<>();
 		tempElementData = new ArrayList<>();
-		quadCount = 0;
+		tempVertexCount = 0;
 	}
 	
 	public void addVertexData(float x, float y, AbstractTexture tex)
@@ -77,8 +80,8 @@ public class ScreenModel extends AbstractModel
 		
 		int elementData[] =
 		{
-			2 + quadCount, 1 + quadCount, 0 + quadCount,
-			0 + quadCount, 3 + quadCount, 2 + quadCount
+			2 + tempVertexCount, 1 + tempVertexCount, 0 + tempVertexCount,
+			0 + tempVertexCount, 3 + tempVertexCount, 2 + tempVertexCount
 		};
 		
 		for (int i = 0; i < vertexData.length; i++)
@@ -91,7 +94,7 @@ public class ScreenModel extends AbstractModel
 			tempElementData.add(elementData[i]);
 		}
 		
-		quadCount += 4;
+		tempVertexCount += VERTECES_PER_QUAD;
 	}
 	
 	public int[] addElementData()
@@ -117,10 +120,10 @@ public class ScreenModel extends AbstractModel
 
 		int offsetPerVertex = Float.BYTES * 8;
 
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < currentVertexCount; i++)
 		{
 			long base = offsetPerVertex * i;
-			long offset = base + (Float.BYTES * 4);
+			long offset = base + (Float.BYTES * VERTECES_PER_QUAD);
 			updateVertexSubData(buffer, offset);
 		}
 	}
