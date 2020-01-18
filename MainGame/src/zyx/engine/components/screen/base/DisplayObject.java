@@ -213,7 +213,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		
 		onDraw();
 		
-		if (clipRect != null)
+		if (oldClipData != null)
 		{
 			shader.setClipRect(oldClipData.x, oldClipData.width, oldClipData.y, oldClipData.height);
 			CLIP_POOL.releaseInstance(oldClipData);

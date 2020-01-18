@@ -7,7 +7,7 @@
 	[
 		{
 			"name":"image44",
-			"type":"composedScale9Button",
+			"type":"composedScale9button",
 			"width":300,
 			"height":300,
 			"x":-150,

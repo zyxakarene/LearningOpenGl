@@ -5,95 +5,222 @@ import zyx.engine.components.screen.base.DisplayObjectContainer;
 import zyx.engine.components.screen.image.AbstractImage;
 import zyx.engine.components.screen.image.Image;
 import zyx.engine.components.screen.image.Scale9Image;
+import zyx.engine.utils.callbacks.ICallback;
 
 public class ComposedImage extends DisplayObjectContainer implements IComposedImage
 {
 	
-	private int[] colors;
-	private AbstractImage[] images;
-	private boolean scale9;
+	protected float originalWidth;
+	protected float originalHeight;
+
+	protected AbstractImage[] images;
+	protected boolean loaded;
+	private int loadedCount;
+
+	private Vector3f[] colors;
+	private float alpha;
 	
+	private ICallback<AbstractImage> onFirstImageLoaded;
+	private boolean scale9;
+
 	public ComposedImage(boolean scale9)
 	{
 		this.scale9 = scale9;
+
+		alpha = 1;
+		focusable = true;
+
+		onFirstImageLoaded = (AbstractImage img) -> 
+		{
+			onImageLoaded(img);
+		};
 	}
-	
+
 	@Override
 	public void setTextures(String[] textures)
 	{
 		clean();
-		
-		images = new AbstractImage[textures.length];
-		
+
+		int len = textures.length;
+		images = new AbstractImage[len];
+
+		AbstractImage img;
 		String texture;
-		AbstractImage image;
-		for (int i = 0; i < textures.length; i++)
+		for (int i = 0; i < len; i++)
 		{
-			if (scale9)
-			{
-				image = new Scale9Image();
-			}
-			else
-			{	
-				image = new Image();
-			}
-			
-			addChild(image);
-			
 			texture = textures[i];
-			image.load(texture);
+			img = scale9 ? new Scale9Image() : new Image();
+			images[i] = img;
+
+			img.onLoaded.addCallback(onFirstImageLoaded);
 			
-			images[i] = image;
-		}
-		
-		if (colors != null)
-		{
-			applyColors();
+			img.load(texture);
+			img.touchable = false;
+			addChild(img);
 		}
 	}
-	
-	public void setColors(int[] colors)
+
+	private void onImageLoaded(AbstractImage img)
 	{
-		this.colors = colors;
-		
-		if (images != null)
+		if (loaded == false)
 		{
-			applyColors();
+			loaded = true;
+
+			if (originalWidth != 0)
+			{
+				setWidth(originalWidth);
+			}
+
+			if (originalHeight != 0)
+			{
+				setHeight(originalHeight);
+			}
+		}
+		
+		loadedCount++;
+		if (loadedCount == images.length)
+		{
+			updateMesh();
 		}
 	}
-	
-	private void applyColors()
+
+	@Override
+	public float getWidth()
 	{
-		if (images.length != colors.length)
+		if (loaded)
 		{
-			String msg = String.format("Length of composed Images and Colors don't match up for %s: %s - %s", name, images.length, colors.length);
-			throw new RuntimeException(msg);
+			return super.getWidth();
+		}
+
+		return originalWidth;
+	}
+
+	@Override
+	public float getHeight()
+	{
+		if (loaded)
+		{
+			return super.getHeight();
+		}
+
+		return originalHeight;
+	}
+
+	@Override
+	public void setWidth(float value)
+	{
+		if (loaded)
+		{
+			for (AbstractImage img : images)
+			{
+				img.setWidth(value);
+			}
+		}
+		else
+		{
+			originalWidth = value;
+		}
+	}
+
+	@Override
+	public void setHeight(float value)
+	{
+		if (loaded)
+		{
+			for (AbstractImage img : images)
+			{
+				img.setHeight(value);
+			}
+		}
+		else
+		{
+			originalHeight = value;
+		}
+	}
+
+	@Override
+	public void setColors(Vector3f[] newColors)
+	{
+		int newLen = newColors.length;
+		if (colors == null || colors.length != newLen)
+		{
+			colors = new Vector3f[newLen];
+
+			for (int i = 0; i < newLen; i++)
+			{
+				colors[i] = new Vector3f();
+			}
 		}
 		
-		for (int i = 0; i < images.length; i++)
+		for (int i = 0; i < newLen; i++)
 		{
-			int color = colors[i];
-			images[i].setColor(color);
+			colors[i].set(newColors[i]);
 		}
+		
+		updateMesh();
+	}
+	
+	public void setColor(Vector3f color)
+	{
+		Vector3f[] singleArray = new Vector3f[]
+		{
+			color
+		};
+		
+		setColors(singleArray);
+	}
+
+	public void setColor(float r, float g, float b)
+	{
+		HELPER_VEC3.set(r, g, b);
+		setColor(HELPER_VEC3);
+	}
+
+	public void setAlpha(float a)
+	{
+		alpha = a;
+		updateMesh();
+	}
+
+	private void updateMesh()
+	{
+		if (loaded)
+		{
+			int len = images.length;
+			AbstractImage img;
+			Vector3f col;
+			for (int i = 0; i < len; i++)
+			{
+				col = colors[i];
+				img = images[i];
+				HELPER_VEC4.set(col.x, col.y, col.z, alpha);
+				
+				img.setColor(HELPER_VEC4);
+			}
+		}
+	}
+
+	@Override
+	public void dispose()
+	{
+		clean();
+		
+		super.dispose();
+
+		onFirstImageLoaded = null;
 	}
 
 	private void clean()
 	{
+		loadedCount = 0;
+		
 		if (images != null)
 		{
-			for (AbstractImage image : images)
+			for (AbstractImage img : images)
 			{
-				image.dispose();
+				img.dispose();
 			}
-			
 			images = null;
 		}
-		
-		colors = null;
-	}
-
-	@Override
-	public void setColors(Vector3f[] colors)
-	{
 	}
 }

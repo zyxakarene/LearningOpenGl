@@ -31,8 +31,8 @@ class JsonSpriteParser
 	static final String TYPE_TEXTFIELD = "textfield";
 	static final String TYPE_COMPOSED_IMAGE = "composedImage";
 	static final String TYPE_COMPOSED_BUTTON = "composedButton";
-	static final String TYPE_COMPOSED_SCALE_NINE_IMAGE = "composedScale9Image";
-	static final String TYPE_COMPOSED_SCALE_NINE_BUTTON = "composedScale9Button";
+	static final String TYPE_COMPOSED_SCALE_NINE_IMAGE = "composedScale9image";
+	static final String TYPE_COMPOSED_SCALE_NINE_BUTTON = "composedScale9button";
 
 	private ConsumerFactory factory;
 	private int currentChildDepth;

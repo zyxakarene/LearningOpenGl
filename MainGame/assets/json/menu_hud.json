@@ -5,13 +5,23 @@
 	[
 		{
 			"name":"play_button",
-			"type":"composedScale9Button",
+			"type":"composedScale9button",
 			"percentWidth":0.5,
 			"percentHeight":0.5,
 			"centerOffsetX":0,
 			"centerOffsetY":0,
 			"colorScheme":"green",
 			"style":"panel_01"
+		},
+		{
+			"name":"menu_panel",
+			"type":"composedScale9image",
+			"percentWidth":0.2,
+			"percentHeight":0.1,
+			"centerOffsetX":0,
+			"centerOffsetY":50,
+			"colorScheme":"greenInv",
+			"style":"panel_02"
 		}
 	]
 }

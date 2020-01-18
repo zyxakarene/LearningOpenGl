@@ -9,11 +9,9 @@ import zyx.engine.curser.GameCursor;
 import zyx.engine.utils.ClickDispatcher;
 import zyx.engine.utils.callbacks.CustomCallback;
 import zyx.engine.utils.callbacks.ICallback;
-import zyx.utils.FloatMath;
 
 public class Button extends InteractableContainer implements IComposedButton
 {
-	private static final int STATE_COUNT = 3;
 	private ButtonState state;
 	
 	protected float originalWidth;
@@ -241,29 +239,25 @@ public class Button extends InteractableContainer implements IComposedButton
 	@Override
 	protected void onMouseEnter()
 	{
-		state = ButtonState.HOVER;
-		updateMesh();
+		changeStateTo(ButtonState.HOVER);
 	}
 
 	@Override
 	protected void onMouseExit()
 	{
-		state = ButtonState.UP;
-		updateMesh();
+		changeStateTo(ButtonState.UP);
 	}
 
 	@Override
 	protected void onMouseDown()
 	{
-		state = ButtonState.DOWN;
-		updateMesh();
+		changeStateTo(ButtonState.DOWN);
 	}
 
 	@Override
 	protected void onMouseClick()
 	{
-		state = ButtonState.HOVER;
-		updateMesh();
+		changeStateTo(ButtonState.HOVER);
 
 		if (onButtonClicked.hasEntries())
 		{
@@ -271,9 +265,20 @@ public class Button extends InteractableContainer implements IComposedButton
 		}
 	}
 
+	private void changeStateTo(ButtonState newState)
+	{
+		if (state != newState)
+		{
+			state = newState;
+			updateMesh();
+		}
+	}
+	
 	@Override
 	public void dispose()
 	{
+		clean();
+		
 		super.dispose();
 
 		onFirstImageLoaded = null;
@@ -283,8 +288,6 @@ public class Button extends InteractableContainer implements IComposedButton
 			onButtonClicked.dispose();
 			onButtonClicked = null;
 		}
-
-		clean();
 	}
 
 	private void clean()

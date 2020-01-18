@@ -57,8 +57,32 @@
 	"sourceSize": {"w":32,"h":32}
 },
 {
+	"filename": "panel_02_center.png",
+	"frame": {"x":96,"y":128,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "panel_02_downright.png",
+	"frame": {"x":112,"y":128,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
+{
+	"filename": "panel_02_upleft.png",
+	"frame": {"x":0,"y":160,"w":16,"h":16},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":16},
+	"sourceSize": {"w":16,"h":16}
+},
+{
 	"filename": "sample.png",
-	"frame": {"x":0,"y":160,"w":64,"h":64},
+	"frame": {"x":16,"y":160,"w":64,"h":64},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":64,"h":64},
@@ -71,6 +95,6 @@
 	"format": "RGBA8888",
 	"size": {"w":128,"h":256},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:89f865f203d96bad833488a81fa77c51:483a42ab6474cfda43bc96d26a982bed:6cc8953523e0367402f95f3c9a630665$"
+	"smartupdate": "$TexturePacker:SmartUpdate:0df99758f7d1206c87f962ee1160bac4:33b3786e98a2f790ab03198f99a3a66f:6cc8953523e0367402f95f3c9a630665$"
 }
 }

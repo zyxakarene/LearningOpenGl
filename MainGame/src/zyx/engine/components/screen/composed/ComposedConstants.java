@@ -3,6 +3,7 @@ package zyx.engine.components.screen.composed;
 import java.util.HashMap;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.utils.Color;
+import zyx.utils.cheats.Print;
 
 public class ComposedConstants
 {
@@ -11,6 +12,7 @@ public class ComposedConstants
 	private static final String STYLE_PANEL_02 = "panel_02";
 
 	private static final String COLOR_GREEN = "green";
+	private static final String COLOR_GREEN_INV = "greenInv";
 
 	private static final HashMap<String, String[]> TEXTURE_MAP = new HashMap<>();
 	private static final HashMap<String, Vector3f[]> IMAGE_COLOR_MAP = new HashMap<>();
@@ -18,66 +20,119 @@ public class ComposedConstants
 
 	static
 	{
-		String[] panel_01_Textures = new String[]
-		{
-			"panel_01_upleft", "panel_01_downright", "panel_01_center"
-		};
+		addTextureGroup(STYLE_PANEL_01, "panel_01");
+		addTextureGroup(STYLE_PANEL_02, "panel_02");
 
-		String[] panel_02_Textures = new String[]
-		{
-			"panel_02_upleft", "panel_02_downright", "panel_02_center"
-		};
+		Vector3f greenCenter = getColor("20D6C7");
+		Vector3f greenOutUpper = getColor("A6FCDB");
+		Vector3f greenOutLower = getColor("249FDE");
 
-		TEXTURE_MAP.put(STYLE_PANEL_01, panel_01_Textures);
-		TEXTURE_MAP.put(STYLE_PANEL_02, panel_02_Textures);
+		Vector3f greenInUpper = getColor("17C0B2");
+		Vector3f greenInLower = getColor("24E4D4");
 
-		Vector3f[] green_colors = new Vector3f[]
-		{
-			Color.toVector(Integer.parseInt("a6fcdb", 16), new Vector3f()),
-			Color.toVector(Integer.parseInt("249fde", 16), new Vector3f()),
-			Color.toVector(Integer.parseInt("20d6c7", 16), new Vector3f()),
-		};
+		Vector3f greenHighlight = getColor("05F0DC");
+		Vector3f greenHighlightUpper = getColor("A3FFDB");
+		Vector3f greenHighlightLower = getColor("09A7F9");
 
-		IMAGE_COLOR_MAP.put(COLOR_GREEN, green_colors);
+		addImageColor(COLOR_GREEN, greenOutUpper, greenOutLower, greenCenter);
+		addImageColor(COLOR_GREEN_INV, greenInUpper, greenInLower, greenCenter);
 
-
-		Vector3f[] green_up = new Vector3f[]
-		{
-			Color.toVector(Integer.parseInt("a6fcdb", 16), new Vector3f()),
-			Color.toVector(Integer.parseInt("249fde", 16), new Vector3f()),
-			Color.toVector(Integer.parseInt("20d6c7", 16), new Vector3f()),
-		};
-
-		Vector3f[] green_hover = new Vector3f[]
-		{
-			Color.toVector(Integer.parseInt("a3ffdb", 16), new Vector3f()),
-			Color.toVector(Integer.parseInt("09a7f9", 16), new Vector3f()),
-			Color.toVector(Integer.parseInt("05f0dc", 16), new Vector3f()),
-		};
-
-		Vector3f[] green_down = new Vector3f[]
-		{
-			Color.toVector(Integer.parseInt("09a7f9", 16), new Vector3f()),
-			Color.toVector(Integer.parseInt("a3ffdb", 16), new Vector3f()),
-			Color.toVector(Integer.parseInt("05f0dc", 16), new Vector3f()),
-		};
-		ComposedButtonColorMap button_green_colors = new ComposedButtonColorMap(green_up, green_hover, green_down);
-
-		BUTTON_COLOR_MAP.put(COLOR_GREEN, button_green_colors);
+		addButtonColor(COLOR_GREEN, greenOutUpper, greenOutLower, greenCenter, greenHighlightUpper, greenHighlightLower, greenHighlight);
 	}
 
 	public static String[] texturesFromStyle(String style)
 	{
-		return TEXTURE_MAP.get(style);
+		if (TEXTURE_MAP.containsKey(style))
+		{
+			return TEXTURE_MAP.get(style);
+		}
+		else
+		{
+			String msg = String.format("[Warning]: No texture style named '%s' was found! Using default instead..", style);
+			Print.out(msg);
+			
+			return TEXTURE_MAP.get(STYLE_PANEL_01);
+		}
 	}
 
 	public static Vector3f[] imageColorsFromScheme(String scheme)
 	{
-		return IMAGE_COLOR_MAP.get(scheme);
+		if (IMAGE_COLOR_MAP.containsKey(scheme))
+		{
+			return IMAGE_COLOR_MAP.get(scheme);
+		}
+		else
+		{
+			String msg = String.format("[Warning]: No color scheme named '%s' was found for images! Using default instead..", scheme);
+			Print.out(msg);
+			
+			return IMAGE_COLOR_MAP.get(COLOR_GREEN);
+		}
 	}
 
 	public static ComposedButtonColorMap buttonColorsFromScheme(String scheme)
 	{
-		return BUTTON_COLOR_MAP.get(scheme);
+		if (BUTTON_COLOR_MAP.containsKey(scheme))
+		{
+			return BUTTON_COLOR_MAP.get(scheme);
+		}
+		else
+		{
+			String msg = String.format("[Warning]: No color scheme named '%s' was found for buttons! Using default instead..", scheme);
+			Print.out(msg);
+			
+			return BUTTON_COLOR_MAP.get(COLOR_GREEN);
+		}
+	}
+
+	private static Vector3f getColor(String hexCode)
+	{
+		Vector3f output = new Vector3f();
+		Color.toVector(Integer.parseInt(hexCode, 16), output);
+
+		return output;
+	}
+
+	private static void addButtonColor(String color, Vector3f upper, Vector3f lower, Vector3f center, Vector3f upHigh, Vector3f lowerHigh, Vector3f centerHigh)
+	{
+		Vector3f[] upColors = new Vector3f[]
+		{
+			upper, lower, center,
+		};
+
+		Vector3f[] hoverColors = new Vector3f[]
+		{
+			upHigh, lowerHigh, centerHigh,
+		};
+
+		Vector3f[] downColors = new Vector3f[]
+		{
+			lowerHigh, upHigh, centerHigh,
+		};
+
+		ComposedButtonColorMap composedColorMap = new ComposedButtonColorMap(upColors, hoverColors, downColors);
+		BUTTON_COLOR_MAP.put(color, composedColorMap);
+	}
+
+	private static void addImageColor(String color, Vector3f upper, Vector3f lower, Vector3f center)
+	{
+		Vector3f[] colorArray = new Vector3f[]
+		{
+			upper, lower, center,
+		};
+
+		IMAGE_COLOR_MAP.put(color, colorArray);
+	}
+
+	private static void addTextureGroup(String style, String prefix)
+	{
+		String[] textureArray = new String[]
+		{
+			prefix + "_upleft",
+			prefix + "_downright",
+			prefix + "_center"
+		};
+
+		TEXTURE_MAP.put(style, textureArray);
 	}
 }
