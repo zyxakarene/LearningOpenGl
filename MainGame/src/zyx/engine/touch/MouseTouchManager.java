@@ -197,7 +197,7 @@ public class MouseTouchManager implements IUpdateable
 			dispatchTo(parent, state, collision);
 		}
 		
-		if (target.hoverIcon != null)
+		if (target.focusable && target.hoverIcon != null)
 		{
 			CursorManager.getInstance().setCursor(target.hoverIcon);
 		}

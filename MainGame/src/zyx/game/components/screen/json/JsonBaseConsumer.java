@@ -72,6 +72,16 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 		}
 	}
 
+	protected boolean toBoolean(Object value)
+	{
+		if (value instanceof Boolean)
+		{
+			return (Boolean) value;
+		}
+		
+		throw new IllegalArgumentException("Invalid parameter: " + value);
+	}
+
 	protected float toFloat(Object value)
 	{
 		if (value instanceof Float)

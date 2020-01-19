@@ -58,6 +58,8 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 
 	public DisplayObject()
 	{
+		name = String.valueOf(Math.random());
+		
 		invWorldMatrix = SharedPools.MATRIX_POOL.getInstance();
 		worldMatrix = SharedPools.MATRIX_POOL.getInstance();
 		localMatrix = SharedPools.MATRIX_POOL.getInstance();

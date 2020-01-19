@@ -14,13 +14,28 @@ public class Text extends AbstractModel
 	private int characterCount;
 	private int vertexCount;
 
+	private float fontScale;
+	
 	private float width;
 	private float height;
 	
-	public Text(BitmapFont font)
+	private String lastText;
+	private Vector4f lastColor;
+	
+	private boolean shouldUpdate;
+	
+	public Text(BitmapFont font, float fontScale, float width, float height)
 	{
 		super(Shader.SCREEN);
 		this.font = font;
+		this.fontScale = fontScale;
+		this.width = width;
+		this.height = height;
+		
+		shouldUpdate = true;
+		
+		lastText = "";
+		lastColor = new Vector4f(1, 1, 1, 1);
 
 		setTexture(font.texture);
 	}
@@ -30,16 +45,28 @@ public class Text extends AbstractModel
 	{
 		return DebugDrawCalls.canDrawUi();
 	}
-	
-	public void setText(String text, Vector4f color)
-	{
-		TextGenerator generator = new TextGenerator(font.fontFile, color);
 
-		characterCount = text.length();
+	@Override
+	public void draw()
+	{
+		if (shouldUpdate)
+		{
+			shouldUpdate = false;
+			update();
+		}
+		
+		super.draw();
+	}
+	
+	private void update()
+	{
+		TextGenerator generator = new TextGenerator(font.fontFile, lastColor, width, height, fontScale);
+
+		characterCount = lastText.length();
 		char character;
 		for (int i = 0; i < characterCount; i++)
 		{
-			character = text.charAt(i);
+			character = lastText.charAt(i);
 			generator.addCharacter(character);
 		}
 
@@ -47,11 +74,15 @@ public class Text extends AbstractModel
 		int[] elementData = generator.getElementData();
 
 		vertexCount = generator.getVertexCount();
-		width = generator.getWidth();
-		height = generator.getHeight();
 				
 		bindVao();
 		setVertexData(vertexData, elementData);
+	}
+	
+	public void setText(String text)
+	{
+		lastText = text;
+		shouldUpdate = true;
 	}
 
 	@Override
@@ -82,21 +113,52 @@ public class Text extends AbstractModel
 
 	public void setColors(Vector4f colors)
 	{
-		bindVao();
-
-		float vertexData[] = new float[]
+		lastColor.set(colors);
+		
+		if (vertexCount > 0)
 		{
-			colors.x, colors.y, colors.z, colors.w
-		};
-		FloatBuffer buffer = BufferWrapper.toBuffer(vertexData);
+			bindVao();
 
-		int offsetPerVertex = Float.BYTES * 8;
+			float vertexData[] = new float[]
+			{
+				colors.x, colors.y, colors.z, colors.w
+			};
+			FloatBuffer buffer = BufferWrapper.toBuffer(vertexData);
 
-		for (int i = 0; i < vertexCount; i++)
-		{
-			long base = offsetPerVertex * i;
-			long offset = base + (Float.BYTES * 4);
-			updateVertexSubData(buffer, offset);
+			int offsetPerVertex = Float.BYTES * 8;
+
+			for (int i = 0; i < vertexCount; i++)
+			{
+				long base = offsetPerVertex * i;
+				long offset = base + (Float.BYTES * 4);
+				updateVertexSubData(buffer, offset);
+			}
 		}
+	}
+
+	public void setFontScale(float scale)
+	{
+		fontScale = scale;
+		shouldUpdate = true;
+	}
+
+	public void setWidth(float width)
+	{
+		this.width = width;
+		shouldUpdate = true;
+	}
+
+	public void setHeight(float height)
+	{
+		this.height = height;
+		shouldUpdate = true;
+	}
+	
+	public void setArea(float width, float height)
+	{
+		this.width = width;
+		this.height = height;
+		
+		shouldUpdate = true;
 	}
 }
