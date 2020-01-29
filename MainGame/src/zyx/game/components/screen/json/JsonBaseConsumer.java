@@ -7,6 +7,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.components.screen.base.DisplayObject;
 import zyx.engine.utils.ScreenSize;
+import zyx.utils.Color;
 
 class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Object>
 {
@@ -78,7 +79,7 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 		{
 			return (Boolean) value;
 		}
-		
+
 		throw new IllegalArgumentException("Invalid parameter: " + value);
 	}
 
@@ -96,6 +97,15 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 		}
 
 		throw new IllegalArgumentException("Invalid parameter: " + value);
+	}
+
+	protected void toColor(Object value, Vector3f out)
+	{
+		String hexColor = value.toString();
+		hexColor = hexColor.replace("0x", "");
+		int color = Integer.parseInt(hexColor, 16);
+
+		Color.toVector(color, out);
 	}
 
 	protected void onAccept(String name, Object value)

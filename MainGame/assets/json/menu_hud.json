@@ -32,6 +32,7 @@
 			"height":150,
 			"showBorders":true,
 			"font":"font.console",
+			"color":"0xFF00FF",
 			"text":"I am a long text that scales up and down and changes container size"
 		}
 	]

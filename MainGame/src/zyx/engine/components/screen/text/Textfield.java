@@ -13,8 +13,6 @@ import zyx.engine.resources.impl.FontResource;
 import zyx.engine.resources.impl.Resource;
 import zyx.opengl.textures.bitmapfont.BitmapFont;
 import zyx.opengl.textures.bitmapfont.Text;
-import zyx.utils.DeltaTime;
-import zyx.utils.FloatMath;
 
 public class Textfield extends InteractableContainer implements IFocusable, IResourceReady<FontResource>, ILoadable
 {
@@ -89,6 +87,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 
 		BitmapFont font = resource.getContent();
 		glText = new Text(font, fontSize, width, height);
+		glText.setColors(colors);
 		glText.setText(text);
 
 		caret = new Quad(1, height, 0xFF0000);
@@ -124,11 +123,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 
 	@Override
 	protected void onDraw()
-	{
-		float newSize = 1 + FloatMath.sin(DeltaTime.getTimestamp() * 0.01f) * 0.5f;
-		
-		setFontSize(newSize);
-		
+	{		
 		if (glText != null)
 		{
 			glText.draw();

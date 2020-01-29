@@ -209,6 +209,8 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 		{
 			child.draw();
 		}
+		
+		onPostDraw();
 	}
 
 	@Override
@@ -356,6 +358,11 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 	}
 
 	protected void onDraw()
+	{
+
+	}
+
+	protected void onPostDraw()
 	{
 
 	}

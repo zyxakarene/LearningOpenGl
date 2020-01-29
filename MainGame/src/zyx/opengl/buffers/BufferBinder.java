@@ -1,6 +1,5 @@
 package zyx.opengl.buffers;
 
-import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL30;
 
 public class BufferBinder

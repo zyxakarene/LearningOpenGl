@@ -1,7 +1,10 @@
 package zyx.opengl.buffers;
 
+import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
+import static org.lwjgl.opengl.GL11.GL_STENCIL_BUFFER_BIT;
+import org.lwjgl.opengl.GL30;
 import static org.lwjgl.opengl.GL30.GL_DRAW_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.GL_READ_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
@@ -11,6 +14,8 @@ import zyx.opengl.GLUtils;
 import zyx.opengl.models.implementations.FullScreenQuadModel;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
+import zyx.opengl.stencils.StencilControl;
+import zyx.opengl.stencils.StencilLayer;
 import zyx.opengl.textures.FrameBufferTexture;
 import zyx.opengl.textures.TextureFromInt;
 import zyx.opengl.textures.enums.TextureAttachment;
@@ -91,7 +96,9 @@ public class DeferredRenderer extends BaseFrameBuffer
 
 		GLUtils.disableDepthWrite();
 		GLUtils.disableDepthTest();
+		StencilControl.disableStencils();
 		model.draw();
+		StencilControl.enableStencils();
 		GLUtils.enableDepthTest();
 		GLUtils.enableDepthWrite();
 		
@@ -105,7 +112,7 @@ public class DeferredRenderer extends BaseFrameBuffer
 
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, readBufferId);
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, writeBufferId); // write to default framebuffer
-		glBlitFramebuffer(0, 0, w, h, 0, 0, w, h, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+		glBlitFramebuffer(0, 0, w, h, 0, 0, w, h, GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
 	}
 
 	@Override

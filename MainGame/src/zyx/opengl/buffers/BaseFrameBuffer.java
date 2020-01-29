@@ -3,11 +3,11 @@ package zyx.opengl.buffers;
 import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_COMPONENT;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import static org.lwjgl.opengl.GL30.GL_DEPTH_ATTACHMENT;
+import static org.lwjgl.opengl.GL30.GL_DEPTH24_STENCIL8;
+import static org.lwjgl.opengl.GL30.GL_DEPTH_STENCIL_ATTACHMENT;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER_COMPLETE;
 import static org.lwjgl.opengl.GL30.GL_RENDERBUFFER;
@@ -62,7 +62,9 @@ public abstract class BaseFrameBuffer
 	{
 		BufferBinder.bindBuffer(buffer);
 		GL11.glClearColor(1, 1, 1, 0);
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+		GL11.glClearStencil(0x00);
+		
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
 	}
 
 	public void bindBuffer()
@@ -82,9 +84,9 @@ public abstract class BaseFrameBuffer
 
 		depthBufferId = glGenRenderbuffers();
 		glBindRenderbuffer(GL_RENDERBUFFER, depthBufferId);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, w, h);
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBufferId);
-
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, w, h);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthBufferId); 
+		
 		// finally check if framebuffer is complete
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		{

@@ -21,6 +21,8 @@ import zyx.net.io.controllers.BaseNetworkController;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.opengl.stencils.StencilControl;
+import zyx.opengl.stencils.StencilLayer;
 import zyx.utils.cheats.DebugContainer;
 
 public class Scene
@@ -133,7 +135,9 @@ public class Scene
 			GLUtils.disableDepthTest();
 			GLUtils.disableCulling();
 			GLUtils.setBlendAlpha();
+			StencilControl.maskOutLayers(StencilLayer.PLAYER_CHARACTER);
 			stage.drawStage();
+			StencilControl.disableStencils();
 			GLUtils.enableCulling();
 			GLUtils.enableDepthTest();
 

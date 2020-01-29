@@ -31,7 +31,7 @@ public class BaseHud extends JsonSprite implements ICallback<Vector2Int>
 	{
 		if (Math.random() > 0)
 		{
-			return;
+			//return;
 		}
 		DeferredRenderer renderer = DeferredRenderer.getInstance();
 		DepthRenderer depthRenderer = DepthRenderer.getInstance();

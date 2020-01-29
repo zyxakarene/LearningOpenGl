@@ -35,7 +35,8 @@ public class SetupOpenGlCommand implements ICommand
 
 	private void setupLwjgl() throws LWJGLException
 	{
-		PixelFormat pixelFormat = new PixelFormat();
+		PixelFormat pixelFormat = new PixelFormat(0, 8, 8);
+		
 		ContextAttribs contextAtrributes;
 		if (GameConstants.DEBUG)
 		{

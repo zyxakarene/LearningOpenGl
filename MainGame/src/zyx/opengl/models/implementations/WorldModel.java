@@ -74,6 +74,7 @@ public class WorldModel extends AbstractModel implements IShadowable
 		super.draw();
 
 		DepthRenderer.getInstance().drawShadowable(this);
+		DeferredRenderer.getInstance().bindBuffer();
 	}
 
 	@Override

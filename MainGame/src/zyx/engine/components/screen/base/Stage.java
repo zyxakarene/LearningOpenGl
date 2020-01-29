@@ -42,7 +42,7 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 	public final void drawStage()
 	{
 		BufferBinder.bindBuffer(Buffer.DEFAULT);
-
+		
 		shader.bind();
 		shader.setClipRect(0, ScreenSize.width, 0, ScreenSize.height);
 		draw();

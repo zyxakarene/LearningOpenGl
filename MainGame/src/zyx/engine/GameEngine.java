@@ -14,6 +14,7 @@ import zyx.game.controls.sound.SoundManager;
 import zyx.game.scene.SceneType;
 import zyx.opengl.GLUtils;
 import zyx.opengl.SetupOpenGlCommand;
+import zyx.opengl.stencils.StencilControl;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.shaders.ShaderManager;
@@ -36,6 +37,7 @@ public class GameEngine
 	{
 		new SetupOpenGlCommand().execute();
 		GLUtils.enableGLSettings();
+		StencilControl.disableStencils();
 		
 		sizeChanger = new DisplaySizeChanger();
 
@@ -87,7 +89,7 @@ public class GameEngine
 			long timestamp = DeltaTime.getTimestamp();
 			int elapsed = DeltaTime.getElapsedTime();
 
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
 
 			DebugDrawCalls.reset();
 			drawCalls = 0;

@@ -25,6 +25,7 @@ import zyx.game.components.world.meshbatch.CubeEntity;
 import zyx.game.components.world.player.ClipboardDrawBehavior;
 import zyx.game.components.world.player.ClipboardViewerBehavior;
 import zyx.game.components.world.player.PlayerClipboard;
+import zyx.game.components.world.player.PlayerObject;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.process.ProcessQueue;
 import zyx.game.models.GameModels;
@@ -50,7 +51,7 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 	private ProcessQueue processQueue;
 
 	private MeshObject testDragon;
-	private GameObject player;
+	private PlayerObject player;
 	private PlayerClipboard board;
 
 	public DragonScene()
@@ -272,7 +273,7 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 
 	public void onAuthed()
 	{
-		player = new GameObject();
+		player = new PlayerObject();
 
 //		WorldObject box = new Box(1, 1, 1);
 //		WorldObject p = new Box(3f, 0.01f, 3f);
