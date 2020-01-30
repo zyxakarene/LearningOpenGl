@@ -11,7 +11,7 @@ public class InteractionCrawler
 {
 
 	private LinkedList<DisplayObject> objects;
-	private DisplayObjectContainer parent;
+	private DisplayObjectContainer[] parents;
 
 	private DisplayObject hitTarget;
 
@@ -19,9 +19,9 @@ public class InteractionCrawler
 	private Rectangle clipRectBackup;
 	private Vector2f helperVec;
 
-	public InteractionCrawler(DisplayObjectContainer container)
+	public InteractionCrawler(DisplayObjectContainer... container)
 	{
-		parent = container;
+		parents = container;
 		objects = new LinkedList<>();
 		clipRect = new Rectangle();
 		clipRectBackup = new Rectangle();
@@ -38,8 +38,11 @@ public class InteractionCrawler
 
 		objects.clear();
 
-		objects.add(parent);
-		parent.getChildren(objects);
+		for (DisplayObjectContainer parent : parents)
+		{
+			objects.add(parent);
+			parent.getChildren(objects);
+		}
 
 		DisplayObject child;
 		DisplayObjectContainer childContainer;

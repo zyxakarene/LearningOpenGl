@@ -11,21 +11,18 @@ import zyx.game.network.GameNetworkController;
 import zyx.engine.components.tooltips.TestTooltip;
 import zyx.engine.components.tooltips.TooltipManager;
 import zyx.engine.components.world.GameLight;
-import zyx.engine.scene.Scene;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.behavior.camera.CameraUpdateViewBehavior;
 import zyx.game.behavior.freefly.FreeFlyBehavior;
 import zyx.game.behavior.misc.JiggleBehavior;
+import zyx.game.behavior.misc.RotateBehavior;
 import zyx.game.behavior.player.OnlinePositionSender;
 import zyx.game.components.GameObject;
 import zyx.game.components.MeshObject;
 import zyx.game.components.world.meshbatch.CubeEntity;
-import zyx.game.components.world.player.ClipboardDrawBehavior;
-import zyx.game.components.world.player.ClipboardViewerBehavior;
-import zyx.game.components.world.player.PlayerClipboard;
-import zyx.game.components.world.player.PlayerObject;
+import zyx.game.components.world.player.*;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.process.ProcessQueue;
 import zyx.game.models.GameModels;
@@ -122,7 +119,7 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 		world.setSunRotation(new Vector3f(-33, -5, -21));
 
 		GameObject spinner = new GameObject();
-		//spinner.addBehavior(new RotateBehavior());
+		spinner.addBehavior(new RotateBehavior());
 
 		Sphere sphere1 = new Sphere(5);
 		Sphere sphere2 = new Sphere(5);

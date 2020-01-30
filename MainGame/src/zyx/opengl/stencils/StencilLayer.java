@@ -2,7 +2,7 @@ package zyx.opengl.stencils;
 
 public enum StencilLayer
 {
-	PLAYER_CHARACTER(1 << 1);
+	PLAYER_CHARACTER(1 << 0); //1
 	
 	public final int maskValue;
 

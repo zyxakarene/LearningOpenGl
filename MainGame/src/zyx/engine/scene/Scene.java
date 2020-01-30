@@ -6,18 +6,16 @@ import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;
 import zyx.engine.scene.preloading.ResourcePreloadProcess;
 import zyx.engine.utils.callbacks.ICallback;
-import zyx.engine.utils.worldpicker.WorldPicker;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.MegaManager;
 import zyx.opengl.GLUtils;
-import zyx.utils.interfaces.IPhysbox;
-import zyx.engine.utils.worldpicker.IHoveredItem;
 import zyx.game.components.screen.debug.DebugPanel;
 import zyx.game.components.screen.hud.BaseHud;
 import zyx.game.controls.input.MouseData;
 import zyx.game.controls.lights.LightsManager;
 import zyx.game.controls.process.ProcessQueue;
 import zyx.net.io.controllers.BaseNetworkController;
+import zyx.opengl.buffers.Buffer;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.shaders.SharedShaderObjects;
@@ -69,7 +67,7 @@ public class Scene
 	{
 		world.addChild(debugContainer);
 		hud = createHud();
-		stage.addChild(hud);
+		stage.hudLayer.addChild(hud);
 
 //		debugPanel = new DebugPanel();
 //		stage.addChild(debugPanel);
@@ -135,9 +133,7 @@ public class Scene
 			GLUtils.disableDepthTest();
 			GLUtils.disableCulling();
 			GLUtils.setBlendAlpha();
-			StencilControl.maskOutLayers(StencilLayer.PLAYER_CHARACTER);
 			stage.drawStage();
-			StencilControl.disableStencils();
 			GLUtils.enableCulling();
 			GLUtils.enableDepthTest();
 

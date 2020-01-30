@@ -96,9 +96,7 @@ public class DeferredRenderer extends BaseFrameBuffer
 
 		GLUtils.disableDepthWrite();
 		GLUtils.disableDepthTest();
-		StencilControl.disableStencils();
 		model.draw();
-		StencilControl.enableStencils();
 		GLUtils.enableDepthTest();
 		GLUtils.enableDepthWrite();
 		
