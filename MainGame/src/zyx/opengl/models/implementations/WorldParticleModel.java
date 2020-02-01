@@ -11,7 +11,7 @@ import zyx.utils.FloatMath;
 
 public class WorldParticleModel extends AbstractInstancedModel implements IParticleModel
 {
-	private static final int INSTANCE_DATA_COUNT = 19;
+	private static final int INSTANCE_DATA_COUNT = 22;
 	private static final Vector3f PARENT_POS = new Vector3f();
 	private static final Matrix4f PARENT_ROTATION = new Matrix4f();
 	
@@ -116,11 +116,14 @@ public class WorldParticleModel extends AbstractInstancedModel implements IParti
 		instanceData[dataIndex + 12] = WorldParticleShader.elapsedTime;
 		instanceData[dataIndex + 13] = vo.lifespan;
 		
-		instanceData[dataIndex + 14] = FloatMath.random();
-		instanceData[dataIndex + 15] = FloatMath.random();
-		instanceData[dataIndex + 16] = FloatMath.random();
-		instanceData[dataIndex + 17] = FloatMath.random();
-		instanceData[dataIndex + 18] = FloatMath.random();
+		instanceData[dataIndex + 14] = FloatMath.random(); //Speed random x
+		instanceData[dataIndex + 15] = FloatMath.random(); //Speed random y
+		instanceData[dataIndex + 16] = FloatMath.random(); //Speed random z
+		instanceData[dataIndex + 17] = FloatMath.random(); //Area random x
+		instanceData[dataIndex + 18] = FloatMath.random(); //Area random y
+		instanceData[dataIndex + 19] = FloatMath.random(); //Area random z
+		instanceData[dataIndex + 20] = FloatMath.random(); //Scale random
+		instanceData[dataIndex + 21] = FloatMath.random(); //Rotation random
 	}
 	
 	@Override
@@ -144,15 +147,16 @@ public class WorldParticleModel extends AbstractInstancedModel implements IParti
 		addAttribute("position", 2, 4, 0);
 		addAttribute("texcoord", 2, 4, 2);
 		
-		addInstanceAttribute("worldPos", 3, 19, 0);
-		addInstanceAttribute("worldRot_0", 3, 19, 3);
-		addInstanceAttribute("worldRot_1", 3, 19, 6);
-		addInstanceAttribute("worldRot_2", 3, 19, 9);
-		addInstanceAttribute("spawnTime", 1, 19, 12);
-		addInstanceAttribute("lifespan", 1, 19, 13);
-		addInstanceAttribute("speedRandom", 3, 19, 16);
-		addInstanceAttribute("scaleRandom", 1, 19, 17);
-		addInstanceAttribute("rotRandom", 1, 19, 18);
+		addInstanceAttribute("worldPos",	3, INSTANCE_DATA_COUNT, 0);
+		addInstanceAttribute("worldRot_0",	3, INSTANCE_DATA_COUNT, 3);
+		addInstanceAttribute("worldRot_1",	3, INSTANCE_DATA_COUNT, 6);
+		addInstanceAttribute("worldRot_2",	3, INSTANCE_DATA_COUNT, 9);
+		addInstanceAttribute("spawnTime",	1, INSTANCE_DATA_COUNT, 12);
+		addInstanceAttribute("lifespan",	1, INSTANCE_DATA_COUNT, 13);
+		addInstanceAttribute("speedRandom",	3, INSTANCE_DATA_COUNT, 16);
+		addInstanceAttribute("areaRandom",	3, INSTANCE_DATA_COUNT, 19);
+		addInstanceAttribute("scaleRandom",	1, INSTANCE_DATA_COUNT, 20);
+		addInstanceAttribute("rotRandom",	1, INSTANCE_DATA_COUNT, 21);
 	}
 	
 	@Override

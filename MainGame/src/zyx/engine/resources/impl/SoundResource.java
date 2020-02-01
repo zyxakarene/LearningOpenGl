@@ -4,7 +4,7 @@ import zyx.engine.sound.IAudio;
 import zyx.engine.sound.SoundSystem;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 
-public class SoundResource extends Resource
+public class SoundResource extends ExternalResource
 {
 
 	private IAudio audio;

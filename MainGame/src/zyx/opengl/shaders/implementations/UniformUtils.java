@@ -118,7 +118,6 @@ class UniformUtils
 		GL20.glUniform2(uniform, buff);
 	}
 
-	
 	/**
 	 * Uploads an array of floats to the given uniform.
 	 *
@@ -139,7 +138,6 @@ class UniformUtils
 		GL20.glUniform1(uniform, buff);
 	}
 
-	
 	/**
 	 * Uploads an array of floats to the given uniform.
 	 *
@@ -159,7 +157,7 @@ class UniformUtils
 
 		GL20.glUniform1(uniform, buff);
 	}
-	
+
 	static void setUniform2F(int uniform, float x, float y)
 	{
 		GL20.glUniform2f(uniform, x, y);
@@ -207,7 +205,7 @@ class UniformUtils
 	private static IntBuffer getIntBufferOfSize(int size)
 	{
 		IntBuffer buff;
-		
+
 		if (INT_BUFFERS.containsKey(size) == false)
 		{
 			buff = BufferUtils.createIntBuffer(size);

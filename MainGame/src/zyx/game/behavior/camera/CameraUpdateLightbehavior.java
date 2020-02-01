@@ -1,7 +1,6 @@
 package zyx.game.behavior.camera;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.World3D;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
@@ -20,11 +19,10 @@ public class CameraUpdateLightbehavior extends Behavior
 	{
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_E))
 		{
-			Vector3f camDir = gameObject.getDir(false, null);
-//			camDir.x *= -1;
-//			camDir.z *= -1;
+			gameObject.getDir(false, HELPER_DIR);
+			HELPER_DIR.y *= -1;
 			
-			World3D.instance.setSunDir(camDir);
+			World3D.instance.setSunDir(HELPER_DIR);
 		}
 	}
 }

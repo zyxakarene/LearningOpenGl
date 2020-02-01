@@ -7,21 +7,27 @@ import zyx.engine.components.cubemaps.CubemapManager;
 import zyx.engine.components.cubemaps.saving.CubemapProcess;
 import zyx.engine.components.meshbatch.MeshBatchEntity;
 import zyx.engine.components.meshbatch.MeshBatchManager;
-import zyx.engine.components.network.GameNetworkController;
+import zyx.game.network.GameNetworkController;
 import zyx.engine.components.tooltips.TestTooltip;
 import zyx.engine.components.tooltips.TooltipManager;
 import zyx.engine.components.world.GameLight;
-import zyx.engine.scene.Scene;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.behavior.BehaviorType;
-import zyx.game.behavior.freefly.OnlinePositionSender;
+import zyx.game.behavior.camera.CameraUpdateViewBehavior;
+import zyx.game.behavior.freefly.FreeFlyBehavior;
+import zyx.game.behavior.misc.JiggleBehavior;
+import zyx.game.behavior.misc.RotateBehavior;
+import zyx.game.behavior.player.OnlinePositionSender;
 import zyx.game.components.GameObject;
 import zyx.game.components.MeshObject;
 import zyx.game.components.world.meshbatch.CubeEntity;
+import zyx.game.components.world.player.*;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.process.ProcessQueue;
+import zyx.game.models.GameModels;
 import zyx.game.network.PingManager;
+import zyx.game.vo.Gender;
 import zyx.net.io.controllers.BaseNetworkController;
 import zyx.net.io.controllers.NetworkChannel;
 import zyx.net.io.controllers.NetworkCommands;
@@ -32,16 +38,18 @@ import zyx.utils.GameConstants;
 import zyx.utils.cheats.Print;
 import zyx.utils.math.QuaternionUtils;
 
-public class DragonScene extends Scene implements ICallback<ProcessQueue>
+public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 {
 
-	public static DragonScene current;
+	private static DragonScene current;
 
 	private ArrayList<GameObject> gameObjects;
 	private boolean cubemapping;
 	private ProcessQueue processQueue;
 
 	private MeshObject testDragon;
+	private PlayerObject player;
+	private PlayerClipboard board;
 
 	public DragonScene()
 	{
@@ -49,6 +57,11 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		current = this;
 	}
 
+	public static DragonScene getCurrent()
+	{
+		return current;
+	}
+	
 	@Override
 	protected void onPreloadResources()
 	{
@@ -57,15 +70,23 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	@Override
 	protected void onInitialize()
 	{
-		NetworkChannel.sendRequest(NetworkCommands.LOGIN, "Zyx" + Math.random());
-		PingManager.getInstance().addEntity(0);
-
+		super.onInitialize();
+		
+		NetworkChannel.sendRequest(NetworkCommands.LOGIN, "Zyx" + Math.random(), Gender.MALE);
+		
+		board = new PlayerClipboard();
+		board.setup();
+		board.addBehavior(new ClipboardDrawBehavior());
+		board.addBehavior(new ClipboardViewerBehavior());
+		world.addChild(board);
+		
 		world.loadSkybox("skybox.texture.desert");
 		CubemapManager.getInstance().load("cubemap.dragon");
-
+		
 		MeshObject dragon = new MeshObject();
 		dragon.setScale(0.33f, 0.33f, 0.33f);
 		dragon.load("mesh.dragon");
+		dragon.setPosition(false, 100, 100, 100);
 		world.addChild(dragon);
 		testDragon = dragon;
 
@@ -91,14 +112,14 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 			lightContainer.setPosition(true, x, y, z);
 			GLUtils.errorCheck();
 
-//			lightContainer.addBehavior(new JiggleBehavior());
+			lightContainer.addBehavior(new JiggleBehavior());
 			gameObjects.add(lightContainer);
 		}
 
 		world.setSunRotation(new Vector3f(-33, -5, -21));
 
 		GameObject spinner = new GameObject();
-		//spinner.addBehavior(new RotateBehavior());
+		spinner.addBehavior(new RotateBehavior());
 
 		Sphere sphere1 = new Sphere(5);
 		Sphere sphere2 = new Sphere(5);
@@ -123,7 +144,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		TooltipManager.getInstance().register(new TestTooltip(sphere3));
 		TooltipManager.getInstance().register(new TestTooltip(sphere4));
 
-		for (int i = 0; i < 50000; i++)
+		for (int i = 0; i < 100; i++)
 		{
 			MeshBatchEntity entityA = new CubeEntity();
 			entityA.position.x = (FloatMath.random() * 200) - 100;
@@ -138,11 +159,20 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 
 			MeshBatchManager.getInstance().addEntity(entityA);
 		}
+		
+		onAuthed();
 	}
 
 	@Override
 	protected void onUpdate(long timestamp, int elapsedTime)
 	{
+		super.onUpdate(timestamp, elapsedTime);
+		
+		if (board != null)
+		{
+			board.update(timestamp, elapsedTime);
+		}
+		
 		for (int i = 0; i < gameObjects.size(); i++)
 		{
 			GameObject obj = gameObjects.get(i);
@@ -173,7 +203,7 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 
 		//Vector3f camPos = Camera.getInstance().getPosition(false, null);
 		//testDragon.lookAt(camPos.x + 0.01f, camPos.y, camPos.z);
-		if (!cubemapping && KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
+		if (!cubemapping && KeyboardData.data.wasPressed(Keyboard.KEY_C))
 		{
 			cubemapping = true;
 
@@ -200,12 +230,14 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 	@Override
 	protected BaseNetworkController createNetworkDispatcher()
 	{
-		return new GameNetworkController(playerHandler);
+		return new GameNetworkController(itemHolderHandler, itemHandler);
 	}
 
 	@Override
 	protected void onDispose()
 	{
+		super.onDispose();
+		
 		for (int i = 0; i < gameObjects.size(); i++)
 		{
 			GameObject obj = gameObjects.get(i);
@@ -216,11 +248,16 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 		CubemapManager.getInstance().clean();
 		TooltipManager.getInstance().clean();
 		MeshBatchManager.getInstance().clean();
-		
+
+		itemHandler.clean();
+		itemHolderHandler.clean();
+
 		gameObjects.clear();
 		gameObjects = null;
 
 		camera.removeBehavior(BehaviorType.ONLINE_POSITION);
+
+		PingManager.getInstance().removeEntity(GameModels.player.playerId);
 	}
 
 	@Override
@@ -233,6 +270,23 @@ public class DragonScene extends Scene implements ICallback<ProcessQueue>
 
 	public void onAuthed()
 	{
-		camera.addBehavior(new OnlinePositionSender());
+		player = new PlayerObject();
+
+//		WorldObject box = new Box(1, 1, 1);
+//		WorldObject p = new Box(3f, 0.01f, 3f);
+//		p.setPosition(true, 0, -1f, 0);
+//		box.setPosition(true, 0, 0, -5);
+//		player.addChild(p);
+//		player.addChild(box);		
+
+		player.addChild(board);
+
+		player.addBehavior(new FreeFlyBehavior());
+		player.addBehavior(new CameraUpdateViewBehavior());
+		player.addBehavior(new OnlinePositionSender());
+
+		gameObjects.add(player);
+
+		world.addChild(player);
 	}
 }

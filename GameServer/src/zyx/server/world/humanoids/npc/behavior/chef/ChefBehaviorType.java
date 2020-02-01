@@ -1,0 +1,14 @@
+package zyx.server.world.humanoids.npc.behavior.chef;
+
+public enum ChefBehaviorType
+{
+	IDLE,
+	FINDING_MONITOR,
+	GETTING_RECIPE_MONITOR,
+	FINDING_FRIDGE,
+	GETTING_INGREDIENTS_FRIDGE,
+	FINDING_STOVE,
+	COOKING_FOOD_STOVE,
+	FINDING_TABLE,
+	SERVING_FOOD_TABLE,
+}

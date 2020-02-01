@@ -17,10 +17,14 @@ public class CollapsablePanel extends Panel implements ICallback<InteractableCon
 		
 		clipRect = new Rectangle(0, 0, width, 10);
 		
+		String[] textures = new String[]
+		{
+			"texture.tile", "texture.tile", "texture.tile"
+		};
 		minimizeButton = new Button(false);
 		minimizeButton.setWidth(32);
 		minimizeButton.setHeight(32);
-		minimizeButton.load("texture.tile", "texture.tile", "texture.tile");
+		minimizeButton.setTextures(textures);
 		minimizeButton.onButtonClicked.addCallback(this);
 		addChild(minimizeButton);
 	}

@@ -14,6 +14,8 @@ class ConsumerFactory
 	private ObjectPool<JsonQuadConsumer> quads;
 	private ObjectPool<JsonItemListConsumer> itemLists;
 	private ObjectPool<JsonTextfieldConsumer> textfields;
+	private ObjectPool<JsonComposedImageConsumer> composedImages;
+	private ObjectPool<JsonComposedButtonConsumer> composedButtons;
 
 	ConsumerFactory()
 	{
@@ -24,6 +26,8 @@ class ConsumerFactory
 		quads = new ObjectPool<>(JsonQuadConsumer.class, 3);
 		itemLists = new ObjectPool<>(JsonItemListConsumer.class, 1);
 		textfields = new ObjectPool<>(JsonTextfieldConsumer.class, 1);
+		composedImages = new ObjectPool<>(JsonComposedImageConsumer.class, 1);
+		composedButtons = new ObjectPool<>(JsonComposedButtonConsumer.class, 1);
 	}
 
 	void consumeByType(String type, DisplayObjectContainer parent, DisplayObject child, JSONObject json)
@@ -65,6 +69,12 @@ class ConsumerFactory
 				return itemLists;
 			case JsonSpriteParser.TYPE_TEXTFIELD:
 				return textfields;
+			case JsonSpriteParser.TYPE_COMPOSED_IMAGE:
+			case JsonSpriteParser.TYPE_COMPOSED_SCALE_NINE_IMAGE:
+				return composedImages;
+			case JsonSpriteParser.TYPE_COMPOSED_BUTTON:
+			case JsonSpriteParser.TYPE_COMPOSED_SCALE_NINE_BUTTON:
+				return composedButtons;
 			default:
 				throw new AssertionError("Unknown type:" + type);
 		}

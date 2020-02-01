@@ -26,7 +26,7 @@ class ByteArraySerializer extends AbstractSerializer
 	{
 		int len = in.readInt();
 		byte[] data = new byte[len];
-		in.read(data);
+		in.readFully(data);
 		
 		return data;
 	}

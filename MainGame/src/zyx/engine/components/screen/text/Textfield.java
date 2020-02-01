@@ -19,23 +19,32 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 
 	private Text glText;
 	private String text;
+	private float fontSize;
 	private Vector4f colors;
 	private boolean loaded;
 
 	private Resource fontResource;
-	private float originalWidth;
-	private float originalHeight;
+	private float width;
+	private float height;
 
 	private boolean hasFocus;
-	private int caretPos;
 	private Quad caret;
+
+	private Quad[] borders;
+	private boolean showBorders;
 
 	public Textfield(String text)
 	{
 		this.text = text;
 		this.colors = new Vector4f(1, 1, 1, 1);
 
-		focusable = true;
+		width = 100;
+		height = 100;
+		fontSize = 1f;
+
+		borders = new Quad[4];
+
+		focusable = false;
 		hoverIcon = GameCursor.TEXT;
 	}
 
@@ -77,13 +86,11 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 		loaded = true;
 
 		BitmapFont font = resource.getContent();
-		glText = new Text(font);
-		glText.setText(text, colors);
+		glText = new Text(font, fontSize, width, height);
+		glText.setColors(colors);
+		glText.setText(text);
 
-		originalWidth = glText.getWidth();
-		originalHeight = glText.getHeight();
-
-		caret = new Quad(1, originalHeight, 0xFF0000);
+		caret = new Quad(1, height, 0xFF0000);
 		caret.visible = false;
 		addChild(caret);
 	}
@@ -93,10 +100,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 		this.text = text;
 		if (loaded)
 		{
-			glText.setText(text, colors);
-
-			originalWidth = glText.getWidth();
-			originalHeight = glText.getHeight();
+			glText.setText(text);
 		}
 	}
 
@@ -108,28 +112,18 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	@Override
 	public float getWidth()
 	{
-		if (loaded)
-		{
-			return originalWidth * getScale(true, HELPER_VEC2).x;
-		}
-
-		return 0;
+		return width;
 	}
 
 	@Override
 	public float getHeight()
 	{
-		if (loaded)
-		{
-			return originalHeight * getScale(true, HELPER_VEC2).x;
-		}
-
-		return 0;
+		return height;
 	}
 
 	@Override
 	protected void onDraw()
-	{
+	{		
 		if (glText != null)
 		{
 			glText.draw();
@@ -146,20 +140,36 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	@Override
 	public void setWidth(float value)
 	{
+		width = value;
+		updateBorders();
+
 		if (loaded)
 		{
-			getScale(true, HELPER_VEC2);
-			setScale(value / originalWidth, HELPER_VEC2.y);
+			glText.setWidth(width);
 		}
 	}
 
 	@Override
 	public void setHeight(float value)
 	{
+		height = value;
+		updateBorders();
+
 		if (loaded)
 		{
-			getScale(true, HELPER_VEC2);
-			setScale(value / originalHeight, HELPER_VEC2.y);
+			glText.setHeight(height);
+		}
+	}
+
+	public void setSize(float width, float height)
+	{
+		this.width = width;
+		this.height = height;
+		updateBorders();
+
+		if (loaded)
+		{
+			glText.setArea(width, height);
 		}
 	}
 
@@ -170,7 +180,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 		{
 			stage.setFocusedObject(null);
 		}
-		
+
 		super.dispose();
 
 		if (fontResource != null)
@@ -189,6 +199,14 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 		{
 			caret.dispose();
 			caret = null;
+		}
+
+		if (showBorders)
+		{
+			for (Quad border : borders)
+			{
+				border.dispose();
+			}
 		}
 	}
 
@@ -225,7 +243,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 			setText(text + character);
 		}
 
-		caret.setPosition(true, originalWidth, 0);
+		caret.setPosition(true, width, 0);
 	}
 
 	@Override
@@ -233,7 +251,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	{
 		hasFocus = true;
 		caret.visible = true;
-		caret.setPosition(true, originalWidth, 0);
+		caret.setPosition(true, width, 0);
 	}
 
 	@Override
@@ -241,5 +259,61 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	{
 		hasFocus = false;
 		caret.visible = false;
+	}
+
+	public void setShowBorders(boolean showBorders)
+	{
+		this.showBorders = showBorders;
+		updateBorders();
+	}
+
+	private void updateBorders()
+	{
+		if (!showBorders)
+		{
+			return;
+		}
+		
+		for (Quad border : borders)
+		{
+			if (border != null)
+			{
+				border.dispose();
+			}
+		}
+
+		//Top
+		Quad top = new Quad(width, 1, 0xFFFFFF);
+
+		//Bottom
+		Quad bottom = new Quad(width, 1, 0xFFFFFF);
+		bottom.setY(height);
+
+		//Left
+		Quad left = new Quad(1, height, 0xFFFFFF);
+
+		//Right
+		Quad right = new Quad(1, height, 0xFFFFFF);
+		right.setX(width);
+
+		addChild(top);
+		addChild(bottom);
+		addChild(left);
+		addChild(right);
+
+		borders[0] = top;
+		borders[1] = bottom;
+		borders[2] = left;
+		borders[3] = right;
+	}
+
+	public void setFontSize(float fontSize)
+	{
+		this.fontSize = fontSize;
+		
+		if (loaded)
+		{
+			glText.setFontScale(fontSize);
+		}
 	}
 }

@@ -10,7 +10,7 @@ import zyx.opengl.models.implementations.WorldParticleModel;
 import zyx.opengl.particles.loading.ZpfLoader;
 import zyx.opengl.textures.AbstractTexture;
 
-public class ParticleResource extends Resource implements IResourceReady
+public class ParticleResource extends ExternalResource implements IResourceReady
 {
 
 	private LoadableParticleVO loadedVo;

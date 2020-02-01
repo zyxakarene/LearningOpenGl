@@ -20,7 +20,10 @@ public abstract class InteractableContainer extends DisplayObjectContainer
 	{
 		touchListener = (TouchState state, boolean collided, TouchData data) ->
 		{
-			updateButtonState(collided);
+			if (focusable)
+			{
+				updateButtonState(collided);
+			}
 		};
 		
 		addTouchListener(touchListener);

@@ -1,95 +1,103 @@
 package zyx.engine.components.screen.interactable;
 
+import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.components.screen.composed.IComposedButton;
 import zyx.engine.components.screen.image.AbstractImage;
 import zyx.engine.components.screen.image.Image;
 import zyx.engine.components.screen.image.Scale9Image;
-import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.curser.GameCursor;
 import zyx.engine.utils.ClickDispatcher;
 import zyx.engine.utils.callbacks.CustomCallback;
 import zyx.engine.utils.callbacks.ICallback;
 
-public class Button extends InteractableContainer
+public class Button extends InteractableContainer implements IComposedButton
 {
-
+	private ButtonState state;
+	
 	protected float originalWidth;
 	protected float originalHeight;
 
-	protected AbstractImage upImg;
-	protected AbstractImage hoverImg;
-	protected AbstractImage downImg;
+	protected AbstractImage[] images;
 	protected boolean loaded;
+	private int loadedCount;
 
-	private Vector4f colors;
-
-	public CustomCallback<InteractableContainer> onButtonClicked;
+	private Vector3f[] upColors;
+	private Vector3f[] hoverColors;
+	private Vector3f[] downColors;
+	private float alpha;
 	
-	private ICallback<AbstractImage> onUpImageLoaded;
+	public CustomCallback<InteractableContainer> onButtonClicked;
+
+	private ICallback<AbstractImage> onFirstImageLoaded;
+	private boolean scale9;
 
 	public Button(boolean scale9)
 	{
-		colors = new Vector4f(1, 1, 1, 1);
-		
-		if (scale9)
-		{
-			upImg = new Scale9Image();
-			hoverImg = new Scale9Image();
-			downImg = new Scale9Image();
-		}
-		else
-		{
-			upImg = new Image();
-			hoverImg = new Image();
-			downImg = new Image();
-		}
+		this.state = ButtonState.UP;
+		this.scale9 = scale9;
 
-		upImg.touchable = false;
-		hoverImg.touchable = false;
-		downImg.touchable = false;
+		alpha = 1;
 
 		onButtonClicked = new CustomCallback<>();
-
-		addChild(upImg);
-		addChild(hoverImg);
-		addChild(downImg);
-
-		hoverImg.visible = false;
-		downImg.visible = false;
 
 		buttonMode = true;
 		focusable = true;
 		hoverIcon = GameCursor.HAND;
-		
-		onUpImageLoaded = (AbstractImage data) ->
+
+		onFirstImageLoaded = (AbstractImage img) -> 
 		{
-			onUpImageLoaded();
+			onImageLoaded(img);
 		};
 	}
 
-	public void load(String upResource, String hoverResource, String downResource)
+	@Override
+	public void setTextures(String[] textures)
 	{
-		upImg.onLoaded.addCallback(onUpImageLoaded);
-		
-		upImg.load(upResource);
-		hoverImg.load(hoverResource);
-		downImg.load(downResource);
+		clean();
+
+		int len = textures.length;
+		images = new AbstractImage[len];
+
+		AbstractImage img;
+		String texture;
+		for (int i = 0; i < len; i++)
+		{
+			texture = textures[i];
+			img = scale9 ? new Scale9Image() : new Image();
+			images[i] = img;
+
+			img.onLoaded.addCallback(onFirstImageLoaded);
+			
+			img.load(texture);
+			img.touchable = false;
+			addChild(img);
+		}
 	}
 
-	private void onUpImageLoaded()
+	private void onImageLoaded(AbstractImage img)
 	{
-		loaded = true;
-		
-		if (originalWidth != 0)
+		if (loaded == false)
 		{
-			setWidth(originalWidth);
+			loaded = true;
+
+			if (originalWidth != 0)
+			{
+				setWidth(originalWidth);
+			}
+
+			if (originalHeight != 0)
+			{
+				setHeight(originalHeight);
+			}
 		}
 		
-		if (originalHeight != 0)
+		loadedCount++;
+		if (loadedCount == images.length)
 		{
-			setHeight(originalHeight);
+			updateMesh();
 		}
 	}
-	
+
 	@Override
 	public float getWidth()
 	{
@@ -117,9 +125,10 @@ public class Button extends InteractableContainer
 	{
 		if (loaded)
 		{
-			upImg.setWidth(value);
-			hoverImg.setWidth(value);
-			downImg.setWidth(value);
+			for (AbstractImage img : images)
+			{
+				img.setWidth(value);
+			}
 		}
 		else
 		{
@@ -132,71 +141,123 @@ public class Button extends InteractableContainer
 	{
 		if (loaded)
 		{
-			upImg.setHeight(value);
-			hoverImg.setHeight(value);
-			downImg.setHeight(value);
+			for (AbstractImage img : images)
+			{
+				img.setHeight(value);
+			}
 		}
 		else
 		{
 			originalHeight = value;
 		}
 	}
-	
-	public void setColor(Vector4f color)
+
+	@Override
+	public void setColors(Vector3f[] up, Vector3f[] hover, Vector3f[] down)
 	{
-		colors.set(color);
+		int newLen = up.length;
+		if (upColors == null || upColors.length != newLen)
+		{
+			upColors = new Vector3f[newLen];
+			hoverColors = new Vector3f[newLen];
+			downColors = new Vector3f[newLen];
+			for (int i = 0; i < newLen; i++)
+			{
+				upColors[i] = new Vector3f();
+				hoverColors[i] = new Vector3f();
+				downColors[i] = new Vector3f();
+			}
+		}
+		
+		for (int i = 0; i < newLen; i++)
+		{
+			upColors[i].set(up[i]);
+			hoverColors[i].set(hover[i]);
+			downColors[i].set(down[i]);
+		}
+		
 		updateMesh();
+	}
+	
+	public void setColor(Vector3f color)
+	{
+		Vector3f[] singleArray = new Vector3f[]
+		{
+			color
+		};
+		
+		setColors(singleArray, singleArray, singleArray);
 	}
 
 	public void setColor(float r, float g, float b)
 	{
-		colors.set(r, g, b);
-		updateMesh();
+		HELPER_VEC3.set(r, g, b);
+		setColor(HELPER_VEC3);
 	}
 
 	public void setAlpha(float a)
 	{
-		colors.w = a;
+		alpha = a;
 		updateMesh();
 	}
 
 	private void updateMesh()
 	{
-		upImg.setColor(colors);
-		hoverImg.setColor(colors);
-		downImg.setColor(colors);
+		Vector3f[] colors;
+		if (loaded)
+		{
+			switch (state)
+			{
+				case HOVER:
+					colors = hoverColors;
+					break;
+				case DOWN:
+					colors = downColors;
+					break;
+				case UP:
+				default:
+					colors = upColors;
+					break;
+			}
+
+			HELPER_VEC4.set(HELPER_VEC3.x, HELPER_VEC3.y, HELPER_VEC3.z, alpha);
+
+			int len = images.length;
+			AbstractImage img;
+			Vector3f col;
+			for (int i = 0; i < len; i++)
+			{
+				col = colors[i];
+				img = images[i];
+				HELPER_VEC4.set(col.x, col.y, col.z, alpha);
+				
+				img.setColor(HELPER_VEC4);
+			}
+		}
 	}
 
 	@Override
 	protected void onMouseEnter()
 	{
-		downImg.visible = false;
-		hoverImg.visible = true;
-		upImg.visible = false;
+		changeStateTo(ButtonState.HOVER);
 	}
 
 	@Override
 	protected void onMouseExit()
 	{
-		downImg.visible = false;
-		hoverImg.visible = false;
-		upImg.visible = true;
+		changeStateTo(ButtonState.UP);
 	}
 
 	@Override
 	protected void onMouseDown()
 	{
-		downImg.visible = true;
-		hoverImg.visible = false;
-		upImg.visible = false;
+		changeStateTo(ButtonState.DOWN);
 	}
 
 	@Override
 	protected void onMouseClick()
 	{
-		downImg.visible = false;
-		hoverImg.visible = true;
-		upImg.visible = false;
+		changeStateTo(ButtonState.HOVER);
 
 		if (onButtonClicked.hasEntries())
 		{
@@ -204,18 +265,42 @@ public class Button extends InteractableContainer
 		}
 	}
 
+	private void changeStateTo(ButtonState newState)
+	{
+		if (state != newState)
+		{
+			state = newState;
+			updateMesh();
+		}
+	}
+	
 	@Override
 	public void dispose()
 	{
+		clean();
+		
 		super.dispose();
 
-		onButtonClicked.dispose();
-
-		onUpImageLoaded = null;
+		onFirstImageLoaded = null;
 		
-		onButtonClicked = null;
-		upImg = null;
-		hoverImg = null;
-		downImg = null;
+		if (onButtonClicked != null)
+		{
+			onButtonClicked.dispose();
+			onButtonClicked = null;
+		}
+	}
+
+	private void clean()
+	{
+		loadedCount = 0;
+		
+		if (images != null)
+		{
+			for (AbstractImage img : images)
+			{
+				img.dispose();
+			}
+			images = null;
+		}
 	}
 }

@@ -47,7 +47,7 @@ public class GameObject extends WorldObject implements IUpdateable
 	{
 		behaviors.addBehavior(behavior);
 	}
-	
+
 	public final void removeBehavior(BehaviorType type)
 	{
 		behaviors.removeBehavior(type);

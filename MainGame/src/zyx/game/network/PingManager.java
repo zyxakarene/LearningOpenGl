@@ -1,6 +1,7 @@
 package zyx.game.network;
 
 import zyx.engine.scene.SceneManager;
+import zyx.game.models.GameModels;
 import zyx.game.ping.PingController;
 import zyx.game.scene.SceneType;
 import zyx.net.io.controllers.NetworkChannel;
@@ -26,6 +27,6 @@ public class PingManager extends PingController
 	@Override
 	protected void onSendPingTo(int id)
 	{
-		NetworkChannel.sendRequest(NetworkCommands.PING);
+		NetworkChannel.sendRequest(NetworkCommands.PING, GameModels.player.playerId);
 	}
 }

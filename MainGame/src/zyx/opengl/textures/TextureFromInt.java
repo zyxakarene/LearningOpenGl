@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.cheats.Print;
+import zyx.utils.geometry.Rectangle;
 
 public class TextureFromInt extends AbstractTexture
 {

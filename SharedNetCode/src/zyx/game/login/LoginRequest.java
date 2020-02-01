@@ -4,6 +4,7 @@ import zyx.net.data.WriteableDataObject;
 import zyx.net.io.requests.BaseNetworkRequest;
 import zyx.net.io.controllers.NetworkCommands;
 import static zyx.game.login.LoginConstants.*;
+import zyx.game.vo.Gender;
 import zyx.net.data.WriteableDataArray;
 
 public class LoginRequest extends BaseNetworkRequest
@@ -18,9 +19,13 @@ public class LoginRequest extends BaseNetworkRequest
 	protected void getDataObject(WriteableDataObject data, Object... params)
 	{
 		String myName = (String) params[0];
+		Gender gender = (Gender) params[1];
 		
 		data.addString(NAME, myName);
+		data.addString(GENDER, gender.name());
 		
+		
+		//Test values!
 		data.addBoolean("bool", true);
 		data.addByte("by", (byte)0);
 		data.addCharacter("cha", 'k');

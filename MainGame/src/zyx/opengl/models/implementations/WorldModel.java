@@ -1,6 +1,7 @@
 package zyx.opengl.models.implementations;
 
 import org.lwjgl.util.vector.Vector3f;
+import zyx.opengl.GLUtils;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
 import zyx.opengl.models.AbstractModel;
@@ -73,6 +74,7 @@ public class WorldModel extends AbstractModel implements IShadowable
 		super.draw();
 
 		DepthRenderer.getInstance().drawShadowable(this);
+		DeferredRenderer.getInstance().bindBuffer();
 	}
 
 	@Override

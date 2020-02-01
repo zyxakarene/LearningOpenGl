@@ -19,6 +19,9 @@ public class Serializers
 	public static final short TYPE_OBJECT = 9;
 	public static final short TYPE_ARRAY = 10;
 	public static final short TYPE_BYTE_ARRAY = 11;
+	public static final short TYPE_INT_ARRAY = 12;
+	
+	private static final int SERIALIZER_COUNT = 13;
 	
 	public final AbstractSerializer BOOLEAN_SERIALIZER = new BooleanSerializer();
 	public final AbstractSerializer BYTE_SERIALIZER = new ByteSerializer();
@@ -32,6 +35,8 @@ public class Serializers
 	public final AbstractSerializer OBJECT_SERIALIZER = new ObjectSerializer();
 	public final AbstractSerializer ARRAY_SERIALIZER = new ArraySerializer();
 	public final AbstractSerializer BYTE_ARRAY_SERIALIZER = new ByteArraySerializer();
+	public final AbstractSerializer INT_ARRAY_SERIALIZER = new IntArraySerializer();
+	
 	
 	private static Serializers instance = new Serializers();
 
@@ -40,7 +45,7 @@ public class Serializers
 	
 	public Serializers()
 	{
-		serializerTypeMap = new AbstractSerializer[12];
+		serializerTypeMap = new AbstractSerializer[SERIALIZER_COUNT];
 		serializerClassMap = new HashMap<>();
 		
 		serializerTypeMap[TYPE_BOOLEAN] = BOOLEAN_SERIALIZER;
@@ -55,6 +60,7 @@ public class Serializers
 		serializerTypeMap[TYPE_OBJECT] = OBJECT_SERIALIZER;
 		serializerTypeMap[TYPE_ARRAY] = ARRAY_SERIALIZER;
 		serializerTypeMap[TYPE_BYTE_ARRAY] = BYTE_ARRAY_SERIALIZER;
+		serializerTypeMap[TYPE_INT_ARRAY] = INT_ARRAY_SERIALIZER;
 		
 		serializerClassMap.put(Boolean.class, BOOLEAN_SERIALIZER);
 		serializerClassMap.put(Byte.class, BYTE_SERIALIZER);
@@ -68,6 +74,7 @@ public class Serializers
 		serializerClassMap.put(WriteableDataObject.class, OBJECT_SERIALIZER);
 		serializerClassMap.put(WriteableDataArray.class, ARRAY_SERIALIZER);
 		serializerClassMap.put(ByteArrayObject.class, BYTE_ARRAY_SERIALIZER);
+		serializerClassMap.put(IntArraySerializer.class, INT_ARRAY_SERIALIZER);
 	}
 	
 	public static Serializers getInstance()

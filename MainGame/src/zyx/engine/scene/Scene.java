@@ -6,36 +6,34 @@ import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;
 import zyx.engine.scene.preloading.ResourcePreloadProcess;
 import zyx.engine.utils.callbacks.ICallback;
-import zyx.engine.utils.worldpicker.WorldPicker;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.MegaManager;
 import zyx.opengl.GLUtils;
-import zyx.utils.interfaces.IPhysbox;
-import zyx.engine.utils.worldpicker.IHoveredItem;
 import zyx.game.components.screen.debug.DebugPanel;
 import zyx.game.components.screen.hud.BaseHud;
 import zyx.game.controls.input.MouseData;
 import zyx.game.controls.lights.LightsManager;
 import zyx.game.controls.process.ProcessQueue;
-import zyx.game.scene.PlayerHandler;
 import zyx.net.io.controllers.BaseNetworkController;
+import zyx.opengl.buffers.Buffer;
 import zyx.opengl.camera.Camera;
+import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.opengl.stencils.StencilControl;
+import zyx.opengl.stencils.StencilLayer;
 import zyx.utils.cheats.DebugContainer;
 
 public class Scene
 {
-
-	private WorldPicker picker;
+	protected static Scene current;
+	
 	protected DebugContainer debugContainer;
 
 	protected Stage stage;
 	protected World3D world;
 	protected CameraController camera;
 
-	protected PlayerHandler playerHandler;
 	protected BaseHud hud;
-	protected BaseNetworkController networkController;
 
 	private ProcessQueue preloadQueue;
 	private boolean ready;
@@ -44,10 +42,6 @@ public class Scene
 
 	public Scene()
 	{
-		picker = new WorldPicker();
-
-		playerHandler = new PlayerHandler();
-
 		world = World3D.instance;
 		stage = Stage.instance;
 		camera = new CameraController();
@@ -56,16 +50,12 @@ public class Scene
 		preloadQueue = new ProcessQueue();
 
 		ready = false;
+		current = this;
 	}
 
-	protected void addPickedObject(IPhysbox object, IHoveredItem clickCallback)
+	public static Scene getCurrent()
 	{
-		picker.addObject(object, clickCallback);
-	}
-
-	protected void removePickedObject(IPhysbox object, IHoveredItem clickCallback)
-	{
-		picker.removeObject(object, clickCallback);
+		return current;
 	}
 
 	protected void enablePing()
@@ -77,20 +67,16 @@ public class Scene
 	{
 		world.addChild(debugContainer);
 		hud = createHud();
-		stage.addChild(hud);
-
-		networkController = createNetworkDispatcher();
-		networkController.addListeners();
+		stage.hudLayer.addChild(hud);
 
 //		debugPanel = new DebugPanel();
 //		stage.addChild(debugPanel);
 		onPreloadResources();
 
-		ICallback<ProcessQueue> onCompleted = (ProcessQueue data)
-				-> 
-				{
-					onInitialize();
-					ready = true;
+		ICallback<ProcessQueue> onCompleted = (ProcessQueue data) ->
+		{
+			onInitialize();
+			ready = true;
 		};
 
 		preloadQueue.start(onCompleted);
@@ -113,7 +99,6 @@ public class Scene
 		stage.checkStageMouseInteractions(MouseData.data.x, MouseData.data.y);
 
 		debugContainer.update(timestamp, elapsedTime);
-		picker.update();
 
 		if (hud != null)
 		{
@@ -124,8 +109,6 @@ public class Scene
 
 		if (ready)
 		{
-			playerHandler.update(timestamp, elapsedTime);
-
 			onUpdate(timestamp, elapsedTime);
 		}
 
@@ -189,8 +172,9 @@ public class Scene
 		onDispose();
 
 		camera.dispose();
-		picker.dispose();
 
+		ParticleManager.getInstance().clear();
+		
 		if (hud != null)
 		{
 			hud.dispose();
@@ -208,11 +192,11 @@ public class Scene
 			debugPanel.dispose();
 			debugPanel = null;
 		}
-
+		
 		stage = null;
 		world = null;
 		camera = null;
-		picker = null;
+		current = null;
 	}
 
 	boolean isReady()

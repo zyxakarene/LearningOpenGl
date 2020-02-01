@@ -11,7 +11,7 @@ import zyx.utils.interfaces.IUpdateable;
 public class TooltipManager implements IUpdateable
 {
 
-	private static final TooltipManager instance = new TooltipManager();
+	private static final TooltipManager INSTANCE = new TooltipManager();
 
 	private ArrayList<AbstractTooltip> tooltips;
 	private Vector2f outVector;
@@ -19,7 +19,7 @@ public class TooltipManager implements IUpdateable
 
 	public static TooltipManager getInstance()
 	{
-		return instance;
+		return INSTANCE;
 	}
 
 	private TooltipManager()
@@ -57,6 +57,28 @@ public class TooltipManager implements IUpdateable
 			tooltip.getScreenPosition(outVector, cameraPos);
 
 			tooltip.setPosition(false, outVector.x, outVector.y);
+		}
+		
+		int len = tooltips.size();
+		AbstractTooltip temp;
+		AbstractTooltip next;
+		for (int i = len - 1; i >= 0; i--)
+		{
+			next = null;
+			
+			temp = tooltips.get(i);
+			if(i - 1 >= 0)
+			{
+				next = tooltips.get(i - 1);
+			}
+			
+			if(next != null && next.currentDistance < temp.currentDistance)
+			{
+				Stage.instance.tooltipLayer.flipChildren(i, i-1);
+				
+				tooltips.set(i - 1, temp);
+				tooltips.set(i, next);
+			}
 		}
 	}
 

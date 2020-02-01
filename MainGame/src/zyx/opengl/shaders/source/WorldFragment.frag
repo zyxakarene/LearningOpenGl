@@ -33,13 +33,14 @@ void main()
 	materialColor += (100 * debugColor);
 
 	vec3 worldNorms = normalize(vec3(WorldNormal.xy + normValue.xy, WorldNormal.z));
+	vec3 screenNorms = normalize(vec3(ScreenNormal.xy + normValue.xy, ScreenNormal.z));
 
 	gPosition = WorldPos;
 	gNormal = worldNorms;
 	gAlbedoSpec = vec4(materialColor.rgb, specValue.r);
 	gDepth = Z;
 	gScreenPosition = ScreenPos;
-	gScreenNormal = ScreenNormal;
+	gScreenNormal = screenNorms;
 	gCubeIndex = (cubemapColor + CubemapAddition);
 
     //Pretty normals

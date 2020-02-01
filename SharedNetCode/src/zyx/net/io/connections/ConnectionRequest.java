@@ -43,6 +43,7 @@ public class ConnectionRequest
 		{
 			byte[] requestData = data.serialize();
 			stream.writeUTF(name);
+			stream.writeShort(requestData.length);
 			stream.write(requestData);
 			stream.flush();
 			

@@ -8,7 +8,6 @@ import zyx.engine.utils.ScreenSize;
 import zyx.game.components.screen.json.JsonSprite;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.FloatMath;
-import zyx.utils.cheats.Print;
 
 public abstract class AbstractTooltip extends JsonSprite
 {
@@ -20,6 +19,8 @@ public abstract class AbstractTooltip extends JsonSprite
 
 	protected float minScale;
 	protected boolean hideAtMinScale;
+	
+	public float currentDistance;
 
 	public AbstractTooltip(WorldObject target)
 	{
@@ -68,8 +69,8 @@ public abstract class AbstractTooltip extends JsonSprite
 			//Convert from [0, 1] space to [0, height]
 			out.y = ScreenSize.height - (out.y * ScreenSize.height);
 
-			float distance = FloatMath.distance(HELPER_VEC3, cameraPos, true);
-			float scale = 8f / distance;
+			currentDistance = FloatMath.distance(HELPER_VEC3, cameraPos, true);
+			float scale = 8f / currentDistance;
 			scale = scale < minScale ? minScale : scale;
 			scale = scale > 1 ? 1 : scale;
 			
@@ -79,6 +80,11 @@ public abstract class AbstractTooltip extends JsonSprite
 			{
 				setScale(scale, scale);
 			}
+		}
+		
+		if (!onScreen)
+		{
+			currentDistance = Integer.MAX_VALUE;
 		}
 	}
 }

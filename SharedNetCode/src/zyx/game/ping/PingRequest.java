@@ -6,6 +6,7 @@ import zyx.net.io.controllers.NetworkCommands;
 
 public class PingRequest extends BaseNetworkRequest
 {
+	private static String ID = "id";
 	
 	public PingRequest()
 	{
@@ -15,7 +16,10 @@ public class PingRequest extends BaseNetworkRequest
 	@Override
 	protected void getDataObject(WriteableDataObject data, Object... params)
 	{
-//		System.out.println("Sending ping!");
+		int id = (int) params[0];
+		data.addInteger(ID, id);
+		
+		System.out.println(id + " Sending ping!");
 	}
 
 }

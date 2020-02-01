@@ -73,6 +73,11 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 		};
 	}
 
+	public void setDiffuse(AbstractTexture tex)
+	{
+		textures[0] = tex;
+	}
+	
 	protected void setTextures(AbstractTexture[] texture)
 	{
 		textures = texture;

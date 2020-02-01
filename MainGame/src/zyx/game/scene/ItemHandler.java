@@ -1,0 +1,116 @@
+package zyx.game.scene;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.components.world.World3D;
+import zyx.game.components.world.IItemHolder;
+import zyx.game.components.world.items.GameItem;
+import zyx.game.vo.HandheldItemType;
+
+public class ItemHandler
+{
+
+	private World3D world;
+
+	private HashMap<Integer, GameItem> itemMap;
+	private ArrayList<GameItem> itemList;
+	private ItemHolderHandler itemHolderHandler;
+
+	public ItemHandler(ItemHolderHandler holderHandler)
+	{
+		world = World3D.instance;
+
+		itemMap = new HashMap<>();
+		itemList = new ArrayList<>();
+		itemHolderHandler = holderHandler;
+	}
+
+	public void addItem(int uniqueId, GameItem item, int ownerId)
+	{
+		itemMap.put(uniqueId, item);
+		itemList.add(item);
+
+		IItemHolder itemHolder = itemHolderHandler.getById(ownerId);
+		item.setOwnerId(ownerId);
+		if (itemHolder != null)
+		{
+			itemHolder.hold(item);
+		}
+	}
+
+	public void setOwner(int uniqueId, int ownerId)
+	{
+		setOwner(uniqueId, ownerId, null);
+	}
+	
+	public void setOwner(int uniqueId, int ownerId, Vector3f position)
+	{
+		GameItem item = itemMap.get(uniqueId);
+
+		if (item != null)
+		{
+			int oldOwnerId = item.getOwnerId();
+			IItemHolder oldHolder = itemHolderHandler.getById(oldOwnerId);
+			if (oldHolder != null)
+			{
+				oldHolder.removeItem(item);
+			}
+
+			IItemHolder newHolder = itemHolderHandler.getById(ownerId);
+			if (newHolder != null)
+			{
+				newHolder.hold(item);
+			}
+			item.setOwnerId(ownerId);
+			
+			if (position != null)
+			{
+				item.setPosition(false, position);
+			}
+			
+			System.out.println(item.getPosition(false, null));
+		}
+	}
+
+	public GameItem getItemById(int uniqueId)
+	{
+		return itemMap.get(uniqueId);
+	}
+
+	public void removeItem(int uniqueId)
+	{
+		GameItem item = itemMap.remove(uniqueId);
+		if (item != null)
+		{
+			IItemHolder currentOwner = itemHolderHandler.getById(item.getOwnerId());
+			if (currentOwner != null)
+			{
+				currentOwner.removeItem(item);
+			}
+			
+			itemList.remove(item);
+			item.dispose();
+		}
+	}
+
+	public void clean()
+	{
+		for (GameItem item : itemList)
+		{
+			item.dispose();
+		}
+
+		itemMap.clear();
+		itemList.clear();
+	}
+
+	public void setType(int uniqueId, HandheldItemType type)
+	{
+		GameItem item = itemMap.get(uniqueId);
+		if (item != null)
+		{
+			item.setType(type);
+		}
+	}
+}

@@ -37,7 +37,7 @@ public class LoadableCubemapVO
 		
 		int textureLength = in.readInt();
 		gl_textureData = new byte[textureLength];
-		in.read(gl_textureData);
+		in.readFully(gl_textureData);
 		
 		positions = new Vector3f[layers];
 		for (int i = 0; i < layers; i++)

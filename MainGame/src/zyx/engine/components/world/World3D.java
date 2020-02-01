@@ -3,10 +3,7 @@ package zyx.engine.components.world;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.meshbatch.MeshBatchManager;
 import zyx.opengl.GLUtils;
-import zyx.opengl.buffers.AmbientOcclusionRenderer;
-import zyx.opengl.buffers.BufferRenderer;
-import zyx.opengl.buffers.DeferredRenderer;
-import zyx.opengl.buffers.DepthRenderer;
+import zyx.opengl.buffers.*;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.shaders.SharedShaderObjects;
@@ -18,6 +15,7 @@ public final class World3D extends WorldObject
 
 	public final Physics physics;
 
+	private DrawingRenderer drawing;
 	private DeferredRenderer renderer;
 	private DepthRenderer depth;
 	private AmbientOcclusionRenderer ambientOcclusion;
@@ -31,6 +29,7 @@ public final class World3D extends WorldObject
 
 		BufferRenderer.setupBuffers();
 
+		drawing = DrawingRenderer.getInstance();
 		renderer = DeferredRenderer.getInstance();
 		depth = DepthRenderer.getInstance();
 		ambientOcclusion = AmbientOcclusionRenderer.getInstance();
@@ -50,15 +49,18 @@ public final class World3D extends WorldObject
 		GLUtils.enableCulling();
 		GLUtils.setBlendNormal();
 
+		drawing.prepareRender();
 		depth.prepareRender();
 		ambientOcclusion.prepareRender();
 		renderer.prepareRender();
 
 		skybox.draw();
 		
+		drawing.draw();
 		draw();
 
 		MeshBatchManager.getInstance().draw();
+		
 		
 		ambientOcclusion.drawAmbientOcclusion();
 

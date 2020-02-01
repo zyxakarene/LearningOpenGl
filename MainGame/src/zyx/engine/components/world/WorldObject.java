@@ -63,7 +63,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 		float scale = HELPER_VEC3.x > HELPER_VEC3.y ? HELPER_VEC3.x : HELPER_VEC3.y;
 		scale = scale > HELPER_VEC3.z ? scale : HELPER_VEC3.z;
 
-		float radius = getRadius()* scale;
+		float radius = getRadius() * scale;
 
 		boolean visible = Camera.getInstance().isInView(HELPER_POSITION, radius);
 		return visible;
@@ -144,7 +144,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 		}
 		else
 		{
-			String msg = String.format("Cannot remove child %s when its parent %s != this %s", child, child.parent, this);
+			String msg = String.format("Cannot remove child %s when its parent '%s' != this '%s'", child, child.parent, this);
 			throw new RuntimeException(msg);
 		}
 	}
@@ -209,6 +209,8 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 		{
 			child.draw();
 		}
+		
+		onPostDraw();
 	}
 
 	@Override
@@ -356,6 +358,11 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 	}
 
 	protected void onDraw()
+	{
+
+	}
+
+	protected void onPostDraw()
 	{
 
 	}
@@ -524,12 +531,18 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 			parent.globalToLocal(HELPER_POSITION, HELPER_POSITION);
 		}
 
-		getPosition(true, HELPER_DIR);
+		getPosition(false, HELPER_DIR);
 
 		Vector3f.sub(HELPER_POSITION, HELPER_DIR, HELPER_DIR);
 
 		MatrixUtils.setDirTo(localMatrix, HELPER_DIR);
+//		rotate(-90, 0, 0);
 		updateTransforms(true);
+	}
+
+	public void lookAt(Vector3f pos)
+	{
+		lookAt(pos.x, pos.y, pos.z);
 	}
 
 	@Override

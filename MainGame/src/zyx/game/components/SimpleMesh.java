@@ -21,6 +21,7 @@ import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.WorldShader;
+import zyx.utils.GeometryUtils;
 import zyx.utils.cheats.DebugPhysics;
 import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IPhysbox;
@@ -162,6 +163,35 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 
 			AttachmentRequest request = new AttachmentRequest(child, attachmentPoint);
 			attachmentRequests.add(request);
+		}
+	}
+	
+	public void removeChildAsAttachment(SimpleMesh child)
+	{
+		child.setPosition(true, 0, 0, 0);
+		child.setDir(true, GeometryUtils.ROTATION_X);
+		
+		attachedObjects.remove(child);
+		
+		for (Attachment attachment : attachments)
+		{
+			if (attachment.child == child)
+			{
+				attachments.remove(attachment);
+				break;
+			}
+		}
+		
+		if (attachmentRequests != null)
+		{
+			for (AttachmentRequest attachmentRequest : attachmentRequests)
+			{
+				if (attachmentRequest.child == child)
+				{
+					attachmentRequests.remove(attachmentRequest);
+					break;
+				}
+			}
 		}
 	}
 

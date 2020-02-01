@@ -5,7 +5,7 @@ import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.opengl.textures.AbstractTexture;
 
-public abstract class BaseTextureRequiredResource extends Resource implements IResourceReady<TextureResource>
+public abstract class BaseTextureRequiredResource extends ExternalResource implements IResourceReady<Resource>
 {
 
 	private Resource[] textureResources;
@@ -37,8 +37,10 @@ public abstract class BaseTextureRequiredResource extends Resource implements IR
 	protected void loadTextures(String... resources)
 	{
 		resourceToIndexMap = new HashMap<>();
-		textureResources = new TextureResource[resources.length];
+		textureResources = new Resource[resources.length];
 		loadedTextures = new AbstractTexture[resources.length];
+		
+		Resource[] toLoad = new Resource[resources.length];
 		
 		for (int i = 0; i < textureResources.length; i++)
 		{
@@ -49,16 +51,21 @@ public abstract class BaseTextureRequiredResource extends Resource implements IR
 			textureResources[i] = textureResource;
 			
 			resourceToIndexMap.put(textureResource, i);
-			textureResource.registerAndLoad(this);
+			toLoad[i] = textureResource;
+		}
+		
+		for (Resource resource : toLoad)
+		{
+			resource.registerAndLoad(this);
 		}
 	}
 	
 	@Override
-	public void onResourceReady(TextureResource resource)
+	public void onResourceReady(Resource resource)
 	{
 		int index = resourceToIndexMap.remove(resource);
 		
-		loadedTextures[index] = resource.getContent();
+		loadedTextures[index] = (AbstractTexture) resource.getContent();
 		
 		if (resourceToIndexMap.isEmpty())
 		{

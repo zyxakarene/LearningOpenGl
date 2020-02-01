@@ -28,6 +28,24 @@ public class BaseNetworkController
 		NetworkServerChannel.setActiveController(this);
 	}
 	
+	public void dispose()
+	{
+		if (responseDispatcher != null)
+		{
+			responseDispatcher.dispose();
+			responseDispatcher = null;
+		}
+		
+		if (requestDispatcher != null)
+		{
+			requestDispatcher.dispose();
+			requestDispatcher = null;
+		}
+		
+		NetworkChannel.setActiveController(null);
+		NetworkServerChannel.setActiveController(null);
+	}
+	
 	public final void addListeners()
 	{
 		addResponseHandlersTo(responseDispatcher);

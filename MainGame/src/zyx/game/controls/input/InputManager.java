@@ -52,11 +52,11 @@ public class InputManager implements IUpdateable
 	{
 		mouseData.grabbed = Mouse.isGrabbed();
 
-		int minX = 0;
-		int maxX = 0;
+		int combinedX = 0;
+		int combinedY = 0;
 
-		int minY = 0;
-		int maxY = 0;
+		int lastX = mouseData.x;
+		int lastY = mouseData.y;
 
 		while (Mouse.next())
 		{
@@ -65,6 +65,9 @@ public class InputManager implements IUpdateable
 			{
 				mouseData.x = ScreenSize.width / 2;
 				mouseData.y = ScreenSize.height / 2;
+
+				combinedX += Mouse.getEventDX();
+				combinedY += Mouse.getEventDY();
 			}
 			else
 			{
@@ -73,19 +76,6 @@ public class InputManager implements IUpdateable
 			}
 
 			//Movements
-			int x = Mouse.getEventDX();
-			int y = Mouse.getEventDY();
-			minX = x < minX ? x : minX;
-			minY = y < minY ? y : minY;
-			
-			maxX = x > maxX ? x : maxX;
-			maxY = y > maxY ? y : maxY;
-			
-			if (mouseData.dX != 0 || mouseData.dY != 0)
-			{
-				onMouseMoved.dispatch(mouseData);
-			}
-			
 			//Clicking
 			int button = Mouse.getEventButton();
 			if (button != -1)
@@ -111,8 +101,16 @@ public class InputManager implements IUpdateable
 		}
 
 		//Movements
-		mouseData.dX = minX + maxX;
-		mouseData.dY = minY + maxY;
+		if (mouseData.grabbed)
+		{
+			mouseData.dX = combinedX;
+			mouseData.dY = combinedY;
+		}
+		else
+		{
+			mouseData.dX = lastX - mouseData.x;
+			mouseData.dY = lastY - mouseData.y;
+		}
 
 		if (mouseData.dX != 0 || mouseData.dY != 0)
 		{

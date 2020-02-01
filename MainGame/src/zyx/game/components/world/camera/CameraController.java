@@ -3,7 +3,7 @@ package zyx.game.components.world.camera;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.behavior.camera.CameraUpdateLightbehavior;
 import zyx.game.behavior.camera.CameraUpdateViewBehavior;
-import zyx.game.behavior.freefly.CameraFreeFlyBehavior;
+import zyx.game.behavior.freefly.FreeFlyBehavior;
 import zyx.game.components.GameObject;
 import zyx.game.controls.lights.LightsManager;
 import zyx.opengl.camera.Camera;
@@ -17,8 +17,6 @@ public class CameraController extends GameObject
 	{
 		camera = Camera.getInstance();
 
-		addBehavior(new CameraFreeFlyBehavior());
-		addBehavior(new CameraUpdateViewBehavior());
 		addBehavior(new CameraUpdateLightbehavior());
 		
 		LightsManager.getInstane().setSource(this);

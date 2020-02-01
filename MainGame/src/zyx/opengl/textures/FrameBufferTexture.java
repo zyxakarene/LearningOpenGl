@@ -35,8 +35,8 @@ public class FrameBufferTexture
 		glTexImage2D(GL_TEXTURE_2D, 0, format.glInternalFormat, width, height, 0, format.glFormat, format.glType, NULL_BUFFER);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 
 		glFramebufferTexture2D(GL_FRAMEBUFFER, attachment.glAttachment, GL_TEXTURE_2D, id, 0);
 	}

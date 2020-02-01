@@ -21,7 +21,7 @@ public abstract class AbstractSerializer
 	
 	public final int getLength(String name, Object obj)
 	{
-		return (Character.BYTES * name.length()) + getDataLength(obj);
+		return Short.BYTES + (Character.BYTES * name.length()) + getDataLength(obj);
 	}
 	
 	public final int getLength(Object obj)

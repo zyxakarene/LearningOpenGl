@@ -3,13 +3,8 @@ package zyx.engine.resources.impl;
 import java.util.ArrayList;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
-import zyx.game.controls.resourceloader.ResourceLoader;
-import zyx.game.controls.resourceloader.requests.IResourceLoaded;
-import zyx.game.controls.resourceloader.requests.ResourceRequestDataInput;
-import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
-import zyx.utils.cheats.Print;
 
-public abstract class Resource implements IResourceLoaded<ResourceDataInputStream>
+public abstract class Resource
 {
 
 	public final String path;
@@ -19,8 +14,6 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 	private ArrayList<IResourceReady> pointers;
 	private boolean loading;
 	private boolean loaded;
-
-	private ResourceRequestDataInput resourceRequest;
 	
 	private ArrayList<Resource> dependencies;
 	private int loadedDependenciesCount;
@@ -67,16 +60,17 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 		}
 	}
 
-	protected void beginLoad()
+	private void beginLoad()
 	{
-		resourceRequest = new ResourceRequestDataInput(path, this);
-		ResourceLoader.getInstance().addEntry(resourceRequest);
+		onBeginLoad();
 		
 		for (Resource dependency : dependencies)
 		{
 			dependency.registerAndLoad(dependencyLoaded);
 		}
 	}
+	
+	protected abstract void onBeginLoad();
 	
 	private void onDependencyLoaded(Resource resource)
 	{
@@ -124,13 +118,6 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 
 	private void dispose()
 	{
-		if (loading && !loaded && resourceRequest != null)
-		{
-			ResourceLoader.getInstance().cancelEntry(resourceRequest);
-			resourceRequest.dispose();
-			resourceRequest = null;
-		}
-
 		for (Resource dependency : dependencies)
 		{
 			dependency.unregister(dependencyLoaded);
@@ -153,6 +140,11 @@ public abstract class Resource implements IResourceLoaded<ResourceDataInputStrea
 	public boolean isLoaded()
 	{
 		return loaded;
+	}
+
+	public boolean isLoading()
+	{
+		return loading;
 	}
 
 	void onDispose()

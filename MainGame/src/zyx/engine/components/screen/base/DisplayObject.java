@@ -58,6 +58,8 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 
 	public DisplayObject()
 	{
+		name = String.valueOf(Math.random());
+		
 		invWorldMatrix = SharedPools.MATRIX_POOL.getInstance();
 		worldMatrix = SharedPools.MATRIX_POOL.getInstance();
 		localMatrix = SharedPools.MATRIX_POOL.getInstance();
@@ -213,7 +215,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		
 		onDraw();
 		
-		if (clipRect != null)
+		if (oldClipData != null)
 		{
 			shader.setClipRect(oldClipData.x, oldClipData.width, oldClipData.y, oldClipData.height);
 			CLIP_POOL.releaseInstance(oldClipData);
@@ -272,6 +274,8 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 
 	public void setPosition(boolean local, float x, float y)
 	{
+		x = (int)x;
+		y = (int)y;
 		HELPER_VEC2.set(x, y);
 
 		if (!local && parent != null)

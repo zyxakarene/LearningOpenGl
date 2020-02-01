@@ -30,6 +30,8 @@ public enum ResourceRule
 	TEXTURES_SPECULAR	("specular.#",			"assets/textures/#.png",	SpecularTextureResource.class),
 	SOUNDS				("sound.#",				"assets/sounds/#.wav",		SoundResource.class),
 	
+	SPECIAL_DRAWABLE	("special.drawable",	"",							DrawableTextureResource.class),
+	
 	UNKNOWN				("",					"",							GenericResource.class);
 	
 	private static final char SEGMENT_SPLIT = '.';

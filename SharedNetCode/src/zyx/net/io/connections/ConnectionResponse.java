@@ -41,9 +41,9 @@ public class ConnectionResponse
 		try (ObjectInputStream stream = new ObjectInputStream(in))
 		{
 			name = stream.readUTF();
-			int length = stream.available();
+			int length = stream.readShort();
 			byte[] buffer = new byte[length];
-			stream.read(buffer, 0, length);
+			stream.readFully(buffer);
 			
 			object = new ReadableDataObject(buffer);
 		}

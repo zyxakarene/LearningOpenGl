@@ -5,12 +5,35 @@
 	[
 		{
 			"name":"play_button",
-			"type":"scale9button",
+			"type":"composedScale9button",
 			"percentWidth":0.5,
 			"percentHeight":0.5,
 			"centerOffsetX":0,
 			"centerOffsetY":0,
-			"texture":["BtnUp", "BtnHover", "BtnDown"]
+			"colorScheme":"green",
+			"style":"panel_01"
+		},
+		{
+			"name":"menu_panel",
+			"type":"composedScale9image",
+			"percentWidth":0.2,
+			"percentHeight":0.1,
+			"centerOffsetX":0,
+			"centerOffsetY":50,
+			"colorScheme":"greenInv",
+			"style":"panel_02"
+		},
+		{
+			"name":"menu_text",
+			"type":"textfield",
+			"x":100,
+			"y":100,
+			"width":300,
+			"height":150,
+			"showBorders":true,
+			"font":"font.console",
+			"color":"0xFF00FF",
+			"text":"I am a long text that scales up and down and changes container size"
 		}
 	]
 }

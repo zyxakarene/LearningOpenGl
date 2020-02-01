@@ -13,6 +13,7 @@ import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.sound.SoundManager;
 import zyx.game.network.PingManager;
 import zyx.net.core.ConnectionHandler;
+import zyx.opengl.particles.ParticleManager;
 import zyx.utils.tasks.TaskScheduler;
 
 public class MegaManager
@@ -24,6 +25,7 @@ public class MegaManager
 		ResourceLoader.getInstance().handleReplies();
 		ConnectionHandler.getInstance().handleReplies();
 
+		ParticleManager.getInstance().update(timestamp, elapsed);
 		TooltipManager.getInstance().update(timestamp, elapsed);
 		CubemapManager.getInstance().update(timestamp, elapsed);
 		MeshAnimator.getInstance().update(timestamp, elapsed);

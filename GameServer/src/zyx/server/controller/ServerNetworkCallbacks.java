@@ -1,12 +1,14 @@
 package zyx.server.controller;
 
-import zyx.game.vo.LoginData;
-import zyx.server.players.Player;
-import zyx.game.vo.PlayerPositionData;
+import zyx.server.controller.sending.ServerSender;
+import zyx.game.login.data.LoginData;
+import zyx.server.world.humanoids.players.Player;
+import zyx.game.position.data.PositionData;
 import zyx.net.io.controllers.NetworkCallbacks;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.INetworkCallback;
-import zyx.server.players.PlayerManager;
+import zyx.server.controller.services.PlayerService;
+import zyx.server.world.humanoids.players.PlayerManager;
 
 public class ServerNetworkCallbacks extends NetworkCallbacks
 {
@@ -21,17 +23,17 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 		createCallbacks();
 
 		registerCallback(NetworkCommands.LOGIN, onPlayerLogin);
-		registerCallback(NetworkCommands.PLAYER_LEFT_GAME, onPlayerLeave);
-		registerCallback(NetworkCommands.PLAYER_UPDATE_POSITION, onPlayerPos);
+		registerCallback(NetworkCommands.CHARACTER_LEFT_GAME, onPlayerLeave);
+		registerCallback(NetworkCommands.CHARACTER_UPDATE_POSITION, onPlayerPos);
 		registerCallback(NetworkCommands.PING, onPlayerPing);
 	}
 
 	private void onPlayerLogin(LoginData data)
 	{
-		Player player = PlayerManager.getInstance().createPlayer(data.uniqueId, data.name, data.connection);
-		System.out.println("Player: " + player.id + " joined the game");
+		Player player = PlayerManager.getInstance().createPlayer(data.name, data.gender, data.connection);
+		System.out.println("Player: " + player.id + " - " + player.gender + " joined the game");
 
-		ServerSender.sendToSingle(NetworkCommands.AUTHENTICATE, player.connection, player.name, player.id);
+		PlayerService.authenticate(player);
 
 		onPlayerJoin(player);
 	}
@@ -41,28 +43,28 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 		PingManager.getInstance().addEntity(player.id);
 
 		//Tell everyone that new guy joined
-		ServerSender.sendToAllBut(NetworkCommands.PLAYER_JOINED_GAME, player.connection, player.id);
+		PlayerService.playerJoined(player);
 
 		//Telling new guy about everyone
-		ServerSender.sendToSingle(NetworkCommands.SETUP_GAME, player.connection, player);
+		PlayerService.setupGame(player);
 	}
 
 	private void onPlayerLeave(int playerId)
 	{
-		Player player = PlayerManager.getInstance().getPlayer(playerId);
+		Player player = PlayerManager.getInstance().getEntity(playerId);
 		PingManager.getInstance().removeEntity(playerId);
 
 		//Tell everyone that the guy left
-		ServerSender.sendToAllBut(NetworkCommands.PLAYER_LEFT_GAME, player.connection, playerId);
+		PlayerService.playerLeft(player);
 
-		PlayerManager.getInstance().removePlayer(player);
+		PlayerManager.getInstance().removeEntity(player);
 	}
 
-	private void onPlayerPos(PlayerPositionData data)
+	private void onPlayerPos(PositionData data)
 	{
 		int id = data.id;
 
-		Player player = PlayerManager.getInstance().getPlayer(id);
+		Player player = PlayerManager.getInstance().getEntity(id);
 		player.updateFrom(data);
 	}
 
@@ -73,7 +75,7 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 			onPlayerLeave(data);
 		};
 
-		onPlayerPos = (INetworkCallback<PlayerPositionData>) (PlayerPositionData data) -> 
+		onPlayerPos = (INetworkCallback<PositionData>) (PositionData data) -> 
 		{
 			onPlayerPos(data);
 		};

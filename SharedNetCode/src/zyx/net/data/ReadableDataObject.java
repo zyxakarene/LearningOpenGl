@@ -77,6 +77,12 @@ public class ReadableDataObject
 		return value == null ? 0 : (int) value;
 	}
 
+	public int[] getIntegerArray(String name)
+	{
+		Object value = dataMap.get(name);
+		return value == null ? null : (int[]) value;
+	}
+
 	public long getLong(String name)
 	{
 		Object value = dataMap.get(name);

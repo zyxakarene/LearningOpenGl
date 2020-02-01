@@ -4,9 +4,7 @@ import java.util.HashMap;
 import zyx.engine.components.screen.base.DisplayObject;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
 import zyx.engine.curser.CursorManager;
-import zyx.engine.curser.GameCursor;
 import zyx.game.controls.input.MouseData;
-import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IUpdateable;
 
 public class MouseTouchManager implements IUpdateable
@@ -81,6 +79,11 @@ public class MouseTouchManager implements IUpdateable
 		TouchState newState = currentState;
 		boolean update = false;
 
+		if(mouseData.grabbed)
+		{
+			return;
+		}
+		
 		switch (currentState)
 		{
 			case LONG_PRESSED:
@@ -194,7 +197,7 @@ public class MouseTouchManager implements IUpdateable
 			dispatchTo(parent, state, collision);
 		}
 		
-		if (target.hoverIcon != null)
+		if (target.focusable && target.hoverIcon != null)
 		{
 			CursorManager.getInstance().setCursor(target.hoverIcon);
 		}
