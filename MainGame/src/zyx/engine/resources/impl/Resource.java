@@ -147,7 +147,7 @@ public abstract class Resource
 		return loading;
 	}
 
-	void onDispose()
+	protected void onDispose()
 	{
 
 	}

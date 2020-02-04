@@ -1,5 +1,6 @@
-package zyx.engine.resources.impl;
+package zyx.engine.resources.impl.textures;
 
+import zyx.engine.resources.impl.ExternalResource;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.textures.GameTexture;
 import zyx.opengl.textures.enums.TextureSlot;
@@ -42,7 +43,7 @@ public class TextureResource extends ExternalResource
 	}
 
 	@Override
-	void onDispose()
+	protected void onDispose()
 	{
 		if(texture != null)
 		{

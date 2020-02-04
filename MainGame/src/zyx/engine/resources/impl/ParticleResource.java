@@ -29,7 +29,7 @@ public class ParticleResource extends ExternalResource implements IResourceReady
 	}
 
 	@Override
-	void onDispose()
+	protected void onDispose()
 	{
 		if(model != null)
 		{

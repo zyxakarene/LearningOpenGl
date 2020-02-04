@@ -31,7 +31,7 @@ public class DrawableTextureResource extends Resource
 	}
 	
 	@Override
-	void onDispose()
+	protected void onDispose()
 	{
 		if(drawTexture != null)
 		{

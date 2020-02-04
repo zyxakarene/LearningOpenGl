@@ -28,7 +28,7 @@ public class CubemapResource extends ExternalResource
 	}
 
 	@Override
-	void onDispose()
+	protected void onDispose()
 	{
 		if(cubemap != null)
 		{

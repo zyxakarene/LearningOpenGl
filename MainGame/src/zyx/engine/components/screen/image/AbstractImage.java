@@ -4,7 +4,7 @@ import zyx.engine.components.animations.ILoadable;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.Resource;
-import zyx.engine.resources.impl.TextureResource;
+import zyx.engine.resources.impl.textures.TextureResource;
 import zyx.engine.utils.callbacks.CustomCallback;
 import zyx.opengl.textures.GameTexture;
 

@@ -1,5 +1,12 @@
 package zyx.engine.resources;
 
+import zyx.engine.resources.impl.sheet.SpriteSheetResource;
+import zyx.engine.resources.impl.sheet.SpriteSheetJsonResource;
+import zyx.engine.resources.impl.meshes.MeshBatchResource;
+import zyx.engine.resources.impl.meshes.MeshResource;
+import zyx.engine.resources.impl.textures.SpecularTextureResource;
+import zyx.engine.resources.impl.textures.NormalTextureResource;
+import zyx.engine.resources.impl.textures.TextureResource;
 import zyx.engine.resources.impl.*;
 import zyx.engine.resources.rules.ParsedResource;
 import zyx.engine.resources.rules.ResourceRuleParser;

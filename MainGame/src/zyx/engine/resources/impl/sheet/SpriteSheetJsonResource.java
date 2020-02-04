@@ -1,8 +1,9 @@
-package zyx.engine.resources.impl;
+package zyx.engine.resources.impl.sheet;
 
 import java.util.HashMap;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import zyx.engine.resources.impl.JsonResource;
 import zyx.utils.geometry.Rectangle;
 
 public class SpriteSheetJsonResource extends JsonResource

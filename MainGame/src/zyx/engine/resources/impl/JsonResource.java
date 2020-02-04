@@ -48,7 +48,7 @@ public class JsonResource extends ExternalResource
 	}
 
 	@Override
-	void onDispose()
+	protected void onDispose()
 	{
 		super.onDispose();
 

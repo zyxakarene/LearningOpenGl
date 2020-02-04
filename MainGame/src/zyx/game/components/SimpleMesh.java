@@ -9,7 +9,7 @@ import zyx.engine.components.cubemaps.IReflective;
 import zyx.engine.components.world.WorldObject;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
-import zyx.engine.resources.impl.MeshResource;
+import zyx.engine.resources.impl.meshes.MeshResource;
 import zyx.engine.resources.impl.Resource;
 import zyx.engine.utils.callbacks.CustomCallback;
 import zyx.engine.utils.callbacks.ICallback;

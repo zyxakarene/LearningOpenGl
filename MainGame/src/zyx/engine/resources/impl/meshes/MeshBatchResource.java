@@ -1,12 +1,16 @@
-package zyx.engine.resources.impl;
+package zyx.engine.resources.impl.meshes;
 
+import java.util.ArrayList;
+import zyx.engine.resources.impl.sub.BaseRequiredSubResource;
+import zyx.engine.resources.impl.sub.ISubResourceLoaded;
+import zyx.engine.resources.impl.sub.SubResourceBatch;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.MeshBatchModel;
 import zyx.opengl.models.loading.ZafLoader;
 import zyx.opengl.textures.AbstractTexture;
 
-public class MeshBatchResource extends BaseTextureRequiredResource
+public class MeshBatchResource extends BaseRequiredSubResource implements ISubResourceLoaded<AbstractTexture>
 {
 
 	private LoadableWorldModelVO loadedVo;
@@ -24,17 +28,17 @@ public class MeshBatchResource extends BaseTextureRequiredResource
 	}
 
 	@Override
-	void onDispose()
+	protected void onDispose()
 	{
 		super.onDispose();
-		
-		if(model != null)
+
+		if (model != null)
 		{
 			model.dispose();
 			model = null;
 		}
-		
-		if(loadedVo != null)
+
+		if (loadedVo != null)
 		{
 			loadedVo.dispose();
 			loadedVo = null;
@@ -51,18 +55,28 @@ public class MeshBatchResource extends BaseTextureRequiredResource
 //		String specular = loadedVo.getSpecularTextureId();
 //		String normal = "normal.default_normal";
 		String specular = "specular.mirror_specular";
-		loadTextures(diffuse, normal, specular);
+
+		SubResourceBatch<AbstractTexture> textureBatch = new SubResourceBatch(this, diffuse, normal, specular);
+		addResourceBatch(textureBatch);
 	}
 
 	@Override
-	protected void onTexturesLoaded(AbstractTexture[] texture)
+	public void onLoaded(ArrayList<AbstractTexture> data)
 	{
-		loadedVo.setDiffuseTexture(texture[0]);
-		loadedVo.setNormalTexture(texture[1]);
-		loadedVo.setSpecularTexture(texture[2]);
-		
+		AbstractTexture diffuse = data.get(0);
+		AbstractTexture normal = data.get(1);
+		AbstractTexture spec = data.get(2);
+
+		loadedVo.setDiffuseTexture(diffuse);
+		loadedVo.setNormalTexture(normal);
+		loadedVo.setSpecularTexture(spec);
+
+	}
+
+	@Override
+	protected void onSubBatchesLoaded()
+	{
 		model = new MeshBatchModel(loadedVo);
-		
 		onContentLoaded(model);
 	}
 }

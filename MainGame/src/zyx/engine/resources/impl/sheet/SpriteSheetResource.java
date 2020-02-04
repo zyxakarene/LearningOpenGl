@@ -1,7 +1,9 @@
-package zyx.engine.resources.impl;
+package zyx.engine.resources.impl.sheet;
 
+import zyx.engine.resources.impl.textures.TextureResource;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
+import zyx.engine.resources.impl.Resource;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.textures.GameTexture;
 import zyx.opengl.textures.SubTexture;
@@ -63,7 +65,7 @@ public class SpriteSheetResource extends TextureResource implements IResourceRea
 	}
 
 	@Override
-	void onDispose()
+	protected void onDispose()
 	{
 		super.onDispose();
 		

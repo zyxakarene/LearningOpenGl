@@ -1,5 +1,11 @@
 package zyx.debug.views.resources;
 
+import zyx.engine.resources.impl.sheet.SpriteSheetResource;
+import zyx.engine.resources.impl.sheet.SpriteSheetJsonResource;
+import zyx.engine.resources.impl.meshes.MeshResource;
+import zyx.engine.resources.impl.textures.SpecularTextureResource;
+import zyx.engine.resources.impl.textures.NormalTextureResource;
+import zyx.engine.resources.impl.textures.TextureResource;
 import java.io.File;
 import java.util.HashMap;
 import javax.swing.Icon;

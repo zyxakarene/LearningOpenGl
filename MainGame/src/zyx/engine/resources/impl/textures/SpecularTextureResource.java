@@ -1,5 +1,6 @@
-package zyx.engine.resources.impl;
+package zyx.engine.resources.impl.textures;
 
+import zyx.engine.resources.impl.textures.TextureResource;
 import zyx.opengl.textures.enums.TextureSlot;
 
 public class SpecularTextureResource extends TextureResource

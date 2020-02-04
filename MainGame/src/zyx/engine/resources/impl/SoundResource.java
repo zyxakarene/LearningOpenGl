@@ -28,7 +28,7 @@ public class SoundResource extends ExternalResource
 	}
 
 	@Override
-	void onDispose()
+	protected void onDispose()
 	{
 		if(audio != null)
 		{

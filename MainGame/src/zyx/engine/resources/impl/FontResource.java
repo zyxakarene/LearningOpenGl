@@ -1,6 +1,10 @@
 package zyx.engine.resources.impl;
 
+import zyx.engine.resources.impl.sub.ISubResourceLoaded;
+import zyx.engine.resources.impl.sub.BaseRequiredSubResource;
+import zyx.engine.resources.impl.sub.SubResourceBatch;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
@@ -8,7 +12,7 @@ import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.bitmapfont.BitmapFont;
 import zyx.opengl.textures.bitmapfont.BitmapFontGenerator;
 
-public class FontResource extends BaseTextureRequiredResource
+public class FontResource extends BaseRequiredSubResource implements ISubResourceLoaded<AbstractTexture>
 {
 
 	private BitmapFont font;
@@ -35,7 +39,7 @@ public class FontResource extends BaseTextureRequiredResource
 			generator = new BitmapFontGenerator();
 			generator.setFontData(fontData);
 
-			loadTextures(textureResource);
+			addResourceBatch(new SubResourceBatch(this, textureResource));
 		}
 		catch (IOException ex)
 		{
@@ -44,7 +48,7 @@ public class FontResource extends BaseTextureRequiredResource
 	}
 
 	@Override
-	void onDispose()
+	protected void onDispose()
 	{
 		super.onDispose();
 
@@ -62,11 +66,15 @@ public class FontResource extends BaseTextureRequiredResource
 	}
 
 	@Override
-	protected void onTexturesLoaded(AbstractTexture[] texture)
+	public void onLoaded(ArrayList<AbstractTexture> data)
 	{
-		generator.setMainTexture(texture[0]);
+		generator.setMainTexture(data.get(0));
 		font = generator.createBitmapFont();
-		
+	}
+	
+	@Override
+	protected void onSubBatchesLoaded()
+	{
 		onContentLoaded(font);
 	}
 }

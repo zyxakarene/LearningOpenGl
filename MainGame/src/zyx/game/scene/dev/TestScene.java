@@ -2,10 +2,11 @@ package zyx.game.scene.dev;
 
 import java.util.ArrayList;
 import zyx.engine.scene.Scene;
+import zyx.game.behavior.camera.CameraUpdateViewBehavior;
+import zyx.game.behavior.freefly.FreeFlyBehavior;
 import zyx.game.components.AnimatedMesh;
+import zyx.game.components.GameObject;
 import zyx.game.components.MeshObject;
-import zyx.game.components.screen.hud.MainHud;
-import zyx.utils.FloatMath;
 
 public class TestScene extends Scene
 {
@@ -42,13 +43,22 @@ public class TestScene extends Scene
 		knight.load("mesh.knight.knight");
 		knight.setAnimation("attack");
 		world.addChild(knight);
+		
+		MeshObject player = new MeshObject();
+		player.addBehavior(new FreeFlyBehavior());
+		player.addBehavior(new CameraUpdateViewBehavior());
+
+		objects.add(player);
+
+		world.addChild(player);
+
 	}
 
-	@Override
-	protected MainHud createHud()
-	{
-		return new MainHud();
-	}
+//	@Override
+//	protected MainHud createHud()
+//	{
+//		return new MainHud();
+//	}
 
 	@Override
 	protected void onUpdate(long timestamp, int elapsedTime)
