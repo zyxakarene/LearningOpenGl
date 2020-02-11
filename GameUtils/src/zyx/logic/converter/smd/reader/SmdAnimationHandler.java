@@ -13,14 +13,16 @@ public class SmdAnimationHandler implements ISmdHandler
 
 	private final Vector3f pos, rot;
 	
-	private String fileName;
+	private String name;
+	private boolean looping;
 	private ArrayList<AnimationFrame> animFrames = new ArrayList<>();
 	private AnimationFrame currentFrame;
 	private HashMap<Byte, Bone> boneMap;
 
-	public SmdAnimationHandler(String fileName)
+	public SmdAnimationHandler(String name, boolean looping)
 	{
-		this.fileName = fileName;
+		this.name = name;
+		this.looping = looping;
 		pos = new Vector3f();
 		rot = new Vector3f();
 	}
@@ -63,7 +65,7 @@ public class SmdAnimationHandler implements ISmdHandler
 		AnimationFrame[] frames = new AnimationFrame[animFrames.size()];
 		animFrames.toArray(frames);
 		
-		return new Animation(fileName, frames);
+		return new Animation(name, looping, frames);
 	}
 
 	@Override

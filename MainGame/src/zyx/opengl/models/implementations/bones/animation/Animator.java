@@ -38,7 +38,7 @@ public class Animator implements IDisposeable
 
 			float currentFrame = (timeSinceStart / GameConstants.ANIMATION_MS_PER_FRAME);
 
-			if (currentAnimation.loopable)
+			if (currentAnimation.looping)
 			{
 				currentFrame = currentFrame % animationLength;
 			}
@@ -52,7 +52,7 @@ public class Animator implements IDisposeable
 
 			if (nextFrame >= animationLength)
 			{
-				nextFrame = currentAnimation.loopable ? 0 : animationLength - 1;
+				nextFrame = currentAnimation.looping ? 0 : animationLength - 1;
 			}
 
 			float percentage = currentFrame - prevFrame;

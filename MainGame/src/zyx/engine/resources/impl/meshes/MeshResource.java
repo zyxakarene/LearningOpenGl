@@ -7,6 +7,7 @@ import zyx.engine.resources.impl.sub.SubResourceBatch;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.WorldModel;
+import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.loading.ZafLoader;
 import zyx.opengl.textures.AbstractTexture;
 
@@ -17,14 +18,14 @@ public class MeshResource extends BaseRequiredSubResource
 	private WorldModel model;
 
 	private ISubResourceLoaded<AbstractTexture> textureLoaded;
-	private ISubResourceLoaded<Object> skeletonLoaded;
+	private ISubResourceLoaded<Skeleton> skeletonLoaded;
 
 	public MeshResource(String path)
 	{
 		super(path);
 
 		textureLoaded = (ISubResourceLoaded<AbstractTexture>) this::onTextureLoaded;
-		skeletonLoaded = (ISubResourceLoaded<Object>) this::onSkeletonLoaded;
+		skeletonLoaded = (ISubResourceLoaded<Skeleton>) this::onSkeletonLoaded;
 	}
 
 	@Override
@@ -60,8 +61,11 @@ public class MeshResource extends BaseRequiredSubResource
 		String normal = loadedVo.getNormalTextureId();
 		String specular = loadedVo.getSpecularTextureId();
 		
+		String skeleton = loadedVo.getSkeletonId();
+		
 		SubResourceBatch<AbstractTexture> textureBatch = new SubResourceBatch(textureLoaded, diffuse, normal, specular);
-		addResourceBatch(textureBatch);
+		SubResourceBatch<Skeleton> skeletonBatch = new SubResourceBatch(skeletonLoaded, skeleton);
+		addResourceBatch(textureBatch, skeletonBatch);
 	}
 
 	
@@ -76,9 +80,10 @@ public class MeshResource extends BaseRequiredSubResource
 		loadedVo.setSpecularTexture(spec);
 	}
 
-	private void onSkeletonLoaded(ArrayList<Object> data)
+	private void onSkeletonLoaded(ArrayList<Skeleton> data)
 	{
-
+		Skeleton skeleton = data.get(0);
+		loadedVo.setSkeleton(skeleton);
 	}
 
 	@Override

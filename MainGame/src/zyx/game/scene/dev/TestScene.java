@@ -28,7 +28,7 @@ public class TestScene extends Scene
 	@Override
 	protected void onInitialize()
 	{
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < 0; i++)
 		{
 			MeshObject model = new MeshObject();
 			model.load("mesh.box");

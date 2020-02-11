@@ -13,9 +13,11 @@ public class SmdObject
 	private ArrayList<Animation> animations = new ArrayList<>();
 	private PhysInformation phys = new PhysInformation();
 	private ArrayList<Integer> elements;
+	private String skeletonPath;
 	private String diffuseTexturePath;
 	private String normalTexturePath;
 	private String specularTexturePath;
+	private boolean isSkeleton;
 	
 	private Vector3f radiusCenter = new Vector3f();
 	private float radius = 0;
@@ -23,6 +25,11 @@ public class SmdObject
 	public void setRootBone(Bone bone)
 	{
 		this.rootBone = bone;
+	}
+	
+	public void setSkeleton(boolean skeleton)
+	{
+		this.isSkeleton = skeleton;
 	}
 
 	public void setDiffuseTexturePath(String diffuseTexturePath)
@@ -38,6 +45,11 @@ public class SmdObject
 	public void setSpecularTexturePath(String specularTexturePath)
 	{
 		this.specularTexturePath = specularTexturePath;
+	}
+
+	public void setSkeletonPath(String skeletonPath)
+	{
+		this.skeletonPath = skeletonPath;
 	}
 
 	public Bone getRootBone()
@@ -126,8 +138,29 @@ public class SmdObject
 	
 	public void save(DataOutputStream out) throws IOException
 	{
+		if (isSkeleton)
+		{
+			saveAsSkeleton(out);
+		}
+		else
+		{
+			saveAsMesh(out);
+		}
+	}
+
+	private void saveAsSkeleton(DataOutputStream out) throws IOException
+	{
 		rootBone.save(out);
 		
+		out.writeInt(animations.size());
+		for (Animation animation : animations)
+		{
+			animation.save(out);
+		}
+	}
+
+	private void saveAsMesh(DataOutputStream out) throws IOException
+	{
 		out.writeInt(verticies.size());
 		for (Vertex vertex : verticies)
 		{
@@ -140,12 +173,6 @@ public class SmdObject
 			out.writeShort(element);
 		}
 		
-		out.writeInt(animations.size());
-		for (Animation animation : animations)
-		{
-			animation.save(out);
-		}
-		
 		phys.save(out);
 		
 		out.writeUTF(diffuseTexturePath);
@@ -156,5 +183,7 @@ public class SmdObject
 		out.writeFloat(radiusCenter.y);
 		out.writeFloat(radiusCenter.z);
 		out.writeFloat(radius);
+		
+		out.writeUTF(skeletonPath);
 	}
 }

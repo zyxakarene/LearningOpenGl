@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 public class QcParser
 {
+	private static final String TYPE_START = "$type";
+	private static final String SKELETON_START = "$skeleton";
 	private static final String MESH_START = "$mesh";
 	private static final String PHYS_START = "$phys";
 	private static final String TEXTURE_START = "$texture";
@@ -45,6 +47,14 @@ public class QcParser
 		if (line.startsWith(MESH_START))
 		{
 			reader.readMesh(line, qc);
+		}
+		else if (line.startsWith(SKELETON_START))
+		{
+			reader.readSkeleton(line, qc);
+		}
+		else if (line.startsWith(TYPE_START))
+		{
+			reader.readType(line, qc);
 		}
 		else if (line.startsWith(PHYS_START))
 		{

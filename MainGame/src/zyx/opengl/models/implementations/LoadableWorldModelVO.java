@@ -11,6 +11,7 @@ public class LoadableWorldModelVO
 	float vertexData[];
 	int elementData[];
 	Skeleton skeleton;
+	String skeletonId;
 	String diffuseTextureId;
 	String normalTextureId;
 	String specularTextureId;
@@ -22,18 +23,23 @@ public class LoadableWorldModelVO
 	AbstractTexture normalTexture;
 	AbstractTexture specularTexture;
 
-	public LoadableWorldModelVO(float[] vertexData, int[] elementData, Skeleton skeleton, PhysBox physBox, String diffuse, String normal, String specular,
-			Vector3f radiusCenter, float radius)
+	public LoadableWorldModelVO(float[] vertexData, int[] elementData, PhysBox physBox, String diffuse, String normal, String specular,
+			Vector3f radiusCenter, float radius, String skeletonId)
 	{
 		this.vertexData = vertexData;
 		this.elementData = elementData;
-		this.skeleton = skeleton;
 		this.diffuseTextureId = diffuse;
 		this.normalTextureId = normal;
 		this.specularTextureId = specular;
 		this.physBox = physBox;
 		this.radiusCenter = radiusCenter;
 		this.radius = radius;
+		this.skeletonId = skeletonId;
+	}
+
+	public void setSkeleton(Skeleton skeleton)
+	{
+		this.skeleton = skeleton;
 	}
 
 	public String getDiffuseTextureId()
@@ -49,6 +55,11 @@ public class LoadableWorldModelVO
 	public String getSpecularTextureId()
 	{
 		return specularTextureId;
+	}
+
+	public String getSkeletonId()
+	{
+		return skeletonId;
 	}
 	
 	public void setDiffuseTexture(AbstractTexture gameTexture)
