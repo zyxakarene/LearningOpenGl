@@ -28,6 +28,7 @@ public class Bone
 
 	public void setRestData(Vector3f restPos, Vector3f restRot)
 	{
+		System.out.println("Setting rest data for " + id + " to " + restPos + " on " + this);
 		this.restPos = new Vector3f(restPos);
 		this.restRot = EulerToQuat.transform(restRot);
 	}
@@ -70,7 +71,7 @@ public class Bone
 	{
 		out.writeByte(id);
 		out.writeUTF(name);
-		
+		System.out.println("writing rest data for " + id + " to " + restPos + " on " + this);
 		out.writeFloat(restPos.x);
 		out.writeFloat(restPos.y);
 		out.writeFloat(restPos.z);

@@ -1,4 +1,4 @@
-package zyx.opengl.models.loading;
+package zyx.opengl.models.loading.skeletons;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -7,6 +7,7 @@ class SmdAnimation
 {
 	String name;
 	int length;
+	boolean looping;
 	SmdAnimationFrame[] frames;
 
 	SmdAnimation()
@@ -16,6 +17,7 @@ class SmdAnimation
 	void read(DataInputStream in) throws IOException
 	{
 		name = in.readUTF();
+		looping = in.readBoolean();
 		length = in.readInt();
 		frames = new SmdAnimationFrame[length];
 		

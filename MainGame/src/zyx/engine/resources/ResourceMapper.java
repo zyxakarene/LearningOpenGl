@@ -8,6 +8,7 @@ import zyx.engine.resources.impl.textures.SpecularTextureResource;
 import zyx.engine.resources.impl.textures.NormalTextureResource;
 import zyx.engine.resources.impl.textures.TextureResource;
 import zyx.engine.resources.impl.*;
+import zyx.engine.resources.impl.meshes.SkeletonResource;
 import zyx.engine.resources.rules.ParsedResource;
 import zyx.engine.resources.rules.ResourceRuleParser;
 
@@ -31,6 +32,10 @@ class ResourceMapper
 		if (resourceClass == MeshResource.class)
 		{
 			return new MeshResource(path);
+		}
+		else if (resourceClass == SkeletonResource.class)
+		{
+			return new SkeletonResource(path);
 		}
 		else if (resourceClass == SoundResource.class)
 		{

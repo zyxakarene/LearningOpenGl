@@ -160,7 +160,7 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 			MeshBatchManager.getInstance().addEntity(entityA);
 		}
 		
-		onAuthed();
+//		onAuthed();
 	}
 
 	@Override
