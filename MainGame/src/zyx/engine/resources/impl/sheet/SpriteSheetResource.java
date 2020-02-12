@@ -81,6 +81,11 @@ public class SpriteSheetResource extends TextureResource implements IResourceRea
 			jsonResource = null;
 		}
 	}
-
+	
+	@Override
+	public String getResourceIcon()
+	{
+		return "spritesheet.png";
+	}
 	
 }

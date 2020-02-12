@@ -147,6 +147,11 @@ public abstract class Resource
 		return loading;
 	}
 
+	public String getResourceIcon()
+	{
+		return "default.png";
+	}
+	
 	protected void onDispose()
 	{
 

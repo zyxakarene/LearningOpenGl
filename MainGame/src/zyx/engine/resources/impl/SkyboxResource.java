@@ -66,4 +66,10 @@ public class SkyboxResource extends BaseRequiredSubResource implements ISubResou
 		loadedVo.setDiffuseTexture(data.get(0));
 		model = new SkyboxModel(loadedVo);
 	}
+	
+	@Override
+	public String getResourceIcon()
+	{
+		return "skybox.png";
+	}
 }

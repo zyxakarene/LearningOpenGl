@@ -51,4 +51,10 @@ public class TextureResource extends ExternalResource
 			texture = null;
 		}
 	}
+	
+	@Override
+	public String getResourceIcon()
+	{
+		return "texture.png";
+	}
 }

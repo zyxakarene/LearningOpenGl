@@ -17,4 +17,9 @@ public class NormalTextureResource extends TextureResource
 		return TextureSlot.WORLD_NORMAL;
 	}
 	
+	@Override
+	public String getResourceIcon()
+	{
+		return "normal.png";
+	}
 }

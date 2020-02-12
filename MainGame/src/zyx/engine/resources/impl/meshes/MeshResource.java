@@ -92,4 +92,10 @@ public class MeshResource extends BaseRequiredSubResource
 		model = new WorldModel(loadedVo);
 		onContentLoaded(model);
 	}
+	
+	@Override
+	public String getResourceIcon()
+	{
+		return "mesh.png";
+	}
 }

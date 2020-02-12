@@ -36,4 +36,10 @@ public class CubemapResource extends ExternalResource
 			cubemap = null;
 		}
 	}
+	
+	@Override
+	public String getResourceIcon()
+	{
+		return "cubemap.png";
+	}
 }

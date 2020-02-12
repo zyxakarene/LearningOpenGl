@@ -36,5 +36,11 @@ public class SoundResource extends ExternalResource
 			audio = null;
 		}
 	}
+	
+	@Override
+	public String getResourceIcon()
+	{
+		return "sound.png";
+	}
 
 }

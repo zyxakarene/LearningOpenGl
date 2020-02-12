@@ -38,4 +38,10 @@ public class SkeletonResource extends ExternalResource
 			skeleton = null;
 		}
 	}
+	
+	@Override
+	public String getResourceIcon()
+	{
+		return "skeleton.png";
+	}
 }

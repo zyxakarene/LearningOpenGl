@@ -70,4 +70,10 @@ public class ParticleResource extends ExternalResource implements IResourceReady
 		
 		onContentLoaded(model);
 	}
+	
+	@Override
+	public String getResourceIcon()
+	{
+		return "particle.png";
+	}
 }

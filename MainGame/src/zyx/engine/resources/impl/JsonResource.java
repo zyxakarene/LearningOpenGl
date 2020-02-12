@@ -58,4 +58,10 @@ public class JsonResource extends ExternalResource
 			json = null;
 		}
 	}
+	
+	@Override
+	public String getResourceIcon()
+	{
+		return "json.png";
+	}
 }

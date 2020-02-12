@@ -77,4 +77,10 @@ public class FontResource extends BaseRequiredSubResource implements ISubResourc
 	{
 		onContentLoaded(font);
 	}
+	
+	@Override
+	public String getResourceIcon()
+	{
+		return "font.png";
+	}
 }

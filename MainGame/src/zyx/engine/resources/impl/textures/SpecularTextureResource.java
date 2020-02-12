@@ -17,4 +17,10 @@ public class SpecularTextureResource extends TextureResource
 		return TextureSlot.WORLD_SPECULAR;
 	}
 	
+	@Override
+	public String getResourceIcon()
+	{
+		return "specular.png";
+	}
+	
 }
