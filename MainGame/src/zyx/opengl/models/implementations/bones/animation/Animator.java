@@ -15,11 +15,15 @@ public class Animator implements IDisposeable
 	private HashMap<String, Joint> joints;
 	private HashMap<String, Animation> animations;
 	private long timeSinceStarted;
+	private String[] keys;
 
 	public Animator(HashMap<String, Joint> joints, HashMap<String, Animation> animations)
 	{
 		this.joints = joints;
 		this.animations = animations;
+		
+		keys = new String[joints.size()];
+		joints.keySet().toArray(keys);
 	}
 
 	public void setCurrentAnimation(AnimationController controller)
@@ -60,7 +64,7 @@ public class Animator implements IDisposeable
 			AnimationFrame prevAnimationFrame = currentAnimation.frames[prevFrame];
 			AnimationFrame nextAnimationFrame = currentAnimation.frames[nextFrame];
 
-			AnimationTransformer.transform(prevAnimationFrame.transforms, nextAnimationFrame.transforms, joints, percentage);
+			AnimationTransformer.transform(prevAnimationFrame.transforms, nextAnimationFrame.transforms, joints, keys, percentage);
 		}
 		else
 		{

@@ -22,11 +22,12 @@ class AnimationTransformer
 	private static final Vector3f INTERPOLATED_POS = new Vector3f();
 	private static final Matrix4f TRANSFORM_MATRIX = new Matrix4f();
 
-	static void transform(HashMap<String, JointTransform> prevTransforms, HashMap<String, JointTransform> nextTransforms, HashMap<String, Joint> joints, float percentage)
+	static void transform(HashMap<String, JointTransform> prevTransforms,
+						  HashMap<String, JointTransform> nextTransforms,
+						  HashMap<String, Joint> joints,
+						  String[] keys,
+						  float percentage)
 	{
-		String[] keys = new String[prevTransforms.size()];
-		prevTransforms.keySet().toArray(keys);
-
 		for (String key : keys)
 		{
 			Joint joint = joints.get(key);
