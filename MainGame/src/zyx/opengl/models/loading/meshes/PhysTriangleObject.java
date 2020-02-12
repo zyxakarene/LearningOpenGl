@@ -1,17 +1,17 @@
-package zyx.opengl.models.loading;
+package zyx.opengl.models.loading.meshes;
 
 import java.io.DataInputStream;
 import java.io.IOException;
 import org.lwjgl.util.vector.Vector3f;
 
-class SmdPhysTriangle
+class PhysTriangleObject
 {
 	Vector3f v1; 
 	Vector3f v2; 
 	Vector3f v3; 
 	Vector3f normal; 
 	
-	SmdPhysTriangle()
+	PhysTriangleObject()
 	{
 	}
 

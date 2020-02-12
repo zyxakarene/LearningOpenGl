@@ -1,4 +1,4 @@
-package zyx.opengl.models.loading;
+package zyx.opengl.models.loading.meshes;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -15,7 +15,7 @@ public class ZafLoader
 	{
 		try
 		{
-			SmdObject smd = new SmdObject();
+			ZafObject smd = new ZafObject();
 			smd.read(in);
 
 			PhysBox phys = createPhysBox(smd.physInformation);
@@ -30,17 +30,17 @@ public class ZafLoader
 		}
 	}
 
-	private static PhysBox createPhysBox(SmdPhysInfo physInfo)
+	private static PhysBox createPhysBox(PhysObject physInfo)
 	{
-		SmdPhysbox[] boxes = physInfo.physBoxes;
+		PhysboxObject[] boxes = physInfo.physBoxes;
 		int triangleCount = getTriangleCount(boxes);
 
 		PhysBox box = new PhysBox(triangleCount, physInfo.boundingBox, boxes.length);
-		for (SmdPhysbox physBox : boxes)
+		for (PhysboxObject physBox : boxes)
 		{
 			box.addObject(physBox.triangles.length, physBox.boneId);
 
-			for (SmdPhysTriangle triangle : physBox.triangles)
+			for (PhysTriangleObject triangle : physBox.triangles)
 			{
 				box.addTriangle(triangle.v1, triangle.v2, triangle.v3, triangle.normal);
 			}
@@ -49,11 +49,11 @@ public class ZafLoader
 		return box;
 	}
 
-	private static int getTriangleCount(SmdPhysbox[] physboxes)
+	private static int getTriangleCount(PhysboxObject[] physboxes)
 	{
 		int count = 0;
 
-		for (SmdPhysbox box : physboxes)
+		for (PhysboxObject box : physboxes)
 		{
 			count += box.triangles.length;
 		}

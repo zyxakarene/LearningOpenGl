@@ -8,7 +8,7 @@ import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
-import zyx.opengl.models.loading.ZafLoader;
+import zyx.opengl.models.loading.meshes.ZafLoader;
 import zyx.opengl.textures.AbstractTexture;
 
 public class MeshResource extends BaseRequiredSubResource

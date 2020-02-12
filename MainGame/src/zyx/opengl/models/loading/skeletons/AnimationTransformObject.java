@@ -3,7 +3,7 @@ package zyx.opengl.models.loading.skeletons;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-class SmdAnimationTransform
+class AnimationTransformObject
 {
 
 	String name;
@@ -15,7 +15,7 @@ class SmdAnimationTransform
 	float rotZ;
 	float rotW;
 
-	SmdAnimationTransform()
+	AnimationTransformObject()
 	{
 	}
 

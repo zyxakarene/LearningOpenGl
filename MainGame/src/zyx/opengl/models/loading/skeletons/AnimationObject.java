@@ -3,14 +3,14 @@ package zyx.opengl.models.loading.skeletons;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-class SmdAnimation
+class AnimationObject
 {
 	String name;
 	int length;
 	boolean looping;
-	SmdAnimationFrame[] frames;
+	AnimationFrameObject[] frames;
 
-	SmdAnimation()
+	AnimationObject()
 	{
 	}
 	
@@ -19,11 +19,11 @@ class SmdAnimation
 		name = in.readUTF();
 		looping = in.readBoolean();
 		length = in.readInt();
-		frames = new SmdAnimationFrame[length];
+		frames = new AnimationFrameObject[length];
 		
 		for (int i = 0; i < length; i++)
 		{
-			frames[i] = new SmdAnimationFrame();
+			frames[i] = new AnimationFrameObject();
 			frames[i].read(in);
 		}
 	}

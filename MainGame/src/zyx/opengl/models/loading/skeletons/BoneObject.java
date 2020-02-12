@@ -3,11 +3,11 @@ package zyx.opengl.models.loading.skeletons;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-class SmdBone
+class BoneObject
 {
 	byte id;
 	String name;
-	SmdBone[] children;
+	BoneObject[] children;
 	
 	float restX;
 	float restY;
@@ -17,7 +17,7 @@ class SmdBone
 	float restRotZ;
 	float restRotW;
 	
-	SmdBone()
+	BoneObject()
 	{
 	}
 	
@@ -35,10 +35,10 @@ class SmdBone
 		restRotW = in.readFloat();
 		
 		byte childrenCount = in.readByte();
-		children = new SmdBone[childrenCount];
+		children = new BoneObject[childrenCount];
 		for (int i = 0; i < childrenCount; i++)
 		{
-			children[i] = new SmdBone();
+			children[i] = new BoneObject();
 			children[i].read(in);
 		}
 	}

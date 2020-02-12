@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.SkyboxModel;
-import zyx.opengl.models.loading.ZafLoader;
+import zyx.opengl.models.loading.meshes.ZafLoader;
 import zyx.opengl.textures.AbstractTexture;
 
 public class SkyboxResource extends BaseRequiredSubResource implements ISubResourceLoaded<AbstractTexture>

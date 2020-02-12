@@ -1,4 +1,4 @@
-package zyx.opengl.models.loading;
+package zyx.opengl.models.loading.meshes;
 
 import java.io.DataInputStream;
 import java.io.IOException;

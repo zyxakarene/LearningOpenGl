@@ -7,7 +7,7 @@ import zyx.engine.resources.impl.sub.SubResourceBatch;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.MeshBatchModel;
-import zyx.opengl.models.loading.ZafLoader;
+import zyx.opengl.models.loading.meshes.ZafLoader;
 import zyx.opengl.textures.AbstractTexture;
 
 public class MeshBatchResource extends BaseRequiredSubResource implements ISubResourceLoaded<AbstractTexture>

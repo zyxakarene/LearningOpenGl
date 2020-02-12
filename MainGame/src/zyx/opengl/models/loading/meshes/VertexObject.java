@@ -1,9 +1,9 @@
-package zyx.opengl.models.loading;
+package zyx.opengl.models.loading.meshes;
 
 import java.io.DataInputStream;
 import java.io.IOException;
 
-class SmdVertex
+class VertexObject
 {
 
 	float x;
@@ -16,7 +16,7 @@ class SmdVertex
 	float v;
 	BoneWeight weights;
 	
-	SmdVertex()
+	VertexObject()
 	{
 		weights = new BoneWeight();
 	}

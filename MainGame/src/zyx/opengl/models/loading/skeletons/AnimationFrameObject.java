@@ -3,13 +3,13 @@ package zyx.opengl.models.loading.skeletons;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-class SmdAnimationFrame
+class AnimationFrameObject
 {
 
 	int frame;
-	SmdAnimationTransform[] transforms;
+	AnimationTransformObject[] transforms;
 
-	SmdAnimationFrame()
+	AnimationFrameObject()
 	{
 	}
 
@@ -18,11 +18,11 @@ class SmdAnimationFrame
 		
 		frame = in.readInt();
 		int length = in.readInt();
-		transforms = new SmdAnimationTransform[length];
+		transforms = new AnimationTransformObject[length];
 		
 		for (int i = 0; i < length; i++)
 		{
-			transforms[i] = new SmdAnimationTransform();
+			transforms[i] = new AnimationTransformObject();
 			transforms[i].read(in);
 		}
 	}

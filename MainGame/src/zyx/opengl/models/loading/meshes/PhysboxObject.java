@@ -1,14 +1,14 @@
-package zyx.opengl.models.loading;
+package zyx.opengl.models.loading.meshes;
 
 import java.io.DataInputStream;
 import java.io.IOException;
 
-class SmdPhysbox
+class PhysboxObject
 {
-	SmdPhysTriangle[] triangles;
+	PhysTriangleObject[] triangles;
 	short boneId;
 	
-	SmdPhysbox()
+	PhysboxObject()
 	{
 	}
 
@@ -17,11 +17,11 @@ class SmdPhysbox
 		boneId = in.readShort();
 		
 		int length = in.readInt();
-		triangles = new SmdPhysTriangle[length];
+		triangles = new PhysTriangleObject[length];
 		
 		for (int i = 0; i < length; i++)
 		{
-			triangles[i] = new SmdPhysTriangle();
+			triangles[i] = new PhysTriangleObject();
 			triangles[i].read(in);
 		}
 	}

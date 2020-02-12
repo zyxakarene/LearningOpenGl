@@ -1,15 +1,15 @@
-package zyx.opengl.models.loading;
+package zyx.opengl.models.loading.meshes;
 
 import java.io.DataInputStream;
 import java.io.IOException;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.utils.cheats.Print;
 
-class SmdObject
+class ZafObject
 {
 	float[] vertexData;
 	int[] elementData;
-	SmdPhysInfo physInformation;
+	PhysObject physInformation;
 	String diffuseTexture;
 	String normalTexture;
 	String specularTexture;
@@ -40,7 +40,7 @@ class SmdObject
 			elementData[i] = in.readShort();
 		}
 		
-		physInformation = new SmdPhysInfo();
+		physInformation = new PhysObject();
 		physInformation.read(in);
 		
 		Print.out("↳", physInformation.physBoxes.length, "physboxes");

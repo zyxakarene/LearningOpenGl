@@ -1,16 +1,16 @@
-package zyx.opengl.models.loading;
+package zyx.opengl.models.loading.meshes;
 
 import java.io.DataInputStream;
 import java.io.IOException;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.utils.geometry.Box;
 
-class SmdPhysInfo
+class PhysObject
 {
-	SmdPhysbox[] physBoxes;
+	PhysboxObject[] physBoxes;
 	Box boundingBox;
 	
-	SmdPhysInfo()
+	PhysObject()
 	{
 	}
 
@@ -29,10 +29,10 @@ class SmdPhysInfo
 		boundingBox = new Box(min.x, max.x, min.y, max.y, min.z, max.z);
 		
 		int length = in.readInt();
-		physBoxes = new SmdPhysbox[length];
+		physBoxes = new PhysboxObject[length];
 		for (int i = 0; i < length; i++)
 		{
-			physBoxes[i] = new SmdPhysbox();
+			physBoxes[i] = new PhysboxObject();
 			physBoxes[i].read(in);
 		}
 	}

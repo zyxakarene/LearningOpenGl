@@ -44,7 +44,7 @@ public class SkeletonLoader
 		}
 	}
 
-	private static Joint getJointFrom(SmdBone bone)
+	private static Joint getJointFrom(BoneObject bone)
 	{
 		POSITION.set(bone.restX, bone.restY, bone.restZ);
 		ROTATION.set(bone.restRotX, bone.restRotY, bone.restRotZ, bone.restRotW);
@@ -54,7 +54,7 @@ public class SkeletonLoader
 
 		Joint joint = new Joint(bone.id, bone.name, restPose);
 
-		for (SmdBone childBone : bone.children)
+		for (BoneObject childBone : bone.children)
 		{
 			Joint childJoint = getJointFrom(childBone);
 			joint.addChild(childJoint);
@@ -63,17 +63,17 @@ public class SkeletonLoader
 		return joint;
 	}
 
-	private static void addAnimationsTo(Skeleton skeleton, SmdAnimation[] smdAnimations)
+	private static void addAnimationsTo(Skeleton skeleton, AnimationObject[] smdAnimations)
 	{
-		for (SmdAnimation smdAnimation : smdAnimations)
+		for (AnimationObject smdAnimation : smdAnimations)
 		{
 			Animation jointAnim = new Animation(smdAnimation.name, smdAnimation.length, smdAnimation.looping);
 
-			for (SmdAnimationFrame smdFrame : smdAnimation.frames)
+			for (AnimationFrameObject smdFrame : smdAnimation.frames)
 			{
 				AnimationFrame jointFrame = new AnimationFrame();
 
-				for (SmdAnimationTransform smdTransform : smdFrame.transforms)
+				for (AnimationTransformObject smdTransform : smdFrame.transforms)
 				{
 					JointTransform jointTransform = new JointTransform(smdTransform.x, smdTransform.y, smdTransform.z,
 																	   smdTransform.rotX, smdTransform.rotY, smdTransform.rotZ, smdTransform.rotW);
