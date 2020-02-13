@@ -17,14 +17,18 @@ public class SmdAnimationHandler implements ISmdHandler
 	private boolean looping;
 	private ArrayList<AnimationFrame> animFrames = new ArrayList<>();
 	private AnimationFrame currentFrame;
-	private HashMap<Byte, Bone> boneMap;
+	
+	private HashMap<Byte, Bone> boneIdMapFromMesh;
+	private HashMap<String, Bone> boneNameMapFromAnimation;
 
-	public SmdAnimationHandler(String name, boolean looping)
+	public SmdAnimationHandler(String name, boolean looping, Bone animationRootBone)
 	{
 		this.name = name;
 		this.looping = looping;
 		pos = new Vector3f();
 		rot = new Vector3f();
+		
+		boneNameMapFromAnimation = animationRootBone.toBoneNameMap();
 	}
 
 	@Override
@@ -34,13 +38,13 @@ public class SmdAnimationHandler implements ISmdHandler
 		
 		if (line.startsWith("time"))
 		{
-			int time = Integer.parseInt(split[1]);
+			short time = Short.parseShort(split[1]);
 			currentFrame = new AnimationFrame(time);
 			animFrames.add(currentFrame);
 		}
 		else
 		{
-			byte nodeId = Byte.parseByte(split[0]);
+			byte animationBoneId = Byte.parseByte(split[0]);
 			
 			float x = Float.parseFloat(split[1]);
 			float y = Float.parseFloat(split[2]);
@@ -50,10 +54,12 @@ public class SmdAnimationHandler implements ISmdHandler
 			float rotY = Float.parseFloat(split[5]);
 			float rotZ = Float.parseFloat(split[6]);
 			
+			String boneName = boneIdMapFromMesh.get(animationBoneId).getName();
+			Bone meshBone = boneNameMapFromAnimation.get(boneName);
+			
 			pos.set(x, y, z);
 			rot.set(rotX, rotY, rotZ);
-			String boneName = boneMap.get(nodeId).getName();
-			AnimationTransform transform = new AnimationTransform(boneName, pos, rot);
+			AnimationTransform transform = new AnimationTransform(meshBone.getId(), pos, rot);
 			
 			currentFrame.addTransform(transform);
 		}
@@ -72,7 +78,7 @@ public class SmdAnimationHandler implements ISmdHandler
 	public void setData(Object data)
 	{
 		Bone rootBone = (Bone) data;
-		boneMap = rootBone.toBoneMap();
+		boneIdMapFromMesh = rootBone.toBoneMap();
 	}
 
 }

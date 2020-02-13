@@ -6,7 +6,7 @@ import java.io.IOException;
 class AnimationFrameObject
 {
 
-	int frame;
+	short frame;
 	AnimationTransformObject[] transforms;
 
 	AnimationFrameObject()
@@ -16,8 +16,8 @@ class AnimationFrameObject
 	void read(DataInputStream in) throws IOException
 	{
 		
-		frame = in.readInt();
-		int length = in.readInt();
+		frame = in.readShort();
+		short length = in.readShort();
 		transforms = new AnimationTransformObject[length];
 		
 		for (int i = 0; i < length; i++)

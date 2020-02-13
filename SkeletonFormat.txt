@@ -2,21 +2,29 @@
 
 skel
 {
+	byte							boneCount
+	BoneInfo[boneCount]				boneInfo
+	
 	SmdBone							rootBone
 
 	int								animationCount
 	SmdAnimation[animationCount]	animations
 }
 
-SmdBone
+BoneInfo
 {
 	byte		id
 	UtfString	name
+}
+
+SmdBone
+{
+	byte				id
 	
-	Vector3F	restPos
-	Vector4F	restRot
+	Vector3F			restPos
+	Vector4F			restRot
 	
-	byte		childCount
+	byte				childCount
 	SmdBone[childCount] childBones
 }
 
@@ -24,20 +32,20 @@ SmdAnimation
 {
 	UtfString						name
 	boolean							looping
-	int								frameCount
+	short							frameCount
 	SmdAnimationFrame[frameCount]	frames
 }
 
 SmdAnimationFrame
 {
-	int										frame
-	int										transformLength
+	short									frame
+	short									transformLength
 	SmdAnimationTransform[transformLength]	transforms
 }
 
 SmdAnimationTransform
 {
-	UtfString	boneName
+	byte		boneId
 	Vector3F	position
 	Vector4F	rotation
 }

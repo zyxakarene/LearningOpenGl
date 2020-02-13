@@ -6,7 +6,7 @@ import java.io.IOException;
 public class Animation
 {
 	private String name;
-	private int length;
+	private short length;
 	private boolean looping;
 	private AnimationFrame[] frames;
 
@@ -14,7 +14,7 @@ public class Animation
 	{
 		this.name = name;
 		this.looping = looping;
-		this.length = frames.length;
+		this.length = (short) frames.length;
 		this.frames = frames;
 	}
 	
@@ -22,7 +22,7 @@ public class Animation
 	{
 		out.writeUTF(name);
 		out.writeBoolean(looping);
-		out.writeInt(length);
+		out.writeShort(length);
 		
 		for (AnimationFrame frame : frames)
 		{

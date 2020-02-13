@@ -29,7 +29,7 @@ public class SkeletonLoader
 			SkeletonObject obj = new SkeletonObject();
 			obj.read(in);
 			
-			Joint rootJoint = getJointFrom(obj.rootBone);
+			Joint rootJoint = getJointFrom(obj.rootBone, obj.boneInfo);
 			Joint meshJoint = getMeshJoint();
 
 			Skeleton skeleton = new Skeleton(rootJoint, meshJoint);
@@ -44,7 +44,7 @@ public class SkeletonLoader
 		}
 	}
 
-	private static Joint getJointFrom(BoneObject bone)
+	private static Joint getJointFrom(BoneObject bone, BoneInfoObject boneInfo)
 	{
 		POSITION.set(bone.restX, bone.restY, bone.restZ);
 		ROTATION.set(bone.restRotX, bone.restRotY, bone.restRotZ, bone.restRotW);
@@ -52,11 +52,12 @@ public class SkeletonLoader
 		Matrix4f restPose = SharedPools.MATRIX_POOL.getInstance();
 		MatrixUtils.transformMatrix(ROTATION, POSITION, restPose);
 
-		Joint joint = new Joint(bone.id, bone.name, restPose);
+		String boneName = boneInfo.getBoneName(bone.id);
+		Joint joint = new Joint(bone.id, boneName, restPose);
 
 		for (BoneObject childBone : bone.children)
 		{
-			Joint childJoint = getJointFrom(childBone);
+			Joint childJoint = getJointFrom(childBone, boneInfo);
 			joint.addChild(childJoint);
 		}
 
@@ -77,7 +78,7 @@ public class SkeletonLoader
 				{
 					JointTransform jointTransform = new JointTransform(smdTransform.x, smdTransform.y, smdTransform.z,
 																	   smdTransform.rotX, smdTransform.rotY, smdTransform.rotZ, smdTransform.rotW);
-					jointFrame.addTransform(smdTransform.name, jointTransform);
+					jointFrame.addTransform(smdTransform.boneId, jointTransform);
 				}
 
 				jointAnim.setFrame(smdFrame.frame, jointFrame);
@@ -91,7 +92,7 @@ public class SkeletonLoader
 	{
 		String name = "dummy";
 		Matrix4f matrix = SharedPools.MATRIX_POOL.getInstance();
-		int id = 0;
+		byte id = 0;
 
 		return new Joint(id, name, matrix);
 	}

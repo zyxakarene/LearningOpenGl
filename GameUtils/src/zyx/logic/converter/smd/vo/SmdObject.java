@@ -3,6 +3,8 @@ package zyx.logic.converter.smd.vo;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.logic.converter.smd.reader.SmdTriangleHandler;
 
@@ -150,6 +152,18 @@ public class SmdObject
 
 	private void saveAsSkeleton(DataOutputStream out) throws IOException
 	{
+		HashMap<Byte, Bone> boneMap = rootBone.toBoneMap();
+		out.writeByte(boneMap.size());
+		
+		for (Map.Entry<Byte, Bone> entry : boneMap.entrySet())
+		{
+			byte boneId = entry.getKey();
+			Bone bone = entry.getValue();
+			
+			out.writeByte(boneId);
+			out.writeUTF(bone.getName());
+		}
+				
 		rootBone.save(out);
 		
 		out.writeInt(animations.size());

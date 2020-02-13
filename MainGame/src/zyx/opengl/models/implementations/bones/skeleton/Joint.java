@@ -13,7 +13,7 @@ public class Joint implements IDisposeable
 	private static Matrix4f[] shaderBones;
 	private static Matrix4f[] inverseTransposeShaderBones;
 
-	public final int id;
+	public final byte id;
 	public final String name;
 
 	private List<Joint> children;
@@ -29,7 +29,7 @@ public class Joint implements IDisposeable
 	private Matrix4f attachmentTransform;
 	private Matrix4f physTransform;
 
-	public Joint(int id, String name, Matrix4f localTransform)
+	public Joint(byte id, String name, Matrix4f localTransform)
 	{
 		this.id = id;
 		this.name = name;
@@ -97,7 +97,7 @@ public class Joint implements IDisposeable
 		return inverseBindTransform;
 	}
 
-	public void addToMap(HashMap<String, Joint> nameMap, HashMap<Integer, Joint> idMap)
+	public void addToMap(HashMap<String, Joint> nameMap, HashMap<Byte, Joint> idMap)
 	{
 		nameMap.put(name, this);
 		idMap.put(id, this);

@@ -7,6 +7,7 @@ import zyx.utils.cheats.Print;
 class SkeletonObject
 {
 
+	BoneInfoObject boneInfo;
 	BoneObject rootBone;
 	AnimationObject[] animations;
 
@@ -14,6 +15,9 @@ class SkeletonObject
 	{
 		Print.out("Parsing model data from byte count:", in.available());
 
+		boneInfo = new BoneInfoObject();
+		boneInfo.read(in);
+		
 		rootBone = new BoneObject();
 		rootBone.read(in);
 

@@ -12,17 +12,17 @@ public class Animator implements IDisposeable
 
 	private Animation currentAnimation;
 
-	private HashMap<String, Joint> joints;
+	private HashMap<Byte, Joint> joints;
 	private HashMap<String, Animation> animations;
 	private long timeSinceStarted;
-	private String[] keys;
+	private Byte[] keys;
 
-	public Animator(HashMap<String, Joint> joints, HashMap<String, Animation> animations)
+	public Animator(HashMap<Byte, Joint> joints, HashMap<String, Animation> animations)
 	{
 		this.joints = joints;
 		this.animations = animations;
 		
-		keys = new String[joints.size()];
+		keys = new Byte[joints.size()];
 		joints.keySet().toArray(keys);
 	}
 

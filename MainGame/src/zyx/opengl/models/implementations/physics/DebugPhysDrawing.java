@@ -88,7 +88,7 @@ public class DebugPhysDrawing
 			elementData[i] = i;
 		}
 		
-		Skeleton skeleton = new Skeleton(getMeshJoint("root", 0), getMeshJoint("dummy", 0));
+		Skeleton skeleton = new Skeleton(getMeshJoint("root"), getMeshJoint("dummy"));
 		LoadableWorldModelVO vo = new LoadableWorldModelVO(vertexData, elementData, null, "", "", "", new Vector3f(), 1000, "");
 		vo.setSkeleton(skeleton);
 		vo.setDiffuseTexture(new ColorTexture(0xFF0000, TextureSlot.SHARED_DIFFUSE));
@@ -99,10 +99,10 @@ public class DebugPhysDrawing
 		return model;
 	}
 
-	private static Joint getMeshJoint(String name, int id)
+	private static Joint getMeshJoint(String name)
 	{
 		Matrix4f matrix = SharedPools.MATRIX_POOL.getInstance();
-		return new Joint(id, name, matrix);
+		return new Joint((byte)0, name, matrix);
 	}
 
 	private static int fillData(PhysTriangle[] triangles, float[] vertexData, int boneId, int index)
@@ -189,7 +189,7 @@ public class DebugPhysDrawing
 		int[] elementData = new int[elementCount];
 
 		fillData(boundingBox, vertexData, elementData);
-		Skeleton skeleton = new Skeleton(getMeshJoint("root11", 0), getMeshJoint("dummy22", 0));
+		Skeleton skeleton = new Skeleton(getMeshJoint("root11"), getMeshJoint("dummy22"));
 		LoadableWorldModelVO vo = new LoadableWorldModelVO(vertexData, elementData, null, "", "", "", new Vector3f(), 1000, "");
 		vo.setSkeleton(skeleton);
 		vo.setDiffuseTexture(new ColorTexture(0x00FF00, TextureSlot.SHARED_DIFFUSE));

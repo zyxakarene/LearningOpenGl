@@ -14,7 +14,7 @@ public class Skeleton implements IDisposeable
 	
 	private Joint rootJoint;
 	private Joint dummyJoint;
-	private HashMap<Integer, Joint> jointIdMap;
+	private HashMap<Byte, Joint> jointIdMap;
 	private HashMap<String, Joint> jointNameMap;
 	private HashMap<String, Animation> animations;
 	private Animator animator;
@@ -40,7 +40,7 @@ public class Skeleton implements IDisposeable
 			jointNameMap.put(dummyJoint.name, dummyJoint);
 		}
 		
-		animator = new Animator(jointNameMap, animations);
+		animator = new Animator(jointIdMap, animations);
 	}
 	
 	public void addAnimation(String name, Animation animation)

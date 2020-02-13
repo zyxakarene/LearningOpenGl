@@ -30,6 +30,7 @@ public class SmdImporter
 
 	private String animationName;
 	private boolean animationLooping;
+	private Bone animationRootBone;
 
 	public SmdImporter()
 	{
@@ -83,6 +84,7 @@ public class SmdImporter
 		currentToken = TOKEN_NONE;
 		lineHandler = null;
 		animationName = null;
+		animationRootBone = null;
 
 		importFile(file);
 	}
@@ -93,6 +95,7 @@ public class SmdImporter
 		currentToken = TOKEN_NONE;
 		lineHandler = null;
 		animationName = null;
+		animationRootBone = null;
 		
 		importFile(file);
 	}
@@ -103,6 +106,7 @@ public class SmdImporter
 		currentToken = TOKEN_NONE;
 		lineHandler = null;
 		animationName = null;
+		animationRootBone = null;
 		
 		importFile(file);
 	}
@@ -115,6 +119,7 @@ public class SmdImporter
 
 		for (QcAnimation animation : animations)
 		{
+			animationRootBone = null;
 			animationName = animation.name;
 			animationLooping = animation.looping;
 
@@ -147,7 +152,7 @@ public class SmdImporter
 				}
 				else
 				{
-					lineHandler = new SmdAnimationHandler(animationName, animationLooping);
+					lineHandler = new SmdAnimationHandler(animationName, animationLooping, animationRootBone);
 					lineHandler.setData(smd.getRootBone());
 				}
 
@@ -186,6 +191,10 @@ public class SmdImporter
 					{
 						Bone rootBone = (Bone) lineHandler.getResult();
 						smd.setRootBone(rootBone);
+					}
+					else if (currentFileType == FILE_TYPE_ANIMATION)
+					{
+						animationRootBone = (Bone) lineHandler.getResult();
 					}
 					break;
 				}

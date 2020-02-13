@@ -6,7 +6,7 @@ import java.io.IOException;
 class AnimationTransformObject
 {
 
-	String name;
+	byte boneId;
 	float x;
 	float y;
 	float z;
@@ -21,7 +21,7 @@ class AnimationTransformObject
 
 	void read(DataInputStream in) throws IOException
 	{
-		name = in.readUTF();
+		boneId = in.readByte();
 		
 		x = in.readFloat();
 		y = in.readFloat();

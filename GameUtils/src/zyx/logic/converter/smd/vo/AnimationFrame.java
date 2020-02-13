@@ -7,10 +7,10 @@ import java.util.ArrayList;
 public class AnimationFrame
 {
 
-	public int frame;
+	public short frame;
 	public ArrayList<AnimationTransform> transforms;
 
-	public AnimationFrame(int frame)
+	public AnimationFrame(short frame)
 	{
 		this.frame = frame;
 		transforms = new ArrayList<>();
@@ -23,8 +23,8 @@ public class AnimationFrame
 
 	public void save(DataOutputStream out) throws IOException
 	{
-		out.writeInt(frame);
-		out.writeInt(transforms.size());
+		out.writeShort(frame);
+		out.writeShort(transforms.size());
 		for (AnimationTransform transform : transforms)
 		{
 			transform.save(out);

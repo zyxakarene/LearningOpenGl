@@ -6,7 +6,7 @@ import java.io.IOException;
 class AnimationObject
 {
 	String name;
-	int length;
+	short length;
 	boolean looping;
 	AnimationFrameObject[] frames;
 
@@ -18,7 +18,7 @@ class AnimationObject
 	{
 		name = in.readUTF();
 		looping = in.readBoolean();
-		length = in.readInt();
+		length = in.readShort();
 		frames = new AnimationFrameObject[length];
 		
 		for (int i = 0; i < length; i++)

@@ -6,7 +6,6 @@ import java.io.IOException;
 class BoneObject
 {
 	byte id;
-	String name;
 	BoneObject[] children;
 	
 	float restX;
@@ -24,7 +23,6 @@ class BoneObject
 	void read(DataInputStream in) throws IOException
 	{
 		id = in.readByte();
-		name = in.readUTF();
 		
 		restX = in.readFloat();
 		restY = in.readFloat();
