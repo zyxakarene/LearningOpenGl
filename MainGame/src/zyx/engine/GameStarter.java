@@ -21,7 +21,7 @@ public class GameStarter implements Runnable
 	{
 		ConnectionEstablisher.getInstance().connect("localhost", 8888);
 		
-		TaskScheduler.getInstance().addThreads(1);
+		TaskScheduler.getInstance().addThreads(5);
 		ResourceLoader.getInstance().addThreads(1);
 		ConnectionHandler.getInstance().addThreads(1);
 

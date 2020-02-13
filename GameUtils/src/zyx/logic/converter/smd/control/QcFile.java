@@ -29,6 +29,16 @@ public class QcFile
 				+ ", animations=" + animations + ", outModel=" + outModel + '}';
 	}
 
+	public String getSkeletonResourceName()
+	{
+		if (skeletonResource != null)
+		{
+			return skeletonResource;
+		}
+
+		return "skeleton.default";
+	}
+
 	public String getDiffuseTextureName()
 	{
 		if (diffuseTextureResource != null)

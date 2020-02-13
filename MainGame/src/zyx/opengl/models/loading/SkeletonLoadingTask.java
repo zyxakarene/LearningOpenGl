@@ -10,17 +10,19 @@ public class SkeletonLoadingTask extends ScheduledTask<Skeleton>
 {
 
 	private ResourceDataInputStream inputData;
+	private String id;
 
-	public SkeletonLoadingTask(ITaskCompleted<Skeleton> taskDoneCallback, ResourceDataInputStream data)
+	public SkeletonLoadingTask(ITaskCompleted<Skeleton> taskDoneCallback, ResourceDataInputStream data, String id)
 	{
 		super(taskDoneCallback);
 		inputData = data;
+		this.id = id;
 	}
 
 	@Override
 	protected void performTask()
 	{
-		Skeleton result = SkeletonLoader.loadSkeletonFrom(inputData);
+		Skeleton result = SkeletonLoader.loadSkeletonFrom(inputData, id);
 		taskCompleted(result);
 		
 		inputData = null;

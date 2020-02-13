@@ -16,7 +16,7 @@ public class MenuHud extends BaseHud
 	{
 		onPlayButtonClicked = (InteractableContainer data) ->
 		{
-			SceneManager.getInstance().changeScene(SceneType.TEST);
+			SceneManager.getInstance().changeScene(SceneType.GAME);
 		};
 	}
 

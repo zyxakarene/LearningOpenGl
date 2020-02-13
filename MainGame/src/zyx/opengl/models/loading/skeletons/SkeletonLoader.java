@@ -13,6 +13,8 @@ import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.implementations.bones.transform.JointTransform;
 import zyx.utils.GameConstants;
+import zyx.utils.PrintBuilder;
+import zyx.utils.cheats.Print;
 import zyx.utils.math.MatrixUtils;
 
 public class SkeletonLoader
@@ -21,23 +23,32 @@ public class SkeletonLoader
 	private static final Quaternion ROTATION = new Quaternion();
 	private static final Vector3f POSITION = new Vector3f();
 
-	public static Skeleton loadSkeletonFrom(ResourceDataInputStream in)
+	public static Skeleton loadSkeletonFrom(ResourceDataInputStream in, String id)
 	{
+		PrintBuilder builder = new PrintBuilder();
+
 		try
 		{
+			builder.append("==== Parsing skeleton data from byte count:", in.available(), "====");
+			builder.append("Id", id);
+
 			SkeletonObject obj = new SkeletonObject();
-			obj.read(in);
-			
+			obj.read(in, builder);
+
 			Joint rootJoint = getJointFrom(obj.rootBone, obj.boneInfo);
 			Joint meshJoint = getMeshJoint();
 
 			Skeleton skeleton = new Skeleton(rootJoint, meshJoint);
 			addAnimationsTo(skeleton, obj.animations);
-
+			builder.append("========");
+			
 			return skeleton;
 		}
 		catch (IOException e)
 		{
+			builder.append("==== [ERROR] Failed to parse skeleton! ====");
+			Print.out(builder);
+
 			GameConstants.LOGGER.log(Level.SEVERE, "Error at loading a skeleton data", e);
 			return null;
 		}

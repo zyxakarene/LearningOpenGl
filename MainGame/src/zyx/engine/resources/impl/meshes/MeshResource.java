@@ -57,7 +57,7 @@ public class MeshResource extends BaseRequiredSubResource implements ITaskComple
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		MeshLoadingTask task = new MeshLoadingTask(this, data);
+		MeshLoadingTask task = new MeshLoadingTask(this, data, path);
 		TaskScheduler.getInstance().addEntry(task);
 	}
 

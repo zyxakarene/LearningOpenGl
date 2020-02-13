@@ -30,7 +30,6 @@ public class BitmapFontGenerator
 
 	private void buildBitmapFont() throws IOException
 	{
-		String resource = fontData.readUTF();
 		short lineHeight = fontData.readShort();
 		short characters = fontData.readShort();
 		short kernings = fontData.readShort();

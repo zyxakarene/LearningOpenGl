@@ -50,7 +50,7 @@ public class MeshBatchResource extends BaseRequiredSubResource implements ISubRe
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		MeshLoadingTask task = new MeshLoadingTask(this, data);
+		MeshLoadingTask task = new MeshLoadingTask(this, data, path);
 		TaskScheduler.getInstance().addEntry(task);
 	}
 

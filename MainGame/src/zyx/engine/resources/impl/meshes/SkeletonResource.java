@@ -26,7 +26,7 @@ public class SkeletonResource extends ExternalResource implements ITaskCompleted
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		SkeletonLoadingTask task = new SkeletonLoadingTask(this, data);
+		SkeletonLoadingTask task = new SkeletonLoadingTask(this, data, path);
 		TaskScheduler.getInstance().addEntry(task);
 	}
 

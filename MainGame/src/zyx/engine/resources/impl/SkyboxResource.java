@@ -50,7 +50,7 @@ public class SkyboxResource extends BaseRequiredSubResource implements ISubResou
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		MeshLoadingTask task = new MeshLoadingTask(this, data);
+		MeshLoadingTask task = new MeshLoadingTask(this, data, path);
 		TaskScheduler.getInstance().addEntry(task);
 	}
 	

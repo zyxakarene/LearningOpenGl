@@ -16,6 +16,14 @@ public class ResourceDataInputStream extends DataInputStream
 		
 		this.bytes = bytes;
 	}
+	
+	public int getPosition()
+	{
+		int length = bytes.length;
+		int remaining = ((ByteArrayInputStream)in).available();
+		
+		return length - remaining;
+	}
 
 	public int getLength()
 	{

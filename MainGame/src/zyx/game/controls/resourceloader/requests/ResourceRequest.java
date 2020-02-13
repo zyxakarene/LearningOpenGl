@@ -72,9 +72,9 @@ public abstract class ResourceRequest implements IDisposeable
 			int len = callbacks.size();
 			for (int i = 0; i < len; i++)
 			{
-				callbacks.get(i).resourceLoaded(data);
-
 				onPostComplete();
+				
+				callbacks.get(i).resourceLoaded(data);
 			}
 		}
 	}

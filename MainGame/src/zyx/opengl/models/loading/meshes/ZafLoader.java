@@ -7,24 +7,35 @@ import zyx.opengl.models.implementations.LoadableWorldModelVO;
 
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.utils.GameConstants;
+import zyx.utils.PrintBuilder;
+import zyx.utils.cheats.Print;
 
 public class ZafLoader
 {
 
-	public static LoadableWorldModelVO loadMeshFrom(ResourceDataInputStream in)
+	public static LoadableWorldModelVO loadMeshFrom(ResourceDataInputStream in, String id)
 	{
+		PrintBuilder builder = new PrintBuilder();
 		try
 		{
+			builder.append("==== Parsing mesh data from byte count:", in.available(), "====");
+			builder.append("Id", id);
+			
 			ZafObject smd = new ZafObject();
-			smd.read(in);
+			smd.read(in, builder);
 
 			PhysBox phys = createPhysBox(smd.physInformation);
 
+			builder.append("========");
+			Print.out(builder);
+			
 			return new LoadableWorldModelVO(smd.vertexData, smd.elementData, phys, smd.diffuseTexture, smd.normalTexture, smd.specularTexture,
-					smd.radiusCenter, smd.radius, smd.skeletonId);
+											smd.radiusCenter, smd.radius, smd.skeletonId);
 		}
 		catch (IOException e)
 		{
+			builder.append("==== [ERROR] Failed to parse mesh! ====");
+			Print.out(builder);
 			GameConstants.LOGGER.log(Level.SEVERE, "Error at loading a zaf data", e);
 			return null;
 		}

@@ -8,19 +8,20 @@ import zyx.utils.tasks.ScheduledTask;
 
 public class MeshLoadingTask extends ScheduledTask<LoadableWorldModelVO>
 {
-
 	private ResourceDataInputStream inputData;
+	private String id;
 
-	public MeshLoadingTask(ITaskCompleted<LoadableWorldModelVO> taskDoneCallback, ResourceDataInputStream data)
+	public MeshLoadingTask(ITaskCompleted<LoadableWorldModelVO> taskDoneCallback, ResourceDataInputStream data, String id)
 	{
 		super(taskDoneCallback);
 		inputData = data;
+		this.id = id;
 	}
 
 	@Override
 	protected void performTask()
 	{
-		LoadableWorldModelVO result = ZafLoader.loadMeshFrom(inputData);
+		LoadableWorldModelVO result = ZafLoader.loadMeshFrom(inputData, id);
 		taskCompleted(result);
 		
 		inputData = null;

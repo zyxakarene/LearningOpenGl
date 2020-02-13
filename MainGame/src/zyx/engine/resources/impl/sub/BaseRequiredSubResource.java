@@ -23,6 +23,10 @@ public abstract class BaseRequiredSubResource extends ExternalResource implement
 		for (SubResourceBatch batch : batches)
 		{
 			allBatches.add(batch);
+		}
+		
+		for (SubResourceBatch batch : batches)
+		{
 			batch.load(this);
 		}
 	}

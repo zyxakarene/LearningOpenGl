@@ -44,7 +44,7 @@ public class SmdParser
 		
 		SmdObject smd = importer.getSmd();
 		smd.setSkeleton(qc.isSkeleton);
-		smd.setSkeletonPath(qc.skeletonResource);
+		smd.setSkeletonPath(qc.getSkeletonResourceName());
 		smd.setDiffuseTexturePath(qc.getDiffuseTextureName());
 		smd.setNormalTexturePath(qc.getNormalTextureName());
 		smd.setSpecularTexturePath(qc.getSpecularTextureName());

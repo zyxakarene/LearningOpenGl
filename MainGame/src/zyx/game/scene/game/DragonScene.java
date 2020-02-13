@@ -85,7 +85,7 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 		
 		MeshObject dragon = new MeshObject();
 		dragon.setScale(0.33f, 0.33f, 0.33f);
-		dragon.load("mesh.dragon");
+//		dragon.load("mesh.dragon");
 		dragon.setPosition(false, 100, 100, 100);
 		world.addChild(dragon);
 		testDragon = dragon;

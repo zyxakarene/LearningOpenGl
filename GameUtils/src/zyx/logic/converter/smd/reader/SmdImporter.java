@@ -145,12 +145,12 @@ public class SmdImporter
 			case ("skeleton"):
 			{
 				currentToken = TOKEN_SKELETON;
-				if (currentFileType == FILE_TYPE_REF)
+				if (currentFileType == FILE_TYPE_REF || currentFileType == FILE_TYPE_PHYS || currentFileType == FILE_TYPE_BOUNDING)
 				{
 					lineHandler = new SmdBoneHandler();
 					lineHandler.setData(smd.getRootBone());
 				}
-				else
+				else if (currentFileType == FILE_TYPE_ANIMATION)
 				{
 					lineHandler = new SmdAnimationHandler(animationName, animationLooping, animationRootBone);
 					lineHandler.setData(smd.getRootBone());
