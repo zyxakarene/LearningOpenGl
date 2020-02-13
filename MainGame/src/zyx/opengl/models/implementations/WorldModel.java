@@ -1,7 +1,6 @@
 package zyx.opengl.models.implementations;
 
 import org.lwjgl.util.vector.Vector3f;
-import zyx.opengl.GLUtils;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
 import zyx.opengl.models.AbstractModel;
@@ -129,7 +128,7 @@ public class WorldModel extends AbstractModel implements IShadowable
 
 	public Joint getBoneById(int boneId)
 	{
-		return skeleton.getBoneById(boneId);
+		return skeleton.getBoneById((byte) boneId);
 	}
 
 	@Override

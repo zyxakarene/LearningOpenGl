@@ -65,7 +65,7 @@ public class Skeleton implements IDisposeable
 		return jointNameMap.get(name);
 	}
 
-	public Joint getBoneById(int boneId)
+	public Joint getBoneById(byte boneId)
 	{
 		return jointIdMap.get(boneId);
 	}
