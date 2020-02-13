@@ -18,7 +18,7 @@ public class Print
 		print(System.err, args);
 	}
 	
-	public static void print(PrintStream stream, Object... args)
+	public static synchronized void print(PrintStream stream, Object... args)
 	{
 		StringBuilder builder = new StringBuilder();
 		

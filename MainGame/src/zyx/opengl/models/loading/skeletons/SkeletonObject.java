@@ -13,10 +13,11 @@ class SkeletonObject
 
 	public void read(DataInputStream in) throws IOException
 	{
-		Print.out("Parsing model data from byte count:", in.available());
+		Print.out("==== Parsing skeleton from byte count:", in.available(), "====");
 
 		boneInfo = new BoneInfoObject();
 		boneInfo.read(in);
+		Print.out("↳", boneInfo.boneIds.length, "bones");
 		
 		rootBone = new BoneObject();
 		rootBone.read(in);
@@ -28,6 +29,8 @@ class SkeletonObject
 		{
 			animations[i] = new AnimationObject();
 			animations[i].read(in);
+			Print.out("↳ Animation:", animations[i].name);
 		}
+		Print.out("========");
 	}
 }

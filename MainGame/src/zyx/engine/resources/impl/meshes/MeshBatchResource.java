@@ -7,10 +7,12 @@ import zyx.engine.resources.impl.sub.SubResourceBatch;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.MeshBatchModel;
-import zyx.opengl.models.loading.meshes.ZafLoader;
+import zyx.opengl.models.loading.MeshLoadingTask;
 import zyx.opengl.textures.AbstractTexture;
+import zyx.utils.tasks.ITaskCompleted;
+import zyx.utils.tasks.TaskScheduler;
 
-public class MeshBatchResource extends BaseRequiredSubResource implements ISubResourceLoaded<AbstractTexture>
+public class MeshBatchResource extends BaseRequiredSubResource implements ISubResourceLoaded<AbstractTexture>, ITaskCompleted<LoadableWorldModelVO>
 {
 
 	private LoadableWorldModelVO loadedVo;
@@ -48,7 +50,14 @@ public class MeshBatchResource extends BaseRequiredSubResource implements ISubRe
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		loadedVo = ZafLoader.loadFromZaf(data);
+		MeshLoadingTask task = new MeshLoadingTask(this, data);
+		TaskScheduler.getInstance().addEntry(task);
+	}
+
+	@Override
+	public void onTaskCompleted(LoadableWorldModelVO data)
+	{
+		loadedVo = data;
 
 		String diffuse = loadedVo.getDiffuseTextureId();
 		String normal = loadedVo.getNormalTextureId();
@@ -70,7 +79,6 @@ public class MeshBatchResource extends BaseRequiredSubResource implements ISubRe
 		loadedVo.setDiffuseTexture(diffuse);
 		loadedVo.setNormalTexture(normal);
 		loadedVo.setSpecularTexture(spec);
-
 	}
 
 	@Override

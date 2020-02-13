@@ -11,7 +11,7 @@ import zyx.utils.GameConstants;
 public class ZafLoader
 {
 
-	public static LoadableWorldModelVO loadFromZaf(ResourceDataInputStream in)
+	public static LoadableWorldModelVO loadMeshFrom(ResourceDataInputStream in)
 	{
 		try
 		{

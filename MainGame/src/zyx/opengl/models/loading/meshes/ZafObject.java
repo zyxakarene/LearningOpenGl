@@ -21,7 +21,7 @@ class ZafObject
 	
 	public void read(DataInputStream in) throws IOException
 	{
-		Print.out("Parsing model data from byte count:", in.available());
+		Print.out("==== Parsing model data from byte count:", in.available(), "====");
 
 		int vertexCount = in.readInt();
 		vertexData = new float[vertexCount * 12];
@@ -48,7 +48,7 @@ class ZafObject
 		diffuseTexture = in.readUTF();
 		normalTexture = in.readUTF();
 		specularTexture = in.readUTF();
-		Print.out("↳", "Textures:", diffuseTexture, normalTexture, specularTexture, "\n");
+		Print.out("↳", "Textures:", diffuseTexture, normalTexture, specularTexture);
 		
 		radiusCenter = new Vector3f();
 		radiusCenter.x = in.readFloat();
@@ -57,6 +57,7 @@ class ZafObject
 		radius = in.readFloat();
 		
 		skeletonId = in.readUTF();
-		Print.out("↳", "Skeleton:", skeletonId, "\n");
+		Print.out("↳", "Skeleton:", skeletonId);
+		Print.out("========");
 	}
 }

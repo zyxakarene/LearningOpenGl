@@ -8,10 +8,12 @@ import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
-import zyx.opengl.models.loading.meshes.ZafLoader;
+import zyx.opengl.models.loading.MeshLoadingTask;
 import zyx.opengl.textures.AbstractTexture;
+import zyx.utils.tasks.ITaskCompleted;
+import zyx.utils.tasks.TaskScheduler;
 
-public class MeshResource extends BaseRequiredSubResource
+public class MeshResource extends BaseRequiredSubResource implements ITaskCompleted<LoadableWorldModelVO>
 {
 
 	private LoadableWorldModelVO loadedVo;
@@ -55,26 +57,32 @@ public class MeshResource extends BaseRequiredSubResource
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		loadedVo = ZafLoader.loadFromZaf(data);
+		MeshLoadingTask task = new MeshLoadingTask(this, data);
+		TaskScheduler.getInstance().addEntry(task);
+	}
+
+	@Override
+	public void onTaskCompleted(LoadableWorldModelVO data)
+	{
+		loadedVo = data;
 
 		String diffuse = loadedVo.getDiffuseTextureId();
 		String normal = loadedVo.getNormalTextureId();
 		String specular = loadedVo.getSpecularTextureId();
-		
+
 		String skeleton = loadedVo.getSkeletonId();
-		
+
 		SubResourceBatch<AbstractTexture> textureBatch = new SubResourceBatch(textureLoaded, diffuse, normal, specular);
 		SubResourceBatch<Skeleton> skeletonBatch = new SubResourceBatch(skeletonLoaded, skeleton);
 		addResourceBatch(textureBatch, skeletonBatch);
 	}
 
-	
 	private void onTextureLoaded(ArrayList<AbstractTexture> data)
 	{
 		AbstractTexture diffuse = data.get(0);
 		AbstractTexture normal = data.get(1);
 		AbstractTexture spec = data.get(2);
-		
+
 		loadedVo.setDiffuseTexture(diffuse);
 		loadedVo.setNormalTexture(normal);
 		loadedVo.setSpecularTexture(spec);
@@ -92,7 +100,7 @@ public class MeshResource extends BaseRequiredSubResource
 		model = new WorldModel(loadedVo);
 		onContentLoaded(model);
 	}
-	
+
 	@Override
 	public String getResourceIcon()
 	{

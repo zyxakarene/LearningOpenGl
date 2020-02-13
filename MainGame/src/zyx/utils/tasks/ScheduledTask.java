@@ -1,17 +1,16 @@
 package zyx.utils.tasks;
 
-import zyx.engine.utils.callbacks.ICallback;
 import zyx.utils.cheats.Print;
 
 public abstract class ScheduledTask<R>
 {
 
-	private ICallback<R> callback;
+	private ITaskCompleted<R> callback;
 	private boolean completed;
 
 	private R data;
 
-	public ScheduledTask(ICallback<R> taskDoneCallback)
+	public ScheduledTask(ITaskCompleted<R> taskDoneCallback)
 	{
 		callback = taskDoneCallback;
 		completed = false;
@@ -38,7 +37,7 @@ public abstract class ScheduledTask<R>
 
 	void dispatchComplete()
 	{
-		callback.onCallback(data);
+		callback.onTaskCompleted(data);
 	}
 
 	void dispose()

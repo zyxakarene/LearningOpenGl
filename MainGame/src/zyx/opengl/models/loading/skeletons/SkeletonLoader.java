@@ -7,7 +7,6 @@ import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.controls.SharedPools;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
-
 import zyx.opengl.models.implementations.bones.animation.Animation;
 import zyx.opengl.models.implementations.bones.animation.AnimationFrame;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
@@ -22,7 +21,7 @@ public class SkeletonLoader
 	private static final Quaternion ROTATION = new Quaternion();
 	private static final Vector3f POSITION = new Vector3f();
 
-	public static Skeleton loadFromZaf(ResourceDataInputStream in)
+	public static Skeleton loadSkeletonFrom(ResourceDataInputStream in)
 	{
 		try
 		{
