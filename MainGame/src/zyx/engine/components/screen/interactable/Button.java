@@ -59,18 +59,23 @@ public class Button extends InteractableContainer implements IComposedButton
 		images = new AbstractImage[len];
 
 		AbstractImage img;
-		String texture;
 		for (int i = 0; i < len; i++)
 		{
-			texture = textures[i];
 			img = scale9 ? new Scale9Image() : new Image();
 			images[i] = img;
 
 			img.onLoaded.addCallback(onFirstImageLoaded);
 			
-			img.load(texture);
 			img.touchable = false;
 			addChild(img);
+		}
+		
+		String texture;
+		for (int i = 0; i < len; i++)
+		{
+			texture = textures[i];
+			img = images[i];
+			img.load(texture);
 		}
 	}
 
@@ -94,6 +99,18 @@ public class Button extends InteractableContainer implements IComposedButton
 		loadedCount++;
 		if (loadedCount == images.length)
 		{
+			if (upColors == null)
+			{
+				Vector3f white = new Vector3f(1, 1, 1);
+				Vector3f[] defaultColor = new Vector3f[loadedCount];
+				for (int i = 0; i < loadedCount; i++)
+				{
+					defaultColor[i] = white;
+				}
+				
+				setColors(defaultColor, defaultColor, defaultColor);
+			}
+			
 			updateMesh();
 		}
 	}
@@ -219,8 +236,6 @@ public class Button extends InteractableContainer implements IComposedButton
 					colors = upColors;
 					break;
 			}
-
-			HELPER_VEC4.set(HELPER_VEC3.x, HELPER_VEC3.y, HELPER_VEC3.z, alpha);
 
 			int len = images.length;
 			AbstractImage img;

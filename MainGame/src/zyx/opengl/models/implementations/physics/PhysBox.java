@@ -2,13 +2,14 @@ package zyx.opengl.models.implementations.physics;
 
 import org.lwjgl.util.vector.Vector3f;
 import zyx.utils.geometry.Box;
+import zyx.utils.interfaces.IDisposeable;
 
 
-public class PhysBox
+public class PhysBox implements IDisposeable
 {
-	private final PhysObject[] objects;
-	private final Box boundingBox;
-	private final PhysTriangle[] allTriangles;
+	private PhysObject[] objects;
+	private Box boundingBox;
+	private PhysTriangle[] allTriangles;
 
 	private int trianglesAdded;
 	private int objectsAdded;
@@ -59,4 +60,30 @@ public class PhysBox
 	{
 		return boundingBox;
 	}
+
+	@Override
+	public void dispose()
+	{
+		if (objects != null)
+		{
+			for (PhysObject object : objects)
+			{
+				object.dispose();
+			}
+		}
+		
+		if (allTriangles != null)
+		{
+			for (PhysTriangle triangle : allTriangles)
+			{
+				triangle.dispose();
+			}
+		}
+		
+		boundingBox = null;
+		allTriangles = null;
+		objects = null;
+	}
+	
+	
 }

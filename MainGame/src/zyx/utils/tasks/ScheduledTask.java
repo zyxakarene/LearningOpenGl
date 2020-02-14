@@ -7,6 +7,7 @@ public abstract class ScheduledTask<R>
 
 	private ITaskCompleted<R> callback;
 	private boolean completed;
+	private boolean canceled;
 
 	private R data;
 
@@ -34,15 +35,29 @@ public abstract class ScheduledTask<R>
 		completed = true;
 		data = results;
 	}
-
+	
+	public final void cancel()
+	{
+		canceled = true;
+		
+		onCanceled();
+	}
+	
 	void dispatchComplete()
 	{
-		callback.onTaskCompleted(data);
+		if (!canceled)
+		{
+			callback.onTaskCompleted(data);
+		}
 	}
 
 	void dispose()
 	{
 		callback = null;
 		data = null;
+	}
+
+	protected void onCanceled()
+	{
 	}
 }

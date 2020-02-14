@@ -11,6 +11,7 @@ public class SkeletonResource extends ExternalResource implements ITaskCompleted
 {
 
 	private Skeleton skeleton;
+	private SkeletonLoadingTask loadingTask;
 
 	public SkeletonResource(String path)
 	{
@@ -26,8 +27,14 @@ public class SkeletonResource extends ExternalResource implements ITaskCompleted
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		SkeletonLoadingTask task = new SkeletonLoadingTask(this, data, path);
-		TaskScheduler.getInstance().addEntry(task);
+		if (loadingTask != null)
+		{
+			loadingTask.cancel();
+			loadingTask = null;
+		}
+		
+		loadingTask = new SkeletonLoadingTask(this, data, path);
+		TaskScheduler.getInstance().addEntry(loadingTask);
 	}
 
 	@Override
@@ -40,6 +47,12 @@ public class SkeletonResource extends ExternalResource implements ITaskCompleted
 	@Override
 	protected void onDispose()
 	{
+		if (loadingTask != null)
+		{
+			loadingTask.cancel();
+			loadingTask = null;
+		}
+		
 		if (skeleton != null)
 		{
 			skeleton.dispose();

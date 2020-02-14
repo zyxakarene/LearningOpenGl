@@ -87,4 +87,10 @@ public class MeshBatchResource extends BaseRequiredSubResource implements ISubRe
 		model = new MeshBatchModel(loadedVo);
 		onContentLoaded(model);
 	}
+	
+	@Override
+	public String getResourceIcon()
+	{
+		return "mesh.png";
+	}
 }

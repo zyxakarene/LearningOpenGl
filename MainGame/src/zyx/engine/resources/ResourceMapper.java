@@ -87,7 +87,7 @@ class ResourceMapper
 		}
 		else if (resourceClass == DrawableTextureResource.class)
 		{
-			return new DrawableTextureResource(path);
+			return new DrawableTextureResource();
 		}
 		
 		return new GenericResource(path);

@@ -89,7 +89,9 @@ public class Skeleton implements IDisposeable
 			jointNameMap.clear();
 			animations.clear();
 			animationList.clear();
-
+			jointIdMap.clear();
+			
+			jointIdMap = null;
 			rootJoint = null;
 			jointNameMap = null;
 			animations = null;

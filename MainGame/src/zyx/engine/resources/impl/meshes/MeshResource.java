@@ -21,6 +21,7 @@ public class MeshResource extends BaseRequiredSubResource implements ITaskComple
 
 	private ISubResourceLoaded<AbstractTexture> textureLoaded;
 	private ISubResourceLoaded<Skeleton> skeletonLoaded;
+	private MeshLoadingTask loadingTask;
 
 	public MeshResource(String path)
 	{
@@ -37,28 +38,16 @@ public class MeshResource extends BaseRequiredSubResource implements ITaskComple
 	}
 
 	@Override
-	protected void onDispose()
-	{
-		super.onDispose();
-
-		if (model != null)
-		{
-			model.dispose();
-			model = null;
-		}
-
-		if (loadedVo != null)
-		{
-			loadedVo.dispose();
-			loadedVo = null;
-		}
-	}
-
-	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		MeshLoadingTask task = new MeshLoadingTask(this, data, path);
-		TaskScheduler.getInstance().addEntry(task);
+		if (loadingTask != null)
+		{
+			loadingTask.cancel();
+			loadingTask = null;
+		}
+		
+		loadingTask = new MeshLoadingTask(this, data, path);
+		TaskScheduler.getInstance().addEntry(loadingTask);
 	}
 
 	@Override
@@ -99,8 +88,34 @@ public class MeshResource extends BaseRequiredSubResource implements ITaskComple
 	{
 		model = new WorldModel(loadedVo);
 		onContentLoaded(model);
+		
+		loadedVo.clean();
 	}
 
+	@Override
+	protected void onDispose()
+	{
+		super.onDispose();
+
+		if (loadingTask != null)
+		{
+			loadingTask.cancel();
+			loadingTask = null;
+		}
+		
+		if (model != null)
+		{
+			model.dispose();
+			model = null;
+		}
+
+		if (loadedVo != null)
+		{
+			loadedVo.dispose();
+			loadedVo = null;
+		}
+	}
+	
 	@Override
 	public String getResourceIcon()
 	{

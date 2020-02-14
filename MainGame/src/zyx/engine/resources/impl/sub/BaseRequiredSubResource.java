@@ -46,18 +46,15 @@ public abstract class BaseRequiredSubResource extends ExternalResource implement
 	{
 		super.onDispose();
 
-		if (allBatches != null)
-		{
-			SubResourceBatch batch;
-			while (allBatches.isEmpty() == false)
-			{				
-				batch = allBatches.remove();
-				batch.dispose();
-			}
-			
-			allBatches.clear();
-			allBatches = null;
+		SubResourceBatch batch;
+		while (allBatches.isEmpty() == false)
+		{				
+			batch = allBatches.remove();
+			batch.dispose();
 		}
+
+		allBatches.clear();
+		batchesLoaded = 0;
 	}
 
 	protected abstract void onSubBatchesLoaded();

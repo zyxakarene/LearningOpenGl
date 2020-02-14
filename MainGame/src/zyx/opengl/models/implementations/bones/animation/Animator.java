@@ -78,5 +78,6 @@ public class Animator implements IDisposeable
 		currentAnimation = null;
 		joints = null;
 		animations = null;
+		keys = null;
 	}
 }

@@ -85,8 +85,19 @@ public class LoadableWorldModelVO
 			skeleton = null;
 		}
 		
+		if (physBox != null)
+		{
+			physBox.dispose();
+		}
+		
 		vertexData = null;
 		elementData = null;
 		physBox = null;
+	}
+
+	public void clean()
+	{
+		vertexData = null;
+		elementData = null;
 	}
 }

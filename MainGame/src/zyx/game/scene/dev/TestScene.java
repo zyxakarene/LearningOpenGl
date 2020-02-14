@@ -1,25 +1,16 @@
 package zyx.game.scene.dev;
 
-import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
-import zyx.engine.scene.Scene;
-import zyx.game.behavior.camera.CameraUpdateViewBehavior;
-import zyx.game.behavior.freefly.FreeFlyBehavior;
 import zyx.game.components.AnimatedMesh;
-import zyx.game.components.GameObject;
 import zyx.game.components.MeshObject;
 import zyx.game.controls.input.KeyboardData;
 import zyx.utils.FloatMath;
 
-public class TestScene extends Scene
+public class TestScene extends DebugScene
 {
-
-	private ArrayList<MeshObject> objects;
-	private AnimatedMesh knight;
 
 	public TestScene()
 	{
-		objects = new ArrayList<>();
 	}
 
 	@Override
@@ -31,6 +22,8 @@ public class TestScene extends Scene
 	@Override
 	protected void onInitialize()
 	{
+		addPlayerControls();
+		
 		for (int i = 0; i < 0; i++)
 		{
 			MeshObject model = new MeshObject();
@@ -42,19 +35,11 @@ public class TestScene extends Scene
 			objects.add(model);
 		}
 
-		knight = new AnimatedMesh();
+		AnimatedMesh knight = new AnimatedMesh();
 		knight.load("mesh.knight.knight");
 		knight.setAnimation("attack");
+		objects.add(knight);
 		world.addChild(knight);
-
-		MeshObject player = new MeshObject();
-		player.addBehavior(new FreeFlyBehavior());
-		player.addBehavior(new CameraUpdateViewBehavior());
-
-		objects.add(player);
-
-		world.addChild(player);
-
 	}
 
 //	@Override
@@ -62,14 +47,12 @@ public class TestScene extends Scene
 //	{
 //		return new MainHud();
 //	}
+	
 	@Override
 	protected void onUpdate(long timestamp, int elapsedTime)
 	{
-		for (MeshObject object : objects)
-		{
-			object.update(timestamp, elapsedTime);
-		}
-
+		super.onUpdate(timestamp, elapsedTime);
+		
 		if (KeyboardData.data.isDown(Keyboard.KEY_SPACE))
 		{
 			AnimatedMesh tempKnight = new AnimatedMesh();
@@ -87,25 +70,9 @@ public class TestScene extends Scene
 			{
 				tempKnight.setAnimation("walk");	
 			}
+			
+			objects.add(tempKnight);
 			world.addChild(tempKnight);
 		}
-	}
-
-	@Override
-	protected void onDispose()
-	{
-		for (MeshObject object : objects)
-		{
-			object.dispose();
-		}
-
-		if (knight != null)
-		{
-			knight.dispose();
-			knight = null;
-		}
-
-		objects.clear();
-		objects = null;
 	}
 }

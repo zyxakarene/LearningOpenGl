@@ -21,16 +21,16 @@ public class ZafLoader
 			builder.append("==== Parsing mesh data from byte count:", in.available(), "====");
 			builder.append("Id", id);
 			
-			ZafObject smd = new ZafObject();
-			smd.read(in, builder);
+			ZafObject obj = new ZafObject();
+			obj.read(in, builder);
 
-			PhysBox phys = createPhysBox(smd.physInformation);
+			PhysBox phys = createPhysBox(obj.physInformation);
 
 			builder.append("========");
 			Print.out(builder);
 			
-			return new LoadableWorldModelVO(smd.vertexData, smd.elementData, phys, smd.diffuseTexture, smd.normalTexture, smd.specularTexture,
-											smd.radiusCenter, smd.radius, smd.skeletonId);
+			return new LoadableWorldModelVO(obj.vertexData, obj.elementData, phys, obj.diffuseTexture, obj.normalTexture, obj.specularTexture,
+											obj.radiusCenter, obj.radius, obj.skeletonId);
 		}
 		catch (IOException e)
 		{

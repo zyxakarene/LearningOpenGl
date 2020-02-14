@@ -1,26 +1,23 @@
 package zyx.game.scene.dev;
 
 import zyx.game.behavior.misc.JiggleBehavior;
-import java.util.ArrayList;
-import zyx.engine.scene.Scene;
 import zyx.game.components.MeshObject;
 import zyx.opengl.GLUtils;
 import zyx.opengl.particles.ParticleSystem;
 import zyx.utils.FloatMath;
 
-public class ParticleScene extends Scene
+public class ParticleScene extends DebugScene
 {
-
-	private ArrayList<MeshObject> objects;
 
 	public ParticleScene()
 	{
-		objects = new ArrayList<>();
 	}
 
 	@Override
 	protected void onInitialize()
 	{
+		addPlayerControls();
+		
 		for (int i = 0; i < 1; i++)
 		{
 			MeshObject model = new MeshObject();
@@ -69,26 +66,5 @@ public class ParticleScene extends Scene
 		}
 		
 		GLUtils.errorCheck();
-	}
-
-	@Override
-	protected void onUpdate(long timestamp, int elapsedTime)
-	{
-		for (MeshObject object : objects)
-		{
-			object.update(timestamp, elapsedTime);
-		}
-	}
-
-	@Override
-	protected void onDispose()
-	{
-		for (MeshObject object : objects)
-		{
-			object.dispose();
-		}
-		
-		objects.clear();
-		objects = null;
 	}
 }
