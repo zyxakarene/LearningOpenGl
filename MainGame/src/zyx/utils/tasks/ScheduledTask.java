@@ -28,6 +28,11 @@ public abstract class ScheduledTask<R>
 		}
 	}
 
+	public final void start()
+	{
+		TaskScheduler.getInstance().addEntry(this);
+	}
+	
 	protected abstract void performTask();
 
 	protected final void taskCompleted(R results)

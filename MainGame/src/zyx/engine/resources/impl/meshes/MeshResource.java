@@ -11,7 +11,6 @@ import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.loading.MeshLoadingTask;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.tasks.ITaskCompleted;
-import zyx.utils.tasks.TaskScheduler;
 
 public class MeshResource extends BaseRequiredSubResource implements ITaskCompleted<LoadableWorldModelVO>
 {
@@ -40,14 +39,8 @@ public class MeshResource extends BaseRequiredSubResource implements ITaskComple
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		if (loadingTask != null)
-		{
-			loadingTask.cancel();
-			loadingTask = null;
-		}
-		
 		loadingTask = new MeshLoadingTask(this, data, path);
-		TaskScheduler.getInstance().addEntry(loadingTask);
+		loadingTask.start();
 	}
 
 	@Override

@@ -5,7 +5,6 @@ import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.loading.SkeletonLoadingTask;
 import zyx.utils.tasks.ITaskCompleted;
-import zyx.utils.tasks.TaskScheduler;
 
 public class SkeletonResource extends ExternalResource implements ITaskCompleted<Skeleton>
 {
@@ -27,14 +26,8 @@ public class SkeletonResource extends ExternalResource implements ITaskCompleted
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		if (loadingTask != null)
-		{
-			loadingTask.cancel();
-			loadingTask = null;
-		}
-		
 		loadingTask = new SkeletonLoadingTask(this, data, path);
-		TaskScheduler.getInstance().addEntry(loadingTask);
+		loadingTask.start();
 	}
 
 	@Override

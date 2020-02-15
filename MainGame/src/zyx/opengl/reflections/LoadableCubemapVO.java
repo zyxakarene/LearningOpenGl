@@ -1,8 +1,6 @@
 package zyx.opengl.reflections;
 
-import java.io.IOException;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 
 public class LoadableCubemapVO
 {
@@ -17,37 +15,23 @@ public class LoadableCubemapVO
 	public int gl_type;
 	public byte[] gl_textureData;
 	public Vector3f[] positions;
-	
-	
-	LoadableCubemapVO()
-	{
-	}
-	
-	void read(ResourceDataInputStream in) throws IOException
-	{
-		name = in.readUTF();
-		
-		faceSize = in.readShort();
-		layers = in.readShort();
 
-		
-		gl_internalFormat = in.readInt();
-		gl_format = in.readInt();
-		gl_type = in.readInt();
-		
-		int textureLength = in.readInt();
-		gl_textureData = new byte[textureLength];
-		in.readFully(gl_textureData);
-		
-		positions = new Vector3f[layers];
-		for (int i = 0; i < layers; i++)
-		{
-			float x = in.readFloat();
-			float y = in.readFloat();
-			float z = in.readFloat();
-			
-			positions[i] = new Vector3f(x, y, z);
-		}
+	public LoadableCubemapVO(String name, short faceSize, short layers, int gl_internalFormat, int gl_format, int gl_type, byte[] gl_textureData, Vector3f[] positions)
+	{
+		this.name = name;
+		this.faceSize = faceSize;
+		this.layers = layers;
+		this.gl_internalFormat = gl_internalFormat;
+		this.gl_format = gl_format;
+		this.gl_type = gl_type;
+		this.gl_textureData = gl_textureData;
+		this.positions = positions;
 	}
 
+	public void dispose()
+	{
+		name = null;
+		gl_textureData = null;
+		positions = null;
+	}
 }

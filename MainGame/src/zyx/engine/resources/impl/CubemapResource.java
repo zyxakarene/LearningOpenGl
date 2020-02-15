@@ -1,13 +1,18 @@
 package zyx.engine.resources.impl;
 
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
-import zyx.opengl.reflections.CubeLoader;
+import zyx.opengl.models.loading.CubeLoadingTask;
 import zyx.opengl.reflections.Cubemap;
+import zyx.opengl.reflections.LoadableCubemapVO;
+import zyx.opengl.textures.CubemapArrayTexture;
+import zyx.utils.tasks.ITaskCompleted;
 
-public class CubemapResource extends ExternalResource
+public class CubemapResource extends ExternalResource implements ITaskCompleted<LoadableCubemapVO>
 {
 
 	private Cubemap cubemap;
+	private CubemapArrayTexture texture;
+	private CubeLoadingTask task;
 
 	public CubemapResource(String path)
 	{
@@ -23,20 +28,37 @@ public class CubemapResource extends ExternalResource
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		cubemap = CubeLoader.loadFromCube(data);
+		task = new CubeLoadingTask(this, data, path);
+		task.start();
+	}
+
+	@Override
+	public void onTaskCompleted(LoadableCubemapVO data)
+	{
+		texture = new CubemapArrayTexture(data);
+		cubemap = new Cubemap(data.positions, texture);
+
 		onContentLoaded(cubemap);
+
+		data.dispose();
 	}
 
 	@Override
 	protected void onDispose()
 	{
-		if(cubemap != null)
+		if (texture != null)
+		{
+			texture.dispose();
+			texture = null;
+		}
+
+		if (cubemap != null)
 		{
 			cubemap.dispose();
 			cubemap = null;
 		}
 	}
-	
+
 	@Override
 	public String getResourceIcon()
 	{

@@ -21,6 +21,14 @@ public class MeshLoadingTask extends ScheduledTask<LoadableWorldModelVO>
 	@Override
 	protected void performTask()
 	{
+//		try
+//		{
+//			Thread.sleep((long) (1000 + (10000 * Math.random())));
+//		}
+//		catch (InterruptedException ex)
+//		{
+//		}
+		
 		LoadableWorldModelVO result = ZafLoader.loadMeshFrom(inputData, id);
 		taskCompleted(result);
 		

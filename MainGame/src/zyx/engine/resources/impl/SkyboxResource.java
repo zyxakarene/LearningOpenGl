@@ -10,7 +10,6 @@ import zyx.opengl.models.implementations.SkyboxModel;
 import zyx.opengl.models.loading.MeshLoadingTask;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.tasks.ITaskCompleted;
-import zyx.utils.tasks.TaskScheduler;
 
 public class SkyboxResource extends BaseRequiredSubResource implements ISubResourceLoaded<AbstractTexture>, ITaskCompleted<LoadableWorldModelVO>
 {
@@ -51,7 +50,7 @@ public class SkyboxResource extends BaseRequiredSubResource implements ISubResou
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
 		MeshLoadingTask task = new MeshLoadingTask(this, data, path);
-		TaskScheduler.getInstance().addEntry(task);
+		task.start();
 	}
 	
 	@Override

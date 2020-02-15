@@ -17,6 +17,7 @@ public class MeshBatchResource extends BaseRequiredSubResource implements ISubRe
 
 	private LoadableWorldModelVO loadedVo;
 	private MeshBatchModel model;
+	private MeshLoadingTask task;
 
 	public MeshBatchResource(String path)
 	{
@@ -45,13 +46,19 @@ public class MeshBatchResource extends BaseRequiredSubResource implements ISubRe
 			loadedVo.dispose();
 			loadedVo = null;
 		}
+		
+		if (task != null)
+		{
+			task.cancel();
+			task = null;
+		}
 	}
 
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		MeshLoadingTask task = new MeshLoadingTask(this, data, path);
-		TaskScheduler.getInstance().addEntry(task);
+		task = new MeshLoadingTask(this, data, path);
+		task.start();
 	}
 
 	@Override
