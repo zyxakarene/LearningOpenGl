@@ -108,8 +108,9 @@ public class ScreenModel extends AbstractModel
 		return elementData;
 	}
 	
-	public void setColors(Vector4f colors)
+	public void setColors(Vector4f color)
 	{
+		colors.set(color);
 		bindVao();
 		
 		float vertexData[] = new float[]

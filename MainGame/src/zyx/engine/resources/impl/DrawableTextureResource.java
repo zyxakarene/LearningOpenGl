@@ -7,12 +7,13 @@ import zyx.opengl.textures.enums.TextureSlot;
 
 public class DrawableTextureResource extends Resource
 {
-
+	private static final String PATH = "drawable_texture";
+	
 	private TextureFromInt drawTexture;
 
-	public DrawableTextureResource(String path)
+	public DrawableTextureResource()
 	{
-		super(path);
+		super(PATH);
 	}
 
 	@Override
@@ -31,12 +32,18 @@ public class DrawableTextureResource extends Resource
 	}
 	
 	@Override
-	void onDispose()
+	protected void onDispose()
 	{
 		if(drawTexture != null)
 		{
 			drawTexture.dispose();
 			drawTexture = null;
 		}
+	}
+	
+	@Override
+	public String getResourceIcon()
+	{
+		return "texture.png";
 	}
 }

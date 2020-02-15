@@ -1,15 +1,16 @@
 package zyx.game.controls.resourceloader.requests;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import zyx.utils.interfaces.IDisposeable;
 
-public abstract class ResourceRequest implements IDisposeable
+public abstract class ResourceRequest<T extends InputStream> implements IDisposeable
 {
 	public String path;
-	public ArrayList<IResourceLoaded> callbacks;
+	public ArrayList<IResourceLoaded<T>> callbacks;
 	public boolean requestCompleted;
 
-	public ResourceRequest(String path, IResourceLoaded callback)
+	ResourceRequest(String path, IResourceLoaded<T> callback)
 	{
 		this.path = path;
 		this.callbacks = new ArrayList<>();
@@ -32,7 +33,7 @@ public abstract class ResourceRequest implements IDisposeable
 	@Override
 	public int hashCode()
 	{
-		return path.hashCode();
+		return super.hashCode() + path.hashCode();
 	}
 	
 	public void setFailed()
@@ -41,7 +42,7 @@ public abstract class ResourceRequest implements IDisposeable
 	}
 	
 	public abstract void setData(byte[] data);
-	public abstract Object getData();
+	public abstract T getData();
 
 	@Override
 	public void dispose()
@@ -55,31 +56,34 @@ public abstract class ResourceRequest implements IDisposeable
 		}
 	}
 
-	public void mergeFrom(ResourceRequest request)
+	public void mergeFrom(ResourceRequest<T> request)
 	{
-		callbacks.addAll(request.callbacks);
-	}
-
-	public void unMergeFrom(ResourceRequest request)
-	{
-		callbacks.removeAll(request.callbacks);
-	}
-	
-	public void complete(Object data)
-	{
-		if(callbacks != null)
+		for (IResourceLoaded<T> newCallbacks : request.callbacks)
 		{
-			int len = callbacks.size();
-			for (int i = 0; i < len; i++)
+			if (callbacks.indexOf(newCallbacks) == -1)
 			{
-				callbacks.get(i).resourceLoaded(data);
-
-				onPostComplete();
+				callbacks.add(newCallbacks);
+			}
+			else
+			{
+				//TODO: Figure out why the same callback sometimes already exists
 			}
 		}
 	}
 
-	protected void onPostComplete()
+	public void unMergeFrom(ResourceRequest<T> request)
 	{
+		callbacks.removeAll(request.callbacks);
+	}
+	
+	public void complete(T data)
+	{
+		if(callbacks != null)
+		{
+			for (IResourceLoaded<T> callback : callbacks)
+			{
+				callback.resourceLoaded(data);
+			}
+		}
 	}
 }

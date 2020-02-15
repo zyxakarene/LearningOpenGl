@@ -1,21 +1,16 @@
 package zyx.game.scene.dev;
 
-import java.util.ArrayList;
-import zyx.engine.scene.Scene;
+import org.lwjgl.input.Keyboard;
 import zyx.game.components.AnimatedMesh;
 import zyx.game.components.MeshObject;
-import zyx.game.components.screen.hud.MainHud;
+import zyx.game.controls.input.KeyboardData;
 import zyx.utils.FloatMath;
 
-public class TestScene extends Scene
+public class TestScene extends DebugScene
 {
-
-	private ArrayList<MeshObject> objects;
-	private AnimatedMesh knight;
 
 	public TestScene()
 	{
-		objects = new ArrayList<>();
 	}
 
 	@Override
@@ -27,7 +22,9 @@ public class TestScene extends Scene
 	@Override
 	protected void onInitialize()
 	{
-		for (int i = 0; i < 1; i++)
+		addPlayerControls();
+		
+		for (int i = 0; i < 0; i++)
 		{
 			MeshObject model = new MeshObject();
 			model.load("mesh.box");
@@ -37,43 +34,45 @@ public class TestScene extends Scene
 			world.addChild(model);
 			objects.add(model);
 		}
-		
-		knight = new AnimatedMesh();
+
+		AnimatedMesh knight = new AnimatedMesh();
 		knight.load("mesh.knight.knight");
 		knight.setAnimation("attack");
+		objects.add(knight);
 		world.addChild(knight);
 	}
 
-	@Override
-	protected MainHud createHud()
-	{
-		return new MainHud();
-	}
-
+//	@Override
+//	protected MainHud createHud()
+//	{
+//		return new MainHud();
+//	}
+	
 	@Override
 	protected void onUpdate(long timestamp, int elapsedTime)
 	{
-		for (MeshObject object : objects)
-		{
-			object.update(timestamp, elapsedTime);
-		}
-	}
-
-	@Override
-	protected void onDispose()
-	{
-		for (MeshObject object : objects)
-		{
-			object.dispose();
-		}
-
-		if (knight != null)
-		{
-			knight.dispose();
-			knight = null;
-		}
+		super.onUpdate(timestamp, elapsedTime);
 		
-		objects.clear();
-		objects = null;
+		if (KeyboardData.data.isDown(Keyboard.KEY_SPACE))
+		{
+			AnimatedMesh tempKnight = new AnimatedMesh();
+			tempKnight.setX((FloatMath.random() * 200) - 100);
+			tempKnight.setY((FloatMath.random() * 200) - 100);
+			tempKnight.setRotZ(FloatMath.random() * 360);
+			
+			tempKnight.load("mesh.knight.knight");
+			
+			if (Math.random() > 0.5)
+			{
+				tempKnight.setAnimation("attack");
+			}
+			else
+			{
+				tempKnight.setAnimation("walk");	
+			}
+			
+			objects.add(tempKnight);
+			world.addChild(tempKnight);
+		}
 	}
 }

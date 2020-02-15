@@ -5,17 +5,17 @@ import zyx.utils.interfaces.IDisposeable;
 public class Animation implements IDisposeable
 {
 	int length;
-	boolean loopable;
+	boolean looping;
 	
 	public String name;
 	public AnimationFrame[] frames;
 
-	public Animation(String name, int length)
+	public Animation(String name, int length, boolean looping)
 	{
 		this.name = name;
 		this.frames = new AnimationFrame[length];
 		this.length = length;
-		this.loopable = false;
+		this.looping = looping;
 	}
 	
 	public void setFrame(int frame, AnimationFrame animationFrame)
@@ -27,10 +27,9 @@ public class Animation implements IDisposeable
 	@Override
 	public void dispose()
 	{
-		int len = frames.length;
-		for (int i = 0; i < len; i++)
+		for (AnimationFrame frame : frames)
 		{
-			frames[i].dispose();
+			frame.dispose();
 		}
 		
 		name = null;

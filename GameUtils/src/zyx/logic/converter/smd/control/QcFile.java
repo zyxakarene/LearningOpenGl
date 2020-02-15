@@ -6,23 +6,37 @@ import java.util.ArrayList;
 public class QcFile
 {
 
+	public boolean isSkeleton;
+
 	public File meshFile;
 	public File physFile;
 	public File boundingFile;
+	public String skeletonResource;
 	public String diffuseTextureResource;
 	public String normalTextureResource;
 	public String specularTextureResource;
 
-	public ArrayList<File> animations = new ArrayList<>();
+	public ArrayList<QcAnimation> animations = new ArrayList<>();
 
 	public File outModel;
 
 	@Override
 	public String toString()
 	{
-		return "QcFile{" + "meshFile=" + meshFile + ", physFile=" + physFile + ", boundingFile=" + boundingFile + ", diffuseTextureResource=" + diffuseTextureResource + 
-				", normalTextureResource=" + normalTextureResource + ", specularTextureResource=" + specularTextureResource + ", animations=" + animations + 
-				", outModel=" + outModel + "}";
+		return "QcFile{" + "isSkeleton=" + isSkeleton + ", meshFile=" + meshFile + ", physFile=" + physFile + ", boundingFile="
+				+ boundingFile + ", skeletonResource=" + skeletonResource + ", diffuseTextureResource=" + diffuseTextureResource
+				+ ", normalTextureResource=" + normalTextureResource + ", specularTextureResource=" + specularTextureResource
+				+ ", animations=" + animations + ", outModel=" + outModel + '}';
+	}
+
+	public String getSkeletonResourceName()
+	{
+		if (skeletonResource != null)
+		{
+			return skeletonResource;
+		}
+
+		return "skeleton.default";
 	}
 
 	public String getDiffuseTextureName()

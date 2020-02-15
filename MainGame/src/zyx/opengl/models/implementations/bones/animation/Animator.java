@@ -12,14 +12,18 @@ public class Animator implements IDisposeable
 
 	private Animation currentAnimation;
 
-	private HashMap<String, Joint> joints;
+	private HashMap<Byte, Joint> joints;
 	private HashMap<String, Animation> animations;
 	private long timeSinceStarted;
+	private Byte[] keys;
 
-	public Animator(HashMap<String, Joint> joints, HashMap<String, Animation> animations)
+	public Animator(HashMap<Byte, Joint> joints, HashMap<String, Animation> animations)
 	{
 		this.joints = joints;
 		this.animations = animations;
+		
+		keys = new Byte[joints.size()];
+		joints.keySet().toArray(keys);
 	}
 
 	public void setCurrentAnimation(AnimationController controller)
@@ -38,7 +42,7 @@ public class Animator implements IDisposeable
 
 			float currentFrame = (timeSinceStart / GameConstants.ANIMATION_MS_PER_FRAME);
 
-			if (currentAnimation.loopable)
+			if (currentAnimation.looping)
 			{
 				currentFrame = currentFrame % animationLength;
 			}
@@ -52,7 +56,7 @@ public class Animator implements IDisposeable
 
 			if (nextFrame >= animationLength)
 			{
-				nextFrame = currentAnimation.loopable ? 0 : animationLength - 1;
+				nextFrame = currentAnimation.looping ? 0 : animationLength - 1;
 			}
 
 			float percentage = currentFrame - prevFrame;
@@ -60,7 +64,7 @@ public class Animator implements IDisposeable
 			AnimationFrame prevAnimationFrame = currentAnimation.frames[prevFrame];
 			AnimationFrame nextAnimationFrame = currentAnimation.frames[nextFrame];
 
-			AnimationTransformer.transform(prevAnimationFrame.transforms, nextAnimationFrame.transforms, joints, percentage);
+			AnimationTransformer.transform(prevAnimationFrame.transforms, nextAnimationFrame.transforms, joints, keys, percentage);
 		}
 		else
 		{
@@ -74,5 +78,6 @@ public class Animator implements IDisposeable
 		currentAnimation = null;
 		joints = null;
 		animations = null;
+		keys = null;
 	}
 }

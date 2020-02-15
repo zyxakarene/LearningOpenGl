@@ -28,13 +28,19 @@ public class SoundResource extends ExternalResource
 	}
 
 	@Override
-	void onDispose()
+	protected void onDispose()
 	{
 		if(audio != null)
 		{
 			audio.dispose();
 			audio = null;
 		}
+	}
+	
+	@Override
+	public String getResourceIcon()
+	{
+		return "sound.png";
 	}
 
 }

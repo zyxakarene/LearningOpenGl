@@ -1,31 +1,28 @@
 zaf
 {
-	SmdBone							rootBone
-	
-	vertexCount						int
+	int								vertexCount
 	float[vertexCount * 12]			vertexData
 	
-	elementCount					int
+	int								elementCount
 	short[elementCount]				elementData
 	
-	animationCount					int
-	SmdAnimation[animationCount]	animations
-	
-	physInformation					SmdPhysInformation
+	SmdPhysInformation				physInformation
 	
 	UtfString						diffuseTexture
 	UtfString						normalTexture
 	UtfString						specularTexture
 	
-	CenterPosition					Vector3F
-	Radius							float
+	Vector3F						CenterPosition
+	float							radius
+	
+	UtfString						skeleton
 }
 
 SmdPhysInformation
 {
 	Vector3F						boundingBoxMin
 	Vector3F						boundingBoxMax
-	physBoxCount					int
+	int								physBoxCount
 	SmdPhysBox[physBoxCount]		physBoxes
 }
 
@@ -44,50 +41,9 @@ SmdPhysTriangle
 	Vector3F	normal
 }
 
-SmdBone
-{
-	byte		id
-	UtfString	name
-	
-	Vector3F	restPos
-	Vector4F	restRot
-	
-	byte		childCount
-	SmdBone[childCount] childBones
-}
-
-SmdAnimation
-{
-	UtfString				name
-	animationCount			int
-	SmdAnimationFrame[]		frames
-}
-
-SmdAnimationFrame
-{
-	frame									int
-	transformLength							int
-	SmdAnimationTransform[transformLength]	transforms
-}
-
-SmdAnimationTransform
-{
-	UtfString	boneName
-	Vector3F	position
-	Vector4F	rotation
-}
-
 Vector3F
 {
 	float		x
 	float		y
 	float		z
-}
-
-Vector4F
-{
-	float		x
-	float		y
-	float		z
-	float		w
 }

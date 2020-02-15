@@ -34,6 +34,12 @@ class ResourceExchange extends BaseExchange<ResourceRequest, ResourceRequest>
 	}
 
 	@Override
+	protected void onRemoveReply(ResourceRequest request)
+	{
+		requestMap.remove(request.path);
+	}
+
+	@Override
 	protected boolean shouldAddEntry(ResourceRequest request)
 	{
 		if (requestMap.containsKey(request.path))

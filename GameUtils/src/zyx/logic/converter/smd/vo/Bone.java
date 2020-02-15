@@ -28,6 +28,7 @@ public class Bone
 
 	public void setRestData(Vector3f restPos, Vector3f restRot)
 	{
+		System.out.println("Setting rest data for " + id + " to " + restPos + " on " + this);
 		this.restPos = new Vector3f(restPos);
 		this.restRot = EulerToQuat.transform(restRot);
 	}
@@ -40,7 +41,7 @@ public class Bone
 	public HashMap<Byte, Bone> toBoneMap()
 	{
 		HashMap<Byte, Bone> map = new HashMap<>();
-		addToBoneMap(map);
+		addToBoneIdMap(map);
 
 		if (map.containsKey(MESH_BONE.id) == false)
 		{
@@ -51,12 +52,35 @@ public class Bone
 		return map;
 	}
 	
-	private void addToBoneMap(HashMap<Byte, Bone> map)
+	public HashMap<String, Bone> toBoneNameMap()
+	{
+		HashMap<String, Bone> map = new HashMap<>();
+		addToBoneNameMap(map);
+
+		if (map.containsKey(MESH_BONE.name) == false)
+		{
+			UtilsLogger.log("No boneName dummy. Adding it manually!");
+			map.put(MESH_BONE.name, MESH_BONE);
+		}
+		
+		return map;
+	}
+	
+	private void addToBoneIdMap(HashMap<Byte, Bone> map)
 	{
 		map.put(id, this);
 		for (Bone child : children)
 		{
-			child.addToBoneMap(map);
+			child.addToBoneIdMap(map);
+		}
+	}
+	
+	private void addToBoneNameMap(HashMap<String, Bone> map)
+	{
+		map.put(name, this);
+		for (Bone child : children)
+		{
+			child.addToBoneNameMap(map);
 		}
 	}
 
@@ -64,13 +88,15 @@ public class Bone
 	{
 		return name;
 	}
-	
+
+	public byte getId()
+	{
+		return id;
+	}
 	
 	public void save(DataOutputStream out) throws IOException
 	{
 		out.writeByte(id);
-		out.writeUTF(name);
-		
 		out.writeFloat(restPos.x);
 		out.writeFloat(restPos.y);
 		out.writeFloat(restPos.z);

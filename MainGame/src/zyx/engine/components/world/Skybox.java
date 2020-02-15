@@ -3,7 +3,7 @@ package zyx.engine.components.world;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.SkyboxResource;
-import zyx.engine.resources.impl.TextureResource;
+import zyx.engine.resources.impl.textures.TextureResource;
 import zyx.opengl.GLUtils;
 import zyx.opengl.models.implementations.SkyboxModel;
 import zyx.opengl.shaders.ShaderManager;

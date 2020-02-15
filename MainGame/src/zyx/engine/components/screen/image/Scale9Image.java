@@ -5,7 +5,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
 import zyx.engine.resources.IResourceReady;
-import zyx.engine.resources.impl.TextureResource;
+import zyx.engine.resources.impl.textures.TextureResource;
 import zyx.opengl.models.implementations.ScreenModel;
 import zyx.opengl.textures.GameTexture;
 import zyx.utils.geometry.Rectangle;

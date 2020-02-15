@@ -1,6 +1,8 @@
 package zyx.game.controls.resourceloader.requests;
 
-public interface IResourceLoaded<T>
+import java.io.InputStream;
+
+public interface IResourceLoaded<T extends InputStream>
 {
 	public void resourceLoaded(T data);
 }

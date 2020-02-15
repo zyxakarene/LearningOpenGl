@@ -1,12 +1,17 @@
 package zyx.engine.resources.impl;
 
+import zyx.engine.resources.impl.sub.ISubResourceLoaded;
+import zyx.engine.resources.impl.sub.BaseRequiredSubResource;
+import zyx.engine.resources.impl.sub.SubResourceBatch;
+import java.util.ArrayList;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.SkyboxModel;
-import zyx.opengl.models.loading.ZafLoader;
+import zyx.opengl.models.loading.MeshLoadingTask;
 import zyx.opengl.textures.AbstractTexture;
+import zyx.utils.tasks.ITaskCompleted;
 
-public class SkyboxResource extends BaseTextureRequiredResource
+public class SkyboxResource extends BaseRequiredSubResource implements ISubResourceLoaded<AbstractTexture>, ITaskCompleted<LoadableWorldModelVO>
 {
 
 	private LoadableWorldModelVO loadedVo;
@@ -24,7 +29,7 @@ public class SkyboxResource extends BaseTextureRequiredResource
 	}
 
 	@Override
-	void onDispose()
+	protected void onDispose()
 	{
 		super.onDispose();
 		
@@ -44,19 +49,35 @@ public class SkyboxResource extends BaseTextureRequiredResource
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		loadedVo = ZafLoader.loadFromZaf(data);
-
+		MeshLoadingTask task = new MeshLoadingTask(this, data, path);
+		task.start();
+	}
+	
+	@Override
+	public void onTaskCompleted(LoadableWorldModelVO data)
+	{
+		loadedVo = data;
+		
 		String diffuse = loadedVo.getDiffuseTextureId();
-		loadTextures(diffuse);
+		addResourceBatch(new SubResourceBatch(this, diffuse));
+	}
+	
+	@Override
+	protected void onSubBatchesLoaded()
+	{
+		onContentLoaded(model);
 	}
 
 	@Override
-	protected void onTexturesLoaded(AbstractTexture[] texture)
+	public void onLoaded(ArrayList<AbstractTexture> data)
 	{
-		loadedVo.setDiffuseTexture(texture[0]);
-		
+		loadedVo.setDiffuseTexture(data.get(0));
 		model = new SkyboxModel(loadedVo);
-		
-		onContentLoaded(model);
+	}
+	
+	@Override
+	public String getResourceIcon()
+	{
+		return "skybox.png";
 	}
 }

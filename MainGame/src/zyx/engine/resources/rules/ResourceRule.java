@@ -1,6 +1,14 @@
 package zyx.engine.resources.rules;
 
+import zyx.engine.resources.impl.sheet.SpriteSheetResource;
+import zyx.engine.resources.impl.sheet.SpriteSheetJsonResource;
+import zyx.engine.resources.impl.meshes.MeshBatchResource;
+import zyx.engine.resources.impl.meshes.MeshResource;
+import zyx.engine.resources.impl.textures.SpecularTextureResource;
+import zyx.engine.resources.impl.textures.NormalTextureResource;
+import zyx.engine.resources.impl.textures.TextureResource;
 import zyx.engine.resources.impl.*;
+import zyx.engine.resources.impl.meshes.SkeletonResource;
 
 public enum ResourceRule
 {
@@ -17,6 +25,8 @@ public enum ResourceRule
 	
 	MESHES_0_FOLDERS	("mesh.#",				"assets/models/#.zaf",		MeshResource.class),
 	MESHES_1_FOLDERS	("mesh.#.#",			"assets/models/#/#.zaf",	MeshResource.class),
+	
+	SKELETONS			("skeleton.#",			"assets/models/skeletons/#.skeleton",	SkeletonResource.class),
 	
 	MESH_BATCH_0_FOLDER	("meshbatch.#",			"assets/models/#.zaf",		MeshBatchResource.class),
 	MESH_BATCH_1_FOLDER	("meshbatch.#.#",		"assets/models/#/#.zaf",	MeshBatchResource.class),

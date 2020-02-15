@@ -2,7 +2,7 @@ package zyx.engine.components.screen.image;
 
 import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.resources.IResourceReady;
-import zyx.engine.resources.impl.TextureResource;
+import zyx.engine.resources.impl.textures.TextureResource;
 import zyx.opengl.models.implementations.ScreenModel;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.textures.AbstractTexture;

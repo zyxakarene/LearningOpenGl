@@ -48,7 +48,7 @@ public class JsonResource extends ExternalResource
 	}
 
 	@Override
-	void onDispose()
+	protected void onDispose()
 	{
 		super.onDispose();
 
@@ -57,5 +57,11 @@ public class JsonResource extends ExternalResource
 			json.clear();
 			json = null;
 		}
+	}
+	
+	@Override
+	public String getResourceIcon()
+	{
+		return "json.png";
 	}
 }

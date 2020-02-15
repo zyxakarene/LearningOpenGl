@@ -11,7 +11,7 @@ public class GenericPool<T extends IPoolable> extends ObjectPool<T> implements I
 	}
 
 	@Override
-	public T getInstance()
+	public synchronized T getInstance()
 	{
 		T instance = super.getInstance();
 		instance.reset();
@@ -20,7 +20,7 @@ public class GenericPool<T extends IPoolable> extends ObjectPool<T> implements I
 	}
 
 	@Override
-	public void releaseInstance(T instance)
+	public synchronized void releaseInstance(T instance)
 	{
 		instance.release();
 		

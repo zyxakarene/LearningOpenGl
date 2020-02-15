@@ -18,12 +18,7 @@ public class Cubemap
 	public void dispose()
 	{
 		positions = null;
-		
-		if (texture != null)
-		{
-			texture.dispose();
-			texture = null;
-		}
+		texture = null;
 	}
 
 	public void bind()

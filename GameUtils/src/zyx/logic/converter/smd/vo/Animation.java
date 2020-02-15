@@ -6,20 +6,23 @@ import java.io.IOException;
 public class Animation
 {
 	private String name;
-	private int length;
+	private short length;
+	private boolean looping;
 	private AnimationFrame[] frames;
 
-	public Animation(String name, AnimationFrame[] frames)
+	public Animation(String name, boolean looping, AnimationFrame[] frames)
 	{
 		this.name = name;
-		this.length = frames.length;
+		this.looping = looping;
+		this.length = (short) frames.length;
 		this.frames = frames;
 	}
 	
 	public void save(DataOutputStream out) throws IOException
 	{
 		out.writeUTF(name);
-		out.writeInt(length);
+		out.writeBoolean(looping);
+		out.writeShort(length);
 		
 		for (AnimationFrame frame : frames)
 		{

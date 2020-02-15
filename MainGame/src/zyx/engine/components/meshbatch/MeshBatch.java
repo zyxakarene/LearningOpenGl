@@ -5,7 +5,7 @@ import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
-import zyx.engine.resources.impl.MeshBatchResource;
+import zyx.engine.resources.impl.meshes.MeshBatchResource;
 import zyx.opengl.models.implementations.MeshBatchModel;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IDrawable;

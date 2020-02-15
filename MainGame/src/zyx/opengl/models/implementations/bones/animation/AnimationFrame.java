@@ -8,7 +8,7 @@ import zyx.utils.interfaces.IDisposeable;
 public class AnimationFrame implements IDisposeable
 {
 	public int frame;
-	public HashMap<String, JointTransform> transforms;
+	public HashMap<Byte, JointTransform> transforms;
 	
 	private LinkedList<JointTransform> transformList;
 
@@ -18,9 +18,9 @@ public class AnimationFrame implements IDisposeable
 		transformList = new LinkedList<>();
 	}
 	
-	public void addTransform(String boneName, JointTransform transform)
+	public void addTransform(byte boneId, JointTransform transform)
 	{
-		transforms.put(boneName, transform);
+		transforms.put(boneId, transform);
 		transformList.add(transform);
 	}
 

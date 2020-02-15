@@ -17,30 +17,16 @@ class FontFile
 	
 	void generateMaps()
 	{
-		int len = characters.size();
-		FontCharacter character;
-		for (int i = 0; i < len; i++)
+		for (FontCharacter character : characters)
 		{
-			character = characters.get(i);
 			characterMap.put(character.id, character);
 		}
 		
-		char key;
-		len = kernings.size();
-		FontKerning kerning;
-		for (int i = 0; i < len; i++)
+		for (FontKerning kerning : kernings)
 		{
-			kerning = kernings.get(i);
-			
-			key = (char) ((kerning.second << 7) + kerning.first);
-			
+			char key = (char) ((kerning.second << 7) + kerning.first);
 			kerningMap.put(key, kerning);
 		}
-		
-//		int key = (b << 7) + a;
-//		
-//		char readB = (char) (key >> 7);
-//		char readA = (char) (key & 0xFF);
 	}
 	
 	FontKerning getKerning(char prev, char current)

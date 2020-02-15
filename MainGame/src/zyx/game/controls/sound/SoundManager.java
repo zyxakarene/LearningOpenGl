@@ -63,11 +63,8 @@ public class SoundManager implements IUpdateable, IDisposeable
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-		int len = playingSounds.length;
-		Sound playingSound;
-		for (int i = 0; i < len; i++)
+		for (Sound playingSound : playingSounds)
 		{
-			playingSound = playingSounds[i];
 			if (playingSound != null)
 			{
 				playingSound.update(timestamp, elapsedTime);
@@ -78,17 +75,13 @@ public class SoundManager implements IUpdateable, IDisposeable
 	@Override
 	public void dispose()
 	{
-		int len = playingSounds.length;
-		Sound playingSound;
-		for (int i = 0; i < len; i++)
+		for (Sound playingSound : playingSounds)
 		{
-			playingSound = playingSounds[i];
 			if (playingSound != null)
 			{
 				playingSound.dispose();
 			}
 		}
-
 		availibleSounds.clear();
 	}
 

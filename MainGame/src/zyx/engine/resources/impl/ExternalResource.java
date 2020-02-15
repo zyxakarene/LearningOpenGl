@@ -10,7 +10,7 @@ public abstract class ExternalResource extends Resource implements IResourceLoad
 
 	private ResourceRequestDataInput resourceRequest;
 
-	ExternalResource(String path)
+	public ExternalResource(String path)
 	{
 		super(path);
 	}
@@ -23,11 +23,12 @@ public abstract class ExternalResource extends Resource implements IResourceLoad
 	}
 
 	@Override
-	void onDispose()
+	protected void onDispose()
 	{
 		if (isLoading() && !isLoaded() && resourceRequest != null)
 		{
 			ResourceLoader.getInstance().cancelEntry(resourceRequest);
+			ResourceLoader.getInstance().cancelReply(resourceRequest);
 			resourceRequest.dispose();
 			resourceRequest = null;
 		}

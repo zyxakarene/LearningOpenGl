@@ -1,0 +1,66 @@
+#Zaf Skeleton
+
+skel
+{
+	byte							boneCount
+	BoneInfo[boneCount]				boneInfo
+	
+	SmdBone							rootBone
+
+	int								animationCount
+	SmdAnimation[animationCount]	animations
+}
+
+BoneInfo
+{
+	byte		id
+	UtfString	name
+}
+
+SmdBone
+{
+	byte				id
+	
+	Vector3F			restPos
+	Vector4F			restRot
+	
+	byte				childCount
+	SmdBone[childCount] childBones
+}
+
+SmdAnimation
+{
+	UtfString						name
+	boolean							looping
+	short							frameCount
+	SmdAnimationFrame[frameCount]	frames
+}
+
+SmdAnimationFrame
+{
+	short									frame
+	short									transformLength
+	SmdAnimationTransform[transformLength]	transforms
+}
+
+SmdAnimationTransform
+{
+	byte		boneId
+	Vector3F	position
+	Vector4F	rotation
+}
+
+Vector3F
+{
+	float		x
+	float		y
+	float		z
+}
+
+Vector4F
+{
+	float		x
+	float		y
+	float		z
+	float		w
+}

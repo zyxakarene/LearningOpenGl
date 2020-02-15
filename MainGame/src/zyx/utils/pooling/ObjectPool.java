@@ -27,14 +27,14 @@ public class ObjectPool<T> implements IDisposeable
 		initSize = initialSize;
 		
 		DebugPoolList.addPool(this);
-}
+	}
 
 	public ObjectPool(Class<? extends T> type, int initialSize)
 	{
 		this(type, initialSize, EMPTY_ARRAY);
 	}
 
-	public T getInstance()
+	public synchronized T getInstance()
 	{
 		if (pool.isEmpty())
 		{
@@ -51,7 +51,7 @@ public class ObjectPool<T> implements IDisposeable
 		return instance;
 	}
 
-	public void releaseInstance(T instance)
+	public synchronized void releaseInstance(T instance)
 	{
 		pool.add(instance);
 		takenCount--;
@@ -71,7 +71,7 @@ public class ObjectPool<T> implements IDisposeable
 	}
 	
 	@Override
-	public void dispose()
+	public synchronized void dispose()
 	{
 		if (poolSize != pool.size())
 		{

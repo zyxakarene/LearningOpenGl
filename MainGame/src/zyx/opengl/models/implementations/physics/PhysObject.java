@@ -1,9 +1,11 @@
 package zyx.opengl.models.implementations.physics;
 
-public class PhysObject
+import zyx.utils.interfaces.IDisposeable;
+
+public class PhysObject implements IDisposeable
 {
-	private final PhysTriangle[] triangles;
-	private final short boneId;
+	private PhysTriangle[] triangles;
+	private short boneId;
 	
 	private int addedTriangles;
 
@@ -29,6 +31,12 @@ public class PhysObject
 	public short getBoneId()
 	{
 		return boneId;
+	}
+
+	@Override
+	public void dispose()
+	{
+		triangles = null;
 	}
 	
 }

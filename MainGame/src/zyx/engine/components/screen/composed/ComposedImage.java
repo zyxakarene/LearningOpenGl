@@ -45,18 +45,23 @@ public class ComposedImage extends DisplayObjectContainer implements IComposedIm
 		images = new AbstractImage[len];
 
 		AbstractImage img;
-		String texture;
 		for (int i = 0; i < len; i++)
 		{
-			texture = textures[i];
 			img = scale9 ? new Scale9Image() : new Image();
 			images[i] = img;
 
 			img.onLoaded.addCallback(onFirstImageLoaded);
 			
-			img.load(texture);
 			img.touchable = false;
 			addChild(img);
+		}
+		
+		String texture;
+		for (int i = 0; i < len; i++)
+		{
+			texture = textures[i];
+			img = images[i];
+			img.load(texture);
 		}
 	}
 
@@ -80,6 +85,17 @@ public class ComposedImage extends DisplayObjectContainer implements IComposedIm
 		loadedCount++;
 		if (loadedCount == images.length)
 		{
+			if (colors == null)
+			{
+				Vector3f white = new Vector3f(1, 1, 1);
+				Vector3f[] defaultColor = new Vector3f[loadedCount];
+				for (int i = 0; i < loadedCount; i++)
+				{
+					defaultColor[i] = white;
+				}
+				setColors(defaultColor);
+			}
+			
 			updateMesh();
 		}
 	}
@@ -194,7 +210,7 @@ public class ComposedImage extends DisplayObjectContainer implements IComposedIm
 				col = colors[i];
 				img = images[i];
 				HELPER_VEC4.set(col.x, col.y, col.z, alpha);
-				
+
 				img.setColor(HELPER_VEC4);
 			}
 		}

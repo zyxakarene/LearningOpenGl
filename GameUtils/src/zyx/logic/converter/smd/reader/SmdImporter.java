@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import zyx.logic.converter.smd.control.QcAnimation;
 import zyx.logic.converter.smd.vo.Animation;
 import zyx.logic.converter.smd.vo.Bone;
 import zyx.logic.converter.smd.vo.PhysBox;
@@ -27,7 +28,9 @@ public class SmdImporter
 	private ISmdHandler lineHandler;
 	private SmdObject smd;
 
-	private String fileName;
+	private String animationName;
+	private boolean animationLooping;
+	private Bone animationRootBone;
 
 	public SmdImporter()
 	{
@@ -80,7 +83,8 @@ public class SmdImporter
 		currentFileType = FILE_TYPE_REF;
 		currentToken = TOKEN_NONE;
 		lineHandler = null;
-		fileName = null;
+		animationName = null;
+		animationRootBone = null;
 
 		importFile(file);
 	}
@@ -90,7 +94,8 @@ public class SmdImporter
 		currentFileType = FILE_TYPE_PHYS;
 		currentToken = TOKEN_NONE;
 		lineHandler = null;
-		fileName = null;
+		animationName = null;
+		animationRootBone = null;
 		
 		importFile(file);
 	}
@@ -100,23 +105,25 @@ public class SmdImporter
 		currentFileType = FILE_TYPE_BOUNDING;
 		currentToken = TOKEN_NONE;
 		lineHandler = null;
-		fileName = null;
+		animationName = null;
+		animationRootBone = null;
 		
 		importFile(file);
 	}
 
-	public void importAnimations(File[] animations) throws FileNotFoundException
+	public void importAnimations(QcAnimation[] animations) throws FileNotFoundException
 	{
 		currentFileType = FILE_TYPE_ANIMATION;
 		currentToken = TOKEN_NONE;
 		lineHandler = null;
 
-		for (File animation : animations)
+		for (QcAnimation animation : animations)
 		{
-			fileName = animation.getName().split("_")[1];
-			fileName = fileName.replace(".smd", "");
+			animationRootBone = null;
+			animationName = animation.name;
+			animationLooping = animation.looping;
 
-			importFile(animation);
+			importFile(animation.file);
 		}
 	}
 
@@ -138,14 +145,14 @@ public class SmdImporter
 			case ("skeleton"):
 			{
 				currentToken = TOKEN_SKELETON;
-				if (currentFileType == FILE_TYPE_REF)
+				if (currentFileType == FILE_TYPE_REF || currentFileType == FILE_TYPE_PHYS || currentFileType == FILE_TYPE_BOUNDING)
 				{
 					lineHandler = new SmdBoneHandler();
 					lineHandler.setData(smd.getRootBone());
 				}
-				else
+				else if (currentFileType == FILE_TYPE_ANIMATION)
 				{
-					lineHandler = new SmdAnimationHandler(fileName);
+					lineHandler = new SmdAnimationHandler(animationName, animationLooping, animationRootBone);
 					lineHandler.setData(smd.getRootBone());
 				}
 
@@ -184,6 +191,10 @@ public class SmdImporter
 					{
 						Bone rootBone = (Bone) lineHandler.getResult();
 						smd.setRootBone(rootBone);
+					}
+					else if (currentFileType == FILE_TYPE_ANIMATION)
+					{
+						animationRootBone = (Bone) lineHandler.getResult();
 					}
 					break;
 				}

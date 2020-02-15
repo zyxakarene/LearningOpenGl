@@ -3,6 +3,8 @@ package zyx.logic.converter.smd.vo;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.logic.converter.smd.reader.SmdTriangleHandler;
 
@@ -13,9 +15,11 @@ public class SmdObject
 	private ArrayList<Animation> animations = new ArrayList<>();
 	private PhysInformation phys = new PhysInformation();
 	private ArrayList<Integer> elements;
+	private String skeletonPath;
 	private String diffuseTexturePath;
 	private String normalTexturePath;
 	private String specularTexturePath;
+	private boolean isSkeleton;
 	
 	private Vector3f radiusCenter = new Vector3f();
 	private float radius = 0;
@@ -23,6 +27,11 @@ public class SmdObject
 	public void setRootBone(Bone bone)
 	{
 		this.rootBone = bone;
+	}
+	
+	public void setSkeleton(boolean skeleton)
+	{
+		this.isSkeleton = skeleton;
 	}
 
 	public void setDiffuseTexturePath(String diffuseTexturePath)
@@ -38,6 +47,11 @@ public class SmdObject
 	public void setSpecularTexturePath(String specularTexturePath)
 	{
 		this.specularTexturePath = specularTexturePath;
+	}
+
+	public void setSkeletonPath(String skeletonPath)
+	{
+		this.skeletonPath = skeletonPath;
 	}
 
 	public Bone getRootBone()
@@ -126,8 +140,41 @@ public class SmdObject
 	
 	public void save(DataOutputStream out) throws IOException
 	{
+		if (isSkeleton)
+		{
+			saveAsSkeleton(out);
+		}
+		else
+		{
+			saveAsMesh(out);
+		}
+	}
+
+	private void saveAsSkeleton(DataOutputStream out) throws IOException
+	{
+		HashMap<Byte, Bone> boneMap = rootBone.toBoneMap();
+		out.writeByte(boneMap.size());
+		
+		for (Map.Entry<Byte, Bone> entry : boneMap.entrySet())
+		{
+			byte boneId = entry.getKey();
+			Bone bone = entry.getValue();
+			
+			out.writeByte(boneId);
+			out.writeUTF(bone.getName());
+		}
+				
 		rootBone.save(out);
 		
+		out.writeInt(animations.size());
+		for (Animation animation : animations)
+		{
+			animation.save(out);
+		}
+	}
+
+	private void saveAsMesh(DataOutputStream out) throws IOException
+	{
 		out.writeInt(verticies.size());
 		for (Vertex vertex : verticies)
 		{
@@ -140,12 +187,6 @@ public class SmdObject
 			out.writeShort(element);
 		}
 		
-		out.writeInt(animations.size());
-		for (Animation animation : animations)
-		{
-			animation.save(out);
-		}
-		
 		phys.save(out);
 		
 		out.writeUTF(diffuseTexturePath);
@@ -156,5 +197,7 @@ public class SmdObject
 		out.writeFloat(radiusCenter.y);
 		out.writeFloat(radiusCenter.z);
 		out.writeFloat(radius);
+		
+		out.writeUTF(skeletonPath);
 	}
 }

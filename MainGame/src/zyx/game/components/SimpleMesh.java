@@ -9,7 +9,7 @@ import zyx.engine.components.cubemaps.IReflective;
 import zyx.engine.components.world.WorldObject;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
-import zyx.engine.resources.impl.MeshResource;
+import zyx.engine.resources.impl.meshes.MeshResource;
 import zyx.engine.resources.impl.Resource;
 import zyx.engine.utils.callbacks.CustomCallback;
 import zyx.engine.utils.callbacks.ICallback;
@@ -77,11 +77,8 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 
 			DebugPhysics.getInstance().draw(this);
 
-			Attachment attachment;
-			int len = attachments.size();
-			for (int i = 0; i < len; i++)
+			for (Attachment attachment : attachments)
 			{
-				attachment = attachments.get(i);
 				attachment.child.drawAsAttachment(attachment);
 			}
 		}
