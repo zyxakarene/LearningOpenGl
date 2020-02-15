@@ -43,12 +43,12 @@ public class ParticleScene extends DebugScene
 			
 			objects.add(model);
 			ParticleSystem localSystem1 = new ParticleSystem();
-			localSystem1.load("particles.particle");
+			localSystem1.load("particles.particle2");
 			localSystem1.setX(10);
 			model.addChild(localSystem1);
 			
 			ParticleSystem localSystem2 = new ParticleSystem();
-			localSystem2.load("particles.particle");
+			localSystem2.load("particles.particle2");
 			localSystem2.setX(20);
 			model.addChild(localSystem2);
 			

@@ -20,10 +20,12 @@ public class DebugScene extends GameScene
 
 	protected void addPlayerControls()
 	{
+		world.loadSkybox("skybox.texture.desert");
+
 		MeshObject player = new MeshObject();
 		player.addBehavior(new FreeFlyBehavior());
 		player.addBehavior(new CameraUpdateViewBehavior());
-		
+
 		world.addChild(player);
 		objects.add(player);
 	}

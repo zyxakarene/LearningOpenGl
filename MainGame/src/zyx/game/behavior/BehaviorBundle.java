@@ -45,12 +45,8 @@ public class BehaviorBundle implements IUpdateable, IDisposeable
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-		int len = behaviors.size();
-		Behavior behavior;
-		for (int i = 0; i < len; i++)
+		for (Behavior behavior : behaviors)
 		{
-			behavior = behaviors.get(i);
-			
 			if(behavior.active)
 			{
 				behavior.update(timestamp, elapsedTime);
@@ -67,10 +63,8 @@ public class BehaviorBundle implements IUpdateable, IDisposeable
 	public void dispose()
 	{
 		int len = behaviors.size();
-		Behavior behavior;
-		for (int i = 0; i < len; i++)
+		for (Behavior behavior : behaviors)
 		{
-			behavior = behaviors.get(i);
 			behavior.dispose();
 		}
 		

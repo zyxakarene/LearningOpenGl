@@ -1,15 +1,16 @@
 package zyx.game.controls.resourceloader.requests;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import zyx.utils.interfaces.IDisposeable;
 
-public abstract class ResourceRequest implements IDisposeable
+public abstract class ResourceRequest<T extends InputStream> implements IDisposeable
 {
 	public String path;
-	public ArrayList<IResourceLoaded> callbacks;
+	public ArrayList<IResourceLoaded<T>> callbacks;
 	public boolean requestCompleted;
 
-	public ResourceRequest(String path, IResourceLoaded callback)
+	ResourceRequest(String path, IResourceLoaded<T> callback)
 	{
 		this.path = path;
 		this.callbacks = new ArrayList<>();
@@ -41,7 +42,7 @@ public abstract class ResourceRequest implements IDisposeable
 	}
 	
 	public abstract void setData(byte[] data);
-	public abstract Object getData();
+	public abstract T getData();
 
 	@Override
 	public void dispose()
@@ -65,16 +66,15 @@ public abstract class ResourceRequest implements IDisposeable
 		callbacks.removeAll(request.callbacks);
 	}
 	
-	public void complete(Object data)
+	public void complete(T data)
 	{
 		if(callbacks != null)
 		{
-			int len = callbacks.size();
-			for (int i = 0; i < len; i++)
+			onPostComplete();
+			
+			for (IResourceLoaded<T> callback : callbacks)
 			{
-				onPostComplete();
-				
-				callbacks.get(i).resourceLoaded(data);
+				callback.resourceLoaded(data);
 			}
 		}
 	}

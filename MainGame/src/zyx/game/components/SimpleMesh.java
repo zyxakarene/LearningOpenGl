@@ -77,11 +77,8 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 
 			DebugPhysics.getInstance().draw(this);
 
-			Attachment attachment;
-			int len = attachments.size();
-			for (int i = 0; i < len; i++)
+			for (Attachment attachment : attachments)
 			{
-				attachment = attachments.get(i);
 				attachment.child.drawAsAttachment(attachment);
 			}
 		}

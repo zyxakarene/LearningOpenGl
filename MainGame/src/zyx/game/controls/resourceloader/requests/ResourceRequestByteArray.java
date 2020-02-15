@@ -2,7 +2,7 @@ package zyx.game.controls.resourceloader.requests;
 
 import zyx.game.controls.resourceloader.requests.vo.ResourceByteArray;
 
-public class ResourceRequestByteArray extends ResourceRequest
+public class ResourceRequestByteArray extends ResourceRequest<ResourceByteArray>
 {
 	private ResourceByteArray data;
 
@@ -18,7 +18,7 @@ public class ResourceRequestByteArray extends ResourceRequest
 	}
 
 	@Override
-	public Object getData()
+	public ResourceByteArray getData()
 	{
 		return data;
 	}

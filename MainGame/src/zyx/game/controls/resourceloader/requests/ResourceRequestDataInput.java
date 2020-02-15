@@ -2,7 +2,7 @@ package zyx.game.controls.resourceloader.requests;
 
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 
-public class ResourceRequestDataInput extends ResourceRequest
+public class ResourceRequestDataInput extends ResourceRequest<ResourceDataInputStream>
 {
 
 	private ResourceDataInputStream data;
@@ -19,7 +19,7 @@ public class ResourceRequestDataInput extends ResourceRequest
 	}
 
 	@Override
-	public Object getData()
+	public ResourceDataInputStream getData()
 	{
 		return data;
 	}

@@ -27,10 +27,9 @@ public class Animation implements IDisposeable
 	@Override
 	public void dispose()
 	{
-		int len = frames.length;
-		for (int i = 0; i < len; i++)
+		for (AnimationFrame frame : frames)
 		{
-			frames[i].dispose();
+			frame.dispose();
 		}
 		
 		name = null;

@@ -14,7 +14,6 @@ import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.DepthShader;
 import zyx.opengl.textures.AbstractTexture;
-import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IShadowable;
 
 public class WorldModel extends AbstractModel implements IShadowable
@@ -137,11 +136,14 @@ public class WorldModel extends AbstractModel implements IShadowable
 	{
 		super.dispose();
 
-		skeleton.dispose();
-
+		if (physBox != null)
+		{
+			physBox.dispose();
+			physBox = null;
+		}
+		
 		skeleton = null;
 		shader = null;
-		physBox = null;
 	}
 
 }

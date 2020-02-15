@@ -79,12 +79,6 @@ public class LoadableWorldModelVO
 	
 	public void dispose()
 	{
-		if(skeleton != null)
-		{
-			skeleton.dispose();
-			skeleton = null;
-		}
-		
 		if (physBox != null)
 		{
 			physBox.dispose();
@@ -93,6 +87,11 @@ public class LoadableWorldModelVO
 		vertexData = null;
 		elementData = null;
 		physBox = null;
+		
+		gameTexture = null;
+		normalTexture = null;
+		specularTexture = null;
+		skeleton = null;
 	}
 
 	public void clean()

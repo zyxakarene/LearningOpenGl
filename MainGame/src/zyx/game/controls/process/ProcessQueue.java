@@ -74,11 +74,9 @@ public class ProcessQueue implements IUpdateable, IDisposeable
 	{
 		if(processes != null)
 		{
-			int len = processes.size();
-			for (int i = 0; i < len; i++)
+			for (BaseProcess processe : processes)
 			{
-				currentProcess = processes.get(i);
-				currentProcess.dispose();
+				processe.dispose();
 			}
 			
 			processes.clear();

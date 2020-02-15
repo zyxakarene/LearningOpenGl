@@ -39,12 +39,8 @@ public class CustomCallback<T> implements IDisposeable
 	
 	public void dispatch(T data)
 	{
-		ICallback<T> callback;
-		
-		int len = callbacks.size();
-		for (int i = 0; i < len; i++)
+		for (ICallback<T> callback : callbacks)
 		{
-			callback = callbacks.get(i);
 			callback.onCallback(data);
 		}
 		
