@@ -52,6 +52,16 @@ public abstract class BaseExchange<E, R>
 		}
 	}
 
+	void removeReply(R reply)
+	{
+		synchronized (LOCK)
+		{
+			REPLIES.remove(reply);
+			
+			onRemoveReply(reply);
+		}
+	}
+
 	void addReply(R reply)
 	{
 		synchronized (LOCK)
@@ -134,6 +144,10 @@ public abstract class BaseExchange<E, R>
 	}
 
 	protected void onRemoveEntry(E entry)
+	{
+	}
+
+	protected void onRemoveReply(R entry)
 	{
 	}
 }

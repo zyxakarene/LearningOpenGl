@@ -2,8 +2,9 @@ package zyx.game.controls.resourceloader.requests.vo;
 
 import java.io.ByteArrayInputStream;
 import java.util.Arrays;
+import zyx.utils.interfaces.IDisposeable;
 
-public class ResourceByteArray extends ByteArrayInputStream
+public class ResourceByteArray extends ByteArrayInputStream implements IDisposeable
 {
 
 	public ResourceByteArray(byte[] buf)
@@ -31,6 +32,12 @@ public class ResourceByteArray extends ByteArrayInputStream
 	public String toString()
 	{
 		return Arrays.toString(buf);
+	}
+
+	@Override
+	public void dispose()
+	{
+		buf = null;
 	}
 	
 	

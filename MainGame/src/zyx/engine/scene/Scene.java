@@ -193,6 +193,11 @@ public class Scene
 			debugPanel = null;
 		}
 		
+		if (world != null)
+		{
+			world.removeSkybox();
+		}
+		
 		stage = null;
 		world = null;
 		camera = null;

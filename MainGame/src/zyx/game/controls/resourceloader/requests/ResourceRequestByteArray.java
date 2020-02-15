@@ -4,7 +4,7 @@ import zyx.game.controls.resourceloader.requests.vo.ResourceByteArray;
 
 public class ResourceRequestByteArray extends ResourceRequest<ResourceByteArray>
 {
-	private ResourceByteArray data;
+	private byte[] bytes;
 
 	public ResourceRequestByteArray(String path, IResourceLoaded<ResourceByteArray> callback)
 	{
@@ -14,21 +14,23 @@ public class ResourceRequestByteArray extends ResourceRequest<ResourceByteArray>
 	@Override
 	public void setData(byte[] bytes)
 	{
-		data = new ResourceByteArray(bytes);
+		this.bytes = bytes;
 	}
 
 	@Override
 	public ResourceByteArray getData()
 	{
-		return data;
+		return new ResourceByteArray(bytes);
 	}
-	
+
 	@Override
-	protected void onPostComplete()
+	public void dispose()
 	{
-		if (data.markSupported())
+		super.dispose();
+		
+		if (bytes != null)
 		{
-			data.reset();
+			bytes = null;
 		}
 	}
 }

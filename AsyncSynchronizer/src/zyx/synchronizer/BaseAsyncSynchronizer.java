@@ -58,6 +58,11 @@ public abstract class BaseAsyncSynchronizer<E, R>
 	{
 		exchange.removeEntry(entry);
 	}
+	
+	public void cancelReply(R reply)
+	{
+		exchange.removeReply(reply);
+	}
 
 	public void dispose()
 	{

@@ -1,38 +1,48 @@
 package zyx.game.controls.resourceloader.requests.vo;
 
-import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import zyx.utils.exceptions.Msg;
+import zyx.utils.interfaces.IDisposeable;
 
-public class ResourceDataInputStream extends DataInputStream
+public class ResourceDataInputStream extends DataInputStream implements IDisposeable
 {
 
-	private byte[] bytes;
+	private ResourceByteArray source;
 	
-	public ResourceDataInputStream(byte[] bytes)
+	private ResourceDataInputStream(ResourceByteArray source)
 	{
-		super(new ByteArrayInputStream(bytes));
+		super(source);
 		
-		this.bytes = bytes;
+		this.source = source;
+	}
+	
+	public ResourceDataInputStream(byte[] data)
+	{
+		this(new ResourceByteArray(data));
 	}
 	
 	public int getPosition()
 	{
-		int length = bytes.length;
-		int remaining = ((ByteArrayInputStream)in).available();
+		int length = source.length();
+		int remaining = source.available();
 		
 		return length - remaining;
 	}
 
 	public int getLength()
 	{
-		return bytes.length;
+		return source.length();
 	}
 
 	public byte[] getData()
 	{
-		return bytes;
+		return source.getData();
+	}
+	
+	public ResourceDataInputStream createClone()
+	{
+		return new ResourceDataInputStream(source.getData());
 	}
 	
 	@Override
@@ -46,6 +56,16 @@ public class ResourceDataInputStream extends DataInputStream
 		{
 			//This should never happen
 			Msg.error("IOException where it should never happen??", ex);
+		}
+	}
+
+	@Override
+	public void dispose()
+	{
+		if (source != null)
+		{
+			source.dispose();
+			source = null;
 		}
 	}
 }

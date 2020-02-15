@@ -5,7 +5,7 @@ import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 public class ResourceRequestDataInput extends ResourceRequest<ResourceDataInputStream>
 {
 
-	private ResourceDataInputStream data;
+	private byte[] bytes;
 
 	public ResourceRequestDataInput(String path, IResourceLoaded<ResourceDataInputStream> callback)
 	{
@@ -15,21 +15,23 @@ public class ResourceRequestDataInput extends ResourceRequest<ResourceDataInputS
 	@Override
 	public void setData(byte[] bytes)
 	{
-		data = new ResourceDataInputStream(bytes);
+		this.bytes = bytes;
 	}
 
 	@Override
 	public ResourceDataInputStream getData()
 	{
-		return data;
+		return new ResourceDataInputStream(bytes);
 	}
 
 	@Override
-	protected void onPostComplete()
+	public void dispose()
 	{
-		if (data.markSupported())
+		super.dispose();
+		
+		if (bytes != null)
 		{
-			data.reset();
+			bytes = null;
 		}
 	}
 }

@@ -244,7 +244,6 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 			obj.dispose();
 		}
 
-		world.removeSkybox();
 		CubemapManager.getInstance().clean();
 		TooltipManager.getInstance().clean();
 		MeshBatchManager.getInstance().clean();

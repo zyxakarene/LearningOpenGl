@@ -97,6 +97,11 @@ public class DisplayObjectContainer extends DisplayObject
 		{
 			child = children.get(i);
 			removeChild(child);
+			
+			if (dispose)
+			{
+				child.dispose();
+			}
 		}
 		
 		children.clear();

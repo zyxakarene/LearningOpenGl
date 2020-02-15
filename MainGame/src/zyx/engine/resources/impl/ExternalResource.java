@@ -28,6 +28,7 @@ public abstract class ExternalResource extends Resource implements IResourceLoad
 		if (isLoading() && !isLoaded() && resourceRequest != null)
 		{
 			ResourceLoader.getInstance().cancelEntry(resourceRequest);
+			ResourceLoader.getInstance().cancelReply(resourceRequest);
 			resourceRequest.dispose();
 			resourceRequest = null;
 		}

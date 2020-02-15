@@ -33,7 +33,7 @@ public abstract class ResourceRequest<T extends InputStream> implements IDispose
 	@Override
 	public int hashCode()
 	{
-		return path.hashCode();
+		return super.hashCode() + path.hashCode();
 	}
 	
 	public void setFailed()
@@ -56,12 +56,22 @@ public abstract class ResourceRequest<T extends InputStream> implements IDispose
 		}
 	}
 
-	public void mergeFrom(ResourceRequest request)
+	public void mergeFrom(ResourceRequest<T> request)
 	{
-		callbacks.addAll(request.callbacks);
+		for (IResourceLoaded<T> newCallbacks : request.callbacks)
+		{
+			if (callbacks.indexOf(newCallbacks) == -1)
+			{
+				callbacks.add(newCallbacks);
+			}
+			else
+			{
+				//TODO: Figure out why the same callback sometimes already exists
+			}
+		}
 	}
 
-	public void unMergeFrom(ResourceRequest request)
+	public void unMergeFrom(ResourceRequest<T> request)
 	{
 		callbacks.removeAll(request.callbacks);
 	}
@@ -70,16 +80,10 @@ public abstract class ResourceRequest<T extends InputStream> implements IDispose
 	{
 		if(callbacks != null)
 		{
-			onPostComplete();
-			
 			for (IResourceLoaded<T> callback : callbacks)
 			{
 				callback.resourceLoaded(data);
 			}
 		}
-	}
-
-	protected void onPostComplete()
-	{
 	}
 }
