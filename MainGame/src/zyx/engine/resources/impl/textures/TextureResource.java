@@ -30,6 +30,15 @@ public class TextureResource extends ExternalResource
 		onContentLoaded(texture);
 	}
 
+	@Override
+	protected void onResourceReloaded(ResourceDataInputStream data)
+	{
+		if (texture != null)
+		{
+			texture.refresh(data);
+		}
+	}
+
 	protected TextureSlot getTextureSlot()
 	{
 		return TextureSlot.SHARED_DIFFUSE;

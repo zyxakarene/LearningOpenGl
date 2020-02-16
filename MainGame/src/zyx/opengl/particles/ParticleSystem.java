@@ -5,7 +5,6 @@ import zyx.engine.components.world.WorldObject;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.ParticleResource;
-import zyx.engine.resources.impl.Resource;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.models.implementations.IParticleModel;
 import zyx.opengl.shaders.SharedShaderObjects;
@@ -22,7 +21,7 @@ public class ParticleSystem extends WorldObject implements IResourceReady<Partic
 	protected String path;
 	protected IParticleModel model;
 	
-	private Resource particleResource;
+	private ParticleResource particleResource;
 
 	public ParticleSystem()
 	{
@@ -47,22 +46,16 @@ public class ParticleSystem extends WorldObject implements IResourceReady<Partic
 	{
 		this.path = resource;
 		
-		particleResource = ResourceManager.getInstance().getResource(resource);
+		particleResource = ResourceManager.getInstance().<ParticleResource>getResourceAs(resource);
 		particleResource.registerAndLoad(this);
 	}
 
 	@Override
 	public void onResourceReady(ParticleResource resource)
 	{
-		IParticleModel data = resource.getContent();
-		
-		if (data.isWorldParticle())
+		model = resource.getContent();
+		if (model.isWorldParticle() == false)
 		{
-			model = data.cloneParticle();
-		}
-		else
-		{
-			model = data;
 			particleTime += (1000 * FloatMath.random());
 		}
 		
@@ -100,6 +93,12 @@ public class ParticleSystem extends WorldObject implements IResourceReady<Partic
 	protected void onDispose()
 	{
 		ParticleManager.getInstance().remove(this);
+		
+		if (model != null && model.isWorldParticle())
+		{
+			particleResource.removeParticleInstance(model);
+			model.dispose();
+		}
 		
 		model = null;
 		

@@ -10,7 +10,6 @@ import static org.lwjgl.opengl.GL11.glTexImage2D;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 import zyx.opengl.textures.enums.TextureFiltering;
 
-
 public class Texture implements ITexture
 {
 
@@ -27,18 +26,24 @@ public class Texture implements ITexture
 	public Texture(InputStream content, TextureFiltering filter)
 	{
 		this.textureId = GL11.glGenTextures();
+		
+		setData(content);
+		setFiltering(filter);
+	}
+
+	public void setData(InputStream content)
+	{
 		LoadedTextureContainer textureContainer = PngTextureLoader.getImageDataFor(content);
-		
-		this.width = textureContainer.width;
-		this.height = textureContainer.height;
-		
+
+		width = textureContainer.width;
+		height = textureContainer.height;
+
 		int format = textureContainer.hasAlpha ? GL11.GL_RGBA : GL11.GL_RGB;
 
 		glBindTexture(GL_TEXTURE_2D, textureId);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, format, GL11.GL_UNSIGNED_BYTE, textureContainer.data);
-		setFiltering(filter);
 	}
-	
+
 	private void setFiltering(TextureFiltering filter)
 	{
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter.glId);

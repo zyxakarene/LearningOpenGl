@@ -9,32 +9,39 @@ import zyx.utils.FloatMath;
 
 public class ParticleModel extends AbstractInstancedModel implements IParticleModel
 {
+
+	private static final int[] SHARED_ELEMENT_DATA =
+	{
+		0, 1, 2,
+		2, 3, 0
+	};
+	
 	private ParticleShader shader;
 	private LoadableParticleVO vo;
 
-	public ParticleModel(LoadableParticleVO vo)
+	public ParticleModel(LoadableParticleVO loadableVo)
 	{
 		super(Shader.PARTICLE);
 
-		this.vo = vo;
-		this.shader = (ParticleShader) meshShader;
+		shader = (ParticleShader) meshShader;
+		refresh(loadableVo);
+	}
+
+	@Override
+	public void refresh(LoadableParticleVO loadedVo)
+	{
+		vo = loadedVo;
 
 		AbstractTexture t = vo.gameTexture;
-		
+
 		float[] vertexData =
 		{
-		   -0.5f,  0.5f, t.x, t.y, // Top-left
-			0.5f,  0.5f, t.u, t.y, // Top-right
+			-0.5f, 0.5f, t.x, t.y, // Top-left
+			0.5f, 0.5f, t.u, t.y, // Top-right
 			0.5f, -0.5f, t.u, t.v, // Bottom-right
-		   -0.5f, -0.5f, t.x, t.v  // Bottom-left
+			-0.5f, -0.5f, t.x, t.v  // Bottom-left
 		};
-		
-		int[] elementData = 
-		{
-			0, 1, 2,
-			2, 3, 0
-		};
-		
+
 		int instanceDataAmount = 9;
 		int count = vo.instanceCount;
 		float[] instanceData = new float[count * instanceDataAmount];
@@ -46,7 +53,7 @@ public class ParticleModel extends AbstractInstancedModel implements IParticleMo
 			}
 		}
 		setInstanceData(instanceData, instanceData.length / instanceDataAmount);
-		setVertexData(vertexData, elementData);
+		setVertexData(vertexData, SHARED_ELEMENT_DATA);
 		setTexture(vo.gameTexture);
 	}
 
@@ -55,7 +62,7 @@ public class ParticleModel extends AbstractInstancedModel implements IParticleMo
 	{
 		return vo.radius;
 	}
-	
+
 	@Override
 	public void draw()
 	{
@@ -70,7 +77,7 @@ public class ParticleModel extends AbstractInstancedModel implements IParticleMo
 	{
 		addAttribute("position", 2, 4, 0);
 		addAttribute("texcoord", 2, 4, 2);
-		
+
 		addInstanceAttribute("lifespanRandom", 1, 9, 0);
 		addInstanceAttribute("areaRandom", 3, 9, 1);
 		addInstanceAttribute("speedRandom", 3, 9, 4);
@@ -91,7 +98,7 @@ public class ParticleModel extends AbstractInstancedModel implements IParticleMo
 	{
 		return false;
 	}
-	
+
 	@Override
 	public void setParent(WorldObject parent)
 	{

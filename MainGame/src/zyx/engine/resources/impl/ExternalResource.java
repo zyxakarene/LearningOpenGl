@@ -10,9 +10,18 @@ public abstract class ExternalResource extends Resource implements IResourceLoad
 
 	private ResourceRequestDataInput resourceRequest;
 
+	private IResourceLoaded<ResourceDataInputStream> resourceReloaded;
+
 	public ExternalResource(String path)
 	{
 		super(path);
+
+		resourceReloaded = (IResourceLoaded<ResourceDataInputStream>) this::onResourceReloaded;
+	}
+
+	protected void onResourceReloaded(ResourceDataInputStream data)
+	{
+
 	}
 
 	@Override
@@ -32,5 +41,20 @@ public abstract class ExternalResource extends Resource implements IResourceLoad
 			resourceRequest.dispose();
 			resourceRequest = null;
 		}
+	}
+
+	@Override
+	public final void forceRefresh()
+	{
+		if (resourceRequest != null)
+		{
+			ResourceLoader.getInstance().cancelEntry(resourceRequest);
+			ResourceLoader.getInstance().cancelReply(resourceRequest);
+			resourceRequest.dispose();
+			resourceRequest = null;
+		}
+
+		resourceRequest = new ResourceRequestDataInput(path, resourceReloaded);
+		ResourceLoader.getInstance().addEntry(resourceRequest);
 	}
 }

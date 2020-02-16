@@ -15,4 +15,6 @@ public interface IParticleModel extends IDisposeable, IUpdateable
 	public IParticleModel cloneParticle();
 
 	public float getRadius();
+
+	public void refresh(LoadableParticleVO loadedVo);
 }

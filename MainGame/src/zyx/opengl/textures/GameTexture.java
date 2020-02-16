@@ -1,6 +1,7 @@
 package zyx.opengl.textures;
 
 import java.io.InputStream;
+import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.textures.custom.ITexture;
 import zyx.opengl.textures.custom.Texture;
 import zyx.opengl.textures.enums.TextureFiltering;
@@ -17,7 +18,7 @@ public class GameTexture extends AbstractTexture
 		super(rect, name, textureSlot);
 
 		texture = parent;
-		
+
 		setSizes();
 	}
 
@@ -29,7 +30,11 @@ public class GameTexture extends AbstractTexture
 	public GameTexture(InputStream stream, String name, Rectangle rect, TextureSlot textureSlot)
 	{
 		super(rect, name, textureSlot);
+		refresh(stream);
+	}
 
+	public void refresh(InputStream stream)
+	{
 		texture = new Texture(stream, TextureFiltering.NEAREST);
 		setSizes();
 	}
@@ -39,7 +44,7 @@ public class GameTexture extends AbstractTexture
 		float w = u - x;
 		float h = v - y;
 
-		setSizes(texture.getWidth()* w, texture.getHeight()* h);
+		setSizes(texture.getWidth() * w, texture.getHeight() * h);
 	}
 
 	@Override

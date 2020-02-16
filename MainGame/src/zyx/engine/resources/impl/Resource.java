@@ -152,6 +152,10 @@ public abstract class Resource
 		return "default.png";
 	}
 	
+	public void forceRefresh()
+	{
+	}
+	
 	protected void onDispose()
 	{
 

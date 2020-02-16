@@ -11,6 +11,12 @@ import zyx.utils.FloatMath;
 
 public class WorldParticleModel extends AbstractInstancedModel implements IParticleModel
 {
+	private static final int[] SHARED_ELEMENT_DATA =
+	{
+		0, 1, 2,
+		2, 3, 0
+	};
+	
 	private static final int INSTANCE_DATA_COUNT = 22;
 	private static final Vector3f PARENT_POS = new Vector3f();
 	private static final Matrix4f PARENT_ROTATION = new Matrix4f();
@@ -22,13 +28,19 @@ public class WorldParticleModel extends AbstractInstancedModel implements IParti
 	private float[] instanceData;
 	private int[] particleAge;
 	
-	public WorldParticleModel(LoadableParticleVO vo)
+	public WorldParticleModel(LoadableParticleVO loadableVo)
 	{
 		super(Shader.WORLD_PARTICLE);
 
-		this.vo = vo;
-		this.shader = (WorldParticleShader) meshShader;
+		shader = (WorldParticleShader) meshShader;
+		refresh(loadableVo);
+	}
 
+	@Override
+	public void refresh(LoadableParticleVO loadedVo)
+	{
+		this.vo = loadedVo;
+		
 		AbstractTexture t = vo.gameTexture;
 		
 		float[] vertexData =
@@ -37,12 +49,6 @@ public class WorldParticleModel extends AbstractInstancedModel implements IParti
 			0.5f,  0.5f, t.u, t.y, // Top-right
 			0.5f, -0.5f, t.u, t.v, // Bottom-right
 		   -0.5f, -0.5f, t.x, t.v  // Bottom-left
-		};
-		
-		int[] elementData = 
-		{
-			0, 1, 2,
-			2, 3, 0
 		};
 		
 		int count = vo.instanceCount;
@@ -55,10 +61,10 @@ public class WorldParticleModel extends AbstractInstancedModel implements IParti
 		}
 
 		setInstanceData(instanceData, instanceData.length / INSTANCE_DATA_COUNT);
-		setVertexData(vertexData, elementData);
+		setVertexData(vertexData, SHARED_ELEMENT_DATA);
 		setTexture(vo.gameTexture);
 	}
-
+	
 	@Override
 	public IParticleModel cloneParticle()
 	{

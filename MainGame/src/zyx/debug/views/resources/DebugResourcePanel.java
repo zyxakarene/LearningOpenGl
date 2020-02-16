@@ -1,5 +1,7 @@
 package zyx.debug.views.resources;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -7,7 +9,6 @@ import javax.swing.JScrollPane;
 import zyx.debug.views.base.BaseDebugPanel;
 import zyx.engine.resources.impl.DebugResourceList;
 import zyx.engine.resources.impl.Resource;
-import zyx.utils.cheats.Print;
 
 public class DebugResourcePanel extends BaseDebugPanel
 {
@@ -23,7 +24,7 @@ public class DebugResourcePanel extends BaseDebugPanel
 	{
 		listScrollPane = new JScrollPane();
 		add(listScrollPane);
-		
+
 		listModel = new SafeDefaultListModel<>();
 		cellRenderer = new ResourceRenderer();
 
@@ -34,6 +35,17 @@ public class DebugResourcePanel extends BaseDebugPanel
 		listScrollPane.setViewportView(list);
 
 		out = new ArrayList<>();
+
+		list.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyPressed(KeyEvent e)
+			{
+				Resource res = listModel.getElementAt(list.getSelectedIndex());
+				res.forceRefresh();
+			}
+			
+		});
 	}
 
 	@Override
@@ -45,14 +57,14 @@ public class DebugResourcePanel extends BaseDebugPanel
 		{
 			int oldIndex = list.getSelectedIndex();
 			oldIndex = oldIndex < 0 ? 0 : oldIndex;
-			
+
 			listModel.removeAllElements();
 
 			for (Resource resource : out)
 			{
 				listModel.addElement(resource);
 			}
-			
+
 			if (oldIndex >= out.size())
 			{
 				list.setSelectedIndex(out.size() - 1);
@@ -62,7 +74,7 @@ public class DebugResourcePanel extends BaseDebugPanel
 				list.setSelectedIndex(oldIndex);
 			}
 		}
-		
+
 		repaint();
 	}
 

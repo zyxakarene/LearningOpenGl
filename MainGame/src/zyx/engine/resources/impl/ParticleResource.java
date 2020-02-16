@@ -1,5 +1,6 @@
 package zyx.engine.resources.impl;
 
+import java.util.ArrayList;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
@@ -14,34 +15,52 @@ public class ParticleResource extends ExternalResource implements IResourceReady
 {
 
 	private LoadableParticleVO loadedVo;
-	private IParticleModel model;
 	private Resource textureResource;
+
+	private IParticleModel model;
+	private ArrayList<IParticleModel> clones;
 
 	public ParticleResource(String path)
 	{
 		super(path);
+
+		clones = new ArrayList<>();
 	}
 
 	@Override
 	public IParticleModel getContent()
 	{
-		return model;
+		IParticleModel particleModel = model;
+
+		if (model != null && model.isWorldParticle())
+		{
+			particleModel = model.cloneParticle();
+			clones.add(particleModel);
+		}
+
+		return particleModel;
 	}
 
 	@Override
 	protected void onDispose()
 	{
-		if(model != null)
+		if (model != null)
 		{
 			model.dispose();
 			model = null;
 		}
-	
-		if(textureResource != null)
+
+		if (textureResource != null)
 		{
 			textureResource.unregister(this);
 			textureResource = null;
 		}
+
+		for (IParticleModel clone : clones)
+		{
+			clone.dispose();
+		}
+		clones.clear();
 	}
 
 	@Override
@@ -52,25 +71,57 @@ public class ParticleResource extends ExternalResource implements IResourceReady
 		textureResource = ResourceManager.getInstance().getResource(loadedVo.getDiffuseTextureId());
 		textureResource.registerAndLoad(this);
 	}
-	
+
+	@Override
+	protected void onResourceReloaded(ResourceDataInputStream data)
+	{
+		if (textureResource != null)
+		{
+			textureResource.unregister(this);
+			textureResource = null;
+		}
+
+		loadedVo = ZpfLoader.loadFromZpf(data);
+
+		textureResource = ResourceManager.getInstance().getResource(loadedVo.getDiffuseTextureId());
+		textureResource.registerAndLoad(this);
+	}
+
 	@Override
 	public void onResourceReady(Resource resource)
 	{
 		AbstractTexture texture = (AbstractTexture) resource.content;
 		loadedVo.setDiffuseTexture(texture);
-		
-		if (loadedVo.worldParticle)
+
+		if (model == null)
 		{
-			model = new WorldParticleModel(loadedVo);
+			if (loadedVo.worldParticle)
+			{
+				model = new WorldParticleModel(loadedVo);
+			}
+			else
+			{
+				model = new ParticleModel(loadedVo);
+			}
+
+			clones.add(model);
+
+			onContentLoaded(model);
 		}
 		else
 		{
-			model = new ParticleModel(loadedVo);
+			for (IParticleModel clone : clones)
+			{
+				clone.refresh(loadedVo);
+			}
 		}
-		
-		onContentLoaded(model);
 	}
-	
+
+	public void removeParticleInstance(IParticleModel model)
+	{
+		clones.remove(model);
+	}
+
 	@Override
 	public String getResourceIcon()
 	{
