@@ -1,12 +1,11 @@
 package zyx.debug.views.resources;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import zyx.debug.views.base.BaseDebugPanel;
+import zyx.debug.views.resources.watcher.WatcherManager;
 import zyx.engine.resources.impl.DebugResourceList;
 import zyx.engine.resources.impl.Resource;
 
@@ -19,6 +18,8 @@ public class DebugResourcePanel extends BaseDebugPanel
 	private DefaultListModel<Resource> listModel;
 	private ResourceRenderer cellRenderer;
 	private JScrollPane listScrollPane;
+
+	private WatcherManager watcher;
 
 	public DebugResourcePanel()
 	{
@@ -35,17 +36,9 @@ public class DebugResourcePanel extends BaseDebugPanel
 		listScrollPane.setViewportView(list);
 
 		out = new ArrayList<>();
-
-		list.addKeyListener(new KeyAdapter()
-		{
-			@Override
-			public void keyPressed(KeyEvent e)
-			{
-				Resource res = listModel.getElementAt(list.getSelectedIndex());
-				res.forceRefresh();
-			}
-			
-		});
+		
+		watcher = new WatcherManager();
+		watcher.initialize();
 	}
 
 	@Override
@@ -60,6 +53,8 @@ public class DebugResourcePanel extends BaseDebugPanel
 
 			listModel.removeAllElements();
 
+			watcher.setActiveResources(out);
+			
 			for (Resource resource : out)
 			{
 				listModel.addElement(resource);
@@ -76,6 +71,8 @@ public class DebugResourcePanel extends BaseDebugPanel
 		}
 
 		repaint();
+		
+		watcher.checkChanged();
 	}
 
 	@Override

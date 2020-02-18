@@ -2,13 +2,15 @@ package zyx.engine.resources.impl.textures;
 
 import zyx.engine.resources.impl.ExternalResource;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
+import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.GameTexture;
+import zyx.opengl.textures.MissingTexture;
 import zyx.opengl.textures.enums.TextureSlot;
 
 public class TextureResource extends ExternalResource
 {
 
-	private GameTexture texture;
+	private AbstractTexture texture;
 
 	public TextureResource(String path)
 	{
@@ -16,7 +18,7 @@ public class TextureResource extends ExternalResource
 	}
 
 	@Override
-	public GameTexture getContent()
+	public AbstractTexture getContent()
 	{
 		return texture;
 	}
@@ -31,11 +33,20 @@ public class TextureResource extends ExternalResource
 	}
 
 	@Override
+	public void onResourceFailed(String path)
+	{
+		TextureSlot slot = getTextureSlot();
+		texture = MissingTexture.getAsSlot(slot);
+		
+		onContentLoaded(texture);
+	}
+
+	@Override
 	protected void onResourceReloaded(ResourceDataInputStream data)
 	{
-		if (texture != null)
+		if (texture instanceof GameTexture)
 		{
-			texture.refresh(data);
+			((GameTexture) texture).refresh(data);
 		}
 	}
 
@@ -43,8 +54,8 @@ public class TextureResource extends ExternalResource
 	{
 		return TextureSlot.SHARED_DIFFUSE;
 	}
-	
-	protected void resourceCreated(GameTexture creation)
+
+	protected void resourceCreated(AbstractTexture creation)
 	{
 		this.texture = creation;
 
@@ -54,13 +65,13 @@ public class TextureResource extends ExternalResource
 	@Override
 	protected void onDispose()
 	{
-		if(texture != null)
+		if (texture != null)
 		{
 			texture.dispose();
 			texture = null;
 		}
 	}
-	
+
 	@Override
 	public String getResourceIcon()
 	{

@@ -1,7 +1,6 @@
 package zyx.opengl.textures;
 
 import java.io.InputStream;
-import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.textures.custom.ITexture;
 import zyx.opengl.textures.custom.Texture;
 import zyx.opengl.textures.enums.TextureFiltering;
@@ -50,7 +49,10 @@ public class GameTexture extends AbstractTexture
 	@Override
 	protected void onBind()
 	{
-		texture.bind();
+		if (texture != null)
+		{
+			texture.bind();
+		}
 	}
 
 	@Override
@@ -61,5 +63,11 @@ public class GameTexture extends AbstractTexture
 			texture.dispose();
 			texture = null;
 		}
+	}
+
+	@Override
+	public ITexture getGlTexture()
+	{
+		return texture;
 	}
 }

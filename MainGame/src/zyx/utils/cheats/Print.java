@@ -36,6 +36,6 @@ public class Print
 			builder.append(args[i]);
 		}
 		
-//		stream.println(builder.toString());
+		stream.println(builder.toString());
 	}
 }

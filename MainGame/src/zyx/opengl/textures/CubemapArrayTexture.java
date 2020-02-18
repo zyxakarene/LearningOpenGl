@@ -34,4 +34,10 @@ public class CubemapArrayTexture extends AbstractTexture
 			texture = null;
 		}
 	}
+
+	@Override
+	public ITexture getGlTexture()
+	{
+		return texture;
+	}
 }

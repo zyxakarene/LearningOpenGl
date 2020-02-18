@@ -5,7 +5,8 @@ import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.Resource;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
-import zyx.opengl.textures.GameTexture;
+import zyx.opengl.textures.AbstractTexture;
+import zyx.opengl.textures.MissingTexture;
 import zyx.opengl.textures.SubTexture;
 import zyx.utils.geometry.Rectangle;
 
@@ -44,23 +45,31 @@ public class SpriteSheetResource extends TextureResource implements IResourceRea
 		if (loadCompleteCounter >= 2)
 		{
 			Rectangle rect = jsonResource.getById(path);
-			GameTexture textureSheet = textureResource.getContent();
+			AbstractTexture textureSheet = textureResource.getContent();
 			
-			float width = textureSheet.getWidth();
-			float height = textureSheet.getHeight();
+			AbstractTexture tex;
+			if (rect == null)
+			{
+				tex = MissingTexture.getAsSlot(textureSheet.slot);
+			}
+			else
+			{
+				float width = textureSheet.getWidth();
+				float height = textureSheet.getHeight();
+
+				float ratioW = 1/width;
+				float ratioH = 1/height;
+
+				float x = rect.x * ratioW;
+				float y = rect.y * ratioH;
+				float w = x + (rect.width * ratioW);
+				float h = y + (rect.height * ratioH);
+
+				Rectangle uvs = new Rectangle(x, y, w, h);
+				tex = new SubTexture(textureSheet, uvs, path);
+			}
 			
-			float ratioW = 1/width;
-			float ratioH = 1/height;
-			
-			float x = rect.x * ratioW;
-			float y = rect.y * ratioH;
-			float w = x + (rect.width * ratioW);
-			float h = y + (rect.height * ratioH);
-			
-			Rectangle uvs = new Rectangle(x, y, w, h);
-			
-			SubTexture subTexture = new SubTexture(textureSheet, uvs, path);
-			resourceCreated(subTexture);
+			resourceCreated(tex);
 		}
 	}
 

@@ -1,11 +1,12 @@
 package zyx.engine.resources.impl;
 
 import zyx.game.controls.resourceloader.ResourceLoader;
+import zyx.game.controls.resourceloader.requests.IResourceFailed;
 import zyx.game.controls.resourceloader.requests.IResourceLoaded;
 import zyx.game.controls.resourceloader.requests.ResourceRequestDataInput;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 
-public abstract class ExternalResource extends Resource implements IResourceLoaded<ResourceDataInputStream>
+public abstract class ExternalResource extends Resource implements IResourceLoaded<ResourceDataInputStream>, IResourceFailed
 {
 
 	private ResourceRequestDataInput resourceRequest;
@@ -25,9 +26,14 @@ public abstract class ExternalResource extends Resource implements IResourceLoad
 	}
 
 	@Override
+	public void onResourceFailed(String path)
+	{
+	}
+
+	@Override
 	protected void onBeginLoad()
 	{
-		resourceRequest = new ResourceRequestDataInput(path, this);
+		resourceRequest = new ResourceRequestDataInput(path, this, this);
 		ResourceLoader.getInstance().addEntry(resourceRequest);
 	}
 

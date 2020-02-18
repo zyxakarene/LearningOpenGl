@@ -9,7 +9,7 @@ import zyx.opengl.models.implementations.SkyboxModel;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.SkyboxShader;
-import zyx.opengl.textures.GameTexture;
+import zyx.opengl.textures.AbstractTexture;
 
 public class Skybox extends WorldObject
 {
@@ -18,7 +18,7 @@ public class Skybox extends WorldObject
 	private TextureResource textureResource;
 
 	private SkyboxModel model;
-	private GameTexture texture;
+	private AbstractTexture texture;
 	private boolean loaded;
 	
 	private IResourceReady<SkyboxResource> onMeshLoaded;

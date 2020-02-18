@@ -6,7 +6,6 @@ import zyx.engine.resources.impl.textures.TextureResource;
 import zyx.opengl.models.implementations.ScreenModel;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.textures.AbstractTexture;
-import zyx.opengl.textures.GameTexture;
 
 public class Image extends AbstractImage implements IResourceReady<TextureResource>
 {
@@ -19,7 +18,7 @@ public class Image extends AbstractImage implements IResourceReady<TextureResour
 	}
 	
 	@Override
-	protected void onTextureResourceReady(GameTexture texture)
+	protected void onTextureResourceReady(AbstractTexture texture)
 	{
 		model = new ScreenModel(texture, colors);
 		model.addVertexData(0, 0, texture);

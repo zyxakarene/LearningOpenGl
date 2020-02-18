@@ -5,9 +5,9 @@ import zyx.utils.geometry.Rectangle;
 public class SubTexture extends GameTexture
 {
 
-	public SubTexture(GameTexture parent, Rectangle rect, String name)
+	public SubTexture(AbstractTexture parent, Rectangle rect, String name)
 	{
-		super(parent.texture, rect, name, parent.slot);
+		super(parent.getGlTexture(), rect, name, parent.slot);
 	}
 	
 	@Override

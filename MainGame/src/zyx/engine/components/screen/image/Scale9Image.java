@@ -3,11 +3,10 @@ package zyx.engine.components.screen.image;
 import java.util.HashMap;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
-import zyx.engine.components.screen.base.DisplayObjectContainer;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.impl.textures.TextureResource;
 import zyx.opengl.models.implementations.ScreenModel;
-import zyx.opengl.textures.GameTexture;
+import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.geometry.Rectangle;
 import zyx.utils.math.Scale9Texture;
 
@@ -17,7 +16,7 @@ public class Scale9Image extends AbstractImage implements IResourceReady<Texture
 	private float scaleX;
 	private float scaleY;
 	
-	private GameTexture gameTexture;
+	private AbstractTexture gameTexture;
 
 	public Scale9Image()
 	{
@@ -26,7 +25,7 @@ public class Scale9Image extends AbstractImage implements IResourceReady<Texture
 	}
 
 	@Override
-	protected void onTextureResourceReady(GameTexture texture)
+	protected void onTextureResourceReady(AbstractTexture texture)
 	{
 		gameTexture = texture;
 		
@@ -76,17 +75,17 @@ public class Scale9Image extends AbstractImage implements IResourceReady<Texture
 
 		Rectangle grid = Scale9Grids.getGridFor(gameTexture.getName());
 
-		HashMap<String, GameTexture> textureMap = Scale9Texture.ToScale9TextureMap(grid, gameTexture);
+		HashMap<String, AbstractTexture> textureMap = Scale9Texture.ToScale9TextureMap(grid, gameTexture);
 
-		GameTexture topLeftTexture = textureMap.get(Scale9Texture.TOP_LEFT);
-		GameTexture topMidTexture = textureMap.get(Scale9Texture.TOP_MIDDLE);
-		GameTexture topRightTexture = textureMap.get(Scale9Texture.TOP_RIGHT);
-		GameTexture midLeftTexture = textureMap.get(Scale9Texture.MIDDLE_LEFT);
-		GameTexture midMidTexture = textureMap.get(Scale9Texture.MIDDLE_MIDDLE);
-		GameTexture midRightTexture = textureMap.get(Scale9Texture.MIDDLE_RIGHT);
-		GameTexture lowLeftTexture = textureMap.get(Scale9Texture.LOWER_LEFT);
-		GameTexture lowMidTexture = textureMap.get(Scale9Texture.LOWER_MIDDLE);
-		GameTexture lowRightTexture = textureMap.get(Scale9Texture.LOWER_RIGHT);
+		AbstractTexture topLeftTexture = textureMap.get(Scale9Texture.TOP_LEFT);
+		AbstractTexture topMidTexture = textureMap.get(Scale9Texture.TOP_MIDDLE);
+		AbstractTexture topRightTexture = textureMap.get(Scale9Texture.TOP_RIGHT);
+		AbstractTexture midLeftTexture = textureMap.get(Scale9Texture.MIDDLE_LEFT);
+		AbstractTexture midMidTexture = textureMap.get(Scale9Texture.MIDDLE_MIDDLE);
+		AbstractTexture midRightTexture = textureMap.get(Scale9Texture.MIDDLE_RIGHT);
+		AbstractTexture lowLeftTexture = textureMap.get(Scale9Texture.LOWER_LEFT);
+		AbstractTexture lowMidTexture = textureMap.get(Scale9Texture.LOWER_MIDDLE);
+		AbstractTexture lowRightTexture = textureMap.get(Scale9Texture.LOWER_RIGHT);
 		
 		float colLeftWidth = topLeftTexture.getWidth();
 		float colMidWidth;
