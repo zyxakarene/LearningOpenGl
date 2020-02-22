@@ -1,8 +1,8 @@
 {
 	"name":"tooltip_main",
 	"type":"container",
-	"forceWidth":100,
-	"forceHeight":100,
+	"forceWidth":300,
+	"forceHeight":300,
 	"children":
 	[
 		{

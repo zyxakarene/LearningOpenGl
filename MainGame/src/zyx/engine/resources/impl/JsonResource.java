@@ -27,23 +27,28 @@ public class JsonResource extends ExternalResource
 	@Override
 	public void resourceLoaded(ResourceDataInputStream jsonData)
 	{
+		parseJsonData(jsonData);
+		onContentLoaded(json);
+	}
+
+	@Override
+	protected void onResourceReloaded(ResourceDataInputStream jsonData)
+	{
+		parseJsonData(jsonData);
+		resourceReloaded();
+	}
+
+	private void parseJsonData(ResourceDataInputStream jsonData)
+	{
 		try
 		{
 			String text = new String(jsonData.getData(), Charset.defaultCharset());
-
 			json = (JSONObject) new JSONParser().parse(text);
-
-			onContentLoaded(json);
 		}
 		catch (ParseException ex)
 		{
-			Object[] params = new Object[]
-			{
-				path, ex.getPosition()
-			};
-			GameConstants.LOGGER.log(Level.WARNING, "Could not parse JSON file from resource: {0} - {1}", params);
-			
-			json = new JSONObject();
+			String msg = String.format("Could not parse JSON file from resource: %s at position %s", path, ex.getPosition());
+			throw new RuntimeException(msg);
 		}
 	}
 

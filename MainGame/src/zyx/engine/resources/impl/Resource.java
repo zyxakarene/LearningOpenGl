@@ -2,6 +2,7 @@ package zyx.engine.resources.impl;
 
 import java.util.ArrayList;
 import zyx.engine.resources.IResourceReady;
+import zyx.engine.resources.IResourceReloaded;
 import zyx.engine.resources.ResourceManager;
 
 public abstract class Resource
@@ -14,10 +15,12 @@ public abstract class Resource
 	private ArrayList<IResourceReady> pointers;
 	private boolean loading;
 	private boolean loaded;
-	
+
 	private ArrayList<Resource> dependencies;
 	private int loadedDependenciesCount;
 	private IResourceReady dependencyLoaded;
+
+	private ArrayList<IResourceReloaded> reloadedListeners;
 
 	Resource(String path)
 	{
@@ -26,19 +29,17 @@ public abstract class Resource
 
 		this.pointers = new ArrayList<>();
 		this.dependencies = new ArrayList<>();
+		this.reloadedListeners = new ArrayList<>();
 		this.loadedDependenciesCount = 0;
-		
-		this.dependencyLoaded = (IResourceReady) (Resource resource) ->
-		{
-			onDependencyLoaded(resource);
-		};
+
+		this.dependencyLoaded = (IResourceReady) this::onDependencyLoaded;
 	}
 
 	public void addDependency(Resource dependency)
 	{
 		dependencies.add(dependency);
 	}
-	
+
 	public void registerAndLoad(IResourceReady callback)
 	{
 		DebugResourceList.addResource(this);
@@ -46,6 +47,11 @@ public abstract class Resource
 		if (pointers.contains(callback) == false)
 		{
 			pointers.add(callback);
+
+			if (callback instanceof IResourceReloaded)
+			{
+				reloadedListeners.add((IResourceReloaded) callback);
+			}
 		}
 
 		if (loaded)
@@ -63,34 +69,43 @@ public abstract class Resource
 	private void beginLoad()
 	{
 		onBeginLoad();
-		
+
 		for (Resource dependency : dependencies)
 		{
 			dependency.registerAndLoad(dependencyLoaded);
 		}
 	}
-	
+
 	protected abstract void onBeginLoad();
-	
+
 	private void onDependencyLoaded(Resource resource)
 	{
 		loadedDependenciesCount++;
-		
+
 		if (content != null)
 		{
 			onContentLoaded(content);
 		}
 	}
-	
+
 	public void unregister(IResourceReady callback)
 	{
 		boolean removed = pointers.remove(callback);
-		if (removed && pointers.isEmpty())
+		
+		if (removed)
 		{
-			dispose();
+			if (callback instanceof IResourceReloaded)
+			{
+				reloadedListeners.remove((IResourceReloaded) callback);
+			}
+			
+			if (pointers.isEmpty())
+			{
+				dispose();
 
-			loaded = false;
-			loading = false;
+				loaded = false;
+				loading = false;
+			}
 		}
 	}
 
@@ -102,7 +117,7 @@ public abstract class Resource
 	protected void onContentLoaded(Object content)
 	{
 		this.content = content;
-		
+
 		if (loadedDependenciesCount == dependencies.size())
 		{
 			this.loaded = true;
@@ -122,7 +137,7 @@ public abstract class Resource
 		{
 			dependency.unregister(dependencyLoaded);
 		}
-		
+
 		onDispose();
 
 		if (pointers.isEmpty() == false)
@@ -133,7 +148,7 @@ public abstract class Resource
 		content = null;
 
 		DebugResourceList.removeResource(this);
-		
+
 		ResourceManager.getInstance().disposeResource(path);
 	}
 
@@ -151,11 +166,20 @@ public abstract class Resource
 	{
 		return "default.png";
 	}
-	
+
 	public void forceRefresh()
 	{
+		resourceReloaded();
 	}
-	
+
+	protected final void resourceReloaded()
+	{
+		for (IResourceReloaded listener : reloadedListeners)
+		{
+			listener.onResourceReloaded(this);
+		}
+	}
+
 	protected void onDispose()
 	{
 

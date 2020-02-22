@@ -20,6 +20,8 @@ public class DebugResourcePanel extends BaseDebugPanel
 	private JScrollPane listScrollPane;
 
 	private WatcherManager watcher;
+	
+	private int watchFrameCounter;
 
 	public DebugResourcePanel()
 	{
@@ -72,7 +74,12 @@ public class DebugResourcePanel extends BaseDebugPanel
 
 		repaint();
 		
-		watcher.checkChanged();
+		watchFrameCounter++;
+		if (watchFrameCounter >= 25)
+		{
+			watcher.checkChanged();
+			watchFrameCounter = 0;
+		}
 	}
 
 	@Override

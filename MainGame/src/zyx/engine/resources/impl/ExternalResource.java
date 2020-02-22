@@ -22,7 +22,7 @@ public abstract class ExternalResource extends Resource implements IResourceLoad
 
 	protected void onResourceReloaded(ResourceDataInputStream data)
 	{
-
+		resourceReloaded();
 	}
 
 	@Override
