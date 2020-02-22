@@ -31,6 +31,14 @@ public class Texture implements ITexture
 		setFiltering(filter);
 	}
 
+	public Texture(int textureId, InputStream content, TextureFiltering filter)
+	{
+		this.textureId = textureId;
+		
+		setData(content);
+		setFiltering(filter);
+	}
+
 	public void setData(InputStream content)
 	{
 		LoadedTextureContainer textureContainer = PngTextureLoader.getImageDataFor(content);

@@ -42,6 +42,7 @@ public class WatcherManager implements IFileUpdated
 	{
 		File baseFolder = new File("assets");
 		ArrayList<File> allFolders = new ArrayList<>();
+		allFolders.add(baseFolder);
 
 		findFolders(baseFolder, allFolders);
 

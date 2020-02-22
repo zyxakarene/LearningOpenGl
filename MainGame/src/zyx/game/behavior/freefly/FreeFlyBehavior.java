@@ -45,7 +45,6 @@ public class FreeFlyBehavior extends Behavior
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_Z))
 		{
 			Mouse.setGrabbed(!Mouse.isGrabbed());
-			Print.out(Mouse.isGrabbed());
 		}
 
 		if (Mouse.isGrabbed())

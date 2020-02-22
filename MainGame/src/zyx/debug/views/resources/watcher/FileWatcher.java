@@ -32,7 +32,7 @@ class FileWatcher implements Runnable
 			for (String folderPath : folderPaths)
 			{
 				Path path = new File(folderPath).toPath();
-				path.register(watcher, ENTRY_MODIFY);
+				path.register(watcher, ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_CREATE);
 			}
 		}
 		catch (IOException ex)

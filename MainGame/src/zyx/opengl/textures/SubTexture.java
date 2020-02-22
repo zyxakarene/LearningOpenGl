@@ -10,6 +10,12 @@ public class SubTexture extends GameTexture
 		super(parent.getGlTexture(), rect, name, parent.slot);
 	}
 	
+	public void refresh(AbstractTexture parent)
+	{
+		texture = parent.getGlTexture();
+		setSizes();
+	}
+	
 	@Override
 	protected void onDispose()
 	{

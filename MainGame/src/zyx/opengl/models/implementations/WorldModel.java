@@ -45,6 +45,7 @@ public class WorldModel extends AbstractModel implements IShadowable
 		radiusCenter = vo.radiusCenter;
 		radius = vo.radius;
 
+		bindVao();
 		setVertexData(vo.vertexData, vo.elementData);
 		AbstractTexture[] texs = new AbstractTexture[]
 		{

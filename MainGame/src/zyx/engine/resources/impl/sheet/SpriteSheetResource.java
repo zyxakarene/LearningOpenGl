@@ -13,8 +13,10 @@ import zyx.utils.geometry.Rectangle;
 public class SpriteSheetResource extends TextureResource implements IResourceReady<Resource>
 {
 	private SpriteSheetJsonResource jsonResource;
-	private TextureResource textureResource;
+	private SpriteSheetTextureResource textureResource;
 	private int loadCompleteCounter;
+	
+	private SubTexture subTexture;
 	
 	public SpriteSheetResource(String path)
 	{
@@ -30,7 +32,7 @@ public class SpriteSheetResource extends TextureResource implements IResourceRea
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		textureResource = (TextureResource) ResourceManager.getInstance().getResource("sprite_sheet_png");
+		textureResource = (SpriteSheetTextureResource) ResourceManager.getInstance().getResource("sprite_sheet_png");
 		textureResource.registerAndLoad(this);
 		
 		jsonResource = (SpriteSheetJsonResource) ResourceManager.getInstance().getResource("sprite_sheet_json");
@@ -47,7 +49,7 @@ public class SpriteSheetResource extends TextureResource implements IResourceRea
 			Rectangle rect = jsonResource.getById(path);
 			AbstractTexture textureSheet = textureResource.getContent();
 			
-			AbstractTexture tex;
+			AbstractTexture tex = null;
 			if (rect == null)
 			{
 				tex = MissingTexture.getAsSlot(textureSheet.slot);
@@ -66,7 +68,11 @@ public class SpriteSheetResource extends TextureResource implements IResourceRea
 				float h = y + (rect.height * ratioH);
 
 				Rectangle uvs = new Rectangle(x, y, w, h);
-				tex = new SubTexture(textureSheet, uvs, path);
+
+				subTexture = new SubTexture(textureSheet, uvs, path);
+				tex = subTexture;
+				
+				textureResource.addSubTexture(subTexture);
 			}
 			
 			resourceCreated(tex);
@@ -80,6 +86,8 @@ public class SpriteSheetResource extends TextureResource implements IResourceRea
 		
 		if (textureResource != null)
 		{
+			textureResource.removeSubTexture(subTexture);
+			
 			textureResource.unregister(this);
 			textureResource = null;
 		}
