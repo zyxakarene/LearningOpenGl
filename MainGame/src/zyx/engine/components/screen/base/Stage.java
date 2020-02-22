@@ -28,7 +28,7 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 	{
 		tooltipLayer = new DisplayObjectContainer();
 		hudLayer = new DisplayObjectContainer();
-		
+
 		crawler = new InteractionCrawler(this, hudLayer, tooltipLayer);
 		stage = this;
 
