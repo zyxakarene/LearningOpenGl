@@ -16,7 +16,7 @@ public class ResourceRenderer extends JLabel implements ListCellRenderer<Resourc
 	{
 		setOpaque(true);
 		setBorder(DEFAULT_NO_FOCUS_BORDER);
-	}
+				}
 
 	@Override
 	public Component getListCellRendererComponent(JList<? extends Resource> list, Resource value, int index, boolean isSelected, boolean cellHasFocus)
@@ -33,7 +33,7 @@ public class ResourceRenderer extends JLabel implements ListCellRenderer<Resourc
 			{
 				setForeground(Color.RED);
 			}
-			
+
 			Icon icon = ResourceIcons.createIcon(value);
 			setIcon(icon);
 		}

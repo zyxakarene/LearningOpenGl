@@ -2,6 +2,7 @@ package zyx.opengl.textures;
 
 import java.util.HashMap;
 import zyx.engine.utils.ScreenSize;
+import zyx.opengl.textures.custom.ITexture;
 import zyx.opengl.textures.enums.TextureSlot;
 import zyx.opengl.textures.impl.CustomDataTexture;
 import zyx.utils.cheats.Print;
@@ -132,5 +133,11 @@ public class DrawingTexture extends AbstractTexture
 	public float[] getPixelData()
 	{
 		return pixelData;
+	}
+
+	@Override
+	public ITexture getGlTexture()
+	{
+		return texture;
 	}
 }

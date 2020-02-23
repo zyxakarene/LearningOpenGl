@@ -1,5 +1,6 @@
 package zyx.opengl.textures;
 
+import zyx.opengl.textures.custom.ITexture;
 import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.geometry.Rectangle;
 import zyx.utils.interfaces.IDisposeable;
@@ -90,6 +91,8 @@ public abstract class AbstractTexture implements IDisposeable
 	abstract protected void onBind();
 
 	abstract protected void onDispose();
+	
+	abstract public ITexture getGlTexture();
 
 	@Override
 	public String toString()

@@ -94,6 +94,17 @@ class ModelUtils
 	}
 
 	/**
+	 * Uploads the data to the currently bound EBO
+	 *
+	 * @param data The element data to upload
+	 */
+	static void fillEBO_Dynamic(int[] data)
+	{
+		IntBuffer buffer = BufferWrapper.toBuffer(data);
+		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_DYNAMIC_DRAW);
+	}
+
+	/**
 	 * Generates a new VAO
 	 *
 	 * @return The newly created Vertex Array

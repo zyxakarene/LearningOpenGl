@@ -10,7 +10,6 @@ import zyx.opengl.models.implementations.MeshBatchModel;
 import zyx.opengl.models.loading.MeshLoadingTask;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.tasks.ITaskCompleted;
-import zyx.utils.tasks.TaskScheduler;
 
 public class MeshBatchResource extends BaseRequiredSubResource implements ISubResourceLoaded<AbstractTexture>, ITaskCompleted<LoadableWorldModelVO>
 {
@@ -31,30 +30,6 @@ public class MeshBatchResource extends BaseRequiredSubResource implements ISubRe
 	}
 
 	@Override
-	protected void onDispose()
-	{
-		super.onDispose();
-
-		if (model != null)
-		{
-			model.dispose();
-			model = null;
-		}
-
-		if (loadedVo != null)
-		{
-			loadedVo.dispose();
-			loadedVo = null;
-		}
-		
-		if (task != null)
-		{
-			task.cancel();
-			task = null;
-		}
-	}
-
-	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
 		task = new MeshLoadingTask(this, data, path);
@@ -62,15 +37,28 @@ public class MeshBatchResource extends BaseRequiredSubResource implements ISubRe
 	}
 
 	@Override
+	protected void onResourceReloaded(ResourceDataInputStream data)
+	{
+		cancelSubBatches();
+		
+		if (task != null)
+		{
+			task.cancel();
+			task = null;
+		}
+		
+		task = new MeshLoadingTask(this, data, path);
+		task.start();
+	}
+	
+	@Override
 	public void onTaskCompleted(LoadableWorldModelVO data)
 	{
 		loadedVo = data;
 
 		String diffuse = loadedVo.getDiffuseTextureId();
 		String normal = loadedVo.getNormalTextureId();
-//		String specular = loadedVo.getSpecularTextureId();
-//		String normal = "normal.default_normal";
-		String specular = "specular.mirror_specular";
+		String specular = loadedVo.getSpecularTextureId();
 
 		SubResourceBatch<AbstractTexture> textureBatch = new SubResourceBatch(this, diffuse, normal, specular);
 		addResourceBatch(textureBatch);
@@ -91,8 +79,41 @@ public class MeshBatchResource extends BaseRequiredSubResource implements ISubRe
 	@Override
 	protected void onSubBatchesLoaded()
 	{
-		model = new MeshBatchModel(loadedVo);
-		onContentLoaded(model);
+		if (model == null)
+		{
+			model = new MeshBatchModel(loadedVo);
+			onContentLoaded(model);
+		}
+		else
+		{
+			model.refresh(loadedVo);
+		}
+		
+		loadedVo.clean();
+	}
+	
+		@Override
+	protected void onDispose()
+	{
+		super.onDispose();
+
+		if (task != null)
+		{
+			task.cancel();
+			task = null;
+		}
+		
+		if (model != null)
+		{
+			model.dispose();
+			model = null;
+		}
+
+		if (loadedVo != null)
+		{
+			loadedVo.dispose();
+			loadedVo = null;
+		}
 	}
 	
 	@Override

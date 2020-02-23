@@ -6,7 +6,7 @@ import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.Resource;
 import zyx.engine.resources.impl.textures.TextureResource;
 import zyx.engine.utils.callbacks.CustomCallback;
-import zyx.opengl.textures.GameTexture;
+import zyx.opengl.textures.AbstractTexture;
 
 public abstract class AbstractImage extends AbstractQuad implements ILoadable, IResourceReady<TextureResource>
 {
@@ -34,7 +34,7 @@ public abstract class AbstractImage extends AbstractQuad implements ILoadable, I
 	@Override
 	public final void onResourceReady(TextureResource resource)
 	{
-		GameTexture texture = resource.getContent();
+		AbstractTexture texture = resource.getContent();
 
 		onTextureResourceReady(texture);
 
@@ -59,6 +59,6 @@ public abstract class AbstractImage extends AbstractQuad implements ILoadable, I
 		}
 	}
 
-	protected abstract void onTextureResourceReady(GameTexture texture);
+	protected abstract void onTextureResourceReady(AbstractTexture texture);
 
 }

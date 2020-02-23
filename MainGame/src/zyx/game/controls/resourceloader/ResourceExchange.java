@@ -23,6 +23,10 @@ class ResourceExchange extends BaseExchange<ResourceRequest, ResourceRequest>
 		{
 			request.complete(request.getData());
 		}
+		else
+		{
+			request.fail();
+		}
 
 		request.dispose();
 	}

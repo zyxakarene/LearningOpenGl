@@ -53,11 +53,17 @@ public class SmdParser
 		{
 			outputModel.getParentFile().mkdirs();
 		}
-		
-		try (DataOutputStream out = new DataOutputStream(new FileOutputStream(outputModel)))
+
+		try (SingleWriteFileOutputStream outBuffer = new SingleWriteFileOutputStream())
 		{
-			smd.save(out);
-			out.flush();
+			smd.save(outBuffer);
+			byte[] data = outBuffer.getData();
+			
+			try (DataOutputStream out = new DataOutputStream(new FileOutputStream(outputModel)))
+			{
+				out.write(data);
+				out.flush();
+			}
 		}
 	}
 

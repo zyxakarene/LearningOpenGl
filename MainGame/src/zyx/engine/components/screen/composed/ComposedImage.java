@@ -30,10 +30,7 @@ public class ComposedImage extends DisplayObjectContainer implements IComposedIm
 		alpha = 1;
 		focusable = true;
 
-		onFirstImageLoaded = (AbstractImage img) -> 
-		{
-			onImageLoaded(img);
-		};
+		onFirstImageLoaded = this::onImageLoaded;
 	}
 
 	@Override

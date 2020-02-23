@@ -10,6 +10,7 @@ import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.textures.ColorTexture;
 import zyx.opengl.textures.enums.TextureSlot;
+import zyx.utils.FloatMath;
 import zyx.utils.geometry.Box;
 import zyx.utils.interfaces.IPhysbox;
 
@@ -18,14 +19,16 @@ public class DebugPhysDrawing
 
 	public static final int INDEX_MESH = 0;
 	public static final int INDEX_BOUNDING = 1;
-	
+
+	private static final HashMap<PhysBox, Skeleton> SKELETON_MAP_BOUNDING = new HashMap<>();
+	private static final HashMap<PhysBox, Skeleton> SKELETON_MAP_MESH = new HashMap<>();
 	private static final HashMap<PhysBox, WorldModel> MESH_MAP = new HashMap<>();
 	private static final HashMap<PhysBox, WorldModel> BOUNDING_BOX_MAP = new HashMap<>();
-	
+
 	public static WorldModel[] getModelFor(IPhysbox physBox)
 	{
 		PhysBox box = physBox.getPhysbox();
-		
+
 		if (MESH_MAP.containsKey(box) == false)
 		{
 			createModel(box);
@@ -34,7 +37,7 @@ public class DebugPhysDrawing
 		WorldModel[] models = new WorldModel[2];
 		models[INDEX_MESH] = MESH_MAP.get(box);
 		models[INDEX_BOUNDING] = BOUNDING_BOX_MAP.get(box);
-				
+
 		return models;
 	}
 
@@ -43,31 +46,43 @@ public class DebugPhysDrawing
 		PhysBox box = physBox.getPhysbox();
 		WorldModel meshRemove = MESH_MAP.remove(box);
 		WorldModel boundingRemove = BOUNDING_BOX_MAP.remove(box);
-		
-		if(meshRemove != null)
+		Skeleton skeletonMeshRemove = SKELETON_MAP_MESH.remove(box);
+		Skeleton skeletonBoundingRemove = SKELETON_MAP_BOUNDING.remove(box);
+
+		if (meshRemove != null)
 		{
 			meshRemove.dispose();
 		}
-		
-		if(boundingRemove != null)
+
+		if (boundingRemove != null)
 		{
 			boundingRemove.dispose();
 		}
+		
+		if (skeletonMeshRemove != null)
+		{
+			skeletonMeshRemove.dispose();
+		}
+		
+		if (skeletonBoundingRemove != null)
+		{
+			skeletonBoundingRemove.dispose();
+		}
 	}
-	
+
 	private static void createModel(PhysBox box)
 	{
 		PhysObject[] objects = box.getObjects();
-		Box boundingBox = box.getBoundingBox();
 
-		WorldModel bounding = getBoundingModel(boundingBox);
-		WorldModel mesh = getMeshModel(box.getTriangles().length, objects);
+		WorldModel bounding = getBoundingModel(box);
+		WorldModel mesh = getMeshModel(box, objects);
 		MESH_MAP.put(box, mesh);
 		BOUNDING_BOX_MAP.put(box, bounding);
 	}
 
-	private static WorldModel getMeshModel(int totalTriangleCount, PhysObject[] objects)
+	private static WorldModel getMeshModel(PhysBox box, PhysObject[] objects)
 	{
+		int totalTriangleCount = box.getTriangles().length;
 		int vertexCount = (totalTriangleCount * 3 * 12);
 		float[] vertexData = new float[vertexCount];
 
@@ -79,15 +94,15 @@ public class DebugPhysDrawing
 		{
 			PhysTriangle[] triangles = object.getTriangles();
 			int boneId = object.getBoneId();
-			
+
 			index = fillData(triangles, vertexData, boneId, index);
 		}
-		
+
 		for (int i = 0; i < elementData.length; i++)
 		{
 			elementData[i] = i;
 		}
-		
+
 		Skeleton skeleton = new Skeleton(getMeshJoint("root"), getMeshJoint("dummy"));
 		LoadableWorldModelVO vo = new LoadableWorldModelVO(vertexData, elementData, null, "", "", "", new Vector3f(), 1000, "");
 		vo.setSkeleton(skeleton);
@@ -96,13 +111,15 @@ public class DebugPhysDrawing
 		vo.setNormalTexture(new ColorTexture(0x000000, TextureSlot.WORLD_NORMAL));
 		WorldModel model = new WorldModel(vo);
 
+		SKELETON_MAP_MESH.put(box, skeleton);
+		
 		return model;
 	}
 
 	private static Joint getMeshJoint(String name)
 	{
 		Matrix4f matrix = SharedPools.MATRIX_POOL.getInstance();
-		return new Joint((byte)0, name, matrix);
+		return new Joint((byte) 0, name, matrix);
 	}
 
 	private static int fillData(PhysTriangle[] triangles, float[] vertexData, int boneId, int index)
@@ -150,7 +167,7 @@ public class DebugPhysDrawing
 			vertexData[index++] = 1;
 			vertexData[index++] = 0;
 		}
-		
+
 		return index;
 	}
 
@@ -178,8 +195,10 @@ public class DebugPhysDrawing
 		}
 	}
 
-	private static WorldModel getBoundingModel(Box boundingBox)
+	private static WorldModel getBoundingModel(PhysBox physBox)
 	{
+		Box boundingBox = physBox.getBoundingBox();
+		
 		int triangleCount = 12; //2 top, 2 btm, 2 left, 2 right, 2 front, 2 back
 
 		int vertexCount = triangleCount * 3 * 12; //triangles * vertecies * vertexData
@@ -197,6 +216,8 @@ public class DebugPhysDrawing
 		vo.setNormalTexture(new ColorTexture(0x000000, TextureSlot.WORLD_NORMAL));
 		WorldModel model = new WorldModel(vo);
 
+		SKELETON_MAP_BOUNDING.put(physBox, skeleton);
+		
 		return model;
 	}
 
@@ -212,28 +233,28 @@ public class DebugPhysDrawing
 		Vector3f b3 = new Vector3f(b.minX, b.minY, b.minZ);
 		Vector3f b4 = new Vector3f(b.minX, b.maxY, b.minZ);
 		Vector3f normal = new Vector3f();
-		
+
 		normal.set(0, 0, 1); //Top
 		index = addVertex(t4, t2, t1, normal, vertexData, index);
 		index = addVertex(t4, t3, t2, normal, vertexData, index);
 		normal.set(0, 0, -1); //bottom
 		index = addVertex(b1, b2, b4, normal, vertexData, index);
 		index = addVertex(b2, b3, b4, normal, vertexData, index);
-		
+
 		normal.set(1, 0, 0); //front
 		index = addVertex(t1, t2, b2, normal, vertexData, index);
 		index = addVertex(t1, b2, b1, normal, vertexData, index);
 		normal.set(-1, 0, 0); //back
 		index = addVertex(t3, t4, b4, normal, vertexData, index);
 		index = addVertex(b4, b3, t3, normal, vertexData, index);
-		
+
 		normal.set(0, 1, 0); //left
 		index = addVertex(b4, t4, t1, normal, vertexData, index);
 		index = addVertex(b1, b4, t1, normal, vertexData, index);
 		normal.set(0, -1, 0); //right
 		index = addVertex(b2, t2, t3, normal, vertexData, index);
 		index = addVertex(b3, b2, t3, normal, vertexData, index);
-		
+
 		for (int i = 0; i < elementData.length; i++)
 		{
 			elementData[i] = i;
@@ -248,39 +269,39 @@ public class DebugPhysDrawing
 		vertexData[index++] = n.x;
 		vertexData[index++] = n.y;
 		vertexData[index++] = n.z;
-		vertexData[index++] = 0;
-		vertexData[index++] = 0;
+		vertexData[index++] = FloatMath.random();
+		vertexData[index++] = FloatMath.random();
 		vertexData[index++] = 0;
 		vertexData[index++] = 0;
 		vertexData[index++] = 1;
 		vertexData[index++] = 0;
-		
+
 		vertexData[index++] = v2.x;
 		vertexData[index++] = v2.y;
 		vertexData[index++] = v2.z;
 		vertexData[index++] = n.x;
 		vertexData[index++] = n.y;
 		vertexData[index++] = n.z;
-		vertexData[index++] = 0;
-		vertexData[index++] = 0;
+		vertexData[index++] = FloatMath.random();
+		vertexData[index++] = FloatMath.random();
 		vertexData[index++] = 0;
 		vertexData[index++] = 0;
 		vertexData[index++] = 1;
 		vertexData[index++] = 0;
-		
+
 		vertexData[index++] = v3.x;
 		vertexData[index++] = v3.y;
 		vertexData[index++] = v3.z;
 		vertexData[index++] = n.x;
 		vertexData[index++] = n.y;
 		vertexData[index++] = n.z;
-		vertexData[index++] = 0;
-		vertexData[index++] = 0;
+		vertexData[index++] = FloatMath.random();
+		vertexData[index++] = FloatMath.random();
 		vertexData[index++] = 0;
 		vertexData[index++] = 0;
 		vertexData[index++] = 1;
 		vertexData[index++] = 0;
-		
+
 		return index;
 	}
 }

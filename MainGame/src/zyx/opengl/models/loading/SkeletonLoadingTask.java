@@ -35,4 +35,10 @@ public class SkeletonLoadingTask extends ScheduledTask<Skeleton>
 		
 		inputData = null;
 	}
+
+	@Override
+	protected void onCanceled(Skeleton result)
+	{
+		result.dispose();
+	}
 }

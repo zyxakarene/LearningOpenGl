@@ -16,6 +16,7 @@ public class SkyboxResource extends BaseRequiredSubResource implements ISubResou
 
 	private LoadableWorldModelVO loadedVo;
 	private SkyboxModel model;
+	private MeshLoadingTask task;
 
 	public SkyboxResource(String path)
 	{
@@ -49,7 +50,22 @@ public class SkyboxResource extends BaseRequiredSubResource implements ISubResou
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		MeshLoadingTask task = new MeshLoadingTask(this, data, path);
+		task = new MeshLoadingTask(this, data, path);
+		task.start();
+	}
+
+	@Override
+	protected void onResourceReloaded(ResourceDataInputStream data)
+	{
+		cancelSubBatches();
+		
+		if (task != null)
+		{
+			task.cancel();
+			task = null;
+		}
+		
+		task = new MeshLoadingTask(this, data, path);
 		task.start();
 	}
 	

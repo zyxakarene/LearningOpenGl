@@ -77,10 +77,38 @@ public class MeshResource extends BaseRequiredSubResource implements ITaskComple
 	}
 
 	@Override
+	protected void onResourceReloaded(ResourceDataInputStream data)
+	{
+		cancelSubBatches();
+		
+		if (loadingTask != null)
+		{
+			loadingTask.cancel();
+			loadingTask = null;
+		}
+		
+		if (loadedVo != null)
+		{
+			loadedVo.dispose();
+			loadedVo = null;
+		}
+		
+		loadingTask = new MeshLoadingTask(this, data, path);
+		loadingTask.start();
+	}
+	
+	@Override
 	protected void onSubBatchesLoaded()
 	{
-		model = new WorldModel(loadedVo);
-		onContentLoaded(model);
+		if (model == null)
+		{
+			model = new WorldModel(loadedVo);
+			onContentLoaded(model);
+		}
+		else
+		{
+			model.refresh(loadedVo);
+		}
 		
 		loadedVo.clean();
 	}

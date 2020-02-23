@@ -5,9 +5,9 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import zyx.debug.views.base.BaseDebugPanel;
+import zyx.debug.views.resources.watcher.WatcherManager;
 import zyx.engine.resources.impl.DebugResourceList;
 import zyx.engine.resources.impl.Resource;
-import zyx.utils.cheats.Print;
 
 public class DebugResourcePanel extends BaseDebugPanel
 {
@@ -19,11 +19,15 @@ public class DebugResourcePanel extends BaseDebugPanel
 	private ResourceRenderer cellRenderer;
 	private JScrollPane listScrollPane;
 
+	private WatcherManager watcher;
+	
+	private int watchFrameCounter;
+
 	public DebugResourcePanel()
 	{
 		listScrollPane = new JScrollPane();
 		add(listScrollPane);
-		
+
 		listModel = new SafeDefaultListModel<>();
 		cellRenderer = new ResourceRenderer();
 
@@ -34,6 +38,9 @@ public class DebugResourcePanel extends BaseDebugPanel
 		listScrollPane.setViewportView(list);
 
 		out = new ArrayList<>();
+		
+		watcher = new WatcherManager();
+		watcher.initialize();
 	}
 
 	@Override
@@ -45,14 +52,16 @@ public class DebugResourcePanel extends BaseDebugPanel
 		{
 			int oldIndex = list.getSelectedIndex();
 			oldIndex = oldIndex < 0 ? 0 : oldIndex;
-			
+
 			listModel.removeAllElements();
 
+			watcher.setActiveResources(out);
+			
 			for (Resource resource : out)
 			{
 				listModel.addElement(resource);
 			}
-			
+
 			if (oldIndex >= out.size())
 			{
 				list.setSelectedIndex(out.size() - 1);
@@ -62,8 +71,15 @@ public class DebugResourcePanel extends BaseDebugPanel
 				list.setSelectedIndex(oldIndex);
 			}
 		}
-		
+
 		repaint();
+		
+		watchFrameCounter++;
+		if (watchFrameCounter >= 25)
+		{
+			watcher.checkChanged();
+			watchFrameCounter = 0;
+		}
 	}
 
 	@Override

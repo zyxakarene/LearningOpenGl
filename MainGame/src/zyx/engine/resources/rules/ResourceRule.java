@@ -1,20 +1,21 @@
 package zyx.engine.resources.rules;
 
-import zyx.engine.resources.impl.sheet.SpriteSheetResource;
-import zyx.engine.resources.impl.sheet.SpriteSheetJsonResource;
+import zyx.engine.resources.impl.*;
 import zyx.engine.resources.impl.meshes.MeshBatchResource;
 import zyx.engine.resources.impl.meshes.MeshResource;
-import zyx.engine.resources.impl.textures.SpecularTextureResource;
-import zyx.engine.resources.impl.textures.NormalTextureResource;
-import zyx.engine.resources.impl.textures.TextureResource;
-import zyx.engine.resources.impl.*;
 import zyx.engine.resources.impl.meshes.SkeletonResource;
+import zyx.engine.resources.impl.sheet.SpriteSheetJsonResource;
+import zyx.engine.resources.impl.sheet.SpriteSheetResource;
+import zyx.engine.resources.impl.sheet.SpriteSheetTextureResource;
+import zyx.engine.resources.impl.textures.NormalTextureResource;
+import zyx.engine.resources.impl.textures.SpecularTextureResource;
+import zyx.engine.resources.impl.textures.TextureResource;
 
 public enum ResourceRule
 {
 	UI_ITEM				("json.#",				"assets/json/#.json",		JsonResource.class),
 	
-	SPRITE_SHEET_PNG	("sprite_sheet_png",	"assets/sprite_sheet.png",	TextureResource.class),
+	SPRITE_SHEET_PNG	("sprite_sheet_png",	"assets/sprite_sheet.png",	SpriteSheetTextureResource.class),
 	SPRITE_SHEET_JSON	("sprite_sheet_json",	"assets/sprite_sheet.json",	SpriteSheetJsonResource.class),
 	SPRITE_SHEET_ITEM	("#",					"#",						SpriteSheetResource.class),
 	

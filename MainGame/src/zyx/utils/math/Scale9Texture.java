@@ -1,7 +1,7 @@
 package zyx.utils.math;
 
 import java.util.HashMap;
-import zyx.opengl.textures.GameTexture;
+import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.SubTexture;
 import zyx.utils.geometry.Rectangle;
 
@@ -19,24 +19,24 @@ public class Scale9Texture
 	public static final String LOWER_MIDDLE = "lm";
 	public static final String LOWER_RIGHT = "lr";
 	
-	private static final HashMap<String, HashMap<String, GameTexture>> CACHE = new HashMap<>();
-	private static final HashMap<String, GameTexture> OUT = new HashMap<>();
+	private static final HashMap<String, HashMap<String, AbstractTexture>> CACHE = new HashMap<>();
+	private static final HashMap<String, AbstractTexture> OUT = new HashMap<>();
 
-	public static HashMap<String, GameTexture> ToScale9TextureMap(Rectangle grid, GameTexture baseTexture)
+	public static HashMap<String, AbstractTexture> ToScale9TextureMap(Rectangle grid, AbstractTexture baseTexture)
 	{
 		String baseName = baseTexture.getName();
 		String key = baseName + "-" + grid.x + "," + grid.y + ":" + grid.width + "," + grid.height;
 		
 		if (CACHE.containsKey(key))
 		{
-			HashMap<String, GameTexture> cacheEntry = CACHE.get(key);
+			HashMap<String, AbstractTexture> cacheEntry = CACHE.get(key);
 			OUT.clear();
 			
 			OUT.putAll(cacheEntry);
 		}
 		else
 		{
-			HashMap<String, GameTexture> createdEntry = createEntry(grid, baseTexture);
+			HashMap<String, AbstractTexture> createdEntry = createEntry(grid, baseTexture);
 			
 			CACHE.put(key, createdEntry);
 			
@@ -47,11 +47,11 @@ public class Scale9Texture
 		return OUT;
 	}
 
-	private static HashMap<String, GameTexture> createEntry(Rectangle grid, GameTexture texture)
+	private static HashMap<String, AbstractTexture> createEntry(Rectangle grid, AbstractTexture texture)
 	{
 		String name = texture.getName();
 		Rectangle rect = new Rectangle();
-		HashMap<String, GameTexture> entry = new HashMap<>();
+		HashMap<String, AbstractTexture> entry = new HashMap<>();
 		
 		float texelWidthPerPixel = (texture.u - texture.x) / texture.getWidth();
 		float texelHeightPerPixel = (texture.v - texture.y) / texture.getHeight();

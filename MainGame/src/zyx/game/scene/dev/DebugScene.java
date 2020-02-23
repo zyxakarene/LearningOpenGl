@@ -51,6 +51,8 @@ public class DebugScene extends GameScene
 		{
 			object.dispose();
 		}
+		
+		super.onDispose();
 	}
 
 }

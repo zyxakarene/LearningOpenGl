@@ -11,7 +11,7 @@ public class DrawableTextureResource extends Resource
 	
 	private TextureFromInt drawTexture;
 
-	public DrawableTextureResource()
+	public DrawableTextureResource(String path)
 	{
 		super(PATH);
 	}

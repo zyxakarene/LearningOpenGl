@@ -4,6 +4,7 @@ import zyx.opengl.buffers.BufferBinder;
 import java.nio.ByteBuffer;
 import org.lwjgl.opengl.*;
 import zyx.opengl.buffers.Buffer;
+import zyx.opengl.textures.custom.ITexture;
 import zyx.utils.geometry.Rectangle;
 
 public class RenderTextureDebth extends AbstractTexture
@@ -61,5 +62,11 @@ public class RenderTextureDebth extends AbstractTexture
 		GL11.glDrawBuffer(GL11.GL_NONE);
 		GL11.glReadBuffer(GL11.GL_NONE);
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
+	}
+
+	@Override
+	public ITexture getGlTexture()
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 }

@@ -238,10 +238,9 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 	{
 		super.onDispose();
 		
-		for (int i = 0; i < gameObjects.size(); i++)
+		for (GameObject gameObject : gameObjects)
 		{
-			GameObject obj = gameObjects.get(i);
-			obj.dispose();
+			gameObject.dispose();
 		}
 
 		CubemapManager.getInstance().clean();

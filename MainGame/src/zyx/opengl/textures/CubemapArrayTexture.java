@@ -8,14 +8,26 @@ import zyx.opengl.textures.enums.TextureSlot;
 public class CubemapArrayTexture extends AbstractTexture
 {
 
-	protected ITexture texture;
+	private CubeTexture3D texture;
 
 	public CubemapArrayTexture(LoadableCubemapVO cubeVo)
 	{
 		super(cubeVo.name, TextureSlot.WORLD_CUBEMAPS);
 
-		texture = new CubeTexture3D(cubeVo);
+		refresh(cubeVo);
+	}
 
+	public void refresh(LoadableCubemapVO cubeVo)
+	{
+		if (texture != null)
+		{
+			texture.loadFrom(cubeVo);
+		}
+		else
+		{
+			texture = new CubeTexture3D(cubeVo);
+		}
+		
 		setSizes(texture.getWidth(), texture.getHeight());
 	}
 
@@ -33,5 +45,11 @@ public class CubemapArrayTexture extends AbstractTexture
 			texture.dispose();
 			texture = null;
 		}
+	}
+
+	@Override
+	public ITexture getGlTexture()
+	{
+		return texture;
 	}
 }

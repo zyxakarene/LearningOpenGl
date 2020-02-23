@@ -35,12 +35,32 @@ public class CubemapResource extends ExternalResource implements ITaskCompleted<
 	@Override
 	public void onTaskCompleted(LoadableCubemapVO data)
 	{
-		texture = new CubemapArrayTexture(data);
-		cubemap = new Cubemap(data.positions, texture);
+		if (texture != null)
+		{
+			texture.refresh(data);
+		}
+		else
+		{
+			texture = new CubemapArrayTexture(data);
+			cubemap = new Cubemap(data.positions, texture);
+		}
 
 		onContentLoaded(cubemap);
 
 		data.dispose();
+	}
+
+	@Override
+	protected void onResourceReloaded(ResourceDataInputStream data)
+	{
+		if (task != null)
+		{
+			task.cancel();
+			task = null;
+		}
+		
+		task = new CubeLoadingTask(this, data, path);
+		task.start();
 	}
 
 	@Override

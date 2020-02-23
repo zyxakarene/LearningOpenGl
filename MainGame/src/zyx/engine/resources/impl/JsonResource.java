@@ -1,12 +1,12 @@
 package zyx.engine.resources.impl;
 
 import java.nio.charset.Charset;
-import java.util.logging.Level;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import zyx.utils.GameConstants;
+import zyx.utils.PrintBuilder;
+import zyx.utils.cheats.Print;
 
 public class JsonResource extends ExternalResource
 {
@@ -27,21 +27,39 @@ public class JsonResource extends ExternalResource
 	@Override
 	public void resourceLoaded(ResourceDataInputStream jsonData)
 	{
+		parseJsonData(jsonData);
+		onContentLoaded(json);
+	}
+
+	@Override
+	protected void onResourceReloaded(ResourceDataInputStream jsonData)
+	{
+		parseJsonData(jsonData);
+		resourceReloaded();
+	}
+
+	private void parseJsonData(ResourceDataInputStream jsonData)
+	{
+		PrintBuilder builder = new PrintBuilder();
+
 		try
 		{
+			builder.append("==== Parsing json data from byte count:", jsonData.getLength(), "====");
+			builder.append("↳ Id", path);
+			
 			String text = new String(jsonData.getData(), Charset.defaultCharset());
-
 			json = (JSONObject) new JSONParser().parse(text);
-
-			onContentLoaded(json);
+			
+			builder.append("========");
+			
+			Print.out(builder);
 		}
 		catch (ParseException ex)
 		{
-			Object[] params = new Object[]
-			{
-				path, ex.getPosition()
-			};
-			GameConstants.LOGGER.log(Level.WARNING, "Could not parse JSON file from resource: {0} - {1}", params);
+			builder.append("Error at position ", ex.getPosition());
+			builder.append(String.format("==== [ERROR] Failed to parse json! ===="));
+
+			Print.err(builder);
 			
 			json = new JSONObject();
 		}

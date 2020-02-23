@@ -34,4 +34,10 @@ public class MeshLoadingTask extends ScheduledTask<LoadableWorldModelVO>
 		
 		inputData = null;
 	}
+
+	@Override
+	protected void onCanceled(LoadableWorldModelVO result)
+	{
+		result.dispose();
+	}
 }

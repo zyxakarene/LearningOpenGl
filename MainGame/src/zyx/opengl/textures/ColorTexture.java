@@ -1,5 +1,6 @@
 package zyx.opengl.textures;
 
+import zyx.opengl.textures.custom.ITexture;
 import zyx.opengl.textures.enums.TextureSlot;
 import zyx.opengl.textures.impl.SolidColorTexture;
 
@@ -45,5 +46,11 @@ public class ColorTexture extends AbstractTexture
 			texture.dispose();
 			texture = null;
 		}
+	}
+
+	@Override
+	public ITexture getGlTexture()
+	{
+		return texture;
 	}
 }

@@ -14,12 +14,14 @@ public class MenuHud extends BaseHud
 
 	public MenuHud()
 	{
-		onPlayButtonClicked = (InteractableContainer data) ->
-		{
-			SceneManager.getInstance().changeScene(SceneType.GAME);
-		};
+		onPlayButtonClicked = this::playBtnClicked;
 	}
 
+	private void playBtnClicked(InteractableContainer data)
+	{
+		SceneManager.getInstance().changeScene(SceneType.GAME);
+	}
+	
 	@Override
 	public String getResource()
 	{
@@ -32,6 +34,9 @@ public class MenuHud extends BaseHud
 		super.onComponentsCreated();
 
 		playButton = this.<Button>getComponentByName("play_button");
-		playButton.onButtonClicked.addCallback(onPlayButtonClicked);
+		if (playButton != null)
+		{
+			playButton.onButtonClicked.addCallback(onPlayButtonClicked);
+		}
 	}
 }

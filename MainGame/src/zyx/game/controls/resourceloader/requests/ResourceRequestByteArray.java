@@ -8,7 +8,12 @@ public class ResourceRequestByteArray extends ResourceRequest<ResourceByteArray>
 
 	public ResourceRequestByteArray(String path, IResourceLoaded<ResourceByteArray> callback)
 	{
-		super(path, callback);
+		this(path, callback, null);
+	}
+	
+	public ResourceRequestByteArray(String path, IResourceLoaded<ResourceByteArray> callback, IResourceFailed failedCallback)
+	{
+		super(path, callback, failedCallback);
 	}
 
 	@Override

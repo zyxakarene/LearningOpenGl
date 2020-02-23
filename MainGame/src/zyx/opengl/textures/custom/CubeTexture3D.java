@@ -27,13 +27,13 @@ public class CubeTexture3D implements ITexture
 
 	public CubeTexture3D(LoadableCubemapVO cubeVo)
 	{
+		this.textureId = GL11.glGenTextures();
+		
 		loadFrom(cubeVo);
 	}
 
-	protected void loadFrom(LoadableCubemapVO cubeVo)
+	public void loadFrom(LoadableCubemapVO cubeVo)
 	{
-		this.textureId = GL11.glGenTextures();
-		
 		int size = cubeVo.faceSize;
 		int layers = cubeVo.layers;
 		int faces = 6;

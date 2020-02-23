@@ -34,4 +34,10 @@ public class CubeLoadingTask extends ScheduledTask<LoadableCubemapVO>
 		
 		inputData = null;
 	}
+
+	@Override
+	protected void onCanceled(LoadableCubemapVO result)
+	{
+		result.dispose();
+	}
 }

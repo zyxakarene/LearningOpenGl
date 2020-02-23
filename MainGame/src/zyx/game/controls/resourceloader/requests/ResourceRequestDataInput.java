@@ -9,7 +9,12 @@ public class ResourceRequestDataInput extends ResourceRequest<ResourceDataInputS
 
 	public ResourceRequestDataInput(String path, IResourceLoaded<ResourceDataInputStream> callback)
 	{
-		super(path, callback);
+		this(path, callback, null);
+	}
+
+	public ResourceRequestDataInput(String path, IResourceLoaded<ResourceDataInputStream> callback, IResourceFailed failedCallback)
+	{
+		super(path, callback, failedCallback);
 	}
 
 	@Override

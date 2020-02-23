@@ -1,7 +1,6 @@
 package zyx.opengl.models.loading.skeletons;
 
 import java.io.IOException;
-import java.util.logging.Level;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
@@ -12,7 +11,7 @@ import zyx.opengl.models.implementations.bones.animation.AnimationFrame;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.implementations.bones.transform.JointTransform;
-import zyx.utils.GameConstants;
+import zyx.opengl.models.loading.skeletons.fallback.FakeSkeleton;
 import zyx.utils.PrintBuilder;
 import zyx.utils.cheats.Print;
 import zyx.utils.math.MatrixUtils;
@@ -30,7 +29,7 @@ public class SkeletonLoader
 		try
 		{
 			builder.append("==== Parsing skeleton data from byte count:", in.available(), "====");
-			builder.append("Id", id);
+			builder.append("↳ Id", id);
 
 			SkeletonObject obj = new SkeletonObject();
 			obj.read(in, builder);
@@ -41,16 +40,16 @@ public class SkeletonLoader
 			Skeleton skeleton = new Skeleton(rootJoint, meshJoint);
 			addAnimationsTo(skeleton, obj.animations);
 			builder.append("========");
+			Print.out(builder);
 			
 			return skeleton;
 		}
 		catch (IOException e)
 		{
 			builder.append("==== [ERROR] Failed to parse skeleton! ====");
-			Print.out(builder);
+			Print.err(builder);
 
-			GameConstants.LOGGER.log(Level.SEVERE, "Error at loading a skeleton data", e);
-			return null;
+			return FakeSkeleton.makeFakeSkeleton();
 		}
 	}
 

@@ -72,7 +72,7 @@ public class SubResourceBatch<T> implements IResourceReady<Resource>, IDisposeab
 			onAllDone.onCallback(this);
 		}
 	}
-	
+
 	@Override
 	public void dispose()
 	{

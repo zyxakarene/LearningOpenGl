@@ -16,10 +16,7 @@ public class Checkbox extends Button
 	{
 		super(scale9);
 
-		onCheckImageLoaded = (AbstractImage data) ->
-		{
-			onCheckImageLoaded();
-		};
+		onCheckImageLoaded = this::onCheckImageLoaded;
 		
 		checkImg = new Image();
 		checkImg.onLoaded.addCallback(onCheckImageLoaded);
@@ -35,7 +32,7 @@ public class Checkbox extends Button
 		checkImg.load(resource);
 	}
 
-	private void onCheckImageLoaded()
+	private void onCheckImageLoaded(AbstractImage data)
 	{
 		if (loaded)
 		{

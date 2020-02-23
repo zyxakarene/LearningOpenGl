@@ -14,10 +14,15 @@ public class ParticleScene extends DebugScene
 	}
 
 	@Override
+	protected void onPreloadResources()
+	{
+		preloadResource("sprite_sheet_png");
+		preloadResource("sprite_sheet_json");
+	}
+
+	@Override
 	protected void onInitialize()
 	{
-		addPlayerControls();
-		
 		for (int i = 0; i < 1; i++)
 		{
 			MeshObject model = new MeshObject();
@@ -38,33 +43,35 @@ public class ParticleScene extends DebugScene
 			}
 			else
 			{
-				objects.get(i-1).addChild(model);
+				objects.get(i - 1).addChild(model);
 			}
-			
+
 			objects.add(model);
 			ParticleSystem localSystem1 = new ParticleSystem();
 			localSystem1.load("particles.particle2");
-			localSystem1.setX(10);
+			localSystem1.setZ(40);
 			model.addChild(localSystem1);
-			
-			ParticleSystem localSystem2 = new ParticleSystem();
-			localSystem2.load("particles.particle2");
-			localSystem2.setX(20);
-			model.addChild(localSystem2);
-			
-			ParticleSystem worldSystem1 = new ParticleSystem();
-			worldSystem1.load("particles.world");
-			worldSystem1.setX(-10);
-			model.addChild(worldSystem1);
-			
-			ParticleSystem worldSystem2 = new ParticleSystem();
-			worldSystem2.load("particles.world");
-			worldSystem2.setX(-20);
-			model.addChild(worldSystem2);
-			
-			model.addBehavior(new JiggleBehavior());
+
+//			ParticleSystem localSystem2 = new ParticleSystem();
+//			localSystem2.load("particles.particle2");
+//			localSystem2.setX(20);
+//			model.addChild(localSystem2);
+//
+//			ParticleSystem worldSystem1 = new ParticleSystem();
+//			worldSystem1.load("particles.world");
+//			worldSystem1.setX(-10);
+//			model.addChild(worldSystem1);
+//
+//			ParticleSystem worldSystem2 = new ParticleSystem();
+//			worldSystem2.load("particles.world");
+//			worldSystem2.setX(-20);
+//			model.addChild(worldSystem2);
+
+//			model.addBehavior(new JiggleBehavior());
 		}
-		
+
+		addPlayerControls();
+
 		GLUtils.errorCheck();
 	}
 }

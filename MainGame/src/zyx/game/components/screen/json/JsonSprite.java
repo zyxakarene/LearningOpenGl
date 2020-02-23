@@ -5,13 +5,14 @@ import org.json.simple.JSONObject;
 import zyx.engine.components.screen.base.DisplayObject;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
 import zyx.engine.resources.IResourceReady;
+import zyx.engine.resources.IResourceReloaded;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.JsonResource;
 import zyx.engine.resources.impl.Resource;
 import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IUpdateable;
 
-public abstract class JsonSprite extends DisplayObjectContainer implements IResourceReady<JsonResource>, IUpdateable
+public abstract class JsonSprite extends DisplayObjectContainer implements IResourceReady<JsonResource>, IUpdateable, IResourceReloaded<JsonResource>
 {
 
 	private static final String[] EMPTY_DEPENDENCIES = new String[0];
@@ -30,10 +31,7 @@ public abstract class JsonSprite extends DisplayObjectContainer implements IReso
 	{
 		super();
 
-		dependencyLoaded = (IResourceReady) (Resource dependency) -> 
-		{
-					onDependencyLoaded(dependency);
-		};
+		dependencyLoaded = (IResourceReady) this::onDependencyLoaded;
 
 		jsonChildren = new HashMap<>();
 		String res = getResource();
@@ -98,6 +96,16 @@ public abstract class JsonSprite extends DisplayObjectContainer implements IReso
 		onComponentsCreated();
 
 		loaded = true;
+	}
+	
+	@Override
+	public void onResourceReloaded(JsonResource resource)
+	{
+		if (loaded)
+		{
+			removeChildren(true);
+			onAllResourcesLoaded();
+		}
 	}
 
 	protected void onComponentsCreated()

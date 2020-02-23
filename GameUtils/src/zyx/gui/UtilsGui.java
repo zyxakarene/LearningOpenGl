@@ -61,6 +61,7 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
         smdCompileButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("GameUtils");
 
         logArea.setColumns(20);
         logArea.setFont(new java.awt.Font("Consolas", 0, 13)); // NOI18N

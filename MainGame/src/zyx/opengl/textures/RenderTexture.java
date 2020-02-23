@@ -4,6 +4,7 @@ import zyx.opengl.buffers.BufferBinder;
 import java.nio.ByteBuffer;
 import org.lwjgl.opengl.*;
 import zyx.opengl.buffers.Buffer;
+import zyx.opengl.textures.custom.ITexture;
 import zyx.utils.geometry.Rectangle;
 
 public class RenderTexture extends AbstractTexture
@@ -62,5 +63,11 @@ public class RenderTexture extends AbstractTexture
 		GL30.glRenderbufferStorage(GL30.GL_RENDERBUFFER, GL30.GL_DEPTH24_STENCIL8, w, h);
 
 		GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_STENCIL_ATTACHMENT, GL30.GL_RENDERBUFFER, stencilBufferId);
+	}
+
+	@Override
+	public ITexture getGlTexture()
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 }

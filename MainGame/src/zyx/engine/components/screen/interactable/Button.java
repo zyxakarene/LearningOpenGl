@@ -12,8 +12,9 @@ import zyx.engine.utils.callbacks.ICallback;
 
 public class Button extends InteractableContainer implements IComposedButton
 {
+
 	private ButtonState state;
-	
+
 	protected float originalWidth;
 	protected float originalHeight;
 
@@ -25,7 +26,7 @@ public class Button extends InteractableContainer implements IComposedButton
 	private Vector3f[] hoverColors;
 	private Vector3f[] downColors;
 	private float alpha;
-	
+
 	public CustomCallback<InteractableContainer> onButtonClicked;
 
 	private ICallback<AbstractImage> onFirstImageLoaded;
@@ -44,10 +45,7 @@ public class Button extends InteractableContainer implements IComposedButton
 		focusable = true;
 		hoverIcon = GameCursor.HAND;
 
-		onFirstImageLoaded = (AbstractImage img) -> 
-		{
-			onImageLoaded(img);
-		};
+		onFirstImageLoaded = this::onImageLoaded;
 	}
 
 	@Override
@@ -65,11 +63,11 @@ public class Button extends InteractableContainer implements IComposedButton
 			images[i] = img;
 
 			img.onLoaded.addCallback(onFirstImageLoaded);
-			
+
 			img.touchable = false;
 			addChild(img);
 		}
-		
+
 		String texture;
 		for (int i = 0; i < len; i++)
 		{
@@ -95,7 +93,7 @@ public class Button extends InteractableContainer implements IComposedButton
 				setHeight(originalHeight);
 			}
 		}
-		
+
 		loadedCount++;
 		if (loadedCount == images.length)
 		{
@@ -107,10 +105,10 @@ public class Button extends InteractableContainer implements IComposedButton
 				{
 					defaultColor[i] = white;
 				}
-				
+
 				setColors(defaultColor, defaultColor, defaultColor);
 			}
-			
+
 			updateMesh();
 		}
 	}
@@ -185,24 +183,24 @@ public class Button extends InteractableContainer implements IComposedButton
 				downColors[i] = new Vector3f();
 			}
 		}
-		
+
 		for (int i = 0; i < newLen; i++)
 		{
 			upColors[i].set(up[i]);
 			hoverColors[i].set(hover[i]);
 			downColors[i].set(down[i]);
 		}
-		
+
 		updateMesh();
 	}
-	
+
 	public void setColor(Vector3f color)
 	{
 		Vector3f[] singleArray = new Vector3f[]
 		{
 			color
 		};
-		
+
 		setColors(singleArray, singleArray, singleArray);
 	}
 
@@ -245,7 +243,7 @@ public class Button extends InteractableContainer implements IComposedButton
 				col = colors[i];
 				img = images[i];
 				HELPER_VEC4.set(col.x, col.y, col.z, alpha);
-				
+
 				img.setColor(HELPER_VEC4);
 			}
 		}
@@ -288,16 +286,16 @@ public class Button extends InteractableContainer implements IComposedButton
 			updateMesh();
 		}
 	}
-	
+
 	@Override
 	public void dispose()
 	{
 		clean();
-		
+
 		super.dispose();
 
 		onFirstImageLoaded = null;
-		
+
 		if (onButtonClicked != null)
 		{
 			onButtonClicked.dispose();
@@ -308,7 +306,7 @@ public class Button extends InteractableContainer implements IComposedButton
 	private void clean()
 	{
 		loadedCount = 0;
-		
+
 		if (images != null)
 		{
 			for (AbstractImage img : images)

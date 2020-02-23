@@ -17,7 +17,7 @@ public class GameTexture extends AbstractTexture
 		super(rect, name, textureSlot);
 
 		texture = parent;
-		
+
 		setSizes();
 	}
 
@@ -29,7 +29,11 @@ public class GameTexture extends AbstractTexture
 	public GameTexture(InputStream stream, String name, Rectangle rect, TextureSlot textureSlot)
 	{
 		super(rect, name, textureSlot);
+		refresh(stream);
+	}
 
+	public void refresh(InputStream stream)
+	{
 		texture = new Texture(stream, TextureFiltering.NEAREST);
 		setSizes();
 	}
@@ -39,13 +43,16 @@ public class GameTexture extends AbstractTexture
 		float w = u - x;
 		float h = v - y;
 
-		setSizes(texture.getWidth()* w, texture.getHeight()* h);
+		setSizes(texture.getWidth() * w, texture.getHeight() * h);
 	}
 
 	@Override
 	protected void onBind()
 	{
-		texture.bind();
+		if (texture != null)
+		{
+			texture.bind();
+		}
 	}
 
 	@Override
@@ -56,5 +63,11 @@ public class GameTexture extends AbstractTexture
 			texture.dispose();
 			texture = null;
 		}
+	}
+
+	@Override
+	public ITexture getGlTexture()
+	{
+		return texture;
 	}
 }
