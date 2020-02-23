@@ -57,8 +57,8 @@ class JsonSpriteParser
 
 	void createSprite(DisplayObjectContainer parent, JSONObject json)
 	{
-		String type = (String) json.get(TYPE);
-		DisplayObject child;
+		String type = String.valueOf(json.get(TYPE));
+		DisplayObject child = null;
 		
 		switch (type)
 		{
@@ -101,10 +101,11 @@ class JsonSpriteParser
 			case TYPE_COMPOSED_SCALE_NINE_IMAGE:
 				child = new ComposedImage(true);
 				break;
-			default:
-				throw new AssertionError("Unknown type:" + type);
 		}
 		
-		factory.consumeByType(type, parent, child, json);
+		if (child != null)
+		{
+			factory.consumeByType(type, parent, child, json);
+		}
 	}
 }

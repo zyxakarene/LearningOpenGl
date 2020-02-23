@@ -1,12 +1,12 @@
 package zyx.engine.resources.impl;
 
 import java.nio.charset.Charset;
-import java.util.logging.Level;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import zyx.utils.GameConstants;
+import zyx.utils.PrintBuilder;
+import zyx.utils.cheats.Print;
 
 public class JsonResource extends ExternalResource
 {
@@ -40,15 +40,28 @@ public class JsonResource extends ExternalResource
 
 	private void parseJsonData(ResourceDataInputStream jsonData)
 	{
+		PrintBuilder builder = new PrintBuilder();
+
 		try
 		{
+			builder.append("==== Parsing json data from byte count:", jsonData.getLength(), "====");
+			builder.append("↳ Id", path);
+			
 			String text = new String(jsonData.getData(), Charset.defaultCharset());
 			json = (JSONObject) new JSONParser().parse(text);
+			
+			builder.append("========");
+			
+			Print.out(builder);
 		}
 		catch (ParseException ex)
 		{
-			String msg = String.format("Could not parse JSON file from resource: %s at position %s", path, ex.getPosition());
-			throw new RuntimeException(msg);
+			builder.append("Error at position ", ex.getPosition());
+			builder.append(String.format("==== [ERROR] Failed to parse json! ===="));
+
+			Print.err(builder);
+			
+			json = new JSONObject();
 		}
 	}
 
