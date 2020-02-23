@@ -79,6 +79,14 @@ public class MeshResource extends BaseRequiredSubResource implements ITaskComple
 	@Override
 	protected void onResourceReloaded(ResourceDataInputStream data)
 	{
+		cancelSubBatches();
+		
+		if (loadingTask != null)
+		{
+			loadingTask.cancel();
+			loadingTask = null;
+		}
+		
 		if (loadedVo != null)
 		{
 			loadedVo.dispose();

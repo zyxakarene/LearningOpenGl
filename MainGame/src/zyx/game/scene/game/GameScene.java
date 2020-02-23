@@ -19,7 +19,7 @@ public class GameScene extends Scene
 
 	public GameScene()
 	{
-		picker = new WorldPicker();
+		//picker = new WorldPicker();
 
 		itemHolderHandler = new ItemHolderHandler();
 		itemHandler = new ItemHandler(itemHolderHandler);
@@ -32,12 +32,12 @@ public class GameScene extends Scene
 	
 	public void addPickedObject(IPhysbox object, IHoveredItem clickCallback)
 	{
-		picker.addObject(object, clickCallback);
+//		picker.addObject(object, clickCallback);
 	}
 
 	public void removePickedObject(IPhysbox object, IHoveredItem clickCallback)
 	{
-		picker.removeObject(object, clickCallback);
+//		picker.removeObject(object, clickCallback);
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class GameScene extends Scene
 		super.onUpdate(timestamp, elapsedTime);
 
 		itemHolderHandler.update(timestamp, elapsedTime);
-		picker.update();
+//		picker.update();
 	}
 
 	@Override

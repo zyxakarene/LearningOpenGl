@@ -15,10 +15,14 @@ public class PrintBuilder
 
 	public void append(Object... args)
 	{
-		builder.append(DeltaTime.getTimestamp());
-		builder.append(" - ");
-
 		int len = args.length;
+		
+		if (len > 0)
+		{
+			builder.append(DeltaTime.getTimestamp());
+			builder.append(" - ");
+		}
+
 		for (int i = 0; i < len; i++)
 		{
 			if (i != 0)

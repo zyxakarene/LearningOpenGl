@@ -14,18 +14,36 @@ public class PlayerClipboard extends GameObject implements IPhysbox
 
 	public PlayerClipboard()
 	{
-		board = new SimpleMesh();
-		paper = new SimpleMesh();
+//		board = new SimpleMesh();
+//		paper = new SimpleMesh();
 	}
 
 	public void setup()
 	{
-		board.load("mesh.player.clipboard");
-		paper.load("mesh.player.paper");
-		paper.setScale(25, 17, 1);
+//		board.load("mesh.player.clipboard");
+//		paper.load("mesh.player.paper");
+//		paper.setScale(25, 17, 1);
+//
+//		addChild(board);
+//		addChild(paper);
+	}
 
-		addChild(board);
-		addChild(paper);
+	@Override
+	protected void onDispose()
+	{
+		if (board != null)
+		{
+			board.dispose();
+			board = null;
+		}
+		
+		if (paper != null)
+		{
+			paper.dispose();
+			paper = null;
+		}
+		
+		super.onDispose();
 	}
 
 	@Override

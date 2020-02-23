@@ -1,12 +1,11 @@
 package zyx.opengl.models.loading.meshes;
 
 import java.io.IOException;
-import java.util.logging.Level;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 
 import zyx.opengl.models.implementations.physics.PhysBox;
-import zyx.utils.GameConstants;
+import zyx.opengl.models.loading.meshes.fallback.FakeMesh;
 import zyx.utils.PrintBuilder;
 import zyx.utils.cheats.Print;
 
@@ -19,8 +18,8 @@ public class ZafLoader
 		try
 		{
 			builder.append("==== Parsing mesh data from byte count:", in.available(), "====");
-			builder.append("Id", id);
-			
+			builder.append("↳ Id", id);
+
 			ZafObject obj = new ZafObject();
 			obj.read(in, builder);
 
@@ -28,16 +27,16 @@ public class ZafLoader
 
 			builder.append("========");
 			Print.out(builder);
-			
+
 			return new LoadableWorldModelVO(obj.vertexData, obj.elementData, phys, obj.diffuseTexture, obj.normalTexture, obj.specularTexture,
 											obj.radiusCenter, obj.radius, obj.skeletonId);
 		}
 		catch (IOException e)
 		{
 			builder.append("==== [ERROR] Failed to parse mesh! ====");
-			Print.out(builder);
-			GameConstants.LOGGER.log(Level.SEVERE, "Error at loading a zaf data", e);
-			return null;
+			Print.err(builder);
+
+			return FakeMesh.makeFakeMesh(2);
 		}
 	}
 

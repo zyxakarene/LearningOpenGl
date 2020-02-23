@@ -2,9 +2,8 @@ package zyx.opengl.models.loading.cubemaps;
 
 import zyx.opengl.reflections.*;
 import java.io.IOException;
-import java.util.logging.Level;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
-import zyx.utils.GameConstants;
+import zyx.opengl.models.loading.cubemaps.fallback.FakeCubemap;
 import zyx.utils.PrintBuilder;
 import zyx.utils.cheats.Print;
 
@@ -30,11 +29,10 @@ public class CubeLoader
 		}
 		catch (IOException e)
 		{
-			builder.append("==== [ERROR] Failed to parse mesh! ====");
-			Print.out(builder);
+			builder.append("==== [ERROR] Failed to parse cubemap! ====");
+			Print.err(builder);
 
-			GameConstants.LOGGER.log(Level.SEVERE, "Error at loading a cube data", e);
-			return null;
+			return FakeCubemap.makeFakeCube();
 		}
 	}
 }

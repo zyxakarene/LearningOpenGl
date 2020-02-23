@@ -44,13 +44,20 @@ public abstract class ScheduledTask<R>
 	public final void cancel()
 	{
 		canceled = true;
-		
-		onCanceled();
+	}
+	
+	public boolean isCanceled()
+	{
+		return canceled;
 	}
 	
 	void dispatchComplete()
 	{
-		if (!canceled)
+		if (canceled)
+		{
+			onCanceled(data);
+		}
+		else
 		{
 			callback.onTaskCompleted(data);
 		}
@@ -62,7 +69,7 @@ public abstract class ScheduledTask<R>
 		data = null;
 	}
 
-	protected void onCanceled()
+	protected void onCanceled(R result)
 	{
 	}
 }

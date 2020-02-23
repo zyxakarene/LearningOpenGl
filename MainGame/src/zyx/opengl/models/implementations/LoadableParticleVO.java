@@ -36,7 +36,7 @@ public class LoadableParticleVO
 	
 	public boolean worldParticle = false;
 	
-	String texture = "particle.png";
+	String texture = "missing";
 	AbstractTexture gameTexture;
 
 	public LoadableParticleVO()

@@ -29,9 +29,15 @@ public class MeshBatchModel extends AbstractInstancedModel implements IShadowabl
 		this.shader = (MeshBatchShader) meshShader;
 		this.shadowShader = ShaderManager.getInstance().<MeshBatchDepthShader>get(Shader.MESH_BATCH_DEPTH);
 
+		refresh(vo);
+	}
+
+	public void refresh(LoadableWorldModelVO vo)
+	{
 		radiusCenter = vo.radiusCenter;
 		radius = vo.radius;
 
+		bindVao();
 		setVertexData(vo.vertexData, vo.elementData);
 		AbstractTexture[] texs = new AbstractTexture[]
 		{
@@ -39,7 +45,7 @@ public class MeshBatchModel extends AbstractInstancedModel implements IShadowabl
 		};
 		setTextures(texs);
 	}
-
+	
 	public void setMeshBatchData(float[] instanceData)
 	{
 		setInstanceData(instanceData, instanceData.length / INSTANCE_DATA_AMOUNT);

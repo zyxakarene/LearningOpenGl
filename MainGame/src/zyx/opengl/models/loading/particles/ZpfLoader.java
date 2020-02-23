@@ -1,9 +1,13 @@
-package zyx.opengl.particles.loading;
+package zyx.opengl.models.loading.particles;
 
+import java.io.IOException;
 import java.util.Scanner;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.LoadableParticleVO;
 import zyx.opengl.models.implementations.ParticleVoBuilder;
+import zyx.opengl.models.loading.particles.fallback.FakeParticle;
+import zyx.utils.PrintBuilder;
+import zyx.utils.cheats.Print;
 
 public class ZpfLoader
 {
@@ -27,28 +31,48 @@ public class ZpfLoader
 	private static final String KEY_TEXTURE = "texture";
 	private static final String KEY_RADIUS = "radius";
 	
-	public static LoadableParticleVO loadFromZpf(ResourceDataInputStream in)
+	public static LoadableParticleVO loadFromZpf(ResourceDataInputStream in, String id)
 	{
-		ParticleVoBuilder builder = ParticleVoBuilder.createBuilder();
-		
-		String particleData = new String(in.getData());
-		Scanner scanner = new Scanner(particleData);
-		
-		String key, value;
-		String[] split;
-		String line;
-		while (scanner.hasNextLine())
-		{			
-			line = scanner.nextLine();
-			split = line.split("=");
+		PrintBuilder printBuilder = new PrintBuilder();
+
+		try
+		{
+			printBuilder.append("==== Parsing particle data from byte count:", in.available(), "====");
+			printBuilder.append("↳ Id", id);
 			
-			key = split[0];
-			value = split[1];
+			ParticleVoBuilder particleBuilder = ParticleVoBuilder.createBuilder();
+
+			String particleData = new String(in.getData());
+			Scanner scanner = new Scanner(particleData);
+
+			String key, value;
+			String[] split;
+			String line;
+			while (scanner.hasNextLine())
+			{			
+				line = scanner.nextLine();
+				split = line.split("=");
+
+				key = split[0];
+				value = split[1];
+
+				printBuilder.append("↳ Adding", key, "=", value);
+				
+				handleKeyValue(particleBuilder, key, value);
+			}
 			
-			handleKeyValue(builder, key, value);
+			printBuilder.append("========");
+			Print.out(printBuilder);
+			
+			return particleBuilder.get();
 		}
-		
-		return builder.get();
+		catch (Exception e)
+		{
+			printBuilder.append("==== [ERROR] Failed to parse skeleton! ====");
+			Print.err(printBuilder);
+			
+			return FakeParticle.makeFakeParticle();
+		}
 	}
 
 	private static void handleKeyValue(ParticleVoBuilder builder, String key, String value)

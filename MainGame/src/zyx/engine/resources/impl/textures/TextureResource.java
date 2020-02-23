@@ -6,6 +6,7 @@ import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.GameTexture;
 import zyx.opengl.textures.MissingTexture;
 import zyx.opengl.textures.enums.TextureSlot;
+import zyx.utils.cheats.Print;
 
 public class TextureResource extends ExternalResource
 {
@@ -26,6 +27,8 @@ public class TextureResource extends ExternalResource
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
+		Print.out("Creating texture data for", path);
+		
 		TextureSlot slot = getTextureSlot();
 		texture = new GameTexture(data, path, slot);
 

@@ -8,10 +8,11 @@ import zyx.opengl.models.implementations.IParticleModel;
 import zyx.opengl.models.implementations.LoadableParticleVO;
 import zyx.opengl.models.implementations.ParticleModel;
 import zyx.opengl.models.implementations.WorldParticleModel;
-import zyx.opengl.particles.loading.ZpfLoader;
+import zyx.opengl.models.loading.ParticleLoadingTask;
 import zyx.opengl.textures.AbstractTexture;
+import zyx.utils.tasks.ITaskCompleted;
 
-public class ParticleResource extends ExternalResource implements IResourceReady
+public class ParticleResource extends ExternalResource implements IResourceReady, ITaskCompleted<LoadableParticleVO>
 {
 
 	private LoadableParticleVO loadedVo;
@@ -19,6 +20,7 @@ public class ParticleResource extends ExternalResource implements IResourceReady
 
 	private IParticleModel model;
 	private ArrayList<IParticleModel> clones;
+	private ParticleLoadingTask particleTask;
 
 	public ParticleResource(String path)
 	{
@@ -66,8 +68,15 @@ public class ParticleResource extends ExternalResource implements IResourceReady
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		loadedVo = ZpfLoader.loadFromZpf(data);
+		particleTask = new ParticleLoadingTask(this, data, path);
+		particleTask.start();
+	}
 
+	@Override
+	public void onTaskCompleted(LoadableParticleVO data)
+	{
+		loadedVo = data;
+		
 		textureResource = ResourceManager.getInstance().getResource(loadedVo.getDiffuseTextureId());
 		textureResource.registerAndLoad(this);
 	}
@@ -81,10 +90,14 @@ public class ParticleResource extends ExternalResource implements IResourceReady
 			textureResource = null;
 		}
 
-		loadedVo = ZpfLoader.loadFromZpf(data);
-
-		textureResource = ResourceManager.getInstance().getResource(loadedVo.getDiffuseTextureId());
-		textureResource.registerAndLoad(this);
+		if (particleTask != null)
+		{
+			particleTask.cancel();
+			particleTask = null;
+		}
+		
+		particleTask = new ParticleLoadingTask(this, data, path);
+		particleTask.start();
 	}
 
 	@Override
