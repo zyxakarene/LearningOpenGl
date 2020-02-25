@@ -2,19 +2,18 @@ package zyx.debug.views.hierarchy;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import zyx.engine.components.world.WorldObjectNode;
 
-public class HierarchyTreeModel extends DefaultTreeModel
+class HierarchyTreeModel<D> extends DefaultTreeModel
 {
 
-	public HierarchyTreeModel()
+	HierarchyTreeModel()
 	{
 		super(new DefaultMutableTreeNode("N/A"));
 	}
 	
-	public void reset(WorldObjectNode data)
+	void reset(AbstractHierarchyData<D> data)
 	{
-		HierarchyNode newRoot = new HierarchyNode(data);
+		HierarchyNode<D> newRoot = new HierarchyNode<>(data);
 		setRoot(newRoot);
 	}
 }

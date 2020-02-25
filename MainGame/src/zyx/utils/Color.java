@@ -67,6 +67,24 @@ public class Color
 		return out;
 	}
 
+	public static int toInt(Vector4f color)
+	{
+		int r = (int) (color.x * 255);
+		int g = (int) (color.y * 255);
+		int b = (int) (color.z * 255);
+		
+		return b + (g << 8) + (r << 16);
+	}
+
+	public static int toInt(Vector3f color)
+	{
+		int r = (int) (color.x * 255);
+		int g = (int) (color.y * 255);
+		int b = (int) (color.z * 255);
+		
+		return b + (g << 8) + (r << 16);
+	}
+
 	public static Vector4f toVector(long color, Vector4f out)
 	{
 		if (out == null)

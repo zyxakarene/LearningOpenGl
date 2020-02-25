@@ -14,24 +14,19 @@ import zyx.net.data.ReadableDataObject;
 
 public class DebugNetworkPanel extends BaseDebugPanel implements INetworkListClicked
 {
-	public static int REQUESTS = 0;
-	public static int RESPONSES = 1;
-	
 	private final ArrayList<ReadableDataObject> OUT = new ArrayList<>();
 	private final ArrayList<String> OUT_NAMES = new ArrayList<>();
 
-	private int type;
-	private String typeName;
+	private DebugNetworkType type;
 	private HashMap<String, NetworkInfo> networkData;
 	private NetworkDebugListAdaptor listAdaptor;
 	private final JList<NetworkInfo> list;
 	private DefaultListModel<NetworkInfo> listModel;
 	private JScrollPane listScrollPane;
 
-	public DebugNetworkPanel(int type)
+	public DebugNetworkPanel(DebugNetworkType type)
 	{
 		this.type = type;
-		this.typeName = (type == REQUESTS) ? "Requests" : "Responses";
 		
 		listScrollPane = new JScrollPane();
 		add(listScrollPane);
@@ -53,11 +48,11 @@ public class DebugNetworkPanel extends BaseDebugPanel implements INetworkListCli
 	{
 		boolean changes = false;
 		
-		if (type == REQUESTS)
+		if (type == DebugNetworkType.REQUEST)
 		{
 			changes = DebugNetworkList.getNewestRequests(OUT, OUT_NAMES);
 		}
-		else if (type == RESPONSES)
+		else if (type == DebugNetworkType.RESPONSE)
 		{
 			changes = DebugNetworkList.getNewestResponses(OUT, OUT_NAMES);
 		}
@@ -94,7 +89,7 @@ public class DebugNetworkPanel extends BaseDebugPanel implements INetworkListCli
 	@Override
 	public String getTabName()
 	{
-		return "Network " + typeName;
+		return "Network " + type.name;
 	}
 
 	@Override

@@ -3,8 +3,10 @@ package zyx.debug.views;
 import java.util.ArrayList;
 import zyx.debug.views.base.BaseDebugPanel;
 import zyx.debug.views.drawcalls.DebugDrawCallPanel;
-import zyx.debug.views.hierarchy.DebugHierarchyPanel;
+import zyx.debug.views.hierarchy.DebugHierarchyScreenPanel;
+import zyx.debug.views.hierarchy.DebugHierarchyWorldPanel;
 import zyx.debug.views.network.DebugNetworkPanel;
+import zyx.debug.views.network.DebugNetworkType;
 import zyx.debug.views.pools.DebugPoolsPanel;
 import zyx.debug.views.resources.DebugResourcePanel;
 import zyx.debug.views.sounds.DebugSoundPanel;
@@ -25,13 +27,14 @@ public class DebugView extends javax.swing.JFrame
 
 	void onWindowOpened()
 	{
-		panels.add(new DebugNetworkPanel(DebugNetworkPanel.REQUESTS));
-		panels.add(new DebugNetworkPanel(DebugNetworkPanel.RESPONSES));
+		panels.add(new DebugNetworkPanel(DebugNetworkType.REQUEST));
+		panels.add(new DebugNetworkPanel(DebugNetworkType.RESPONSE));
 		panels.add(new DebugResourcePanel());
 		panels.add(new DebugSoundPanel());
 		panels.add(new DebugDrawCallPanel());
 		panels.add(new DebugPoolsPanel());
-		panels.add(new DebugHierarchyPanel());
+		panels.add(new DebugHierarchyWorldPanel());
+		panels.add(new DebugHierarchyScreenPanel());
 		
 		for (BaseDebugPanel panel : panels)
 		{

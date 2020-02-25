@@ -67,6 +67,9 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 			case ROTATION:
 				currentDisplayObject.setRotation(toFloat(value));
 				break;
+			case NAME:
+				currentDisplayObject.name = value.toString();
+				break;
 			default:
 				onAccept(name, value);
 				break;

@@ -24,6 +24,7 @@ import zyx.utils.pooling.model.PoolableRectangle;
 
 public abstract class DisplayObject implements IPositionable2D, IDisposeable
 {
+	private static int instanceCounter;
 
 	private static final ObjectPool<Rectangle> CLIP_POOL = new GenericPool(PoolableRectangle.class, 10);
 
@@ -58,7 +59,9 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 
 	public DisplayObject()
 	{
-		name = String.valueOf(Math.random());
+		DebugDisplayObjectList.updateList();
+		
+		name = String.format("Instance%s", instanceCounter++);
 		
 		invWorldMatrix = SharedPools.MATRIX_POOL.getInstance();
 		worldMatrix = SharedPools.MATRIX_POOL.getInstance();
@@ -164,6 +167,8 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 
 	protected final void setParent(DisplayObjectContainer parent)
 	{
+		DebugDisplayObjectList.updateList();
+		
 		if (parent != null && parent.stage != null)
 		{
 			stage = parent.stage;
@@ -180,6 +185,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	{
 		if (parent != null)
 		{
+			DebugDisplayObjectList.updateList();
 			parent.removeChild(this);
 
 			if (dispose)
@@ -229,6 +235,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		{
 			return;
 		}
+		DebugDisplayObjectList.updateList();
 		disposed = true;
 
 		removeFromParent(false);

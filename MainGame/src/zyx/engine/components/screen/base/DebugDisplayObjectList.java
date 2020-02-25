@@ -1,6 +1,6 @@
-package zyx.engine.components.world;
+package zyx.engine.components.screen.base;
 
-public class DebugWorldObjectList
+public class DebugDisplayObjectList
 {
 	private static final Object LOCK = new Object();
 	private static boolean update = false;
@@ -21,15 +21,15 @@ public class DebugWorldObjectList
 		}
 	}
 	
-	public static WorldObjectNode getActiveWorldObjects()
+	public static DisplayObjectNode getActiveDisplayObjects()
 	{
 		synchronized(LOCK)
 		{
 			update = false;
 			
-			WorldObject base = World3D.instance;
+			Stage base = Stage.instance;
 			
-			return new WorldObjectNode(base);
+			return new DisplayObjectNode(base);
 		}
 	}
 }

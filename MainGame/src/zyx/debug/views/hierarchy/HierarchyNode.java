@@ -2,20 +2,19 @@ package zyx.debug.views.hierarchy;
 
 import java.util.ArrayList;
 import javax.swing.tree.DefaultMutableTreeNode;
-import zyx.engine.components.world.WorldObjectNode;
 
-public class HierarchyNode extends DefaultMutableTreeNode
+class HierarchyNode<D> extends DefaultMutableTreeNode
 {
-	public WorldObjectNode data;
+	AbstractHierarchyData<D> data;
 	
-	public HierarchyNode(WorldObjectNode data)
+	HierarchyNode(AbstractHierarchyData<D> nodeData)
 	{
-		super(data);
+		super(nodeData);
 		
-		this.data = data;
+		data = nodeData;
 		
-		ArrayList<WorldObjectNode> dataChildren = this.data.children;
-		for (WorldObjectNode dataChild : dataChildren)
+		ArrayList<AbstractHierarchyData<D>> dataChildren = data.getChildren();
+		for (AbstractHierarchyData dataChild : dataChildren)
 		{
 			HierarchyNode childNode = new HierarchyNode(dataChild);
 			add(childNode);

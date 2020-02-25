@@ -125,6 +125,8 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 	{
 		if (child.parent != this)
 		{
+			DebugWorldObjectList.updateList();
+			
 			if (child.parent != null)
 			{
 				child.removeFromParent(false);
@@ -141,6 +143,8 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 	{
 		if (child.parent == this)
 		{
+			DebugWorldObjectList.updateList();
+			
 			child.parent = null;
 			children.remove(child);
 		}

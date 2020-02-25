@@ -29,6 +29,11 @@ public abstract class ItemRenderer extends JsonSprite implements ITouched
 		this.data = data;
 		onDataSet();
 	}
+	
+	public Object getData()
+	{
+		return data;
+	}
 
 	protected void onDataSet()
 	{

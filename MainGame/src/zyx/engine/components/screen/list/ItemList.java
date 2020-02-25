@@ -43,6 +43,11 @@ public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer imp
 		itemRenderer = clazz;
 	}
 
+	public Class<T> getItemRenderer()
+	{
+		return itemRenderer;
+	}
+	
 	public void setData(Collection<Object> data)
 	{
 		rendererData.clear();

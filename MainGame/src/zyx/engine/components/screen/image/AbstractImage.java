@@ -30,6 +30,11 @@ public abstract class AbstractImage extends AbstractQuad implements ILoadable, I
 		textureResource = ResourceManager.getInstance().getResource(resource);
 		textureResource.registerAndLoad(this);
 	}
+	
+	public String getResource()
+	{
+		return resource;
+	}
 
 	@Override
 	public final void onResourceReady(TextureResource resource)

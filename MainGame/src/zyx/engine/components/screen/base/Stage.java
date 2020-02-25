@@ -41,6 +41,9 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 		};
 
 		ScreenSize.addListener(screenSizeChanged);
+		
+		addChild(tooltipLayer);
+		addChild(hudLayer);
 	}
 
 	public final void drawStage()
@@ -49,7 +52,6 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 
 		shader.bind();
 		shader.setClipRect(0, ScreenSize.width, 0, ScreenSize.height);
-		draw();
 
 		StencilControl.getInstance().startMaskingLayer(StencilLayer.PLAYER_CHARACTER, Buffer.DEFAULT);
 		tooltipLayer.draw();

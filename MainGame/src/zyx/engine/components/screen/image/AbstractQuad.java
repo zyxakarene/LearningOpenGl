@@ -46,6 +46,11 @@ public abstract class AbstractQuad extends DisplayObject
 		updateMesh();
 	}
 
+	public int getColor()
+	{
+		return Color.toInt(colors);
+	}
+	
 	private void updateMesh()
 	{
 		if (loaded)
