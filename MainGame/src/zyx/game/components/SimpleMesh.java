@@ -64,6 +64,11 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 		modelResource.registerAndLoad(this);
 	}
 
+	public String getResource()
+	{
+		return resource;
+	}
+	
 	@Override
 	protected void onDraw()
 	{

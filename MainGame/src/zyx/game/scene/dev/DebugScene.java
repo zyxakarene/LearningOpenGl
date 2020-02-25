@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import zyx.engine.components.world.WorldObject;
 import zyx.game.behavior.camera.CameraUpdateViewBehavior;
 import zyx.game.behavior.freefly.FreeFlyBehavior;
-import zyx.game.components.MeshObject;
+import zyx.game.components.world.player.PlayerObject;
 import zyx.game.scene.game.GameScene;
+import zyx.opengl.camera.Camera;
 import zyx.utils.interfaces.IUpdateable;
 
 public class DebugScene extends GameScene
@@ -22,10 +23,11 @@ public class DebugScene extends GameScene
 	{
 		world.loadSkybox("skybox.texture.desert");
 
-		MeshObject player = new MeshObject();
+		PlayerObject player = new PlayerObject();
 		player.addBehavior(new FreeFlyBehavior());
 		player.addBehavior(new CameraUpdateViewBehavior());
-
+		Camera.getInstance().setViewObject(player);
+		
 		world.addChild(player);
 		objects.add(player);
 	}

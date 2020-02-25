@@ -15,18 +15,16 @@ import zyx.game.controls.input.MouseData;
 import zyx.game.controls.lights.LightsManager;
 import zyx.game.controls.process.ProcessQueue;
 import zyx.net.io.controllers.BaseNetworkController;
-import zyx.opengl.buffers.Buffer;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.shaders.SharedShaderObjects;
-import zyx.opengl.stencils.StencilControl;
-import zyx.opengl.stencils.StencilLayer;
 import zyx.utils.cheats.DebugContainer;
 
 public class Scene
 {
+
 	protected static Scene current;
-	
+
 	protected DebugContainer debugContainer;
 
 	protected Stage stage;
@@ -60,7 +58,7 @@ public class Scene
 
 	protected void enablePing()
 	{
-		
+
 	}
 
 	final void initialize()
@@ -73,10 +71,11 @@ public class Scene
 //		stage.addChild(debugPanel);
 		onPreloadResources();
 
-		ICallback<ProcessQueue> onCompleted = (ProcessQueue data) ->
-		{
-			onInitialize();
-			ready = true;
+		ICallback<ProcessQueue> onCompleted = (ProcessQueue data)
+				-> 
+				{
+					onInitialize();
+					ready = true;
 		};
 
 		preloadQueue.start(onCompleted);
@@ -174,7 +173,8 @@ public class Scene
 		camera.dispose();
 
 		ParticleManager.getInstance().clear();
-		
+		Camera.getInstance().clearViewObject();
+
 		if (hud != null)
 		{
 			hud.dispose();
@@ -192,12 +192,12 @@ public class Scene
 			debugPanel.dispose();
 			debugPanel = null;
 		}
-		
+
 		if (world != null)
 		{
 			world.removeSkybox();
 		}
-		
+
 		stage = null;
 		world = null;
 		camera = null;

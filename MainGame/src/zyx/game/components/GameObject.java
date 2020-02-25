@@ -58,6 +58,16 @@ public class GameObject extends WorldObject implements IUpdateable
 		return behaviors.getBehaviorById(type);
 	}
 
+	public int getBehaviorCount()
+	{
+		if (behaviors != null)
+		{
+			return behaviors.count();
+		}
+		
+		return 0;
+	}
+	
 	@Override
 	protected void onDispose()
 	{

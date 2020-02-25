@@ -4,7 +4,6 @@ import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.meshbatch.MeshBatchManager;
 import zyx.opengl.GLUtils;
 import zyx.opengl.buffers.*;
-import zyx.opengl.camera.Camera;
 import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.shaders.SharedShaderObjects;
 
@@ -39,8 +38,6 @@ public final class World3D extends WorldObject
 		sun = new GameSun();
 		Vector3f startSunDir = new Vector3f(-0.0626f, 0.7103f, -0.701f);
 		setSunDir(startSunDir);
-
-		addChild(Camera.getInstance());
 	}
 
 	public void drawScene()

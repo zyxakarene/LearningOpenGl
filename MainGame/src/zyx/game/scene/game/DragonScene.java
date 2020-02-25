@@ -32,6 +32,7 @@ import zyx.net.io.controllers.BaseNetworkController;
 import zyx.net.io.controllers.NetworkChannel;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.opengl.GLUtils;
+import zyx.opengl.camera.Camera;
 import zyx.opengl.models.implementations.shapes.Sphere;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
@@ -48,7 +49,7 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 	private ProcessQueue processQueue;
 
 	private MeshObject testDragon;
-	private PlayerObject player;
+	public PlayerObject player;
 	private PlayerClipboard board;
 
 	public DragonScene()
@@ -85,7 +86,7 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 		
 		MeshObject dragon = new MeshObject();
 		dragon.setScale(0.33f, 0.33f, 0.33f);
-//		dragon.load("mesh.dragon");
+		dragon.load("mesh.dragon");
 		dragon.setPosition(false, 100, 100, 100);
 		world.addChild(dragon);
 		testDragon = dragon;
@@ -282,6 +283,7 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 		player.addBehavior(new FreeFlyBehavior());
 		player.addBehavior(new CameraUpdateViewBehavior());
 		player.addBehavior(new OnlinePositionSender());
+		Camera.getInstance().setViewObject(player);
 
 		gameObjects.add(player);
 

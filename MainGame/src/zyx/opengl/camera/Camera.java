@@ -2,6 +2,7 @@ package zyx.opengl.camera;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.components.world.World3D;
 import zyx.engine.components.world.WorldObject;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
@@ -10,7 +11,7 @@ import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.GameConstants;
 import zyx.utils.math.Vector2Int;
 
-public class Camera extends WorldObject
+public class Camera
 {
 
 	private static Camera instance = new Camera();
@@ -25,10 +26,14 @@ public class Camera extends WorldObject
 	
 	private ICallback<Vector2Int> onScreenSizeChanged;
 	
+	private WorldObject target;
+	
 	private Camera()
 	{
 		initialized = false;
 		frustum = new ViewFrustum();
+	
+		target = World3D.instance;
 		
 		onScreenSizeChanged = (Vector2Int data) ->
 		{
@@ -36,6 +41,16 @@ public class Camera extends WorldObject
 		};
 	}
 
+	public void setViewObject(WorldObject target)
+	{
+		this.target = target;
+	}
+	
+	public void clearViewObject()
+	{
+		this.target = World3D.instance;
+	}
+	
 	public void initialize()
 	{
 		if (initialized)
@@ -45,8 +60,6 @@ public class Camera extends WorldObject
 		
 		initialized = true;
 		createMatrices();
-		
-		setRotation(-90, 0, 0);
 		
 		ScreenSize.addListener(onScreenSizeChanged);
 	}
@@ -81,5 +94,50 @@ public class Camera extends WorldObject
 	public boolean isInView(Vector3f worldPosition, float radius)
 	{
 		return frustum.isInsideView(worldPosition, radius);
+	}
+
+	public Vector3f getRotation(boolean local, Vector3f out)
+	{
+		return target.getRotation(local, out);
+	}
+
+	public Vector3f getPosition(boolean local, Vector3f out)
+	{
+		return target.getPosition(local, out);
+	}
+
+	public void setPosition(boolean local, Vector3f out)
+	{
+		target.setPosition(local, out);
+	}
+
+	public void setRotation(Vector3f rotation)
+	{
+		target.setRotation(rotation);
+	}
+
+	public void setDir(boolean local, Vector3f dir)
+	{
+		target.setDir(local, dir);
+	}
+
+	public Vector3f getDir(boolean local, Vector3f out)
+	{
+		return target.getDir(local, out);
+	}
+	
+	public void lookAt(float x, float y, float z)
+	{
+		target.lookAt(x, y, z);
+	}
+
+	public void lookAt(Vector3f pos)
+	{
+		target.lookAt(pos);
+	}
+	
+	public void rotate(float x, float y, float z)
+	{
+		target.rotate(x, y, z);
 	}
 }

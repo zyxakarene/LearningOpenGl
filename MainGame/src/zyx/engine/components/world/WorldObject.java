@@ -41,6 +41,8 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 
 	public WorldObject()
 	{
+		DebugWorldObjectList.updateList();
+		
 		invWorldMatrix = SharedPools.MATRIX_POOL.getInstance();
 		worldMatrix = SharedPools.MATRIX_POOL.getInstance();
 		localMatrix = SharedPools.MATRIX_POOL.getInstance();
@@ -180,6 +182,14 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 	{
 		return parent != null;
 	}
+	
+	public void getChildren(ArrayList<WorldObject> out)
+	{
+		if (children != null)
+		{
+			out.addAll(children);
+		}
+	}
 
 	protected void updateTransforms(boolean alsoChildren)
 	{
@@ -220,6 +230,8 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 		{
 			return;
 		}
+		DebugWorldObjectList.updateList();
+		
 		onDispose();
 
 		disposed = true;

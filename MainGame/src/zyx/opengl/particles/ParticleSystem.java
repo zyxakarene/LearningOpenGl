@@ -18,7 +18,7 @@ public class ParticleSystem extends WorldObject implements IResourceReady<Partic
 	float parentScale;
 
 	protected boolean loaded;
-	protected String path;
+	protected String resource;
 	protected IParticleModel model;
 	
 	private ParticleResource particleResource;
@@ -44,12 +44,17 @@ public class ParticleSystem extends WorldObject implements IResourceReady<Partic
 
 	public void load(String resource)
 	{
-		this.path = resource;
+		this.resource = resource;
 		
 		particleResource = ResourceManager.getInstance().<ParticleResource>getResourceAs(resource);
 		particleResource.registerAndLoad(this);
 	}
 
+	public String getResource()
+	{
+		return resource;
+	}
+	
 	@Override
 	public void onResourceReady(ParticleResource resource)
 	{
@@ -112,6 +117,6 @@ public class ParticleSystem extends WorldObject implements IResourceReady<Partic
 	@Override
 	public String toString()
 	{
-		return String.format("%s{%s}", getClass().getSimpleName(), path);
+		return String.format("%s{%s}", getClass().getSimpleName(), resource);
 	}
 }

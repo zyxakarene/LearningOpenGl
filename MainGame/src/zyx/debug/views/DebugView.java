@@ -3,6 +3,7 @@ package zyx.debug.views;
 import java.util.ArrayList;
 import zyx.debug.views.base.BaseDebugPanel;
 import zyx.debug.views.drawcalls.DebugDrawCallPanel;
+import zyx.debug.views.hierarchy.DebugHierarchyPanel;
 import zyx.debug.views.network.DebugNetworkPanel;
 import zyx.debug.views.pools.DebugPoolsPanel;
 import zyx.debug.views.resources.DebugResourcePanel;
@@ -30,6 +31,7 @@ public class DebugView extends javax.swing.JFrame
 		panels.add(new DebugSoundPanel());
 		panels.add(new DebugDrawCallPanel());
 		panels.add(new DebugPoolsPanel());
+		panels.add(new DebugHierarchyPanel());
 		
 		for (BaseDebugPanel panel : panels)
 		{

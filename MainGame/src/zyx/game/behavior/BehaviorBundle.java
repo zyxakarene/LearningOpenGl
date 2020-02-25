@@ -59,10 +59,19 @@ public class BehaviorBundle implements IUpdateable, IDisposeable
 		return behaviorMap.get(id);
 	}
 
+	public int count()
+	{
+		if (behaviors != null)
+		{
+			return behaviors.size();
+		}
+		
+		return 0;
+	}
+	
 	@Override
 	public void dispose()
 	{
-		int len = behaviors.size();
 		for (Behavior behavior : behaviors)
 		{
 			behavior.dispose();
