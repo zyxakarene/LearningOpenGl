@@ -91,4 +91,10 @@ public class GameLight extends WorldObject implements ILight
 		
 		super.onDispose();
 	}
+
+	@Override
+	public String getDebugIcon()
+	{
+		return "light.png";
+	}
 }

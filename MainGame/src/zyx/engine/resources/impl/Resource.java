@@ -1,11 +1,12 @@
 package zyx.engine.resources.impl;
 
 import java.util.ArrayList;
+import zyx.debug.views.base.IDebugIcon;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.IResourceReloaded;
 import zyx.engine.resources.ResourceManager;
 
-public abstract class Resource
+public abstract class Resource implements IDebugIcon
 {
 
 	public final String path;
@@ -162,11 +163,18 @@ public abstract class Resource
 		return loading;
 	}
 
-	public String getResourceIcon()
+	@Override
+	public String getDebugIcon()
 	{
 		return "default.png";
 	}
 
+	@Override
+	public String getDebugIconFolder()
+	{
+		return "resource";
+	}
+	
 	public void forceRefresh()
 	{
 		resourceReloaded();

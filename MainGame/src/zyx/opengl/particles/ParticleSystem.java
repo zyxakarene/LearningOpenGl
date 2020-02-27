@@ -119,4 +119,10 @@ public class ParticleSystem extends WorldObject implements IResourceReady<Partic
 	{
 		return String.format("%s{%s}", getClass().getSimpleName(), resource);
 	}
+
+	@Override
+	public String getDebugIcon()
+	{
+		return "particle.png";
+	}
 }

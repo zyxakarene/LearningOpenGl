@@ -316,4 +316,10 @@ public class Button extends InteractableContainer implements IComposedButton
 			images = null;
 		}
 	}
+	
+	@Override
+	public String getDebugIcon()
+	{
+		return "button.png";
+	}
 }

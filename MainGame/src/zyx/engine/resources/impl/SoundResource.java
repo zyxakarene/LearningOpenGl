@@ -38,7 +38,7 @@ public class SoundResource extends ExternalResource
 	}
 	
 	@Override
-	public String getResourceIcon()
+	public String getDebugIcon()
 	{
 		return "sound.png";
 	}

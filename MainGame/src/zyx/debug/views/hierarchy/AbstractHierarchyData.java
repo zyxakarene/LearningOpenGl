@@ -1,8 +1,9 @@
 package zyx.debug.views.hierarchy;
 
 import java.util.ArrayList;
+import zyx.debug.views.base.IDebugIcon;
 
-public abstract class AbstractHierarchyData<D>
+public abstract class AbstractHierarchyData<D extends IDebugIcon>
 {
 	protected D instance;
 	protected String type;

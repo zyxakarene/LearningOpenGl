@@ -38,5 +38,9 @@ public class Quad extends AbstractQuad
 		}
 	}
 	
-	
+	@Override
+	public String getDebugIcon()
+	{
+		return "quad.png";
+	}
 }

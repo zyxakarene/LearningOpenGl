@@ -136,7 +136,7 @@ public class ParticleResource extends ExternalResource implements IResourceReady
 	}
 
 	@Override
-	public String getResourceIcon()
+	public String getDebugIcon()
 	{
 		return "particle.png";
 	}

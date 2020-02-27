@@ -2,8 +2,9 @@ package zyx.debug.views.hierarchy;
 
 import java.util.ArrayList;
 import javax.swing.tree.DefaultMutableTreeNode;
+import zyx.debug.views.base.IDebugIcon;
 
-class HierarchyNode<D> extends DefaultMutableTreeNode
+class HierarchyNode<D extends IDebugIcon> extends DefaultMutableTreeNode
 {
 	AbstractHierarchyData<D> data;
 	

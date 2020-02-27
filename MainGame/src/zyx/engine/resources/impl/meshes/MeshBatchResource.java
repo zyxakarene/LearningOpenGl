@@ -117,7 +117,7 @@ public class MeshBatchResource extends BaseRequiredSubResource implements ISubRe
 	}
 	
 	@Override
-	public String getResourceIcon()
+	public String getDebugIcon()
 	{
 		return "mesh.png";
 	}

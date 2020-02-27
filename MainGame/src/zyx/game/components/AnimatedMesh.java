@@ -46,5 +46,11 @@ public class AnimatedMesh extends SimpleMesh
 			animationController = null;
 		}
 	}
+	
+	@Override
+	public String getDebugIcon()
+	{
+		return "animatedmesh.png";
+	}
 
 }

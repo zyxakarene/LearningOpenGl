@@ -138,7 +138,7 @@ public class MeshResource extends BaseRequiredSubResource implements ITaskComple
 	}
 	
 	@Override
-	public String getResourceIcon()
+	public String getDebugIcon()
 	{
 		return "mesh.png";
 	}

@@ -108,6 +108,12 @@ public final class World3D extends WorldObject
 		return "World3D";
 	}
 
+	@Override
+	public String getDebugIcon()
+	{
+		return "world.png";
+	}
+
 	//<editor-fold defaultstate="collapsed" desc="Getter & Setter">
 	private static final String INVALID_METHOD_CALL = "This method is invalid";
 

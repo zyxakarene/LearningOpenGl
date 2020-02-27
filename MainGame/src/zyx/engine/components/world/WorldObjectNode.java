@@ -13,7 +13,7 @@ public class WorldObjectNode extends AbstractHierarchyData<WorldObject>
 	{
 		super(instance);
 	}
-	
+
 	@Override
 	protected void addChildrenTo(ArrayList<AbstractHierarchyData<WorldObject>> children)
 	{

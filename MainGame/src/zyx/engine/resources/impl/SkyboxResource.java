@@ -92,7 +92,7 @@ public class SkyboxResource extends BaseRequiredSubResource implements ISubResou
 	}
 	
 	@Override
-	public String getResourceIcon()
+	public String getDebugIcon()
 	{
 		return "skybox.png";
 	}

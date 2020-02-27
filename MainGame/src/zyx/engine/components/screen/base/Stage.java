@@ -26,6 +26,8 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 
 	private Stage()
 	{
+		name = "";
+		
 		tooltipLayer = new DisplayObjectContainer();
 		hudLayer = new DisplayObjectContainer();
 
@@ -123,5 +125,11 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 	@Override
 	public void onUnFocused()
 	{
+	}
+
+	@Override
+	public String getDebugIcon()
+	{
+		return "stage.png";
 	}
 }

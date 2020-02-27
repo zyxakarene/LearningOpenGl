@@ -17,7 +17,7 @@ public class NormalTextureResource extends TextureResource
 	}
 	
 	@Override
-	public String getResourceIcon()
+	public String getDebugIcon()
 	{
 		return "normal.png";
 	}

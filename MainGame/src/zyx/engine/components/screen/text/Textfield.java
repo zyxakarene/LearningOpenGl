@@ -316,4 +316,10 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 			glText.setFontScale(fontSize);
 		}
 	}
+	
+	@Override
+	public String getDebugIcon()
+	{
+		return "textfield.png";
+	}
 }

@@ -100,7 +100,7 @@ public class SpriteSheetResource extends TextureResource implements IResourceRea
 	}
 	
 	@Override
-	public String getResourceIcon()
+	public String getDebugIcon()
 	{
 		return "spritesheet.png";
 	}

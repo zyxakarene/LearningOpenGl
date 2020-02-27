@@ -34,6 +34,7 @@ import zyx.net.io.controllers.NetworkCommands;
 import zyx.opengl.GLUtils;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.models.implementations.shapes.Sphere;
+import zyx.opengl.particles.ParticleSystem;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
 import zyx.utils.cheats.Print;
@@ -84,9 +85,9 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 		world.loadSkybox("skybox.texture.desert");
 		CubemapManager.getInstance().load("cubemap.dragon");
 		
-		MeshObject dragon = new MeshObject();
+		MeshObject dragon = new MeshObject(true);
 		dragon.setScale(0.33f, 0.33f, 0.33f);
-		dragon.load("mesh.dragon");
+		dragon.load("mesh.worm");
 		dragon.setPosition(false, 100, 100, 100);
 		world.addChild(dragon);
 		testDragon = dragon;
@@ -95,11 +96,15 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 		platform.load("mesh.platform");
 		world.addChild(platform);
 
+		ParticleSystem particleSystem = new ParticleSystem();
+		particleSystem.load("particles.test");
+		world.addChild(particleSystem);
+		
 		gameObjects.add(dragon);
 		gameObjects.add(platform);
 
 //		dragon.addBehavior(new RotateBehavior());
-		for (int i = 0; i < GameConstants.LIGHT_COUNT; i++)
+		for (int i = 0; i < 4; i++)
 		{
 			GameObject lightContainer = new GameObject();
 			GameLight light = new GameLight((int) (0xFFFFFF * Math.random()), 100);

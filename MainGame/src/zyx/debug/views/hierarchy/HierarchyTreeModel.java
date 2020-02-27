@@ -2,8 +2,9 @@ package zyx.debug.views.hierarchy;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import zyx.debug.views.base.IDebugIcon;
 
-class HierarchyTreeModel<D> extends DefaultTreeModel
+class HierarchyTreeModel<D extends IDebugIcon> extends DefaultTreeModel
 {
 
 	HierarchyTreeModel()

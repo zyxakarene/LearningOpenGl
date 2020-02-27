@@ -55,6 +55,12 @@ public class Image extends AbstractImage implements IResourceReady<TextureResour
 	}
 
 	@Override
+	public String getDebugIcon()
+	{
+		return "image.png";
+	}
+	
+	@Override
 	public String toString()
 	{
 		return String.format("Image{%s}", resource);

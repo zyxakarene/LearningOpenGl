@@ -41,9 +41,9 @@ public class DebugWindowAdaptor extends WindowAdapter implements Runnable
 	{
 		while (active)
 		{
+			view.update();
 			synchronized (DebugController.SHARED_LOCK)
 			{
-				view.update();
 
 				try
 				{

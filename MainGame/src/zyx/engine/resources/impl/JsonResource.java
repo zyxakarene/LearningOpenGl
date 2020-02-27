@@ -78,7 +78,7 @@ public class JsonResource extends ExternalResource
 	}
 	
 	@Override
-	public String getResourceIcon()
+	public String getDebugIcon()
 	{
 		return "json.png";
 	}

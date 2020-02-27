@@ -74,4 +74,10 @@ public class GameObject extends WorldObject implements IUpdateable
 		behaviors.dispose();
 		behaviors = null;
 	}
+	
+	@Override
+	public String getDebugIcon()
+	{
+		return "gameobject.png";
+	}
 }

@@ -17,7 +17,7 @@ public class SpecularTextureResource extends TextureResource
 	}
 	
 	@Override
-	public String getResourceIcon()
+	public String getDebugIcon()
 	{
 		return "specular.png";
 	}

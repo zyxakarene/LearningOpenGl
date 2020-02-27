@@ -80,7 +80,7 @@ public class CubemapResource extends ExternalResource implements ITaskCompleted<
 	}
 
 	@Override
-	public String getResourceIcon()
+	public String getDebugIcon()
 	{
 		return "cubemap.png";
 	}

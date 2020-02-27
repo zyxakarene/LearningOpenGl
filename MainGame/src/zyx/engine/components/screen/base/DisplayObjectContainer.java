@@ -258,6 +258,12 @@ public class DisplayObjectContainer extends DisplayObject
 		
 	}
 
+	@Override
+	public String getDebugIcon()
+	{
+		return "displayobjectcontainer.png";
+	}
+	
 	public void flipChildren(int indexA, int indexB)
 	{
 		DisplayObject a = children.get(indexA);

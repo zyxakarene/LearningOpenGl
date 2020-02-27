@@ -236,4 +236,10 @@ public class ComposedImage extends DisplayObjectContainer implements IComposedIm
 			images = null;
 		}
 	}
+	
+	@Override
+	public String getDebugIcon()
+	{
+		return "composedimage.png";
+	}
 }

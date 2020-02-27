@@ -5,6 +5,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import zyx.debug.views.base.IDebugIcon;
 import zyx.engine.curser.GameCursor;
 import zyx.engine.touch.MouseTouchManager;
 import zyx.game.controls.SharedPools;
@@ -22,7 +23,7 @@ import zyx.utils.pooling.GenericPool;
 import zyx.utils.pooling.ObjectPool;
 import zyx.utils.pooling.model.PoolableRectangle;
 
-public abstract class DisplayObject implements IPositionable2D, IDisposeable
+public abstract class DisplayObject implements IPositionable2D, IDisposeable, IDebugIcon
 {
 	private static int instanceCounter;
 
@@ -61,7 +62,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 	{
 		DebugDisplayObjectList.updateList();
 		
-		name = String.format("Instance%s", instanceCounter++);
+		name = String.format("I%s", instanceCounter++);
 		
 		invWorldMatrix = SharedPools.MATRIX_POOL.getInstance();
 		worldMatrix = SharedPools.MATRIX_POOL.getInstance();
@@ -408,6 +409,18 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable
 		MouseTouchManager.getInstance().unregisterTouch(this, listener);
 	}
 
+	@Override
+	public String getDebugIcon()
+	{
+		return "displayobject.png";
+	}
+
+	@Override
+	public final String getDebugIconFolder()
+	{
+		return "screen";
+	}
+	
 	public boolean hitTest(int x, int y)
 	{
 		if (!touchable || !visible)

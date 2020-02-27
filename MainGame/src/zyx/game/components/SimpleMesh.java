@@ -281,4 +281,10 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	{
 		cubemapIndex = index;
 	}
+	
+	@Override
+	public String getDebugIcon()
+	{
+		return "mesh.png";
+	}
 }

@@ -42,7 +42,7 @@ public class DrawableTextureResource extends Resource
 	}
 	
 	@Override
-	public String getResourceIcon()
+	public String getDebugIcon()
 	{
 		return "texture.png";
 	}

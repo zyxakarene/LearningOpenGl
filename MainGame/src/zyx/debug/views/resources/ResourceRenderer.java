@@ -1,5 +1,6 @@
 package zyx.debug.views.resources;
 
+import zyx.debug.views.base.DebugIcons;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.*;
@@ -34,7 +35,7 @@ public class ResourceRenderer extends JLabel implements ListCellRenderer<Resourc
 				setForeground(Color.RED);
 			}
 
-			Icon icon = ResourceIcons.createIcon(value);
+			Icon icon = DebugIcons.createIcon(value);
 			setIcon(icon);
 		}
 

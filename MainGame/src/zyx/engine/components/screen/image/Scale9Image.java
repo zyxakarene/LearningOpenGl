@@ -172,6 +172,12 @@ public class Scale9Image extends AbstractImage implements IResourceReady<Texture
 	}
 	
 	@Override
+	public String getDebugIcon()
+	{
+		return "scale9image.png";
+	}
+	
+	@Override
 	public String toString()
 	{
 		return String.format("Scale9Image{%s}", resource);

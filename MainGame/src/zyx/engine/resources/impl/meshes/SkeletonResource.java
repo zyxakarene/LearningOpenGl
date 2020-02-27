@@ -54,7 +54,7 @@ public class SkeletonResource extends ExternalResource implements ITaskCompleted
 	}
 
 	@Override
-	public String getResourceIcon()
+	public String getDebugIcon()
 	{
 		return "skeleton.png";
 	}

@@ -79,7 +79,7 @@ public class FontResource extends BaseRequiredSubResource implements ISubResourc
 	}
 	
 	@Override
-	public String getResourceIcon()
+	public String getDebugIcon()
 	{
 		return "font.png";
 	}
