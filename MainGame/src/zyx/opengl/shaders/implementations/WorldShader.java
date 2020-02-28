@@ -1,9 +1,7 @@
 package zyx.opengl.shaders.implementations;
 
 import org.lwjgl.util.vector.Matrix4f;
-import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.shaders.SharedShaderObjects;
-import zyx.utils.cheats.Print;
 
 public class WorldShader extends BaseBoneShader
 {
@@ -19,7 +17,6 @@ public class WorldShader extends BaseBoneShader
 	private int ViewMatrixTrans;
 	private int projectionViewMatrixTrans;
 	private int modelMatrixTrans;
-	private int debugColor;
 	private int cubemapColor;
 
 	private int modelMatrixTrans_InverseTranspose;
@@ -33,7 +30,6 @@ public class WorldShader extends BaseBoneShader
 	@Override
 	protected void onPostLoading()
 	{
-		debugColor = UniformUtils.createUniform(program, "debugColor");
 		cubemapColor = UniformUtils.createUniform(program, "cubemapColor");
 		
 		modelMatrixTrans = UniformUtils.createUniform(program, "model");
@@ -47,7 +43,6 @@ public class WorldShader extends BaseBoneShader
 	@Override
 	public void upload()
 	{
-		UniformUtils.setUniformInt(debugColor, DebugDrawCalls.shouldHighlightWorld() ? 1 : 0);
 		UniformUtils.setUniformMatrix(modelMatrixTrans, MATRIX_MODEL);
 		UniformUtils.setUniformMatrix(projectionViewMatrixTrans, MATRIX_PROJECTION_VIEW);
 		UniformUtils.setUniformMatrix(ViewMatrixTrans, MATRIX_VIEW);

@@ -1,7 +1,6 @@
 package zyx.opengl.shaders.implementations;
 
 import org.lwjgl.util.vector.Matrix4f;
-import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.SharedShaderObjects;
 
@@ -14,7 +13,6 @@ public class MeshBatchShader extends AbstractShader
 
 	private int ViewMatrixTrans;
 	private int projectionViewMatrixTrans;
-	private int debugColor;
 	private int cubemapColor;
 
 	private int viewMatrixTrans_InverseTranspose;
@@ -27,7 +25,6 @@ public class MeshBatchShader extends AbstractShader
 	@Override
 	protected void postLoading()
 	{
-		debugColor = UniformUtils.createUniform(program, "debugColor");
 		cubemapColor = UniformUtils.createUniform(program, "cubemapColor");
 		
 		projectionViewMatrixTrans = UniformUtils.createUniform(program, "projectionView");
@@ -41,7 +38,6 @@ public class MeshBatchShader extends AbstractShader
 	@Override
 	public void upload()
 	{
-		UniformUtils.setUniformInt(debugColor, DebugDrawCalls.shouldHighlightWorld() ? 1 : 0);
 		UniformUtils.setUniformMatrix(projectionViewMatrixTrans, MATRIX_PROJECTION_VIEW);
 		UniformUtils.setUniformMatrix(ViewMatrixTrans, MATRIX_VIEW);
 

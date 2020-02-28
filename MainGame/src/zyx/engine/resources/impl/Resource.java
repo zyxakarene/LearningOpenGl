@@ -5,6 +5,7 @@ import zyx.debug.views.base.IDebugIcon;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.IResourceReloaded;
 import zyx.engine.resources.ResourceManager;
+import zyx.utils.cheats.Print;
 
 public abstract class Resource implements IDebugIcon
 {
@@ -92,14 +93,14 @@ public abstract class Resource implements IDebugIcon
 	public void unregister(IResourceReady callback)
 	{
 		boolean removed = pointers.remove(callback);
-		
+
 		if (removed)
 		{
 			if (callback instanceof IResourceReloaded)
 			{
 				reloadedListeners.remove((IResourceReloaded) callback);
 			}
-			
+
 			if (pointers.isEmpty())
 			{
 				dispose();
@@ -174,8 +175,15 @@ public abstract class Resource implements IDebugIcon
 	{
 		return "resource";
 	}
+
+	public final void forceRefresh()
+	{
+		Print.out("Resource", path, "was refreshed");
+
+		onForceRefresh();
+	}
 	
-	public void forceRefresh()
+	protected void onForceRefresh()
 	{
 		resourceReloaded();
 	}

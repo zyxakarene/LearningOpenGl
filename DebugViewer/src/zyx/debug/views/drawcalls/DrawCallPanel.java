@@ -1,10 +1,10 @@
 package zyx.debug.views.drawcalls;
 
 import javax.swing.*;
+import zyx.debug.network.vo.drawcalls.DrawCallsInformation;
 import zyx.debug.views.base.BaseDebugPanel;
-import zyx.opengl.models.DebugDrawCalls;
 
-public class DebugDrawCallPanel extends BaseDebugPanel
+public class DrawCallPanel extends BaseDebugPanel
 {
 	private static final String CURRENT = "current: ";
 	
@@ -15,11 +15,11 @@ public class DebugDrawCallPanel extends BaseDebugPanel
 
 	private JLabel uiDrawCalls;
 	private JLabel worldDrawCalls;
-	
-	public DebugDrawCallPanel()
+		
+	public DrawCallPanel()
 	{
 		setLayout(null);
-		
+			
 		uiLabel = new JLabel("UI");
         worldLabel = new JLabel("World");
 		
@@ -53,11 +53,11 @@ public class DebugDrawCallPanel extends BaseDebugPanel
 	@Override
 	public void update()
 	{
-		DebugDrawCalls.setUiDrawLimit((int) uiStepper.getValue());
-		DebugDrawCalls.setWorldDrawLimit((int) worldStepper.getValue());
+		DrawCallsInformation.screenDrawCallsLimit = (int) uiStepper.getValue();
+		DrawCallsInformation.worldDrawCallsLimit = (int) worldStepper.getValue();
 		
-		worldDrawCalls.setText(CURRENT + DebugDrawCalls.getCurrentDrawWorld());
-		uiDrawCalls.setText(CURRENT + DebugDrawCalls.getCurrentDrawUi());
+		worldDrawCalls.setText(CURRENT + DrawCallsInformation.currentWorldDrawCalls);
+		uiDrawCalls.setText(CURRENT + DrawCallsInformation.currentScreenDrawCalls);
 	}
 
 	@Override

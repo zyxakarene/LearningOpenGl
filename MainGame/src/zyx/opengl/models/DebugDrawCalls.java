@@ -9,9 +9,6 @@ public class DebugDrawCalls
 	private static int currentDrawWorld;
 	private static int currentDrawUi;
 	
-	private static int highlightedDrawUi = -1;
-	private static int highlightedDrawWorld = -1;
-	
 	public static void setUiDrawLimit(int limit)
 	{
 		synchronized (LOCK)
@@ -78,38 +75,6 @@ public class DebugDrawCalls
 		synchronized (LOCK)
 		{
 			return currentDrawUi;
-		}
-	}
-
-	public static boolean shouldHighlightWorld()
-	{
-		synchronized (LOCK)
-		{
-			return currentDrawWorld == highlightedDrawWorld;
-		}
-	}
-
-	public static boolean shouldHighlightUi()
-	{
-		synchronized (LOCK)
-		{
-			return currentDrawUi == highlightedDrawUi;
-		}
-	}
-
-	public static void setUiHighlight(boolean selected)
-	{
-		synchronized (LOCK)
-		{
-			highlightedDrawUi = selected ? limitUi : -1;
-		}
-	}
-
-	public static void setWorldHighlight(boolean selected)
-	{
-		synchronized (LOCK)
-		{
-			highlightedDrawWorld = selected ? limitWorld - 1 : -1;
 		}
 	}
 }

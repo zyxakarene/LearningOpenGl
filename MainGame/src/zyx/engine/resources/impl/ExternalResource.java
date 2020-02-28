@@ -50,7 +50,7 @@ public abstract class ExternalResource extends Resource implements IResourceLoad
 	}
 
 	@Override
-	public final void forceRefresh()
+	protected final void onForceRefresh()
 	{
 		if (resourceRequest != null)
 		{

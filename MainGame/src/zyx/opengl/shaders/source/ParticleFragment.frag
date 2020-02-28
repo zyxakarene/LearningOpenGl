@@ -7,9 +7,7 @@ layout(location = 0) out vec4 outColor;
 
 uniform sampler2D tex;
 
-uniform int debugColor;
-
 void main(void)
 {
-	outColor = texture(tex, Texcoord) * Color + debugColor;
+	outColor = texture(tex, Texcoord) * Color;
 }
