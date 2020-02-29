@@ -3,8 +3,9 @@ package zyx.debug.views.pools;
 import java.util.ArrayList;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import zyx.debug.link.DebugInfo;
 import zyx.debug.views.base.BaseDebugPanel;
-import zyx.utils.pooling.DebugPoolList;
+import zyx.debug.link.DebugPoolLink;
 
 public class DebugPoolsPanel extends BaseDebugPanel
 {
@@ -13,6 +14,7 @@ public class DebugPoolsPanel extends BaseDebugPanel
 	private JTable list;
 	private PoolTableModel listModel;
 	private JScrollPane listScrollPane;
+	private DebugPoolLink poolLink;
 
 	public DebugPoolsPanel()
 	{
@@ -26,16 +28,17 @@ public class DebugPoolsPanel extends BaseDebugPanel
 		listScrollPane.setViewportView(list);
 		
 		out = new ArrayList<>();
+		poolLink = DebugInfo.pools;
 	}
 
 	@Override
 	public void update()
 	{
-		boolean changes = DebugPoolList.hasChanges();
+		boolean changes = poolLink.hasChanges();
 
 		if (changes)
 		{
-			DebugPoolList.getPoolStatus(out);
+			poolLink.getPoolStatus(out);
 			
 			listModel.removeAllElements();
 

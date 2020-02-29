@@ -5,6 +5,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import zyx.debug.link.DebugInfo;
 import zyx.debug.views.base.IDebugIcon;
 import zyx.engine.curser.GameCursor;
 import zyx.engine.touch.MouseTouchManager;
@@ -60,7 +61,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 
 	public DisplayObject()
 	{
-		DebugDisplayObjectList.updateList();
+		DebugInfo.screenObjects.updateList();
 		
 		name = String.format("I%s", instanceCounter++);
 		
@@ -168,8 +169,6 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 
 	protected final void setParent(DisplayObjectContainer parent)
 	{
-		DebugDisplayObjectList.updateList();
-		
 		if (parent != null && parent.stage != null)
 		{
 			stage = parent.stage;
@@ -186,7 +185,6 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 	{
 		if (parent != null)
 		{
-			DebugDisplayObjectList.updateList();
 			parent.removeChild(this);
 
 			if (dispose)
@@ -236,7 +234,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		{
 			return;
 		}
-		DebugDisplayObjectList.updateList();
+		DebugInfo.screenObjects.updateList();
 		disposed = true;
 
 		removeFromParent(false);

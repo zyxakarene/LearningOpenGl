@@ -9,7 +9,7 @@ import zyx.opengl.particles.ParticleSystem;
 public class WorldObjectNode extends AbstractHierarchyData<WorldObject>
 {
 
-	WorldObjectNode(WorldObject instance)
+	public WorldObjectNode(WorldObject instance)
 	{
 		super(instance);
 	}

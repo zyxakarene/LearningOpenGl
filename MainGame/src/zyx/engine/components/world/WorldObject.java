@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import zyx.debug.link.DebugInfo;
 import zyx.debug.views.base.IDebugIcon;
 import zyx.game.controls.SharedPools;
 import zyx.opengl.camera.Camera;
@@ -42,7 +43,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 
 	public WorldObject()
 	{
-		DebugWorldObjectList.updateList();
+		DebugInfo.worldObjects.updateList();
 		
 		invWorldMatrix = SharedPools.MATRIX_POOL.getInstance();
 		worldMatrix = SharedPools.MATRIX_POOL.getInstance();
@@ -126,8 +127,6 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 	{
 		if (child.parent != this)
 		{
-			DebugWorldObjectList.updateList();
-			
 			if (child.parent != null)
 			{
 				child.removeFromParent(false);
@@ -144,8 +143,6 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 	{
 		if (child.parent == this)
 		{
-			DebugWorldObjectList.updateList();
-			
 			child.parent = null;
 			children.remove(child);
 		}
@@ -235,7 +232,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 		{
 			return;
 		}
-		DebugWorldObjectList.updateList();
+		DebugInfo.worldObjects.updateList();
 		
 		onDispose();
 

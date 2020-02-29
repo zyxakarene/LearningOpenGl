@@ -3,15 +3,19 @@ package zyx.debug.views.hierarchy;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.engine.components.world.DebugWorldObjectList;
+import zyx.debug.link.DebugInfo;
+import zyx.debug.link.DebugWorldObjectLink;
 import zyx.engine.components.world.WorldObject;
 import zyx.opengl.camera.Camera;
 
 public class DebugHierarchyWorldPanel extends DebugHierarchyPanel<WorldObject>
 {
-
+	private DebugWorldObjectLink worldObject;
+	
 	public DebugHierarchyWorldPanel()
 	{
+		worldObject = DebugInfo.worldObjects;
+		
 		tree.addKeyListener(new KeyAdapter()
 		{
 			@Override
@@ -36,11 +40,11 @@ public class DebugHierarchyWorldPanel extends DebugHierarchyPanel<WorldObject>
 	@Override
 	protected AbstractHierarchyData<WorldObject> getUpdatedNode()
 	{
-		boolean changes = DebugWorldObjectList.hasUpdate();
+		boolean changes = worldObject.hasUpdate();
 
 		if (changes)
 		{
-			return DebugWorldObjectList.getActiveWorldObjects();
+			return worldObject.getActiveWorldObjects();
 		}
 
 		return null;

@@ -1,12 +1,17 @@
-package zyx.engine.resources.impl;
+package zyx.debug.link;
 
 import java.util.ArrayList;
+import zyx.engine.resources.impl.Resource;
 
-public class DebugResourceList
+public class DebugResourceLink
 {
-	private static final ArrayList<Resource> RESOURCES = new ArrayList<>();
-	
-	static void addResource(Resource resource)
+	private final ArrayList<Resource> RESOURCES = new ArrayList<>();
+
+	DebugResourceLink()
+	{
+	}
+
+	public void addResource(Resource resource)
 	{
 		synchronized(RESOURCES)
 		{
@@ -17,7 +22,7 @@ public class DebugResourceList
 		}
 	}
 	
-	static void removeResource(Resource resource)
+	public void removeResource(Resource resource)
 	{
 		synchronized(RESOURCES)
 		{
@@ -25,7 +30,7 @@ public class DebugResourceList
 		}
 	}
 	
-	public static boolean getActiveResources(ArrayList<Resource> lastList)
+	public boolean getActiveResources(ArrayList<Resource> lastList)
 	{
 		synchronized(RESOURCES)
 		{

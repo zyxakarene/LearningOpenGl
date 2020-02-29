@@ -1,17 +1,22 @@
-package zyx.utils.pooling;
+package zyx.debug.link;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import zyx.debug.views.pools.PoolInfo;
+import zyx.utils.pooling.ObjectPool;
 
-public class DebugPoolList
+public class DebugPoolLink
 {
-	private static final HashMap<ObjectPool, PoolInfo> POOLS = new HashMap<>();
-	private static final ArrayList<PoolInfo> POOL_LIST = new ArrayList<>();
+	private final HashMap<ObjectPool, PoolInfo> POOLS = new HashMap<>();
+	private final ArrayList<PoolInfo> POOL_LIST = new ArrayList<>();
 	
-	private static boolean hasChanges = true;
+	private boolean hasChanges = true;
+
+	DebugPoolLink()
+	{
+	}
 	
-	static void addPool(ObjectPool pool)
+	public void addPool(ObjectPool pool)
 	{
 		synchronized(POOLS)
 		{
@@ -24,7 +29,7 @@ public class DebugPoolList
 		}
 	}
 	
-	static void removePool(ObjectPool pool)
+	public void removePool(ObjectPool pool)
 	{
 		synchronized(POOLS)
 		{
@@ -36,7 +41,7 @@ public class DebugPoolList
 		}
 	}
 	
-	static void updatePoolInfo(ObjectPool pool, int current, int taken, int max)
+	public void updatePoolInfo(ObjectPool pool, int current, int taken, int max)
 	{
 		synchronized(POOLS)
 		{
@@ -50,7 +55,7 @@ public class DebugPoolList
 		}
 	}
 
-	public static boolean hasChanges()
+	public boolean hasChanges()
 	{
 		boolean has = hasChanges;
 		hasChanges = false;
@@ -58,7 +63,7 @@ public class DebugPoolList
 		return has;
 	}
 	
-	public static void getPoolStatus(ArrayList<PoolInfo> out)
+	public void getPoolStatus(ArrayList<PoolInfo> out)
 	{
 		synchronized(POOLS)
 		{

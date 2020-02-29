@@ -1,6 +1,7 @@
 package zyx.utils.pooling;
 
 import java.util.LinkedList;
+import zyx.debug.link.DebugInfo;
 import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IDisposeable;
 
@@ -26,7 +27,7 @@ public class ObjectPool<T> implements IDisposeable
 		poolSize = initialSize;
 		initSize = initialSize;
 		
-		DebugPoolList.addPool(this);
+		DebugInfo.pools.addPool(this);
 	}
 
 	public ObjectPool(Class<? extends T> type, int initialSize)
@@ -46,7 +47,7 @@ public class ObjectPool<T> implements IDisposeable
 
 		takenCount++;
 		
-		DebugPoolList.updatePoolInfo(this, pool.size(), takenCount, poolSize);
+		DebugInfo.pools.updatePoolInfo(this, pool.size(), takenCount, poolSize);
 		
 		return instance;
 	}
@@ -56,7 +57,7 @@ public class ObjectPool<T> implements IDisposeable
 		pool.add(instance);
 		takenCount--;
 		
-		DebugPoolList.updatePoolInfo(this, pool.size(), takenCount, poolSize);
+		DebugInfo.pools.updatePoolInfo(this, pool.size(), takenCount, poolSize);
 	}
 
 	@Override
@@ -95,7 +96,7 @@ public class ObjectPool<T> implements IDisposeable
 			initializeArgs[i] = null;
 		}
 		
-		DebugPoolList.removePool(this);
+		DebugInfo.pools.removePool(this);
 	}
 
 }

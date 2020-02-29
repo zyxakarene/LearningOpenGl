@@ -1,10 +1,13 @@
-package zyx.engine.sound;
+package zyx.debug.link;
 
-public class DebugSoundList
+import zyx.engine.sound.DebugSound;
+import zyx.engine.sound.SoundSystem;
+
+public class DebugSoundLink
 {
-	private static final DebugSound[] SOURCES = new DebugSound[SoundSystem.MAX_SOURCES];
-		
-	static
+	private final DebugSound[] SOURCES = new DebugSound[SoundSystem.MAX_SOURCES];
+
+	DebugSoundLink()
 	{
 		for (int i = 0; i < SoundSystem.MAX_SOURCES; i++)
 		{
@@ -12,7 +15,7 @@ public class DebugSoundList
 		}
 	}
 	
-	static void setSourceStatus(int index, boolean status, String path, float x, float y, float z)
+	public void setSourceStatus(int index, boolean status, String path, float x, float y, float z)
 	{
 		synchronized(SOURCES)
 		{
@@ -25,7 +28,7 @@ public class DebugSoundList
 		}
 	}
 	
-	public static void getSourceStatus(DebugSound[] out)
+	public void getSourceStatus(DebugSound[] out)
 	{
 		synchronized(SOURCES)
 		{

@@ -25,10 +25,13 @@ public class ConnectionHandler extends BaseAsyncSynchronizer<ConnectionRequest, 
 	@Override
 	public void addThreads(int count)
 	{
-		ConnectionRequestRunner requestRunner = new ConnectionRequestRunner();
-		addRunner(requestRunner);
-		
-		ConnectionResponseRunner responseRunner = new ConnectionResponseRunner();
-		addResponseRunner(responseRunner);
+		for (int i = 0; i < count; i++)
+		{
+			ConnectionRequestRunner requestRunner = new ConnectionRequestRunner();
+			addRunner(requestRunner);
+
+			ConnectionResponseRunner responseRunner = new ConnectionResponseRunner();
+			addResponseRunner(responseRunner);
+		}
 	}
 }

@@ -1,6 +1,7 @@
 package zyx.engine.sound;
 
 import org.lwjgl.openal.AL10;
+import zyx.debug.link.DebugInfo;
 
 class Audio implements IAudio
 {
@@ -64,7 +65,7 @@ class Audio implements IAudio
 
 		if (playing)
 		{
-			DebugSoundList.setSourceStatus(sourceIndex, true, path, x, y, z);
+			DebugInfo.sounds.setSourceStatus(sourceIndex, true, path, x, y, z);
 		}
 	}
 
@@ -79,7 +80,7 @@ class Audio implements IAudio
 	{
 		if (playing)
 		{
-			DebugSoundList.setSourceStatus(sourceIndex, false, EMPTY_STRING, 0, 0, 0);
+			DebugInfo.sounds.setSourceStatus(sourceIndex, false, EMPTY_STRING, 0, 0, 0);
 			
 			SoundSystem.stop(sourceIndex);
 			sourceIndex = -1;
@@ -116,7 +117,7 @@ class Audio implements IAudio
 		if (playing)
 		{
 			SoundSystem.setListenerPosition(sourceIndex, x, y, z);
-			DebugSoundList.setSourceStatus(sourceIndex, true, path, x, y, z);
+			DebugInfo.sounds.setSourceStatus(sourceIndex, true, path, x, y, z);
 		}
 	}
 

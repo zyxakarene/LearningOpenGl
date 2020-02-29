@@ -1,19 +1,26 @@
 package zyx.debug.views.hierarchy;
 
-import zyx.engine.components.screen.base.DebugDisplayObjectList;
+import zyx.debug.link.DebugDisplayObjectLink;
+import zyx.debug.link.DebugInfo;
 import zyx.engine.components.screen.base.DisplayObject;
 
 public class DebugHierarchyScreenPanel extends DebugHierarchyPanel<DisplayObject>
 {
+	private DebugDisplayObjectLink screenLink;
+	
+	public DebugHierarchyScreenPanel()
+	{
+		screenLink = DebugInfo.screenObjects;
+	}
 
 	@Override
 	protected AbstractHierarchyData<DisplayObject> getUpdatedNode()
 	{
-		boolean changes = DebugDisplayObjectList.hasUpdate();
+		boolean changes = screenLink.hasUpdate();
 
 		if (changes)
 		{
-			return DebugDisplayObjectList.getActiveDisplayObjects();
+			return screenLink.getActiveDisplayObjects();
 		}
 
 		return null;

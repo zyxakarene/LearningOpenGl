@@ -4,9 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import zyx.debug.link.DebugInfo;
 import zyx.debug.views.base.BaseDebugPanel;
 import zyx.engine.sound.DebugSound;
-import zyx.engine.sound.DebugSoundList;
+import zyx.debug.link.DebugSoundLink;
 import zyx.engine.sound.SoundSystem;
 
 public class DebugSoundPanel extends BaseDebugPanel
@@ -18,6 +19,7 @@ public class DebugSoundPanel extends BaseDebugPanel
 	private DebugSound[] outSounds;
 	
 	private DebugSound selectedSound;
+	private DebugSoundLink soundLink;
 
 	public DebugSoundPanel()
 	{
@@ -33,6 +35,8 @@ public class DebugSoundPanel extends BaseDebugPanel
 		});
 		
 		setBackground(Color.WHITE);
+		
+		soundLink = DebugInfo.sounds;
 	}
 
 	private void onMouseDown(int x, int y)
@@ -59,7 +63,7 @@ public class DebugSoundPanel extends BaseDebugPanel
 	@Override
 	public void update()
 	{
-		DebugSoundList.getSourceStatus(outSounds);
+		soundLink.getSourceStatus(outSounds);
 	}
 
 	@Override

@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import zyx.debug.link.DebugInfo;
 import zyx.debug.views.base.BaseDebugPanel;
 import zyx.debug.views.resources.watcher.WatcherManager;
-import zyx.engine.resources.impl.DebugResourceList;
+import zyx.debug.link.DebugResourceLink;
 import zyx.engine.resources.impl.Resource;
 
 public class DebugResourcePanel extends BaseDebugPanel
@@ -22,6 +23,7 @@ public class DebugResourcePanel extends BaseDebugPanel
 	private WatcherManager watcher;
 	
 	private int watchFrameCounter;
+	private DebugResourceLink resourceLink;
 
 	public DebugResourcePanel()
 	{
@@ -41,12 +43,14 @@ public class DebugResourcePanel extends BaseDebugPanel
 		
 		watcher = new WatcherManager();
 		watcher.initialize();
+		
+		resourceLink = DebugInfo.resources;
 	}
 
 	@Override
 	public void update()
 	{
-		boolean changes = DebugResourceList.getActiveResources(out);
+		boolean changes = resourceLink.getActiveResources(out);
 
 		if (changes)
 		{

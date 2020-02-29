@@ -23,7 +23,7 @@ public abstract class ScheduledTask<R>
 
 		if (!completed)
 		{
-			Print.out("Scheduled task", this, "completed proccessing, but did not report being done!");
+			Print.err("Scheduled task", this, "completed proccessing, but did not report being done!");
 			throw new RuntimeException();
 		}
 	}

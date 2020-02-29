@@ -1,6 +1,8 @@
 package zyx.engine.resources.impl;
 
+import zyx.debug.link.DebugResourceLink;
 import java.util.ArrayList;
+import zyx.debug.link.DebugInfo;
 import zyx.debug.views.base.IDebugIcon;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.IResourceReloaded;
@@ -43,7 +45,7 @@ public abstract class Resource implements IDebugIcon
 
 	public void registerAndLoad(IResourceReady callback)
 	{
-		DebugResourceList.addResource(this);
+		DebugInfo.resources.addResource(this);
 
 		if (pointers.contains(callback) == false)
 		{
@@ -148,7 +150,7 @@ public abstract class Resource implements IDebugIcon
 
 		content = null;
 
-		DebugResourceList.removeResource(this);
+		DebugInfo.resources.removeResource(this);
 
 		ResourceManager.getInstance().disposeResource(path);
 	}

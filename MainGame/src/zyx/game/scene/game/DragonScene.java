@@ -34,10 +34,7 @@ import zyx.net.io.controllers.NetworkCommands;
 import zyx.opengl.GLUtils;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.models.implementations.shapes.Sphere;
-import zyx.opengl.particles.ParticleSystem;
 import zyx.utils.FloatMath;
-import zyx.utils.GameConstants;
-import zyx.utils.cheats.Print;
 import zyx.utils.math.QuaternionUtils;
 
 public class DragonScene extends GameScene implements ICallback<ProcessQueue>
@@ -49,7 +46,6 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 	private boolean cubemapping;
 	private ProcessQueue processQueue;
 
-	private MeshObject testDragon;
 	public PlayerObject player;
 	private PlayerClipboard board;
 
@@ -85,25 +81,12 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 		world.loadSkybox("skybox.texture.desert");
 		CubemapManager.getInstance().load("cubemap.dragon");
 		
-		MeshObject dragon = new MeshObject(true);
-		dragon.setScale(0.33f, 0.33f, 0.33f);
-		dragon.load("mesh.worm");
-		dragon.setPosition(false, 100, 100, 100);
-		world.addChild(dragon);
-		testDragon = dragon;
-
 		MeshObject platform = new MeshObject();
 		platform.load("mesh.platform");
 		world.addChild(platform);
-
-		ParticleSystem particleSystem = new ParticleSystem();
-		particleSystem.load("particles.test");
-		world.addChild(particleSystem);
 		
-		gameObjects.add(dragon);
 		gameObjects.add(platform);
 
-//		dragon.addBehavior(new RotateBehavior());
 		for (int i = 0; i < 4; i++)
 		{
 			GameObject lightContainer = new GameObject();
@@ -190,21 +173,6 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 			int width = (int) (64 + (Math.random() * 1920 * 0.75));
 			int height = (int) (64 + (Math.random() * 1080 * 0.75));
 			ScreenSize.changeScreenSize(width, height);
-		}
-
-		if (KeyboardData.data.wasPressed(Keyboard.KEY_Q))
-		{
-			Vector3f dir = testDragon.getDir(false, null);
-			Vector3f pos = testDragon.getPosition(false, null);
-			Print.out("Dragon dir:", dir);
-			Print.out("Dragon pos:", pos);
-			float x = pos.x + (dir.x * 100);
-			float y = pos.y + (dir.y * 100);
-			float z = pos.z + (dir.z * 100);
-
-			testDragon.lookAt(x, y, z);
-			Vector3f postDir = testDragon.getDir(false, null);
-			Print.out("Dragon PostDir:", postDir);
 		}
 
 		//Vector3f camPos = Camera.getInstance().getPosition(false, null);
