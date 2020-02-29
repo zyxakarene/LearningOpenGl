@@ -1,30 +1,21 @@
 package zyx.engine.components.world;
 
-import java.util.ArrayList;
-import zyx.debug.views.hierarchy.AbstractHierarchyData;
 import zyx.game.components.GameObject;
 import zyx.game.components.SimpleMesh;
 import zyx.opengl.particles.ParticleSystem;
 
-public class WorldObjectNode extends AbstractHierarchyData<WorldObject>
+public class WorldObjectNode
 {
+
+	private final WorldObject instance;
+	private int childCount;
+	private String type;
 
 	WorldObjectNode(WorldObject instance)
 	{
-		super(instance);
-	}
-
-	@Override
-	protected void addChildrenTo(ArrayList<AbstractHierarchyData<WorldObject>> children)
-	{
-		ArrayList<WorldObject> instanceChildren = new ArrayList<>();
-		instance.getChildren(instanceChildren);
-
-		for (WorldObject worldObject : instanceChildren)
-		{
-			WorldObjectNode child = new WorldObjectNode(worldObject);
-			children.add(child);
-		}
+		this.instance = instance;
+		this.childCount = 0;
+		this.type = instance.getClass().getSimpleName();
 	}
 
 	@Override

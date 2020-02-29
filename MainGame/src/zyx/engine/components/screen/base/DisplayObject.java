@@ -5,7 +5,6 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
-import zyx.debug.views.base.IDebugIcon;
 import zyx.engine.curser.GameCursor;
 import zyx.engine.touch.MouseTouchManager;
 import zyx.game.controls.SharedPools;
@@ -23,7 +22,7 @@ import zyx.utils.pooling.GenericPool;
 import zyx.utils.pooling.ObjectPool;
 import zyx.utils.pooling.model.PoolableRectangle;
 
-public abstract class DisplayObject implements IPositionable2D, IDisposeable, IDebugIcon
+public abstract class DisplayObject implements IPositionable2D, IDisposeable
 {
 	private static int instanceCounter;
 
@@ -409,13 +408,11 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		MouseTouchManager.getInstance().unregisterTouch(this, listener);
 	}
 
-	@Override
 	public String getDebugIcon()
 	{
 		return "displayobject.png";
 	}
 
-	@Override
 	public final String getDebugIconFolder()
 	{
 		return "screen";

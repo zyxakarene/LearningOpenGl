@@ -1,24 +1,22 @@
-package zyx.debug.views.pools;
+package zyx.game.debug.pools;
 
 public class PoolInfo
 {
-	private static int idCounter = 0;
+	public String name;
+	public int free;
+	public int taken;
+	public int total;
 	
-	String name;
-	int free;
-	int taken;
-	int total;
-	
-	private int id;
+	public int id;
 
-	public PoolInfo(String name)
+	public PoolInfo(int id, String name)
 	{
 		this.name = name;
 		free = 0;
 		taken = 0;
 		total = 0;
 		
-		id = ++idCounter;
+		this.id = id;
 	}
 
 	public void setAmount(int free, int taken, int total)

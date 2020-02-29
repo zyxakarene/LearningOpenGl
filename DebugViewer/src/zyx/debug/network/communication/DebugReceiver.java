@@ -1,31 +1,45 @@
 package zyx.debug.network.communication;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import zyx.debug.DebugController;
+import zyx.debug.network.vo.pools.PoolInformation;
 
-public class DebugReceiver implements Runnable
+public class DebugReceiver extends AbstractDebugIO
 {
-	private ObjectInputStream in;
+	private static final short POOL_TYPE = 0;
 
-	public DebugReceiver(ObjectInputStream in)
+	private DataInputStream in;
+
+	public DebugReceiver(DataInputStream in)
 	{
 		this.in = in;
 	}
-	
+
 	@Override
-	public void run()
+	protected void onRun()
 	{
-		while(true)
+		try
 		{
-			try
+			short dataType = in.readShort();
+			int len = in.readInt();
+			byte[] data = new byte[len];
+			in.readFully(data);
+			
+			if (dataType == POOL_TYPE)
 			{
-				byte dataType = in.readByte();
+				PoolInformation.fromData(data);
 			}
-			catch (IOException ex)
+			
+			synchronized (DebugController.SHARED_LOCK)
 			{
-				throw new RuntimeException(ex);
+				DebugController.SHARED_LOCK.notifyAll();
 			}
 		}
+		catch (IOException ex)
+		{
+			fail(ex);
+		}
 	}
-
 }

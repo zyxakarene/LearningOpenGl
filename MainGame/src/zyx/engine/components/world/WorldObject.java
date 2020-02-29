@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
-import zyx.debug.views.base.IDebugIcon;
 import zyx.game.controls.SharedPools;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.camera.IFrustumHideable;
@@ -14,7 +13,7 @@ import zyx.utils.interfaces.IPositionable;
 import zyx.utils.math.DecomposedMatrix;
 import zyx.utils.math.MatrixUtils;
 
-public abstract class WorldObject implements IPositionable, IDisposeable, IFrustumHideable, IDebugIcon
+public abstract class WorldObject implements IPositionable, IDisposeable, IFrustumHideable
 {
 
 	protected static final DecomposedMatrix DECOMPOSED_MATRIX = new DecomposedMatrix();
@@ -594,13 +593,11 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 		out.set(0, 0, 0);
 	}
 
-	@Override
 	public String getDebugIcon()
 	{
 		return "worldobject.png";
 	}
 
-	@Override
 	public final String getDebugIconFolder()
 	{
 		return "world";

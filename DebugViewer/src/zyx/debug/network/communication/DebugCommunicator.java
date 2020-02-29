@@ -1,28 +1,70 @@
 package zyx.debug.network.communication;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 
-public class DebugCommunicator
+class DebugCommunicator
 {
+	private Thread receiverThread;
+	private Thread senderThread;
+	
 	private DebugReceiver receiver;
 	private DebugSender sender;
 
-	public DebugCommunicator(ObjectInputStream in, ObjectOutputStream out)
+	DebugCommunicator(DataInputStream in, DataOutputStream out)
 	{
 		receiver = new DebugReceiver(in);
 		sender = new DebugSender(out);
 	}
 	
-	public void startThreads()
+	void startThreads()
 	{
-		Thread senderThread = new Thread(sender, "Sender");
-		Thread receiverThread = new Thread(receiver, "Receiver");
+		receiverThread = new Thread(receiver, "Receiver");
+		senderThread = new Thread(sender, "Sender");
 		
-		senderThread.setDaemon(true);
 		receiverThread.setDaemon(true);
+		senderThread.setDaemon(true);
 		
-		senderThread.start();
 		receiverThread.start();
+		senderThread.start();
+	}
+	
+	boolean isActive()
+	{
+		if (receiver != null && sender != null)
+		{
+			return receiver.isActive() && sender.isActive();
+		}
+		
+		return false;
+	}
+
+	void dispose()
+	{
+		System.out.println("Connection dropped, killing " + this);
+		
+		if (receiver != null)
+		{
+			receiver.fail();
+			receiver = null;
+		}
+		
+		if (sender != null)
+		{
+			sender.fail();
+			sender = null;
+		}
+		
+		if (receiverThread != null)
+		{
+			receiverThread.interrupt();
+			receiverThread = null;
+		}
+		
+		if (senderThread != null)
+		{
+			senderThread.interrupt();
+			senderThread = null;
+		}
 	}
 }

@@ -6,9 +6,12 @@ import java.net.Socket;
 
 public class DebugServer implements Runnable
 {
+
+	static final Object SERVER_LOCK = new Object();
+
 	private ServerSocket server;
 	private boolean active;
-	
+
 	private DebugCommunicator communicator;
 
 	public DebugServer()
@@ -23,23 +26,45 @@ public class DebugServer implements Runnable
 			throw new RuntimeException(ex);
 		}
 	}
-	
-	
+
 	@Override
 	public void run()
 	{
 		while (active)
-		{			
+		{
 			try
 			{
-				Socket connection = server.accept();
+				synchronized (SERVER_LOCK)
+				{
+					while (communicator != null && communicator.isActive())
+					{
+						System.out.println("Waiting for current connection to die, before listening again...");
+						
+						try
+						{
+							SERVER_LOCK.wait();
+						}
+						catch (InterruptedException ex)
+						{
+						}
+						
+						communicator.dispose();
+						communicator = null;
+					}
+				}
+
+				System.out.println("Listening for incoming connections...");
 				
+				Socket connection = server.accept();
+
+				System.out.println("Got incoming connection from game: " + connection);
+
 				InputStream in = connection.getInputStream();
 				OutputStream out = connection.getOutputStream();
-				
-				ObjectInputStream input = new ObjectInputStream(in);
-				ObjectOutputStream output = new ObjectOutputStream(out);
-				
+
+				DataInputStream input = new DataInputStream(in);
+				DataOutputStream output = new DataOutputStream(out);
+
 				communicator = new DebugCommunicator(input, output);
 				communicator.startThreads();
 			}
@@ -49,7 +74,7 @@ public class DebugServer implements Runnable
 			}
 		}
 	}
-	
+
 	public void stop()
 	{
 		active = false;

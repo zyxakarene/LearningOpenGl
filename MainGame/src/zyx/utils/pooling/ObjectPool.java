@@ -1,5 +1,6 @@
 package zyx.utils.pooling;
 
+import zyx.game.debug.pools.DebugPoolList;
 import java.util.LinkedList;
 import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IDisposeable;
@@ -26,7 +27,7 @@ public class ObjectPool<T> implements IDisposeable
 		poolSize = initialSize;
 		initSize = initialSize;
 		
-		DebugPoolList.addPool(this);
+		DebugPoolList.addPool(this, poolSize);
 	}
 
 	public ObjectPool(Class<? extends T> type, int initialSize)

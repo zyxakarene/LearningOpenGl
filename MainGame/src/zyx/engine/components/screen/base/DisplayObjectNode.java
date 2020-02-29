@@ -1,7 +1,5 @@
 package zyx.engine.components.screen.base;
 
-import java.util.ArrayList;
-import zyx.debug.views.hierarchy.AbstractHierarchyData;
 import zyx.engine.components.screen.composed.ComposedImage;
 import zyx.engine.components.screen.image.Image;
 import zyx.engine.components.screen.image.Scale9Image;
@@ -11,30 +9,18 @@ import zyx.engine.components.screen.list.ItemList;
 import zyx.engine.components.screen.list.ItemRenderer;
 import zyx.engine.components.screen.text.Textfield;
 
-public class DisplayObjectNode extends AbstractHierarchyData<DisplayObject>
+public class DisplayObjectNode
 {
 
-	public DisplayObjectNode(DisplayObject instance)
-	{
-		super(instance);
-	}
+	private DisplayObject instance;
+	private int childCount;
+	private String type;
 
-	@Override
-	protected void addChildrenTo(ArrayList<AbstractHierarchyData<DisplayObject>> children)
+	DisplayObjectNode(DisplayObject instance)
 	{
-		if (instance instanceof DisplayObjectContainer)
-		{
-			ArrayList<DisplayObject> instanceChildren = new ArrayList<>();
-
-			DisplayObjectContainer container = (DisplayObjectContainer) instance;
-			container.getChildren(instanceChildren);
-			
-			for (DisplayObject instanceChild : instanceChildren)
-			{
-				DisplayObjectNode child = new DisplayObjectNode(instanceChild);
-				children.add(child);
-			}
-		}
+		this.instance = instance;
+		this.childCount = 0;
+		this.type = instance.getClass().getSimpleName();
 	}
 
 	@Override

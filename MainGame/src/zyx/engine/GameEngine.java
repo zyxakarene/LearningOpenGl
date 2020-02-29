@@ -4,8 +4,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import zyx.debug.DebugController;
-import zyx.debug.views.DebugFrame;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.scene.SceneManager;
 import zyx.engine.sound.SoundSystem;
@@ -94,8 +92,6 @@ public class GameEngine
 			sceneManager.update(timestamp, elapsed);
 			FPSCounter.updateFPS();
 
-			DebugFrame.onFrame();
-
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_ESCAPE))
 			{
 				running = false;
@@ -113,8 +109,6 @@ public class GameEngine
 		Keyboard.destroy();
 		Mouse.destroy();
 		SoundSystem.dispose();
-		
-		DebugController.close();
 		
 		System.exit(0);
 	}

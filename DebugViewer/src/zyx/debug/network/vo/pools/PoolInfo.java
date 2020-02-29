@@ -2,23 +2,19 @@ package zyx.debug.network.vo.pools;
 
 public class PoolInfo
 {
-	private static int idCounter = 0;
-	
 	public String name;
 	public int free;
 	public int taken;
 	public int total;
 	
-	private int id;
+	public int id;
 
-	public PoolInfo(String name)
+	public PoolInfo(String name, int id)
 	{
 		this.name = name;
 		free = 0;
 		taken = 0;
 		total = 0;
-		
-		id = ++idCounter;
 	}
 
 	public void setAmount(int free, int taken, int total)

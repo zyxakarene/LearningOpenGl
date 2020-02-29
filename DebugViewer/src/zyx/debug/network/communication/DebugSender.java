@@ -1,23 +1,19 @@
 package zyx.debug.network.communication;
 
-import java.io.ObjectOutputStream;
+import java.io.DataOutputStream;
 
-public class DebugSender implements Runnable
+public class DebugSender extends AbstractDebugIO
 {
-	private ObjectOutputStream out;
+	private DataOutputStream out;
 
-	public DebugSender(ObjectOutputStream out)
+	public DebugSender(DataOutputStream out)
 	{
 		this.out = out;
 	}
-	
+
 	@Override
-	public void run()
+	protected void onRun()
 	{
-		while(true)
-		{
-			
-		}
 	}
 
 }

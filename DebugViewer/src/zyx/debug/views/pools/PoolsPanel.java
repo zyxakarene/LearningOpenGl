@@ -28,9 +28,9 @@ public class PoolsPanel extends BaseDebugPanel
 	@Override
 	public void update()
 	{
-		if (PoolInformation.hasPoolChanges)
+		if (PoolInformation.hasPoolChanges())
 		{
-			ArrayList<PoolInfo> poolData = PoolInformation.poolData;
+			ArrayList<PoolInfo> poolData = PoolInformation.getPoolData();
 			
 			listModel.removeAllElements();
 
