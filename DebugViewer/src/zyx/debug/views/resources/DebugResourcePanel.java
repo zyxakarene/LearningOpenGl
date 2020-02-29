@@ -20,7 +20,7 @@ public class DebugResourcePanel extends BaseDebugPanel
 	private JScrollPane listScrollPane;
 
 	private WatcherManager watcher;
-	
+
 	private int watchFrameCounter;
 
 	public DebugResourcePanel()
@@ -38,9 +38,6 @@ public class DebugResourcePanel extends BaseDebugPanel
 		listScrollPane.setViewportView(list);
 
 		out = new ArrayList<>();
-		
-		watcher = new WatcherManager();
-		watcher.initialize();
 	}
 
 	@Override
@@ -48,16 +45,22 @@ public class DebugResourcePanel extends BaseDebugPanel
 	{
 		if (ResourceInformation.hasResourceChanges)
 		{
+			if (watcher == null)
+			{
+				watcher = new WatcherManager();
+				watcher.initialize();
+			}
+
 			out.clear();
 			out.addAll(ResourceInformation.resourceInfo);
-			
+
 			int oldIndex = list.getSelectedIndex();
 			oldIndex = oldIndex < 0 ? 0 : oldIndex;
 
 			listModel.removeAllElements();
 
 			watcher.setActiveResources(out);
-			
+
 			for (ResourceInfo resource : out)
 			{
 				listModel.addElement(resource);
@@ -74,7 +77,7 @@ public class DebugResourcePanel extends BaseDebugPanel
 		}
 
 		repaint();
-		
+
 		watchFrameCounter++;
 		if (watchFrameCounter >= 25)
 		{

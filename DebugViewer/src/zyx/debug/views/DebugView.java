@@ -57,7 +57,7 @@ public class DebugView extends javax.swing.JFrame
 
         tabPane = new javax.swing.JTabbedPane();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Debug View");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

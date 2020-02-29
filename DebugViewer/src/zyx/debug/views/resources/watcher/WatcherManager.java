@@ -9,25 +9,25 @@ import zyx.debug.network.vo.resources.ResourceInformation;
 public class WatcherManager implements IFileUpdated
 {
 
-	private final FileWatcher watcher;
-	private final Thread thread;
+	private FileWatcher watcher;
+	private Thread thread;
 
 	private ResourceInfo[] activeResources;
 
-	private final ArrayList<File> changedFiles;
-	private final HashMap<String, Boolean> pathMap;
+	private ArrayList<File> changedFiles;
+	private HashMap<String, Boolean> pathMap;
 
 	public WatcherManager()
 	{
 		changedFiles = new ArrayList<>();
 		pathMap = new HashMap<>();
-
-		watcher = new FileWatcher(this);
-		thread = new Thread(watcher);
 	}
 
 	public void initialize()
 	{
+		watcher = new FileWatcher(this);
+		thread = new Thread(watcher, "FileWatcher");
+		
 		thread.setDaemon(true);
 		thread.start();
 	}

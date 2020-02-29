@@ -4,36 +4,36 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
-import zyx.debug.views.network.NetworkInfo;
-import zyx.net.data.ReadableDataArray;
-import zyx.net.data.ReadableDataObject;
+import zyx.debug.network.vo.network.NetworkCommandInfo;
+import zyx.debug.network.vo.network.NetworkData;
+import zyx.debug.network.vo.network.NetworkDataType;
 
 public class NetworkTree extends JTree
 {
 
 	private final DefaultTreeModel model;
 
-	public NetworkTree(NetworkInfo info)
+	public NetworkTree(NetworkCommandInfo info)
 	{
 		TreeNode rootNode = createTree(info);
 
 		model = new DefaultTreeModel(rootNode);
 		setModel(model);
-		
+
 		setCellRenderer(new NetworkTreeCellRenderer());
-		
+
 		setRowHeight(17);
 	}
 
-	private TreeNode createTree(NetworkInfo info)
+	private TreeNode createTree(NetworkCommandInfo info)
 	{
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode(info.command, true);
 
 		for (int i = 0; i < info.count; i++)
 		{
-			ReadableDataObject obj = info.data.get(i);
+			NetworkData obj = info.data.get(i);
 			long timestamp = info.timestamps.get(i);
-			
+
 			DefaultMutableTreeNode readNode = new DefaultMutableTreeNode(new NetworkTreeItemWrapper(info, timestamp), true);
 			addReadableToNode(readNode, obj);
 
@@ -43,55 +43,61 @@ public class NetworkTree extends JTree
 		return root;
 	}
 
-	private void addReadableToNode(DefaultMutableTreeNode readNode, ReadableDataObject obj)
+	private void addReadableToNode(DefaultMutableTreeNode readNode, NetworkData obj)
 	{
 		String[] keys = obj.getAllKeys();
 
 		for (String key : keys)
 		{
-			Object objData = obj.getRaw(key);
+			Object objData = obj.dataMap.get(key);
+			NetworkDataType typeData = obj.typeMap.get(key);
 
-			if (objData instanceof ReadableDataObject)
+			switch (typeData)
 			{
-				DefaultMutableTreeNode dataNode = new DefaultMutableTreeNode(new NetworkTreeItemWrapper(objData, key), true);
-				addReadableToNode(dataNode, (ReadableDataObject) objData);
-				
-				readNode.add(dataNode);
-			}
-			else if (objData instanceof ReadableDataArray)
-			{
-				ReadableDataArray array = (ReadableDataArray) objData;
-				DefaultMutableTreeNode arrayNode = new DefaultMutableTreeNode(new NetworkTreeItemWrapper(array, key), true);
-
-				for (int i = 0; i < array.size(); i++)
+				case OBJECT:
 				{
-					Object item = array.get(i);
-					
-					DefaultMutableTreeNode dataNode = new DefaultMutableTreeNode(new NetworkTreeItemWrapper(item, i), true);
-					addObjectToNode(dataNode, item);
-					arrayNode.add(dataNode);
+					DefaultMutableTreeNode dataNode = new DefaultMutableTreeNode(new NetworkTreeItemWrapper(objData, key), true);
+					addReadableToNode(dataNode, (NetworkData) objData);
+					readNode.add(dataNode);
+					break;
 				}
-				readNode.add(arrayNode);
-			}
-			else if (objData instanceof byte[])
-			{
-				byte[] byteData = (byte[]) objData;
-				String nodeText = key + ": ByteArray[" + byteData.length + "]";
-				addObjectToNode(readNode, new NetworkTreeItemWrapper(objData, nodeText));
-			}
-			else
-			{
-				String nodeText = key + ": " + objData;
-				addObjectToNode(readNode, new NetworkTreeItemWrapper(objData, nodeText));
+				case ARRAY:
+				{
+					NetworkData[] array = (NetworkData[]) objData;
+					DefaultMutableTreeNode arrayNode = new DefaultMutableTreeNode(new NetworkTreeItemWrapper(array, key), true);
+					for (int i = 0; i < array.length; i++)
+					{
+						Object item = array[i];
+
+						DefaultMutableTreeNode dataNode = new DefaultMutableTreeNode(new NetworkTreeItemWrapper(item, i), true);
+						addObjectToNode(dataNode, item);
+						arrayNode.add(dataNode);
+					}
+					readNode.add(arrayNode);
+					break;
+				}
+				case BYTE_ARRAY:
+				{
+					int byteDataLen = (int) objData;
+					String nodeText = key + ": ByteArray[" + byteDataLen + "]";
+					addObjectToNode(readNode, new NetworkTreeItemWrapper(objData, nodeText));
+					break;
+				}
+				default:
+				{
+					String nodeText = key + ": " + objData;
+					addObjectToNode(readNode, new NetworkTreeItemWrapper(objData, nodeText));
+					break;
+				}
 			}
 		}
 	}
 
 	private void addObjectToNode(DefaultMutableTreeNode dataNode, Object item)
 	{
-		if (item instanceof ReadableDataObject)
+		if (item instanceof NetworkData)
 		{
-			addReadableToNode(dataNode, (ReadableDataObject) item);
+			addReadableToNode(dataNode, (NetworkData) item);
 		}
 		else
 		{

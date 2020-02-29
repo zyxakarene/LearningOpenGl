@@ -23,7 +23,7 @@ public class NetworkTreeCellRenderer extends DefaultTreeCellRenderer
 		}
 		else
 		{
-			setIcon(NetworkIcons.createIcon(userObject.getClass()));
+			setIcon(DebugIcons.createIcon(userObject.getClass()));
 		}
 		
 		return this;

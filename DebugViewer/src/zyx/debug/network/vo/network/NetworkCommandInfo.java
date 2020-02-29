@@ -1,19 +1,17 @@
-package zyx.debug.views.network;
+package zyx.debug.network.vo.network;
 
 import java.util.ArrayList;
-import zyx.net.data.ReadableDataObject;
-import zyx.utils.DeltaTime;
 
-public class NetworkInfo
+public class NetworkCommandInfo
 {
 	public String command;
-	public ArrayList<ReadableDataObject> data;
+	public ArrayList<NetworkData> data;
 	public ArrayList<Long> timestamps;
 	public long lastTimestamp;
 	
 	public int count;
 
-	public NetworkInfo(String name)
+	public NetworkCommandInfo(String name)
 	{
 		this.command = name;
 		this.data = new ArrayList<>();
@@ -22,10 +20,10 @@ public class NetworkInfo
 		this.lastTimestamp = 0;
 	}
 	
-	public void addData(ReadableDataObject obj)
+	public void addData(NetworkData obj, long time)
 	{
 		data.add(obj);
-		timestamps.add(DeltaTime.getTimestamp());
+		timestamps.add(time);
 		
 		if (data.size() > 10)
 		{
@@ -34,7 +32,7 @@ public class NetworkInfo
 		}
 		
 		count = data.size();
-		lastTimestamp = DeltaTime.getTimestamp();
+		lastTimestamp = time;
 	}
 
 	@Override

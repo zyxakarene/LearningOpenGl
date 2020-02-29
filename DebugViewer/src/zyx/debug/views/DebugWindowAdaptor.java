@@ -17,7 +17,7 @@ public class DebugWindowAdaptor extends WindowAdapter implements Runnable
 		this.view = view;
 		active = true;
 
-		updater = new Thread(this);
+		updater = new Thread(this, "WindowAdaptor");
 		updater.setDaemon(true);
 		updater.setPriority(2);
 	}
