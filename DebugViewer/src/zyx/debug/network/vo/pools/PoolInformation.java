@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class PoolInformation
@@ -11,12 +12,12 @@ public class PoolInformation
 
 	private static boolean hasPoolChanges;
 	
-	private static final ArrayList<PoolInfo> POOL_LIST = new ArrayList<>();
-	private static final HashMap<Integer, PoolInfo> POOL_MAP = new HashMap<>();
+	private static final ArrayList<PoolInfo> CHANGED_POOLS_LIST = new ArrayList<>();
+	private static final HashMap<Integer, PoolInfo> ALL_POOLS_MAP = new HashMap<>();
 
 	public static void fromData(byte[] data) throws IOException
 	{
-		synchronized (POOL_LIST)
+		synchronized (CHANGED_POOLS_LIST)
 		{
 			DataInputStream in = new DataInputStream(new ByteArrayInputStream(data));
 			int count = in.readByte();
@@ -27,12 +28,12 @@ public class PoolInformation
 				int taken = in.readInt();
 				int total = in.readInt();
 
-				PoolInfo info = POOL_MAP.get(id);
+				PoolInfo info = ALL_POOLS_MAP.get(id);
 				if (info == null)
 				{
 					info = new PoolInfo("", id);
-					POOL_MAP.put(id, info);
-					POOL_LIST.add(info);
+					ALL_POOLS_MAP.put(id, info);
+					CHANGED_POOLS_LIST.add(info);
 				}
 
 				info.setAmount(free, taken, total);
@@ -44,7 +45,7 @@ public class PoolInformation
 
 	public static boolean hasPoolChanges()
 	{
-		synchronized (POOL_LIST)
+		synchronized (CHANGED_POOLS_LIST)
 		{
 			return hasPoolChanges;
 		}
@@ -52,10 +53,9 @@ public class PoolInformation
 	
 	public static ArrayList<PoolInfo> getPoolData()
 	{
-		synchronized (POOL_LIST)
+		synchronized (CHANGED_POOLS_LIST)
 		{
-			ArrayList<PoolInfo> clone = new ArrayList<>(POOL_LIST);
-			POOL_LIST.clear();
+			ArrayList<PoolInfo> clone = new ArrayList<>(CHANGED_POOLS_LIST);
 			
 			return clone;
 		}

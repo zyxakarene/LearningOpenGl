@@ -2,6 +2,7 @@ package zyx.debug.network.vo.pools;
 
 public class PoolInfo
 {
+	public boolean active;
 	public String name;
 	public int free;
 	public int taken;
@@ -15,6 +16,7 @@ public class PoolInfo
 		free = 0;
 		taken = 0;
 		total = 0;
+		active = true;
 	}
 
 	public void setAmount(int free, int taken, int total)
@@ -22,5 +24,10 @@ public class PoolInfo
 		this.free = free;
 		this.taken = taken;
 		this.total = total;
+		
+		if (free == -1)
+		{
+			active = false;
+		}
 	}
 }

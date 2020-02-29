@@ -32,8 +32,13 @@ public class DebugPoolList
 	{
 		synchronized (POOLS)
 		{
-			POOLS.remove(pool);
+			PoolInfo info = POOLS.remove(pool);
 			CHANGED_POOLS.put(pool, Boolean.FALSE);
+			
+			if (info != null)
+			{
+				info.setAmount(-1, -1, -1);
+			}
 		}
 	}
 

@@ -11,12 +11,12 @@ public class PoolInfo
 
 	public PoolInfo(int id, String name)
 	{
+		this.id = id;
 		this.name = name;
+		
 		free = 0;
 		taken = 0;
 		total = 0;
-		
-		this.id = id;
 	}
 
 	public void setAmount(int free, int taken, int total)

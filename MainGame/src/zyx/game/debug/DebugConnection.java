@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import zyx.game.debug.io.SingleWriteFileOutputStream;
 import zyx.game.debug.pools.DebugPoolList;
 import zyx.game.debug.pools.PoolInfo;

@@ -78,11 +78,14 @@ public class DebugResourcePanel extends BaseDebugPanel
 
 		repaint();
 
-		watchFrameCounter++;
-		if (watchFrameCounter >= 25)
+		if (watcher != null)
 		{
-			watcher.checkChanged();
-			watchFrameCounter = 0;
+			watchFrameCounter++;
+			if (watchFrameCounter >= 25)
+			{
+				watcher.checkChanged();
+				watchFrameCounter = 0;
+			}
 		}
 	}
 
