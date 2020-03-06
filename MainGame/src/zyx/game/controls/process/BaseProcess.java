@@ -37,7 +37,6 @@ public class BaseProcess implements IUpdateable, IDisposeable
 
 	protected void onStart()
 	{
-		finish();
 	}
 
 	protected void onFinish()

@@ -11,6 +11,7 @@ import zyx.game.network.GameNetworkController;
 import zyx.engine.components.tooltips.TestTooltip;
 import zyx.engine.components.tooltips.TooltipManager;
 import zyx.engine.components.world.GameLight;
+import zyx.engine.scene.loading.WaitingProcess;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.behavior.BehaviorType;
@@ -63,12 +64,20 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 	@Override
 	protected void onPreloadResources()
 	{
+		preloadResource("mesh.box");
+		preloadResource("mesh.debug");
+		preloadResource("mesh.dragon");
+		preloadResource("mesh.player");
 	}
 
 	@Override
 	protected void onInitialize()
 	{
 		super.onInitialize();
+	
+		addLoadingScreenProcess(new WaitingProcess(100));
+		addLoadingScreenProcess(new WaitingProcess(100));
+		addLoadingScreenProcess(new WaitingProcess(100));
 		
 		NetworkChannel.sendRequest(NetworkCommands.LOGIN, "Zyx" + Math.random(), Gender.MALE);
 		

@@ -1,0 +1,25 @@
+{
+	"name":"loading_main",
+	"type":"container",
+	"children":
+	[
+		{
+			"name":"bar",
+			"type":"quad",
+			"width":100,
+			"height":100,
+			"x":0,
+			"y":0,
+			"texture":"sample"
+		},
+		{
+			"name":"bar2",
+			"type":"quad",
+			"width":100,
+			"height":100,
+			"x":0,
+			"y":150,
+			"texture":"sample"
+		}
+	]
+}

@@ -64,7 +64,7 @@ class Scale9Grids
 			default:
 				grid = new Rectangle(22, 22, 20, 20);
 				keys = new String[] {name};
-				Print.out("[Warning] Unknown Scale9Grid name:", name);
+				Print.err("[Warning] Unknown Scale9Grid name:", name);
 		}
 		
 		for (String key : keys)

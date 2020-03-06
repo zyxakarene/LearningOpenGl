@@ -3,9 +3,9 @@ package zyx.engine.scene.preloading;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.Resource;
-import zyx.game.controls.process.BaseProcess;
+import zyx.engine.scene.loading.LoadingScreenProcess;
 
-public class ResourcePreloadProcess extends BaseProcess implements IResourceReady<Resource>
+public class ResourcePreloadProcess extends LoadingScreenProcess implements IResourceReady<Resource>
 {
 	private String resource;
 	private Resource res;
@@ -25,6 +25,7 @@ public class ResourcePreloadProcess extends BaseProcess implements IResourceRead
 	@Override
 	public void onResourceReady(Resource resource)
 	{
+		addDone(1);
 		finish();
 	}
 
@@ -36,5 +37,11 @@ public class ResourcePreloadProcess extends BaseProcess implements IResourceRead
 			res.unregister(this);
 			res = null;
 		}
+	}
+
+	@Override
+	public int getTotalProgress()
+	{
+		return 1;
 	}
 }
