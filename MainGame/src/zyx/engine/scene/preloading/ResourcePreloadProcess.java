@@ -4,19 +4,21 @@ import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.Resource;
 import zyx.engine.scene.loading.LoadingScreenProcess;
+import zyx.engine.scene.loading.WaitingProcess;
 
-public class ResourcePreloadProcess extends LoadingScreenProcess implements IResourceReady<Resource>
+public class ResourcePreloadProcess extends WaitingProcess implements IResourceReady<Resource>
 {
 	private String resource;
 	private Resource res;
 	
 	public ResourcePreloadProcess(String resource)
 	{
+		super(50, "Preloading: " + resource);
 		this.resource = resource;
 	}
 
 	@Override
-	protected void onStart()
+	protected void onDoneWaiting()
 	{
 		res = ResourceManager.getInstance().getResource(resource);
 		res.registerAndLoad(this);
@@ -42,6 +44,6 @@ public class ResourcePreloadProcess extends LoadingScreenProcess implements IRes
 	@Override
 	public int getTotalProgress()
 	{
-		return 1;
+		return super.getTotalProgress() + 1;
 	}
 }

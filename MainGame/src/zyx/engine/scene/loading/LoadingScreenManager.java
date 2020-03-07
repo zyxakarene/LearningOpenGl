@@ -12,6 +12,7 @@ public class LoadingScreenManager implements IUpdateable, ICallback<ProcessQueue
 
 	private LoadingScreen screen;
 	private LoadingScreenProcessQueue currentQueue;
+	private ILoadingScreenDone currentCallback;
 	
 	public static LoadingScreenManager getInstance()
 	{
@@ -22,11 +23,20 @@ public class LoadingScreenManager implements IUpdateable, ICallback<ProcessQueue
 	{
 	}
 
-	public void showLoadingScreenWith(LoadingScreenProcessQueue queue)
+	public void showLoadingScreenWith(LoadingScreenProcessQueue queue, ILoadingScreenDone callback)
 	{
 		screen.visible = true;
 		currentQueue = queue;
-		currentQueue.start(this);
+		currentCallback = callback;
+		
+		if (currentQueue.isEmpty())
+		{
+			onCallback(currentQueue);
+		}
+		else
+		{
+			currentQueue.start(this);
+		}
 	}
 
 	public void initialize()
@@ -43,12 +53,20 @@ public class LoadingScreenManager implements IUpdateable, ICallback<ProcessQueue
 			currentQueue.update(timestamp, elapsedTime);
 			
 			float progress = currentQueue.getRatioCompleted();
-			screen.setProgress(progress);
+			String description = currentQueue.getCurrentTaskDescription();
+			screen.setProgress(progress, description);
 		}
 	}
 
 	@Override
 	public void onCallback(ProcessQueue data)
 	{
+		screen.visible = false;
+		
+		if (currentCallback != null)
+		{
+			currentCallback.onLoadingScreenCompleted();
+			currentCallback = null;
+		}
 	}
 }

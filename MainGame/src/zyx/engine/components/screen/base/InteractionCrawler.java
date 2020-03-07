@@ -40,27 +40,29 @@ public class InteractionCrawler
 
 		for (DisplayObjectContainer parent : parents)
 		{
-			objects.add(parent);
-			parent.getChildren(objects);
+			if (parent.visible && parent.touchable)
+			{
+				objects.add(parent);
+			}
 		}
 
 		DisplayObject child;
 		DisplayObjectContainer childContainer;
 		boolean hit;
-		boolean insideClip;
 		while (objects.size() > 0)
 		{
 			child = objects.removeLast();
+			
+			if (!child.visible)
+			{
+				continue;
+			}
 			
 			if (child instanceof DisplayObjectContainer)
 			{
 				childContainer = (DisplayObjectContainer) child;
 				childContainer.getChildren(objects);
-
-				if (child.focusable == false)
-				{
-					continue;
-				}
+				continue;
 			}
 
 			if (child.clipRect != null)

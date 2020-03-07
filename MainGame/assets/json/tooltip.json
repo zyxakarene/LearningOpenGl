@@ -6,7 +6,7 @@
 	"children":
 	[
 		{
-			"name":"image44",
+			"name":"tooltip_button",
 			"type":"composedScale9button",
 			"width":300,
 			"height":300,

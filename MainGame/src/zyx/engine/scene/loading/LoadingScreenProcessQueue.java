@@ -16,21 +16,29 @@ public class LoadingScreenProcessQueue extends ProcessQueue<LoadingScreenProcess
 	public void addProcess(LoadingScreenProcess process)
 	{
 		super.addProcess(process);
-		process.setQueue(this);
+		process.loadingQueue = this;
 		
 		totalSumRequired += process.getTotalProgress();
-		System.out.println("required now " + totalSumRequired);
 	}
 
 	void addProgression(int count)
 	{
 		totalSumCompleted += count;
-		System.out.println("Completed now: " + totalSumCompleted);
 		ratioCompleted = totalSumCompleted / totalSumRequired;
 	}
 
-	public float getRatioCompleted()
+	float getRatioCompleted()
 	{
 		return ratioCompleted;
+	}
+
+	String getCurrentTaskDescription()
+	{
+		if (currentProcess != null)
+		{
+			return currentProcess.taskDescription;
+		}
+		
+		return "";
 	}
 }

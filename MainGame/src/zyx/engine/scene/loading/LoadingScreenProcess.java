@@ -6,14 +6,15 @@ public abstract class LoadingScreenProcess extends BaseProcess
 {
 	private int currentSum;
 	
-	private LoadingScreenProcessQueue loadingQueue;
-	
-	public abstract int getTotalProgress();
-	
-	void setQueue(LoadingScreenProcessQueue queue)
+	LoadingScreenProcessQueue loadingQueue;
+	String taskDescription;
+
+	public LoadingScreenProcess(String taskDescription)
 	{
-		loadingQueue = queue;
+		this.taskDescription = taskDescription;
 	}
+
+	public abstract int getTotalProgress();
 	
 	protected void addDone(int count)
 	{
@@ -25,6 +26,7 @@ public abstract class LoadingScreenProcess extends BaseProcess
 			int origValue = currentSum - count;
 			count = total - origValue;
 		}
+		
 		loadingQueue.addProgression(count);
 	}
 }

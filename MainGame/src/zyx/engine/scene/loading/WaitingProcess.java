@@ -6,20 +6,24 @@ public class WaitingProcess extends LoadingScreenProcess
 	private int sum;
 	private int count;
 
-	public WaitingProcess(int sum)
+	public WaitingProcess(int sum, String text)
 	{
+		super(text);
 		this.sum = sum;
 	}
 
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-		count++;
-		addDone(1);
-		
-		if (count >= sum)
+		if (count < sum)
 		{
-			finish();
+			count++;
+			addDone(1);
+
+			if (count >= sum)
+			{
+				onDoneWaiting();
+			}
 		}
 	}
 
@@ -29,4 +33,8 @@ public class WaitingProcess extends LoadingScreenProcess
 		return sum;
 	}
 
+	protected void onDoneWaiting()
+	{
+		finish();
+	}
 }

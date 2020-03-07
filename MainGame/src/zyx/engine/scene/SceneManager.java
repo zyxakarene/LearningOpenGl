@@ -9,7 +9,8 @@ import zyx.utils.interfaces.IUpdateable;
 public class SceneManager implements IUpdateable
 {
 
-	private static final SceneManager instance = new SceneManager();
+	private static final SceneManager INSTANCE = new SceneManager();
+	
 	private Scene currentScene;
 	private SceneType requestedScene;
 
@@ -17,7 +18,7 @@ public class SceneManager implements IUpdateable
 	
 	public static SceneManager getInstance()
 	{
-		return instance;
+		return INSTANCE;
 	}
 
 	private SceneManager()
@@ -38,7 +39,7 @@ public class SceneManager implements IUpdateable
 					
 			currentScene.initialize();
 			LoadingScreenProcessQueue queue = currentScene.getLoadingScreenProcess();
-			loadingScreen.showLoadingScreenWith(queue);
+			loadingScreen.showLoadingScreenWith(queue, currentScene);
 			
 			GLUtils.errorCheck();
 

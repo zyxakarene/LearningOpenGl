@@ -30,10 +30,15 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 		name = "";
 		
 		loadingScreenLayer = new DisplayObjectContainer();
+		loadingScreenLayer.name = "LoadingContainer";
+		
 		tooltipLayer = new DisplayObjectContainer();
+		tooltipLayer.name = "TooltipContainer";
+		
 		hudLayer = new DisplayObjectContainer();
+		hudLayer.name = "HudContainer";
 
-		crawler = new InteractionCrawler(this, hudLayer, tooltipLayer);
+		crawler = new InteractionCrawler(this, hudLayer, tooltipLayer, loadingScreenLayer);
 		stage = this;
 
 		InputManager.getInstance().OnKeyPressed.addCallback(this);

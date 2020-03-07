@@ -7,9 +7,10 @@ import zyx.utils.interfaces.IUpdateable;
 
 public class ProcessQueue<P extends BaseProcess> implements IUpdateable, IDisposeable
 {
-	private ArrayList<BaseProcess> processes;
+	private ArrayList<P> processes;
 	
-	private BaseProcess currentProcess;
+	protected P currentProcess;
+	
 	private int currentIndex;
 	private ICallback<ProcessQueue> onCompleted;
 	private ICallback<BaseProcess> onProcessDone;
@@ -69,6 +70,11 @@ public class ProcessQueue<P extends BaseProcess> implements IUpdateable, IDispos
 		{
 			currentProcess.update(timestamp, elapsedTime);
 		}
+	}
+	
+	public boolean isEmpty()
+	{
+		return processes == null || processes.isEmpty();
 	}
 
 	@Override

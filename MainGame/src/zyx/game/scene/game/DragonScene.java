@@ -68,6 +68,8 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 		preloadResource("mesh.debug");
 		preloadResource("mesh.dragon");
 		preloadResource("mesh.player");
+		preloadResource("skybox.texture.desert");
+		preloadResource("cubemap.dragon");
 	}
 
 	@Override
@@ -75,9 +77,9 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 	{
 		super.onInitialize();
 	
-		addLoadingScreenProcess(new WaitingProcess(100));
-		addLoadingScreenProcess(new WaitingProcess(100));
-		addLoadingScreenProcess(new WaitingProcess(100));
+		addLoadingScreenProcess(new WaitingProcess(100, "Reticulating Splines"));
+		addLoadingScreenProcess(new WaitingProcess(100, "Branching Family Trees"));
+		addLoadingScreenProcess(new WaitingProcess(100, "Blurring Reality Lines"));
 		
 		NetworkChannel.sendRequest(NetworkCommands.LOGIN, "Zyx" + Math.random(), Gender.MALE);
 		

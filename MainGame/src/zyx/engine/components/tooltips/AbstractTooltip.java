@@ -82,6 +82,8 @@ public abstract class AbstractTooltip extends JsonSprite
 			}
 		}
 		
+		touchable = onScreen;
+		visible = onScreen;
 		if (!onScreen)
 		{
 			currentDistance = Integer.MAX_VALUE;

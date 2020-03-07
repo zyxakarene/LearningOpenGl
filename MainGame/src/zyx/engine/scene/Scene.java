@@ -4,6 +4,7 @@ import zyx.engine.components.screen.base.Stage;
 import zyx.engine.components.world.World3D;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;
+import zyx.engine.scene.loading.ILoadingScreenDone;
 import zyx.engine.scene.loading.LoadingScreenProcess;
 import zyx.engine.scene.loading.LoadingScreenProcessQueue;
 import zyx.engine.scene.preloading.ResourcePreloadProcess;
@@ -20,7 +21,7 @@ import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.cheats.DebugContainer;
 
-public class Scene
+public class Scene implements ILoadingScreenDone
 {
 
 	protected static Scene current;
@@ -72,9 +73,14 @@ public class Scene
 		onPreloadResources();
 
 		onInitialize();
-		ready = true;
 	}
 
+	@Override
+	public final void onLoadingScreenCompleted()
+	{
+		ready = true;
+	}
+	
 	protected void onPreloadResources()
 	{
 	}
@@ -86,7 +92,6 @@ public class Scene
 
 	protected final void addLoadingScreenProcess(LoadingScreenProcess process)
 	{
-		System.out.println("Added " + process + " to " + loadingQueue);
 		loadingQueue.addProcess(process);
 	}
 
@@ -211,7 +216,6 @@ public class Scene
 
 	LoadingScreenProcessQueue getLoadingScreenProcess()
 	{
-		System.out.println("Returning " + loadingQueue);
 		return loadingQueue;
 	}
 }

@@ -63,8 +63,6 @@ public class Button extends InteractableContainer implements IComposedButton
 			images[i] = img;
 
 			img.onLoaded.addCallback(onFirstImageLoaded);
-
-			img.touchable = false;
 			addChild(img);
 		}
 
