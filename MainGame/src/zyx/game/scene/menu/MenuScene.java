@@ -11,7 +11,7 @@ public class MenuScene extends Scene
 	@Override
 	protected void onInitialize()
 	{
-		addLoadingScreenProcess(new WaitingProcess(101, "Pretending to load"));
+		addLoadingScreenProcess(new WaitingProcess(15, "Pretending to load"));
 	}
 
 	@Override

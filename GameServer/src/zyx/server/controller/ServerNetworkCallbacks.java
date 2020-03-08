@@ -70,24 +70,9 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 
 	private void createCallbacks()
 	{
-		onPlayerLeave = (INetworkCallback<Integer>) (Integer data) -> 
-		{
-			onPlayerLeave(data);
-		};
-
-		onPlayerPos = (INetworkCallback<PositionData>) (PositionData data) -> 
-		{
-			onPlayerPos(data);
-		};
-
-		onPlayerLogin = (INetworkCallback<LoginData>) (LoginData data) -> 
-		{
-			onPlayerLogin(data);
-		};
-
-		onPlayerPing = (INetworkCallback<Integer>) (Integer data) -> 
-		{
-			PingManager.getInstance().onPing(data);
-		};
+		onPlayerLeave = (INetworkCallback<Integer>) this::onPlayerLeave;
+		onPlayerPos = (INetworkCallback<PositionData>) this::onPlayerPos;
+		onPlayerLogin = (INetworkCallback<LoginData>) this::onPlayerLogin;
+		onPlayerPing = (INetworkCallback<Integer>) PingManager.getInstance()::onPing;
 	}
 }

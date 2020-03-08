@@ -26,6 +26,7 @@ import zyx.game.scene.game.DragonScene;
 import zyx.game.login.data.AuthenticationData;
 import zyx.game.position.data.CharacterMassPositionData;
 import zyx.game.scene.ItemHandler;
+import zyx.game.scene.game.GameScene;
 import zyx.game.vo.DishType;
 import zyx.game.vo.HandheldItemType;
 import zyx.game.world.guests.data.GuestOrderData;
@@ -69,10 +70,16 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 	{
 		PingManager.getInstance().addEntity(data.id);
 
+		GameModels.player.authenticated = true;
 		GameModels.player.playerId = data.id;
 		GameModels.player.playerName = data.name;
-		DragonScene.getCurrent().onAuthed();
 
+		GameScene scene = GameScene.getCurrent();
+		if (scene != null)
+		{
+			scene.createPlayerObject();
+		}
+		
 		Print.out("User authenticated as ID:", data.id);
 	}
 

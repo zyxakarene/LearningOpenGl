@@ -3,7 +3,6 @@ package zyx.engine.scene.preloading;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.Resource;
-import zyx.engine.scene.loading.LoadingScreenProcess;
 import zyx.engine.scene.loading.WaitingProcess;
 
 public class ResourcePreloadProcess extends WaitingProcess implements IResourceReady<Resource>
@@ -13,7 +12,7 @@ public class ResourcePreloadProcess extends WaitingProcess implements IResourceR
 	
 	public ResourcePreloadProcess(String resource)
 	{
-		super(50, "Preloading: " + resource);
+		super(5, "Preloading: " + resource);
 		this.resource = resource;
 	}
 
