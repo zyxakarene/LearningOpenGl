@@ -9,6 +9,8 @@ public class JsonTextfieldConsumer extends JsonBaseConsumer<Textfield>
 	protected static final String FONT_SIZE = "fontSize";
 	protected static final String SHOW_BORDERS = "showBorders";
 	protected static final String COLOR = "color";
+	protected static final String H_ALIGN = "hAlign";
+	protected static final String V_ALIGN = "vAlign";
 
 	@Override
 	protected void onAccept(String name, Object value)
@@ -18,12 +20,18 @@ public class JsonTextfieldConsumer extends JsonBaseConsumer<Textfield>
 			case FONT:
 				currentDisplayObject.load(value.toString());
 				break;
+			case H_ALIGN:
+				currentDisplayObject.setHAlign(value.toString());
+				break;
+			case V_ALIGN:
+				currentDisplayObject.setVAlign(value.toString());
+				break;
 			case TEXT:
 				currentDisplayObject.setText(value.toString());
 				break;
 			case FONT_SIZE:
 				float fontSize = toFloat(value);
-				currentDisplayObject.setFontSize(fontSize);
+				currentDisplayObject.setFontSize(fontSize / 12f);
 				break;
 			case SHOW_BORDERS:
 				boolean borderVisibility = toBoolean(value);
