@@ -4,6 +4,8 @@ import zyx.utils.ListUtils;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 import org.lwjgl.util.vector.Vector4f;
+import zyx.opengl.textures.bitmapfont.alignment.HAlignment;
+import zyx.opengl.textures.bitmapfont.alignment.VAlignment;
 
 class TextGenerator
 {
@@ -12,6 +14,9 @@ class TextGenerator
 	private final LinkedList<Integer> elementData;
 	private final FontFile fontFile;
 
+	private HAlignment hAlign;
+	private VAlignment vAlign;
+	
 	private char prevCharacter;
 
 	private int highestX;
@@ -37,11 +42,20 @@ class TextGenerator
 		this.maxWidth = width;
 		this.maxHeight = height;
 
+		hAlign = HAlignment.CENTER;
+		vAlign = VAlignment.MIDDLE;
+		
 		currentValueX = 0;
 		currentValueY = 0;
 
 		highestX = 0;
 		highestY = 0;
+	}
+
+	void sethAlign(HAlignment h, VAlignment v)
+	{
+		hAlign = h;
+		vAlign = v;
 	}
 
 	void addCharacter(char character)
@@ -139,13 +153,35 @@ class TextGenerator
 
 	private void scaleVertexData(float scale, float[] data)
 	{
-		float offsetX = ((maxWidth / 2) - (getWidth() * scale / 2));
-		float offsetY = ((maxHeight / 2) - (getHeight() * scale / 2));
-//		Print.out(scale);
-//		Print.out(maxWidth, maxHeight);
-//		Print.out(getWidth(), getHeight());
-//		Print.out(offsetX, offsetY);
-//		Print.out(highestY);
+		float offsetX = 0;
+		float offsetY = 0;
+		
+		switch (hAlign)
+		{
+			case LEFT:
+				offsetX = 0;
+				break;
+			case CENTER:
+				offsetX = ((maxWidth / 2) - (getWidth() * scale / 2));
+				break;
+			case RIGHT:
+				offsetX = maxWidth - (getWidth() * scale);
+				break;
+		}
+		
+		switch (vAlign)
+		{
+			case TOP:
+				offsetY = 0;
+				break;
+			case MIDDLE:
+				offsetY = ((maxHeight / 2) - (getHeight() * scale / 2));
+				break;
+			case BOTTOM:
+				offsetY = maxHeight - (getHeight() * scale);
+				break;
+		}
+
 		highestX = 0;
 		highestY = 0;
 
@@ -178,9 +214,6 @@ class TextGenerator
 		float scaleAmount = getRescaleValue();
 		
 		scaleVertexData(scaleAmount, finalizedVertexData);
-		if (scaleAmount < 1)
-		{
-		}
 		
 		return finalizedVertexData;
 	}

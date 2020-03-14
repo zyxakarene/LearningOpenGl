@@ -14,6 +14,11 @@ public enum Gender
 		this.id = id;
 	}
 	
+	public static Gender random()
+	{
+		return Math.random() > 0.5 ? MALE : FEMALE;
+	}
+	
 	public static Gender getFromId(int id)
 	{
 		for (Gender gender : values)

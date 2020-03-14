@@ -81,6 +81,19 @@ public abstract class AbstractQuad extends DisplayObject
 		return originalHeight;
 	}
 
+	public void setSize(float x, float y)
+	{
+		if (loaded)
+		{
+			setScale(x / originalWidth, y / originalHeight);
+		}
+		else
+		{
+			originalWidth = x;
+			originalHeight = y;
+		}
+	}
+
 	@Override
 	public void setWidth(float value)
 	{

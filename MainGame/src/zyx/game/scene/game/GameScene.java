@@ -1,11 +1,18 @@
 package zyx.game.scene.game;
 
+import java.util.ArrayList;
 import zyx.engine.scene.Scene;
 import zyx.engine.utils.worldpicker.IHoveredItem;
 import zyx.engine.utils.worldpicker.WorldPicker;
+import zyx.game.behavior.camera.CameraUpdateViewBehavior;
+import zyx.game.behavior.freefly.FreeFlyBehavior;
+import zyx.game.behavior.player.OnlinePositionSender;
+import zyx.game.components.GameObject;
+import zyx.game.components.world.player.PlayerObject;
 import zyx.game.scene.ItemHandler;
 import zyx.game.scene.ItemHolderHandler;
 import zyx.net.io.controllers.BaseNetworkController;
+import zyx.opengl.camera.Camera;
 import zyx.utils.interfaces.IPhysbox;
 
 public class GameScene extends Scene
@@ -16,10 +23,16 @@ public class GameScene extends Scene
 	protected ItemHandler itemHandler;
 	protected ItemHolderHandler itemHolderHandler;
 	protected BaseNetworkController networkController;
+	
+	protected PlayerObject player;
+	
+	private ArrayList<GameObject> gameObjects;
 
 	public GameScene()
 	{
-		//picker = new WorldPicker();
+		gameObjects = new ArrayList<>();
+		
+		picker = new WorldPicker();
 
 		itemHolderHandler = new ItemHolderHandler();
 		itemHandler = new ItemHandler(itemHolderHandler);
@@ -27,17 +40,32 @@ public class GameScene extends Scene
 
 	public static GameScene getCurrent()
 	{
-		return (GameScene) current;
+		if (current instanceof GameScene)
+		{
+			return (GameScene) current;
+		}
+		
+		return null;
 	}
 	
 	public void addPickedObject(IPhysbox object, IHoveredItem clickCallback)
 	{
-//		picker.addObject(object, clickCallback);
+		picker.addObject(object, clickCallback);
 	}
 
 	public void removePickedObject(IPhysbox object, IHoveredItem clickCallback)
 	{
-//		picker.removeObject(object, clickCallback);
+		picker.removeObject(object, clickCallback);
+	}
+	
+	public void addGameObject(GameObject object)
+	{
+		gameObjects.add(object);
+	}
+
+	public void removeGameObject(GameObject object)
+	{
+		gameObjects.remove(object);
 	}
 
 	@Override
@@ -45,8 +73,13 @@ public class GameScene extends Scene
 	{
 		super.onUpdate(timestamp, elapsedTime);
 
+		for (GameObject gameObject : gameObjects)
+		{
+			gameObject.update(timestamp, elapsedTime);
+		}
+		
 		itemHolderHandler.update(timestamp, elapsedTime);
-//		picker.update();
+		picker.update();
 	}
 
 	@Override
@@ -56,6 +89,20 @@ public class GameScene extends Scene
 
 		networkController = createNetworkDispatcher();
 		networkController.addListeners();
+	}
+	
+	public void createPlayerObject()
+	{
+		player = new PlayerObject();
+
+		player.addBehavior(new FreeFlyBehavior());
+		player.addBehavior(new CameraUpdateViewBehavior());
+		player.addBehavior(new OnlinePositionSender());
+		Camera.getInstance().setViewObject(player);
+
+		gameObjects.add(player);
+
+		world.addChild(player);
 	}
 
 	@Override
@@ -71,6 +118,17 @@ public class GameScene extends Scene
 		{
 			networkController.dispose();
 			networkController = null;
+		}
+		
+		if (gameObjects != null)
+		{
+			for (GameObject gameObject : gameObjects)
+			{
+				gameObject.dispose();
+			}
+			
+			gameObjects.clear();
+			gameObjects = null;
 		}
 
 		super.onDispose();

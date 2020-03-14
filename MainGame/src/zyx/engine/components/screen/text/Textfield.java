@@ -13,6 +13,8 @@ import zyx.engine.resources.impl.FontResource;
 import zyx.engine.resources.impl.Resource;
 import zyx.opengl.textures.bitmapfont.BitmapFont;
 import zyx.opengl.textures.bitmapfont.Text;
+import zyx.opengl.textures.bitmapfont.alignment.HAlignment;
+import zyx.opengl.textures.bitmapfont.alignment.VAlignment;
 
 public class Textfield extends InteractableContainer implements IFocusable, IResourceReady<FontResource>, ILoadable
 {
@@ -21,6 +23,8 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	private String text;
 	private float fontSize;
 	private Vector4f colors;
+	private HAlignment hAlign;
+	private VAlignment vAlign;
 	private boolean loaded;
 
 	private Resource fontResource;
@@ -41,7 +45,9 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 		width = 100;
 		height = 100;
 		fontSize = 1f;
-
+		hAlign = HAlignment.CENTER;
+		vAlign = VAlignment.MIDDLE;
+		
 		borders = new Quad[4];
 
 		focusable = false;
@@ -87,6 +93,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 
 		BitmapFont font = resource.getContent();
 		glText = new Text(font, fontSize, width, height);
+		glText.setAlignment(vAlign, hAlign);
 		glText.setColors(colors);
 		glText.setText(text);
 
@@ -123,7 +130,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 
 	@Override
 	protected void onDraw()
-	{		
+	{
 		if (glText != null)
 		{
 			glText.draw();
@@ -170,6 +177,26 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 		if (loaded)
 		{
 			glText.setArea(width, height);
+		}
+	}
+
+	public void setVAlign(String alignment)
+	{
+		vAlign = VAlignment.getFrom(alignment);
+		
+		if (loaded)
+		{
+			glText.setAlignment(vAlign, hAlign);
+		}
+	}
+
+	public void setHAlign(String alignment)
+	{
+		hAlign = HAlignment.getFrom(alignment);
+		
+		if (loaded)
+		{
+			glText.setAlignment(vAlign, hAlign);
 		}
 	}
 
@@ -273,7 +300,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 		{
 			return;
 		}
-		
+
 		for (Quad border : borders)
 		{
 			if (border != null)
@@ -310,13 +337,13 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	public void setFontSize(float fontSize)
 	{
 		this.fontSize = fontSize;
-		
+
 		if (loaded)
 		{
 			glText.setFontScale(fontSize);
 		}
 	}
-	
+
 	@Override
 	public String getDebugIcon()
 	{

@@ -1,5 +1,7 @@
 package zyx.engine.scene;
 
+import zyx.engine.scene.loading.LoadingScreenManager;
+import zyx.engine.scene.loading.LoadingScreenProcessQueue;
 import zyx.game.scene.SceneType;
 import zyx.opengl.GLUtils;
 import zyx.utils.interfaces.IUpdateable;
@@ -7,18 +9,16 @@ import zyx.utils.interfaces.IUpdateable;
 public class SceneManager implements IUpdateable
 {
 
-	private static SceneManager instance = new SceneManager();
+	private static final SceneManager INSTANCE = new SceneManager();
+	
 	private Scene currentScene;
 	private SceneType requestedScene;
 
+	private LoadingScreenManager loadingScreen;
+	
 	public static SceneManager getInstance()
 	{
-		if (instance == null)
-		{
-			instance = new SceneManager();
-		}
-
-		return instance;
+		return INSTANCE;
 	}
 
 	private SceneManager()
@@ -36,12 +36,21 @@ public class SceneManager implements IUpdateable
 			}
 
 			currentScene = requestedScene.createScene();
+					
 			currentScene.initialize();
+			LoadingScreenProcessQueue queue = currentScene.getLoadingScreenProcess();
+			loadingScreen.showLoadingScreenWith(queue, currentScene);
+			
 			GLUtils.errorCheck();
 
 			requestedScene = null;
 		}
 
+		if (loadingScreen != null)
+		{
+			loadingScreen.update(timestamp, elapsedTime);
+		}
+		
 		if (currentScene != null)
 		{
 			currentScene.update(timestamp, elapsedTime);
@@ -51,6 +60,12 @@ public class SceneManager implements IUpdateable
 
 	public void changeScene(SceneType scene)
 	{
+		if (loadingScreen == null)
+		{
+			loadingScreen = LoadingScreenManager.getInstance();
+			loadingScreen.initialize();
+		}
+
 		requestedScene = scene;
 	}
 }

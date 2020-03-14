@@ -15,6 +15,7 @@ class Scale9Grids
 	private static final String BTN_UP = "BtnUp";
 	private static final String FLAT_BG = "flat_bg";
 	private static final String SAMPLE = "sample";
+	private static final String LOADING = "loading";
 	
 	private static final String PANEL_1_A = "panel_01_center";
 	private static final String PANEL_1_B = "panel_01_downright";
@@ -61,10 +62,14 @@ class Scale9Grids
 				grid = new Rectangle(6, 6, 4, 4);
 				keys = new String[] {PANEL_2_A, PANEL_2_B, PANEL_2_C};
 				break;
+			case LOADING:
+				grid = new Rectangle(4, 4, 0, 0);
+				keys = new String[] {LOADING};
+				break;
 			default:
 				grid = new Rectangle(22, 22, 20, 20);
 				keys = new String[] {name};
-				Print.out("[Warning] Unknown Scale9Grid name:", name);
+				Print.err("[Warning] Unknown Scale9Grid name:", name);
 		}
 		
 		for (String key : keys)

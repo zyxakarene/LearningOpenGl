@@ -6,6 +6,8 @@ import zyx.opengl.models.AbstractModel;
 import zyx.opengl.models.BufferWrapper;
 import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.shaders.implementations.Shader;
+import zyx.opengl.textures.bitmapfont.alignment.HAlignment;
+import zyx.opengl.textures.bitmapfont.alignment.VAlignment;
 
 public class Text extends AbstractModel
 {
@@ -23,6 +25,8 @@ public class Text extends AbstractModel
 	private Vector4f lastColor;
 	
 	private boolean shouldUpdate;
+	private HAlignment hAlign;
+	private VAlignment vAlign;
 	
 	public Text(BitmapFont font, float fontScale, float width, float height)
 	{
@@ -31,6 +35,9 @@ public class Text extends AbstractModel
 		this.fontScale = fontScale;
 		this.width = width;
 		this.height = height;
+		
+		hAlign = HAlignment.CENTER;
+		vAlign = VAlignment.MIDDLE;
 		
 		shouldUpdate = true;
 		
@@ -61,7 +68,8 @@ public class Text extends AbstractModel
 	private void update()
 	{
 		TextGenerator generator = new TextGenerator(font.fontFile, lastColor, width, height, fontScale);
-
+		generator.sethAlign(hAlign, vAlign);
+		
 		characterCount = lastText.length();
 		char character;
 		for (int i = 0; i < characterCount; i++)
@@ -158,6 +166,16 @@ public class Text extends AbstractModel
 	{
 		this.width = width;
 		this.height = height;
+		
+		shouldUpdate = true;
+	}
+
+	public void setAlignment(VAlignment vAlign, HAlignment hAlign)
+	{
+		this.vAlign = vAlign;
+		this.hAlign = hAlign;
+		
+		System.out.println("Setting alignment to " + hAlign);
 		
 		shouldUpdate = true;
 	}

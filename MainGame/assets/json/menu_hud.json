@@ -30,10 +30,12 @@
 			"y":100,
 			"width":300,
 			"height":150,
-			"showBorders":true,
+			"fontSize":15,
+			"hAlign":"left",
+			"showBorders":false,
 			"font":"font.console",
 			"color":"0xFF00FF",
-			"text":"I am a long text that scales up and down and changes container size"
+			"text":"Textfield"
 		}
 	]
 }

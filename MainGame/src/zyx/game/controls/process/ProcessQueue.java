@@ -5,11 +5,12 @@ import zyx.engine.utils.callbacks.ICallback;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IUpdateable;
 
-public class ProcessQueue implements IUpdateable, IDisposeable
+public class ProcessQueue<P extends BaseProcess> implements IUpdateable, IDisposeable
 {
-	private ArrayList<BaseProcess> processes;
+	private ArrayList<P> processes;
 	
-	private BaseProcess currentProcess;
+	protected P currentProcess;
+	
 	private int currentIndex;
 	private ICallback<ProcessQueue> onCompleted;
 	private ICallback<BaseProcess> onProcessDone;
@@ -25,7 +26,7 @@ public class ProcessQueue implements IUpdateable, IDisposeable
 		};
 	}
 	
-	public void addProcess(BaseProcess process)
+	public void addProcess(P process)
 	{
 		processes.add(process);
 	}
@@ -45,6 +46,8 @@ public class ProcessQueue implements IUpdateable, IDisposeable
 	private void loadNext()
 	{
 		currentIndex++;
+		
+		currentProcess = null;
 		
 		if (currentIndex >= processes.size())
 		{
@@ -67,6 +70,11 @@ public class ProcessQueue implements IUpdateable, IDisposeable
 		{
 			currentProcess.update(timestamp, elapsedTime);
 		}
+	}
+	
+	public boolean isEmpty()
+	{
+		return processes == null || processes.isEmpty();
 	}
 
 	@Override

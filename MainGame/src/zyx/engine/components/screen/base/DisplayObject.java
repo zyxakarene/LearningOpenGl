@@ -51,6 +51,9 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 	public boolean touchable;
 	public boolean focusable;
 	public boolean disposed;
+	
+	private float pivotX;
+	private float pivotY;
 
 	public String name;
 
@@ -79,6 +82,9 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		dirty = true;
 		dirtyInv = true;
 
+		pivotX = 0f;
+		pivotY = 0f;
+		
 		shader = ShaderManager.getInstance().<ScreenShader>get(Shader.SCREEN);
 	}
 
@@ -86,11 +92,13 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 	{
 		if (dirty)
 		{
+			localMatrix.translate(new Vector2f(-pivotX, pivotY));
 			Matrix4f.load(localMatrix, worldMatrix);
 			if (parent != null)
 			{
 				Matrix4f.mul(parent.worldMatrix(), worldMatrix, worldMatrix);
 			}
+			localMatrix.translate(new Vector2f(pivotX, -pivotY));
 
 			dirty = false;
 			dirtyInv = true;
@@ -143,6 +151,44 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		return parent;
 	}
 
+	public float getPivotX()
+	{
+		return pivotX;
+	}
+
+	public void setPivotX(float value)
+	{
+		pivotX = value;
+	}
+
+	public float getPivotY()
+	{
+		return pivotY;
+	}
+
+	public void setPivotY(float value)
+	{
+		pivotY = value;
+	}
+
+	public Vector2f getPivot(Vector2f out)
+	{
+		if (out == null)
+		{
+			out = new Vector2f();
+		}
+		
+		out.x = pivotX;
+		out.y = pivotY;
+		return out;
+	}
+
+	public void setPivot(Vector2f value)
+	{
+		pivotX = value.x;
+		pivotY = value.y;
+	}
+	
 	public float getWidth(boolean local)
 	{
 		float width = getWidth();

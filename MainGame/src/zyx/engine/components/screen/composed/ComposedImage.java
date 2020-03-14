@@ -48,8 +48,6 @@ public class ComposedImage extends DisplayObjectContainer implements IComposedIm
 			images[i] = img;
 
 			img.onLoaded.addCallback(onFirstImageLoaded);
-			
-			img.touchable = false;
 			addChild(img);
 		}
 		

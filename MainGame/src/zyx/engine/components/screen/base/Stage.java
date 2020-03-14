@@ -21,6 +21,7 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 
 	private ICallback<Vector2Int> screenSizeChanged;
 
+	public final DisplayObjectContainer loadingScreenLayer;
 	public final DisplayObjectContainer tooltipLayer;
 	public final DisplayObjectContainer hudLayer;
 
@@ -28,10 +29,16 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 	{
 		name = "";
 		
+		loadingScreenLayer = new DisplayObjectContainer();
+		loadingScreenLayer.name = "LoadingContainer";
+		
 		tooltipLayer = new DisplayObjectContainer();
+		tooltipLayer.name = "TooltipContainer";
+		
 		hudLayer = new DisplayObjectContainer();
+		hudLayer.name = "HudContainer";
 
-		crawler = new InteractionCrawler(this, hudLayer, tooltipLayer);
+		crawler = new InteractionCrawler(this, hudLayer, tooltipLayer, loadingScreenLayer);
 		stage = this;
 
 		InputManager.getInstance().OnKeyPressed.addCallback(this);
@@ -46,6 +53,7 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 		
 		addChild(tooltipLayer);
 		addChild(hudLayer);
+		addChild(loadingScreenLayer);
 	}
 
 	public final void drawStage()
@@ -59,6 +67,8 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 		tooltipLayer.draw();
 		hudLayer.draw();
 		StencilControl.getInstance().stopMaskingLayer(StencilLayer.PLAYER_CHARACTER, Buffer.DEFAULT);
+		
+		loadingScreenLayer.draw();
 	}
 
 	public final void checkStageMouseInteractions(int x, int y)

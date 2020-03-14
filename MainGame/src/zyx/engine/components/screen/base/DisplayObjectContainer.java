@@ -17,7 +17,7 @@ public class DisplayObjectContainer extends DisplayObject
 		children = new ArrayList<>();
 		numChildren = 0;
 	}
-
+	
 	@Override
 	protected void updateTransforms(boolean alsoChildren)
 	{

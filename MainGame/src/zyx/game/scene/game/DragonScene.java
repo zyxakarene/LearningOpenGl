@@ -1,6 +1,5 @@
 package zyx.game.scene.game;
 
-import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.cubemaps.CubemapManager;
@@ -11,28 +10,22 @@ import zyx.game.network.GameNetworkController;
 import zyx.engine.components.tooltips.TestTooltip;
 import zyx.engine.components.tooltips.TooltipManager;
 import zyx.engine.components.world.GameLight;
+import zyx.engine.scene.loading.WaitingProcess;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
-import zyx.game.behavior.BehaviorType;
-import zyx.game.behavior.camera.CameraUpdateViewBehavior;
-import zyx.game.behavior.freefly.FreeFlyBehavior;
 import zyx.game.behavior.misc.JiggleBehavior;
 import zyx.game.behavior.misc.RotateBehavior;
-import zyx.game.behavior.player.OnlinePositionSender;
 import zyx.game.components.GameObject;
-import zyx.game.components.MeshObject;
+import zyx.game.components.SimpleMesh;
 import zyx.game.components.world.meshbatch.CubeEntity;
-import zyx.game.components.world.player.*;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.process.ProcessQueue;
+import zyx.game.controls.process.impl.AuthenticateLoadingProcess;
 import zyx.game.models.GameModels;
 import zyx.game.network.PingManager;
 import zyx.game.vo.Gender;
 import zyx.net.io.controllers.BaseNetworkController;
-import zyx.net.io.controllers.NetworkChannel;
-import zyx.net.io.controllers.NetworkCommands;
 import zyx.opengl.GLUtils;
-import zyx.opengl.camera.Camera;
 import zyx.opengl.models.implementations.shapes.Sphere;
 import zyx.utils.FloatMath;
 import zyx.utils.math.QuaternionUtils;
@@ -40,52 +33,49 @@ import zyx.utils.math.QuaternionUtils;
 public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 {
 
-	private static DragonScene current;
-
-	private ArrayList<GameObject> gameObjects;
 	private boolean cubemapping;
 	private ProcessQueue processQueue;
 
-	public PlayerObject player;
-	private PlayerClipboard board;
-
 	public DragonScene()
 	{
-		gameObjects = new ArrayList<>();
-		current = this;
 	}
 
 	public static DragonScene getCurrent()
 	{
-		return current;
+		if (current instanceof DragonScene)
+		{
+			return (DragonScene) current;
+		}
+		
+		return null;
 	}
 	
 	@Override
 	protected void onPreloadResources()
 	{
+		preloadResource("mesh.player");
+		preloadResource("skybox.texture.desert");
+		preloadResource("cubemap.dragon");
 	}
 
 	@Override
 	protected void onInitialize()
 	{
 		super.onInitialize();
+	
+//		addLoadingScreenProcess(new AuthenticateLoadingProcess("Zyx", Gender.random()));
+		addLoadingScreenProcess(new WaitingProcess(3, "Reticulating Splines"));
+		addLoadingScreenProcess(new WaitingProcess(5, "Branching Family Trees"));
+		addLoadingScreenProcess(new WaitingProcess(7, "Blurring Reality Lines"));
 		
-		NetworkChannel.sendRequest(NetworkCommands.LOGIN, "Zyx" + Math.random(), Gender.MALE);
-		
-		board = new PlayerClipboard();
-		board.setup();
-		board.addBehavior(new ClipboardDrawBehavior());
-		board.addBehavior(new ClipboardViewerBehavior());
-		world.addChild(board);
+		createPlayerObject();
 		
 		world.loadSkybox("skybox.texture.desert");
 		CubemapManager.getInstance().load("cubemap.dragon");
 		
-		MeshObject platform = new MeshObject();
+		SimpleMesh platform = new SimpleMesh();
 		platform.load("mesh.platform");
 		world.addChild(platform);
-		
-		gameObjects.add(platform);
 
 		for (int i = 0; i < 4; i++)
 		{
@@ -102,7 +92,7 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 			GLUtils.errorCheck();
 
 			lightContainer.addBehavior(new JiggleBehavior());
-			gameObjects.add(lightContainer);
+			addGameObject(lightContainer);
 		}
 
 		world.setSunRotation(new Vector3f(-33, -5, -21));
@@ -126,7 +116,7 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 		spinner.addChild(sphere4);
 		world.addChild(spinner);
 
-		gameObjects.add(spinner);
+		addGameObject(spinner);
 
 		TooltipManager.getInstance().register(new TestTooltip(sphere1));
 		TooltipManager.getInstance().register(new TestTooltip(sphere2));
@@ -148,8 +138,6 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 
 			MeshBatchManager.getInstance().addEntity(entityA);
 		}
-		
-		onAuthed();
 	}
 
 	@Override
@@ -157,17 +145,6 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 	{
 		super.onUpdate(timestamp, elapsedTime);
 		
-		if (board != null)
-		{
-			board.update(timestamp, elapsedTime);
-		}
-		
-		for (int i = 0; i < gameObjects.size(); i++)
-		{
-			GameObject obj = gameObjects.get(i);
-			obj.update(timestamp, elapsedTime);
-		}
-
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_R))
 		{
 			int width = (int) (64 + (Math.random() * 1920 * 0.75));
@@ -212,22 +189,12 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 	{
 		super.onDispose();
 		
-		for (GameObject gameObject : gameObjects)
-		{
-			gameObject.dispose();
-		}
-
 		CubemapManager.getInstance().clean();
 		TooltipManager.getInstance().clean();
 		MeshBatchManager.getInstance().clean();
 
 		itemHandler.clean();
 		itemHolderHandler.clean();
-
-		gameObjects.clear();
-		gameObjects = null;
-
-		camera.removeBehavior(BehaviorType.ONLINE_POSITION);
 
 		PingManager.getInstance().removeEntity(GameModels.player.playerId);
 	}
@@ -238,28 +205,5 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 		cubemapping = false;
 		processQueue.dispose();
 		processQueue = null;
-	}
-
-	public void onAuthed()
-	{
-		player = new PlayerObject();
-
-//		WorldObject box = new Box(1, 1, 1);
-//		WorldObject p = new Box(3f, 0.01f, 3f);
-//		p.setPosition(true, 0, -1f, 0);
-//		box.setPosition(true, 0, 0, -5);
-//		player.addChild(p);
-//		player.addChild(box);		
-
-		player.addChild(board);
-
-		player.addBehavior(new FreeFlyBehavior());
-		player.addBehavior(new CameraUpdateViewBehavior());
-		player.addBehavior(new OnlinePositionSender());
-		Camera.getInstance().setViewObject(player);
-
-		gameObjects.add(player);
-
-		world.addChild(player);
 	}
 }

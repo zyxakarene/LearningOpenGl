@@ -8,6 +8,27 @@ import zyx.opengl.stencils.StencilLayer;
 public class PlayerObject extends GameObject
 {
 
+	private PlayerClipboard board;
+
+	public PlayerObject()
+	{
+		board = new PlayerClipboard();
+		board.setup();
+		board.addBehavior(new ClipboardDrawBehavior());
+		board.addBehavior(new ClipboardViewerBehavior());
+		
+		addChild(board);
+	}
+
+	@Override
+	protected void onUpdate(long timestamp, int elapsedTime)
+	{
+		if (board != null)
+		{
+			board.update(timestamp, elapsedTime);
+		}
+	}
+
 	@Override
 	protected void onDraw()
 	{
@@ -19,7 +40,5 @@ public class PlayerObject extends GameObject
 	{
 		StencilControl.getInstance().stopDrawingToLayer(StencilLayer.PLAYER_CHARACTER, Buffer.DEFERRED);
 	}
-	
-	
 
 }
