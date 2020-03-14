@@ -31,6 +31,8 @@ public abstract class JsonSprite extends DisplayObjectContainer implements IReso
 	{
 		super();
 
+		JsonSpriteAnimator.getInstance().addAnimatedMesh(this);
+		
 		dependencyLoaded = (IResourceReady) this::onDependencyLoaded;
 
 		jsonChildren = new HashMap<>();
@@ -154,6 +156,8 @@ public abstract class JsonSprite extends DisplayObjectContainer implements IReso
 	{
 		super.dispose();
 
+		JsonSpriteAnimator.getInstance().removeAnimatedMesh(this);
+		
 		jsonChildren.clear();
 		jsonChildren = null;
 

@@ -32,7 +32,7 @@
 			"height":150,
 			"fontSize":15,
 			"hAlign":"left",
-			"showBorders":true,
+			"showBorders":false,
 			"font":"font.console",
 			"color":"0xFF00FF",
 			"text":"Textfield"

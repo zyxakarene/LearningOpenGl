@@ -1,6 +1,6 @@
-package zyx.utils.tween;
+package zyx.utils.tween.easing;
 
-public class TweenUtils
+public class Easing
 {
 	public static final Linear LINEAR = new Linear();
 }

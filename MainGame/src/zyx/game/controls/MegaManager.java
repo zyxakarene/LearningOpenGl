@@ -7,6 +7,7 @@ import zyx.engine.components.tooltips.TooltipManager;
 import zyx.engine.touch.MouseTouchManager;
 import zyx.engine.utils.ClickDispatcher;
 import zyx.engine.utils.worldpicker.calculating.RayPicker;
+import zyx.game.components.screen.json.JsonSpriteAnimator;
 import zyx.game.controls.input.InputManager;
 import zyx.game.controls.input.MouseData;
 import zyx.game.controls.resourceloader.ResourceLoader;
@@ -29,6 +30,7 @@ public class MegaManager
 		TooltipManager.getInstance().update(timestamp, elapsed);
 		CubemapManager.getInstance().update(timestamp, elapsed);
 		MeshAnimator.getInstance().update(timestamp, elapsed);
+		JsonSpriteAnimator.getInstance().update(timestamp, elapsed);
 		InputManager.getInstance().update(timestamp, elapsed);
 		MouseTouchManager.getInstance().update(timestamp, elapsed);
 		ClickDispatcher.getInstance().dispatchEvents();

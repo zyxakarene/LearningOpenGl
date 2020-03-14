@@ -1,10 +1,10 @@
-package zyx.utils.tween;
+package zyx.utils.tween.easing;
 
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.utils.FloatMath;
 
-public class Linear
+public class Linear implements IEasing
 {
 
 	private static final Quaternion HELPER_QUAT = new Quaternion();
@@ -18,6 +18,17 @@ public class Linear
 		out.x = from.x + fraction * (to.x - from.x);
 		out.y = from.y + fraction * (to.y - from.y);
 		out.z = from.z + fraction * (to.z - from.z);
+	}
+	
+	@Override
+	public float ease(long startTime, long currentTime, float startValue, float endValue, int duration)
+	{
+		float t = currentTime - startTime;
+		float b = startValue;
+		float c = endValue - startTime;
+		float d = duration;
+		
+		return c * t / d + b;
 	}
 	
 	public float lerp(float from, float to, float fraction)

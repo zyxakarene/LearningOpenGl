@@ -104,11 +104,6 @@ public class Scene implements ILoadingScreenDone
 
 		debugContainer.update(timestamp, elapsedTime);
 
-		if (hud != null)
-		{
-			hud.update(timestamp, elapsedTime);
-		}
-
 		camera.update(timestamp, elapsedTime);
 
 		if (ready)

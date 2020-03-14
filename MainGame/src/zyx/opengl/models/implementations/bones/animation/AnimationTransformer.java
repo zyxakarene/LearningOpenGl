@@ -8,7 +8,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.utils.math.MatrixUtils;
-import zyx.utils.tween.TweenUtils;
+import zyx.utils.tween.easing.Easing;
 
 class AnimationTransformer
 {
@@ -56,8 +56,8 @@ class AnimationTransformer
 		prevTransform.getRotation(PREV_ROT);
 		nextTransform.getRotation(NEXT_ROT);
 
-		TweenUtils.LINEAR.lerp(PREV_POS, NEXT_POS, percentage, INTERPOLATED_POS);
-		TweenUtils.LINEAR.slerp(PREV_ROT, NEXT_ROT, percentage, INTERPOLATED_ROT);
+		Easing.LINEAR.lerp(PREV_POS, NEXT_POS, percentage, INTERPOLATED_POS);
+		Easing.LINEAR.slerp(PREV_ROT, NEXT_ROT, percentage, INTERPOLATED_ROT);
 
 		MatrixUtils.transformMatrix(INTERPOLATED_ROT, INTERPOLATED_POS, TRANSFORM_MATRIX);
 		

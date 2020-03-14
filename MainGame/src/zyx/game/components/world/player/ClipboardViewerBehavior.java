@@ -5,7 +5,7 @@ import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.controls.input.InputManager;
-import zyx.utils.tween.TweenUtils;
+import zyx.utils.tween.easing.Easing;
 
 public class ClipboardViewerBehavior extends Behavior implements ICallback<Character>
 {
@@ -59,8 +59,8 @@ public class ClipboardViewerBehavior extends Behavior implements ICallback<Chara
 			tweenTime += elapsedTime;
 			float fraction = tweenTime / timeToMove;
 			
-			TweenUtils.LINEAR.lerp(fromRot, toRot, fraction, curRot);
-			TweenUtils.LINEAR.lerp(fromPos, toPos, fraction, curPos);
+			Easing.LINEAR.lerp(fromRot, toRot, fraction, curRot);
+			Easing.LINEAR.lerp(fromPos, toPos, fraction, curPos);
 
 			gameObject.setRotation(curRot);
 			gameObject.setPosition(true, curPos);
