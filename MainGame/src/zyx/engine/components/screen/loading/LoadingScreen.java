@@ -15,8 +15,8 @@ public class LoadingScreen extends JsonSprite
 	private static final int DOT_STATE_4 = 4;
 	private int dotState = DOT_STATE_1;
 
-	private float start = -1;
-	private float time = 200;
+	private long start = -1;
+	private int time = 200;
 
 	private static final String PERCENT_TEMPLATE = "%.2f%%";
 
@@ -68,10 +68,9 @@ public class LoadingScreen extends JsonSprite
 			{
 				start = timestamp;
 			}
-			float fraction = (timestamp - start) / time;
 
-			float sizeUp = Easing.LINEAR.lerp(10f, 30f, fraction);
-			float sizeDown = Easing.LINEAR.lerp(30f, 10f, fraction);
+			float sizeUp = Easing.LINEAR.in(start, timestamp, 10, 30, time);
+			float sizeDown = Easing.LINEAR.in(start, timestamp, 30, 10, time);
 
 			switch (dotState)
 			{
@@ -101,7 +100,7 @@ public class LoadingScreen extends JsonSprite
 				}
 			}
 
-			if (fraction >= 1)
+			if (start + time >= timestamp)
 			{
 				start = -1;
 				dotState++;

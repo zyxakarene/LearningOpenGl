@@ -9,6 +9,7 @@ public interface IPositionable
 	
 	public void setPosition(boolean local, Vector3f pos);
 	public void setScale(Vector3f scale);
+	public void setScale(float x, float y, float z);
 	public void setRotation(Vector3f rot);
 	
 	public Vector3f getPosition(boolean local, Vector3f out);
@@ -17,4 +18,8 @@ public interface IPositionable
 	public Vector3f getDir(boolean local, Vector3f out);
 	public Vector3f getUp(boolean local, Vector3f out);
 	public Vector3f getRight(boolean local, Vector3f out);
+	
+	public void setX(float x);
+	public void setY(float y);
+	public void setZ(float z);
 }

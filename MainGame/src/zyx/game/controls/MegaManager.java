@@ -16,6 +16,7 @@ import zyx.game.network.PingManager;
 import zyx.net.core.ConnectionHandler;
 import zyx.opengl.particles.ParticleManager;
 import zyx.utils.tasks.TaskScheduler;
+import zyx.utils.tween.TweenManager;
 
 public class MegaManager
 {
@@ -36,6 +37,7 @@ public class MegaManager
 		ClickDispatcher.getInstance().dispatchEvents();
 		PingManager.getInstance().update(timestamp, elapsed);
 		MeshBatchManager.getInstance().update(timestamp, elapsed);
+		TweenManager.getInstance().update(timestamp, elapsed);
 
 		SoundManager.getInstance().update(timestamp, elapsed);
 

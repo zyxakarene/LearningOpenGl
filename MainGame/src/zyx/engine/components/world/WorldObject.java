@@ -439,6 +439,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 		updateTransforms(true);
 	}
 
+	@Override
 	public void setScale(float x, float y, float z)
 	{
 		DECOMPOSED_MATRIX.setSource(localMatrix);
@@ -460,16 +461,19 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 		setRotation(rot.x, rot.y, rot.z);
 	}
 
+	@Override
 	public void setX(float x)
 	{
 		setPosition(true, x, position.y, position.z);
 	}
 
+	@Override
 	public void setY(float y)
 	{
 		setPosition(true, position.x, y, position.z);
 	}
 
+	@Override
 	public void setZ(float z)
 	{
 		setPosition(true, position.x, position.y, z);

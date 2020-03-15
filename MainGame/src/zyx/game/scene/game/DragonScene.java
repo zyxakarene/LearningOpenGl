@@ -16,26 +16,33 @@ import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.behavior.misc.JiggleBehavior;
 import zyx.game.behavior.misc.RotateBehavior;
 import zyx.game.components.GameObject;
-import zyx.game.components.SimpleMesh;
+import zyx.game.components.MeshObject;
 import zyx.game.components.world.meshbatch.CubeEntity;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.process.ProcessQueue;
-import zyx.game.controls.process.impl.AuthenticateLoadingProcess;
 import zyx.game.models.GameModels;
 import zyx.game.network.PingManager;
-import zyx.game.vo.Gender;
 import zyx.net.io.controllers.BaseNetworkController;
 import zyx.opengl.GLUtils;
 import zyx.opengl.models.implementations.shapes.Sphere;
 import zyx.utils.FloatMath;
 import zyx.utils.math.QuaternionUtils;
+import zyx.utils.tween.BaseTween;
+import zyx.utils.tween.easing.EasingFunction;
+import zyx.utils.tween.impl.positionable.TweenPositionableSingleScale;
+import zyx.utils.tween.impl.positionable.TweenPositionableVectorPosition;
 
 public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 {
 
 	private boolean cubemapping;
 	private ProcessQueue processQueue;
+	private GameObject spinner;
+	
+	private BaseTween tweenPos;
+	private BaseTween tweenScale;
 
+	
 	public DragonScene()
 	{
 	}
@@ -73,9 +80,10 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 		world.loadSkybox("skybox.texture.desert");
 		CubemapManager.getInstance().load("cubemap.dragon");
 		
-		SimpleMesh platform = new SimpleMesh();
+		MeshObject platform = new MeshObject();
 		platform.load("mesh.platform");
 		world.addChild(platform);
+		addGameObject(platform);
 
 		for (int i = 0; i < 4; i++)
 		{
@@ -97,7 +105,7 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 
 		world.setSunRotation(new Vector3f(-33, -5, -21));
 
-		GameObject spinner = new GameObject();
+		spinner = new GameObject();
 		spinner.addBehavior(new RotateBehavior());
 
 		Sphere sphere1 = new Sphere(5);
@@ -150,6 +158,23 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 			int width = (int) (64 + (Math.random() * 1920 * 0.75));
 			int height = (int) (64 + (Math.random() * 1080 * 0.75));
 			ScreenSize.changeScreenSize(width, height);
+		}
+		
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_T))
+		{
+			if (tweenPos != null)
+			{
+				tweenPos.dispose();
+				tweenScale.dispose();
+			}
+			
+			tweenPos = new TweenPositionableVectorPosition()
+					.setTweenData(spinner, new Vector3f(0, 0, 0), new Vector3f(100, 500, 200), 500, EasingFunction.BACK_IN_OUT)
+					.start();
+			
+			tweenScale = new TweenPositionableSingleScale()
+					.setTweenData(spinner, 1f, 20f, 500, EasingFunction.LINEAR)
+					.start();
 		}
 
 		//Vector3f camPos = Camera.getInstance().getPosition(false, null);
