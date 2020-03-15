@@ -169,11 +169,11 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 			}
 			
 			tweenPos = new TweenPositionableVectorPosition()
-					.setTweenData(spinner, new Vector3f(0, 0, 0), new Vector3f(100, 500, 200), 500, EasingFunction.BACK_IN_OUT)
+					.setTweenData(spinner, new Vector3f(0, 0, 0), new Vector3f(0, 100, 0), 2000, EasingFunction.BOUNCE_OUT)
 					.start();
 			
 			tweenScale = new TweenPositionableSingleScale()
-					.setTweenData(spinner, 1f, 20f, 500, EasingFunction.LINEAR)
+					.setTweenData(spinner, 1f, 1f, 500, EasingFunction.LINEAR)
 					.start();
 		}
 
