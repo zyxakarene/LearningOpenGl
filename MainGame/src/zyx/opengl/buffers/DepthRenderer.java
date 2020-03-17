@@ -4,19 +4,18 @@ import org.lwjgl.opengl.GL11;
 import zyx.opengl.textures.FrameBufferTexture;
 import zyx.opengl.textures.enums.TextureAttachment;
 import zyx.opengl.textures.enums.TextureFormat;
-import zyx.utils.GameConstants;
 import zyx.utils.interfaces.IShadowable;
 
 public class DepthRenderer extends BaseFrameBuffer
 {
 
-	private static DepthRenderer instance = new DepthRenderer();
+	private static final DepthRenderer INSTANCE = new DepthRenderer();
 
 	private FrameBufferTexture depthBuffer;
 
 	public static DepthRenderer getInstance()
 	{
-		return instance;
+		return INSTANCE;
 	}
 
 	public DepthRenderer()

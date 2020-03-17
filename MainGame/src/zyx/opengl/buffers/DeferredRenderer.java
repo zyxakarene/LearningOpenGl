@@ -25,7 +25,7 @@ import zyx.opengl.textures.enums.TextureSlot;
 public class DeferredRenderer extends BaseFrameBuffer
 {
 
-	private static DeferredRenderer instance = new DeferredRenderer();
+	private static final DeferredRenderer INSTANCE = new DeferredRenderer();
 
 	private FrameBufferTexture positionBuffer;
 	private FrameBufferTexture normalBuffer;
@@ -49,7 +49,7 @@ public class DeferredRenderer extends BaseFrameBuffer
 
 	public static DeferredRenderer getInstance()
 	{
-		return instance;
+		return INSTANCE;
 	}
 
 	public DeferredRenderer()

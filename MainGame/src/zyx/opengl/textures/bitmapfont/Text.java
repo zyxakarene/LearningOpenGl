@@ -175,8 +175,6 @@ public class Text extends AbstractModel
 		this.vAlign = vAlign;
 		this.hAlign = hAlign;
 		
-		System.out.println("Setting alignment to " + hAlign);
-		
 		shouldUpdate = true;
 	}
 }

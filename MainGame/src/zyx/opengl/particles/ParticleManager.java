@@ -9,13 +9,13 @@ import zyx.utils.interfaces.IUpdateable;
 
 public class ParticleManager implements IDrawable, IUpdateable
 {
-	private static ParticleManager instance = new ParticleManager();
+	private static final ParticleManager INSTANCE = new ParticleManager();
 
 	private ArrayList<ParticleSystem> systems;
 	
 	public static ParticleManager getInstance()
 	{
-		return instance;
+		return INSTANCE;
 	}
 
 	private ParticleManager()

@@ -14,11 +14,11 @@ import zyx.utils.math.Vector2Int;
 public class Camera
 {
 
-	private static Camera instance = new Camera();
+	private static final Camera INSTANCE = new Camera();
 
 	public static Camera getInstance()
 	{
-		return instance;
+		return INSTANCE;
 	}
 
 	private boolean initialized;

@@ -30,7 +30,7 @@ import static org.lwjgl.opengl.GL11.glTexImage2D;
 public class AmbientOcclusionRenderer extends BaseFrameBuffer
 {
 
-	private static AmbientOcclusionRenderer instance = new AmbientOcclusionRenderer();
+	private static final AmbientOcclusionRenderer INSTANCE = new AmbientOcclusionRenderer();
 
 	private FrameBufferTexture ambientOcclusionBuffer;
 
@@ -43,7 +43,7 @@ public class AmbientOcclusionRenderer extends BaseFrameBuffer
 
 	public static AmbientOcclusionRenderer getInstance()
 	{
-		return instance;
+		return INSTANCE;
 	}
 	private TextureFromInt noiseTexture;
 

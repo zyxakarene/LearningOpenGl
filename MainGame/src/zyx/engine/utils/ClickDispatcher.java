@@ -6,7 +6,7 @@ import zyx.engine.utils.callbacks.CustomCallback;
 
 public class ClickDispatcher
 {
-	private static final ClickDispatcher instance = new ClickDispatcher();
+	private static final ClickDispatcher INSTANCE = new ClickDispatcher();
 	
 	private LinkedList<CustomCallback<InteractableContainer>> callbacks;
 	private LinkedList<InteractableContainer> buttons;
@@ -19,7 +19,7 @@ public class ClickDispatcher
 	
 	public static ClickDispatcher getInstance()
 	{
-		return instance;
+		return INSTANCE;
 	}
 
 	public void dispatchEvents()

@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class ResourceManager
 {
-	private static ResourceManager instance = new ResourceManager();
+	private static final ResourceManager INSTANCE = new ResourceManager();
 	
 	private ResourceMapper mapper;
 	private HashMap<String, Resource> resources;
@@ -18,7 +18,7 @@ public class ResourceManager
 
 	public static ResourceManager getInstance()
 	{
-		return instance;
+		return INSTANCE;
 	}
 
 	public Resource getResource(String resource)

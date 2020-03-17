@@ -1,8 +1,6 @@
 package zyx.opengl.buffers;
 
 import java.util.ArrayList;
-import zyx.engine.utils.ScreenSize;
-import zyx.game.controls.input.MouseData;
 import zyx.opengl.GLUtils;
 import zyx.opengl.models.implementations.FullScreenQuadModel;
 import zyx.opengl.shaders.AbstractShader;
@@ -14,13 +12,12 @@ import zyx.opengl.textures.enums.TextureFormat;
 import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.Bresenham2D;
 import zyx.utils.FloatMath;
-import zyx.utils.cheats.Print;
 import zyx.utils.math.Vector2Int;
 
 public class DrawingRenderer extends BaseFrameBuffer
 {
 
-	private static DrawingRenderer instance = new DrawingRenderer();
+	private static final DrawingRenderer INSTANCE = new DrawingRenderer();
 
 	private FrameBufferTexture underlayBuffer;
 
@@ -31,7 +28,7 @@ public class DrawingRenderer extends BaseFrameBuffer
 
 	public static DrawingRenderer getInstance()
 	{
-		return instance;
+		return INSTANCE;
 	}
 	private float b;
 	private float g;

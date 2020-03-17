@@ -12,7 +12,7 @@ public class MouseTouchManager implements IUpdateable
 
 	private static final int LONG_PRESS_TIME = 1000;
 
-	private static final MouseTouchManager instance = new MouseTouchManager();
+	private static final MouseTouchManager INSTANCE = new MouseTouchManager();
 
 	private TouchData data;
 	private TouchState currentState;
@@ -37,7 +37,7 @@ public class MouseTouchManager implements IUpdateable
 
 	public static MouseTouchManager getInstance()
 	{
-		return instance;
+		return INSTANCE;
 	}
 
 	public TouchState currentState()

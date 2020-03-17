@@ -1,6 +1,5 @@
 package zyx.opengl;
 
-import jdk.nashorn.internal.objects.NativeError;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import zyx.utils.cheats.Print;
@@ -81,19 +80,24 @@ public class GLUtils
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ZERO);
 	}
-	
+
 	public static void setBlendAdditive()
 	{
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 	}
-	
+
 	public static void setBlendAlpha()
 	{
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 	}
-	
+
 	public static void setBlendNormal()
 	{
 		GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ZERO);
+	}
+
+	public static void clearView()
+	{
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
 	}
 }

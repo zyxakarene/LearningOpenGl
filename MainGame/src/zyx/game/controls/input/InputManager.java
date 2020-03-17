@@ -4,13 +4,12 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.CustomCallback;
-import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IUpdateable;
 
 public class InputManager implements IUpdateable
 {
 
-	private static final InputManager instance = new InputManager();
+	private static final InputManager INSTANCE = new InputManager();
 
 	private final MouseData mouseData;
 	private final KeyboardData keyboardData;
@@ -35,7 +34,7 @@ public class InputManager implements IUpdateable
 
 	public static InputManager getInstance()
 	{
-		return instance;
+		return INSTANCE;
 	}
 
 	@Override

@@ -15,7 +15,7 @@ import zyx.engine.components.screen.text.Textfield;
 class JsonSpriteParser
 {
 
-	private static final JsonSpriteParser instance = new JsonSpriteParser();
+	private static final JsonSpriteParser INSTANCE = new JsonSpriteParser();
 
 	private static final String TYPE = "type";
 
@@ -39,7 +39,7 @@ class JsonSpriteParser
 	
 	static JsonSpriteParser getInstance()
 	{
-		return instance;
+		return INSTANCE;
 	}
 
 	private JsonSpriteParser()

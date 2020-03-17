@@ -3,7 +3,6 @@ package zyx.engine;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
 import zyx.debug.DebugController;
 import zyx.debug.views.DebugFrame;
 import zyx.engine.curser.CursorManager;
@@ -13,7 +12,7 @@ import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.sound.SoundManager;
 import zyx.game.scene.SceneType;
 import zyx.opengl.GLUtils;
-import zyx.opengl.SetupOpenGlCommand;
+import zyx.opengl.OpenGlStarter;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.shaders.ShaderManager;
@@ -23,6 +22,7 @@ import zyx.utils.GameConstants;
 
 public class GameEngine
 {
+	public static int drawCalls = 0;
 
 	private SceneManager sceneManager;
 	private DisplaySizeChanger sizeChanger;
@@ -34,7 +34,7 @@ public class GameEngine
 
 	public void startWith(SceneType startScene)
 	{
-		new SetupOpenGlCommand().execute();
+		OpenGlStarter.setupOpenGl();
 		GLUtils.enableGLSettings();
 		
 		sizeChanger = new DisplaySizeChanger();
@@ -48,8 +48,6 @@ public class GameEngine
 		sceneManager.changeScene(startScene);
 		beginGameLoop();
 	}
-
-	public static int drawCalls = 0;
 
 	private void beginGameLoop()
 	{
@@ -87,7 +85,7 @@ public class GameEngine
 			long timestamp = DeltaTime.getTimestamp();
 			int elapsed = DeltaTime.getElapsedTime();
 
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
+			GLUtils.clearView();
 
 			DebugDrawCalls.reset();
 			drawCalls = 0;

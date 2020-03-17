@@ -10,11 +10,11 @@ import zyx.utils.cheats.Print;
 
 public class PingManager extends PingController
 {
-	private static final PingManager instance = new PingManager();
+	private static final PingManager INSTANCE = new PingManager();
 
 	public static PingManager getInstance()
 	{
-		return instance;
+		return INSTANCE;
 	}
 	
 	@Override

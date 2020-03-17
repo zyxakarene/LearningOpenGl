@@ -8,14 +8,11 @@ import org.lwjgl.opengl.*;
 import zyx.engine.utils.ScreenSize;
 import zyx.utils.GameConstants;
 import zyx.utils.exceptions.Msg;
-import zyx.utils.exceptions.UncaughtExceptionHandlerImpl;
-import zyx.utils.interfaces.ICommand;
 
-public class SetupOpenGlCommand implements ICommand
+public class OpenGlStarter
 {
 
-	@Override
-	public void execute()
+	public static void setupOpenGl()
 	{
 		try
 		{
@@ -33,7 +30,7 @@ public class SetupOpenGlCommand implements ICommand
 		}
 	}
 
-	private void setupLwjgl() throws LWJGLException
+	private static void setupLwjgl() throws LWJGLException
 	{
 		PixelFormat pixelFormat = new PixelFormat(0, 8, 8);
 		
@@ -65,7 +62,7 @@ public class SetupOpenGlCommand implements ICommand
 		Keyboard.create();
 	}
 
-	private void setupLogging() throws IOException
+	private static void setupLogging() throws IOException
 	{
 //		Thread.setDefaultUncsaughtExceptionHandler(new UncaughtExceptionHandlerImpl());
 	}
