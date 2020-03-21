@@ -1,11 +1,9 @@
 package zyx.engine.components.world.physics;
 
-import zyx.utils.geometry.Box;
-
 public abstract class AbstractColliderMover
 {
 
-	protected Box physBound = null;
+	protected PhysicsBoundingBox physBound = null;
 
-	abstract void onMoveTo(Box statBound, BoxCollider physCollider, boolean intoGround);
+	abstract void onMoveTo(PhysicsBoundingBox statBound, BoxCollider physCollider, boolean intoGround);
 }

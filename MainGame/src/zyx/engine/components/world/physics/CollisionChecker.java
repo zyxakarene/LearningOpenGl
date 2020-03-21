@@ -4,7 +4,6 @@ import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.Collider;
 import zyx.utils.FloatMath;
 import zyx.utils.cheats.Print;
-import zyx.utils.geometry.Box;
 
 public class CollisionChecker
 {
@@ -21,8 +20,8 @@ public class CollisionChecker
 
 	private static void checkBoxBox(BoxCollider colliderA, BoxCollider colliderB)
 	{
-		Box a = colliderA.boundingBox;
-		Box b = colliderB.boundingBox;
+		PhysicsBoundingBox a = colliderA.boundingBox;
+		PhysicsBoundingBox b = colliderB.boundingBox;
 
 		COLLISION.x = a.minX < b.maxX && a.maxX > b.minX;
 		COLLISION.y = a.minY < b.maxY && a.maxY > b.minY;
@@ -53,8 +52,8 @@ public class CollisionChecker
 			return;
 		}
 		
-		Box physBound = physBox.boundingBox;
-		Box statBound = staticBox.boundingBox;
+		PhysicsBoundingBox physBound = physBox.boundingBox;
+		PhysicsBoundingBox statBound = staticBox.boundingBox;
 
 		float distIntoXGround = FloatMath.abs(statBound.maxX - physBound.minX);
 		float distIntoXCeil = FloatMath.abs(physBound.maxX - statBound.minX);
@@ -97,10 +96,8 @@ public class CollisionChecker
 		}
 	}
 	
-	private static void moveBox(float distIntoGround, float distIntoCeil, Box statBound, BoxCollider physCollider, AbstractColliderMover mover)
+	private static void moveBox(float distIntoGround, float distIntoCeil, PhysicsBoundingBox statBound, BoxCollider physCollider, AbstractColliderMover mover)
 	{
-		Box physBounds = physCollider.boundingBox;
-		
 		if (distIntoGround < distIntoCeil)
 		{
 			mover.onMoveTo(statBound, physCollider, true);

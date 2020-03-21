@@ -2,7 +2,6 @@ package zyx.engine.components.world.physics;
 
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.controls.SharedPools;
-import zyx.utils.geometry.Box;
 
 public class BoxCollider extends ParentMovingCollider
 {
@@ -14,7 +13,7 @@ public class BoxCollider extends ParentMovingCollider
 	//		1		3
 	//		  	0
 	private Vector3f[] verticies;
-	Box boundingBox;
+	PhysicsBoundingBox boundingBox;
 
 	private float width;
 	private float debth;
@@ -45,7 +44,7 @@ public class BoxCollider extends ParentMovingCollider
 		verticies[6].set(wH, dH, height);
 		verticies[7].set(-wH, dH, height);
 
-		boundingBox = new Box(width, debth, height);
+		boundingBox = new PhysicsBoundingBox(width, debth, height);
 
 	}
 

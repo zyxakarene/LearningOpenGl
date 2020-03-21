@@ -1,12 +1,10 @@
 package zyx.engine.components.world.physics;
 
-import zyx.utils.geometry.Box;
-
 public class BoxMoverY extends AbstractColliderMover
 {
 
 	@Override
-	void onMoveTo(Box statBound, BoxCollider physCollider, boolean intoGround)
+	void onMoveTo(PhysicsBoundingBox statBound, BoxCollider physCollider, boolean intoGround)
 	{
 		physBound = physCollider.boundingBox;
 
