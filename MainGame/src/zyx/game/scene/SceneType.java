@@ -4,13 +4,14 @@ import zyx.engine.scene.Scene;
 import zyx.game.scene.game.DragonScene;
 import zyx.game.scene.dev.TestScene;
 import zyx.game.scene.dev.ParticleScene;
+import zyx.game.scene.game.DinerScene;
 import zyx.game.scene.menu.MenuScene;
 
 public enum SceneType
 {
 	
 	MENU(MenuScene.class),
-	GAME(DragonScene.class),
+	GAME(DinerScene.class),
 	
 	TEST(TestScene.class),
 	PARTICLE(ParticleScene.class),

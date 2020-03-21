@@ -6,7 +6,6 @@ import zyx.engine.components.cubemaps.CubemapManager;
 import zyx.engine.components.cubemaps.saving.CubemapProcess;
 import zyx.engine.components.meshbatch.MeshBatchEntity;
 import zyx.engine.components.meshbatch.MeshBatchManager;
-import zyx.game.network.GameNetworkController;
 import zyx.engine.components.tooltips.TestTooltip;
 import zyx.engine.components.tooltips.TooltipManager;
 import zyx.engine.components.world.GameLight;
@@ -20,9 +19,8 @@ import zyx.game.components.MeshObject;
 import zyx.game.components.world.meshbatch.CubeEntity;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.process.ProcessQueue;
-import zyx.game.models.GameModels;
-import zyx.game.network.PingManager;
-import zyx.net.io.controllers.BaseNetworkController;
+import zyx.game.controls.process.impl.AuthenticateLoadingProcess;
+import zyx.game.vo.Gender;
 import zyx.opengl.GLUtils;
 import zyx.opengl.models.implementations.shapes.Sphere;
 import zyx.utils.FloatMath;
@@ -70,12 +68,12 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 	{
 		super.onInitialize();
 	
-//		addLoadingScreenProcess(new AuthenticateLoadingProcess("Zyx", Gender.random()));
+		addLoadingScreenProcess(new AuthenticateLoadingProcess("Zyx", Gender.random()));
 		addLoadingScreenProcess(new WaitingProcess(3, "Reticulating Splines"));
 		addLoadingScreenProcess(new WaitingProcess(5, "Branching Family Trees"));
 		addLoadingScreenProcess(new WaitingProcess(7, "Blurring Reality Lines"));
 		
-		createPlayerObject();
+//		createPlayerObject();
 		
 		world.loadSkybox("skybox.texture.desert");
 		CubemapManager.getInstance().load("cubemap.dragon");
@@ -201,27 +199,6 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 		{
 			processQueue.update(timestamp, elapsedTime);
 		}
-	}
-
-	@Override
-	protected BaseNetworkController createNetworkDispatcher()
-	{
-		return new GameNetworkController(itemHolderHandler, itemHandler);
-	}
-
-	@Override
-	protected void onDispose()
-	{
-		super.onDispose();
-		
-		CubemapManager.getInstance().clean();
-		TooltipManager.getInstance().clean();
-		MeshBatchManager.getInstance().clean();
-
-		itemHandler.clean();
-		itemHolderHandler.clean();
-
-		PingManager.getInstance().removeEntity(GameModels.player.playerId);
 	}
 
 	@Override

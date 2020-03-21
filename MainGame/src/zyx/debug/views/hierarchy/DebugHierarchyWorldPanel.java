@@ -10,31 +10,39 @@ import zyx.opengl.camera.Camera;
 
 public class DebugHierarchyWorldPanel extends DebugHierarchyPanel<WorldObject>
 {
+
 	private DebugWorldObjectLink worldObject;
-	
+
 	public DebugHierarchyWorldPanel()
 	{
 		worldObject = DebugInfo.worldObjects;
-		
+
 		tree.addKeyListener(new KeyAdapter()
 		{
 			@Override
 			public void keyPressed(KeyEvent e)
 			{
-				AbstractHierarchyData<WorldObject> data = getSelectedData();
-
-				Vector3f worldPos = data.getInstance().getPosition(false, null);
-				Vector3f cameraDir = Camera.getInstance().getDir(false, null);
-
-				Vector3f camPos = new Vector3f();
-				camPos.x = worldPos.x + (cameraDir.x * 100);
-				camPos.y = worldPos.y + (cameraDir.y * 100);
-				camPos.z = worldPos.z + (cameraDir.z * 100);
-
-				Camera.getInstance().setPosition(false, camPos);
+				onKeyPressed(e);
 			}
-
 		});
+	}
+
+	private void onKeyPressed(KeyEvent e)
+	{
+		if (e.getKeyChar() == KeyEvent.VK_SPACE)
+		{
+			AbstractHierarchyData<WorldObject> data = getSelectedData();
+
+			Vector3f worldPos = data.getInstance().getPosition(false, null);
+			Vector3f cameraDir = Camera.getInstance().getDir(false, null);
+
+			Vector3f camPos = new Vector3f();
+			camPos.x = worldPos.x + (cameraDir.x * 100);
+			camPos.y = worldPos.y + (cameraDir.y * 100);
+			camPos.z = worldPos.z + (cameraDir.z * 100);
+			
+			Camera.getInstance().setPosition(false, camPos);
+		}
 	}
 
 	@Override

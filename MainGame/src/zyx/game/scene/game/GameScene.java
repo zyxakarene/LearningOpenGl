@@ -1,6 +1,9 @@
 package zyx.game.scene.game;
 
 import java.util.ArrayList;
+import zyx.engine.components.cubemaps.CubemapManager;
+import zyx.engine.components.meshbatch.MeshBatchManager;
+import zyx.engine.components.tooltips.TooltipManager;
 import zyx.engine.scene.Scene;
 import zyx.engine.utils.worldpicker.IHoveredItem;
 import zyx.engine.utils.worldpicker.WorldPicker;
@@ -9,9 +12,14 @@ import zyx.game.behavior.freefly.FreeFlyBehavior;
 import zyx.game.behavior.player.OnlinePositionSender;
 import zyx.game.components.GameObject;
 import zyx.game.components.world.player.PlayerObject;
+import zyx.game.models.GameModels;
+import zyx.game.network.GameNetworkController;
+import zyx.game.network.PingManager;
 import zyx.game.scene.ItemHandler;
 import zyx.game.scene.ItemHolderHandler;
 import zyx.net.io.controllers.BaseNetworkController;
+import zyx.net.io.controllers.NetworkChannel;
+import zyx.net.io.controllers.NetworkCommands;
 import zyx.opengl.camera.Camera;
 import zyx.utils.interfaces.IPhysbox;
 
@@ -23,15 +31,15 @@ public class GameScene extends Scene
 	protected ItemHandler itemHandler;
 	protected ItemHolderHandler itemHolderHandler;
 	protected BaseNetworkController networkController;
-	
+
 	protected PlayerObject player;
-	
+
 	private ArrayList<GameObject> gameObjects;
 
 	public GameScene()
 	{
 		gameObjects = new ArrayList<>();
-		
+
 		picker = new WorldPicker();
 
 		itemHolderHandler = new ItemHolderHandler();
@@ -44,10 +52,10 @@ public class GameScene extends Scene
 		{
 			return (GameScene) current;
 		}
-		
+
 		return null;
 	}
-	
+
 	public void addPickedObject(IPhysbox object, IHoveredItem clickCallback)
 	{
 		picker.addObject(object, clickCallback);
@@ -57,7 +65,7 @@ public class GameScene extends Scene
 	{
 		picker.removeObject(object, clickCallback);
 	}
-	
+
 	public void addGameObject(GameObject object)
 	{
 		gameObjects.add(object);
@@ -77,7 +85,7 @@ public class GameScene extends Scene
 		{
 			gameObject.update(timestamp, elapsedTime);
 		}
-		
+
 		itemHolderHandler.update(timestamp, elapsedTime);
 		picker.update();
 	}
@@ -90,7 +98,7 @@ public class GameScene extends Scene
 		networkController = createNetworkDispatcher();
 		networkController.addListeners();
 	}
-	
+
 	public void createPlayerObject()
 	{
 		player = new PlayerObject();
@@ -106,8 +114,17 @@ public class GameScene extends Scene
 	}
 
 	@Override
+	protected BaseNetworkController createNetworkDispatcher()
+	{
+		return new GameNetworkController(itemHolderHandler, itemHandler);
+	}
+	
+	@Override
 	protected void onDispose()
 	{
+		NetworkChannel.sendRequest(NetworkCommands.CHARACTER_LEFT_GAME, GameModels.player.playerId);
+		PingManager.getInstance().removeEntity(GameModels.player.playerId);
+
 		if (picker != null)
 		{
 			picker.dispose();
@@ -119,16 +136,32 @@ public class GameScene extends Scene
 			networkController.dispose();
 			networkController = null;
 		}
-		
+
 		if (gameObjects != null)
 		{
 			for (GameObject gameObject : gameObjects)
 			{
 				gameObject.dispose();
 			}
-			
+
 			gameObjects.clear();
 			gameObjects = null;
+		}
+
+		CubemapManager.getInstance().clean();
+		TooltipManager.getInstance().clean();
+		MeshBatchManager.getInstance().clean();
+
+		if (itemHandler != null)
+		{
+			itemHandler.dispose();
+			itemHandler = null;
+		}
+
+		if (itemHolderHandler != null)
+		{
+			itemHolderHandler.dispose();
+			itemHolderHandler = null;
 		}
 
 		super.onDispose();

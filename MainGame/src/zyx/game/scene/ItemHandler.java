@@ -3,7 +3,6 @@ package zyx.game.scene;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.engine.components.world.World3D;
 import zyx.game.components.world.IItemHolder;
 import zyx.game.components.world.items.GameItem;
 import zyx.game.vo.HandheldItemType;
@@ -11,16 +10,12 @@ import zyx.game.vo.HandheldItemType;
 public class ItemHandler
 {
 
-	private World3D world;
-
 	private HashMap<Integer, GameItem> itemMap;
 	private ArrayList<GameItem> itemList;
 	private ItemHolderHandler itemHolderHandler;
 
 	public ItemHandler(ItemHolderHandler holderHandler)
 	{
-		world = World3D.instance;
-
 		itemMap = new HashMap<>();
 		itemList = new ArrayList<>();
 		itemHolderHandler = holderHandler;
@@ -94,15 +89,21 @@ public class ItemHandler
 		}
 	}
 
-	public void clean()
+	public void dispose()
 	{
-		for (GameItem item : itemList)
+		if (itemList != null)
 		{
-			item.dispose();
-		}
+			for (GameItem item : itemList)
+			{
+				item.dispose();
+			}
 
-		itemMap.clear();
-		itemList.clear();
+			itemMap.clear();
+			itemList.clear();
+			
+			itemList = null;
+			itemMap = null;
+		}
 	}
 
 	public void setType(int uniqueId, HandheldItemType type)

@@ -1,6 +1,5 @@
 package zyx.server.controller;
 
-import zyx.server.controller.sending.ServerSender;
 import zyx.game.login.data.LoginData;
 import zyx.server.world.humanoids.players.Player;
 import zyx.game.position.data.PositionData;
@@ -20,14 +19,17 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 
 	public ServerNetworkCallbacks()
 	{
-		createCallbacks();
+		onPlayerLogin = (INetworkCallback<LoginData>) this::onPlayerLogin;
+		onPlayerLeave = (INetworkCallback<Integer>) this::onPlayerLeave;
+		onPlayerPos = (INetworkCallback<PositionData>) this::onPlayerPos;
+		onPlayerPing = (INetworkCallback<Integer>) PingManager.getInstance()::onPing;
 
 		registerCallback(NetworkCommands.LOGIN, onPlayerLogin);
 		registerCallback(NetworkCommands.CHARACTER_LEFT_GAME, onPlayerLeave);
 		registerCallback(NetworkCommands.CHARACTER_UPDATE_POSITION, onPlayerPos);
 		registerCallback(NetworkCommands.PING, onPlayerPing);
 	}
-
+	
 	private void onPlayerLogin(LoginData data)
 	{
 		Player player = PlayerManager.getInstance().createPlayer(data.name, data.gender, data.connection);
@@ -52,6 +54,8 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 	private void onPlayerLeave(int playerId)
 	{
 		Player player = PlayerManager.getInstance().getEntity(playerId);
+		
+		System.out.println("Player: " + player.id + " - " + player.gender + " left the game");
 		PingManager.getInstance().removeEntity(playerId);
 
 		//Tell everyone that the guy left
@@ -66,13 +70,5 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 
 		Player player = PlayerManager.getInstance().getEntity(id);
 		player.updateFrom(data);
-	}
-
-	private void createCallbacks()
-	{
-		onPlayerLeave = (INetworkCallback<Integer>) this::onPlayerLeave;
-		onPlayerPos = (INetworkCallback<PositionData>) this::onPlayerPos;
-		onPlayerLogin = (INetworkCallback<LoginData>) this::onPlayerLogin;
-		onPlayerPing = (INetworkCallback<Integer>) PingManager.getInstance()::onPing;
 	}
 }

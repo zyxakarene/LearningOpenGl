@@ -100,7 +100,7 @@ public class LoadingScreen extends JsonSprite
 				}
 			}
 
-			if (start + time >= timestamp)
+			if (timestamp > start + time)
 			{
 				start = -1;
 				dotState++;

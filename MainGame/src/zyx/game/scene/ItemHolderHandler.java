@@ -44,14 +44,20 @@ public class ItemHolderHandler implements IUpdateable
 		}
 	}
 
-	public void clean()
+	public void dispose()
 	{
-		for (IItemHolder character : holderList)
+		if (holderList != null)
 		{
-			character.dispose();
+			for (IItemHolder character : holderList)
+			{
+				character.dispose();
+			}
+
+			holderMap.clear();
+			holderList.clear();
+			
+			holderList = null;
+			holderMap = null;
 		}
-		
-		holderMap.clear();
-		holderList.clear();
 	}
 }
