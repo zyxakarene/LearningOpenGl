@@ -1,8 +1,8 @@
 package zyx.game.controls.sound;
 
 import java.util.LinkedList;
+import zyx.engine.components.world.WorldObject;
 import zyx.engine.sound.SoundSystem;
-import zyx.game.components.GameObject;
 import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IUpdateable;
@@ -32,7 +32,7 @@ public class SoundManager implements IUpdateable, IDisposeable
 		return INSTANCE;
 	}
 
-	public void playSound(String resource, GameObject emitter)
+	public void playSound(String resource, WorldObject emitter)
 	{
 		if (emitter == null)
 		{

@@ -5,6 +5,7 @@ import zyx.game.components.AnimatedMesh;
 import zyx.game.components.GameObject;
 import zyx.game.components.world.IItemHolder;
 import zyx.game.components.world.items.GameItem;
+import zyx.utils.interfaces.IPhysbox;
 
 public class GameCharacter extends GameObject implements IItemHolder
 {
@@ -49,5 +50,10 @@ public class GameCharacter extends GameObject implements IItemHolder
 			mesh.removeChildAsAttachment(item);
 			info.heldItem = null;
 		}
+	}
+	
+	public IPhysbox getPhysbox()
+	{
+		return mesh;
 	}
 }

@@ -2,6 +2,7 @@ package zyx.game.network.callbacks;
 
 import java.util.HashMap;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.OnTeaPotClicked;
 import zyx.engine.components.tooltips.TestTooltip;
 import zyx.engine.components.tooltips.TooltipManager;
 import zyx.engine.components.world.World3D;
@@ -95,6 +96,8 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 			GameCharacter character = new GameCharacter();
 			character.load(vo);
 
+			GameScene.getCurrent().addPickedObject(character.getPhysbox(), new OnTeaPotClicked());
+			
 			int id = data.ids[i];
 			Print.out("Character", id, "joined my game!");
 			itemHolderHandler.addItemHolder(id, character);

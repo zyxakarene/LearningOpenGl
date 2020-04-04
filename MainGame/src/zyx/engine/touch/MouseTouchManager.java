@@ -25,6 +25,7 @@ public class MouseTouchManager implements IUpdateable
 	private DisplayObject currentTarget;
 	private DisplayObject mouseDownTarget;
 	private boolean hasDownTarget;
+	private boolean enabled;
 
 	private MouseTouchManager()
 	{
@@ -33,6 +34,7 @@ public class MouseTouchManager implements IUpdateable
 		pressTimer = 0;
 		data = new TouchData();
 		touchListeners = new HashMap<>();
+		enabled = true;
 	}
 
 	public static MouseTouchManager getInstance()
@@ -45,6 +47,19 @@ public class MouseTouchManager implements IUpdateable
 		return currentState;
 	}
 
+	public void setEnabled(boolean value)
+	{
+		if (currentTarget != null)
+		{
+			dispatchTo(currentTarget, currentState, false);
+			currentState = TouchState.RELEASE;
+			
+			currentTarget = null;
+		}
+		
+		enabled = value;
+	}
+	
 	public void registerTouch(DisplayObject target, ITouched listener)
 	{
 		if (touchListeners.containsKey(target) == false)
@@ -79,7 +94,7 @@ public class MouseTouchManager implements IUpdateable
 		TouchState newState = currentState;
 		boolean update = false;
 
-		if(mouseData.grabbed)
+		if(mouseData.grabbed || !enabled)
 		{
 			return;
 		}
@@ -201,5 +216,15 @@ public class MouseTouchManager implements IUpdateable
 		{
 			CursorManager.getInstance().setCursor(target.hoverIcon);
 		}
+	}
+	
+	public boolean hasTarget()
+	{
+		return currentTarget != null;
+	}
+	
+	public boolean isEnabled()
+	{
+		return enabled;
 	}
 }

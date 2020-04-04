@@ -17,6 +17,9 @@ public class RayPicker
 	private Matrix4f inverseView;
 
 	private Vector3f currentRay;
+	
+	private int lastX;
+	private int lastY;
 
 	private RayPicker()
 	{
@@ -45,10 +48,16 @@ public class RayPicker
 
 	public void updateMousePos(int x, int y)
 	{
-		camera.getViewMatrix(inverseView);
-		inverseView.invert();
+		if(x != lastX || y != lastY)
+		{
+			lastX = x;
+			lastY = y;
+			
+			camera.getViewMatrix(inverseView);
+			inverseView.invert();
 
-		calculateMouseRay(x, y);
+			calculateMouseRay(x, y);
+		}
 	}
 
 	private void calculateMouseRay(int x, int y)

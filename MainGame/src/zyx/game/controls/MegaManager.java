@@ -6,10 +6,8 @@ import zyx.engine.components.meshbatch.MeshBatchManager;
 import zyx.engine.components.tooltips.TooltipManager;
 import zyx.engine.touch.MouseTouchManager;
 import zyx.engine.utils.ClickDispatcher;
-import zyx.engine.utils.worldpicker.calculating.RayPicker;
 import zyx.game.components.screen.json.JsonSpriteAnimator;
 import zyx.game.controls.input.InputManager;
-import zyx.game.controls.input.MouseData;
 import zyx.game.controls.resourceloader.ResourceLoader;
 import zyx.game.controls.sound.SoundManager;
 import zyx.game.network.PingManager;
@@ -40,7 +38,5 @@ public class MegaManager
 		TweenManager.getInstance().update(timestamp, elapsed);
 
 		SoundManager.getInstance().update(timestamp, elapsed);
-
-		RayPicker.getInstance().updateMousePos(MouseData.data.x, MouseData.data.y);
 	}
 }

@@ -3,8 +3,9 @@ package zyx.engine.utils.worldpicker;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.components.world.WorldObject;
+import zyx.engine.touch.MouseTouchManager;
 import zyx.engine.utils.worldpicker.calculating.*;
-import zyx.game.components.GameObject;
 import zyx.opengl.camera.Camera;
 import zyx.utils.FloatMath;
 import zyx.utils.interfaces.IDisposeable;
@@ -15,16 +16,17 @@ import zyx.utils.pooling.model.PoolableVector3f;
 public class WorldPicker implements IDisposeable
 {
 	private ArrayList<IPhysbox> pickables;
-	private ArrayList<IHoveredItem> clickCallbacks;
+	private ArrayList<IWorldPickedItem> clickCallbacks;
 	private Vector3f currentRay;
 	private Vector3f currentPos;
 	
 	private Camera camera;
+	private MouseTouchManager mouseTouchManager;
 	
 	private ObjectPool<PoolableVector3f> positionPool;
 	private LinkedList<PoolableVector3f> collidedPositions;
 	private LinkedList<IPhysbox> collidedObjects;
-	private LinkedList<IHoveredItem> collidedClicks;
+	private LinkedList<IWorldPickedItem> collidedClicks;
 	private Vector3f outPosition;
 	
 	private AbstractPicker pickerImpl;
@@ -33,8 +35,10 @@ public class WorldPicker implements IDisposeable
 	{
 		pickables = new ArrayList<>();
 		clickCallbacks = new ArrayList<>();
-		currentRay = RayPicker.getInstance().getRay();
 		currentPos = new Vector3f();
+		
+		currentRay = RayPicker.getInstance().getRay();
+		mouseTouchManager = MouseTouchManager.getInstance();
 		camera = Camera.getInstance();
 		
 		positionPool = new ObjectPool<>(PoolableVector3f.class, 10);
@@ -44,15 +48,16 @@ public class WorldPicker implements IDisposeable
 		outPosition = new Vector3f();
 		
 		pickerImpl = new PhysPicker();
+		
 	}
 	
-	public void addObject(IPhysbox obj, IHoveredItem clickCallback)
+	public void addObject(IPhysbox obj, IWorldPickedItem clickCallback)
 	{
 		pickables.add(obj);
 		clickCallbacks.add(clickCallback);
 	}
 	
-	public void removeObject(IPhysbox obj, IHoveredItem clickCallback)
+	public void removeObject(IPhysbox obj, IWorldPickedItem clickCallback)
 	{
 		pickables.remove(obj);
 		clickCallbacks.remove(clickCallback);
@@ -60,10 +65,16 @@ public class WorldPicker implements IDisposeable
 	
 	public void update()
 	{
+		if(mouseTouchManager.hasTarget())
+		{
+			//Mouse over a UI component, so never hit world geometry
+			return;
+		}
+		
 		camera.getPosition(false, currentPos);
 		boolean collided;
 		PoolableVector3f out;
-		IHoveredItem click;
+		IWorldPickedItem click;
 		IPhysbox pickable;
 		
 		int len = pickables.size();
@@ -94,12 +105,12 @@ public class WorldPicker implements IDisposeable
 	{
 		float closestDistance = Float.MAX_VALUE;
 		IPhysbox closestObject = null;
-		IHoveredItem closestClick = null;
+		IWorldPickedItem closestClick = null;
 		Vector3f closestPos = new Vector3f();
 		
 		PoolableVector3f pos;
 		IPhysbox obj;
-		IHoveredItem click;
+		IWorldPickedItem click;
 		float distance;
 		
 		while (collidedPositions.isEmpty() == false)
@@ -125,16 +136,16 @@ public class WorldPicker implements IDisposeable
 			ClickedInfo info = new ClickedInfo();
 			info.position = closestPos;
 			info.target = closestObject;
-			if (closestObject instanceof GameObject)
+			if (closestObject instanceof WorldObject)
 			{
-				info.gameObject = (GameObject) closestObject;
+				info.worldObject = (WorldObject) closestObject;
 			}
 			else
 			{
-				info.gameObject = null;
+				info.worldObject = null;
 			}
 			
-			closestClick.onClicked(info);
+			closestClick.onGeometryPicked(info);
 		}
 	}
 	

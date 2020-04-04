@@ -73,7 +73,10 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 
 	public final void checkStageMouseInteractions(int x, int y)
 	{
-		crawler.interactionTest(x, y);
+		if (touchable)
+		{
+			crawler.interactionTest(x, y);
+		}
 	}
 
 	public void setFocusedObject(IFocusable target)

@@ -12,6 +12,7 @@ public class DinerScene extends GameScene
 	@Override
 	protected void onPreloadResources()
 	{
+		preloadResource("mesh.player");
 		preloadResource("skybox.texture.desert");
 		preloadResource("cubemap.dragon");
 	}
@@ -20,8 +21,9 @@ public class DinerScene extends GameScene
 	protected void onInitialize()
 	{
 		super.onInitialize();
+createPlayerObject();
 
-		addLoadingScreenProcess(new AuthenticateLoadingProcess("Zyx", Gender.random()));
+//		addLoadingScreenProcess(new AuthenticateLoadingProcess("Zyx", Gender.random()));
 		addLoadingScreenProcess(new WaitingProcess(3, "Reticulating Splines"));
 		addLoadingScreenProcess(new WaitingProcess(5, "Branching Family Trees"));
 		addLoadingScreenProcess(new WaitingProcess(7, "Blurring Reality Lines"));

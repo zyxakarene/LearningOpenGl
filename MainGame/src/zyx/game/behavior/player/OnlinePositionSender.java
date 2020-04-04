@@ -50,10 +50,6 @@ public class OnlinePositionSender extends Behavior
 			gameObject.getPosition(false, HELPER_POS);
 			gameObject.getDir(false, HELPER_DIR);
 			
-			//While using directions of the camera!
-			HELPER_DIR.x *= -1;
-			HELPER_DIR.z *= -1;
-			
 			float distanceMoved = FloatMath.distance(lastX, lastY, lastZ, HELPER_POS.x, HELPER_POS.y, HELPER_POS.z);
 			float distanceRotated = FloatMath.distance(lastDirX, lastDirY, lastDirZ, HELPER_DIR.x, HELPER_DIR.y, HELPER_DIR.z);
 			
@@ -67,9 +63,9 @@ public class OnlinePositionSender extends Behavior
 				lastDirY = HELPER_DIR.y;
 				lastDirZ = HELPER_DIR.z;
 				
-				HELPER_DIR.x = lastX + (HELPER_DIR.x * 100); 
-				HELPER_DIR.y = lastY + (HELPER_DIR.y * 100); 
-				HELPER_DIR.z = lastZ + (HELPER_DIR.z * 100); 
+				HELPER_DIR.x = lastX - (HELPER_DIR.x * 100); 
+				HELPER_DIR.y = lastY - (HELPER_DIR.y * 100); 
+				HELPER_DIR.z = lastZ - (HELPER_DIR.z * 100); 
 				
 				NetworkChannel.sendRequest(NetworkCommands.CHARACTER_UPDATE_POSITION, HELPER_POS, HELPER_DIR, id);
 			}

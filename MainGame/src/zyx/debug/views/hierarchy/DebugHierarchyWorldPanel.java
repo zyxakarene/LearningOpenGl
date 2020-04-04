@@ -33,15 +33,8 @@ public class DebugHierarchyWorldPanel extends DebugHierarchyPanel<WorldObject>
 		{
 			AbstractHierarchyData<WorldObject> data = getSelectedData();
 
-			Vector3f worldPos = data.getInstance().getPosition(false, null);
-			Vector3f cameraDir = Camera.getInstance().getDir(false, null);
-
-			Vector3f camPos = new Vector3f();
-			camPos.x = worldPos.x + (cameraDir.x * 100);
-			camPos.y = worldPos.y + (cameraDir.y * 100);
-			camPos.z = worldPos.z + (cameraDir.z * 100);
-			
-			Camera.getInstance().setPosition(false, camPos);
+			Vector3f targetPos = data.getInstance().getPosition(false, null);
+			Camera.getInstance().lookAt(targetPos);
 		}
 	}
 

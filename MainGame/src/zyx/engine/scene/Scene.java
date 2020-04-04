@@ -8,6 +8,7 @@ import zyx.engine.scene.loading.ILoadingScreenDone;
 import zyx.engine.scene.loading.LoadingScreenProcess;
 import zyx.engine.scene.loading.LoadingScreenProcessQueue;
 import zyx.engine.scene.preloading.ResourcePreloadProcess;
+import zyx.engine.utils.worldpicker.calculating.RayPicker;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.MegaManager;
 import zyx.opengl.GLUtils;
@@ -47,7 +48,7 @@ public class Scene implements ILoadingScreenDone
 
 		debugContainer = DebugContainer.getInstance();
 		loadingQueue = new LoadingScreenProcessQueue();
-		
+
 		ready = false;
 		current = this;
 	}
@@ -80,7 +81,7 @@ public class Scene implements ILoadingScreenDone
 	{
 		ready = true;
 	}
-	
+
 	protected void onPreloadResources()
 	{
 	}
@@ -106,6 +107,8 @@ public class Scene implements ILoadingScreenDone
 
 		camera.update(timestamp, elapsedTime);
 
+		RayPicker.getInstance().updateMousePos(MouseData.data.x, MouseData.data.y);
+
 		if (ready)
 		{
 			onUpdate(timestamp, elapsedTime);
@@ -129,7 +132,7 @@ public class Scene implements ILoadingScreenDone
 
 			onDraw();
 		}
-		
+
 		GLUtils.disableDepthTest();
 		GLUtils.disableCulling();
 		GLUtils.setBlendAlpha();

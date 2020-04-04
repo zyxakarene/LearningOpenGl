@@ -1,6 +1,8 @@
 package zyx.game.components.world.player;
 
 import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.components.screen.base.Stage;
+import zyx.engine.touch.MouseTouchManager;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
@@ -81,6 +83,9 @@ public class ClipboardViewerBehavior extends Behavior implements ICallback<Chara
 		if (data == TOGGLE_CHARACTER)
 		{
 			viewingBoard = !viewingBoard;
+			MouseTouchManager.getInstance().setEnabled(!viewingBoard);
+			Stage.instance.touchable = !viewingBoard;
+			
 			if (tweening)
 			{
 				timeToMove = tweenTime;

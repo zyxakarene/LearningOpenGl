@@ -5,7 +5,6 @@ import zyx.engine.components.cubemaps.CubemapManager;
 import zyx.engine.components.meshbatch.MeshBatchManager;
 import zyx.engine.components.tooltips.TooltipManager;
 import zyx.engine.scene.Scene;
-import zyx.engine.utils.worldpicker.IHoveredItem;
 import zyx.engine.utils.worldpicker.WorldPicker;
 import zyx.game.behavior.camera.CameraUpdateViewBehavior;
 import zyx.game.behavior.freefly.FreeFlyBehavior;
@@ -22,6 +21,7 @@ import zyx.net.io.controllers.NetworkChannel;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.opengl.camera.Camera;
 import zyx.utils.interfaces.IPhysbox;
+import zyx.engine.utils.worldpicker.IWorldPickedItem;
 
 public class GameScene extends Scene
 {
@@ -56,12 +56,12 @@ public class GameScene extends Scene
 		return null;
 	}
 
-	public void addPickedObject(IPhysbox object, IHoveredItem clickCallback)
+	public void addPickedObject(IPhysbox object, IWorldPickedItem clickCallback)
 	{
 		picker.addObject(object, clickCallback);
 	}
 
-	public void removePickedObject(IPhysbox object, IHoveredItem clickCallback)
+	public void removePickedObject(IPhysbox object, IWorldPickedItem clickCallback)
 	{
 		picker.removeObject(object, clickCallback);
 	}

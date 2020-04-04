@@ -3,12 +3,12 @@ package zyx.game.controls.sound;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import zyx.engine.components.world.WorldObject;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.Resource;
 import zyx.engine.resources.impl.SoundResource;
 import zyx.engine.sound.IAudio;
-import zyx.game.components.GameObject;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IUpdateable;
@@ -21,7 +21,7 @@ public class Sound implements IDisposeable, IUpdateable, IResourceReady<SoundRes
 
 	final int soundId;
 
-	private GameObject emitter;
+	private WorldObject emitter;
 
 	private float prevPosition;
 	private boolean stopped;
@@ -36,7 +36,7 @@ public class Sound implements IDisposeable, IUpdateable, IResourceReady<SoundRes
 		this.soundId = soundId;
 	}
 
-	void set(float volume, boolean loop, String resource, GameObject emitter)
+	void set(float volume, boolean loop, String resource, WorldObject emitter)
 	{
 		this.loop = loop;
 		this.emitter = emitter;

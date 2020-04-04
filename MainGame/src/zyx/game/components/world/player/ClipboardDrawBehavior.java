@@ -2,20 +2,19 @@ package zyx.game.components.world.player;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
+import zyx.engine.curser.CursorManager;
+import zyx.engine.curser.GameCursor;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.engine.utils.worldpicker.ClickedInfo;
-import zyx.engine.utils.worldpicker.IHoveredItem;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.controls.input.InputManager;
 import zyx.game.controls.input.MouseData;
 import zyx.game.scene.game.GameScene;
 import zyx.opengl.buffers.DrawingRenderer;
-import zyx.opengl.textures.AbstractTexture;
-import zyx.opengl.textures.TextureFromInt;
-import zyx.opengl.textures.enums.TextureSlot;
+import zyx.engine.utils.worldpicker.IWorldPickedItem;
 
-public class ClipboardDrawBehavior extends Behavior implements ICallback<Character>, IHoveredItem
+public class ClipboardDrawBehavior extends Behavior implements ICallback<Character>, IWorldPickedItem
 {
 
 	private static final Character TOGGLE_CHARACTER = 'z';
@@ -23,6 +22,7 @@ public class ClipboardDrawBehavior extends Behavior implements ICallback<Charact
 	private GameScene scene;
 	private boolean active;
 	private PlayerClipboard clipboard;
+	private int noGeometryFrames;
 
 	public ClipboardDrawBehavior()
 	{
@@ -38,9 +38,6 @@ public class ClipboardDrawBehavior extends Behavior implements ICallback<Charact
 		InputManager.getInstance().OnKeyPressed.addCallback(this);
 		clipboard = (PlayerClipboard) gameObject;
 
-		int id = DrawingRenderer.getInstance().underlayInt();
-		AbstractTexture tex = new TextureFromInt(256, 256, id, TextureSlot.SHARED_DIFFUSE);
-
 		if (active)
 		{
 			scene.addPickedObject(clipboard, this);
@@ -50,6 +47,7 @@ public class ClipboardDrawBehavior extends Behavior implements ICallback<Charact
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
+		noGeometryFrames++;
 	}
 
 	@Override
@@ -66,7 +64,7 @@ public class ClipboardDrawBehavior extends Behavior implements ICallback<Charact
 		if (data == TOGGLE_CHARACTER)
 		{
 			active = !active;
-
+			
 			if (active)
 			{
 				scene.addPickedObject(clipboard, this);
@@ -81,24 +79,33 @@ public class ClipboardDrawBehavior extends Behavior implements ICallback<Charact
 	private boolean isDrawing;
 
 	@Override
-	public void onClicked(ClickedInfo info)
+	public void onGeometryPicked(ClickedInfo info)
 	{
+		CursorManager.getInstance().setCursor(GameCursor.PENCIL);
 
+		
 		boolean wasDrawing = isDrawing;
 		isDrawing = MouseData.data.isLeftDown();
 
+		if (noGeometryFrames >= 3)
+		{
+			DrawingRenderer.getInstance().toggleDraw(false);
+			wasDrawing = false;
+			isDrawing = false;
+		}
+		noGeometryFrames = 0;
+		
 		if (wasDrawing != isDrawing)
 		{
 			DrawingRenderer.getInstance().toggleDraw(isDrawing);
 		}
 
-		if (isDrawing)
+		if (isDrawing && noGeometryFrames <= 3)
 		{
 			Vector4f pos = new Vector4f(info.position.x, info.position.y, info.position.z, 1);
 			Matrix4f invWorld = Matrix4f.invert(clipboard.getMatrix(), null);
 			Matrix4f.transform(invWorld, pos, pos);
 
-			System.out.println(pos);
 			float x = pos.x + 0.5f;
 			float y = pos.y + 0.5f;
 			DrawingRenderer.getInstance().drawAt(x, y, !wasDrawing);

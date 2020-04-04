@@ -13,7 +13,8 @@ import zyx.utils.math.Vector2Int;
 
 public class Camera
 {
-
+	private static final Vector3f HELPER_LOOK_AT_TARGET = new Vector3f();
+	private static final Vector3f HELPER_LOOK_AT_MY_POS = new Vector3f();
 	private static final Camera INSTANCE = new Camera();
 
 	public static Camera getInstance()
@@ -128,12 +129,25 @@ public class Camera
 	
 	public void lookAt(float x, float y, float z)
 	{
-		target.lookAt(x, y, z);
+		HELPER_LOOK_AT_TARGET.set(x, y, z);
+		getPosition(false, HELPER_LOOK_AT_MY_POS);
+
+		Vector3f.sub(HELPER_LOOK_AT_TARGET, HELPER_LOOK_AT_MY_POS, HELPER_LOOK_AT_TARGET);
+		if (HELPER_LOOK_AT_TARGET.x != 0 || HELPER_LOOK_AT_TARGET.y != 0 || HELPER_LOOK_AT_TARGET.z != 0)
+		{
+			HELPER_LOOK_AT_TARGET.normalise();
+
+			HELPER_LOOK_AT_MY_POS.x -= (HELPER_LOOK_AT_TARGET.x * 100f);
+			HELPER_LOOK_AT_MY_POS.y -= (HELPER_LOOK_AT_TARGET.y * 100f);
+			HELPER_LOOK_AT_MY_POS.z -= (HELPER_LOOK_AT_TARGET.z * 100f);
+		}
+		
+		target.lookAt(HELPER_LOOK_AT_MY_POS);
 	}
 
 	public void lookAt(Vector3f pos)
 	{
-		target.lookAt(pos);
+		lookAt(pos.x, pos.y, pos.z);
 	}
 	
 	public void rotate(float x, float y, float z)
