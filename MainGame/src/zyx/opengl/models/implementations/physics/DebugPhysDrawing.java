@@ -11,6 +11,7 @@ import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.textures.ColorTexture;
 import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.FloatMath;
+import zyx.utils.cheats.Print;
 import zyx.utils.geometry.Box;
 import zyx.utils.interfaces.IPhysbox;
 
@@ -24,15 +25,20 @@ public class DebugPhysDrawing
 	private static final HashMap<PhysBox, Skeleton> SKELETON_MAP_MESH = new HashMap<>();
 	private static final HashMap<PhysBox, WorldModel> MESH_MAP = new HashMap<>();
 	private static final HashMap<PhysBox, WorldModel> BOUNDING_BOX_MAP = new HashMap<>();
+	private static final HashMap<PhysBox, Integer> PHYS_COUNT_MAP = new HashMap<>();
 
 	public static WorldModel[] getModelFor(IPhysbox physBox)
 	{
 		PhysBox box = physBox.getPhysbox();
-
-		if (MESH_MAP.containsKey(box) == false)
+		Integer integerCount = PHYS_COUNT_MAP.get(box);
+		int count = integerCount == null ? 0 : integerCount;
+		
+		if (count <= 0)
 		{
 			createModel(box);
 		}
+		
+		PHYS_COUNT_MAP.put(box, count + 1);
 
 		WorldModel[] models = new WorldModel[2];
 		models[INDEX_MESH] = MESH_MAP.get(box);
@@ -44,29 +50,39 @@ public class DebugPhysDrawing
 	public static void removeModelFor(IPhysbox physBox)
 	{
 		PhysBox box = physBox.getPhysbox();
-		WorldModel meshRemove = MESH_MAP.remove(box);
-		WorldModel boundingRemove = BOUNDING_BOX_MAP.remove(box);
-		Skeleton skeletonMeshRemove = SKELETON_MAP_MESH.remove(box);
-		Skeleton skeletonBoundingRemove = SKELETON_MAP_BOUNDING.remove(box);
-
-		if (meshRemove != null)
-		{
-			meshRemove.dispose();
-		}
-
-		if (boundingRemove != null)
-		{
-			boundingRemove.dispose();
-		}
 		
-		if (skeletonMeshRemove != null)
-		{
-			skeletonMeshRemove.dispose();
-		}
+		Integer integerCount = PHYS_COUNT_MAP.get(box);
+		int count = integerCount == null ? 0 : integerCount;
+
+		int newCount = count - 1;
+		PHYS_COUNT_MAP.put(box, newCount);
 		
-		if (skeletonBoundingRemove != null)
+		if (newCount <= 0)
 		{
-			skeletonBoundingRemove.dispose();
+			WorldModel meshRemove = MESH_MAP.remove(box);
+			WorldModel boundingRemove = BOUNDING_BOX_MAP.remove(box);
+			Skeleton skeletonMeshRemove = SKELETON_MAP_MESH.remove(box);
+			Skeleton skeletonBoundingRemove = SKELETON_MAP_BOUNDING.remove(box);
+
+			if (meshRemove != null)
+			{
+				meshRemove.dispose();
+			}
+
+			if (boundingRemove != null)
+			{
+				boundingRemove.dispose();
+			}
+
+			if (skeletonMeshRemove != null)
+			{
+				skeletonMeshRemove.dispose();
+			}
+
+			if (skeletonBoundingRemove != null)
+			{
+				skeletonBoundingRemove.dispose();
+			}
 		}
 	}
 

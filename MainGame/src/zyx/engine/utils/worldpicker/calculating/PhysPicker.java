@@ -1,17 +1,12 @@
 package zyx.engine.utils.worldpicker.calculating;
 
 import java.util.LinkedList;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.game.controls.input.KeyboardData;
-import zyx.game.controls.input.MouseData;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.models.implementations.physics.PhysObject;
 import zyx.opengl.models.implementations.physics.PhysTriangle;
 import zyx.utils.FloatMath;
-import zyx.utils.cheats.DebugPoint;
-import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IPhysbox;
 
 public class PhysPicker extends AbstractPicker
@@ -125,13 +120,6 @@ public class PhysPicker extends AbstractPicker
 		transformVertex(VERTEX_1, mat);
 		transformVertex(VERTEX_2, mat);
 		transformVertex(VERTEX_3, mat);
-		
-		if (KeyboardData.data.wasPressed(Keyboard.KEY_P))
-		{
-			DebugPoint.addToScene(VERTEX_1, 1000);
-			DebugPoint.addToScene(VERTEX_2, 1000);
-			DebugPoint.addToScene(VERTEX_3, 1000);
-		}
 
 		Vector3f.sub(VERTEX_2, VERTEX_1, EDGE_1);
 		Vector3f.sub(VERTEX_3, VERTEX_1, EDGE_2);

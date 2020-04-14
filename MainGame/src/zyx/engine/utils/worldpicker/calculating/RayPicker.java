@@ -4,6 +4,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.utils.ScreenSize;
+import zyx.game.controls.input.MouseData;
 import zyx.opengl.camera.Camera;
 
 public class RayPicker
@@ -15,6 +16,7 @@ public class RayPicker
 	private Camera camera;
 	private Matrix4f inverseProjection;
 	private Matrix4f inverseView;
+	private MouseData mouseData;
 
 	private Vector3f currentRay;
 	
@@ -28,6 +30,7 @@ public class RayPicker
 		currentRay = new Vector3f();
 
 		camera = Camera.getInstance();
+		mouseData = MouseData.data;
 	}
 
 	public void setProjectionMatrix(Matrix4f matrix)
@@ -48,7 +51,7 @@ public class RayPicker
 
 	public void updateMousePos(int x, int y)
 	{
-		if(x != lastX || y != lastY)
+		if(mouseData.dX != 0 ||mouseData.dY != 0)
 		{
 			lastX = x;
 			lastY = y;

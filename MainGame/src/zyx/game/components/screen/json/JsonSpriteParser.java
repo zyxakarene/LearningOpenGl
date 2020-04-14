@@ -11,6 +11,7 @@ import org.json.simple.JSONObject;
 import zyx.engine.components.screen.composed.ComposedImage;
 import zyx.engine.components.screen.list.ItemList;
 import zyx.engine.components.screen.text.Textfield;
+import zyx.game.components.screen.radial.RadialMenu;
 
 class JsonSpriteParser
 {
@@ -33,6 +34,8 @@ class JsonSpriteParser
 	static final String TYPE_COMPOSED_BUTTON = "composedButton";
 	static final String TYPE_COMPOSED_SCALE_NINE_IMAGE = "composedScale9image";
 	static final String TYPE_COMPOSED_SCALE_NINE_BUTTON = "composedScale9button";
+	
+	static final String TYPE_RADIAL_MENU = "radialMenu";
 
 	private ConsumerFactory factory;
 	private int currentChildDepth;
@@ -100,6 +103,9 @@ class JsonSpriteParser
 				break;
 			case TYPE_COMPOSED_SCALE_NINE_IMAGE:
 				child = new ComposedImage(true);
+				break;
+			case TYPE_RADIAL_MENU:
+				child = new RadialMenu();
 				break;
 		}
 		

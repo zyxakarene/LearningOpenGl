@@ -64,6 +64,7 @@ public class DebugSoundPanel extends BaseDebugPanel
 	public void update()
 	{
 		soundLink.getSourceStatus(outSounds);
+		repaint();
 	}
 
 	@Override

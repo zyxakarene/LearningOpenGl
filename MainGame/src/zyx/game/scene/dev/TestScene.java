@@ -20,7 +20,7 @@ public class TestScene extends DebugScene
 	}
 
 	@Override
-	protected void onInitialize()
+	protected void onInitializeGameScene()
 	{
 		addPlayerControls();
 		

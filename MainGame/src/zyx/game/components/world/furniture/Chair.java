@@ -16,4 +16,9 @@ public class Chair extends BaseFurnitureItem<SimpleMesh>
 		return "mesh.furniture.chair";
 	}
 
+	@Override
+	public boolean isInteractable()
+	{
+		return true;
+	}
 }

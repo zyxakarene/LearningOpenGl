@@ -20,6 +20,8 @@ public class FoodItem extends GameItem
 	public void setType(HandheldItemType type)
 	{
 		super.setType(type);
+		
+		clean();
 		load();
 	}
 	

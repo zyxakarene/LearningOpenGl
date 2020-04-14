@@ -3,17 +3,16 @@ package zyx.game.components.world.player;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.screen.base.Stage;
 import zyx.engine.touch.MouseTouchManager;
-import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.controls.input.InputManager;
+import zyx.game.controls.input.scheme.InputScheme;
 
-public class ClipboardViewerBehavior extends Behavior implements ICallback<Character>
+public class ClipboardViewerBehavior extends Behavior
 {
 
-	private static final Character TOGGLE_CHARACTER = ' ';
 	private static final int DEFAULT_MOVE_TIME = 1000;
-	
+
 	private boolean viewingBoard;
 	private boolean tweening;
 	private float timeToMove;
@@ -26,9 +25,12 @@ public class ClipboardViewerBehavior extends Behavior implements ICallback<Chara
 	private Vector3f curRot;
 	private Vector3f curPos;
 
+	private InputScheme inputScheme;
+	private Behavior clipDrawBehavior;
+
 	public ClipboardViewerBehavior()
 	{
-		super(BehaviorType.CLIP_BOARD_DRAWING);
+		super(BehaviorType.CLIP_BOARD_VIEWING);
 
 		fromPos = new Vector3f();
 		toPos = new Vector3f();
@@ -42,30 +44,38 @@ public class ClipboardViewerBehavior extends Behavior implements ICallback<Chara
 	public void initialize()
 	{
 		viewingBoard = false;
-		InputManager.getInstance().OnKeyPressed.addCallback(this);
+		inputScheme = InputManager.getInstance().scheme;
 
 		curPos.set(-3, -2, -2);
 		curRot.set(45, 0, 90);
-		
+
 		gameObject.setScale(0.1f, 0.1f, 0.1f);
 		gameObject.setRotation(curRot);
 		gameObject.setPosition(true, curPos);
+
+		clipDrawBehavior = gameObject.getBehaviorById(BehaviorType.CLIP_BOARD_DRAWING);
 	}
 
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
+		if (inputScheme.toggleClipboard)
+		{
+			toggleClipboard();
+			clipDrawBehavior.setActive(viewingBoard);
+		}
+
 		if (tweening)
 		{
 			tweenTime += elapsedTime;
 			float fraction = tweenTime / timeToMove;
-			
+
 			lerp(fromRot, toRot, fraction, curRot);
 			lerp(fromPos, toPos, fraction, curPos);
 
 			gameObject.setRotation(curRot);
 			gameObject.setPosition(true, curPos);
-			
+
 			tweening = fraction < 1;
 		}
 	}
@@ -76,48 +86,36 @@ public class ClipboardViewerBehavior extends Behavior implements ICallback<Chara
 		out.y = from.y + fraction * (to.y - from.y);
 		out.z = from.z + fraction * (to.z - from.z);
 	}
-	
-	@Override
-	public void onCallback(Character data)
+
+	private void toggleClipboard()
 	{
-		if (data == TOGGLE_CHARACTER)
+		viewingBoard = !viewingBoard;
+		MouseTouchManager.getInstance().setEnabled(!viewingBoard);
+		Stage.instance.touchable = !viewingBoard;
+
+		if (tweening)
 		{
-			viewingBoard = !viewingBoard;
-			MouseTouchManager.getInstance().setEnabled(!viewingBoard);
-			Stage.instance.touchable = !viewingBoard;
-			
-			if (tweening)
-			{
-				timeToMove = tweenTime;
-			}
-			else
-			{
-				timeToMove = DEFAULT_MOVE_TIME;
-			}
-			tweening = true;
-			tweenTime = 0;
-
-			fromPos.set(curPos);
-			fromRot.set(curRot);
-			
-			if (viewingBoard)
-			{
-				toPos.set(0, 0, -2);
-				toRot.set(0, 0, 90);
-			}
-			else
-			{
-				toPos.set(-3, -2, -2);
-				toRot.set(45, 0, 90);
-			}
+			timeToMove = tweenTime;
 		}
-	}
+		else
+		{
+			timeToMove = DEFAULT_MOVE_TIME;
+		}
+		tweening = true;
+		tweenTime = 0;
 
-	@Override
-	public void dispose()
-	{
-		super.dispose();
+		fromPos.set(curPos);
+		fromRot.set(curRot);
 
-		InputManager.getInstance().OnKeyPressed.removeCallback(this);
+		if (viewingBoard)
+		{
+			toPos.set(0, 0, -2);
+			toRot.set(0, 0, 90);
+		}
+		else
+		{
+			toPos.set(-3, -2, -2);
+			toRot.set(45, 0, 90);
+		}
 	}
 }

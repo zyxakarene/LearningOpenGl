@@ -52,8 +52,15 @@ public class GameCharacter extends GameObject implements IItemHolder
 		}
 	}
 	
-	public IPhysbox getPhysbox()
+	@Override
+	public IPhysbox getInteractionPhysbox()
 	{
 		return mesh;
+	}
+
+	@Override
+	public boolean isInteractable()
+	{
+		return false;
 	}
 }

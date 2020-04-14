@@ -10,8 +10,8 @@ public class SmdBoundsTriangleHandler implements ISmdHandler
 
 	public SmdBoundsTriangleHandler()
 	{
-		min = new Vector3f(0, 0, 0);
-		max = new Vector3f(0, 0, 0);
+		min = new Vector3f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE);
+		max = new Vector3f(Float.MIN_VALUE, Float.MIN_VALUE, Float.MIN_VALUE);
 	}
 
 	@Override

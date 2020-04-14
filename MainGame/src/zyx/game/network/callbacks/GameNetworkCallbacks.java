@@ -3,9 +3,8 @@ package zyx.game.network.callbacks;
 import java.util.HashMap;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.OnTeaPotClicked;
-import zyx.engine.components.tooltips.TestTooltip;
-import zyx.engine.components.tooltips.TooltipManager;
 import zyx.engine.components.world.World3D;
+import zyx.engine.scene.SceneManager;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.behavior.player.OnlinePositionInterpolator;
 import zyx.game.components.GameObject;
@@ -23,7 +22,6 @@ import zyx.game.network.PingManager;
 import zyx.game.joining.data.GameSetupVo;
 import zyx.game.joining.data.ItemSetupData;
 import zyx.game.scene.ItemHolderHandler;
-import zyx.game.scene.game.DragonScene;
 import zyx.game.login.data.AuthenticationData;
 import zyx.game.position.data.CharacterMassPositionData;
 import zyx.game.scene.ItemHandler;
@@ -75,11 +73,8 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 		GameModels.player.playerId = data.id;
 		GameModels.player.playerName = data.name;
 
-		GameScene scene = GameScene.getCurrent();
-		if (scene != null)
-		{
-			scene.createPlayerObject();
-		}
+		GameScene scene = SceneManager.getInstance().<GameScene>getSceneAs();
+		scene.createPlayerObject();
 		
 		Print.out("User authenticated as ID:", data.id);
 	}
@@ -95,8 +90,6 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 
 			GameCharacter character = new GameCharacter();
 			character.load(vo);
-
-			GameScene.getCurrent().addPickedObject(character.getPhysbox(), new OnTeaPotClicked());
 			
 			int id = data.ids[i];
 			Print.out("Character", id, "joined my game!");
@@ -117,7 +110,7 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 
 			BaseFurnitureItem furniture = vo.createFurniture();
 			furniture.load(vo);
-
+			
 			int id = data.ids[i];
 			Print.out("Furniture", id, "was added to the world");
 			itemHolderHandler.addItemHolder(id, furniture);

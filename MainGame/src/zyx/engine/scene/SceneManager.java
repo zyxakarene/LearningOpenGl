@@ -25,6 +25,11 @@ public class SceneManager implements IUpdateable
 	{
 	}
 
+	public <T extends Scene> T getSceneAs()
+	{
+		return (T) currentScene;
+	}
+	
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{

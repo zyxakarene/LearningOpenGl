@@ -6,6 +6,7 @@ import zyx.game.components.GameObject;
 import zyx.game.components.SimpleMesh;
 import zyx.game.components.world.IItemHolder;
 import zyx.game.components.world.items.GameItem;
+import zyx.utils.interfaces.IPhysbox;
 
 public abstract class BaseFurnitureItem<V extends SimpleMesh> extends GameObject implements IItemHolder
 {
@@ -51,6 +52,18 @@ public abstract class BaseFurnitureItem<V extends SimpleMesh> extends GameObject
 	{
 		items.remove(item);
 		onLostItem(item);
+	}
+	
+	@Override
+	public IPhysbox getInteractionPhysbox()
+	{
+		return view;
+	}
+	
+	@Override
+	public boolean isInteractable()
+	{
+		return false;
 	}
 
 	protected void onGotItem(GameItem item)

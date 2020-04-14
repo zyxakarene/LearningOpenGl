@@ -31,4 +31,10 @@ public class Table extends BaseFurnitureItem<SimpleMesh>
 		return "mesh.furniture.table";
 	}
 
+	@Override
+	public boolean isInteractable()
+	{
+		return true;
+	}
+	
 }

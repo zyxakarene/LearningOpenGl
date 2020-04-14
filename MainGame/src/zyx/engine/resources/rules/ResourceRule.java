@@ -13,7 +13,8 @@ import zyx.engine.resources.impl.textures.TextureResource;
 
 public enum ResourceRule
 {
-	UI_ITEM				("json.#",				"assets/json/#.json",		JsonResource.class),
+	UI_ITEM_1_FOLDERS	("json.#",				"assets/json/#.json",		JsonResource.class),
+	UI_ITEM_2_FOLDERS	("json.#.#",			"assets/json/#/#.json",		JsonResource.class),
 	
 	SPRITE_SHEET_PNG	("sprite_sheet_png",	"assets/sprite_sheet.png",	SpriteSheetTextureResource.class),
 	SPRITE_SHEET_JSON	("sprite_sheet_json",	"assets/sprite_sheet.json",	SpriteSheetJsonResource.class),

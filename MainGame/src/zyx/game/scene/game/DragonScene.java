@@ -64,10 +64,8 @@ public class DragonScene extends GameScene implements ICallback<ProcessQueue>
 	}
 
 	@Override
-	protected void onInitialize()
+	protected void onInitializeGameScene()
 	{
-		super.onInitialize();
-	
 		addLoadingScreenProcess(new AuthenticateLoadingProcess("Zyx", Gender.random()));
 		addLoadingScreenProcess(new WaitingProcess(3, "Reticulating Splines"));
 		addLoadingScreenProcess(new WaitingProcess(5, "Branching Family Trees"));

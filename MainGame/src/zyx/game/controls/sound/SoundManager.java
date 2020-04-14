@@ -1,6 +1,7 @@
 package zyx.game.controls.sound;
 
 import java.util.LinkedList;
+import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.WorldObject;
 import zyx.engine.sound.SoundSystem;
 import zyx.utils.cheats.Print;
@@ -34,22 +35,36 @@ public class SoundManager implements IUpdateable, IDisposeable
 
 	public void playSound(String resource, WorldObject emitter)
 	{
-		if (emitter == null)
-		{
-			Print.out("Emitter playing sound", resource, "is null. Not playing sound.");
-			return;
-		}
+		Sound sound = getSound();
 		
+		if (sound != null)
+		{
+			sound.set(10, false, resource, emitter);
+		}
+	}
+	
+	public void playSound(String resource, Vector3f position)
+	{
+		Sound sound = getSound();
+		
+		if (sound != null)
+		{
+			sound.set(10, false, resource, position);
+		}
+	}
+	
+	private Sound getSound()
+	{
 		if (availibleSounds.isEmpty())
 		{
 			Print.out("No availible sounds!");
-			return;
+			return null;
 		}
 
 		Sound sound = availibleSounds.removeFirst();
-		sound.set(10, false, resource, emitter);
-		
 		playingSounds[sound.soundId] = sound;
+		
+		return sound;
 	}
 
 	void onSoundDone(Sound sound)

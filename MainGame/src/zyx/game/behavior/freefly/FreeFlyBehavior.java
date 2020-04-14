@@ -5,8 +5,10 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
+import zyx.game.controls.input.InputManager;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.input.MouseData;
+import zyx.game.controls.input.scheme.InputScheme;
 import zyx.utils.DeltaTime;
 import zyx.utils.FloatMath;
 import zyx.utils.cheats.Print;
@@ -15,14 +17,13 @@ public class FreeFlyBehavior extends Behavior
 {
 
 	private static final int FORWARD = 1;
-	private static final int BACKWARD = 2;
-	private static final int RIGHT = 3;
-	private static final int LEFT = 4;
+	private static final int STRAFE = 2;
 	
 	private static final float MOVE_SPEED = 0.2f;
 	
 	private Vector3f cameraPosition;
 	private Vector3f cameraRotation;
+	private InputScheme inputScheme;
 
 	public FreeFlyBehavior()
 	{
@@ -32,6 +33,7 @@ public class FreeFlyBehavior extends Behavior
 	@Override
 	public void initialize()
 	{		
+		inputScheme = InputManager.getInstance().scheme;
 		cameraPosition = new Vector3f();
 		cameraRotation = new Vector3f();
 	}
@@ -54,22 +56,14 @@ public class FreeFlyBehavior extends Behavior
 			rotate(-dy, 0, dx, elapsedTime);
 		}
 
-		if (KeyboardData.data.isDown(Keyboard.KEY_W))
+		if (inputScheme.forward != 0)
 		{
-			move(FORWARD, elapsedTime);
-		}
-		if (KeyboardData.data.isDown(Keyboard.KEY_S))
-		{
-			move(BACKWARD, elapsedTime);
+			move(FORWARD, inputScheme.forward, elapsedTime);
 		}
 
-		if (KeyboardData.data.isDown(Keyboard.KEY_D))
+		if (inputScheme.strafe != 0)
 		{
-			move(RIGHT, elapsedTime);
-		}
-		if (KeyboardData.data.isDown(Keyboard.KEY_A))
-		{
-			move(LEFT, elapsedTime);
+			move(STRAFE, inputScheme.strafe, elapsedTime);
 		}
 
 		gameObject.setPosition(true, cameraPosition);
@@ -103,19 +97,9 @@ public class FreeFlyBehavior extends Behavior
         }
 	}
 	
-	private void move(int direction, int elapsedTime)
+	private void move(int direction, float value, int elapsedTime)
 	{
-		float multiplier = elapsedTime * 0.15f;
-
-		if (KeyboardData.data.isDown(Keyboard.KEY_LSHIFT))
-		{
-			multiplier *= 5;
-		}
-		
-		if (KeyboardData.data.isDown(Keyboard.KEY_LCONTROL))
-		{
-			multiplier /= 5;
-		}
+		float multiplier = value * elapsedTime * 0.15f * inputScheme.moveModifier;
 		
         float dX = FloatMath.sin(FloatMath.toRadians(-cameraRotation.z)) * FloatMath.cos(FloatMath.toRadians(-cameraRotation.x + 90)) * MOVE_SPEED * multiplier;
         float dY = FloatMath.cos(FloatMath.toRadians(-cameraRotation.z)) * FloatMath.cos(FloatMath.toRadians(-cameraRotation.x + 90)) * MOVE_SPEED * multiplier;
@@ -130,26 +114,10 @@ public class FreeFlyBehavior extends Behavior
                 cameraPosition.z -= dZ;
                 break;
             }
-            case (BACKWARD):
-            {
-				cameraPosition.x -= dX;
-                cameraPosition.y -= dY;
-                cameraPosition.z += dZ;
-                break;
-            }
-            case (RIGHT):
+            case (STRAFE):
             {
                 dX = FloatMath.sin(FloatMath.toRadians(-cameraRotation.z + 90)) * MOVE_SPEED * multiplier;
                 dY = FloatMath.cos(FloatMath.toRadians(-cameraRotation.z + 90)) * MOVE_SPEED * multiplier;
-
-				cameraPosition.x += dX;
-                cameraPosition.y += dY;
-                break;
-            }
-            case (LEFT):
-            {
-                dX = FloatMath.sin(FloatMath.toRadians(-cameraRotation.z - 90)) * MOVE_SPEED * multiplier;
-                dY = FloatMath.cos(FloatMath.toRadians(-cameraRotation.z - 90)) * MOVE_SPEED * multiplier;
 
 				cameraPosition.x += dX;
                 cameraPosition.y += dY;

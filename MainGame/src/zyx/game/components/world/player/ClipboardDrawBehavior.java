@@ -4,23 +4,19 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;
-import zyx.engine.utils.callbacks.ICallback;
+import zyx.engine.scene.SceneManager;
 import zyx.engine.utils.worldpicker.ClickedInfo;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
-import zyx.game.controls.input.InputManager;
 import zyx.game.controls.input.MouseData;
 import zyx.game.scene.game.GameScene;
 import zyx.opengl.buffers.DrawingRenderer;
 import zyx.engine.utils.worldpicker.IWorldPickedItem;
 
-public class ClipboardDrawBehavior extends Behavior implements ICallback<Character>, IWorldPickedItem
+public class ClipboardDrawBehavior extends Behavior implements IWorldPickedItem
 {
 
-	private static final Character TOGGLE_CHARACTER = 'z';
-
 	private GameScene scene;
-	private boolean active;
 	private PlayerClipboard clipboard;
 	private int noGeometryFrames;
 
@@ -32,16 +28,21 @@ public class ClipboardDrawBehavior extends Behavior implements ICallback<Charact
 	@Override
 	public void initialize()
 	{
-		active = !MouseData.data.grabbed;
-		scene = GameScene.getCurrent();
+		scene = SceneManager.getInstance().getSceneAs();
 
-		InputManager.getInstance().OnKeyPressed.addCallback(this);
 		clipboard = (PlayerClipboard) gameObject;
+	}
 
-		if (active)
-		{
-			scene.addPickedObject(clipboard, this);
-		}
+	@Override
+	protected void onActivate()
+	{
+		scene.addPickedObject(clipboard, this);
+	}
+
+	@Override
+	protected void onDeactivate()
+	{
+		scene.removePickedObject(clipboard, this);
 	}
 
 	@Override
@@ -55,25 +56,7 @@ public class ClipboardDrawBehavior extends Behavior implements ICallback<Charact
 	{
 		super.dispose();
 
-		InputManager.getInstance().OnKeyPressed.removeCallback(this);
-	}
-
-	@Override
-	public void onCallback(Character data)
-	{
-		if (data == TOGGLE_CHARACTER)
-		{
-			active = !active;
-			
-			if (active)
-			{
-				scene.addPickedObject(clipboard, this);
-			}
-			else
-			{
-				scene.removePickedObject(clipboard, this);
-			}
-		}
+		scene.removePickedObject(clipboard, this);
 	}
 
 	private boolean isDrawing;

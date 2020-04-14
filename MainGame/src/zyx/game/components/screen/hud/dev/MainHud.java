@@ -1,8 +1,9 @@
-package zyx.game.components.screen.hud;
+package zyx.game.components.screen.hud.dev;
 
 import java.util.ArrayList;
 import zyx.engine.components.screen.image.AbstractImage;
 import zyx.engine.components.screen.list.ItemList;
+import zyx.game.components.screen.hud.BaseHud;
 
 public class MainHud extends BaseHud
 {

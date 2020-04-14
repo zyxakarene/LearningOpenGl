@@ -1,9 +1,10 @@
 package zyx.game.controls.input;
 
+import zyx.game.controls.input.scheme.InputScheme;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import zyx.engine.utils.ScreenSize;
-import zyx.engine.utils.callbacks.CustomCallback;
+import zyx.game.controls.input.scheme.InputSchemeMap;
 import zyx.utils.interfaces.IUpdateable;
 
 public class InputManager implements IUpdateable
@@ -14,22 +15,13 @@ public class InputManager implements IUpdateable
 	private final MouseData mouseData;
 	private final KeyboardData keyboardData;
 
-	public final CustomCallback<MouseData> onMouseMoved;
-	public final CustomCallback<MouseData> OnMouseDownClicked;
-	public final CustomCallback<MouseData> OnMouseUpClicked;
-	public final CustomCallback<MouseData> OnMouseClicked;
-	public final CustomCallback<Character> OnKeyPressed;
+	public final InputScheme scheme;
 
 	private InputManager()
 	{
-		onMouseMoved = new CustomCallback<>();
-		OnMouseDownClicked = new CustomCallback<>();
-		OnMouseUpClicked = new CustomCallback<>();
-		OnMouseClicked = new CustomCallback<>();
-		OnKeyPressed = new CustomCallback<>();
-
 		mouseData = MouseData.data;
 		keyboardData = KeyboardData.data;
+		scheme = new InputScheme(InputSchemeMap.WASD);
 	}
 
 	public static InputManager getInstance()
@@ -42,6 +34,7 @@ public class InputManager implements IUpdateable
 	{
 		mouseData.reset();
 		keyboardData.reset();
+		scheme.reset();
 
 		checkMouse();
 		checkKeyboard();
@@ -79,23 +72,8 @@ public class InputManager implements IUpdateable
 			int button = Mouse.getEventButton();
 			if (button != -1)
 			{
-				boolean wasDown = mouseData.isDown(button);
 				boolean isDown = Mouse.getEventButtonState();
 				mouseData.setClickData(button, isDown);
-
-				if (!wasDown && isDown)
-				{
-					OnMouseDownClicked.dispatch(mouseData);
-				}
-				else if (wasDown && !isDown)
-				{
-					OnMouseUpClicked.dispatch(mouseData);
-				}
-
-				if (mouseData.wasPressed(button))
-				{
-					OnMouseClicked.dispatch(mouseData);
-				}
 			}
 		}
 
@@ -111,10 +89,8 @@ public class InputManager implements IUpdateable
 			mouseData.dY = lastY - mouseData.y;
 		}
 
-		if (mouseData.dX != 0 || mouseData.dY != 0)
-		{
-			onMouseMoved.dispatch(mouseData);
-		}
+		scheme.mouseDx = mouseData.dX;
+		scheme.mouseDy = mouseData.dY;
 	}
 
 	private void checkKeyboard()
@@ -125,9 +101,8 @@ public class InputManager implements IUpdateable
 			boolean isDown = Keyboard.getEventKeyState();
 
 			keyboardData.setClickData(key, isDown);
-
-			char character = Keyboard.getEventCharacter();
-			OnKeyPressed.dispatch(character);
 		}
+
+		scheme.tryMap(keyboardData);
 	}
 }

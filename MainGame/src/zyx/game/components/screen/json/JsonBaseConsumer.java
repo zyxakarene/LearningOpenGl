@@ -21,6 +21,8 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 	protected static final String Y = "y";
 	protected static final String WIDTH = "width";
 	protected static final String HEIGHT = "height";
+	protected static final String SCALE = "scale";
+	protected static final String VISIBLE = "visible";
 	protected static final String ROTATION = "rotation";
 	protected static final String PIVOT_X = "pivotX";
 	protected static final String PIVOT_Y = "pivotY";
@@ -66,6 +68,10 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 			case HEIGHT:
 				currentDisplayObject.setHeight(toFloat(value));
 				break;
+			case SCALE:
+				float scale = toFloat(value);
+				currentDisplayObject.setScale(scale, scale);
+				break;
 			case ROTATION:
 				currentDisplayObject.setRotation(toFloat(value));
 				break;
@@ -77,6 +83,9 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 				break;
 			case NAME:
 				currentDisplayObject.name = value.toString();
+				break;
+			case VISIBLE:
+				currentDisplayObject.visible = toBoolean(value);
 				break;
 			default:
 				onAccept(name, value);

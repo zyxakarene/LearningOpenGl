@@ -3,7 +3,7 @@ package zyx.game.components.screen.json;
 import java.util.HashMap;
 import zyx.engine.components.screen.list.ItemList;
 import zyx.engine.components.screen.list.ItemRenderer;
-import zyx.game.components.screen.hud.HudRenderer;
+import zyx.game.components.screen.hud.dev.HudRenderer;
 
 public class JsonItemListConsumer extends JsonContainerConsumer<ItemList>
 {

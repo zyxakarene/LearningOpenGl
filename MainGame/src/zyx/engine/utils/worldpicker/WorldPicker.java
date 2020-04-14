@@ -131,7 +131,7 @@ public class WorldPicker implements IDisposeable
 			positionPool.releaseInstance(pos);
 		}
 		
-		if (closestObject != null && closestClick != null)
+		if (closestDistance <= 5000 && closestObject != null && closestClick != null)
 		{
 			ClickedInfo info = new ClickedInfo();
 			info.position = closestPos;

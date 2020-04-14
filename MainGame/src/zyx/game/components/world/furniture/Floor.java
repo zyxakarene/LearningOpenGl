@@ -32,4 +32,10 @@ public class Floor extends BaseFurnitureItem<SimpleMesh>
 	{
 		World3D.instance.removeChild(item);
 	}
+	
+	@Override
+	public boolean isInteractable()
+	{
+		return false;
+	}
 }

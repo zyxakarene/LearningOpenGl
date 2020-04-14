@@ -2,7 +2,7 @@ package zyx.game.behavior;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import zyx.engine.components.world.WorldObject;
+import zyx.game.components.GameObject;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IUpdateable;
 
@@ -10,9 +10,9 @@ public class BehaviorBundle implements IUpdateable, IDisposeable
 {
 	private HashMap<BehaviorType, Behavior> behaviorMap;
 	private ArrayList<Behavior> behaviors;
-	private WorldObject gameObject;
+	private GameObject gameObject;
 
-	public BehaviorBundle(WorldObject gameObject)
+	public BehaviorBundle(GameObject gameObject)
 	{
 		behaviors = new ArrayList<>();
 		behaviorMap = new HashMap<>();

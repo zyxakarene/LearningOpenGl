@@ -3,8 +3,10 @@ package zyx.game.scene;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.scene.SceneManager;
 import zyx.game.components.world.IItemHolder;
 import zyx.game.components.world.items.GameItem;
+import zyx.game.scene.game.DinerScene;
 import zyx.game.vo.HandheldItemType;
 
 public class ItemHandler
@@ -13,16 +15,21 @@ public class ItemHandler
 	private HashMap<Integer, GameItem> itemMap;
 	private ArrayList<GameItem> itemList;
 	private ItemHolderHandler itemHolderHandler;
+	private DinerScene scene;
 
 	public ItemHandler(ItemHolderHandler holderHandler)
 	{
 		itemMap = new HashMap<>();
 		itemList = new ArrayList<>();
 		itemHolderHandler = holderHandler;
+		
+		scene = SceneManager.getInstance().<DinerScene>getSceneAs();
 	}
 
 	public void addItem(int uniqueId, GameItem item, int ownerId)
 	{
+		scene.addInteractableObject(item);
+		
 		itemMap.put(uniqueId, item);
 		itemList.add(item);
 
@@ -78,6 +85,8 @@ public class ItemHandler
 		GameItem item = itemMap.remove(uniqueId);
 		if (item != null)
 		{
+			scene.removeInteractableObject(item);
+			
 			IItemHolder currentOwner = itemHolderHandler.getById(item.getOwnerId());
 			if (currentOwner != null)
 			{

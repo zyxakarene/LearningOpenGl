@@ -16,4 +16,9 @@ public class OrderMachine extends BaseFurnitureItem<SimpleMesh>
 		return "mesh.furniture.order_machine";
 	}
 
+	@Override
+	public boolean isInteractable()
+	{
+		return false;
+	}
 }

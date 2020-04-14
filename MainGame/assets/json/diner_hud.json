@@ -1,0 +1,14 @@
+{
+	"name":"diner_hud",
+	"type":"container",
+	"children":
+	[
+		{
+			"name":"radial_menu",
+			"type":"radialMenu",
+			"visible":false,
+			"centerOffsetX":0,
+			"centerOffsetY":0,
+		}
+	]
+}

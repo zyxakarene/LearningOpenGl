@@ -22,6 +22,7 @@ public class Sound implements IDisposeable, IUpdateable, IResourceReady<SoundRes
 	final int soundId;
 
 	private WorldObject emitter;
+	private Vector3f position;
 
 	private float prevPosition;
 	private boolean stopped;
@@ -34,12 +35,12 @@ public class Sound implements IDisposeable, IUpdateable, IResourceReady<SoundRes
 	Sound(int soundId)
 	{
 		this.soundId = soundId;
+		this.position = new Vector3f();
 	}
 
-	void set(float volume, boolean loop, String resource, WorldObject emitter)
+	private void set(float volume, boolean loop, String resource)
 	{
 		this.loop = loop;
-		this.emitter = emitter;
 		this.volume = volume;
 
 		prevPosition = 0;
@@ -48,6 +49,18 @@ public class Sound implements IDisposeable, IUpdateable, IResourceReady<SoundRes
 
 		soundResource = ResourceManager.getInstance().getResource(resource);
 		soundResource.registerAndLoad(this);
+	}
+	
+	void set(float volume, boolean loop, String resource, WorldObject emitter)
+	{
+		set(volume, loop, resource);
+		this.emitter = emitter;
+	}
+
+	void set(float volume, boolean loop, String resource, Vector3f position)
+	{
+		set(volume, loop, resource);
+		this.position.set(position);
 	}
 
 	@Override
@@ -71,6 +84,7 @@ public class Sound implements IDisposeable, IUpdateable, IResourceReady<SoundRes
 
 		audio = null;
 		emitter = null;
+		position.set(0, 0, 0);
 	}
 
 	@Override
@@ -81,7 +95,7 @@ public class Sound implements IDisposeable, IUpdateable, IResourceReady<SoundRes
 			return;
 		}
 
-		if (emitter.disposed)
+		if (emitter != null && emitter.disposed)
 		{
 			stop();
 			return;
@@ -104,7 +118,15 @@ public class Sound implements IDisposeable, IUpdateable, IResourceReady<SoundRes
 
 	private void getEmitterPosition()
 	{
-		emitter.getPosition(false, SHARED_VECTOR_3F);
+		if (emitter != null)
+		{
+			emitter.getPosition(false, SHARED_VECTOR_3F);
+		}
+		else
+		{
+			SHARED_VECTOR_3F.set(position);
+		}
+		
 		SHARED_VECTOR_4F.x = SHARED_VECTOR_3F.x;
 		SHARED_VECTOR_4F.y = SHARED_VECTOR_3F.y;
 		SHARED_VECTOR_4F.z = SHARED_VECTOR_3F.z;

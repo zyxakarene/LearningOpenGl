@@ -28,6 +28,7 @@ import zyx.utils.interfaces.IPhysbox;
 
 public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<MeshResource>, IReflective
 {
+
 	protected String resource;
 	protected boolean loaded;
 	protected WorldModel model;
@@ -41,7 +42,7 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	private ArrayList<WorldObject> attachedObjects;
 	private ArrayList<Attachment> attachments;
 	private LinkedList<AttachmentRequest> attachmentRequests;
-	
+
 	private WorldShader shader;
 
 	public SimpleMesh()
@@ -52,13 +53,19 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 
 		attachedObjects = new ArrayList<>();
 		attachments = new ArrayList<>();
-		
+
 		enableCubemaps();
 	}
 
 	public void load(String resource)
 	{
 		this.resource = resource;
+
+		if (modelResource != null)
+		{
+			modelResource.unregister(this);
+			modelResource = null;
+		}
 
 		modelResource = ResourceManager.getInstance().getResource(resource);
 		modelResource.registerAndLoad(this);
@@ -68,7 +75,7 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	{
 		return resource;
 	}
-	
+
 	@Override
 	protected void onDraw()
 	{
@@ -93,10 +100,10 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	protected void updateTransforms(boolean alsoChildren)
 	{
 		super.updateTransforms(alsoChildren);
-		
+
 		CubemapManager.getInstance().dirtyPosition(this);
 	}
-	
+
 	@Override
 	public float getRadius()
 	{
@@ -115,7 +122,7 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 			out.set(0, 0, 0);
 		}
 	}
-	
+
 	private void drawAsAttachment(Attachment attachment)
 	{
 		Matrix4f.mul(attachment.parent.worldMatrix(), attachment.joint.getAttachmentTransform(), localMatrix);
@@ -167,14 +174,14 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 			attachmentRequests.add(request);
 		}
 	}
-	
+
 	public void removeChildAsAttachment(SimpleMesh child)
 	{
 		child.setPosition(true, 0, 0, 0);
 		child.setDir(true, GeometryUtils.ROTATION_X);
-		
+
 		attachedObjects.remove(child);
-		
+
 		for (Attachment attachment : attachments)
 		{
 			if (attachment.child == child)
@@ -183,7 +190,7 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 				break;
 			}
 		}
-		
+
 		if (attachmentRequests != null)
 		{
 			for (AttachmentRequest attachmentRequest : attachmentRequests)
@@ -222,28 +229,42 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 		}
 	}
 
-	@Override
-	protected void onDispose()
+	public void clean()
 	{
-		disableCubemaps();
-		
 		if (modelResource != null)
 		{
 			modelResource.unregister(this);
 			modelResource = null;
 		}
 
+		DebugPhysics.getInstance().unregisterPhysbox(this);
+
+		if(attachmentRequests != null)
+		{
+			attachmentRequests.clear();
+			attachmentRequests = null;
+		}
+		
+		attachedObjects.clear();
+		attachments.clear();
+		
+		model = null;
+		physbox = null;
+		loaded = false;
+	}
+	
+	@Override
+	protected void onDispose()
+	{
+		disableCubemaps();
+
 		if (onLoaded != null)
 		{
 			onLoaded.dispose();
 			onLoaded = null;
 		}
-
-		DebugPhysics.getInstance().unregisterPhysbox(this);
-
-		model = null;
-		physbox = null;
-
+		
+		clean();
 	}
 
 	@Override
@@ -281,7 +302,7 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	{
 		cubemapIndex = index;
 	}
-	
+
 	@Override
 	public String getDebugIcon()
 	{

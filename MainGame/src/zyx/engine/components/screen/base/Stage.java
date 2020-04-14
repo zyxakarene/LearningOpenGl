@@ -1,17 +1,15 @@
 package zyx.engine.components.screen.base;
 
-import java.awt.event.KeyEvent;
 import zyx.engine.components.animations.IFocusable;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
-import zyx.game.controls.input.InputManager;
 import zyx.opengl.buffers.Buffer;
 import zyx.opengl.buffers.BufferBinder;
 import zyx.opengl.stencils.StencilControl;
 import zyx.opengl.stencils.StencilLayer;
 import zyx.utils.math.Vector2Int;
 
-public final class Stage extends DisplayObjectContainer implements ICallback<Character>, IFocusable
+public final class Stage extends DisplayObjectContainer implements IFocusable
 {
 
 	public static final Stage instance = new Stage();
@@ -28,20 +26,18 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 	private Stage()
 	{
 		name = "";
-		
+
 		loadingScreenLayer = new DisplayObjectContainer();
 		loadingScreenLayer.name = "LoadingContainer";
-		
+
 		tooltipLayer = new DisplayObjectContainer();
 		tooltipLayer.name = "TooltipContainer";
-		
+
 		hudLayer = new DisplayObjectContainer();
 		hudLayer.name = "HudContainer";
 
 		crawler = new InteractionCrawler(this, hudLayer, tooltipLayer, loadingScreenLayer);
 		stage = this;
-
-		InputManager.getInstance().OnKeyPressed.addCallback(this);
 
 		screenSizeChanged = (Vector2Int data)
 				-> 
@@ -50,7 +46,7 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 		};
 
 		ScreenSize.addListener(screenSizeChanged);
-		
+
 		addChild(tooltipLayer);
 		addChild(hudLayer);
 		addChild(loadingScreenLayer);
@@ -67,7 +63,7 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 		tooltipLayer.draw();
 		hudLayer.draw();
 		StencilControl.getInstance().stopMaskingLayer(StencilLayer.PLAYER_CHARACTER, Buffer.DEFAULT);
-		
+
 		loadingScreenLayer.draw();
 	}
 
@@ -110,19 +106,6 @@ public final class Stage extends DisplayObjectContainer implements ICallback<Cha
 	public void dispose()
 	{
 		throw new RuntimeException("Do not dispose the stage please");
-	}
-
-	@Override
-	public void onCallback(Character data)
-	{
-		if (focusedTarget != null)
-		{
-			boolean printable = !Character.isISOControl(data) || (data == KeyEvent.VK_BACK_SPACE || data == KeyEvent.VK_DELETE || data == KeyEvent.VK_ENTER || data == '\r');
-			if (printable)
-			{
-				focusedTarget.onKeyPressed(data);
-			}
-		}
 	}
 
 	@Override

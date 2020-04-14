@@ -1,9 +1,11 @@
 package zyx.game.components.world.items;
 
 import zyx.game.components.SimpleMesh;
+import zyx.game.components.world.IInteractable;
 import zyx.game.vo.HandheldItemType;
+import zyx.utils.interfaces.IPhysbox;
 
-public abstract class GameItem extends SimpleMesh
+public abstract class GameItem extends SimpleMesh implements IInteractable
 {
 	private int currentOwnerId;
 	protected HandheldItemType type;
@@ -35,4 +37,15 @@ public abstract class GameItem extends SimpleMesh
 	
 	protected abstract String getItemResource();
 
+	@Override
+	public boolean isInteractable()
+	{
+		return true;
+	}
+
+	@Override
+	public IPhysbox getInteractionPhysbox()
+	{
+		return this;
+	}
 }

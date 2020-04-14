@@ -1,4 +1,4 @@
-package zyx.game.components.screen.hud;
+package zyx.game.components.screen.hud.dev;
 
 import zyx.engine.components.screen.base.Quad;
 import zyx.engine.components.screen.list.ItemRenderer;

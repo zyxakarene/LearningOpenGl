@@ -44,9 +44,12 @@ public class DebugView extends javax.swing.JFrame
 	
 	void update()
 	{
-		for (BaseDebugPanel panel : panels)
+		synchronized(getTreeLock())
 		{
-			panel.update();
+			for (BaseDebugPanel panel : panels)
+			{
+				panel.update();
+			}
 		}
 	}
 	

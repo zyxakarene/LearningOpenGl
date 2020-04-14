@@ -1,7 +1,7 @@
 package zyx.game.behavior;
 
 import org.lwjgl.util.vector.Vector3f;
-import zyx.engine.components.world.WorldObject;
+import zyx.game.components.GameObject;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IUpdateable;
 
@@ -15,7 +15,7 @@ public abstract class Behavior implements IUpdateable, IDisposeable
 	BehaviorType type;
 	boolean active;
 	
-	protected WorldObject gameObject;
+	protected GameObject gameObject;
 
 	public Behavior(BehaviorType type)
 	{
@@ -23,12 +23,24 @@ public abstract class Behavior implements IUpdateable, IDisposeable
 		this.active = true;
 	}
 
-	public void setActive(boolean active)
+	public final void setActive(boolean value)
 	{
-		this.active = active;
+		if (active != value)
+		{
+			active = value;
+			
+			if (value)
+			{
+				onActivate();
+			}
+			else
+			{
+				onDeactivate();
+			}
+		}
 	}
 	
-	void setGameObject(WorldObject gameObject)
+	void setGameObject(GameObject gameObject)
 	{
 		this.gameObject = gameObject;
 	}
@@ -42,5 +54,13 @@ public abstract class Behavior implements IUpdateable, IDisposeable
 	{
 		type = null;
 		gameObject = null;
+	}
+
+	protected void onActivate()
+	{
+	}
+
+	protected void onDeactivate()
+	{
 	}
 }

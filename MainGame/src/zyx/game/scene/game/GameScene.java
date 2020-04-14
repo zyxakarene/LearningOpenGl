@@ -41,19 +41,6 @@ public class GameScene extends Scene
 		gameObjects = new ArrayList<>();
 
 		picker = new WorldPicker();
-
-		itemHolderHandler = new ItemHolderHandler();
-		itemHandler = new ItemHandler(itemHolderHandler);
-	}
-
-	public static GameScene getCurrent()
-	{
-		if (current instanceof GameScene)
-		{
-			return (GameScene) current;
-		}
-
-		return null;
 	}
 
 	public void addPickedObject(IPhysbox object, IWorldPickedItem clickCallback)
@@ -91,14 +78,21 @@ public class GameScene extends Scene
 	}
 
 	@Override
-	protected void onInitialize()
+	protected final void onInitialize()
 	{
-		super.onInitialize();
-
+		itemHolderHandler = new ItemHolderHandler();
+		itemHandler = new ItemHandler(itemHolderHandler);
+		
 		networkController = createNetworkDispatcher();
 		networkController.addListeners();
+		
+		onInitializeGameScene();
 	}
 
+	protected void onInitializeGameScene()
+	{
+	}
+	
 	public void createPlayerObject()
 	{
 		player = new PlayerObject();
