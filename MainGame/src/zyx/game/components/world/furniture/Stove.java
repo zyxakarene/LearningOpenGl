@@ -3,7 +3,7 @@ package zyx.game.components.world.furniture;
 import zyx.game.components.SimpleMesh;
 import zyx.game.components.world.items.GameItem;
 
-public class Stove extends BaseFurnitureItem<SimpleMesh>
+public class Stove extends NpcFurniture<SimpleMesh>
 {
 
 	public Stove()

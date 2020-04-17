@@ -16,7 +16,7 @@ public class ItemService
 	{
 		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_CREATE_BILL, bill.id, ownerId);
 	}
-	
+
 	public static void createFood(FoodItem food, int ownerId)
 	{
 		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_CREATE_FOOD, food.id, ownerId, food.dish);
@@ -45,5 +45,10 @@ public class ItemService
 	public static void spoilFood(FoodItem food)
 	{
 		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_SPOIL_FOOD, food.id);
+	}
+
+	public static void setInUse(HandheldItem item, boolean inUse)
+	{
+		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_SET_IN_USE, item.id, inUse);
 	}
 }

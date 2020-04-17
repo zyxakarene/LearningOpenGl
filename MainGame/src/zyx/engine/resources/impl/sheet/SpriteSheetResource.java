@@ -80,6 +80,12 @@ public class SpriteSheetResource extends TextureResource implements IResourceRea
 	}
 
 	@Override
+	public boolean isLoaded()
+	{
+		return subTexture != null;
+	}
+	
+	@Override
 	protected void onDispose()
 	{
 		super.onDispose();

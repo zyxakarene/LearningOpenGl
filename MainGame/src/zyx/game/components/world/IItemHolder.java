@@ -1,5 +1,6 @@
 package zyx.game.components.world;
 
+import zyx.game.components.world.interactable.IInteractable;
 import zyx.game.components.world.items.GameItem;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IUpdateable;

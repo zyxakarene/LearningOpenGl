@@ -21,6 +21,7 @@ public final class NetworkCommands
 	public static final String ITEM_SET_TYPE = "itemType";
 	public static final String ITEM_SPOIL_FOOD = "itemSpoilFood";
 	public static final String ITEM_PUT_ON_FOOR = "itemPutOnFloor";
+	public static final String ITEM_SET_IN_USE = "itemSetInUse";
 	
 	public static final String GUEST_GIVE_ORDER = "guestGiveOrder";
 	public static final String GUEST_NO_ORDERS = "guestNoOrders";

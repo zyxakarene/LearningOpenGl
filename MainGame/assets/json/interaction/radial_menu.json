@@ -4,7 +4,7 @@
 	"children":
 	[
 		{
-			"name":"grab_button",
+			"name":"take_button",
 			"type":"composedScale9button",
 			"width":64,
 			"height":64,
@@ -13,14 +13,14 @@
 			"children":
 			[
 				{
-					"name":"grab_icon",
+					"name":"take_icon",
 					"type":"image",
 					"pivotX":32,
 					"pivotY":32,
 					"x":32,
 					"y":32,
 					"scale":0.75,
-					"texture":"icon_grab"
+					"texture":"icon_take"
 				}
 			]
 		},
@@ -42,6 +42,132 @@
 					"y":32,
 					"scale":0.75,
 					"texture":"icon_serve"
+				}
+			]
+		},
+		{
+			"name":"cleanup_button",
+			"type":"composedScale9button",
+			"width":64,
+			"height":64,
+			"colorScheme":"green",
+			"style":"panel_01",
+			"children":
+			[
+				{
+					"name":"cleanup_icon",
+					"type":"image",
+					"pivotX":32,
+					"pivotY":32,
+					"x":32,
+					"y":32,
+					"scale":0.75,
+					"texture":"icon_cleanup"
+				}
+			]
+		},
+		{
+			"name":"close_button",
+			"type":"composedScale9button",
+			"width":64,
+			"height":64,
+			"colorScheme":"green",
+			"style":"panel_01",
+			"children":
+			[
+				{
+					"name":"close_icon",
+					"type":"image",
+					"pivotX":32,
+					"pivotY":32,
+					"x":32,
+					"y":32,
+					"scale":0.75,
+					"texture":"icon_close"
+				}
+			]
+		},
+		{
+			"name":"place_button",
+			"type":"composedScale9button",
+			"width":64,
+			"height":64,
+			"colorScheme":"green",
+			"style":"panel_01",
+			"children":
+			[
+				{
+					"name":"place_icon",
+					"type":"image",
+					"pivotX":32,
+					"pivotY":32,
+					"x":32,
+					"y":32,
+					"scale":0.75,
+					"texture":"icon_place"
+				}
+			]
+		},
+		{
+			"name":"serve_bill_button",
+			"type":"composedScale9button",
+			"width":64,
+			"height":64,
+			"colorScheme":"green",
+			"style":"panel_01",
+			"children":
+			[
+				{
+					"name":"serve_bill_icon",
+					"type":"image",
+					"pivotX":32,
+					"pivotY":32,
+					"x":32,
+					"y":32,
+					"scale":0.75,
+					"texture":"icon_serve_bill"
+				}
+			]
+		},
+		{
+			"name":"add_order_button",
+			"type":"composedScale9button",
+			"width":64,
+			"height":64,
+			"colorScheme":"green",
+			"style":"panel_01",
+			"children":
+			[
+				{
+					"name":"add_order_icon",
+					"type":"image",
+					"pivotX":32,
+					"pivotY":32,
+					"x":32,
+					"y":32,
+					"scale":0.75,
+					"texture":"icon_add_order"
+				}
+			]
+		},
+		{
+			"name":"take_order_button",
+			"type":"composedScale9button",
+			"width":64,
+			"height":64,
+			"colorScheme":"green",
+			"style":"panel_01",
+			"children":
+			[
+				{
+					"name":"take_order_icon",
+					"type":"image",
+					"pivotX":32,
+					"pivotY":32,
+					"x":32,
+					"y":32,
+					"scale":0.75,
+					"texture":"icon_take_order"
 				}
 			]
 		}

@@ -2,7 +2,7 @@ package zyx.game.components.world.furniture;
 
 import zyx.game.components.AnimatedMesh;
 
-public class Fridge extends BaseFurnitureItem<AnimatedMesh>
+public class Fridge extends NpcFurniture<AnimatedMesh>
 {
 
 	public Fridge()
@@ -20,4 +20,6 @@ public class Fridge extends BaseFurnitureItem<AnimatedMesh>
 	{
 		return "mesh.furniture.fridge";
 	}
+
+	
 }

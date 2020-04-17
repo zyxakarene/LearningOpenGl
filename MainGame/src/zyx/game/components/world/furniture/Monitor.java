@@ -2,7 +2,7 @@ package zyx.game.components.world.furniture;
 
 import zyx.game.components.SimpleMesh;
 
-public class Monitor extends BaseFurnitureItem<SimpleMesh>
+public class Monitor extends NpcFurniture<SimpleMesh>
 {
 
 	public Monitor()
@@ -15,5 +15,4 @@ public class Monitor extends BaseFurnitureItem<SimpleMesh>
 	{
 		return "mesh.furniture.monitor";
 	}
-
 }

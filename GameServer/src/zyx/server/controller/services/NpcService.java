@@ -4,6 +4,7 @@ import zyx.net.io.controllers.NetworkCommands;
 import zyx.server.controller.sending.SendType;
 import zyx.server.controller.sending.ServerSender;
 import zyx.server.world.humanoids.HumanoidEntity;
+import zyx.server.world.humanoids.handheld.food.FoodItem;
 import zyx.server.world.humanoids.npc.Guest;
 import zyx.server.world.humanoids.npc.GuestGroup;
 import zyx.server.world.humanoids.players.Player;
@@ -25,9 +26,9 @@ public class NpcService
 		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.CHARACTER_LEFT_GAME, guest.id);
 	}
 
-	public static void guestGetFood(int guestId, int foodId, boolean correctDish)
+	public static void guestGetFood(Guest guest, FoodItem food, boolean correctDish)
 	{
-		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.GUEST_GRAB_FOOD, guestId, foodId, correctDish);
+		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.GUEST_GRAB_FOOD, guest.id, food.id, correctDish);
 	}
 
 	public static void guestGiveOrderTo(Guest guest, Player player)

@@ -41,7 +41,10 @@ public class CustomCallback<T> implements IDisposeable
 	{
 		for (ICallback<T> callback : callbacks)
 		{
-			callback.onCallback(data);
+			if (callback != null)
+			{
+				callback.onCallback(data);
+			}
 		}
 		
 		if (autoClear)

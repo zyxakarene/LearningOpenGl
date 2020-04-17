@@ -39,6 +39,8 @@ public class FurnitureSetupVo
 				return new OrderMachine();
 			case FLOOR:
 				return new Floor();
+			case DISHWASHER:
+				return new DishWasher();
 		}
 		
 		return new DummyFurnitureItem();

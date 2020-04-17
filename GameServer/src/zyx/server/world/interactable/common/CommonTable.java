@@ -85,6 +85,7 @@ public abstract class CommonTable<User extends HumanoidEntity> extends BaseInter
 	{
 		if (itemsOnTable.size() < maxItemsOnTable && canAcceptItem(item))
 		{
+			ItemService.setInUse(item, false);
 			System.out.println(item + " was placed on " + this);
 			//There is room on the table, so put it down
 			item.inUse = false;

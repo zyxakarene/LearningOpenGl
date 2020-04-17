@@ -1,11 +1,19 @@
 package zyx.game.components.world.items;
 
+import java.util.ArrayList;
+import zyx.game.components.world.interactable.InteractionAction;
 import zyx.game.vo.DishType;
 import zyx.game.vo.HandheldItemType;
 import zyx.opengl.particles.ParticleSystem;
 
 public class FoodItem extends GameItem
 {
+	private static final InteractionAction[] ALL_OPTIONS = new InteractionAction[]
+	{
+		InteractionAction.CLOSE,
+		InteractionAction.TAKE
+	};
+	
 	private DishType dish;
 		
 	private ParticleSystem rottenEffect;
@@ -71,5 +79,25 @@ public class FoodItem extends GameItem
 			rottenEffect.dispose();
 			rottenEffect = null;
 		}
+	}
+
+	@Override
+	public ArrayList<InteractionAction> getAvailibleInteractions()
+	{
+		ArrayList<InteractionAction> options = new ArrayList<>();
+		options.add(InteractionAction.CLOSE);
+		
+		if (!inUse)
+		{
+			options.add(InteractionAction.TAKE);
+		}
+		
+		return options;
+	}
+
+	@Override
+	public InteractionAction[] getAllInteractions()
+	{
+		return ALL_OPTIONS;
 	}
 }

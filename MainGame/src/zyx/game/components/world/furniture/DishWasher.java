@@ -1,27 +1,26 @@
 package zyx.game.components.world.furniture;
 
 import java.util.ArrayList;
-import zyx.engine.components.world.World3D;
 import zyx.game.components.SimpleMesh;
 import zyx.game.components.world.interactable.InteractionAction;
+import zyx.game.components.world.items.FoodItem;
 import zyx.game.components.world.items.GameItem;
 import zyx.game.models.GameModels;
-import zyx.utils.GeometryUtils;
 
-public class Floor extends BaseFurnitureItem<SimpleMesh>
+public class DishWasher extends BaseFurnitureItem<SimpleMesh>
 {
 
-	private static final InteractionAction[] ALL_OPTIONS = new InteractionAction[]
-	{
-		InteractionAction.CLOSE,
-		InteractionAction.PLACE,
-		InteractionAction.TAKE
-	};
+	private InteractionAction[] allOptions;
 
-	public Floor()
+	public DishWasher()
 	{
 		super(false);
-		setScale(0.01f, 0.01f, 0.01f);
+
+		allOptions = new InteractionAction[]
+		{
+			InteractionAction.CLOSE,
+			InteractionAction.CLEANUP,
+		};
 	}
 
 	@Override
@@ -33,16 +32,15 @@ public class Floor extends BaseFurnitureItem<SimpleMesh>
 	@Override
 	protected void onGotItem(GameItem item)
 	{
-		World3D.instance.addChild(item);
-		item.setDir(true, GeometryUtils.ROTATION_X);
+		addChild(item);
 	}
 
 	@Override
 	protected void onLostItem(GameItem item)
 	{
-		World3D.instance.removeChild(item);
+		removeChild(item);
 	}
-	
+
 	@Override
 	public boolean isInteractable()
 	{
@@ -55,9 +53,9 @@ public class Floor extends BaseFurnitureItem<SimpleMesh>
 		ArrayList<InteractionAction> options = new ArrayList<>();
 		options.add(InteractionAction.CLOSE);
 		
-		if (GameModels.player.carriedItem != null)
+		if (GameModels.player.carriedItem instanceof FoodItem)
 		{
-			options.add(InteractionAction.PLACE);
+			options.add(InteractionAction.CLEANUP);
 		}
 		
 		return options;
@@ -66,6 +64,6 @@ public class Floor extends BaseFurnitureItem<SimpleMesh>
 	@Override
 	public InteractionAction[] getAllInteractions()
 	{
-		return ALL_OPTIONS;
+		return allOptions;
 	}
 }

@@ -123,4 +123,13 @@ public class ItemHandler
 			item.setType(type);
 		}
 	}
+
+	public void setItemInUse(int uniqueId, boolean inUse)
+	{
+		GameItem item = itemMap.get(uniqueId);
+		if (item != null)
+		{
+			item.setInUse(inUse);
+		}
+	}
 }

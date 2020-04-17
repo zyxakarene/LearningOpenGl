@@ -1,15 +1,21 @@
 package zyx.game.components.world.furniture;
 
 import java.util.ArrayList;
+import org.lwjgl.util.vector.Matrix4f;
 import zyx.game.components.AnimatedMesh;
 import zyx.game.components.GameObject;
 import zyx.game.components.SimpleMesh;
 import zyx.game.components.world.IItemHolder;
+import zyx.game.components.world.interactable.InteractionAction;
 import zyx.game.components.world.items.GameItem;
+import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.utils.interfaces.IPhysbox;
 
-public abstract class BaseFurnitureItem<V extends SimpleMesh> extends GameObject implements IItemHolder
+public abstract class BaseFurnitureItem<V extends SimpleMesh> extends GameObject implements IItemHolder, IPhysbox
 {
+
+	protected static final ArrayList<InteractionAction> EMPTY_LIST = new ArrayList<>();
+	protected static final InteractionAction[] EMPTY_ARRAY = new InteractionAction[0];
 
 	protected ArrayList<GameItem> items;
 
@@ -27,7 +33,7 @@ public abstract class BaseFurnitureItem<V extends SimpleMesh> extends GameObject
 		}
 
 		addChild(view);
-		
+
 		items = new ArrayList<>();
 	}
 
@@ -53,13 +59,7 @@ public abstract class BaseFurnitureItem<V extends SimpleMesh> extends GameObject
 		items.remove(item);
 		onLostItem(item);
 	}
-	
-	@Override
-	public IPhysbox getInteractionPhysbox()
-	{
-		return view;
-	}
-	
+
 	@Override
 	public boolean isInteractable()
 	{
@@ -75,5 +75,23 @@ public abstract class BaseFurnitureItem<V extends SimpleMesh> extends GameObject
 	}
 
 	protected abstract String getResource();
+
+	@Override
+	public PhysBox getPhysbox()
+	{
+		return view.getPhysbox();
+	}
+
+	@Override
+	public Matrix4f getMatrix()
+	{
+		return view.getMatrix();
+	}
+
+	@Override
+	public Matrix4f getBoneMatrix(int boneId)
+	{
+		return view.getBoneMatrix(boneId);
+	}
 
 }

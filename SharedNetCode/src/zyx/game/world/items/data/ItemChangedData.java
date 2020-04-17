@@ -10,6 +10,7 @@ public class ItemChangedData
 	
 	public int itemId;
 	public int ownerId;
+	public boolean inUse;
 	public DishType dishType;
 	public HandheldItemType type;
 	public Vector3f position = new Vector3f();
