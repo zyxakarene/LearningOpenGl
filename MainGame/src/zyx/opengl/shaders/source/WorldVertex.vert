@@ -13,6 +13,7 @@ out vec3 WorldNormal;
 out vec3 ScreenPos;
 out vec3 ScreenNormal;
 out float Z;
+out float CubemapAddition;
 
 uniform mat4 model;
 uniform mat4 modelInverseTranspose;
@@ -36,6 +37,7 @@ void main()
 
 	WorldPos = worldPosition.xyz;
     WorldNormal = mat3(modelInverseTranspose) * vec3(transformedNorm);
+	CubemapAddition = 0;
 
     Texcoord = texcoord;
     gl_Position = projectionView * worldPosition;

@@ -122,8 +122,11 @@ public class GameScene extends Scene
 	@Override
 	protected void onDispose()
 	{
-		NetworkChannel.sendRequest(NetworkCommands.CHARACTER_LEFT_GAME, GameModels.player.playerId);
-		PingManager.getInstance().removeEntity(GameModels.player.playerId);
+		if (GameModels.player.authenticated)
+		{
+			NetworkChannel.sendRequest(NetworkCommands.CHARACTER_LEFT_GAME, GameModels.player.playerId);
+			PingManager.getInstance().removeEntity(GameModels.player.playerId);
+		}
 
 		if (picker != null)
 		{

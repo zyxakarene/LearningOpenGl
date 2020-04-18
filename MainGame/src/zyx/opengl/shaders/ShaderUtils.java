@@ -108,11 +108,11 @@ public class ShaderUtils
 				lineCount++;
 			}
 			
-			String error = glGetShaderInfoLog(shaderId, 512);
-			String errorMsg = String.format("A shader was not compiled correctly:\n%s\n%s", error, formatSource);
+			int logLength = glGetShaderi(shaderId, GL_INFO_LOG_LENGTH);
+			String error = glGetShaderInfoLog(shaderId, logLength);
+			String errorMsg = String.format("Shader %s was not compiled correctly:\n%s\n%s", shaderId, error, formatSource);
 			
 			Print.err(errorMsg);
-
 			System.exit(-1);
 		}
 	}
@@ -128,11 +128,46 @@ public class ShaderUtils
 	{
 		int shaderProgram = glCreateProgram();
 		glAttachShader(shaderProgram, vertexShader);
+		logProgramInfo("VertexAttach", shaderProgram);
+		
 		glAttachShader(shaderProgram, fragmentShader);
+		logProgramInfo("FragAttach", shaderProgram);
 
 		glBindFragDataLocation(shaderProgram, 0, "outColor");
+		logProgramInfo("FragLocation", shaderProgram);
+		
 		glLinkProgram(shaderProgram);
+		logProgramInfo("Linking", shaderProgram);
+		
+		glValidateProgram(shaderProgram);
+		logProgramInfo("Validating", shaderProgram);
+		
+		int linkStatus = glGetProgrami(shaderProgram, GL_LINK_STATUS);
+		if (linkStatus == GL11.GL_TRUE)
+		{
+			Print.out("Pogram", shaderProgram, "was linked sucesfully");
+		}
+		else
+		{
+			String msg = String.format("Program %s could not be linked with shaders %s, %s", shaderProgram, vertexShader, fragmentShader);
+			Print.err(msg);
+			System.exit(-1);
+		}
 
+		int validateStatus = glGetProgrami(shaderProgram, GL_VALIDATE_STATUS);
+		if (validateStatus == GL11.GL_TRUE)
+		{
+			Print.out("Pogram", shaderProgram, "was validated succesfully");
+		}
+		else
+		{
+			String msg = String.format("Program %s with shaders %s & %s could not be validated", shaderProgram, vertexShader, fragmentShader);
+			Print.err(msg);
+			System.exit(-1);
+		}
+		
+		
+		
 		return shaderProgram;
 	}
 
@@ -144,5 +179,15 @@ public class ShaderUtils
 	static void useShader(int shaderProgram)
 	{
 		glUseProgram(shaderProgram);
+	}
+
+	private static void logProgramInfo(String type, int shaderProgram)
+	{
+		int logLength = glGetProgrami(shaderProgram,GL_INFO_LOG_LENGTH);
+		if (logLength > 0)
+		{
+			String logInfo = glGetProgramInfoLog(shaderProgram, logLength);
+			Print.err("Shader program log type:", type, "-", logInfo);
+		}
 	}
 }

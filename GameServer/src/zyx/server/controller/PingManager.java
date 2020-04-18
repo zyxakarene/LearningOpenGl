@@ -24,6 +24,7 @@ public class PingManager extends PingController
 		PlayerService.playerLeft(player);
 		
 		PlayerManager.getInstance().removeEntity(player);
+		PingManager.getInstance().removeEntity(id);
 	}
 
 	@Override

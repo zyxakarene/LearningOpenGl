@@ -3,7 +3,6 @@ package zyx.game.network.services;
 import zyx.game.components.world.IItemHolder;
 import zyx.game.components.world.characters.GameCharacter;
 import zyx.game.components.world.furniture.BaseFurnitureItem;
-import zyx.game.components.world.furniture.Table;
 import zyx.game.components.world.items.GameItem;
 import zyx.game.models.GameModels;
 import zyx.game.vo.DishType;

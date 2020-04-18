@@ -34,5 +34,9 @@ void main()
 	down = clamp(down, 0, 1);
 
 	int clipRect = int(left * right * up * down);
-    outColor = texture(tex, Texcoord) * Color * clipRect;
+    vec4 outCol = texture(tex, Texcoord) * Color * clipRect;
+	
+	//float grayColor = dot(outCol.rgb, vec3(0.3, 0.59, 0.11));
+
+	outColor = outCol;
 }

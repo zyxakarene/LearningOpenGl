@@ -1,6 +1,8 @@
 {
 	"name":"radial_container",
 	"type":"container",
+	"forceWidth":64,
+	"forceHeight":64,
 	"children":
 	[
 		{
