@@ -1,13 +1,12 @@
 package zyx.net.core.packages;
 
 import java.net.DatagramPacket;
-import java.net.InetAddress;
 import java.util.HashMap;
 import zyx.net.io.connections.ConnectionResponseData;
 
 public class PacketCombiner
 {
-	private HashMap<String, PacketSender> originMap;
+	private HashMap<Integer, PacketSender> originMap;
 
 	public PacketCombiner()
 	{
@@ -16,14 +15,13 @@ public class PacketCombiner
 	
 	public ConnectionResponseData tryCombine(DatagramPacket packet)
 	{
-		InetAddress address = packet.getAddress();
-		String ip = address.getHostAddress();
+		int port = packet.getPort();
 				
-		PacketSender sender = originMap.get(ip);
+		PacketSender sender = originMap.get(port);
 		if (sender == null)
 		{
-			sender = new PacketSender(address, packet.getPort());
-			originMap.put(ip, sender);
+			sender = new PacketSender(packet.getAddress(), port);
+			originMap.put(port, sender);
 		}
 		
 		byte[] packetData = packet.getData();

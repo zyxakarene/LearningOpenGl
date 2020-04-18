@@ -9,8 +9,8 @@ class PacketSender
 
 	private static final int HEADER_LENGTH = PacketSplitter.HEADER_LENGTH;
 	
-	private final InetAddress address;
-	private final int port;
+	private InetAddress address;
+	private int port;
 
 	private HashMap<Short, PacketGroup> groupMap;
 
