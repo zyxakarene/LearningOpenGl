@@ -45,12 +45,18 @@ public class GameScene extends Scene
 
 	public void addPickedObject(IPhysbox object, IWorldPickedItem clickCallback)
 	{
-		picker.addObject(object, clickCallback);
+		if (picker != null)
+		{
+			picker.addObject(object, clickCallback);
+		}
 	}
 
 	public void removePickedObject(IPhysbox object, IWorldPickedItem clickCallback)
 	{
-		picker.removeObject(object, clickCallback);
+		if (picker != null)
+		{
+			picker.removeObject(object, clickCallback);
+		}
 	}
 
 	public void addGameObject(GameObject object)
@@ -102,9 +108,9 @@ public class GameScene extends Scene
 		player.addBehavior(new OnlinePositionSender());
 		Camera.getInstance().setViewObject(player);
 
-		gameObjects.add(player);
-
 		world.addChild(player);
+		
+		itemHolderHandler.addItemHolder(player.getUniqueId(), player);
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package zyx.server.world.humanoids;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import zyx.game.vo.CharacterType;
 import zyx.game.vo.Gender;
 import zyx.server.controller.services.ItemService;
 import zyx.server.world.entity.WorldEntity;
@@ -13,13 +14,15 @@ public class HumanoidEntity extends WorldEntity
 
 	public final String name;
 	public final Gender gender;
+	public final CharacterType type;
 
 	protected HandheldItem heldItem;
 
-	public HumanoidEntity(String name, Gender gender)
+	public HumanoidEntity(String name, Gender gender, CharacterType type)
 	{
 		this.name = name;
 		this.gender = gender;
+		this.type = type;
 	}
 
 	public HandheldItem heldItem()

@@ -2,6 +2,8 @@ package zyx.game.joining;
 
 import static zyx.game.joining.SetupConstants.*;
 import zyx.game.joining.data.CharacterJoinedData;
+import zyx.game.vo.CharacterType;
+import zyx.game.vo.Gender;
 import zyx.net.data.ReadableDataArray;
 import zyx.net.data.ReadableDataObject;
 import zyx.net.io.controllers.NetworkCommands;
@@ -34,6 +36,11 @@ public class CharacterJoinGameResponse extends BaseNetworkResponse<CharacterJoin
 			OUT.lookAts[i].y = charData.getFloat(LOOK_Y);
 			OUT.lookAts[i].z = charData.getFloat(LOOK_Z);
 			OUT.names[i] = charData.getString(NAME);
+			
+			int genderId = charData.getInteger(GENDER);
+			int typeId = charData.getInteger(TYPE);
+			OUT.genders[i] = Gender.getFromId(genderId);
+			OUT.types[i] = CharacterType.getFromId(typeId);
 		}
 		
 		return OUT;

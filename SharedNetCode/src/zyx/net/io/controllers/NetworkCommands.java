@@ -30,9 +30,11 @@ public final class NetworkCommands
 	
 	public static final String ENTITY_INTERACT = "entityInteract";
 	
-	public static final String PLAYER_GET_ORDER = "playerGetOrder";
-	public static final String PLAYER_ENTER_ORDER = "playerEnterOrder";
-	public static final String PLAYER_PICKUP_ITEM = "playerPickup";
-	public static final String PLAYER_GIVE_ITEM = "playerGive";
-	public static final String PLAYER_GIVE_BILL = "playerGiveBill";
+	public static final String PLAYER_GET_ORDER = "playerGetOrder"; //Client -> server: Asking a guest to say their order: PlayerId, GuestId
+	public static final String PLAYER_ENTER_ORDER = "playerEnterOrder"; //Client -> server: Adding a dish to the system: DishTypeId
+	public static final String PLAYER_PICKUP_ITEM = "playerPickup"; //Client -> Server: Wanting to pick up an item: PlayerId, ItemId
+	public static final String PLAYER_GIVE_ITEM = "playerGive"; //Client -> Server: Putting an item in a container: PlayerId, ContainerId
+	public static final String PLAYER_GIVE_BILL = "playerGiveBill"; //Client -> Server: Putting the bill on a table: PlayerId, table UniqueId
+	public static final String PLAYER_PRINT_BILL = "playerPrintBill"; //Client -> Server: Requesting a bill: PlayerId
+	public static final String PLAYER_INTERACT_WITH = "playerInteractWith"; //Client -> Server: Player interacting with a thing: PlayerId, furniture UniqueId
 }

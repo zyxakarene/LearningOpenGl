@@ -8,13 +8,27 @@ import zyx.game.components.GameObject;
 import zyx.game.components.world.IItemHolder;
 import zyx.game.components.world.interactable.InteractionAction;
 import zyx.game.components.world.items.GameItem;
+import zyx.game.vo.CharacterType;
 import zyx.opengl.models.implementations.physics.PhysBox;
 
 public class GameCharacter extends GameObject implements IItemHolder
 {
+
 	private static final ArrayList<InteractionAction> EMPTY_LIST = new ArrayList<>();
 	private static final InteractionAction[] EMPTY_ARRAY = new InteractionAction[0];
 
+	private static final InteractionAction[] GUEST_OPTIONS = new InteractionAction[]
+	{
+		InteractionAction.CLOSE,
+		InteractionAction.TAKE_ORDER
+	};
+	private static final ArrayList<InteractionAction> GUEST_LIST = new ArrayList<>();
+	static
+	{
+		GUEST_LIST.add(InteractionAction.CLOSE);
+		GUEST_LIST.add(InteractionAction.TAKE_ORDER);
+	}
+	
 	private AnimatedMesh mesh;
 
 	public final CharacterInfo info;
@@ -27,17 +41,25 @@ public class GameCharacter extends GameObject implements IItemHolder
 		addChild(mesh);
 	}
 
+	@Override
+	public int getUniqueId()
+	{
+		return info.uniqueId;
+	}
+	
 	public void load(CharacterSetupVo vo)
 	{
 		mesh.load("mesh.player");
-		
+
 		setPosition(false, vo.pos);
 		lookAt(vo.look);
-		
+
 		addBehavior(new OnlinePositionInterpolator());
-		
+
 		info.uniqueId = vo.id;
 		info.name = vo.name;
+		info.gender = vo.gender;
+		info.type = vo.type;
 	}
 
 	@Override
@@ -60,6 +82,11 @@ public class GameCharacter extends GameObject implements IItemHolder
 	@Override
 	public boolean isInteractable()
 	{
+		if (info.type == CharacterType.GUEST)
+		{
+			return true;
+		}
+		
 		return false;
 	}
 
@@ -84,12 +111,26 @@ public class GameCharacter extends GameObject implements IItemHolder
 	@Override
 	public ArrayList<InteractionAction> getAvailibleInteractions()
 	{
-		return EMPTY_LIST;
+		if (info.type == CharacterType.GUEST)
+		{
+			return GUEST_LIST;
+		}
+		else
+		{
+			return EMPTY_LIST;
+		}
 	}
 
 	@Override
 	public InteractionAction[] getAllInteractions()
 	{
-		return EMPTY_ARRAY;
+		if (info.type == CharacterType.GUEST)
+		{
+			return GUEST_OPTIONS;
+		}
+		else
+		{
+			return EMPTY_ARRAY;
+		}
 	}
 }

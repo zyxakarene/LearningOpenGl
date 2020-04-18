@@ -19,8 +19,8 @@ public class PlayerPickupResponse extends BaseNetworkResponse<PlayerRequestData>
 	@Override
 	protected PlayerRequestData onMessageRecieved(ReadableDataObject data)
 	{
-		OUT.itemId = data.getInteger(ITEM_ID);
 		OUT.playerId = data.getInteger(PLAYER_ID);
+		OUT.itemId = data.getInteger(ITEM_ID);
 
 		return OUT;
 	}

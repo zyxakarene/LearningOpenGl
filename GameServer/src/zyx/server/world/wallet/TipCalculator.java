@@ -7,6 +7,11 @@ public class TipCalculator
 
 	public static int calculateTip(Guest guest)
 	{
+		if (guest.servedDish == null)
+		{
+			return 0;
+		}
+		
 		int tip = guest.baseTip;
 		
 		if(!guest.gotRightDish)

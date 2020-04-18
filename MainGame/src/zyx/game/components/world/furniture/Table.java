@@ -3,6 +3,8 @@ package zyx.game.components.world.furniture;
 import java.util.ArrayList;
 import zyx.game.components.SimpleMesh;
 import zyx.game.components.world.interactable.InteractionAction;
+import zyx.game.components.world.items.BillItem;
+import zyx.game.components.world.items.FoodItem;
 import zyx.game.components.world.items.GameItem;
 import zyx.game.models.GameModels;
 
@@ -52,11 +54,15 @@ public class Table extends BaseFurnitureItem<SimpleMesh>
 	{
 		ArrayList<InteractionAction> options = new ArrayList<>();
 		options.add(InteractionAction.CLOSE);
-		options.add(InteractionAction.SERVE_BILL);
 		
-		if (GameModels.player.carriedItem != null)
+		if (GameModels.player.carriedItem instanceof FoodItem)
 		{
 			options.add(InteractionAction.SERVE);
+		}
+		
+		if (GameModels.player.carriedItem instanceof BillItem)
+		{
+			options.add(InteractionAction.SERVE_BILL);
 		}
 		
 		return options;

@@ -1,6 +1,7 @@
 package zyx.server.world.humanoids.npc;
 
 import java.util.HashMap;
+import zyx.game.vo.CharacterType;
 import zyx.server.utils.IUpdateable;
 import zyx.server.world.humanoids.HumanoidEntity;
 import zyx.server.world.humanoids.npc.behavior.BaseNpcBehavior;
@@ -16,9 +17,9 @@ public abstract class BaseNpc<T extends Enum> extends HumanoidEntity implements 
 
 	private T currentState;
 
-	public BaseNpc(NpcSetup setup)
+	public BaseNpc(NpcSetup setup, CharacterType type)
 	{
-		super(setup.name, setup.gender);
+		super(setup.name, setup.gender, type);
 
 		behaviors = new HashMap<>();
 	}

@@ -2,7 +2,6 @@ package zyx.game.network.callbacks;
 
 import java.util.HashMap;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.OnTeaPotClicked;
 import zyx.engine.components.world.World3D;
 import zyx.engine.scene.SceneManager;
 import zyx.game.behavior.BehaviorType;

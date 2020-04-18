@@ -9,6 +9,7 @@ public enum InteractionAction
 	TAKE_ORDER("take_order"),
 	SERVE_BILL("serve_bill"),
 	ADD_ORDER("add_order"),
+	PRINT_BILL("print_bill"),
 	CLEANUP("cleanup");
 	
 	public final String name;

@@ -24,7 +24,10 @@ public class ItemHolderHandler implements IUpdateable
 
 	public void addItemHolder(int uniqueId, IItemHolder holder)
 	{
-		scene.addInteractableObject(holder);
+		if (holder.isInteractable())
+		{
+			scene.addInteractableObject(holder);
+		}
 
 		holderMap.put(uniqueId, holder);
 		holderList.add(holder);
@@ -40,7 +43,10 @@ public class ItemHolderHandler implements IUpdateable
 		IItemHolder holder = holderMap.remove(uniqueId);
 		holderList.remove(holder);
 
-		scene.removeInteractableObject(holder);
+		if (holder.isInteractable())
+		{
+			scene.removeInteractableObject(holder);
+		}
 		
 		holder.dispose();
 	}

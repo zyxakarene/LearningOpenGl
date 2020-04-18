@@ -56,6 +56,7 @@ public class SetupGameRequest extends BaseNetworkRequest
 				playerData.addInteger(ID, entity.id);
 				playerData.addString(NAME, entity.name);
 				playerData.addInteger(GENDER, entity.gender.id);
+				playerData.addInteger(TYPE, entity.type.id);
 				playerData.addFloat(X, entity.x);
 				playerData.addFloat(Y, entity.y);
 				playerData.addFloat(Z, entity.z);

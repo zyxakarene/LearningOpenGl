@@ -28,6 +28,8 @@ public class ItemHandler
 
 	public void addItem(int uniqueId, GameItem item, int ownerId)
 	{
+		item.uniqueId = uniqueId;
+		
 		scene.addInteractableObject(item);
 		
 		itemMap.put(uniqueId, item);

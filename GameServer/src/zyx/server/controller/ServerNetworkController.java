@@ -17,6 +17,7 @@ import zyx.game.world.guests.GuestGrabFoodRequest;
 import zyx.game.world.guests.GuestNoOrdersRequest;
 import zyx.game.world.guests.GuestPayRequest;
 import zyx.game.world.items.*;
+import zyx.game.world.player.*;
 import zyx.net.io.controllers.BaseNetworkController;
 import zyx.net.io.requests.NetworkRequestDispatcher;
 import zyx.net.io.responses.NetworkResponseDispatcher;
@@ -66,5 +67,12 @@ public class ServerNetworkController extends BaseNetworkController
 		dispatcher.addResponseCallback(new CharacterPosResponse());
 		dispatcher.addResponseCallback(new AuthenticateResponse());
 		dispatcher.addResponseCallback(new PingResponse());
+		
+		dispatcher.addResponseCallback(new PlayerEnterOrderResponse());
+		dispatcher.addResponseCallback(new PlayerGetOrderResponse());
+		dispatcher.addResponseCallback(new PlayerGiveBillResponse());
+		dispatcher.addResponseCallback(new PlayerGiveResponse());
+		dispatcher.addResponseCallback(new PlayerPickupResponse());
+		dispatcher.addResponseCallback(new PlayerPrintBillResponse());
 	}
 }

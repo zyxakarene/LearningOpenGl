@@ -81,7 +81,18 @@ public class GuestWaitingForBillBehavior extends GuestBehavior<Object>
 
 				chair.makeAvailible();
 
-				int payAmount = friend.gotRightDish ? friend.servedDish.sellValue : (friend.servedDish.sellValue / 2);
+				int payAmount = 0;
+				if (friend.servedDish != null)
+				{
+					if (friend.gotRightDish)
+					{
+						payAmount = friend.servedDish.sellValue;
+					}
+					else
+					{
+						payAmount = friend.servedDish.sellValue / 2;
+					}
+				}
 				if (payAmount > friend.dishRequest.sellValue)
 				{
 					payAmount = friend.dishRequest.sellValue;

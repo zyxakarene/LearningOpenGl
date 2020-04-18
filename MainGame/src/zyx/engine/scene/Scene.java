@@ -109,12 +109,13 @@ public class Scene implements ILoadingScreenDone
 
 		RayPicker.getInstance().updateMousePos(MouseData.data.x, MouseData.data.y);
 
+		MegaManager.update(timestamp, elapsedTime);
+		
 		if (ready)
 		{
 			onUpdate(timestamp, elapsedTime);
 		}
 
-		MegaManager.update(timestamp, elapsedTime);
 		CursorManager.getInstance().update();
 
 		GLUtils.errorCheck();

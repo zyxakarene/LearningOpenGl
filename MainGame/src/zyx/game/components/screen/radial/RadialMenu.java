@@ -28,7 +28,7 @@ public class RadialMenu extends JsonSprite
 	protected void onComponentsCreated()
 	{
 		actionButtonMap = new HashMap<>();
-		adaptor = new RadialButtonClickAdaptor();
+		adaptor = new RadialButtonClickAdaptor(this);
 		buttons = new ArrayList<>();
 		
 		String postFix = "_button";

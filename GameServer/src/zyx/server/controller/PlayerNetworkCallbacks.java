@@ -6,6 +6,7 @@ import zyx.game.world.player.data.PlayerRequestData;
 import zyx.net.io.controllers.NetworkCallbacks;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.INetworkCallback;
+import zyx.server.controller.services.ItemService;
 import zyx.server.world.RoomItems;
 import zyx.server.world.humanoids.handheld.guests.BillItem;
 import zyx.server.world.humanoids.npc.BaseNpc;
@@ -27,6 +28,7 @@ public class PlayerNetworkCallbacks extends NetworkCallbacks
 	private INetworkCallback onPlayerEnterOrder;
 	private INetworkCallback onPlayerPickupItem;
 	private INetworkCallback onPlayerGiveItem;
+	private INetworkCallback onPlayerPrintBill;
 	private INetworkCallback onPlayerGiveBill;
 
 	public PlayerNetworkCallbacks()
@@ -37,6 +39,7 @@ public class PlayerNetworkCallbacks extends NetworkCallbacks
 		registerCallback(NetworkCommands.PLAYER_ENTER_ORDER, onPlayerEnterOrder);
 		registerCallback(NetworkCommands.PLAYER_PICKUP_ITEM, onPlayerPickupItem);
 		registerCallback(NetworkCommands.PLAYER_GIVE_ITEM, onPlayerGiveItem);
+		registerCallback(NetworkCommands.PLAYER_PRINT_BILL, onPlayerPrintBill);
 		registerCallback(NetworkCommands.PLAYER_GIVE_BILL, onPlayerGiveBill);
 
 		roomItems = RoomItems.instance;
@@ -98,11 +101,22 @@ public class PlayerNetworkCallbacks extends NetworkCallbacks
 		{
 			DinnerTable table = (DinnerTable) entity;
 			
-			if (table.canReceiveBill())
+			if (table.canReceiveBill() && player.heldItem() instanceof BillItem)
 			{
-				player.pickupItemSilent(new BillItem());
 				table.interactWith(player, PlayerInteraction.give());
 			}
+		}
+	}
+
+	private void onPlayerPrintBill(Integer playerId)
+	{
+		Player player = PlayerManager.getInstance().getEntity(playerId);
+
+		if (player != null && player.canHoldItem())
+		{
+			BillItem bill = new BillItem();
+			ItemService.createBill(bill, playerId);
+			player.pickupItemSilent(bill);
 		}
 	}
 
@@ -113,5 +127,6 @@ public class PlayerNetworkCallbacks extends NetworkCallbacks
 		onPlayerPickupItem = (INetworkCallback<PlayerRequestData>) this::onPlayerPickupItem;
 		onPlayerGiveItem = (INetworkCallback<PlayerRequestData>) this::onPlayerGiveItem;
 		onPlayerGiveBill = (INetworkCallback<PlayerRequestData>) this::onPlayerGiveBill;
+		onPlayerPrintBill = (INetworkCallback<Integer>) this::onPlayerPrintBill;
 	}
 }

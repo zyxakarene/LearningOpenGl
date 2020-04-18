@@ -1,5 +1,6 @@
 package zyx.debug.views.network.tree;
 
+import java.util.Arrays;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -77,6 +78,12 @@ public class DebugNetworkTree extends JTree
 			{
 				byte[] byteData = (byte[]) objData;
 				String nodeText = key + ": ByteArray[" + byteData.length + "]";
+				addObjectToNode(readNode, new TreeItemWrapper(objData, nodeText));
+			}
+			else if (objData instanceof int[])
+			{
+				int[] intData = (int[]) objData;
+				String nodeText = key + ": " + Arrays.toString(intData);
 				addObjectToNode(readNode, new TreeItemWrapper(objData, nodeText));
 			}
 			else

@@ -6,6 +6,8 @@ import zyx.game.vo.HandheldItemType;
 
 public abstract class GameItem extends SimpleMesh implements IInteractable
 {
+	public int uniqueId;
+	
 	private int currentOwnerId;
 	
 	protected HandheldItemType type;

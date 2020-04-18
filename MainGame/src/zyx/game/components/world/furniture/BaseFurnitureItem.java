@@ -18,8 +18,9 @@ public abstract class BaseFurnitureItem<V extends SimpleMesh> extends GameObject
 	protected static final InteractionAction[] EMPTY_ARRAY = new InteractionAction[0];
 
 	protected ArrayList<GameItem> items;
-
 	protected V view;
+	
+	private int uniqueId;
 
 	public BaseFurnitureItem(boolean animated)
 	{
@@ -39,6 +40,8 @@ public abstract class BaseFurnitureItem<V extends SimpleMesh> extends GameObject
 
 	public void load(FurnitureSetupVo vo)
 	{
+		uniqueId = vo.id;
+		
 		String resource = getResource();
 		view.load(resource);
 
@@ -60,6 +63,12 @@ public abstract class BaseFurnitureItem<V extends SimpleMesh> extends GameObject
 		onLostItem(item);
 	}
 
+	@Override
+	public int getUniqueId()
+	{
+		return uniqueId;
+	}
+	
 	@Override
 	public boolean isInteractable()
 	{

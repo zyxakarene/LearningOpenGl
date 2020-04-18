@@ -7,7 +7,7 @@ import zyx.utils.interfaces.IUpdateable;
 
 public interface IItemHolder extends IDisposeable, IUpdateable, IInteractable
 {
-
+	public int getUniqueId();
 	public void hold(GameItem item);
 	public void removeItem(GameItem item);
 }

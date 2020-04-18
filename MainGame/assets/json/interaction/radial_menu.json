@@ -130,6 +130,27 @@
 			]
 		},
 		{
+			"name":"print_bill_button",
+			"type":"composedScale9button",
+			"width":64,
+			"height":64,
+			"colorScheme":"green",
+			"style":"panel_01",
+			"children":
+			[
+				{
+					"name":"print_bill_icon",
+					"type":"image",
+					"pivotX":32,
+					"pivotY":32,
+					"x":32,
+					"y":32,
+					"scale":0.75,
+					"texture":"icon_print_bill"
+				}
+			]
+		},
+		{
 			"name":"add_order_button",
 			"type":"composedScale9button",
 			"width":64,

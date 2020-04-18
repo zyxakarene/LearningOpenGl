@@ -1,6 +1,7 @@
 package zyx.server.world.humanoids.npc;
 
 import java.awt.Color;
+import zyx.game.vo.CharacterType;
 import zyx.server.world.humanoids.handheld.food.DishRecipeItem;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
 import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
@@ -11,7 +12,7 @@ public class Chef extends BaseNpc<ChefBehaviorType>
 
 	public Chef(NpcSetup setup)
 	{
-		super(setup);
+		super(setup, CharacterType.CHEF);
 		
 		lx = 0;
 		ly = 0;

@@ -1,6 +1,7 @@
 package zyx.server.world.humanoids.players;
 
 import java.awt.Color;
+import zyx.game.vo.CharacterType;
 import zyx.game.vo.Gender;
 import zyx.net.io.connections.ConnectionData;
 import zyx.server.utils.IUpdateable;
@@ -13,7 +14,7 @@ public class Player extends HumanoidEntity implements IUpdateable
 	
 	public Player(String name, Gender gender, ConnectionData connection)
 	{
-		super(name, gender);
+		super(name, gender, CharacterType.PLAYER);
 		
 		this.connection = connection;
 	}

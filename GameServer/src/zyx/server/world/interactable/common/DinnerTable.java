@@ -88,8 +88,6 @@ public class DinnerTable extends CommonTable<Guest>
 		{
 			hasGottenBill = true;
 
-			ItemService.createBill(bill, id);
-
 			for (Chair chair : chairs)
 			{
 				Guest guestInChair = chair.getCurrentGuest();

@@ -5,9 +5,7 @@ import zyx.net.data.ReadableDataObject;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.BaseNetworkResponse;
 import static zyx.game.joining.SetupConstants.*;
-import zyx.game.vo.DishType;
-import zyx.game.vo.FurnitureType;
-import zyx.game.vo.HandheldItemType;
+import zyx.game.vo.*;
 import zyx.net.data.ReadableDataArray;
 
 public class SetupGameResponse extends BaseNetworkResponse<GameSetupVo>
@@ -51,6 +49,11 @@ public class SetupGameResponse extends BaseNetworkResponse<GameSetupVo>
 			OUT.characters.lookAts[i].x = playerData.getFloat(LOOK_X);
 			OUT.characters.lookAts[i].y = playerData.getFloat(LOOK_Y);
 			OUT.characters.lookAts[i].z = playerData.getFloat(LOOK_Z);
+			
+			int genderId = playerData.getInteger(GENDER);
+			int typeId = playerData.getInteger(TYPE);
+			OUT.characters.genders[i] = Gender.getFromId(genderId);
+			OUT.characters.types[i] = CharacterType.getFromId(typeId);
 		}
 	}
 

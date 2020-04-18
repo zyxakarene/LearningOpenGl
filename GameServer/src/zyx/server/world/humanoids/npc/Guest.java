@@ -1,6 +1,7 @@
 package zyx.server.world.humanoids.npc;
 
 import java.awt.Color;
+import zyx.game.vo.CharacterType;
 import zyx.server.world.humanoids.handheld.HandheldItem;
 import zyx.game.vo.DishType;
 import zyx.server.controller.services.ItemService;
@@ -30,7 +31,7 @@ public class Guest extends BaseNpc<GuestBehaviorType>
 
 	public Guest(NpcSetup setup)
 	{
-		super(setup);
+		super(setup, CharacterType.GUEST);
 
 		dishRequest = DishType.getRandomDish();
 

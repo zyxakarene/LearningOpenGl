@@ -17,8 +17,8 @@ public class PlayerEnterOrderResponse extends BaseNetworkResponse<DishType>
 	@Override
 	protected DishType onMessageRecieved(ReadableDataObject data)
 	{
-		int dish = data.getInteger(DISH_TYPE);
-		DishType result = DishType.getFromId(dish);
+		int dishTypeId = data.getInteger(DISH_TYPE);
+		DishType result = DishType.getFromId(dishTypeId);
 		
 		return result;
 	}

@@ -5,20 +5,17 @@ import zyx.net.io.requests.BaseNetworkRequest;
 import zyx.net.io.controllers.NetworkCommands;
 import static zyx.game.world.player.PlayerRequestConstants.*;
 
-public class PlayerPickupRequest extends BaseNetworkRequest
+public class PlayerPrintBillRequest extends BaseNetworkRequest
 {
-	public PlayerPickupRequest()
+	public PlayerPrintBillRequest()
 	{
-		super(NetworkCommands.PLAYER_PICKUP_ITEM);
+		super(NetworkCommands.PLAYER_PRINT_BILL);
 	}
 	
 	@Override
 	protected void getDataObject(WriteableDataObject data, Object... params)
 	{
 		int playerId = (int) params[0];
-		int itemID = (int) params[1];
-		
 		data.addInteger(PLAYER_ID, playerId);
-		data.addInteger(ITEM_ID, itemID);
 	}
 }

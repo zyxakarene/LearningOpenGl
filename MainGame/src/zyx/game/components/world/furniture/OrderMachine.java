@@ -10,7 +10,8 @@ public class OrderMachine extends BaseFurnitureItem<SimpleMesh>
 	private static final InteractionAction[] ALL_OPTIONS = new InteractionAction[]
 	{
 		InteractionAction.CLOSE,
-		InteractionAction.ADD_ORDER
+		InteractionAction.ADD_ORDER,
+		InteractionAction.PRINT_BILL
 	};
 	
 	private static final ArrayList<InteractionAction> OPTIONS = new ArrayList<>();
@@ -18,6 +19,7 @@ public class OrderMachine extends BaseFurnitureItem<SimpleMesh>
 	{
 		OPTIONS.add(InteractionAction.CLOSE);
 		OPTIONS.add(InteractionAction.ADD_ORDER);
+		OPTIONS.add(InteractionAction.PRINT_BILL);
 	}
 	
 	public OrderMachine()
@@ -34,7 +36,7 @@ public class OrderMachine extends BaseFurnitureItem<SimpleMesh>
 	@Override
 	public boolean isInteractable()
 	{
-		return false;
+		return true;
 	}
 
 	@Override

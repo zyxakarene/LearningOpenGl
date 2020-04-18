@@ -12,7 +12,6 @@ import zyx.game.components.screen.radial.RadialMenu;
 import zyx.game.components.world.interactable.IInteractable;
 import zyx.game.components.world.interactable.InteractionAction;
 import zyx.game.controls.input.MouseData;
-import zyx.utils.GameConstants;
 
 public class DinerHud extends BaseHud implements IWorldPickedItem
 {
@@ -65,10 +64,5 @@ public class DinerHud extends BaseHud implements IWorldPickedItem
 				radialMenu.showFor(availibleInteractions);
 			}
 		}
-	}
-
-	public void hideRadialMenu()
-	{
-		radialMenu.visible = false;
 	}
 }

@@ -7,6 +7,7 @@ import zyx.game.components.screen.hud.BaseHud;
 import zyx.game.components.screen.hud.DinerHud;
 import zyx.game.components.world.interactable.IInteractable;
 import zyx.game.controls.process.impl.AuthenticateLoadingProcess;
+import zyx.game.models.GameModels;
 import zyx.game.vo.Gender;
 
 public class DinerScene extends GameScene
@@ -55,11 +56,13 @@ public class DinerScene extends GameScene
 
 	public void addInteractableObject(IInteractable item)
 	{
+		addPickedObject(item, GameModels.selection);
 		addPickedObject(item, dinerHud);
 	}
 
 	public void removeInteractableObject(IInteractable item)
 	{
+		removePickedObject(item, GameModels.selection);
 		removePickedObject(item, dinerHud);
 	}
 }
