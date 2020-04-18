@@ -40,7 +40,7 @@ class PersistentConnection
 		}
 		else
 		{
-			System.out.println("Attempted to send data to a closed socket");
+			System.err.println("Attempted to send data to a closed socket");
 		}
 	}
 	

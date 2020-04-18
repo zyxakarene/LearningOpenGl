@@ -19,7 +19,7 @@ public class GameStarter implements Runnable
 	@Override
 	public void run()
 	{
-		ConnectionEstablisher.getInstance().connect("localhost", 8888);
+		ConnectionEstablisher.getInstance().connect("80.197.130.80", 8888);
 		
 		TaskScheduler.getInstance().addThreads(5);
 		ResourceLoader.getInstance().addThreads(1);

@@ -62,7 +62,7 @@ public class NetworkRequestDispatcher
 
 		if (handlers == null)
 		{
-			System.out.println("[WARNING] Outgoing message, but no handlers: " + command);
+			System.err.println("[WARNING] Outgoing message, but no handlers: " + command);
 		}
 		
 		if (handlers != null)

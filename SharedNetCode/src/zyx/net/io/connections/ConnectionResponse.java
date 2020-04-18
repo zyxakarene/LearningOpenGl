@@ -3,7 +3,6 @@ package zyx.net.io.connections;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.net.DatagramPacket;
 import java.net.InetAddress;
 import zyx.net.data.ReadableDataObject;
 
@@ -21,23 +20,20 @@ public class ConnectionResponse
 		this.senderHost = null;
 		this.senderPort = -1;
 		
-		loadFrom(data, data.length);
+		loadFrom(data);
 	}
 	
-	public ConnectionResponse(DatagramPacket packet) throws IOException
+	public ConnectionResponse(ConnectionResponseData data) throws IOException
 	{
-		this.senderHost = packet.getAddress();
-		this.senderPort = packet.getPort();
+		this.senderHost = data.senderHost;
+		this.senderPort = data.senderPort;
 		
-		byte[] data = packet.getData();
-		int dataLength = packet.getLength();
-		
-		loadFrom(data, dataLength);
+		loadFrom(data.byteData);
 	}
 	
-	public void loadFrom(byte[] data, int dataLength) throws IOException
+	private void loadFrom(byte[] data) throws IOException
 	{
-		ByteArrayInputStream in = new ByteArrayInputStream(data, 0, dataLength);
+		ByteArrayInputStream in = new ByteArrayInputStream(data, 0, data.length);
 		try (ObjectInputStream stream = new ObjectInputStream(in))
 		{
 			name = stream.readUTF();

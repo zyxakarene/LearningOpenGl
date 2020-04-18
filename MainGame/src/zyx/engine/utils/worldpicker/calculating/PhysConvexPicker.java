@@ -91,8 +91,6 @@ public class PhysConvexPicker extends AbstractPicker
 			DebugPoint.addToScene(point, 2000);
 		}
 		
-		int count = 0;
-		int pass = 0;
 		for (PhysTriangle triangle : triangles)
 		{
 			VERTEX_1.set(triangle.v1);
@@ -100,17 +98,11 @@ public class PhysConvexPicker extends AbstractPicker
 			VERTEX_3.set(triangle.v3);
 			NORMAL.set(triangle.normal);
 			
-			float dot = Vector3f.dot(point, NORMAL);
-			if (MouseData.data.isLeftDown())
-			{
-				System.out.println(dot);
-			}
-		
+			float dot = Vector3f.dot(point, NORMAL);		
 			if (dot <= 0)
 			{
 				return false;
 			}
-			
 		}
 
 		return true;

@@ -40,7 +40,6 @@ public class CleanerIdleBehavior extends BaseNpcBehavior<Cleaner, CleanerBehavio
 
 		if (goofTimer <= 0)
 		{
-			System.out.println(npc + " is checking for dirty plates");
 			goofTimer = (int) (1000 + (MAX_GOOF_TIME * Math.random()));
 
 			CommonTable table = findTable();

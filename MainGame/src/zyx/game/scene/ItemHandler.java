@@ -72,8 +72,6 @@ public class ItemHandler
 			{
 				item.setPosition(false, position);
 			}
-			
-			System.out.println(item.getPosition(false, null));
 		}
 	}
 

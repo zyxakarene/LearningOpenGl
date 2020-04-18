@@ -1,5 +1,6 @@
 package zyx.net.core;
 
+import zyx.net.core.packages.PacketSplitter;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import zyx.net.io.connections.ConnectionRequest;
@@ -13,18 +14,21 @@ public class ConnectionRequestRunner extends BaseRunner<ConnectionRequest, Conne
 	protected ConnectionResponse handleEntry(ConnectionRequest entry)
 	{
 		byte[] byteData = entry.getData();
-		DatagramPacket packet = new DatagramPacket(byteData, byteData.length, entry.host, entry.port);
 
 		DebugNetworkList.addRequest(byteData);
 		
+		DatagramPacket[] packets = PacketSplitter.splitDataToPackets(byteData, entry.host, entry.port);
 		try
 		{
-			PersistentConnection.getInstance().send(packet);
+			for (DatagramPacket packet : packets)
+			{
+				PersistentConnection.getInstance().send(packet);
+			}
 		}
 		catch (IOException ex)
 		{
 			dispose();
-			System.out.println("Error at sending data: " + ex);
+			System.err.println("Error at sending data: " + ex);
 		}
 		
 		entry.dispose();

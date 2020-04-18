@@ -19,7 +19,7 @@ public class PingRequest extends BaseNetworkRequest
 		int id = (int) params[0];
 		data.addInteger(ID, id);
 		
-		System.out.println(id + " Sending ping!");
+//		System.out.println(id + " Sending ping!");
 	}
 
 }

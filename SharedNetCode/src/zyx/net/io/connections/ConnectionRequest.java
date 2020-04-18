@@ -51,7 +51,7 @@ public class ConnectionRequest
 		}
 		catch (IOException ex)
 		{
-			System.out.println("Could not serialize data: " + ex);
+			System.err.println("Could not serialize data: " + ex);
 			return new byte[0];
 		}
 	}

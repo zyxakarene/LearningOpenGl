@@ -19,7 +19,7 @@ public class PingResponse extends BaseNetworkResponse<Integer>
 	{
 		
 		int id = data.getInteger(ID);
-		System.out.println(id + " Received a ping!!");
+//		System.out.println(id + " Received a ping!!");
 		return id;
 	}
 

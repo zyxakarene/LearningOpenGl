@@ -58,7 +58,7 @@ public class NetworkResponseDispatcher
 		
 		if (responses.isEmpty())
 		{
-			System.out.println("[WARNING] Incoming message, but no listeners: " + connectionResponse.name);
+			System.err.println("[WARNING] Incoming message, but no listeners: " + connectionResponse.name);
 		}
 		
 		for (BaseNetworkResponse response : responses)
