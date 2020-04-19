@@ -2,9 +2,9 @@ package zyx.game.components.screen.radial;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import zyx.engine.components.screen.base.Quad;
+import zyx.engine.components.screen.composed.ComposedButtonColorMap;
+import zyx.engine.components.screen.composed.ComposedConstants;
 import zyx.engine.components.screen.image.Image;
-import zyx.engine.components.screen.image.Scale9Image;
 import zyx.engine.components.screen.interactable.Button;
 import zyx.engine.components.screen.interactable.InteractableContainer;
 import zyx.engine.utils.callbacks.ICallback;
@@ -16,9 +16,11 @@ public class RadialMenu extends JsonSprite
 {
 
 	private HashMap<InteractionAction, Button> actionButtonMap;
+	private HashMap<InteractionAction, Image> actionIconMap;
 	private RadialButtonClickAdaptor adaptor;
 	private ArrayList<Button> buttons;
-	
+	private ArrayList<Image> buttonIcons;
+
 	private Button closeButton;
 
 	public RadialMenu()
@@ -35,18 +37,23 @@ public class RadialMenu extends JsonSprite
 	protected void onComponentsCreated()
 	{
 		actionButtonMap = new HashMap<>();
+		actionIconMap = new HashMap<>();
 		adaptor = new RadialButtonClickAdaptor(this);
 		buttons = new ArrayList<>();
+		buttonIcons = new ArrayList<>();
 
-		String postFix = "_button";
+		String postFixButton = "_button";
+		String postFixImage = "_icon";
 		InteractionAction[] values = InteractionAction.values();
 		for (InteractionAction value : values)
 		{
-			Button button = getComponentByName(value.name + postFix);
+			Button button = getComponentByName(value.name + postFixButton);
+			Image icon = getComponentByName(value.name + postFixImage);
 
 			ICallback<InteractableContainer> callback = adaptor.getCallback(value);
 			button.onButtonClicked.addCallback(callback);
 			actionButtonMap.put(value, button);
+			actionIconMap.put(value, icon);
 			
 			if (value == InteractionAction.CLOSE)
 			{
@@ -55,6 +62,7 @@ public class RadialMenu extends JsonSprite
 			else
 			{
 				buttons.add(button);
+				buttonIcons.add(icon);
 			}
 		}
 
@@ -63,31 +71,35 @@ public class RadialMenu extends JsonSprite
 		{
 			float x = 200 * FloatMath.cos(2 * FloatMath.PI * i / len);
 			float y = 200 * FloatMath.sin(2 * FloatMath.PI * i / len);
-			
+
 			Button button = buttons.get(i);
 			button.setPosition(true, x, y);
 		}
 	}
 
-	public void showFor(ArrayList<InteractionAction> values)
+	public void showFor(ArrayList<InteractionAction> enabledActions)
 	{
-		for (Button button : buttons)
-		{
-			button.visible = false;
-		}
-
+		ComposedButtonColorMap colorsEnabled = ComposedConstants.buttonColorsFromScheme("green");
+		ComposedButtonColorMap colorsDisabled = ComposedConstants.buttonColorsFromScheme("gray");
+		
 		visible = true;
 
-		int xPos = 0;
-		for (InteractionAction value : values)
+		InteractionAction[] allACtions = InteractionAction.values();
+		for (InteractionAction value : allACtions)
 		{
 			Button button = actionButtonMap.get(value);
-			if (button != null)
+			Image icon = actionIconMap.get(value);
+			if (enabledActions.contains(value))
 			{
-				button.visible = true;
-				button.setY(0);
-				button.setX(xPos);
-				xPos += 64;
+				button.focusable = true;
+				button.setColors(colorsEnabled);
+				icon.load("icon_" + value.name);
+			}
+			else
+			{
+				button.focusable = false;
+				button.setColors(colorsDisabled);
+				icon.load("icon_" + value.name + "_gray");
 			}
 		}
 	}

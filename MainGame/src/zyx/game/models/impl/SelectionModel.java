@@ -16,10 +16,6 @@ public class SelectionModel implements IWorldPickedItem
 	@Override
 	public void onGeometryPicked(ClickedInfo info)
 	{
-		lastInteractedItem = null;
-		lastInteractedFurniture = null;
-		lastInteractedCharacter = null;
-		
 		WorldObject worldObject = info.worldObject;
 		if (worldObject instanceof GameItem)
 		{

@@ -99,7 +99,7 @@ public class BaseHud extends JsonSprite implements ICallback<Vector2Int>
 
 		Image debugDrawUnder = new Image();
 		debugDrawUnder.setScale(1, -1);
-		debugDrawUnder.setPosition(true, sizeX * 6, screenHeight - (sizeY * 1));
+		debugDrawUnder.setPosition(true, sizeX * 7, screenHeight);
 		debugDrawUnder.setTexture(new TextureFromInt(sizeX, sizeY, drawRenderer.underlayInt(), TextureSlot.SHARED_DIFFUSE));
 		addChild(debugDrawUnder);
 	}

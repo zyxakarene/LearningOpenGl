@@ -1,6 +1,7 @@
 package zyx.engine.components.screen.interactable;
 
 import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.components.screen.composed.ComposedButtonColorMap;
 import zyx.engine.components.screen.composed.IComposedButton;
 import zyx.engine.components.screen.image.AbstractImage;
 import zyx.engine.components.screen.image.Image;
@@ -165,6 +166,11 @@ public class Button extends InteractableContainer implements IComposedButton
 		}
 	}
 
+	public void setColors(ComposedButtonColorMap map)
+	{
+		setColors(map.upColors, map.hoverColors, map.downColors);
+	}
+	
 	@Override
 	public void setColors(Vector3f[] up, Vector3f[] hover, Vector3f[] down)
 	{

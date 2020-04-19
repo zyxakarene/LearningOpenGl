@@ -1,5 +1,6 @@
 package zyx.utils.tween;
 
+import zyx.engine.utils.callbacks.ICallback;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IUpdateable;
 import zyx.utils.tween.easing.EasingFunction;
@@ -16,6 +17,8 @@ public abstract class BaseTween<T, V> implements IUpdateable, IDisposeable
 	
 	private T target;
 	private long endTime;
+	
+	private ICallback<BaseTween> completedCallback;
 	
 	BaseTween()
 	{
@@ -56,6 +59,16 @@ public abstract class BaseTween<T, V> implements IUpdateable, IDisposeable
 		onEase(target, value);
 		
 		completed = timestamp >= endTime;
+		if (completed && completedCallback != null)
+		{
+			completedCallback.onCallback(this);
+			completedCallback = null;
+		}
+	}
+
+	public void setCompletedCallback(ICallback<BaseTween> callback)
+	{
+		completedCallback = callback;
 	}
 
 	protected abstract void onEase(T target, V value);
@@ -71,6 +84,7 @@ public abstract class BaseTween<T, V> implements IUpdateable, IDisposeable
 		{
 			TweenManager.getInstance().remove(this);
 			function = null;
+			completedCallback = null;
 			
 			onDispose();
 		}

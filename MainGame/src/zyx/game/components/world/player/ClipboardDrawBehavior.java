@@ -31,6 +31,7 @@ public class ClipboardDrawBehavior extends Behavior implements IWorldPickedItem
 		scene = SceneManager.getInstance().getSceneAs();
 
 		clipboard = (PlayerClipboard) gameObject;
+		setActive(false);
 	}
 
 	@Override
