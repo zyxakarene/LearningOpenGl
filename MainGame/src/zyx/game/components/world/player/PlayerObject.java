@@ -78,13 +78,7 @@ public class PlayerObject extends GameObject implements IItemHolder
 	}
 
 	@Override
-	public ArrayList<InteractionAction> getAvailibleInteractions()
-	{
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
-
-	@Override
-	public InteractionAction[] getAllInteractions()
+	public ArrayList<InteractionAction> getInteractions()
 	{
 		throw new UnsupportedOperationException("Not supported yet.");
 	}

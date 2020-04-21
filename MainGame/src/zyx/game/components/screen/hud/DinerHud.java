@@ -59,7 +59,7 @@ public class DinerHud extends BaseHud implements IWorldPickedItem
 			if (worldObject instanceof IInteractable)
 			{
 				IInteractable target = ((IInteractable) worldObject);
-				ArrayList<InteractionAction> availibleInteractions = target.getAvailibleInteractions();
+				ArrayList<InteractionAction> availibleInteractions = target.getInteractions();
 				
 				radialMenu.showFor(availibleInteractions);
 			}

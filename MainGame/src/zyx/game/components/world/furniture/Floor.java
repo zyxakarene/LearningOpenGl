@@ -11,13 +11,6 @@ import zyx.utils.GeometryUtils;
 public class Floor extends BaseFurnitureItem<SimpleMesh>
 {
 
-	private static final InteractionAction[] ALL_OPTIONS = new InteractionAction[]
-	{
-		InteractionAction.CLOSE,
-		InteractionAction.PLACE,
-		InteractionAction.TAKE
-	};
-
 	public Floor()
 	{
 		super(false);
@@ -50,7 +43,7 @@ public class Floor extends BaseFurnitureItem<SimpleMesh>
 	}
 
 	@Override
-	public ArrayList<InteractionAction> getAvailibleInteractions()
+	public ArrayList<InteractionAction> getInteractions()
 	{
 		ArrayList<InteractionAction> options = new ArrayList<>();
 		options.add(InteractionAction.CLOSE);
@@ -61,11 +54,5 @@ public class Floor extends BaseFurnitureItem<SimpleMesh>
 		}
 		
 		return options;
-	}
-
-	@Override
-	public InteractionAction[] getAllInteractions()
-	{
-		return ALL_OPTIONS;
 	}
 }

@@ -15,13 +15,6 @@ public class GameCharacter extends GameObject implements IItemHolder
 {
 
 	private static final ArrayList<InteractionAction> EMPTY_LIST = new ArrayList<>();
-	private static final InteractionAction[] EMPTY_ARRAY = new InteractionAction[0];
-
-	private static final InteractionAction[] GUEST_OPTIONS = new InteractionAction[]
-	{
-		InteractionAction.CLOSE,
-		InteractionAction.TAKE_ORDER
-	};
 	private static final ArrayList<InteractionAction> GUEST_LIST = new ArrayList<>();
 	static
 	{
@@ -109,7 +102,7 @@ public class GameCharacter extends GameObject implements IItemHolder
 	}
 
 	@Override
-	public ArrayList<InteractionAction> getAvailibleInteractions()
+	public ArrayList<InteractionAction> getInteractions()
 	{
 		if (info.type == CharacterType.GUEST)
 		{
@@ -118,19 +111,6 @@ public class GameCharacter extends GameObject implements IItemHolder
 		else
 		{
 			return EMPTY_LIST;
-		}
-	}
-
-	@Override
-	public InteractionAction[] getAllInteractions()
-	{
-		if (info.type == CharacterType.GUEST)
-		{
-			return GUEST_OPTIONS;
-		}
-		else
-		{
-			return EMPTY_ARRAY;
 		}
 	}
 }

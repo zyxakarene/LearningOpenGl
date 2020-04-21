@@ -1,10 +1,13 @@
 package zyx.server.world.humanoids.players;
 
 import java.awt.Color;
+import org.lwjgl.util.vector.Vector3f;
 import zyx.game.vo.CharacterType;
 import zyx.game.vo.Gender;
 import zyx.net.io.connections.ConnectionData;
+import zyx.server.controller.services.ItemService;
 import zyx.server.utils.IUpdateable;
+import zyx.server.world.RoomItems;
 import zyx.server.world.humanoids.HumanoidEntity;
 
 public class Player extends HumanoidEntity implements IUpdateable
@@ -38,5 +41,13 @@ public class Player extends HumanoidEntity implements IUpdateable
 	public Color getColor()
 	{
 		return Color.ORANGE;
+	}
+
+	public void dropItems()
+	{
+		if (heldItem != null)
+		{
+			RoomItems.instance.floor.itemDropped(heldItem, this);
+		}
 	}
 }

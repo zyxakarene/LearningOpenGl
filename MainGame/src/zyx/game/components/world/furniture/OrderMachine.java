@@ -6,13 +6,6 @@ import zyx.game.components.world.interactable.InteractionAction;
 
 public class OrderMachine extends BaseFurnitureItem<SimpleMesh>
 {
-
-	private static final InteractionAction[] ALL_OPTIONS = new InteractionAction[]
-	{
-		InteractionAction.CLOSE,
-		InteractionAction.ADD_ORDER,
-		InteractionAction.PRINT_BILL
-	};
 	
 	private static final ArrayList<InteractionAction> OPTIONS = new ArrayList<>();
 	static
@@ -40,14 +33,8 @@ public class OrderMachine extends BaseFurnitureItem<SimpleMesh>
 	}
 
 	@Override
-	public ArrayList<InteractionAction> getAvailibleInteractions()
+	public ArrayList<InteractionAction> getInteractions()
 	{
 		return OPTIONS;
-	}
-
-	@Override
-	public InteractionAction[] getAllInteractions()
-	{
-		return ALL_OPTIONS;
 	}
 }

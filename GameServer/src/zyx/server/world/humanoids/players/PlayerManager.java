@@ -3,20 +3,23 @@ package zyx.server.world.humanoids.players;
 import java.util.ArrayList;
 import zyx.game.vo.Gender;
 import zyx.net.io.connections.ConnectionData;
+import zyx.server.controller.PingManager;
+import zyx.server.controller.services.PlayerService;
 import zyx.server.utils.IUpdateable;
 import zyx.server.world.entity.WorldEntityManager;
 
 public class PlayerManager extends WorldEntityManager<Player> implements IUpdateable
 {
+
 	private static final PlayerManager INSTANCE = new PlayerManager();
 
 	public static PlayerManager getInstance()
 	{
 		return INSTANCE;
 	}
-	
+
 	private ArrayList<ConnectionData> connections;
-	
+
 	private ConnectionData[] allConnections;
 	private ConnectionData[] allButOneConnections;
 
@@ -25,24 +28,24 @@ public class PlayerManager extends WorldEntityManager<Player> implements IUpdate
 		connections = new ArrayList<>();
 		createConnectionArrays();
 	}
-	
+
 	private void createConnectionArrays()
 	{
 		int length = entities.size();
 		allConnections = new ConnectionData[length];
-		
+
 		int lenMinusOne = length <= 0 ? 0 : length - 1;
 		allButOneConnections = new ConnectionData[lenMinusOne];
 	}
-	
+
 	public Player createPlayer(String name, Gender gender, ConnectionData connection)
 	{
 		Player player = new Player(name, gender, connection);
 		addEntity(player);
-		
+
 		connections.add(player.connection);
 		createConnectionArrays();
-		
+
 		return player;
 	}
 
@@ -51,8 +54,14 @@ public class PlayerManager extends WorldEntityManager<Player> implements IUpdate
 	{
 		super.removeEntity(player);
 		
+		System.out.println("Player: " + player.id + " - " + player.gender + " left the game");
+		PingManager.getInstance().removeEntity(player.id);
+		player.dropItems();
+
+		//Tell everyone that the guy left
+		PlayerService.playerLeft(player);
+
 		connections.remove(player.connection);
-		
 		createConnectionArrays();
 	}
 
@@ -63,7 +72,7 @@ public class PlayerManager extends WorldEntityManager<Player> implements IUpdate
 		{
 			allConnections[i] = connections.get(i);
 		}
-		
+
 		return allConnections;
 	}
 
@@ -74,17 +83,17 @@ public class PlayerManager extends WorldEntityManager<Player> implements IUpdate
 		for (int i = 0; i < length; i++)
 		{
 			ConnectionData entry = connections.get(i);
-			
+
 			if (entry != connection)
 			{
 				allButOneConnections[j] = connections.get(i);
 				j++;
 			}
 		}
-		
+
 		return allButOneConnections;
 	}
-	
+
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{

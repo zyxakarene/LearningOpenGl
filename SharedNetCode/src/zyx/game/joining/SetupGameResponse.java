@@ -89,6 +89,7 @@ public class SetupGameResponse extends BaseNetworkResponse<GameSetupVo>
 
 			int type = itemData.getInteger(TYPE);
 			int dish = itemData.getInteger(DISH);
+			int foodState = itemData.getInteger(FOOD_STATE);
 			
 			OUT.items.ids[i] = itemData.getInteger(ID);
 			OUT.items.ownerIds[i] = itemData.getInteger(OWNER_ID);
@@ -96,6 +97,11 @@ public class SetupGameResponse extends BaseNetworkResponse<GameSetupVo>
 			if (type > 0)
 			{
 				OUT.items.types[i] = HandheldItemType.getFromId(type);
+			}
+			
+			if (foodState > 0)
+			{
+				OUT.items.foodStates[i] = FoodState.getFromId(type);
 			}
 			
 			if (dish > 0)

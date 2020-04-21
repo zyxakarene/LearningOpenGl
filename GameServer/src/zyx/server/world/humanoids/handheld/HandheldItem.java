@@ -10,15 +10,16 @@ public abstract class HandheldItem implements IUpdateable
 	private static int idCounter = 0;
 
 	public final int id;
-	public HandheldItemType type;
+	public final HandheldItemType type;
+	
 	public boolean inUse;
 	public int ownerId;
 
-	public HandheldItem(HandheldItemType initialType, boolean invisible)
+	public HandheldItem(HandheldItemType type, boolean invisible)
 	{
 		this.id = idCounter++;
 
-		this.type = initialType;
+		this.type = type;
 		this.inUse = true;
 		
 		if (!invisible)

@@ -4,9 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.LinkedList;
 import zyx.server.world.humanoids.handheld.HandheldItem;
-import zyx.server.world.humanoids.handheld.food.DishRecipeItem;
 import zyx.game.vo.DishType;
 import zyx.game.vo.FurnitureType;
+import zyx.server.world.humanoids.handheld.food.FoodItem;
 import zyx.server.world.humanoids.npc.Chef;
 import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
 import zyx.server.world.interactable.common.useable.UseableItem;
@@ -16,7 +16,7 @@ public class Monitor extends UseableItem<Chef>
 
 	private static final int LOOK_TIME = 1000;
 
-	private LinkedList<DishRecipeItem> queue;
+	private LinkedList<FoodItem> queue;
 
 	public Monitor()
 	{
@@ -41,14 +41,14 @@ public class Monitor extends UseableItem<Chef>
 	@Override
 	protected void onUsingCompleted()
 	{
-		DishRecipeItem recipe = queue.removeFirst();
+		FoodItem recipe = queue.removeFirst();
 		currentUser.pickupItemSilent(recipe);
 		currentUser.requestBehavior(ChefBehaviorType.FINDING_FRIDGE);
 	}
 
 	public void addDish(DishType dish)
 	{
-		DishRecipeItem recipe = new DishRecipeItem(dish);
+		FoodItem recipe = new FoodItem(dish);
 		queue.addLast(recipe);
 	}
 

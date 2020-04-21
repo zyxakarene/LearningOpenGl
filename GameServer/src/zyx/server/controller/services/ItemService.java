@@ -1,11 +1,10 @@
 package zyx.server.controller.services;
 
-import org.lwjgl.util.vector.Vector3f;
+import zyx.game.vo.FoodState;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.server.controller.sending.SendType;
 import zyx.server.controller.sending.ServerSender;
 import zyx.server.world.humanoids.handheld.HandheldItem;
-import zyx.game.vo.HandheldItemType;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
 import zyx.server.world.humanoids.handheld.guests.BillItem;
 
@@ -32,14 +31,14 @@ public class ItemService
 		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_SET_OWNER, item.id, ownerId);
 	}
 
-	public static void dropOnFloor(HandheldItem item, int ownerId, Vector3f position)
+	public static void dropOnFloor(HandheldItem item, int floorId, float x, float y, float z)
 	{
-		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_PUT_ON_FOOR, item.id, ownerId, position);
+		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_PUT_ON_FOOR, item.id, floorId, x, y, z);
 	}
 
-	public static void setType(HandheldItem item, HandheldItemType type)
+	public static void setFoodState(HandheldItem item, FoodState state)
 	{
-		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_SET_TYPE, item.id, type);
+		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_SET_FOOD_STATE, item.id, state.id);
 	}
 
 	public static void spoilFood(FoodItem food)

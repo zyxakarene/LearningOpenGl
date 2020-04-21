@@ -1,6 +1,7 @@
 package zyx.server.world.humanoids.handheld.food;
 
 import zyx.game.vo.DishType;
+import zyx.game.vo.FoodState;
 import zyx.server.world.humanoids.handheld.HandheldItem;
 import zyx.game.vo.HandheldItemType;
 import zyx.server.controller.services.ItemService;
@@ -12,43 +13,49 @@ public class FoodItem extends HandheldItem
 	private static final int FOOD_LIFESPAN_MS = 10000; //10 seconds
 	
 	public final DishType dish;
+	public FoodState state;
 	
 	private int lifeSpan;
 	private boolean spoiled;
 	
 	public FoodItem(DishType resultDish)
 	{
-		super(HandheldItemType.INGREDIENTS, false);
+		super(HandheldItemType.FOOD, false);
 		lifeSpan = FOOD_LIFESPAN_MS;
 		spoiled = false;
 		dish = resultDish;
-		
-		MoneyJar.getInstance().addCost(dish.productionCost);
+		state = FoodState.RECIPE;
 	}
 
 	@Override
 	public void process()
 	{
-		switch (type)
+		switch (state)
 		{
+			case RECIPE:
+			{
+				state = FoodState.INGREDIENTS;
+				MoneyJar.getInstance().addCost(dish.productionCost);
+				break;
+			}
 			case INGREDIENTS:
 			{
-				type = HandheldItemType.POT;
+				state = FoodState.POT;
 				break;
 			}
 			case POT:
 			{
-				type = HandheldItemType.FOOD;
+				state = FoodState.FOOD;
 				break;
 			}
 			case FOOD:
 			{
-				type = HandheldItemType.DIRTY_PLATE;
+				state = FoodState.DIRTY_PLATE;
 				break;
 			}
 		}
 		
-		ItemService.setType(this, type);
+		ItemService.setFoodState(this, state);
 	}
 
 	public boolean isEdible()
@@ -65,7 +72,7 @@ public class FoodItem extends HandheldItem
 	{
 		return !inUse && 
 						(
-							(type == HandheldItemType.DIRTY_PLATE)
+							(state == FoodState.DIRTY_PLATE)
 							|| 
 							(spoiled && type == HandheldItemType.FOOD)
 						);

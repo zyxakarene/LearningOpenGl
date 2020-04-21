@@ -53,15 +53,7 @@ public class ServerNetworkCallbacks extends NetworkCallbacks
 
 	private void onPlayerLeave(int playerId)
 	{
-		Player player = PlayerManager.getInstance().getEntity(playerId);
-		
-		System.out.println("Player: " + player.id + " - " + player.gender + " left the game");
-		PingManager.getInstance().removeEntity(playerId);
-
-		//Tell everyone that the guy left
-		PlayerService.playerLeft(player);
-
-		PlayerManager.getInstance().removeEntity(player);
+		PlayerManager.getInstance().removeEntity(playerId);
 	}
 
 	private void onPlayerPos(PositionData data)

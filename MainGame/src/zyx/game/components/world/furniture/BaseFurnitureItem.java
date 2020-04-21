@@ -15,7 +15,6 @@ public abstract class BaseFurnitureItem<V extends SimpleMesh> extends GameObject
 {
 
 	protected static final ArrayList<InteractionAction> EMPTY_LIST = new ArrayList<>();
-	protected static final InteractionAction[] EMPTY_ARRAY = new InteractionAction[0];
 
 	protected ArrayList<GameItem> items;
 	protected V view;

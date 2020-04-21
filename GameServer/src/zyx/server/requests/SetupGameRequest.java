@@ -104,6 +104,7 @@ public class SetupGameRequest extends BaseNetworkRequest
 			{
 				FoodItem food = (FoodItem) item;
 				itemData.addInteger(DISH, food.dish.id);
+				itemData.addInteger(FOOD_STATE, food.state.id);
 				itemData.addBoolean(SPOILED, food.isSpoiled());
 			}
 

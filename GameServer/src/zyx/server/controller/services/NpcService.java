@@ -45,5 +45,9 @@ public class NpcService
 	{
 		ServerSender.sendWithType(SendType.toSingle(player.connection), NetworkCommands.GUEST_NO_ORDERS, guest.id);
 	}
-
+	
+	public static void reportTableFullTo(Player player, Guest guest)
+	{
+		ServerSender.sendWithType(SendType.toSingle(player.connection), NetworkCommands.GUEST_FULL_TABLE, guest.id);
+	}
 }

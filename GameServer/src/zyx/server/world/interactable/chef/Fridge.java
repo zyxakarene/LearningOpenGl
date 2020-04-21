@@ -1,9 +1,9 @@
 package zyx.server.world.interactable.chef;
 
 import java.awt.Color;
+import zyx.game.vo.FoodState;
 import zyx.game.vo.FurnitureType;
 import zyx.server.controller.services.ItemService;
-import zyx.server.world.humanoids.handheld.food.DishRecipeItem;
 import zyx.server.world.humanoids.handheld.food.FoodItem;
 import zyx.server.world.humanoids.npc.Chef;
 import zyx.server.world.humanoids.npc.behavior.chef.ChefBehaviorType;
@@ -13,7 +13,7 @@ public class Fridge extends UseableItem<Chef>
 {
 	private static final int PICKUP_TIME = 800;
 	
-	private DishRecipeItem recipe;
+	private FoodItem recipe;
 	
 	public Fridge()
 	{
@@ -25,11 +25,14 @@ public class Fridge extends UseableItem<Chef>
 	{
 		if (canUse(chef))
 		{
-			recipe = chef.getHeldAsRecipe();
+			FoodItem heldItem = chef.getHeldAsFood();
 
-			if (recipe != null)
+			if (heldItem != null && heldItem.state == FoodState.RECIPE)
 			{
-				chef.removeItem();
+				recipe = heldItem;
+				recipe.process();
+				
+				chef.removeItemSilent();
 				startUsing(chef);
 			}
 		}
@@ -38,11 +41,10 @@ public class Fridge extends UseableItem<Chef>
 	@Override
 	protected void onUsingCompleted()
 	{
-		FoodItem ingredients = new FoodItem(recipe.dish);
-		currentUser.pickupItemSilent(ingredients);
+		currentUser.pickupItemSilent(recipe);
 		currentUser.requestBehavior(ChefBehaviorType.FINDING_STOVE);
 		
-		ItemService.createFood(ingredients, currentUser.id);
+		ItemService.createFood(recipe, currentUser.id);
 	}
 
 	@Override

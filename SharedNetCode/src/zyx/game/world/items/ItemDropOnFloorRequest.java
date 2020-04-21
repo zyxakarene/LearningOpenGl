@@ -1,6 +1,5 @@
 package zyx.game.world.items;
 
-import org.lwjgl.util.vector.Vector3f;
 import zyx.net.data.WriteableDataObject;
 import zyx.net.io.requests.BaseNetworkRequest;
 import zyx.net.io.controllers.NetworkCommands;
@@ -18,14 +17,16 @@ public class ItemDropOnFloorRequest extends BaseNetworkRequest
 	{
 		int itemID = (int) params[0];
 		int containerID = (int) params[1];
-		Vector3f position = (Vector3f) params[2];
+		float x = (float) params[2];
+		float y = (float) params[3];
+		float z = (float) params[4];
 		
 		data.addInteger(ITEM_ID, itemID);
 		data.addInteger(CONTAINER_ID, containerID);
 		
-		data.addFloat(X, position.x);
-		data.addFloat(Y, position.y);
-		data.addFloat(Z, position.z);
+		data.addFloat(X, x);
+		data.addFloat(Y, y);
+		data.addFloat(Z, z);
 	}
 
 }

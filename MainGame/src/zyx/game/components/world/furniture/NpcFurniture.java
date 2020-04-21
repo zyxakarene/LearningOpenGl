@@ -13,14 +13,8 @@ public abstract class NpcFurniture<V extends SimpleMesh> extends BaseFurnitureIt
 	}
 
 	@Override
-	public ArrayList<InteractionAction> getAvailibleInteractions()
+	public ArrayList<InteractionAction> getInteractions()
 	{
 		return EMPTY_LIST;
-	}
-
-	@Override
-	public InteractionAction[] getAllInteractions()
-	{
-		return EMPTY_ARRAY;
 	}
 }

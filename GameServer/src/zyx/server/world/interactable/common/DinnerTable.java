@@ -38,30 +38,41 @@ public class DinnerTable extends CommonTable<Guest>
 			return;
 		}
 		
-		boolean wasGiven = tryAddItem(itemToGive);
+		TableGiveResponse addedResponse = tryAddItem(itemToGive);
 
-		if (wasGiven)
+		switch (addedResponse)
 		{
-			if (itemToGive.type == HandheldItemType.BILL)
+			case SUCCESS:
 			{
-				giveBill((BillItem) itemToGive);
+				if (itemToGive.type == HandheldItemType.BILL)
+				{
+					giveBill((BillItem) itemToGive);
+				}
+				else if (itemToGive.type == HandheldItemType.FOOD)
+				{
+					giveFood((FoodItem) itemToGive);
+				}	player.removeItemSilent();
+				break;
 			}
-			else if (itemToGive.type == HandheldItemType.FOOD)
-			{
-				giveFood((FoodItem) itemToGive);
-			}
-
-			player.removeItemSilent();
-		}
-		else
-		{
-			if (itemToGive.type == HandheldItemType.FOOD)
+			case NO_ORDERS_GIVEN:
 			{
 				NpcService.reportNoOrdersTo(player, currentUser);
+				break;
+			}
+			case NO_ROOM:
+			{
+				NpcService.reportTableFullTo(player, currentUser);
+				break;
 			}
 		}
 	}
 
+	@Override
+	protected TableGiveResponse getReasonForNotAccepting(HandheldItem item)
+	{
+		return TableGiveResponse.NO_ORDERS_GIVEN;
+	}
+	
 	@Override
 	protected boolean canAcceptItem(HandheldItem item)
 	{
@@ -70,13 +81,11 @@ public class DinnerTable extends CommonTable<Guest>
 			for (Chair chair : chairs)
 			{
 				Guest guestInChair = chair.getCurrentGuest();
-				if (guestInChair != null && !guestInChair.hasEaten && guestInChair.hasOrdered)
+				if (guestInChair != null && !guestInChair.hasOrdered)
 				{
-					return true;
+					return false;
 				}
 			}
-			
-			return false;
 		}
 		
 		return true;

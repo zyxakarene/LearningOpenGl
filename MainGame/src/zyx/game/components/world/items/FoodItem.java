@@ -3,31 +3,26 @@ package zyx.game.components.world.items;
 import java.util.ArrayList;
 import zyx.game.components.world.interactable.InteractionAction;
 import zyx.game.vo.DishType;
+import zyx.game.vo.FoodState;
 import zyx.game.vo.HandheldItemType;
 import zyx.opengl.particles.ParticleSystem;
 
-public class FoodItem extends GameItem
+public class FoodItem extends GameItem<FoodState>
 {
-	private static final InteractionAction[] ALL_OPTIONS = new InteractionAction[]
-	{
-		InteractionAction.CLOSE,
-		InteractionAction.TAKE
-	};
-	
 	private DishType dish;
 		
 	private ParticleSystem rottenEffect;
 	
 	public FoodItem(DishType dish)
 	{
-		super(HandheldItemType.INGREDIENTS);
+		super(HandheldItemType.FOOD, FoodState.INGREDIENTS);
 		this.dish = dish;
 	}
 
 	@Override
-	public void setType(HandheldItemType type)
+	public void setSubType(FoodState subType)
 	{
-		super.setType(type);
+		super.setSubType(subType);
 		
 		clean();
 		load();
@@ -50,7 +45,7 @@ public class FoodItem extends GameItem
 		String foodBase = dish.toString().toLowerCase();
 		String foodState;
 		
-		switch (type)
+		switch (subType)
 		{
 			case INGREDIENTS:
 				foodState = "_raw";
@@ -82,7 +77,7 @@ public class FoodItem extends GameItem
 	}
 
 	@Override
-	public ArrayList<InteractionAction> getAvailibleInteractions()
+	public ArrayList<InteractionAction> getInteractions()
 	{
 		ArrayList<InteractionAction> options = new ArrayList<>();
 		options.add(InteractionAction.CLOSE);
@@ -93,11 +88,5 @@ public class FoodItem extends GameItem
 		}
 		
 		return options;
-	}
-
-	@Override
-	public InteractionAction[] getAllInteractions()
-	{
-		return ALL_OPTIONS;
 	}
 }

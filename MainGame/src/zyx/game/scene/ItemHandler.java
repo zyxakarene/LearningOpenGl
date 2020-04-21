@@ -7,7 +7,6 @@ import zyx.engine.scene.SceneManager;
 import zyx.game.components.world.IItemHolder;
 import zyx.game.components.world.items.GameItem;
 import zyx.game.scene.game.DinerScene;
-import zyx.game.vo.HandheldItemType;
 
 public class ItemHandler
 {
@@ -115,12 +114,12 @@ public class ItemHandler
 		}
 	}
 
-	public void setType(int uniqueId, HandheldItemType type)
+	public <T extends Enum> void setSubType(int uniqueId, T type)
 	{
-		GameItem item = itemMap.get(uniqueId);
+		GameItem<T> item = itemMap.get(uniqueId);
 		if (item != null)
 		{
-			item.setType(type);
+			item.setSubType(type);
 		}
 	}
 

@@ -16,7 +16,7 @@ public class ItemNetworkCallbacks extends NetworkCallbacks
 	private INetworkCallback onDestroy;
 	private INetworkCallback onCreateBill;
 	private INetworkCallback onSetOwner;
-	private INetworkCallback onSetType;
+	private INetworkCallback onSetFoodState;
 	private INetworkCallback onFoodSpoiled;
 	private INetworkCallback onItemDropped;
 	private INetworkCallback onItemSetInUse;
@@ -33,7 +33,7 @@ public class ItemNetworkCallbacks extends NetworkCallbacks
 		registerCallback(NetworkCommands.ITEM_CREATE_BILL, onCreateBill);
 		registerCallback(NetworkCommands.ITEM_DESTROY, onDestroy);
 		registerCallback(NetworkCommands.ITEM_SET_OWNER, onSetOwner);
-		registerCallback(NetworkCommands.ITEM_SET_TYPE, onSetType);
+		registerCallback(NetworkCommands.ITEM_SET_FOOD_STATE, onSetFoodState);
 		registerCallback(NetworkCommands.ITEM_SPOIL_FOOD, onFoodSpoiled);
 		registerCallback(NetworkCommands.ITEM_PUT_ON_FOOR, onItemDropped);
 		registerCallback(NetworkCommands.ITEM_SET_IN_USE, onItemSetInUse);
@@ -83,9 +83,9 @@ public class ItemNetworkCallbacks extends NetworkCallbacks
 		itemHandler.setOwner(data.itemId, data.ownerId);
 	}
 
-	private void onSetItemType(ItemChangedData data)
+	private void onSetFoodState(ItemChangedData data)
 	{
-		itemHandler.setType(data.itemId, data.type);
+		itemHandler.setSubType(data.itemId, data.foodState);
 	}
 
 	private void createCallbacks()
@@ -97,6 +97,6 @@ public class ItemNetworkCallbacks extends NetworkCallbacks
 		onItemSetInUse = (INetworkCallback<ItemChangedData>) this::onItemSetInUse;
 		onCreateBill = (INetworkCallback<ItemChangedData>) this::onCreateBill;
 		onSetOwner = (INetworkCallback<ItemChangedData>) this::onSetItemOwner;
-		onSetType = (INetworkCallback<ItemChangedData>) this::onSetItemType;
+		onSetFoodState = (INetworkCallback<ItemChangedData>) this::onSetFoodState;
 	}
 }

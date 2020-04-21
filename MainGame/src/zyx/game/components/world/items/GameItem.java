@@ -4,18 +4,20 @@ import zyx.game.components.SimpleMesh;
 import zyx.game.components.world.interactable.IInteractable;
 import zyx.game.vo.HandheldItemType;
 
-public abstract class GameItem extends SimpleMesh implements IInteractable
+public abstract class GameItem<TSubType extends Enum> extends SimpleMesh implements IInteractable
 {
 	public int uniqueId;
 	
 	private int currentOwnerId;
 	
-	protected HandheldItemType type;
+	private final HandheldItemType type;
 	protected boolean inUse;
+	protected TSubType subType;
 	
-	public GameItem(HandheldItemType type)
+	public GameItem(HandheldItemType type, TSubType subType)
 	{
 		this.type = type;
+		this.subType = subType;
 		inUse = true;
 	}
 
@@ -33,15 +35,20 @@ public abstract class GameItem extends SimpleMesh implements IInteractable
 	{
 		currentOwnerId = ownerId;
 	}
-
-	public void setType(HandheldItemType type)
-	{
-		this.type = type;
-	}
 	
 	public void setInUse(boolean value)
 	{
 		inUse = value;
+	}
+
+	public TSubType getSubType()
+	{
+		return subType;
+	}
+
+	public void setSubType(TSubType subType)
+	{
+		this.subType = subType;
 	}
 	
 	protected abstract String getItemResource();

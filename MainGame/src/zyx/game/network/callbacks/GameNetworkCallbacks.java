@@ -26,6 +26,7 @@ import zyx.game.position.data.CharacterMassPositionData;
 import zyx.game.scene.ItemHandler;
 import zyx.game.scene.game.GameScene;
 import zyx.game.vo.DishType;
+import zyx.game.vo.FoodState;
 import zyx.game.vo.HandheldItemType;
 import zyx.game.world.guests.data.GuestOrderData;
 import zyx.net.io.controllers.NetworkCallbacks;
@@ -164,7 +165,9 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 			else
 			{
 				DishType dish = items.dishTypes[i];
+				FoodState foodState = items.foodStates[i];
 				FoodItem food = new FoodItem(dish);
+				food.setSubType(foodState);
 				if (items.dishSpoiled[i])
 				{
 					food.spoil();
@@ -173,7 +176,6 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 				item = food;
 			}
 
-			item.setType(type);
 			item.load();
 			itemHandler.addItem(itemId, item, ownerId);
 		}

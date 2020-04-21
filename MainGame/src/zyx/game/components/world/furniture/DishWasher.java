@@ -10,17 +10,9 @@ import zyx.game.models.GameModels;
 public class DishWasher extends BaseFurnitureItem<SimpleMesh>
 {
 
-	private InteractionAction[] allOptions;
-
 	public DishWasher()
 	{
 		super(false);
-
-		allOptions = new InteractionAction[]
-		{
-			InteractionAction.CLOSE,
-			InteractionAction.CLEANUP,
-		};
 	}
 
 	@Override
@@ -48,7 +40,7 @@ public class DishWasher extends BaseFurnitureItem<SimpleMesh>
 	}
 
 	@Override
-	public ArrayList<InteractionAction> getAvailibleInteractions()
+	public ArrayList<InteractionAction> getInteractions()
 	{
 		ArrayList<InteractionAction> options = new ArrayList<>();
 		options.add(InteractionAction.CLOSE);
@@ -59,11 +51,5 @@ public class DishWasher extends BaseFurnitureItem<SimpleMesh>
 		}
 		
 		return options;
-	}
-
-	@Override
-	public InteractionAction[] getAllInteractions()
-	{
-		return allOptions;
 	}
 }

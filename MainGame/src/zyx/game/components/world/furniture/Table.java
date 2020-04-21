@@ -11,13 +11,6 @@ import zyx.game.models.GameModels;
 public class Table extends BaseFurnitureItem<SimpleMesh>
 {
 
-	private static final InteractionAction[] ALL_OPTIONS = new InteractionAction[]
-	{
-		InteractionAction.CLOSE,
-		InteractionAction.PLACE,
-		InteractionAction.SERVE_BILL,
-	};
-
 	public Table()
 	{
 		super(false);
@@ -50,28 +43,25 @@ public class Table extends BaseFurnitureItem<SimpleMesh>
 	}
 
 	@Override
-	public ArrayList<InteractionAction> getAvailibleInteractions()
+	public ArrayList<InteractionAction> getInteractions()
 	{
 		ArrayList<InteractionAction> options = new ArrayList<>();
 		options.add(InteractionAction.CLOSE);
-		
-		if (GameModels.player.carriedItem instanceof FoodItem)
-		{
-			options.add(InteractionAction.SERVE);
-		}
 		
 		if (GameModels.player.carriedItem instanceof BillItem)
 		{
 			options.add(InteractionAction.SERVE_BILL);
 		}
+		else
+		{
+			if (GameModels.player.carriedItem instanceof FoodItem)
+			{
+				options.add(InteractionAction.SERVE);
+			}
+			
+			options.add(InteractionAction.PLACE);
+		}
 		
 		return options;
 	}
-
-	@Override
-	public InteractionAction[] getAllInteractions()
-	{
-		return ALL_OPTIONS;
-	}
-
 }
