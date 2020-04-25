@@ -5,15 +5,17 @@ import java.util.HashMap;
 import zyx.engine.components.screen.interactable.InteractableContainer;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.components.screen.json.JsonSprite;
-import zyx.game.components.world.interactable.InteractionAction;
 import zyx.utils.FloatMath;
 
-public class RadialMenu extends JsonSprite
+
+public abstract class RadialMenu extends JsonSprite
 {
 
-	private HashMap<InteractionAction, RadialMenuItemRenderer> actionButtonMap;
+	private HashMap<IRadialMenuOption, RadialMenuItemRenderer> optionButtonMap;
 	private RadialButtonClickAdaptor adaptor;
 	private ArrayList<RadialMenuItemRenderer> renderers;
+	
+	private IRadialMenuOption[] allOptions;
 
 	public RadialMenu()
 	{
@@ -22,10 +24,17 @@ public class RadialMenu extends JsonSprite
 	@Override
 	protected void onPreInitialize()
 	{
-		actionButtonMap = new HashMap<>();
-		adaptor = new RadialButtonClickAdaptor(this);
+		optionButtonMap = new HashMap<>();
 		renderers = new ArrayList<>();
+		
+		allOptions = getAllPossibilities();
+		
+		adaptor = getClickAdaptor();
+		adaptor.createCallbacks();
+		adaptor.setRadialMenu(this);
 	}
+	
+	protected abstract RadialButtonClickAdaptor getClickAdaptor();
 	
 	@Override
 	protected String[] getDependencies()
@@ -46,17 +55,16 @@ public class RadialMenu extends JsonSprite
 	protected void onComponentsCreated()
 	{
 		String postFixButton = "_button";
-		InteractionAction[] values = InteractionAction.values();
-		for (InteractionAction value : values)
+		for (IRadialMenuOption option : allOptions)
 		{
-			RadialMenuItemRenderer renderer = getComponentByName(value.name + postFixButton);
+			RadialMenuItemRenderer renderer = getComponentByName(option.getName()+ postFixButton);
 
-			ICallback<InteractableContainer> callback = adaptor.getCallback(value);
+			ICallback<InteractableContainer> callback = adaptor.getCallback(option);
 			renderer.addCallback(callback);
 
-			actionButtonMap.put(value, renderer);
+			optionButtonMap.put(option, renderer);
 
-			if (value != InteractionAction.CLOSE)
+			if (option.isCloseOption() == false)
 			{
 				renderers.add(renderer);
 			}
@@ -73,15 +81,16 @@ public class RadialMenu extends JsonSprite
 		}
 	}
 
-	public void showFor(ArrayList<InteractionAction> enabledActions)
+	protected abstract IRadialMenuOption[] getAllPossibilities();
+	
+	public void showFor(ArrayList<? extends IRadialMenuOption> enabledOptions)
 	{
 		visible = true;
 
-		InteractionAction[] allACtions = InteractionAction.values();
-		for (InteractionAction value : allACtions)
+		for (IRadialMenuOption option : allOptions)
 		{
-			RadialMenuItemRenderer button = actionButtonMap.get(value);
-			boolean isEnabled = enabledActions.contains(value);
+			RadialMenuItemRenderer button = optionButtonMap.get(option);
+			boolean isEnabled = enabledOptions.contains(option);
 			button.setEnabled(isEnabled);
 		}
 	}
@@ -94,6 +103,19 @@ public class RadialMenu extends JsonSprite
 			adaptor.dispose();
 			adaptor = null;
 		}
+		
+		if(optionButtonMap != null)
+		{
+			optionButtonMap.clear();
+			optionButtonMap = null;
+		}
+		
+		if(renderers != null)
+		{
+			renderers.clear();
+			renderers = null;
+		}
+		
+		allOptions = null;
 	}
-
 }

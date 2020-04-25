@@ -48,18 +48,22 @@ public class Table extends BaseFurnitureItem<SimpleMesh>
 		ArrayList<InteractionAction> options = new ArrayList<>();
 		options.add(InteractionAction.CLOSE);
 		
-		if (GameModels.player.carriedItem instanceof BillItem)
+		GameItem item = GameModels.player.carriedItem;
+		if (item != null)
 		{
-			options.add(InteractionAction.SERVE_BILL);
-		}
-		else
-		{
-			if (GameModels.player.carriedItem instanceof FoodItem)
+			if (item instanceof BillItem)
 			{
-				options.add(InteractionAction.SERVE);
+				options.add(InteractionAction.SERVE_BILL);
 			}
-			
-			options.add(InteractionAction.PLACE);
+			else
+			{
+				if (item instanceof FoodItem)
+				{
+					options.add(InteractionAction.SERVE);
+				}
+
+				options.add(InteractionAction.PLACE);
+			}
 		}
 		
 		return options;

@@ -53,7 +53,8 @@ class ConsumerFactory
 		switch (type)
 		{
 			case JsonSpriteParser.TYPE_CONTAINER:
-			case JsonSpriteParser.TYPE_RADIAL_MENU:
+			case JsonSpriteParser.TYPE_FOOD_RADIAL_MENU:
+			case JsonSpriteParser.TYPE_INTERACTION_RADIAL_MENU:
 			case JsonSpriteParser.TYPE_RADIAL_BUTTON:
 				return containers;
 			case JsonSpriteParser.TYPE_IMAGE:

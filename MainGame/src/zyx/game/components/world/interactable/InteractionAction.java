@@ -1,8 +1,10 @@
 package zyx.game.components.world.interactable;
 
-public enum InteractionAction
+import zyx.game.components.screen.radial.IRadialMenuOption;
+
+public enum InteractionAction implements IRadialMenuOption
 {
-	CLOSE("close"),
+	CLOSE("close", true),
 	TAKE("take"),
 	PLACE("place"),
 	SERVE("serve"),
@@ -13,9 +15,28 @@ public enum InteractionAction
 	CLEANUP("cleanup");
 	
 	public final String name;
+	public boolean isClose;
 
 	private InteractionAction(String name)
 	{
+		this(name, false);
+	}
+
+	private InteractionAction(String name, boolean isClose)
+	{
 		this.name = name;
+		this.isClose = isClose;
+	}
+
+	@Override
+	public String getName()
+	{
+		return name;
+	}
+
+	@Override
+	public boolean isCloseOption()
+	{
+		return isClose;
 	}
 }

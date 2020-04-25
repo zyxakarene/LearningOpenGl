@@ -5,7 +5,7 @@
 	[
 		{
 			"name":"radial_menu",
-			"type":"radialMenu",
+			"type":"interactionRadialMenu",
 			"visible":false,
 			"centerOffsetX":0,
 			"centerOffsetY":0,

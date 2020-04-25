@@ -70,12 +70,12 @@ public class RadialMenuItemRenderer extends JsonSprite
 		textfield.setText(text);
 	}
 
-	public void addCallback(ICallback<InteractableContainer> callback)
+	void addCallback(ICallback<InteractableContainer> callback)
 	{
 		button.onButtonClicked.addCallback(callback);
 	}
 
-	public void setEnabled(boolean enabled)
+	void setEnabled(boolean enabled)
 	{
 		button.focusable = enabled;
 
