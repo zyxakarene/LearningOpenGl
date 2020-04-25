@@ -54,6 +54,7 @@ class ConsumerFactory
 		{
 			case JsonSpriteParser.TYPE_CONTAINER:
 			case JsonSpriteParser.TYPE_RADIAL_MENU:
+			case JsonSpriteParser.TYPE_RADIAL_BUTTON:
 				return containers;
 			case JsonSpriteParser.TYPE_IMAGE:
 			case JsonSpriteParser.TYPE_SCALE_NINE_IMAGE:

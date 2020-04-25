@@ -12,6 +12,7 @@ import zyx.engine.components.screen.composed.ComposedImage;
 import zyx.engine.components.screen.list.ItemList;
 import zyx.engine.components.screen.text.Textfield;
 import zyx.game.components.screen.radial.RadialMenu;
+import zyx.game.components.screen.radial.RadialMenuItemRenderer;
 
 class JsonSpriteParser
 {
@@ -35,6 +36,7 @@ class JsonSpriteParser
 	static final String TYPE_COMPOSED_SCALE_NINE_IMAGE = "composedScale9image";
 	static final String TYPE_COMPOSED_SCALE_NINE_BUTTON = "composedScale9button";
 	
+	static final String TYPE_RADIAL_BUTTON = "radialMenuButton";
 	static final String TYPE_RADIAL_MENU = "radialMenu";
 
 	private ConsumerFactory factory;
@@ -106,6 +108,9 @@ class JsonSpriteParser
 				break;
 			case TYPE_RADIAL_MENU:
 				child = new RadialMenu();
+				break;
+			case TYPE_RADIAL_BUTTON:
+				child = new RadialMenuItemRenderer(json.get("data"));
 				break;
 		}
 		

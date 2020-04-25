@@ -8,7 +8,7 @@ public class JsonSpriteAnimator implements IUpdateable
 	private static final JsonSpriteAnimator INSTANCE = new JsonSpriteAnimator();
 	
 	private ArrayList<JsonSprite> jsonSprites;
-
+	
 	public static JsonSpriteAnimator getInstance()
 	{
 		return INSTANCE;
@@ -19,22 +19,22 @@ public class JsonSpriteAnimator implements IUpdateable
 		jsonSprites = new ArrayList<>();
 	}
 	
-	void addAnimatedMesh(JsonSprite mesh)
+	void addJsonSprite(JsonSprite sprite)
 	{
-		jsonSprites.add(mesh);
+		jsonSprites.add(sprite);
 	}
 	
-	void removeAnimatedMesh(JsonSprite mesh)
+	void removeJsonSprite(JsonSprite sprite)
 	{
-		jsonSprites.remove(mesh);
+		jsonSprites.remove(sprite);
 	}
 
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
-		for (JsonSprite mesh : jsonSprites)
+		for (JsonSprite sprite : jsonSprites)
 		{
-			mesh.update(timestamp, elapsedTime);
+			sprite.update(timestamp, elapsedTime);
 		}
 	}
 }

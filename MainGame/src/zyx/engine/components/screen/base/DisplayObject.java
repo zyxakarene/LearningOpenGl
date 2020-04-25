@@ -502,4 +502,9 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 
 		return collision;
 	}
+
+	public void setData(Object get)
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 }
