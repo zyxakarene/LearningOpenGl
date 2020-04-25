@@ -138,27 +138,25 @@ void main()
 			-200f
 			-350f
 */
-	int quadrant;
+	int quadrant = int(0.74 * pow(1.008, CascadeDepth));
+	quadrant = min(3, quadrant);
+
 	vec3 col;
-	if(CascadeDepth < 50)
+	if(quadrant == 0)
 	{
 		col = vec3(1, 0, 0);
-		quadrant = 0;
 	}
-	else if(CascadeDepth < 100)
+	else if(quadrant == 1)
 	{
 		col = vec3(0, 1, 0);
-		quadrant = 1;
 	}
-	else if(CascadeDepth < 180)
+	else if(quadrant == 2)
 	{
 		col = vec3(0, 0, 1);
-		quadrant = 2;
 	}
-	else
+	else if(quadrant == 3)
 	{
 		col = vec3(1, 1, 1);
-		quadrant = 3;
 	}
 	
 
@@ -190,7 +188,8 @@ void main()
     vec3 R = reflect(I, Normal);
     vec3 Reflect = texture(cubemapArray, vec4(R, cube)).rgb * sunBrightness;
 
-	vec3 outColor = Diffuse * sunBrightness * AO; // * col;
+	vec3 outColor = Diffuse * sunBrightness * AO;
+	//outColor = outColor * col;
 
 	outColor = blendNormal(outColor, Reflect, Shiny);
     FragColor = vec4(outColor, 1.0);
