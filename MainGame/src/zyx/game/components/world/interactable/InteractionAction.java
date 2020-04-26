@@ -4,39 +4,33 @@ import zyx.game.components.screen.radial.IRadialMenuOption;
 
 public enum InteractionAction implements IRadialMenuOption
 {
-	CLOSE("close", true),
-	TAKE("take"),
-	PLACE("place"),
-	SERVE("serve"),
-	TAKE_ORDER("take_order"),
-	SERVE_BILL("serve_bill"),
-	ADD_ORDER("add_order"),
-	PRINT_BILL("print_bill"),
-	CLEANUP("cleanup");
+	TAKE("take", "Take"),
+	PLACE("place", "Place"),
+	SERVE("serve", "Serve"),
+	TAKE_ORDER("take_order", "Take Order"),
+	SERVE_BILL("serve_bill", "Serve Bill"),
+	ADD_ORDER("add_order", "Add Order"),
+	PRINT_BILL("print_bill", "Print Bill"),
+	CLEANUP("cleanup", "Clean");
 	
 	public final String name;
-	public boolean isClose;
+	public final String text;
 
-	private InteractionAction(String name)
-	{
-		this(name, false);
-	}
-
-	private InteractionAction(String name, boolean isClose)
+	private InteractionAction(String name, String text)
 	{
 		this.name = name;
-		this.isClose = isClose;
+		this.text = text;
 	}
 
 	@Override
-	public String getName()
+	public String getText()
 	{
-		return name;
+		return text;
 	}
 
 	@Override
-	public boolean isCloseOption()
+	public String getIconResource()
 	{
-		return isClose;
+		return String.format("icon_%s", name);
 	}
 }

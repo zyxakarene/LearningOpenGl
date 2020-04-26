@@ -16,11 +16,7 @@ public abstract class RadialMenu extends JsonSprite
 	private ArrayList<RadialMenuItemRenderer> renderers;
 	
 	private IRadialMenuOption[] allOptions;
-
-	public RadialMenu()
-	{
-	}
-
+	
 	@Override
 	protected void onPreInitialize()
 	{
@@ -35,7 +31,8 @@ public abstract class RadialMenu extends JsonSprite
 	}
 	
 	protected abstract RadialButtonClickAdaptor getClickAdaptor();
-	
+	protected abstract IRadialMenuOption[] getAllPossibilities();
+
 	@Override
 	protected String[] getDependencies()
 	{
@@ -54,20 +51,21 @@ public abstract class RadialMenu extends JsonSprite
 	@Override
 	protected void onComponentsCreated()
 	{
-		String postFixButton = "_button";
+		RadialMenuItemRenderer closeRenderer = new RadialMenuItemRenderer("icon_close", "Close");
+		closeRenderer.addCallback(this::onCloseClicked);
+		addChild(closeRenderer);
+		
 		for (IRadialMenuOption option : allOptions)
 		{
-			RadialMenuItemRenderer renderer = getComponentByName(option.getName()+ postFixButton);
+			RadialMenuItemRenderer renderer = new RadialMenuItemRenderer(option.getIconResource(), option.getText());
+			addChild(renderer);
 
 			ICallback<InteractableContainer> callback = adaptor.getCallback(option);
 			renderer.addCallback(callback);
 
 			optionButtonMap.put(option, renderer);
 
-			if (option.isCloseOption() == false)
-			{
-				renderers.add(renderer);
-			}
+			renderers.add(renderer);
 		}
 
 		int len = renderers.size();
@@ -80,8 +78,6 @@ public abstract class RadialMenu extends JsonSprite
 			renderer.setPosition(true, x, y);
 		}
 	}
-
-	protected abstract IRadialMenuOption[] getAllPossibilities();
 	
 	public void showFor(ArrayList<? extends IRadialMenuOption> enabledOptions)
 	{
@@ -93,6 +89,11 @@ public abstract class RadialMenu extends JsonSprite
 			boolean isEnabled = enabledOptions.contains(option);
 			button.setEnabled(isEnabled);
 		}
+	}
+	
+	private void onCloseClicked(InteractableContainer data)
+	{
+		visible = false;
 	}
 
 	@Override

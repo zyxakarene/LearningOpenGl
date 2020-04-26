@@ -43,7 +43,6 @@ public class DishWasher extends BaseFurnitureItem<SimpleMesh>
 	public ArrayList<InteractionAction> getInteractions()
 	{
 		ArrayList<InteractionAction> options = new ArrayList<>();
-		options.add(InteractionAction.CLOSE);
 		
 		if (GameModels.player.carriedItem instanceof FoodItem)
 		{

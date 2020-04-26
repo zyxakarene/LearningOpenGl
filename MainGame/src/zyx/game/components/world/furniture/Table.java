@@ -46,7 +46,6 @@ public class Table extends BaseFurnitureItem<SimpleMesh>
 	public ArrayList<InteractionAction> getInteractions()
 	{
 		ArrayList<InteractionAction> options = new ArrayList<>();
-		options.add(InteractionAction.CLOSE);
 		
 		GameItem item = GameModels.player.carriedItem;
 		if (item != null)

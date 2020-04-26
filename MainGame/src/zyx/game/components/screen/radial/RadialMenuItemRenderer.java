@@ -1,6 +1,5 @@
 package zyx.game.components.screen.radial;
 
-import java.util.HashMap;
 import zyx.engine.components.screen.composed.ComposedButtonColorMap;
 import zyx.engine.components.screen.composed.ComposedConstants;
 import zyx.engine.components.screen.image.Image;
@@ -23,26 +22,13 @@ public class RadialMenuItemRenderer extends JsonSprite
 	private ComposedButtonColorMap colorsEnabled;
 	private ComposedButtonColorMap colorsDisabled;
 
-	public RadialMenuItemRenderer(Object data)
+	public RadialMenuItemRenderer(String texture, String text)
 	{
 		super(false);
 		
-		if (data instanceof HashMap)
-		{
-			HashMap dataObject = (HashMap) data;
+		this.texture = texture;
+		this.text = text;
 
-			Object textureObj = dataObject.get("icon");
-			Object textObj = dataObject.get("text");
-
-			texture = String.valueOf(textureObj);
-			text = String.valueOf(textObj);
-		}
-		else
-		{
-			text = "Text";
-			texture = "icon_take";
-		}
-		
 		load();
 	}
 

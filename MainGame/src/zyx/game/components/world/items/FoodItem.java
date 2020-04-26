@@ -80,7 +80,6 @@ public class FoodItem extends GameItem<FoodState>
 	public ArrayList<InteractionAction> getInteractions()
 	{
 		ArrayList<InteractionAction> options = new ArrayList<>();
-		options.add(InteractionAction.CLOSE);
 		
 		if (!inUse)
 		{

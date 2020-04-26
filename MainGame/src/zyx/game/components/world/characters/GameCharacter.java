@@ -18,7 +18,6 @@ public class GameCharacter extends GameObject implements IItemHolder
 	private static final ArrayList<InteractionAction> GUEST_LIST = new ArrayList<>();
 	static
 	{
-		GUEST_LIST.add(InteractionAction.CLOSE);
 		GUEST_LIST.add(InteractionAction.TAKE_ORDER);
 	}
 	

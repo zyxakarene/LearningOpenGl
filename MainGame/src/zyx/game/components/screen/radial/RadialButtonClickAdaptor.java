@@ -31,11 +31,6 @@ public abstract class RadialButtonClickAdaptor
 		return callbackMap.get(action);
 	}
 	
-	protected void onCloseClicked(InteractableContainer data)
-	{
-		closeRadial();
-	}
-	
 	protected final void closeRadial()
 	{
 		if(radialMenu != null)

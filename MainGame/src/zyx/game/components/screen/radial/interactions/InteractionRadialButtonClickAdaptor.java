@@ -14,7 +14,6 @@ public class InteractionRadialButtonClickAdaptor extends RadialButtonClickAdapto
 
 	private ICallback<InteractableContainer> addOrderClick;
 	private ICallback<InteractableContainer> cleanupClick;
-	private ICallback<InteractableContainer> closeClick;
 	private ICallback<InteractableContainer> placeClick;
 	private ICallback<InteractableContainer> serveClick;
 	private ICallback<InteractableContainer> serveBillClick;
@@ -26,7 +25,6 @@ public class InteractionRadialButtonClickAdaptor extends RadialButtonClickAdapto
 	{
 		addOrderClick = this::onAddOrderClicked;
 		cleanupClick = this::onCleanupClicked;
-		closeClick = this::onCloseClicked;
 		placeClick = this::onPlaceClicked;
 		serveClick = this::onServeClicked;
 		serveBillClick = this::onServeBillClicked;
@@ -40,7 +38,6 @@ public class InteractionRadialButtonClickAdaptor extends RadialButtonClickAdapto
 	{
 		callbackMap.put(InteractionAction.ADD_ORDER, addOrderClick);
 		callbackMap.put(InteractionAction.CLEANUP, cleanupClick);
-		callbackMap.put(InteractionAction.CLOSE, closeClick);
 		callbackMap.put(InteractionAction.PLACE, placeClick);
 		callbackMap.put(InteractionAction.SERVE, serveClick);
 		callbackMap.put(InteractionAction.SERVE_BILL, serveBillClick);
@@ -102,7 +99,6 @@ public class InteractionRadialButtonClickAdaptor extends RadialButtonClickAdapto
 	{
 		addOrderClick = null;
 		cleanupClick = null;
-		closeClick = null;
 		placeClick = null;
 		serveClick = null;
 		serveBillClick = null;

@@ -10,7 +10,6 @@ public class OrderMachine extends BaseFurnitureItem<SimpleMesh>
 	private static final ArrayList<InteractionAction> OPTIONS = new ArrayList<>();
 	static
 	{
-		OPTIONS.add(InteractionAction.CLOSE);
 		OPTIONS.add(InteractionAction.ADD_ORDER);
 		OPTIONS.add(InteractionAction.PRINT_BILL);
 	}
