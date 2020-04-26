@@ -12,22 +12,12 @@ import zyx.server.world.humanoids.players.PlayerManager;
 public class ServerNetworkCallbacks extends NetworkCallbacks
 {
 
-	private INetworkCallback onPlayerLeave;
-	private INetworkCallback onPlayerPos;
-	private INetworkCallback onPlayerLogin;
-	private INetworkCallback onPlayerPing;
-
 	public ServerNetworkCallbacks()
 	{
-		onPlayerLogin = (INetworkCallback<LoginData>) this::onPlayerLogin;
-		onPlayerLeave = (INetworkCallback<Integer>) this::onPlayerLeave;
-		onPlayerPos = (INetworkCallback<PositionData>) this::onPlayerPos;
-		onPlayerPing = (INetworkCallback<Integer>) PingManager.getInstance()::onPing;
-
-		registerCallback(NetworkCommands.LOGIN, onPlayerLogin);
-		registerCallback(NetworkCommands.CHARACTER_LEFT_GAME, onPlayerLeave);
-		registerCallback(NetworkCommands.CHARACTER_UPDATE_POSITION, onPlayerPos);
-		registerCallback(NetworkCommands.PING, onPlayerPing);
+		registerCallback(NetworkCommands.LOGIN, (INetworkCallback<LoginData>) this::onPlayerLogin);
+		registerCallback(NetworkCommands.CHARACTER_LEFT_GAME, (INetworkCallback<Integer>) this::onPlayerLeave);
+		registerCallback(NetworkCommands.CHARACTER_UPDATE_POSITION, (INetworkCallback<PositionData>) this::onPlayerPos);
+		registerCallback(NetworkCommands.PING, (INetworkCallback<Integer>) PingManager.getInstance()::onPing);
 	}
 	
 	private void onPlayerLogin(LoginData data)

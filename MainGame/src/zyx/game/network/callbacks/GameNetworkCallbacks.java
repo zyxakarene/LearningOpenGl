@@ -37,13 +37,6 @@ import zyx.utils.cheats.Print;
 public class GameNetworkCallbacks extends NetworkCallbacks
 {
 
-	private INetworkCallback onAuthenticate;
-	private INetworkCallback onCharacterJoined;
-	private INetworkCallback onCharacterLeft;
-	private INetworkCallback onCharacterMassPos;
-	private INetworkCallback onGameSetup;
-	private INetworkCallback onGiveOrders;
-
 	private ItemHolderHandler itemHolderHandler;
 	private ItemHandler itemHandler;
 
@@ -55,14 +48,12 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 		this.itemHandler = itemHandler;
 		this.characterMap = new HashMap<>();
 
-		createCallbacks();
-
-		registerCallback(NetworkCommands.AUTHENTICATE, onAuthenticate);
-		registerCallback(NetworkCommands.SETUP_GAME, onGameSetup);
-		registerCallback(NetworkCommands.CHARACTER_JOINED_GAME, onCharacterJoined);
-		registerCallback(NetworkCommands.CHARACTER_LEFT_GAME, onCharacterLeft);
-		registerCallback(NetworkCommands.CHARACTER_MASS_POSITION, onCharacterMassPos);
-		registerCallback(NetworkCommands.GUEST_GIVE_ORDER, onGiveOrders);
+		registerCallback(NetworkCommands.AUTHENTICATE, (INetworkCallback<AuthenticationData>) this::onAuthenticate);
+		registerCallback(NetworkCommands.SETUP_GAME, (INetworkCallback<GameSetupVo>) this::onGameSetup);
+		registerCallback(NetworkCommands.CHARACTER_JOINED_GAME, (INetworkCallback<CharacterJoinedData>) this::onCharacterJoined);
+		registerCallback(NetworkCommands.CHARACTER_LEFT_GAME, (INetworkCallback<Integer>) this::onCharacterLeft);
+		registerCallback(NetworkCommands.CHARACTER_MASS_POSITION, (INetworkCallback<CharacterMassPositionData>) this::onCharacterMassPosition);
+		registerCallback(NetworkCommands.GUEST_GIVE_ORDER, (INetworkCallback<GuestOrderData>) this::onGiveOrder);
 	}
 
 	private void onAuthenticate(AuthenticationData data)
@@ -201,15 +192,5 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 //			guest.TellDishAnimation();
 			Print.out("Guest", guest, "wanted the dish", data.dishType);
 		}
-	}
-
-	private void createCallbacks()
-	{
-		onAuthenticate = (INetworkCallback<AuthenticationData>) this::onAuthenticate;
-		onCharacterJoined = (INetworkCallback<CharacterJoinedData>) this::onCharacterJoined;
-		onCharacterLeft = (INetworkCallback<Integer>) this::onCharacterLeft;
-		onCharacterMassPos = (INetworkCallback<CharacterMassPositionData>) this::onCharacterMassPosition;
-		onGameSetup = (INetworkCallback<GameSetupVo>) this::onGameSetup;
-		onGiveOrders = (INetworkCallback<GuestOrderData>) this::onGiveOrder;
 	}
 }

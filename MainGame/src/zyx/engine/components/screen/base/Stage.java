@@ -2,7 +2,6 @@ package zyx.engine.components.screen.base;
 
 import zyx.engine.components.animations.IFocusable;
 import zyx.engine.utils.ScreenSize;
-import zyx.engine.utils.callbacks.ICallback;
 import zyx.opengl.buffers.Buffer;
 import zyx.opengl.buffers.BufferBinder;
 import zyx.opengl.stencils.StencilControl;
@@ -16,8 +15,6 @@ public final class Stage extends DisplayObjectContainer implements IFocusable
 
 	private InteractionCrawler crawler;
 	private IFocusable focusedTarget;
-
-	private ICallback<Vector2Int> screenSizeChanged;
 
 	public final DisplayObjectContainer loadingScreenLayer;
 	public final DisplayObjectContainer tooltipLayer;
@@ -39,19 +36,18 @@ public final class Stage extends DisplayObjectContainer implements IFocusable
 		crawler = new InteractionCrawler(this, hudLayer, tooltipLayer, loadingScreenLayer);
 		stage = this;
 
-		screenSizeChanged = (Vector2Int data)
-				-> 
-				{
-					updateTransforms(true);
-		};
-
-		ScreenSize.addListener(screenSizeChanged);
+		ScreenSize.addListener(this::onScreenSizeChanged);
 
 		addChild(tooltipLayer);
 		addChild(hudLayer);
 		addChild(loadingScreenLayer);
 	}
 
+	private void onScreenSizeChanged(Vector2Int size)
+	{
+		updateTransforms(true);
+	}
+	
 	public final void drawStage()
 	{
 		BufferBinder.bindBuffer(Buffer.DEFAULT);

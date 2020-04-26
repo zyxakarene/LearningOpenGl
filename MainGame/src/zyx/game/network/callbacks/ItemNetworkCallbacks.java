@@ -12,31 +12,20 @@ import zyx.net.io.responses.INetworkCallback;
 public class ItemNetworkCallbacks extends NetworkCallbacks
 {
 
-	private INetworkCallback onCreateFood;
-	private INetworkCallback onDestroy;
-	private INetworkCallback onCreateBill;
-	private INetworkCallback onSetOwner;
-	private INetworkCallback onSetFoodState;
-	private INetworkCallback onFoodSpoiled;
-	private INetworkCallback onItemDropped;
-	private INetworkCallback onItemSetInUse;
-
 	private ItemHandler itemHandler;
 
 	public ItemNetworkCallbacks(ItemHandler itemHandler)
 	{
 		this.itemHandler = itemHandler;
 
-		createCallbacks();
-
-		registerCallback(NetworkCommands.ITEM_CREATE_FOOD, onCreateFood);
-		registerCallback(NetworkCommands.ITEM_CREATE_BILL, onCreateBill);
-		registerCallback(NetworkCommands.ITEM_DESTROY, onDestroy);
-		registerCallback(NetworkCommands.ITEM_SET_OWNER, onSetOwner);
-		registerCallback(NetworkCommands.ITEM_SET_FOOD_STATE, onSetFoodState);
-		registerCallback(NetworkCommands.ITEM_SPOIL_FOOD, onFoodSpoiled);
-		registerCallback(NetworkCommands.ITEM_PUT_ON_FOOR, onItemDropped);
-		registerCallback(NetworkCommands.ITEM_SET_IN_USE, onItemSetInUse);
+		registerCallback(NetworkCommands.ITEM_CREATE_FOOD, (INetworkCallback<ItemChangedData>) this::onCreateFood);
+		registerCallback(NetworkCommands.ITEM_CREATE_BILL, (INetworkCallback<ItemChangedData>) this::onCreateBill);
+		registerCallback(NetworkCommands.ITEM_DESTROY, (INetworkCallback<Integer>) this::onDestroyItem);
+		registerCallback(NetworkCommands.ITEM_SET_OWNER, (INetworkCallback<ItemChangedData>) this::onSetItemOwner);
+		registerCallback(NetworkCommands.ITEM_SET_FOOD_STATE, (INetworkCallback<ItemChangedData>) this::onSetFoodState);
+		registerCallback(NetworkCommands.ITEM_SPOIL_FOOD, (INetworkCallback<Integer>) this::onFoodSpoiled);
+		registerCallback(NetworkCommands.ITEM_PUT_ON_FOOR, (INetworkCallback<ItemChangedData>) this::onItemDropped);
+		registerCallback(NetworkCommands.ITEM_SET_IN_USE, (INetworkCallback<ItemChangedData>) this::onItemSetInUse);
 	}
 
 	private void onItemDropped(ItemChangedData data)
@@ -86,17 +75,5 @@ public class ItemNetworkCallbacks extends NetworkCallbacks
 	private void onSetFoodState(ItemChangedData data)
 	{
 		itemHandler.setSubType(data.itemId, data.foodState);
-	}
-
-	private void createCallbacks()
-	{
-		onItemDropped = (INetworkCallback<ItemChangedData>) this::onItemDropped;
-		onCreateFood = (INetworkCallback<ItemChangedData>) this::onCreateFood;
-		onDestroy = (INetworkCallback<Integer>) this::onDestroyItem;
-		onFoodSpoiled = (INetworkCallback<Integer>) this::onFoodSpoiled;
-		onItemSetInUse = (INetworkCallback<ItemChangedData>) this::onItemSetInUse;
-		onCreateBill = (INetworkCallback<ItemChangedData>) this::onCreateBill;
-		onSetOwner = (INetworkCallback<ItemChangedData>) this::onSetItemOwner;
-		onSetFoodState = (INetworkCallback<ItemChangedData>) this::onSetFoodState;
 	}
 }

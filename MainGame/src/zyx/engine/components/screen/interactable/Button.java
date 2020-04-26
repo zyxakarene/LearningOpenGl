@@ -9,7 +9,6 @@ import zyx.engine.components.screen.image.Scale9Image;
 import zyx.engine.curser.GameCursor;
 import zyx.engine.utils.ClickDispatcher;
 import zyx.engine.utils.callbacks.CustomCallback;
-import zyx.engine.utils.callbacks.ICallback;
 
 public class Button extends InteractableContainer implements IComposedButton
 {
@@ -30,7 +29,6 @@ public class Button extends InteractableContainer implements IComposedButton
 
 	public CustomCallback<InteractableContainer> onButtonClicked;
 
-	private ICallback<AbstractImage> onFirstImageLoaded;
 	private boolean scale9;
 
 	public Button(boolean scale9)
@@ -45,8 +43,6 @@ public class Button extends InteractableContainer implements IComposedButton
 		buttonMode = true;
 		focusable = true;
 		hoverIcon = GameCursor.HAND;
-
-		onFirstImageLoaded = this::onImageLoaded;
 	}
 
 	@Override
@@ -63,7 +59,7 @@ public class Button extends InteractableContainer implements IComposedButton
 			img = scale9 ? new Scale9Image() : new Image();
 			images[i] = img;
 
-			img.onLoaded.addCallback(onFirstImageLoaded);
+			img.onLoaded.addCallback(this::onImageLoaded);
 			addChild(img);
 		}
 
@@ -297,8 +293,6 @@ public class Button extends InteractableContainer implements IComposedButton
 		clean();
 
 		super.dispose();
-
-		onFirstImageLoaded = null;
 
 		if (onButtonClicked != null)
 		{

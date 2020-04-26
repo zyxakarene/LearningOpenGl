@@ -2,7 +2,6 @@ package zyx.engine.components.screen.interactable;
 
 import zyx.engine.components.screen.image.AbstractImage;
 import zyx.engine.components.screen.image.Image;
-import zyx.engine.utils.callbacks.ICallback;
 
 public class Checkbox extends Button
 {
@@ -10,16 +9,12 @@ public class Checkbox extends Button
 	private AbstractImage checkImg;
 	private boolean checked;
 	
-	private ICallback<AbstractImage> onCheckImageLoaded;
-
 	public Checkbox(boolean scale9)
 	{
 		super(scale9);
-
-		onCheckImageLoaded = this::onCheckImageLoaded;
 		
 		checkImg = new Image();
-		checkImg.onLoaded.addCallback(onCheckImageLoaded);
+		checkImg.onLoaded.addCallback(this::onCheckImageLoaded);
 
 		addChild(checkImg);
 

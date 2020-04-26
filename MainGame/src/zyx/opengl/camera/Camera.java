@@ -5,7 +5,6 @@ import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.World3D;
 import zyx.engine.components.world.WorldObject;
 import zyx.engine.utils.ScreenSize;
-import zyx.engine.utils.callbacks.ICallback;
 import zyx.engine.utils.worldpicker.calculating.RayPicker;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.GameConstants;
@@ -25,8 +24,6 @@ public class Camera
 	private boolean initialized;
 	private ViewFrustum frustum;
 	
-	private ICallback<Vector2Int> onScreenSizeChanged;
-	
 	private WorldObject target;
 	
 	private Camera()
@@ -35,13 +32,13 @@ public class Camera
 		frustum = new ViewFrustum();
 	
 		target = World3D.instance;
-		
-		onScreenSizeChanged = (Vector2Int data) ->
-		{
-			createMatrices();
-		};
 	}
 
+	private void onScreenSizeChanged(Vector2Int data)
+	{
+		createMatrices();
+	}
+	
 	public void setViewObject(WorldObject target)
 	{
 		this.target = target;
@@ -62,7 +59,7 @@ public class Camera
 		initialized = true;
 		createMatrices();
 		
-		ScreenSize.addListener(onScreenSizeChanged);
+		ScreenSize.addListener(this::onScreenSizeChanged);
 	}
 
 	protected void createMatrices()

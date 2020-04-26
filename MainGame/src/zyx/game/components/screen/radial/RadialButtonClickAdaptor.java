@@ -48,11 +48,5 @@ public abstract class RadialButtonClickAdaptor
 		}
 
 		radialMenu = null;
-		
-		onDispose();
-	}
-
-	protected void onDispose()
-	{
 	}
 }

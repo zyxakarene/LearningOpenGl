@@ -5,7 +5,6 @@ import zyx.engine.components.screen.base.DisplayObjectContainer;
 import zyx.engine.components.screen.image.AbstractImage;
 import zyx.engine.components.screen.image.Image;
 import zyx.engine.components.screen.image.Scale9Image;
-import zyx.engine.utils.callbacks.ICallback;
 
 public class ComposedImage extends DisplayObjectContainer implements IComposedImage
 {
@@ -20,7 +19,6 @@ public class ComposedImage extends DisplayObjectContainer implements IComposedIm
 	private Vector3f[] colors;
 	private float alpha;
 	
-	private ICallback<AbstractImage> onFirstImageLoaded;
 	private boolean scale9;
 
 	public ComposedImage(boolean scale9)
@@ -29,8 +27,6 @@ public class ComposedImage extends DisplayObjectContainer implements IComposedIm
 
 		alpha = 1;
 		focusable = true;
-
-		onFirstImageLoaded = this::onImageLoaded;
 	}
 
 	@Override
@@ -47,7 +43,7 @@ public class ComposedImage extends DisplayObjectContainer implements IComposedIm
 			img = scale9 ? new Scale9Image() : new Image();
 			images[i] = img;
 
-			img.onLoaded.addCallback(onFirstImageLoaded);
+			img.onLoaded.addCallback(this::onImageLoaded);
 			addChild(img);
 		}
 		
@@ -217,8 +213,6 @@ public class ComposedImage extends DisplayObjectContainer implements IComposedIm
 		clean();
 		
 		super.dispose();
-
-		onFirstImageLoaded = null;
 	}
 
 	private void clean()

@@ -3,7 +3,6 @@ package zyx.engine.resources.impl.sub;
 import java.util.LinkedList;
 import zyx.engine.resources.impl.ExternalResource;
 import zyx.engine.utils.callbacks.ICallback;
-import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 
 public abstract class BaseRequiredSubResource extends ExternalResource implements ICallback<SubResourceBatch>
 {

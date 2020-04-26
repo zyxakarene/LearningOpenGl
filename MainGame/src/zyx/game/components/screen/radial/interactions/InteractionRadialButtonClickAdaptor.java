@@ -11,39 +11,17 @@ import zyx.game.vo.DishType;
 
 public class InteractionRadialButtonClickAdaptor extends RadialButtonClickAdaptor
 {
-
-	private ICallback<InteractableContainer> addOrderClick;
-	private ICallback<InteractableContainer> cleanupClick;
-	private ICallback<InteractableContainer> placeClick;
-	private ICallback<InteractableContainer> serveClick;
-	private ICallback<InteractableContainer> serveBillClick;
-	private ICallback<InteractableContainer> printBillClick;
-	private ICallback<InteractableContainer> takeClick;
-	private ICallback<InteractableContainer> takeOrderClick;
-	
-	public InteractionRadialButtonClickAdaptor()
-	{
-		addOrderClick = this::onAddOrderClicked;
-		cleanupClick = this::onCleanupClicked;
-		placeClick = this::onPlaceClicked;
-		serveClick = this::onServeClicked;
-		serveBillClick = this::onServeBillClicked;
-		printBillClick = this::onPrintBillClicked;
-		takeClick = this::onTakeClicked;
-		takeOrderClick = this::onTakeOrderClicked;
-	}
-
 	@Override
 	protected void addCallbacks(HashMap<IRadialMenuOption, ICallback<InteractableContainer>> callbackMap)
 	{
-		callbackMap.put(InteractionAction.ADD_ORDER, addOrderClick);
-		callbackMap.put(InteractionAction.CLEANUP, cleanupClick);
-		callbackMap.put(InteractionAction.PLACE, placeClick);
-		callbackMap.put(InteractionAction.SERVE, serveClick);
-		callbackMap.put(InteractionAction.SERVE_BILL, serveBillClick);
-		callbackMap.put(InteractionAction.PRINT_BILL, printBillClick);
-		callbackMap.put(InteractionAction.TAKE, takeClick);
-		callbackMap.put(InteractionAction.TAKE_ORDER, takeOrderClick);
+		callbackMap.put(InteractionAction.ADD_ORDER, this::onAddOrderClicked);
+		callbackMap.put(InteractionAction.CLEANUP, this::onCleanupClicked);
+		callbackMap.put(InteractionAction.PLACE, this::onPlaceClicked);
+		callbackMap.put(InteractionAction.SERVE, this::onServeClicked);
+		callbackMap.put(InteractionAction.SERVE_BILL, this::onServeBillClicked);
+		callbackMap.put(InteractionAction.PRINT_BILL, this::onPrintBillClicked);
+		callbackMap.put(InteractionAction.TAKE, this::onTakeClicked);
+		callbackMap.put(InteractionAction.TAKE_ORDER, this::onTakeOrderClicked);
 	}
 	
 	private void onAddOrderClicked(InteractableContainer data)
@@ -92,17 +70,5 @@ public class InteractionRadialButtonClickAdaptor extends RadialButtonClickAdapto
 	{
 		closeRadial();
 		PlayerService.getOrder(GameModels.selection.lastInteractedCharacter);
-	}
-	
-	@Override
-	protected void onDispose()
-	{
-		addOrderClick = null;
-		cleanupClick = null;
-		placeClick = null;
-		serveClick = null;
-		serveBillClick = null;
-		takeClick = null;
-		takeOrderClick = null;
 	}
 }

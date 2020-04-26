@@ -24,23 +24,14 @@ public class PlayerNetworkCallbacks extends NetworkCallbacks
 
 	private final RoomItems roomItems;
 
-	private INetworkCallback onPlayerGetOrder;
-	private INetworkCallback onPlayerEnterOrder;
-	private INetworkCallback onPlayerPickupItem;
-	private INetworkCallback onPlayerGiveItem;
-	private INetworkCallback onPlayerPrintBill;
-	private INetworkCallback onPlayerGiveBill;
-
 	public PlayerNetworkCallbacks()
 	{
-		createCallbacks();
-
-		registerCallback(NetworkCommands.PLAYER_GET_ORDER, onPlayerGetOrder);
-		registerCallback(NetworkCommands.PLAYER_ENTER_ORDER, onPlayerEnterOrder);
-		registerCallback(NetworkCommands.PLAYER_PICKUP_ITEM, onPlayerPickupItem);
-		registerCallback(NetworkCommands.PLAYER_GIVE_ITEM, onPlayerGiveItem);
-		registerCallback(NetworkCommands.PLAYER_PRINT_BILL, onPlayerPrintBill);
-		registerCallback(NetworkCommands.PLAYER_GIVE_BILL, onPlayerGiveBill);
+		registerCallback(NetworkCommands.PLAYER_GET_ORDER, (INetworkCallback<PlayerRequestData>) this::onPlayerGetOrder);
+		registerCallback(NetworkCommands.PLAYER_ENTER_ORDER, (INetworkCallback<DishType>) this::onPlayerEnterOrder);
+		registerCallback(NetworkCommands.PLAYER_PICKUP_ITEM, (INetworkCallback<PlayerRequestData>) this::onPlayerPickupItem);
+		registerCallback(NetworkCommands.PLAYER_GIVE_ITEM, (INetworkCallback<PlayerRequestData>) this::onPlayerGiveItem);
+		registerCallback(NetworkCommands.PLAYER_PRINT_BILL, (INetworkCallback<Integer>) this::onPlayerPrintBill);
+		registerCallback(NetworkCommands.PLAYER_GIVE_BILL, (INetworkCallback<PlayerRequestData>) this::onPlayerGiveBill);
 
 		roomItems = RoomItems.instance;
 	}
@@ -118,15 +109,5 @@ public class PlayerNetworkCallbacks extends NetworkCallbacks
 			ItemService.createBill(bill, playerId);
 			player.pickupItemSilent(bill);
 		}
-	}
-
-	private void createCallbacks()
-	{
-		onPlayerGetOrder = (INetworkCallback<PlayerRequestData>) this::onPlayerGetOrder;
-		onPlayerEnterOrder = (INetworkCallback<DishType>) this::onPlayerEnterOrder;
-		onPlayerPickupItem = (INetworkCallback<PlayerRequestData>) this::onPlayerPickupItem;
-		onPlayerGiveItem = (INetworkCallback<PlayerRequestData>) this::onPlayerGiveItem;
-		onPlayerGiveBill = (INetworkCallback<PlayerRequestData>) this::onPlayerGiveBill;
-		onPlayerPrintBill = (INetworkCallback<Integer>) this::onPlayerPrintBill;
 	}
 }
