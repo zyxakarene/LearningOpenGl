@@ -4,6 +4,8 @@ import zyx.game.components.world.items.BillItem;
 import zyx.game.components.world.items.FoodItem;
 import zyx.game.components.world.items.GameItem;
 import zyx.game.scene.ItemHandler;
+import zyx.game.vo.DishType;
+import zyx.game.vo.FoodState;
 import zyx.game.world.items.data.ItemChangedData;
 import zyx.net.io.controllers.NetworkCallbacks;
 import zyx.net.io.controllers.NetworkCommands;
@@ -35,7 +37,8 @@ public class ItemNetworkCallbacks extends NetworkCallbacks
 	
 	private void onCreateFood(ItemChangedData data)
 	{
-		FoodItem item = new FoodItem(data.dishType);
+		DishType type = DishType.getFromId(data.dishTypeId);
+		FoodItem item = new FoodItem(type);
 		item.load();
 		itemHandler.addItem(data.itemId, item, data.ownerId);
 	}
@@ -74,6 +77,7 @@ public class ItemNetworkCallbacks extends NetworkCallbacks
 
 	private void onSetFoodState(ItemChangedData data)
 	{
-		itemHandler.setSubType(data.itemId, data.foodState);
+		FoodState state = FoodState.getFromId(data.foodStateId);
+		itemHandler.setSubType(data.itemId, state);
 	}
 }

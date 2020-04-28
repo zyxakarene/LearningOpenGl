@@ -1,6 +1,5 @@
 package zyx.game.world.guests;
 
-import zyx.game.vo.DishType;
 import zyx.net.data.ReadableDataObject;
 import zyx.net.io.controllers.NetworkCommands;
 import static zyx.game.world.guests.GuestsConstants.*;
@@ -19,10 +18,8 @@ public class GuestGiveOrdersResponse extends BaseNetworkResponse<GuestOrderData>
 	@Override
 	protected GuestOrderData onMessageRecieved(ReadableDataObject data)
 	{
-		int dish = data.getInteger(DISH_TYPE);
-		
 		OUT.characterId = data.getInteger(GUEST_ID);
-		OUT.dishType = DishType.getFromId(dish);
+		OUT.dishTypeId = data.getInteger(DISH_TYPE);
 
 		return OUT;
 	}

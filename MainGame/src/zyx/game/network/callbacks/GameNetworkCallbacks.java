@@ -190,7 +190,7 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 		if (guest != null)
 		{
 //			guest.TellDishAnimation();
-			Print.out("Guest", guest, "wanted the dish", data.dishType);
+			Print.out("Guest", guest, "wanted the dish", DishType.getFromId(data.dishTypeId));
 		}
 	}
 }

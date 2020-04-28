@@ -18,7 +18,7 @@ public class ItemService
 
 	public static void createFood(FoodItem food, int ownerId)
 	{
-		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_CREATE_FOOD, food.id, ownerId, food.dish);
+		ServerSender.sendWithType(SendType.toAll(), NetworkCommands.ITEM_CREATE_FOOD, food.id, ownerId, food.dish.id);
 	}
 
 	public static void destroyItem(HandheldItem item)

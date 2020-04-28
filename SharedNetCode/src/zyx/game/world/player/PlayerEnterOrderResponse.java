@@ -1,12 +1,11 @@
 package zyx.game.world.player;
 
-import zyx.game.vo.DishType;
 import zyx.net.data.ReadableDataObject;
 import zyx.net.io.responses.BaseNetworkResponse;
 import zyx.net.io.controllers.NetworkCommands;
 import static zyx.game.world.player.PlayerRequestConstants.*;
 
-public class PlayerEnterOrderResponse extends BaseNetworkResponse<DishType>
+public class PlayerEnterOrderResponse extends BaseNetworkResponse<Integer>
 {
 
 	public PlayerEnterOrderResponse()
@@ -15,12 +14,10 @@ public class PlayerEnterOrderResponse extends BaseNetworkResponse<DishType>
 	}
 
 	@Override
-	protected DishType onMessageRecieved(ReadableDataObject data)
+	protected Integer onMessageRecieved(ReadableDataObject data)
 	{
 		int dishTypeId = data.getInteger(DISH_TYPE);
-		DishType result = DishType.getFromId(dishTypeId);
-		
-		return result;
+		return dishTypeId;
 	}
 
 }

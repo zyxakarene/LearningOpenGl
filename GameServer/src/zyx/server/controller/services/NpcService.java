@@ -33,7 +33,7 @@ public class NpcService
 
 	public static void guestGiveOrderTo(Guest guest, Player player)
 	{
-		ServerSender.sendWithType(SendType.toSingle(player.connection), NetworkCommands.GUEST_GIVE_ORDER, guest.id, guest.dishRequest);
+		ServerSender.sendWithType(SendType.toSingle(player.connection), NetworkCommands.GUEST_GIVE_ORDER, guest.id, guest.dishRequest.id);
 	}
 
 	public static void guestPays(int[] guestIds, int[] payAmounts)

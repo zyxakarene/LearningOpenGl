@@ -27,7 +27,7 @@ public class PlayerNetworkCallbacks extends NetworkCallbacks
 	public PlayerNetworkCallbacks()
 	{
 		registerCallback(NetworkCommands.PLAYER_GET_ORDER, (INetworkCallback<PlayerRequestData>) this::onPlayerGetOrder);
-		registerCallback(NetworkCommands.PLAYER_ENTER_ORDER, (INetworkCallback<DishType>) this::onPlayerEnterOrder);
+		registerCallback(NetworkCommands.PLAYER_ENTER_ORDER, (INetworkCallback<Integer>) this::onPlayerEnterOrder);
 		registerCallback(NetworkCommands.PLAYER_PICKUP_ITEM, (INetworkCallback<PlayerRequestData>) this::onPlayerPickupItem);
 		registerCallback(NetworkCommands.PLAYER_GIVE_ITEM, (INetworkCallback<PlayerRequestData>) this::onPlayerGiveItem);
 		registerCallback(NetworkCommands.PLAYER_PRINT_BILL, (INetworkCallback<Integer>) this::onPlayerPrintBill);
@@ -55,9 +55,11 @@ public class PlayerNetworkCallbacks extends NetworkCallbacks
 		}
 	}
 
-	private void onPlayerEnterOrder(DishType dish)
+	private void onPlayerEnterOrder(Integer dishId)
 	{
 		OrderMachine machine = roomItems.getOrderMachine();
+		DishType dish = DishType.getFromId(dishId);
+		
 		machine.addOrder(dish);
 	}
 

@@ -1,6 +1,5 @@
 package zyx.game.world.guests;
 
-import zyx.game.vo.DishType;
 import zyx.game.world.items.ItemCreateRequest;
 import zyx.net.data.WriteableDataObject;
 import zyx.net.io.controllers.NetworkCommands;
@@ -17,9 +16,9 @@ public class GuestGiveOrdersRequest extends ItemCreateRequest
 	protected void getDataObject(WriteableDataObject data, Object... params)
 	{
 		int guestId = (int) params[0];
-		DishType dishType = (DishType) params[1];
+		int dishTypeId = (int) params[1];
 		
 		data.addInteger(GUEST_ID, guestId);
-		data.addInteger(DISH_TYPE, dishType.id);
+		data.addInteger(DISH_TYPE, dishTypeId);
 	}
 }

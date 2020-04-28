@@ -1,6 +1,5 @@
 package zyx.game.world.items;
 
-import zyx.game.vo.FoodState;
 import zyx.net.data.ReadableDataObject;
 import zyx.net.io.responses.BaseNetworkResponse;
 import zyx.net.io.controllers.NetworkCommands;
@@ -20,10 +19,8 @@ public class ItemSetFoodStateResponse extends BaseNetworkResponse<ItemChangedDat
 	@Override
 	protected ItemChangedData onMessageRecieved(ReadableDataObject data)
 	{
-		int type = data.getInteger(FOOD_STATE);
-		
 		OUT.itemId = data.getInteger(ITEM_ID);
-		OUT.foodState = FoodState.getFromId(type);
+		OUT.foodStateId = data.getInteger(FOOD_STATE);
 
 		return OUT;
 	}
