@@ -21,7 +21,7 @@ public abstract class JsonSprite extends DisplayObjectContainer implements IReso
 	private HashMap<String, DisplayObject> jsonChildren;
 
 	private boolean initialized;
-	private boolean loaded;
+	protected boolean loaded;
 
 	private Resource[] resourceDependencies;
 	private int dependenciesLoaded;

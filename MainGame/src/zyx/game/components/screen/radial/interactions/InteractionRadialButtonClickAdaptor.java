@@ -2,71 +2,83 @@ package zyx.game.components.screen.radial.interactions;
 
 import zyx.game.components.screen.radial.*;
 import java.util.HashMap;
-import zyx.engine.components.screen.interactable.InteractableContainer;
+import zyx.engine.scene.SceneManager;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.components.world.interactable.InteractionAction;
 import zyx.game.models.GameModels;
 import zyx.game.network.services.PlayerService;
-import zyx.game.vo.DishType;
+import zyx.game.scene.game.DinerScene;
 
 public class InteractionRadialButtonClickAdaptor extends RadialButtonClickAdaptor
 {
-	@Override
-	protected void addCallbacks(HashMap<IRadialMenuOption, ICallback<InteractableContainer>> callbackMap)
+
+	private final DinerScene scene;
+
+	public InteractionRadialButtonClickAdaptor()
 	{
-		callbackMap.put(InteractionAction.ADD_ORDER, this::onAddOrderClicked);
-		callbackMap.put(InteractionAction.CLEANUP, this::onCleanupClicked);
-		callbackMap.put(InteractionAction.PLACE, this::onPlaceClicked);
-		callbackMap.put(InteractionAction.SERVE, this::onServeClicked);
-		callbackMap.put(InteractionAction.SERVE_BILL, this::onServeBillClicked);
-		callbackMap.put(InteractionAction.PRINT_BILL, this::onPrintBillClicked);
-		callbackMap.put(InteractionAction.TAKE, this::onTakeClicked);
-		callbackMap.put(InteractionAction.TAKE_ORDER, this::onTakeOrderClicked);
-	}
-	
-	private void onAddOrderClicked(InteractableContainer data)
-	{
-		closeRadial();
-		PlayerService.enterOrder(DishType.STEAK);
+		scene = SceneManager.getInstance().getSceneAs();
 	}
 
-	private void onCleanupClicked(InteractableContainer data)
+	@Override
+	protected void addCallbacks(HashMap<Integer, ICallback<RadialMenuItemRenderer>> callbackMap)
+	{
+		callbackMap.put(InteractionAction.ADD_ORDER.id, this::onAddOrderClicked);
+		callbackMap.put(InteractionAction.CLEANUP.id, this::onCleanupClicked);
+		callbackMap.put(InteractionAction.PLACE.id, this::onPlaceClicked);
+		callbackMap.put(InteractionAction.SERVE.id, this::onServeClicked);
+		callbackMap.put(InteractionAction.SERVE_BILL.id, this::onServeBillClicked);
+		callbackMap.put(InteractionAction.PRINT_BILL.id, this::onPrintBillClicked);
+		callbackMap.put(InteractionAction.TAKE.id, this::onTakeClicked);
+		callbackMap.put(InteractionAction.TAKE_ORDER.id, this::onTakeOrderClicked);
+	}
+
+	private void onAddOrderClicked(RadialMenuItemRenderer renderer)
+	{
+		closeRadial();
+
+		if(scene != null)
+		{
+			scene.dinerHud.showFood();
+		}
+	}
+
+	private void onCleanupClicked(RadialMenuItemRenderer renderer)
 	{
 		closeRadial();
 		PlayerService.interactWith(GameModels.selection.lastInteractedFurniture);
 	}
 
-	private void onPlaceClicked(InteractableContainer data)
+	private void onPlaceClicked(RadialMenuItemRenderer renderer)
 	{
 		closeRadial();
 		PlayerService.giveItem(GameModels.selection.lastInteractedFurniture);
 	}
 
-	private void onServeClicked(InteractableContainer data)
+	private void onServeClicked(RadialMenuItemRenderer renderer)
 	{
 		closeRadial();
 		PlayerService.giveItem(GameModels.selection.lastInteractedFurniture);
 	}
 
-	private void onServeBillClicked(InteractableContainer data)
+	private void onServeBillClicked(RadialMenuItemRenderer renderer)
 	{
 		closeRadial();
 		PlayerService.giveBill(GameModels.selection.lastInteractedFurniture);
 	}
 
-	private void onPrintBillClicked(InteractableContainer data)
+	private void onPrintBillClicked(RadialMenuItemRenderer renderer)
 	{
 		closeRadial();
 		PlayerService.printBill();
 	}
 
-	private void onTakeClicked(InteractableContainer data)
+	private void onTakeClicked(RadialMenuItemRenderer renderer)
 	{
 		closeRadial();
 		PlayerService.pickupItem(GameModels.selection.lastInteractedItem);
 	}
 
-	private void onTakeOrderClicked(InteractableContainer data)
+	private void onTakeOrderClicked(RadialMenuItemRenderer renderer)
 	{
 		closeRadial();
 		PlayerService.getOrder(GameModels.selection.lastInteractedCharacter);

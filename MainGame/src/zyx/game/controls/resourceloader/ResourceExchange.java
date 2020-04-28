@@ -19,15 +19,12 @@ class ResourceExchange extends BaseExchange<ResourceRequest, ResourceRequest>
 	{
 		requestMap.remove(request.path);
 
-		if (request.requestCompleted)
-		{
-			request.complete(request.getData());
-		}
-		else
+		if (!request.requestCompleted)
 		{
 			request.fail();
 		}
-
+		
+		request.complete(request.getData());
 		request.dispose();
 	}
 

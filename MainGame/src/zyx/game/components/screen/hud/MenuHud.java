@@ -22,7 +22,7 @@ public class MenuHud extends BaseHud
 	@Override
 	public String getResource()
 	{
-		return "json.menu_hud";
+		return "json.hud.menu_hud";
 	}
 	
 	@Override

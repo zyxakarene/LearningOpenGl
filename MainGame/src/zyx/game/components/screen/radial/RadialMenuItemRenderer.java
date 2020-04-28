@@ -6,37 +6,31 @@ import zyx.engine.components.screen.image.Image;
 import zyx.engine.components.screen.interactable.Button;
 import zyx.engine.components.screen.interactable.InteractableContainer;
 import zyx.engine.components.screen.text.Textfield;
+import zyx.engine.utils.callbacks.CustomCallback;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.components.screen.json.JsonSprite;
 
-public class RadialMenuItemRenderer extends JsonSprite
+public class RadialMenuItemRenderer extends JsonSprite implements ICallback<InteractableContainer>
 {
 
 	private Button button;
 	private Image image;
 	private Textfield textfield;
-
-	private final String texture;
-	private final String text;
+	
+	public IRadialMenuOption data;
 	
 	private ComposedButtonColorMap colorsEnabled;
 	private ComposedButtonColorMap colorsDisabled;
 
-	public RadialMenuItemRenderer(String texture, String text)
-	{
-		super(false);
-		
-		this.texture = texture;
-		this.text = text;
-
-		load();
-	}
-
+	private CustomCallback<RadialMenuItemRenderer> onRendererClicked;
+	
 	@Override
 	protected void onPreInitialize()
 	{
 		colorsEnabled = ComposedConstants.buttonColorsFromScheme("green");
 		colorsDisabled = ComposedConstants.buttonColorsFromScheme("gray");
+		
+		onRendererClicked = new CustomCallback<>();
 	}
 	
 	@Override
@@ -52,29 +46,72 @@ public class RadialMenuItemRenderer extends JsonSprite
 		image = getComponentByName("renderer_icon");
 		textfield = getComponentByName("renderer_text");
 
-		image.load(texture);
-		textfield.setText(text);
+		if (data != null)
+		{
+			setData(data);
+		}
+		
 	}
 
-	void addCallback(ICallback<InteractableContainer> callback)
+	public void setData(IRadialMenuOption data)
 	{
-		button.onButtonClicked.addCallback(callback);
+		this.data = data;
+		
+		if (loaded)
+		{
+			image.load(data.getIconResource());
+			textfield.setText(data.getText());
+			
+			setEnabled(button.focusable);
+		}
+	}
+	
+	void addCallback(ICallback<RadialMenuItemRenderer> callback)
+	{
+		onRendererClicked.addCallback(callback);
+		
+		button.onButtonClicked.addCallback(this);
 	}
 
 	void setEnabled(boolean enabled)
 	{
 		button.focusable = enabled;
 
-		if (enabled)
+		if (data != null)
 		{
-			button.setColors(colorsEnabled);
-			image.load(texture);
-		}
-		else
-		{
-			button.setColors(colorsDisabled);
-			image.load(texture + "_gray");
+			String iconResource = data.getIconResource();
+			if (enabled)
+			{
+				button.setColors(colorsEnabled);
+				image.load(iconResource);
+			}
+			else
+			{
+				button.setColors(colorsDisabled);
+				image.load(iconResource + "_gray");
+			}
 		}
 
 	}
+
+	@Override
+	public void onCallback(InteractableContainer data)
+	{
+		if (onRendererClicked != null)
+		{
+			onRendererClicked.dispatch(this);
+		}
+	}
+
+	@Override
+	protected void onDispose()
+	{
+		if(onRendererClicked != null)
+		{
+			onRendererClicked.dispose();
+			onRendererClicked = null;
+		}
+	}
+	
+	
 }

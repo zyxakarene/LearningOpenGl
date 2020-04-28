@@ -12,6 +12,7 @@ public abstract class ExternalResource extends Resource implements IResourceLoad
 	private ResourceRequestDataInput resourceRequest;
 
 	private IResourceLoaded<ResourceDataInputStream> resourceReloaded;
+	private boolean externalLoadFailed;
 
 	public ExternalResource(String path)
 	{
@@ -26,7 +27,13 @@ public abstract class ExternalResource extends Resource implements IResourceLoad
 	}
 
 	@Override
-	public void onResourceFailed(String path)
+	public final void onResourceFailed(String path)
+	{
+		externalLoadFailed = true;
+		onInnerResourceFailed(path);
+	}
+	
+	protected void onInnerResourceFailed(String path)
 	{
 	}
 
@@ -62,5 +69,11 @@ public abstract class ExternalResource extends Resource implements IResourceLoad
 
 		resourceRequest = new ResourceRequestDataInput(path, resourceReloaded);
 		ResourceLoader.getInstance().addEntry(resourceRequest);
+	}
+
+	@Override
+	public boolean isLoaded()
+	{
+		return !externalLoadFailed && super.isLoaded();
 	}
 }

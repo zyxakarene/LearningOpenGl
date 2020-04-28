@@ -8,6 +8,7 @@ import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.MissingTexture;
 import zyx.opengl.textures.SubTexture;
+import zyx.utils.cheats.Print;
 import zyx.utils.geometry.Rectangle;
 
 public class SpriteSheetResource extends TextureResource implements IResourceReady<Resource>
@@ -53,6 +54,7 @@ public class SpriteSheetResource extends TextureResource implements IResourceRea
 			if (rect == null)
 			{
 				tex = MissingTexture.getAsSlot(textureSheet.slot);
+				Print.err("Could not load SpriteSheet icon:", path);
 			}
 			else
 			{

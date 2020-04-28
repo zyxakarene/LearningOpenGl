@@ -4,8 +4,15 @@
 	"children":
 	[
 		{
-			"name":"radial_menu",
+			"name":"interaction_radial_menu",
 			"type":"interactionRadialMenu",
+			"visible":false,
+			"centerOffsetX":0,
+			"centerOffsetY":0,
+		},
+		{
+			"name":"food_radial_menu",
+			"type":"foodRadialMenu",
 			"visible":false,
 			"centerOffsetX":0,
 			"centerOffsetY":0,

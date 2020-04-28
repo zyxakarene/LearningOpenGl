@@ -11,6 +11,7 @@ import org.json.simple.JSONObject;
 import zyx.engine.components.screen.composed.ComposedImage;
 import zyx.engine.components.screen.list.ItemList;
 import zyx.engine.components.screen.text.Textfield;
+import zyx.game.components.screen.radial.food.FoodRadiallMenu;
 import zyx.game.components.screen.radial.interactions.InteractionRadiallMenu;
 
 class JsonSpriteParser
@@ -110,7 +111,7 @@ class JsonSpriteParser
 				child = new InteractionRadiallMenu();
 				break;
 			case TYPE_FOOD_RADIAL_MENU:
-				child = new InteractionRadiallMenu();
+				child = new FoodRadiallMenu();
 				break;
 		}
 		

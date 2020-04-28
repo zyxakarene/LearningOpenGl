@@ -17,7 +17,7 @@ public class BaseHud extends JsonSprite implements ICallback<Vector2Int>
 	@Override
 	public String getResource()
 	{
-		return "json.empty_hud";
+		return "json.hud.empty_hud";
 	}
 
 	@Override

@@ -36,7 +36,7 @@ public class TextureResource extends ExternalResource
 	}
 
 	@Override
-	public void onResourceFailed(String path)
+	protected void onInnerResourceFailed(String path)
 	{
 		TextureSlot slot = getTextureSlot();
 		texture = MissingTexture.getAsSlot(slot);

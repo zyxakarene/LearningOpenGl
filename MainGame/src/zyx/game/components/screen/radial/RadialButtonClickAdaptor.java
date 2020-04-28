@@ -1,12 +1,11 @@
 package zyx.game.components.screen.radial;
 
 import java.util.HashMap;
-import zyx.engine.components.screen.interactable.InteractableContainer;
 import zyx.engine.utils.callbacks.ICallback;
 
 public abstract class RadialButtonClickAdaptor
 {
-	private HashMap<IRadialMenuOption, ICallback<InteractableContainer>> callbackMap;
+	private HashMap<Integer, ICallback<RadialMenuItemRenderer>> callbackMap;
 	private RadialMenu radialMenu;
 	
 	public RadialButtonClickAdaptor()
@@ -19,16 +18,16 @@ public abstract class RadialButtonClickAdaptor
 		addCallbacks(callbackMap);
 	}
 
-	protected abstract void addCallbacks(HashMap<IRadialMenuOption, ICallback<InteractableContainer>> callbackMap);
+	protected abstract void addCallbacks(HashMap<Integer, ICallback<RadialMenuItemRenderer>> callbackMap);
 	
 	void setRadialMenu(RadialMenu radialMenu)
 	{
 		this.radialMenu = radialMenu;
 	}
 
-	ICallback<InteractableContainer> getCallback(IRadialMenuOption action)
+	ICallback<RadialMenuItemRenderer> getCallback(IRadialMenuOption action)
 	{
-		return callbackMap.get(action);
+		return callbackMap.get(action.getUniqueId());
 	}
 	
 	protected final void closeRadial()
