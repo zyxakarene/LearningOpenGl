@@ -16,7 +16,7 @@ public class MenuHud extends BaseHud
 
 	private void playBtnClicked(InteractableContainer data)
 	{
-		SceneManager.getInstance().changeScene(SceneType.GAME);
+		SceneManager.getInstance().changeScene(SceneType.TEST);
 	}
 	
 	@Override

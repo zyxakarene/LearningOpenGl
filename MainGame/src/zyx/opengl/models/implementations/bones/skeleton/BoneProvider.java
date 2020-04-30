@@ -5,8 +5,8 @@ import org.lwjgl.util.vector.Matrix4f;
 public class BoneProvider
 {
 
-	public static final Matrix4f[] BONES = new Matrix4f[20];
-	public static final Matrix4f[] INVERT_BONES = new Matrix4f[20];
+	public static final Matrix4f[] BONES = new Matrix4f[30];
+	public static final Matrix4f[] INVERT_BONES = new Matrix4f[30];
 
 	static
 	{

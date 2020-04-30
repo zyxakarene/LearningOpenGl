@@ -19,7 +19,8 @@ public class ItemHolderHandler implements IUpdateable
 		holderMap = new HashMap<>();
 		holderList = new ArrayList<>();
 		
-		scene = SceneManager.getInstance().<DinerScene>getSceneAs();
+//TODO: Fix
+//		scene = SceneManager.getInstance().<DinerScene>getSceneAs();
 	}
 
 	public void addItemHolder(int uniqueId, IItemHolder holder)

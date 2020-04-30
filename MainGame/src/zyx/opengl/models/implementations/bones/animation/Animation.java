@@ -15,7 +15,7 @@ public class Animation implements IDisposeable
 		this.name = name;
 		this.frames = new AnimationFrame[length];
 		this.length = length;
-		this.looping = looping;
+		this.looping = true || looping;
 	}
 	
 	public void setFrame(int frame, AnimationFrame animationFrame)

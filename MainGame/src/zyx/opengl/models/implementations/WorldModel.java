@@ -120,11 +120,11 @@ public class WorldModel extends AbstractModel implements IShadowable
 	@Override
 	protected void setupAttributes()
 	{
-		addAttribute("position", 3, 12, 0);
-		addAttribute("normals", 3, 12, 3);
-		addAttribute("texcoord", 2, 12, 6);
-		addAttribute("indexes", 2, 12, 8);
-		addAttribute("weights", 2, 12, 10);
+		addAttribute("position", 3, 16, 0);
+		addAttribute("normals", 3, 16, 3);
+		addAttribute("texcoord", 2, 16, 6);
+		addAttribute("indexes", 4, 16, 8);
+		addAttribute("weights", 4, 16, 12);
 	}
 
 	public Joint getBoneByName(String boneName)

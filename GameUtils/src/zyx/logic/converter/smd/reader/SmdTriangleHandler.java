@@ -1,6 +1,7 @@
 package zyx.logic.converter.smd.reader;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -52,11 +53,11 @@ public class SmdTriangleHandler implements ISmdHandler
 
 		byte[] indexes = new byte[]
 		{
-			0, 0
+			0, 0, 0, 0
 		};
 		float[] weights = new float[]
 		{
-			0f, 0f
+			0f, 0f, 0f, 0f
 		};
 
 		if (split.length > 9)
@@ -73,11 +74,15 @@ public class SmdTriangleHandler implements ISmdHandler
 		}
 		else
 		{
-			indexes[0] = 0;
+			indexes[0] = 24;
 			indexes[1] = 0;
+			indexes[2] = 0;
+			indexes[3] = 0;
 			
 			weights[0] = 1;
 			weights[1] = 0;
+			weights[2] = 0;
+			weights[3] = 0;
 		}
 
 		int existingIndex = exists(indexes, weights);
@@ -88,8 +93,10 @@ public class SmdTriangleHandler implements ISmdHandler
 		else
 		{
 			Vertex vertex = new Vertex(pos, norm, uv, indexCounter);
-			vertex.addWeight(indexes[0], weights[0]);
-			vertex.addWeight(indexes[1], weights[1]);
+			for (int i = 0; i < indexes.length; i++)
+			{
+				vertex.addWeight(indexes[i], weights[i]);
+			}
 
 			elements.add(indexCounter);
 			verticies.add(vertex);
@@ -120,7 +127,12 @@ public class SmdTriangleHandler implements ISmdHandler
 
 	private String getString(byte[] indexes, float[] weights)
 	{
-		return String.format("%s%s%s%s%s%s%s%s%s%s%s%s", pos.x, pos.y, pos.z, norm.x, norm.y, norm.z, uv.x, uv.y, indexes[0], indexes[1], weights[0], weights[1]);
+		StringBuilder weightBuilder = new StringBuilder();
+		for (int i = 0; i < indexes.length; i++)
+		{
+			weightBuilder.append(indexes[i]).append(weights[i]);
+		}
+		return String.format("%s%s%s%s%s%s%s%s%s", pos.x, pos.y, pos.z, norm.x, norm.y, norm.z, uv.x, uv.y, weightBuilder);
 	}
 
 	@Override

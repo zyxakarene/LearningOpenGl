@@ -16,7 +16,6 @@ public class TestScene extends DebugScene
 	@Override
 	protected void onPreloadResources()
 	{
-		preloadResource("flat_bg");
 	}
 
 	@Override
@@ -24,22 +23,11 @@ public class TestScene extends DebugScene
 	{
 		addPlayerControls();
 		
-		for (int i = 0; i < 0; i++)
-		{
-			MeshObject model = new MeshObject();
-			model.load("mesh.box");
-			model.setX(-20);
-//			model.setY(FloatMath.random() * 300);
-
-			world.addChild(model);
-			objects.add(model);
-		}
-
-		AnimatedMesh knight = new AnimatedMesh();
-		knight.load("mesh.knight.knight");
-		knight.setAnimation("attack");
-		objects.add(knight);
-		world.addChild(knight);
+		AnimatedMesh jasper = new AnimatedMesh();
+		jasper.load("mesh.jasper");
+		jasper.setAnimation("walking");
+		objects.add(jasper);
+		world.addChild(jasper);
 	}
 
 //	@Override
@@ -53,22 +41,22 @@ public class TestScene extends DebugScene
 	{
 		super.onUpdate(timestamp, elapsedTime);
 		
-		if (KeyboardData.data.isDown(Keyboard.KEY_SPACE))
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
 		{
 			AnimatedMesh tempKnight = new AnimatedMesh();
-			tempKnight.setX((FloatMath.random() * 200) - 100);
-			tempKnight.setY((FloatMath.random() * 200) - 100);
+			tempKnight.setX((FloatMath.random() * 400) - 200);
+			tempKnight.setY((FloatMath.random() * 400) - 200);
 			tempKnight.setRotZ(FloatMath.random() * 360);
 			
-			tempKnight.load("mesh.knight.knight");
+			tempKnight.load("mesh.jasper");
 			
 			if (Math.random() > 0.5)
 			{
-				tempKnight.setAnimation("attack");
+				tempKnight.setAnimation("walking");
 			}
 			else
 			{
-				tempKnight.setAnimation("walk");	
+				tempKnight.setAnimation("action");	
 			}
 			
 			objects.add(tempKnight);

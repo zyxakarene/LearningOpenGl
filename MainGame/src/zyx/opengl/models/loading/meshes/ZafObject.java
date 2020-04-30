@@ -22,7 +22,7 @@ class ZafObject
 	public void read(DataInputStream in, PrintBuilder builder) throws IOException
 	{
 		int vertexCount = in.readInt();
-		vertexData = new float[vertexCount * 12];
+		vertexData = new float[vertexCount * 16];
 		builder.append("↳", vertexCount, "verticies");
 		builder.append("↳", vertexData.length, "floats");
 		for (int i = 0; i < vertexData.length; i++)

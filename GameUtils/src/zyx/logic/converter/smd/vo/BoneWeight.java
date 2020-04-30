@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class BoneWeight
 {
-	private int MAX_AMOUNT = 2;
+	private int MAX_AMOUNT = 4;
 	
 	private byte[] indexes = new byte[MAX_AMOUNT];
 	private float[] weights = new float[MAX_AMOUNT];
@@ -32,12 +32,16 @@ public class BoneWeight
 		
 		pointer++;
 	}
-	
+
 	public void save(DataOutputStream out) throws IOException
 	{
-		out.writeFloat(indexes[0]);
-		out.writeFloat(indexes[1]);
-		out.writeFloat(weights[0]);
-		out.writeFloat(weights[1]);
+		for (int i = 0; i < MAX_AMOUNT; i++)
+		{
+			out.writeFloat(indexes[i]);
+		}
+		for (int i = 0; i < MAX_AMOUNT; i++)
+		{
+			out.writeFloat(weights[i]);
+		}
 	}
 }
