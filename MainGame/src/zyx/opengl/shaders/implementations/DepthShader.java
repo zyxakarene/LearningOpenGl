@@ -27,9 +27,9 @@ public class DepthShader extends BaseBoneShader
 	private int shadowOffsetMaxUniform;
 	private int currentQuadrantUniform;
 
-	public DepthShader(Object lock)
+	public DepthShader(Object lock, int boneCount)
 	{
-		super(lock);
+		super(lock, boneCount);
 	}
 
 	@Override
@@ -111,6 +111,6 @@ public class DepthShader extends BaseBoneShader
 	@Override
 	public String getName()
 	{
-		return "DepthShader";
+		return "DepthShader_" + boneCount;
 	}
 }

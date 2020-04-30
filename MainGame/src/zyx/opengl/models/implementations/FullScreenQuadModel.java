@@ -10,6 +10,8 @@ public class FullScreenQuadModel extends AbstractModel
 	{
 		super(shader);
 
+		setup();
+		
 		setTextures(textures);
 		setVertexData();
 	}

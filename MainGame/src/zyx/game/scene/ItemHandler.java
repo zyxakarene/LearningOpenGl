@@ -22,8 +22,7 @@ public class ItemHandler
 		itemList = new ArrayList<>();
 		itemHolderHandler = holderHandler;
 		
-//TODO: Fix
-//		scene = SceneManager.getInstance().<DinerScene>getSceneAs();
+		scene = SceneManager.getInstance().<DinerScene>getSceneAs();
 	}
 
 	public void addItem(int uniqueId, GameItem item, int ownerId)

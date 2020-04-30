@@ -47,7 +47,6 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 
 	public SimpleMesh()
 	{
-		shader = ShaderManager.getInstance().<WorldShader>get(Shader.WORLD);
 		loaded = false;
 		onLoaded = new CustomCallback<>(true);
 
@@ -209,6 +208,7 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	{
 		WorldModel data = resource.getContent();
 
+		shader = data.getShader();
 		physbox = data.getPhysbox();
 		model = data;
 		loaded = true;
@@ -239,20 +239,20 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 
 		DebugPhysics.getInstance().unregisterPhysbox(this);
 
-		if(attachmentRequests != null)
+		if (attachmentRequests != null)
 		{
 			attachmentRequests.clear();
 			attachmentRequests = null;
 		}
-		
+
 		attachedObjects.clear();
 		attachments.clear();
-		
+
 		model = null;
 		physbox = null;
 		loaded = false;
 	}
-	
+
 	@Override
 	protected void onDispose()
 	{
@@ -263,7 +263,7 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 			onLoaded.dispose();
 			onLoaded = null;
 		}
-		
+
 		clean();
 	}
 

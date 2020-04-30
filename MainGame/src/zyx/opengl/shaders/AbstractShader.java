@@ -1,11 +1,13 @@
 package zyx.opengl.shaders;
 
 import zyx.opengl.GLUtils;
+import zyx.opengl.shaders.source.ShaderReplacement;
 import zyx.opengl.shaders.source.ShaderSourceLoader;
 import zyx.utils.interfaces.IUpdateable;
 
 public abstract class AbstractShader implements IUpdateable
 {
+	private static final ShaderReplacement[] NO_REPLACEMENTS = new ShaderReplacement[0];
 
 	protected int vertexShader, fragmentShader;
 
@@ -33,8 +35,8 @@ public abstract class AbstractShader implements IUpdateable
 
 	final void load()
 	{
-		String vertexSource = ShaderSourceLoader.getSource(getVertexName());
-		String fragmentSource = ShaderSourceLoader.getSource(getFragmentName());
+		String vertexSource = ShaderSourceLoader.getSource(getVertexName(), getVertexReplacements());
+		String fragmentSource = ShaderSourceLoader.getSource(getFragmentName(), getFragmentReplacements());
 
 		vertexShader = ShaderUtils.createVertexShader(vertexSource);
 		fragmentShader = ShaderUtils.createFragmentShader(fragmentSource);
@@ -58,5 +60,15 @@ public abstract class AbstractShader implements IUpdateable
 	protected abstract String getVertexName();
 
 	protected abstract String getFragmentName();
+
+	protected ShaderReplacement[] getVertexReplacements()
+	{
+		return NO_REPLACEMENTS;
+	}
+
+	protected ShaderReplacement[] getFragmentReplacements()
+	{
+		return NO_REPLACEMENTS;
+	}
 
 }

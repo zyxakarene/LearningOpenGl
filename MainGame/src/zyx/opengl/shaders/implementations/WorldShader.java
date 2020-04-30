@@ -25,9 +25,9 @@ public class WorldShader extends BaseBoneShader
 	private int modelMatrixTrans_InverseTranspose;
 	private int viewModelMatrixTrans_InverseTranspose;
 
-	public WorldShader(Object lock)
+	public WorldShader(Object lock, int boneCount)
 	{
-		super(lock);
+		super(lock, boneCount);
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class WorldShader extends BaseBoneShader
 	@Override
 	public String getName()
 	{
-		return "WorldShader";
+		return "WorldShader_" + boneCount;
 	}
 	
 }

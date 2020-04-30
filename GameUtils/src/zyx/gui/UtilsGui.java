@@ -145,9 +145,24 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
 		{
 			logArea.setText("");
 			
-			File inputQc = qcCombo.getSelectedItem();
-			QcFile parsedQc = new QcParser().parseFile(inputQc);
-			new SmdParser(parsedQc).parseFiles();
+			if (qcCombo.getSelectedIndex() == 0)
+			{
+				int len = qcCombo.getItemCount();
+				for (int i = 1; i < len; i++)
+				{
+					File inputQc = qcCombo.getItemAt(i);
+					QcFile parsedQc = new QcParser().parseFile(inputQc);
+					new SmdParser(parsedQc).parseFiles();
+					
+					logArea.append("=====\n");
+				}
+			}
+			else
+			{
+				File inputQc = qcCombo.getSelectedItem();
+				QcFile parsedQc = new QcParser().parseFile(inputQc);
+				new SmdParser(parsedQc).parseFiles();
+			}
 		}
 		catch (IOException ex)
 		{

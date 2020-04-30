@@ -6,7 +6,6 @@ import zyx.opengl.buffers.DepthRenderer;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.shaders.implementations.WorldShader;
-import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
@@ -19,6 +18,11 @@ import zyx.utils.interfaces.IShadowable;
 public class WorldModel extends AbstractModel implements IShadowable
 {
 
+	private static final int POSITION_LENGTH = 3;
+	private static final int NORMALS_LENGTH = 3;
+	private static final int TEX_COORDS_LENGTH = 2;
+	private static final int BONE_LENGTH = 2;
+
 	private WorldShader shader;
 	private DepthShader shadowShader;
 
@@ -28,16 +32,20 @@ public class WorldModel extends AbstractModel implements IShadowable
 
 	private Vector3f radiusCenter;
 	private float radius;
+	private int boneCount;
 
 	public WorldModel(LoadableWorldModelVO vo)
 	{
-		super(Shader.WORLD);
+		super(vo.worldShader);
+		boneCount = vo.boneCount;
+		setup();
+
 		this.shader = (WorldShader) meshShader;
-		this.shadowShader = ShaderManager.getInstance().<DepthShader>get(Shader.DEPTH);
+		this.shadowShader = ShaderManager.getInstance().<DepthShader>get(vo.shadowShader);
 
 		refresh(vo);
 	}
-	
+
 	public void refresh(LoadableWorldModelVO vo)
 	{
 		skeleton = vo.skeleton;
@@ -46,6 +54,13 @@ public class WorldModel extends AbstractModel implements IShadowable
 		radius = vo.radius;
 
 		bindVao();
+
+		if (boneCount != vo.boneCount)
+		{
+			boneCount = vo.boneCount;
+			setupAttributes();
+		}
+
 		setVertexData(vo.vertexData, vo.elementData);
 		AbstractTexture[] texs = new AbstractTexture[]
 		{
@@ -120,11 +135,13 @@ public class WorldModel extends AbstractModel implements IShadowable
 	@Override
 	protected void setupAttributes()
 	{
-		addAttribute("position", 3, 16, 0);
-		addAttribute("normals", 3, 16, 3);
-		addAttribute("texcoord", 2, 16, 6);
-		addAttribute("indexes", 4, 16, 8);
-		addAttribute("weights", 4, 16, 12);
+		int stride = POSITION_LENGTH + NORMALS_LENGTH + TEX_COORDS_LENGTH + (BONE_LENGTH * boneCount);
+
+		addAttribute("position", POSITION_LENGTH, stride, 0);
+		addAttribute("normals", NORMALS_LENGTH, stride, 3);
+		addAttribute("texcoord", TEX_COORDS_LENGTH, stride, 6);
+		addAttribute("indexes", boneCount, stride, 8);
+		addAttribute("weights", boneCount, stride, 8 + boneCount);
 	}
 
 	public Joint getBoneByName(String boneName)
@@ -147,9 +164,13 @@ public class WorldModel extends AbstractModel implements IShadowable
 			physBox.dispose();
 			physBox = null;
 		}
-		
+
 		skeleton = null;
 		shader = null;
 	}
 
+	public WorldShader getShader()
+	{
+		return shader;
+	}
 }

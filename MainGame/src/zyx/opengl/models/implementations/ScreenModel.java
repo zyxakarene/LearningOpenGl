@@ -30,7 +30,8 @@ public class ScreenModel extends AbstractModel
 	public ScreenModel(AbstractTexture texture, Vector4f color)
 	{
 		super(Shader.SCREEN);
-
+		setup();
+		
 		colors = SharedPools.VECTOR_POOL_4F.getInstance();
 		shader = (ScreenShader) meshShader;
 

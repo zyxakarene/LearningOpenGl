@@ -31,6 +31,8 @@ public class Text extends AbstractModel
 	public Text(BitmapFont font, float fontScale, float width, float height)
 	{
 		super(Shader.SCREEN);
+		setup();
+		
 		this.font = font;
 		this.fontScale = fontScale;
 		this.width = width;

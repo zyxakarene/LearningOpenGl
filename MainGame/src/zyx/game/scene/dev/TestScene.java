@@ -2,7 +2,7 @@ package zyx.game.scene.dev;
 
 import org.lwjgl.input.Keyboard;
 import zyx.game.components.AnimatedMesh;
-import zyx.game.components.MeshObject;
+import zyx.game.components.SimpleMesh;
 import zyx.game.controls.input.KeyboardData;
 import zyx.utils.FloatMath;
 
@@ -28,6 +28,11 @@ public class TestScene extends DebugScene
 		jasper.setAnimation("walking");
 		objects.add(jasper);
 		world.addChild(jasper);
+		
+		AnimatedMesh box = new AnimatedMesh();
+		box.load("mesh.furniture.fridge");
+		objects.add(box);
+		world.addChild(box);
 	}
 
 //	@Override
@@ -43,24 +48,37 @@ public class TestScene extends DebugScene
 		
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
 		{
-			AnimatedMesh tempKnight = new AnimatedMesh();
-			tempKnight.setX((FloatMath.random() * 400) - 200);
-			tempKnight.setY((FloatMath.random() * 400) - 200);
-			tempKnight.setRotZ(FloatMath.random() * 360);
+			AnimatedMesh tempJasper = new AnimatedMesh();
+			tempJasper.setX((FloatMath.random() * 400) - 200);
+			tempJasper.setY((FloatMath.random() * 400) - 200);
+			tempJasper.setRotZ(FloatMath.random() * 360);
 			
-			tempKnight.load("mesh.jasper");
+			tempJasper.load("mesh.jasper");
 			
 			if (Math.random() > 0.5)
 			{
-				tempKnight.setAnimation("walking");
+				tempJasper.setAnimation("walking");
 			}
 			else
 			{
-				tempKnight.setAnimation("action");	
+				tempJasper.setAnimation("action");	
 			}
 			
-			objects.add(tempKnight);
-			world.addChild(tempKnight);
+			objects.add(tempJasper);
+			world.addChild(tempJasper);
+		}
+		
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
+		{
+			SimpleMesh tempBox = new SimpleMesh();
+			tempBox.setX((FloatMath.random() * 400) - 200);
+			tempBox.setY((FloatMath.random() * 400) - 200);
+			tempBox.setRotZ(FloatMath.random() * 360);
+			
+			tempBox.load("mesh.box");
+			
+			objects.add(tempBox);
+			world.addChild(tempBox);
 		}
 	}
 }

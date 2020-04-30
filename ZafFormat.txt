@@ -1,5 +1,7 @@
 zaf
 {
+	byte							bonesPerVertexCount
+	
 	int								vertexCount
 	float[vertexCount * 12]			vertexData
 	

@@ -28,10 +28,10 @@ public class ZafLoader
 			builder.append("========");
 			Print.out(builder);
 
-			return new LoadableWorldModelVO(obj.vertexData, obj.elementData, phys, obj.diffuseTexture, obj.normalTexture, obj.specularTexture,
+			return new LoadableWorldModelVO(obj.boneCount, obj.vertexData, obj.elementData, phys, obj.diffuseTexture, obj.normalTexture, obj.specularTexture,
 											obj.radiusCenter, obj.radius, obj.skeletonId);
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
 			builder.append("==== [ERROR] Failed to parse mesh! ====");
 			Print.err(builder);

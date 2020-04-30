@@ -12,6 +12,7 @@ public abstract class AbstractInstancedModel extends AbstractModel
 	public AbstractInstancedModel(Shader shader)
 	{
 		super(shader);
+		setup();
 	}
 
 	@Override

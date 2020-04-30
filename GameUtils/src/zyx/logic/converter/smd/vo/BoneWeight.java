@@ -35,11 +35,11 @@ public class BoneWeight
 
 	public void save(DataOutputStream out) throws IOException
 	{
-		for (int i = 0; i < MAX_AMOUNT; i++)
+		for (int i = 0; i < pointer; i++)
 		{
 			out.writeFloat(indexes[i]);
 		}
-		for (int i = 0; i < MAX_AMOUNT; i++)
+		for (int i = 0; i < pointer; i++)
 		{
 			out.writeFloat(weights[i]);
 		}

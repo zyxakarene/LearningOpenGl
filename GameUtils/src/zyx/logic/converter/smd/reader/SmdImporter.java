@@ -14,9 +14,10 @@ public class SmdImporter
 {
 
 	private static final int FILE_TYPE_REF = 0;
-	private static final int FILE_TYPE_ANIMATION = 1;
-	private static final int FILE_TYPE_PHYS = 2;
-	private static final int FILE_TYPE_BOUNDING = 3;
+	private static final int FILE_TYPE_BONE_CHECK = 1;
+	private static final int FILE_TYPE_ANIMATION = 2;
+	private static final int FILE_TYPE_PHYS = 3;
+	private static final int FILE_TYPE_BOUNDING = 4;
 
 	private static final int TOKEN_NONE = 0;
 	private static final int TOKEN_NODES = 1;
@@ -45,7 +46,7 @@ public class SmdImporter
 		{
 			return;
 		}
-		
+
 		Scanner scan = new Scanner(file);
 
 		String line;
@@ -80,6 +81,14 @@ public class SmdImporter
 
 	public void importModel(File file) throws FileNotFoundException
 	{
+		currentFileType = FILE_TYPE_BONE_CHECK;
+		currentToken = TOKEN_NONE;
+		lineHandler = null;
+		animationName = null;
+		animationRootBone = null;
+
+		importFile(file);
+
 		currentFileType = FILE_TYPE_REF;
 		currentToken = TOKEN_NONE;
 		lineHandler = null;
@@ -96,7 +105,7 @@ public class SmdImporter
 		lineHandler = null;
 		animationName = null;
 		animationRootBone = null;
-		
+
 		importFile(file);
 	}
 
@@ -107,7 +116,7 @@ public class SmdImporter
 		lineHandler = null;
 		animationName = null;
 		animationRootBone = null;
-		
+
 		importFile(file);
 	}
 
@@ -155,6 +164,10 @@ public class SmdImporter
 					lineHandler = new SmdAnimationHandler(animationName, animationLooping, animationRootBone);
 					lineHandler.setData(smd.getRootBone());
 				}
+				else
+				{
+					lineHandler = new SmdDummyAnimationHandler();
+				}
 
 				break;
 			}
@@ -170,7 +183,10 @@ public class SmdImporter
 						lineHandler = new SmdBoundsTriangleHandler();
 						break;
 					case FILE_TYPE_REF:
-						lineHandler = new SmdTriangleHandler();
+						lineHandler = new SmdTriangleHandler(smd.getMaxBoneCount());
+						break;
+					case FILE_TYPE_BONE_CHECK:
+						lineHandler = new SmdBoneCheckHandler();
 						break;
 				}
 				break;
@@ -213,6 +229,11 @@ public class SmdImporter
 					{
 						SmdTriangleHandler.Response response = (SmdTriangleHandler.Response) lineHandler.getResult();
 						smd.setTriangleData(response);
+					}
+					else if (currentFileType == FILE_TYPE_BONE_CHECK)
+					{
+						byte maxBoneCount = (byte) lineHandler.getResult();
+						smd.setMaxBoneCount(maxBoneCount);
 					}
 					else if (currentFileType == FILE_TYPE_PHYS)
 					{
