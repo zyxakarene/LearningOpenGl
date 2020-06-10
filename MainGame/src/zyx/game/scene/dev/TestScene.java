@@ -19,7 +19,7 @@ public class TestScene extends DebugScene
 	}
 
 	@Override
-	protected void onInitializeGameScene()
+	protected void onInitialize()
 	{
 		addPlayerControls();
 		
@@ -31,6 +31,8 @@ public class TestScene extends DebugScene
 		
 		AnimatedMesh box = new AnimatedMesh();
 		box.load("mesh.furniture.fridge");
+		box.setAnimation("open");
+		box.lookAt(100, 0, 0);
 		objects.add(box);
 		world.addChild(box);
 	}
@@ -70,12 +72,14 @@ public class TestScene extends DebugScene
 		
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
 		{
-			SimpleMesh tempBox = new SimpleMesh();
+			AnimatedMesh tempBox = new AnimatedMesh();
 			tempBox.setX((FloatMath.random() * 400) - 200);
 			tempBox.setY((FloatMath.random() * 400) - 200);
 			tempBox.setRotZ(FloatMath.random() * 360);
 			
-			tempBox.load("mesh.box");
+			tempBox.load("mesh.furniture.fridge");
+			tempBox.setAnimation("open");
+			tempBox.lookAt(0, 0, 0);
 			
 			objects.add(tempBox);
 			world.addChild(tempBox);

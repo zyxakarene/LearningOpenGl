@@ -19,13 +19,12 @@ public class PlayerObject extends GameObject implements IItemHolder
 
 	public PlayerObject()
 	{
-//TODO: Fix
-//		board = new PlayerClipboard();
-//		board.setup();
-//		board.addBehavior(new ClipboardDrawBehavior());
-//		board.addBehavior(new ClipboardViewerBehavior());
-//		
-//		addChild(board);
+		board = new PlayerClipboard();
+		board.setup();
+		board.addBehavior(new ClipboardDrawBehavior());
+		board.addBehavior(new ClipboardViewerBehavior());
+		
+		addChild(board);
 	}
 
 	@Override

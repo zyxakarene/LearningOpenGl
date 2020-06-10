@@ -21,7 +21,7 @@ public class ParticleScene extends DebugScene
 	}
 
 	@Override
-	protected void onInitializeGameScene()
+	protected void onInitialize()
 	{
 		for (int i = 0; i < 1; i++)
 		{
