@@ -74,7 +74,7 @@ class QcLineReader
 		String[] split = line.split(REGEX);
 		String name = split[1];
 		File animationFile = new File(root.getAbsolutePath() + File.separator +  split[2]);
-		boolean looping = split.length >= 3 && LOOP.equals(split[3]);
+		boolean looping = split.length > 3 && LOOP.equals(split[3]);
 		
 		QcAnimation animation = new QcAnimation(animationFile, name, looping);
 		

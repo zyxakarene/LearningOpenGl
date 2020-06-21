@@ -30,7 +30,7 @@ public class LightsManager
 	private WorldObject viewer;
 	private LightSorter lightSorter;
 	private LightingPassShader lightShader;
-	private DepthShader depthShader;
+	private DepthShader[] depthShaders;
 	private MeshBatchDepthShader batchedDepthShader;
 	
 	private Vector3f sunDir;
@@ -52,8 +52,13 @@ public class LightsManager
 
 		lightSorter.setViewer(viewer);
 		lightShader = ShaderManager.getInstance().<LightingPassShader>get(Shader.DEFERED_LIGHT_PASS);
-		depthShader = ShaderManager.getInstance().<DepthShader>get(Shader.DEPTH);
 		batchedDepthShader = ShaderManager.getInstance().<MeshBatchDepthShader>get(Shader.MESH_BATCH_DEPTH);
+		
+		depthShaders = new DepthShader[4];
+		depthShaders[0] = ShaderManager.getInstance().<DepthShader>get(Shader.DEPTH_1);
+		depthShaders[1] = ShaderManager.getInstance().<DepthShader>get(Shader.DEPTH_2);
+		depthShaders[2] = ShaderManager.getInstance().<DepthShader>get(Shader.DEPTH_3);
+		depthShaders[3] = ShaderManager.getInstance().<DepthShader>get(Shader.DEPTH_4);
 	}
 
 	public void addLight(ILight light)
@@ -103,8 +108,11 @@ public class LightsManager
 			lightShader.uploadLightDirection(sunDir);
 			lightShader.uploadSunMatrix();
 			
-			depthShader.uploadSunMatrix();
 			batchedDepthShader.uploadSunMatrix();
+			for (DepthShader depthShader : depthShaders)
+			{
+				depthShader.uploadSunMatrix();
+			}
 		}
 	}
 }

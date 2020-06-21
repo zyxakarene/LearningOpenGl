@@ -7,6 +7,12 @@ import zyx.utils.PrintBuilder;
 
 class ZafObject
 {
+	private static final int POSITION_DATA = 3;
+	private static final int NORMAL_DATA = 3;
+	private static final int UV_DATA = 2;
+	private static final int BONE_DATA = 2;
+	
+	int boneCount;
 	float[] vertexData;
 	int[] elementData;
 	PhysObject physInformation;
@@ -21,8 +27,11 @@ class ZafObject
 	
 	public void read(DataInputStream in, PrintBuilder builder) throws IOException
 	{
+		boneCount = in.readByte();
+		
 		int vertexCount = in.readInt();
-		vertexData = new float[vertexCount * 12];
+		int floatCount = vertexCount * (POSITION_DATA + NORMAL_DATA + UV_DATA + (BONE_DATA * boneCount));
+		vertexData = new float[floatCount];
 		builder.append("↳", vertexCount, "verticies");
 		builder.append("↳", vertexData.length, "floats");
 		for (int i = 0; i < vertexData.length; i++)

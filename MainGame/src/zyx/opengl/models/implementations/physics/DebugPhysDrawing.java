@@ -99,7 +99,7 @@ public class DebugPhysDrawing
 	private static WorldModel getMeshModel(PhysBox box, PhysObject[] objects)
 	{
 		int totalTriangleCount = box.getTriangles().length;
-		int vertexCount = (totalTriangleCount * 3 * 12);
+		int vertexCount = (totalTriangleCount * 3 * 10);
 		float[] vertexData = new float[vertexCount];
 
 		int elementCount = (totalTriangleCount * 3);
@@ -120,7 +120,7 @@ public class DebugPhysDrawing
 		}
 
 		Skeleton skeleton = new Skeleton(getMeshJoint("root"), getMeshJoint("dummy"));
-		LoadableWorldModelVO vo = new LoadableWorldModelVO(vertexData, elementData, null, "", "", "", new Vector3f(), 1000, "");
+		LoadableWorldModelVO vo = new LoadableWorldModelVO(1, vertexData, elementData, null, "", "", "", new Vector3f(), 1000, "");
 		vo.setSkeleton(skeleton);
 		vo.setDiffuseTexture(new ColorTexture(0xFF0000, TextureSlot.SHARED_DIFFUSE));
 		vo.setSpecularTexture(new ColorTexture(0x000000, TextureSlot.WORLD_SPECULAR));
@@ -155,9 +155,7 @@ public class DebugPhysDrawing
 			vertexData[index++] = 0;
 			vertexData[index++] = 0;
 			vertexData[index++] = boneId;
-			vertexData[index++] = 0;
 			vertexData[index++] = 1;
-			vertexData[index++] = 0;
 			vertexData[index++] = triangle.v2.x;
 			vertexData[index++] = triangle.v2.y;
 			vertexData[index++] = triangle.v2.z;
@@ -167,9 +165,7 @@ public class DebugPhysDrawing
 			vertexData[index++] = 0;
 			vertexData[index++] = 0;
 			vertexData[index++] = boneId;
-			vertexData[index++] = 0;
 			vertexData[index++] = 1;
-			vertexData[index++] = 0;
 			vertexData[index++] = triangle.v3.x;
 			vertexData[index++] = triangle.v3.y;
 			vertexData[index++] = triangle.v3.z;
@@ -179,9 +175,7 @@ public class DebugPhysDrawing
 			vertexData[index++] = 0;
 			vertexData[index++] = 0;
 			vertexData[index++] = boneId;
-			vertexData[index++] = 0;
 			vertexData[index++] = 1;
-			vertexData[index++] = 0;
 		}
 
 		return index;
@@ -217,7 +211,7 @@ public class DebugPhysDrawing
 		
 		int triangleCount = 12; //2 top, 2 btm, 2 left, 2 right, 2 front, 2 back
 
-		int vertexCount = triangleCount * 3 * 12; //triangles * vertecies * vertexData
+		int vertexCount = triangleCount * 3 * 10; //triangles * vertecies * vertexData
 		float[] vertexData = new float[vertexCount];
 
 		int elementCount = triangleCount * 3;
@@ -225,7 +219,7 @@ public class DebugPhysDrawing
 
 		fillData(boundingBox, vertexData, elementData);
 		Skeleton skeleton = new Skeleton(getMeshJoint("root11"), getMeshJoint("dummy22"));
-		LoadableWorldModelVO vo = new LoadableWorldModelVO(vertexData, elementData, null, "", "", "", new Vector3f(), 1000, "");
+		LoadableWorldModelVO vo = new LoadableWorldModelVO(1, vertexData, elementData, null, "", "", "", new Vector3f(), 1000, "");
 		vo.setSkeleton(skeleton);
 		vo.setDiffuseTexture(new ColorTexture(0x00FF00, TextureSlot.SHARED_DIFFUSE));
 		vo.setSpecularTexture(new ColorTexture(0x000000, TextureSlot.WORLD_SPECULAR));
@@ -288,9 +282,7 @@ public class DebugPhysDrawing
 		vertexData[index++] = FloatMath.random();
 		vertexData[index++] = FloatMath.random();
 		vertexData[index++] = 0;
-		vertexData[index++] = 0;
 		vertexData[index++] = 1;
-		vertexData[index++] = 0;
 
 		vertexData[index++] = v2.x;
 		vertexData[index++] = v2.y;
@@ -301,9 +293,7 @@ public class DebugPhysDrawing
 		vertexData[index++] = FloatMath.random();
 		vertexData[index++] = FloatMath.random();
 		vertexData[index++] = 0;
-		vertexData[index++] = 0;
 		vertexData[index++] = 1;
-		vertexData[index++] = 0;
 
 		vertexData[index++] = v3.x;
 		vertexData[index++] = v3.y;
@@ -314,9 +304,7 @@ public class DebugPhysDrawing
 		vertexData[index++] = FloatMath.random();
 		vertexData[index++] = FloatMath.random();
 		vertexData[index++] = 0;
-		vertexData[index++] = 0;
 		vertexData[index++] = 1;
-		vertexData[index++] = 0;
 
 		return index;
 	}

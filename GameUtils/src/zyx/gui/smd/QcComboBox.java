@@ -10,6 +10,8 @@ public class QcComboBox extends JComboBox<File>
 
 	public QcComboBox()
 	{
+		addItem(new File("=ALL="));
+		
 		ArrayList<File> qcFiles = QcScanner.getQcFiles();
 		for (File qcFile : qcFiles)
 		{

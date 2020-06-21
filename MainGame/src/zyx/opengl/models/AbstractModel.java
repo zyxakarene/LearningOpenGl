@@ -26,10 +26,14 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 	public AbstractModel(Shader shader)
 	{
 		meshShader = ShaderManager.getInstance().get(shader);
+	}
+
+	protected final void setup()
+	{
 		createObjects();
 		setupAttributes();
 	}
-
+	
 	protected void createObjects()
 	{
 		vao = ModelUtils.generateVertexArray();
@@ -137,5 +141,5 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 	{
 		return true;
 	}
-
+	
 }

@@ -17,9 +17,12 @@ public class SmdTriangleHandler implements ISmdHandler
 	private final ArrayList<Integer> elements;
 
 	private int indexCounter;
+	private int maxBoneCount;
 
-	public SmdTriangleHandler()
+	public SmdTriangleHandler(int maxBoneCount)
 	{
+		this.maxBoneCount = maxBoneCount;
+		
 		verticies = new ArrayList<>();
 		elements = new ArrayList<>();
 		pos = new Vector3f();
@@ -50,18 +53,18 @@ public class SmdTriangleHandler implements ISmdHandler
 		float v = Float.parseFloat(split[8]);
 		uv.set(u, v);
 
-		byte[] indexes = new byte[]
-		{
-			0, 0
-		};
-		float[] weights = new float[]
-		{
-			0f, 0f
-		};
+		byte[] indexes = new byte[maxBoneCount];
+		float[] weights = new float[maxBoneCount];
 
 		if (split.length > 9)
 		{
 			int boneCount = Integer.parseInt(split[9]);
+			if (boneCount > maxBoneCount)
+			{
+				String msg = String.format("Too many bones in the line %s, compared to the max %s", boneCount, maxBoneCount);
+				throw new RuntimeException(msg);
+			}
+			
 			for (int i = 0; i < boneCount; i++)
 			{
 				byte boneWeightId = Byte.parseByte(split[10 + (2 * i)]);
@@ -74,10 +77,7 @@ public class SmdTriangleHandler implements ISmdHandler
 		else
 		{
 			indexes[0] = 0;
-			indexes[1] = 0;
-			
 			weights[0] = 1;
-			weights[1] = 0;
 		}
 
 		int existingIndex = exists(indexes, weights);
@@ -88,8 +88,10 @@ public class SmdTriangleHandler implements ISmdHandler
 		else
 		{
 			Vertex vertex = new Vertex(pos, norm, uv, indexCounter);
-			vertex.addWeight(indexes[0], weights[0]);
-			vertex.addWeight(indexes[1], weights[1]);
+			for (int i = 0; i < indexes.length; i++)
+			{
+				vertex.addWeight(indexes[i], weights[i]);
+			}
 
 			elements.add(indexCounter);
 			verticies.add(vertex);
@@ -120,7 +122,12 @@ public class SmdTriangleHandler implements ISmdHandler
 
 	private String getString(byte[] indexes, float[] weights)
 	{
-		return String.format("%s%s%s%s%s%s%s%s%s%s%s%s", pos.x, pos.y, pos.z, norm.x, norm.y, norm.z, uv.x, uv.y, indexes[0], indexes[1], weights[0], weights[1]);
+		StringBuilder weightBuilder = new StringBuilder();
+		for (int i = 0; i < indexes.length; i++)
+		{
+			weightBuilder.append(indexes[i]).append(weights[i]);
+		}
+		return String.format("%s%s%s%s%s%s%s%s%s", pos.x, pos.y, pos.z, norm.x, norm.y, norm.z, uv.x, uv.y, weightBuilder);
 	}
 
 	@Override

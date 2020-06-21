@@ -34,7 +34,10 @@ class AnimationTransformer
 			JointTransform prevTransform = prevTransforms.get(key);
 			JointTransform nextTransform = nextTransforms.get(key);
 
-			transform(prevTransform, nextTransform, joint, percentage);
+			if (prevTransform != null && nextTransform != null)
+			{
+				transform(prevTransform, nextTransform, joint, percentage);
+			}
 		}
 	}
 

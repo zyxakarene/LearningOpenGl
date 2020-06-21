@@ -52,9 +52,9 @@ public class DebugPhysics
 			
 			if (GameConstants.DRAW_PHYSICS)
 			{
-				ShaderManager.getInstance().bind(Shader.WORLD);
+				ShaderManager.getInstance().bind(Shader.WORLD_1);
 				models[DebugPhysDrawing.INDEX_BOUNDING].draw();
-				ShaderManager.getInstance().bind(Shader.WORLD);
+				ShaderManager.getInstance().bind(Shader.WORLD_1);
 				models[DebugPhysDrawing.INDEX_MESH].draw();
 			}
 			

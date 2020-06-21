@@ -2,9 +2,10 @@ package zyx.opengl.shaders.implementations;
 
 import java.util.Random;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.SharedShaderObjects;
 
-public class AmbientOcclusionShader extends BaseBoneShader
+public class AmbientOcclusionShader extends AbstractShader
 {
 
 	private int positionTexUniform;
@@ -18,7 +19,7 @@ public class AmbientOcclusionShader extends BaseBoneShader
 	}
 
 	@Override
-	protected void onPostLoading()
+	protected void postLoading()
 	{
 		positionTexUniform = UniformUtils.createUniform(program, "gPosition");
 		normalTexUniform = UniformUtils.createUniform(program, "gNormal");

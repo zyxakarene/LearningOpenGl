@@ -2,7 +2,7 @@ package zyx.game.scene.dev;
 
 import org.lwjgl.input.Keyboard;
 import zyx.game.components.AnimatedMesh;
-import zyx.game.components.MeshObject;
+import zyx.game.components.SimpleMesh;
 import zyx.game.controls.input.KeyboardData;
 import zyx.utils.FloatMath;
 
@@ -16,30 +16,25 @@ public class TestScene extends DebugScene
 	@Override
 	protected void onPreloadResources()
 	{
-		preloadResource("flat_bg");
 	}
 
 	@Override
-	protected void onInitializeGameScene()
+	protected void onInitialize()
 	{
 		addPlayerControls();
 		
-		for (int i = 0; i < 0; i++)
-		{
-			MeshObject model = new MeshObject();
-			model.load("mesh.box");
-			model.setX(-20);
-//			model.setY(FloatMath.random() * 300);
-
-			world.addChild(model);
-			objects.add(model);
-		}
-
-		AnimatedMesh knight = new AnimatedMesh();
-		knight.load("mesh.knight.knight");
-		knight.setAnimation("attack");
-		objects.add(knight);
-		world.addChild(knight);
+		AnimatedMesh jasper = new AnimatedMesh();
+		jasper.load("mesh.jasper");
+		jasper.setAnimation("walking");
+		objects.add(jasper);
+		world.addChild(jasper);
+		
+		AnimatedMesh box = new AnimatedMesh();
+		box.load("mesh.furniture.fridge");
+		box.setAnimation("open");
+		box.lookAt(100, 0, 0);
+		objects.add(box);
+		world.addChild(box);
 	}
 
 //	@Override
@@ -53,26 +48,41 @@ public class TestScene extends DebugScene
 	{
 		super.onUpdate(timestamp, elapsedTime);
 		
-		if (KeyboardData.data.isDown(Keyboard.KEY_SPACE))
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
 		{
-			AnimatedMesh tempKnight = new AnimatedMesh();
-			tempKnight.setX((FloatMath.random() * 200) - 100);
-			tempKnight.setY((FloatMath.random() * 200) - 100);
-			tempKnight.setRotZ(FloatMath.random() * 360);
+			AnimatedMesh tempJasper = new AnimatedMesh();
+			tempJasper.setX((FloatMath.random() * 400) - 200);
+			tempJasper.setY((FloatMath.random() * 400) - 200);
+			tempJasper.setRotZ(FloatMath.random() * 360);
 			
-			tempKnight.load("mesh.knight.knight");
+			tempJasper.load("mesh.jasper");
 			
 			if (Math.random() > 0.5)
 			{
-				tempKnight.setAnimation("attack");
+				tempJasper.setAnimation("walking");
 			}
 			else
 			{
-				tempKnight.setAnimation("walk");	
+				tempJasper.setAnimation("action");	
 			}
 			
-			objects.add(tempKnight);
-			world.addChild(tempKnight);
+			objects.add(tempJasper);
+			world.addChild(tempJasper);
+		}
+		
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
+		{
+			AnimatedMesh tempBox = new AnimatedMesh();
+			tempBox.setX((FloatMath.random() * 400) - 200);
+			tempBox.setY((FloatMath.random() * 400) - 200);
+			tempBox.setRotZ(FloatMath.random() * 360);
+			
+			tempBox.load("mesh.furniture.fridge");
+			tempBox.setAnimation("open");
+			tempBox.lookAt(0, 0, 0);
+			
+			objects.add(tempBox);
+			world.addChild(tempBox);
 		}
 	}
 }

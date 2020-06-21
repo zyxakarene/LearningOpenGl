@@ -3,11 +3,29 @@ package zyx.opengl.models.implementations;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.implementations.physics.PhysBox;
+import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.AbstractTexture;
 
 public class LoadableWorldModelVO
 {
-
+	private static final Shader[] WORLD_SHADERS = new Shader[]
+	{
+		null,
+		Shader.WORLD_1,
+		Shader.WORLD_2,
+		Shader.WORLD_3,
+		Shader.WORLD_4,
+	};
+	
+	private static final Shader[] SHADOW_SHADERS = new Shader[]
+	{
+		null,
+		Shader.DEPTH_1,
+		Shader.DEPTH_2,
+		Shader.DEPTH_3,
+		Shader.DEPTH_4,
+	};
+	
 	float vertexData[];
 	int elementData[];
 	Skeleton skeleton;
@@ -18,14 +36,20 @@ public class LoadableWorldModelVO
 	PhysBox physBox;
 	Vector3f radiusCenter;
 	float radius;
+	Shader worldShader;
+	Shader shadowShader;
+	int boneCount;
 	
 	AbstractTexture gameTexture;
 	AbstractTexture normalTexture;
 	AbstractTexture specularTexture;
 
-	public LoadableWorldModelVO(float[] vertexData, int[] elementData, PhysBox physBox, String diffuse, String normal, String specular,
+	public LoadableWorldModelVO(int boneCount, float[] vertexData, int[] elementData, PhysBox physBox, String diffuse, String normal, String specular,
 			Vector3f radiusCenter, float radius, String skeletonId)
 	{
+		this.boneCount = boneCount;
+		this.worldShader = WORLD_SHADERS[boneCount];
+		this.shadowShader = SHADOW_SHADERS[boneCount];
 		this.vertexData = vertexData;
 		this.elementData = elementData;
 		this.diffuseTextureId = diffuse;
