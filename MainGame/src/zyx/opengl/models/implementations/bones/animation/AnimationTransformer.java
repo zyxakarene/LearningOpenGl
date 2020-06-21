@@ -26,17 +26,25 @@ class AnimationTransformer
 						  HashMap<Byte, JointTransform> nextTransforms,
 						  HashMap<Byte, Joint> joints,
 						  Byte[] keys,
-						  float percentage)
+						  float percentage,
+						  HashMap<Byte, JointTransform> blendTransforms,
+						  float blendPercentage)
 	{
 		for (byte key : keys)
 		{
 			Joint joint = joints.get(key);
 			JointTransform prevTransform = prevTransforms.get(key);
 			JointTransform nextTransform = nextTransforms.get(key);
+			
+			JointTransform blendTransform = null;
+			if (blendTransforms != null)
+			{
+				blendTransform = blendTransforms.get(key);
+			}
 
 			if (prevTransform != null && nextTransform != null)
 			{
-				transform(prevTransform, nextTransform, joint, percentage);
+				transform(prevTransform, nextTransform, joint, percentage, blendTransform, blendPercentage);
 			}
 		}
 	}
@@ -52,7 +60,12 @@ class AnimationTransformer
 		}
 	}
 
-	private static void transform(JointTransform prevTransform, JointTransform nextTransform, Joint joint, float percentage)
+	private static void transform(JointTransform prevTransform,
+								  JointTransform nextTransform, 
+								  Joint joint, 
+								  float percentage, 
+								  JointTransform blendTransform, 
+								  float blendPercentage)
 	{
 		prevTransform.getPosition(PREV_POS);
 		nextTransform.getPosition(NEXT_POS);
@@ -62,6 +75,15 @@ class AnimationTransformer
 		lerp(PREV_POS, NEXT_POS, percentage, INTERPOLATED_POS);
 		slerp(PREV_ROT, NEXT_ROT, percentage, INTERPOLATED_ROT);
 
+		if (blendTransform != null)
+		{
+			blendTransform.getPosition(NEXT_POS);
+			blendTransform.getRotation(NEXT_ROT);
+			
+			lerp(NEXT_POS, INTERPOLATED_POS, blendPercentage, INTERPOLATED_POS);
+			slerp(NEXT_ROT, INTERPOLATED_ROT, blendPercentage, INTERPOLATED_ROT);
+		}
+		
 		MatrixUtils.transformMatrix(INTERPOLATED_ROT, INTERPOLATED_POS, TRANSFORM_MATRIX);
 		
 		joint.setAnimationTransform(TRANSFORM_MATRIX);

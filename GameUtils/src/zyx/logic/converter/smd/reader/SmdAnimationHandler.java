@@ -15,16 +15,21 @@ public class SmdAnimationHandler implements ISmdHandler
 	
 	private String name;
 	private boolean looping;
+	private int startFrame;
+	private int endFrame;
 	private ArrayList<AnimationFrame> animFrames = new ArrayList<>();
 	private AnimationFrame currentFrame;
+	private boolean withinRange;
 	
 	private HashMap<Byte, Bone> boneIdMapFromMesh;
 	private HashMap<String, Bone> boneNameMapFromAnimation;
 
-	public SmdAnimationHandler(String name, boolean looping, Bone animationRootBone)
+	public SmdAnimationHandler(String name, boolean looping, Bone animationRootBone, int startFrame, int endFrame)
 	{
 		this.name = name;
 		this.looping = looping;
+		this.startFrame = startFrame;
+		this.endFrame = endFrame;
 		pos = new Vector3f();
 		rot = new Vector3f();
 		
@@ -39,10 +44,18 @@ public class SmdAnimationHandler implements ISmdHandler
 		if (line.startsWith("time"))
 		{
 			short time = Short.parseShort(split[1]);
-			currentFrame = new AnimationFrame(time);
-			animFrames.add(currentFrame);
+			
+			withinRange = time >= startFrame && time <= endFrame;
+			
+			if (withinRange)
+			{
+				time -= startFrame;
+				
+				currentFrame = new AnimationFrame(time);
+				animFrames.add(currentFrame);
+			}
 		}
-		else
+		else if (withinRange)
 		{
 			byte animationBoneId = Byte.parseByte(split[0]);
 			
@@ -68,10 +81,10 @@ public class SmdAnimationHandler implements ISmdHandler
 	@Override
 	public Animation getResult()
 	{
-		AnimationFrame[] frames = new AnimationFrame[animFrames.size()];
-		animFrames.toArray(frames);
+		AnimationFrame[] animationFrames = new AnimationFrame[animFrames.size()];
+		animFrames.toArray(animationFrames);
 		
-		return new Animation(name, looping, frames);
+		return new Animation(name, looping, animationFrames);
 	}
 
 	@Override

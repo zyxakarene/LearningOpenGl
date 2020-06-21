@@ -9,6 +9,7 @@ public class Animation implements IDisposeable
 	
 	public String name;
 	public AnimationFrame[] frames;
+	public int blendDuration;
 
 	public Animation(String name, int length, boolean looping)
 	{
@@ -16,6 +17,7 @@ public class Animation implements IDisposeable
 		this.frames = new AnimationFrame[length];
 		this.length = length;
 		this.looping = looping;
+		this.blendDuration = 500;
 	}
 	
 	public void setFrame(int frame, AnimationFrame animationFrame)

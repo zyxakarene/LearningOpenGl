@@ -18,6 +18,11 @@ public class AnimatedMesh extends SimpleMesh
 		this.animation = animation;
 		animationController.setAnimation(animation);
 	}
+	
+	public void clearBlend()
+	{
+		animationController.clearBlend();
+	}
 
 	public String getAnimation()
 	{

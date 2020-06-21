@@ -6,6 +6,7 @@ import zyx.UtilConstants;
 class QcLineReader
 {
 	private static final String REGEX = "\\s+";
+	private static final String FRAME_REGEX = "-";
 	private static final String TYPE_SKELETON = "skeleton";
 	private static final String TYPE_MESH = "mesh";
 	private static final String LOOP = "loop";
@@ -74,9 +75,15 @@ class QcLineReader
 		String[] split = line.split(REGEX);
 		String name = split[1];
 		File animationFile = new File(root.getAbsolutePath() + File.separator +  split[2]);
-		boolean looping = split.length > 3 && LOOP.equals(split[3]);
 		
-		QcAnimation animation = new QcAnimation(animationFile, name, looping);
+		String frames = split[3];
+		String[] frameSplit = frames.split(FRAME_REGEX);
+		int start = Integer.parseInt(frameSplit[0]);
+		int end = Integer.parseInt(frameSplit[1]);
+		
+		boolean looping = split.length > 4 && LOOP.equals(split[4]);
+		
+		QcAnimation animation = new QcAnimation(animationFile, name, start, end, looping);
 		
 		qc.animations.add(animation);
 	}

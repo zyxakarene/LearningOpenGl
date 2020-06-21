@@ -7,11 +7,15 @@ public class QcAnimation
 	public File file;
 	public String name;
 	public boolean looping;
+	public int start;
+	public int end;
 
-	public QcAnimation(File file, String name, boolean looping)
+	public QcAnimation(File file, String name, int start, int end, boolean looping)
 	{
 		this.file = file;
 		this.name = name;
+		this.start = start;
+		this.end = end;
 		this.looping = looping;
 	}
 }
