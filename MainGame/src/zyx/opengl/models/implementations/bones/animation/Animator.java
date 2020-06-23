@@ -7,7 +7,6 @@ import zyx.opengl.models.implementations.bones.transform.JointTransform;
 import zyx.utils.DeltaTime;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
-import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IDisposeable;
 
 public class Animator implements IDisposeable
@@ -23,6 +22,7 @@ public class Animator implements IDisposeable
 	private Animation lastAnimation;
 	private long timeSinceLastStarted;
 	private long timeAtChange;
+	private int blendDuration;
 
 	public Animator(HashMap<Byte, Joint> joints, HashMap<String, Animation> animations)
 	{
@@ -35,10 +35,19 @@ public class Animator implements IDisposeable
 
 	public void setCurrentAnimation(AnimationController controller)
 	{
-		lastAnimation = animations.get(controller.lastAnimation);
-		timeSinceLastStarted = controller.timeSinceLastAninmation;
-		timeAtChange = controller.timeAtChange;
-
+		Animation newAnimation = animations.get(controller.animation);
+		if (newAnimation != null)
+		{
+			blendDuration = newAnimation.blendDuration;
+			
+			if (blendDuration > controller.blendTimer)
+			{
+				lastAnimation = animations.get(controller.lastAnimation);
+				timeSinceLastStarted = controller.timeSinceLastAninmation;
+				timeAtChange = controller.animationStartedAt;				
+			}
+		}
+		
 		currentAnimation = animations.get(controller.animation);
 		timeSinceStarted = controller.timeSinceStarted;
 	}
@@ -68,10 +77,17 @@ public class Animator implements IDisposeable
 				int prevFrame = FloatMath.floor(lastFrame);
 
 				float timeSinceBlend = DeltaTime.getTimestamp() - timeAtChange;
-				blendPercent = timeSinceBlend / 500f;
-				Print.out(blendPercent);
-				AnimationFrame blendAnimationFrame = lastAnimation.frames[prevFrame];
-				blendTransforms = blendAnimationFrame.transforms;
+				blendPercent = timeSinceBlend / blendDuration;
+
+				if (blendPercent > 1)
+				{
+					lastAnimation = null;
+				}
+				else
+				{
+					AnimationFrame blendAnimationFrame = lastAnimation.frames[prevFrame];
+					blendTransforms = blendAnimationFrame.transforms;
+				}
 			}
 
 			float timeSinceStart = timeSinceStarted;

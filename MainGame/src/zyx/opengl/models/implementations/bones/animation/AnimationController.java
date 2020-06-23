@@ -14,7 +14,6 @@ public class AnimationController implements IAnimateableMesh
 	
 	String lastAnimation;
 	long timeSinceLastAninmation;
-	long timeAtChange;
 	int blendTimer;
 
 	public AnimationController()
@@ -29,10 +28,9 @@ public class AnimationController implements IAnimateableMesh
 		blendTimer = 0;
 		lastAnimation = animation;
 		timeSinceLastAninmation = timeSinceStarted;
-		timeAtChange = DeltaTime.getTimestamp();
+		animationStartedAt = DeltaTime.getTimestamp();
 		
 		animation = name;
-		animationStartedAt = DeltaTime.getTimestamp();
 		timeSinceStarted = 0;
 	}
 
@@ -51,17 +49,7 @@ public class AnimationController implements IAnimateableMesh
 	public void update(long timestamp, int elapsedTime)
 	{
 		timeSinceStarted += elapsedTime;
-		
-		if (lastAnimation != null)
-		{
-			blendTimer += elapsedTime;
-			
-			if (blendTimer >= 500)
-			{
-				lastAnimation = null;
-				timeSinceLastAninmation = 0;
-			}
-		}
+		blendTimer += elapsedTime;
 	}
 
 	@Override
