@@ -32,6 +32,7 @@ SmdAnimation
 {
 	UtfString						name
 	boolean							looping
+	short							blendTime
 	short							frameCount
 	SmdAnimationFrame[frameCount]	frames
 }

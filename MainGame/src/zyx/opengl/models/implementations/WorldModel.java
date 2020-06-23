@@ -33,6 +33,8 @@ public class WorldModel extends AbstractModel implements IShadowable
 	private Vector3f radiusCenter;
 	private float radius;
 	private int boneCount;
+	
+	public boolean ready;
 
 	public WorldModel(LoadableWorldModelVO vo)
 	{
@@ -67,6 +69,8 @@ public class WorldModel extends AbstractModel implements IShadowable
 			vo.gameTexture, vo.normalTexture, vo.specularTexture
 		};
 		setTextures(texs);
+		
+		ready = true;
 	}
 
 	@Override

@@ -79,6 +79,11 @@ public class MeshResource extends BaseRequiredSubResource implements ITaskComple
 	@Override
 	protected void onResourceReloaded(ResourceDataInputStream data)
 	{
+		if (model != null)
+		{
+			model.ready = false;
+		}
+		
 		cancelSubBatches();
 		
 		if (loadingTask != null)

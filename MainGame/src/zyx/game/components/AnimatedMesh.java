@@ -32,7 +32,7 @@ public class AnimatedMesh extends SimpleMesh
 	@Override
 	protected void onDraw()
 	{
-		if (loaded)
+		if (model != null && model.ready)
 		{
 			model.setAnimation(animationController);
 		}

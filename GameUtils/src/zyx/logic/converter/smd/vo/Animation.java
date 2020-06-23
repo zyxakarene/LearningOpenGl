@@ -9,12 +9,14 @@ public class Animation
 	private short length;
 	private boolean looping;
 	private AnimationFrame[] frames;
+	private short blendTime;
 
-	public Animation(String name, boolean looping, AnimationFrame[] frames)
+	public Animation(String name, boolean looping, short blendTime, AnimationFrame[] frames)
 	{
 		this.name = name;
 		this.looping = looping;
 		this.length = (short) frames.length;
+		this.blendTime = blendTime;
 		this.frames = frames;
 	}
 	
@@ -22,6 +24,7 @@ public class Animation
 	{
 		out.writeUTF(name);
 		out.writeBoolean(looping);
+		out.writeShort(blendTime);
 		out.writeShort(length);
 		
 		for (AnimationFrame frame : frames)

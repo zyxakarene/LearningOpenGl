@@ -78,7 +78,7 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	@Override
 	protected void onDraw()
 	{
-		if (loaded && inView())
+		if (model != null && model.ready && inView())
 		{
 			WorldShader.cubemapIndex = cubemapIndex;
 			shader.bind();

@@ -9,6 +9,7 @@ class AnimationObject
 	short length;
 	boolean looping;
 	AnimationFrameObject[] frames;
+	short blendDuration;
 
 	AnimationObject()
 	{
@@ -18,6 +19,7 @@ class AnimationObject
 	{
 		name = in.readUTF();
 		looping = in.readBoolean();
+		blendDuration = in.readShort();
 		length = in.readShort();
 		frames = new AnimationFrameObject[length];
 		

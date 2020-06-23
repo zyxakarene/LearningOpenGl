@@ -34,6 +34,7 @@ public class SmdImporter
 	private Bone animationRootBone;
 	private int animationStart;
 	private int animationEnd;
+	private short animationBlendTime;
 
 	public SmdImporter()
 	{
@@ -135,6 +136,7 @@ public class SmdImporter
 			animationLooping = animation.looping;
 			animationStart = animation.start;
 			animationEnd = animation.end;
+			animationBlendTime = animation.blendTime;
 
 			importFile(animation.file);
 		}
@@ -165,7 +167,7 @@ public class SmdImporter
 				}
 				else if (currentFileType == FILE_TYPE_ANIMATION)
 				{
-					lineHandler = new SmdAnimationHandler(animationName, animationLooping, animationRootBone, animationStart, animationEnd);
+					lineHandler = new SmdAnimationHandler(animationName, animationLooping, animationRootBone, animationStart, animationEnd, animationBlendTime);
 					lineHandler.setData(smd.getRootBone());
 				}
 				else

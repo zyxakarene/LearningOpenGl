@@ -77,7 +77,7 @@ public class SkeletonLoader
 	{
 		for (AnimationObject smdAnimation : smdAnimations)
 		{
-			Animation jointAnim = new Animation(smdAnimation.name, smdAnimation.length, smdAnimation.looping);
+			Animation jointAnim = new Animation(smdAnimation.name, smdAnimation.length, smdAnimation.looping, smdAnimation.blendDuration);
 
 			for (AnimationFrameObject smdFrame : smdAnimation.frames)
 			{

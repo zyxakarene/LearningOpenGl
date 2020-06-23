@@ -17,6 +17,7 @@ public class SmdAnimationHandler implements ISmdHandler
 	private boolean looping;
 	private int startFrame;
 	private int endFrame;
+	private short blendTime;
 	private ArrayList<AnimationFrame> animFrames = new ArrayList<>();
 	private AnimationFrame currentFrame;
 	private boolean withinRange;
@@ -24,12 +25,13 @@ public class SmdAnimationHandler implements ISmdHandler
 	private HashMap<Byte, Bone> boneIdMapFromMesh;
 	private HashMap<String, Bone> boneNameMapFromAnimation;
 
-	public SmdAnimationHandler(String name, boolean looping, Bone animationRootBone, int startFrame, int endFrame)
+	public SmdAnimationHandler(String name, boolean looping, Bone animationRootBone, int startFrame, int endFrame, short blendTime)
 	{
 		this.name = name;
 		this.looping = looping;
 		this.startFrame = startFrame;
 		this.endFrame = endFrame;
+		this.blendTime = blendTime;
 		pos = new Vector3f();
 		rot = new Vector3f();
 		
@@ -84,7 +86,7 @@ public class SmdAnimationHandler implements ISmdHandler
 		AnimationFrame[] animationFrames = new AnimationFrame[animFrames.size()];
 		animFrames.toArray(animationFrames);
 		
-		return new Animation(name, looping, animationFrames);
+		return new Animation(name, looping, blendTime, animationFrames);
 	}
 
 	@Override
