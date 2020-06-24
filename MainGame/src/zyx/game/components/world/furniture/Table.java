@@ -19,15 +19,14 @@ public class Table extends BaseFurnitureItem<SimpleMesh>
 	@Override
 	protected void onGotItem(GameItem item)
 	{
-		item.setPosition(true, 0, 43, 0);
+		view.addChildAsAttachment(item, "plate_center");
 		item.setRotation(0, 0, 0);
-		addChild(item);
 	}
 
 	@Override
 	protected void onLostItem(GameItem item)
 	{
-		removeChild(item);
+		view.removeChildAsAttachment(item);
 	}
 
 	@Override

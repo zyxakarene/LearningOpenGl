@@ -65,16 +65,16 @@ public class MatrixUtils
 
 	public static void getUpFrom(Matrix4f matrix, Vector3f out)
 	{
-		out.x = matrix.m10;
-		out.y = matrix.m11;
-		out.z = matrix.m12;
+		out.x = matrix.m20;
+		out.y = matrix.m21;
+		out.z = matrix.m22;
 	}
 
 	public static void getDirFrom(Matrix4f matrix, Vector3f out)
 	{
-		out.x = matrix.m20;
-		out.y = matrix.m21;
-		out.z = matrix.m22;
+		out.x = -matrix.m10;
+		out.y = -matrix.m11;
+		out.z = -matrix.m12;
 	}
 
 	public static void setDirTo(Matrix4f matrix, Vector3f dir)
@@ -111,13 +111,13 @@ public class MatrixUtils
 		matrix.m01 = right.y * HELPER_SCALE.x;
 		matrix.m02 = right.z * HELPER_SCALE.x;
 
-		matrix.m10 = upCalc.x * HELPER_SCALE.y;
-		matrix.m11 = upCalc.y * HELPER_SCALE.y;
-		matrix.m12 = upCalc.z * HELPER_SCALE.y;
+		matrix.m20 = upCalc.x * HELPER_SCALE.y;
+		matrix.m21 = upCalc.y * HELPER_SCALE.y;
+		matrix.m22 = upCalc.z * HELPER_SCALE.y;
 
-		matrix.m20 = dir.x * HELPER_SCALE.z;
-		matrix.m21 = dir.y * HELPER_SCALE.z;
-		matrix.m22 = dir.z * HELPER_SCALE.z;
+		matrix.m10 = dir.x * -HELPER_SCALE.z;
+		matrix.m11 = dir.y * -HELPER_SCALE.z;
+		matrix.m12 = dir.z * -HELPER_SCALE.z;
 		
 	}
 

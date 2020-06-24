@@ -49,6 +49,8 @@ public class SmdImporter
 		{
 			return;
 		}
+		
+		System.out.println("Importing file: " + file);
 
 		Scanner scan = new Scanner(file);
 

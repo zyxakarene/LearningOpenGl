@@ -91,6 +91,7 @@ public class DebugServerForm extends javax.swing.JFrame
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Server");
 
         getOrderBtn.setText("Get Order");
         getOrderBtn.addActionListener(new java.awt.event.ActionListener()

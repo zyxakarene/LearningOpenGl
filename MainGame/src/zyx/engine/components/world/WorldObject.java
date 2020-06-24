@@ -554,7 +554,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 		Vector3f.sub(HELPER_POSITION, HELPER_DIR, HELPER_DIR);
 
 		MatrixUtils.setDirTo(localMatrix, HELPER_DIR);
-//		rotate(-90, 0, 0);
+		
 		updateTransforms(true);
 	}
 

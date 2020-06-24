@@ -60,6 +60,10 @@ public class PhysTriangle
 			AC.normalise();
 
 			Vector3f.cross(AB, AC, normal);
+			if (normal.length() == 0)
+			{
+				System.out.println("!!");
+			}
 			normal.normalise();
 		}
 		else

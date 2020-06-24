@@ -55,7 +55,7 @@ public class RoomItems implements IUpdateable
 		moneyJar = MoneyJar.getInstance();
 
 		floor = new Floor();
-		floor.updateLook(0, 0, 100);
+		floor.updateLook(0, 0, 0);
 
 		fridges = new Fridge[1];
 		fridges[0] = new Fridge();
