@@ -46,6 +46,10 @@ public class Animator implements IDisposeable
 				timeSinceLastStarted = controller.timeSinceLastAninmation;
 				timeAtChange = controller.animationStartedAt;				
 			}
+			else
+			{
+				lastAnimation = null;
+			}
 		}
 		
 		currentAnimation = animations.get(controller.animation);

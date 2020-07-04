@@ -102,10 +102,10 @@ public class GameScene extends Scene
 	public void createPlayerObject()
 	{
 		player = new PlayerObject();
-
 		player.addBehavior(new FreeFlyBehavior());
 		player.addBehavior(new CameraUpdateViewBehavior());
 		player.addBehavior(new OnlinePositionSender());
+		
 		Camera.getInstance().setViewObject(player);
 
 		world.addChild(player);

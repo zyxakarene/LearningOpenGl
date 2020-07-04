@@ -12,10 +12,4 @@ public abstract class ChefWalkingBehavior<P extends BaseInteractableItem<Chef>> 
 	{
 		super(npc, type);
 	}
-
-	@Override
-	protected void onEnter()
-	{
-		setTarget(params.x, params.y, params.z);
-	}
 }

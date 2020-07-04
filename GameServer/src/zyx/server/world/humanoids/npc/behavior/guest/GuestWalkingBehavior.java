@@ -12,10 +12,4 @@ public abstract class GuestWalkingBehavior<P extends BaseInteractableItem<Guest>
 	{
 		super(npc, type);
 	}
-
-	@Override
-	protected void onEnter()
-	{
-		setTarget(params.x, params.y, params.z);
-	}
 }

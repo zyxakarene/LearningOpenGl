@@ -28,6 +28,7 @@ import zyx.game.scene.game.GameScene;
 import zyx.game.vo.DishType;
 import zyx.game.vo.FoodState;
 import zyx.game.vo.HandheldItemType;
+import zyx.game.world.entities.data.EntityInteractData;
 import zyx.game.world.guests.data.GuestOrderData;
 import zyx.net.io.controllers.NetworkCallbacks;
 import zyx.net.io.controllers.NetworkCommands;
@@ -41,12 +42,14 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 	private ItemHandler itemHandler;
 
 	private HashMap<Integer, GameCharacter> characterMap;
+	private HashMap<Integer, BaseFurnitureItem> furnitureMap;
 
 	public GameNetworkCallbacks(ItemHolderHandler playerHandler, ItemHandler itemHandler)
 	{
 		this.itemHolderHandler = playerHandler;
 		this.itemHandler = itemHandler;
 		this.characterMap = new HashMap<>();
+		this.furnitureMap = new HashMap<>();
 
 		registerCallback(NetworkCommands.AUTHENTICATE, (INetworkCallback<AuthenticationData>) this::onAuthenticate);
 		registerCallback(NetworkCommands.SETUP_GAME, (INetworkCallback<GameSetupVo>) this::onGameSetup);
@@ -54,6 +57,7 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 		registerCallback(NetworkCommands.CHARACTER_LEFT_GAME, (INetworkCallback<Integer>) this::onCharacterLeft);
 		registerCallback(NetworkCommands.CHARACTER_MASS_POSITION, (INetworkCallback<CharacterMassPositionData>) this::onCharacterMassPosition);
 		registerCallback(NetworkCommands.GUEST_GIVE_ORDER, (INetworkCallback<GuestOrderData>) this::onGiveOrder);
+		registerCallback(NetworkCommands.ENTITY_INTERACT, (INetworkCallback<EntityInteractData>) this::onInteractWith);
 	}
 
 	private void onAuthenticate(AuthenticationData data)
@@ -105,6 +109,7 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 			int id = data.ids[i];
 			Print.out("Furniture", id, "was added to the world");
 			itemHolderHandler.addItemHolder(id, furniture);
+			furnitureMap.put(id, furniture);
 
 			World3D.instance.addChild(furniture);
 		}
@@ -115,6 +120,30 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 		Print.out("User", id, "left my game!");
 
 		itemHolderHandler.remove(id);
+	}
+	
+	private void onInteractWith(EntityInteractData data)
+	{
+		Print.out(data.userId, "interacted with", data.entityId, ":", data.started);
+		
+		BaseFurnitureItem furniture = furnitureMap.get(data.entityId);
+		if (furniture != null)
+		{
+			furniture.interactWith(data.started);
+		}
+		
+		GameCharacter character = characterMap.get(data.userId);
+		if (character != null)
+		{
+			if (data.started)
+			{
+				character.interactWith(furniture);
+			}
+			else
+			{
+				character.stopInteracting();
+			}
+		}
 	}
 
 	private void onCharacterMassPosition(CharacterMassPositionData data)

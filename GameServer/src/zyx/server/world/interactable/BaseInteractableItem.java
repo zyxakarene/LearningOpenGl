@@ -3,6 +3,7 @@ package zyx.server.world.interactable;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import org.lwjgl.util.vector.Vector3f;
 import zyx.game.vo.FurnitureType;
 import zyx.server.world.entity.WorldEntity;
 import zyx.server.world.humanoids.HumanoidEntity;
@@ -40,6 +41,20 @@ public abstract class BaseInteractableItem<User extends HumanoidEntity> extends 
 		return !inUse || (inUse && currentUser == user);
 	}
 
+	public void getUsingPosition(Vector3f pos, Vector3f lookPos)
+	{
+		float halfSize = getSize() / 2f;
+		getDir(HELPER_DIR);
+		
+		pos.x = x + (HELPER_DIR.x * halfSize);
+		pos.y = y + (HELPER_DIR.y * halfSize);
+		pos.z = z + (HELPER_DIR.z * halfSize);
+		
+		lookPos.x = x;
+		lookPos.y = y;
+		lookPos.z = z;
+	}
+	
 	public abstract void interactWith(User user);
 	
 	@Override

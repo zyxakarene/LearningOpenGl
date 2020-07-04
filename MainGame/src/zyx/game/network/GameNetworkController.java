@@ -17,6 +17,7 @@ import zyx.game.position.CharacterMassPositionsResponse;
 import zyx.game.position.CharacterPosRequest;
 import zyx.game.scene.ItemHolderHandler;
 import zyx.game.scene.ItemHandler;
+import zyx.game.world.entities.EntityInteractWithResponse;
 import zyx.game.world.guests.GuestGrabFoodResponse;
 import zyx.game.world.guests.GuestNoOrdersResponse;
 import zyx.game.world.guests.GuestPayResponse;
@@ -75,6 +76,8 @@ public class GameNetworkController extends BaseNetworkController
 		dispatcher.addResponseCallback(new ItemDestroyResponse());
 		dispatcher.addResponseCallback(new ItemSetFoodStateResponse());
 		dispatcher.addResponseCallback(new ItemSetInUseResponse());
+		
+		dispatcher.addResponseCallback(new EntityInteractWithResponse());
 	}
 
 }

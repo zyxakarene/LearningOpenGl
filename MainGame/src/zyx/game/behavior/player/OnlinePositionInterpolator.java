@@ -5,6 +5,8 @@ import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
+import zyx.utils.cheats.DebugPoint;
+import zyx.utils.cheats.Print;
 
 public class OnlinePositionInterpolator extends Behavior
 {
@@ -36,6 +38,7 @@ public class OnlinePositionInterpolator extends Behavior
 
 	public void setPosition(Vector3f position, Vector3f lookAt)
 	{
+		DebugPoint.addToScene(lookAt, 1000);
 		gameObject.getPosition(false, startPos);
 		gameObject.getDir(false, startLook);
 		startLook.x = startPos.x + (startLook.x * 100);

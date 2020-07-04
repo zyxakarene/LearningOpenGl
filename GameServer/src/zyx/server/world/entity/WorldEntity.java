@@ -4,9 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.position.data.PositionData;
+import zyx.server.world.humanoids.npc.Guest;
 
 public abstract class WorldEntity
 {
+	protected static final Vector3f HELPER_DIR = new Vector3f();
+	
 	private static int idCounter;
 
 	public float x, y, z;
@@ -49,6 +52,10 @@ public abstract class WorldEntity
 	
 	public void updateLook(float lx, float ly, float lz)
 	{
+		if (lx != lx)
+		{
+			System.out.println("nan");
+		}
 		this.lx = lx;
 		this.ly = ly;
 		this.lz = lz;
@@ -56,6 +63,18 @@ public abstract class WorldEntity
 		updatedPosition = true;
 	}
 
+	public void getDir(Vector3f out)
+	{
+		out.x = lx - x;
+		out.y = ly - y;
+		out.z = lz - z;
+		
+		if (out.lengthSquared() != 0)
+		{
+			out.normalise();
+		}
+	}
+	
 	public final void draw(Graphics g)
 	{
 		int size = getSize();

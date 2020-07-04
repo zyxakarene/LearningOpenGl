@@ -9,6 +9,7 @@ import zyx.engine.scene.loading.LoadingScreenProcess;
 import zyx.engine.scene.loading.LoadingScreenProcessQueue;
 import zyx.engine.scene.preloading.ResourcePreloadProcess;
 import zyx.engine.utils.worldpicker.calculating.RayPicker;
+import zyx.game.components.SimpleMesh;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.MegaManager;
 import zyx.opengl.GLUtils;

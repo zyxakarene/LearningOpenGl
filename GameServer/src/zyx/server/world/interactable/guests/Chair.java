@@ -1,6 +1,7 @@
 package zyx.server.world.interactable.guests;
 
 import java.awt.Color;
+import org.lwjgl.util.vector.Vector3f;
 import zyx.game.vo.FurnitureType;
 import zyx.server.controller.services.NpcService;
 import zyx.server.world.humanoids.npc.Guest;
@@ -52,6 +53,20 @@ public class Chair extends GuestItem implements IPlayerInteractable
 	public Guest getCurrentGuest()
 	{
 		return currentUser;
+	}
+
+	@Override
+	public void getUsingPosition(Vector3f pos, Vector3f lookPos)
+	{
+		pos.x = x;
+		pos.y = y;
+		pos.z = z;
+		
+		getDir(HELPER_DIR);
+		
+		lookPos.x = x + (HELPER_DIR.x * 10);
+		lookPos.y = y + (HELPER_DIR.y * 10);
+		lookPos.z = z + (HELPER_DIR.z * 10);
 	}
 
 	@Override

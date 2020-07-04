@@ -3,6 +3,7 @@ package zyx.server.world.interactable.common.useable;
 import java.awt.Color;
 import java.awt.Graphics;
 import zyx.game.vo.FurnitureType;
+import zyx.server.controller.services.FurnitureService;
 import zyx.server.utils.IUpdateable;
 import zyx.server.world.humanoids.HumanoidEntity;
 import zyx.server.world.humanoids.players.Player;
@@ -15,6 +16,7 @@ public abstract class UseableItem<User extends HumanoidEntity> extends BaseInter
 	private float completeTimeRemaining;
 
 	private boolean actionStarted;
+	private int currentActionUser;
 
 	public UseableItem(int completionTime, FurnitureType type)
 	{
@@ -31,8 +33,11 @@ public abstract class UseableItem<User extends HumanoidEntity> extends BaseInter
 	{
 		if (currentUser == user)
 		{
+			currentActionUser = user.id;
 			actionStarted = true;
 			completeTimeRemaining = timeToComplete;
+			
+			FurnitureService.interactWith(this, currentActionUser, true);
 		}
 	}
 
@@ -40,9 +45,12 @@ public abstract class UseableItem<User extends HumanoidEntity> extends BaseInter
 	{
 		if (!inUse)
 		{
+			currentActionUser = player.id;
 			currentUser = null;
 			actionStarted = true;
 			completeTimeRemaining = timeToComplete;
+			
+			FurnitureService.interactWith(this, currentActionUser, true);
 		}
 	}
 
@@ -55,8 +63,10 @@ public abstract class UseableItem<User extends HumanoidEntity> extends BaseInter
 
 			if (completeTimeRemaining <= 0)
 			{
+				FurnitureService.interactWith(this, currentActionUser, false);
 				onUsingCompleted();
 
+				currentActionUser = 0;
 				actionStarted = false;
 				makeAvailible();
 			}

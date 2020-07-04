@@ -11,7 +11,7 @@ import zyx.server.world.interactable.common.useable.UseableItem;
 
 public class Fridge extends UseableItem<Chef>
 {
-	private static final int PICKUP_TIME = 800;
+	private static final int PICKUP_TIME = 2000;
 	
 	private FoodItem recipe;
 	

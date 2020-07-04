@@ -11,7 +11,7 @@ public abstract class NpcFurniture<V extends SimpleMesh> extends BaseFurnitureIt
 	{
 		super(animated);
 	}
-
+	
 	@Override
 	public ArrayList<InteractionAction> getInteractions()
 	{

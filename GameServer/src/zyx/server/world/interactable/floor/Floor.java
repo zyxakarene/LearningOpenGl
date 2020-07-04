@@ -20,7 +20,7 @@ import zyx.server.world.interactable.common.ICleanable;
 import zyx.server.world.interactable.common.player.IPlayerInteractable;
 import zyx.server.world.interactable.common.player.PlayerInteraction;
 
-public class Floor extends BaseInteractableItem implements IPlayerInteractable, IUpdateable, ICleanable
+public class Floor extends BaseInteractableItem<Cleaner> implements IPlayerInteractable, IUpdateable, ICleanable
 {
 	private ArrayList<FloorItem> floorItems;
 
@@ -213,7 +213,7 @@ public class Floor extends BaseInteractableItem implements IPlayerInteractable, 
 	}
 
 	@Override
-	public void interactWith(HumanoidEntity user)
+	public void interactWith(Cleaner user)
 	{
 		throw new UnsupportedOperationException("Not supported yet.");
 	}

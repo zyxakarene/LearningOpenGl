@@ -60,12 +60,12 @@ public class RoomItems implements IUpdateable
 		fridges = new Fridge[1];
 		fridges[0] = new Fridge();
 		fridges[0].updatePosition(200, 0, 0);
-		fridges[0].updateLook(300, 0, 0);
+		fridges[0].updateLook(200, 50, 0);
 
 		stoves = new Stove[1];
 		stoves[0] = new Stove();
 		stoves[0].updatePosition(250, 5, 0);
-		stoves[0].updateLook(350, 5, 0);
+		stoves[0].updateLook(250, 50, 0);
 
 		foodTables = new FoodTable[1];
 		foodTables[0] = new FoodTable();
@@ -76,7 +76,7 @@ public class RoomItems implements IUpdateable
 		chairs = new Chair[1];
 		chairs[0] = new Chair();
 		chairs[0].updatePosition(50, 150, 0);
-		chairs[0].updateLook(150, 150, 0);
+		chairs[0].updateLook(50, 100, 0);
 
 		dinnerTables = new DinnerTable[1];
 		dinnerTables[0] = new DinnerTable(chairs);
@@ -88,9 +88,10 @@ public class RoomItems implements IUpdateable
 		orderMachine = new OrderMachine();
 		orderMachine.updatePosition(200, 200, 0);
 		orderMachine.updateLook(300, 200, 0);
+		
 		orderMonitor = new Monitor();
 		orderMonitor.updatePosition(150, 5, 0);
-		orderMonitor.updateLook(250, 5, 0);
+		orderMonitor.updateLook(150, 50, 0);
 
 		exitPoint = new ExitPoint();
 		exitPoint.updatePosition(0, 0, 0);
@@ -149,7 +150,7 @@ public class RoomItems implements IUpdateable
 
 		floor.draw(g);
 
-//		graph.draw(g);
+		graph.draw(g);
 		ArrayList<BaseNpc> npcs = NpcManager.getInstance().getAllEntities();
 		for (BaseNpc npc : npcs)
 		{

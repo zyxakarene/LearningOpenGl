@@ -12,6 +12,13 @@ public class GuestWalkToChairBehavior extends GuestWalkingBehavior<Chair>
 	}
 
 	@Override
+	protected void onEnter()
+	{
+		super.onEnter();
+	}
+
+	
+	@Override
 	protected void onArrivedAtDestination()
 	{
 		params.interactWith(npc);

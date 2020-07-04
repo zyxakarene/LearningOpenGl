@@ -16,13 +16,13 @@ public class NodeGraph
 		Node midTop = addNodeAt(85, 50, 0);
 		Node midMid = addNodeAt(95, 125, 0);
 		Node midBtm = addNodeAt(145, 180, 0);
-		Node table = addNodeAt(70, 100, 0);
-		Node chair = addNodeAt(70, 150, 0);
+		Node table = addNodeAt(80, 100, 0);
+		Node chair = addNodeAt(80, 150, 0);
 		Node monitor = addNodeAt(150, 55, 0);
 		Node fridge = addNodeAt(200, 45, 0);
 		Node stove = addNodeAt(250, 55, 0);
-		Node foodTable = addNodeAt(220, 100, 0);
-		Node dishwasher = addNodeAt(180, 250, 0);
+		Node foodTable = addNodeAt(240, 100, 0);
+		Node dishwasher = addNodeAt(170, 250, 0);
 		
 		connectNodes(monitor, midTop);
 		connectNodes(dishwasher, foodTable);

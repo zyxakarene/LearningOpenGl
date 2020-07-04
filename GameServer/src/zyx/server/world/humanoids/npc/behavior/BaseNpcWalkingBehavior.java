@@ -2,13 +2,15 @@ package zyx.server.world.humanoids.npc.behavior;
 
 import org.lwjgl.util.vector.Vector3f;
 import zyx.server.world.humanoids.npc.BaseNpc;
+import zyx.server.world.interactable.BaseInteractableItem;
 import zyx.server.world.pathfanding.AStarPathFinder;
 
-public abstract class BaseNpcWalkingBehavior<NPC extends BaseNpc, T extends Enum, P> extends BaseNpcBehavior<NPC, T, P>
+public abstract class BaseNpcWalkingBehavior<NPC extends BaseNpc, T extends Enum, P extends BaseInteractableItem<NPC>> extends BaseNpcBehavior<NPC, T, P>
 {
 
 	private static final float SPEED = 1f / 16f;
-	private static final Vector3f HELPER = new Vector3f();
+	protected static final Vector3f HELPER = new Vector3f();
+	protected static final Vector3f HELPER_LOOK = new Vector3f();
 
 	private boolean walking;
 	private boolean looking;
@@ -28,6 +30,8 @@ public abstract class BaseNpcWalkingBehavior<NPC extends BaseNpc, T extends Enum
 	private float timeToLook;
 	private int timeLooked;
 
+	private Vector3f pathEndLook;
+	
 	private AStarPathFinder pathFinder;
 
 	public BaseNpcWalkingBehavior(NPC npc, T type)
@@ -41,13 +45,23 @@ public abstract class BaseNpcWalkingBehavior<NPC extends BaseNpc, T extends Enum
 		lookStart = new Vector3f();
 		lookTarget = new Vector3f();
 		lookDir = new Vector3f();
+		
+		pathEndLook = new Vector3f();
 
 		pathFinder = new AStarPathFinder();
 	}
 
-	protected void setTarget(float x, float y, float z)
+	@Override
+	protected void onEnter()
 	{
-		pathFinder.preparePath(npc.x, npc.y, npc.z, x, y, z);
+		params.getUsingPosition(HELPER, HELPER_LOOK);
+		setTarget(HELPER, HELPER_LOOK);
+	}
+	
+	protected void setTarget(Vector3f pos, Vector3f lookPos)
+	{
+		pathEndLook.set(lookPos);
+		pathFinder.preparePath(npc.x, npc.y, npc.z, pos.x, pos.y, pos.z);
 		walking = true;
 		readyToLook = true;
 		looking = false;
@@ -105,6 +119,7 @@ public abstract class BaseNpcWalkingBehavior<NPC extends BaseNpc, T extends Enum
 					lookTarget.x = npc.x + (HELPER.x * 100); 
 					lookTarget.y = npc.y + (HELPER.y * 100); 
 					lookTarget.z = npc.z + (HELPER.z * 100); 
+					lookTarget.set(pathEndLook);
 				}
 				
 				lookStart.set(npc.lx, npc.ly, npc.lz);
@@ -156,6 +171,11 @@ public abstract class BaseNpcWalkingBehavior<NPC extends BaseNpc, T extends Enum
 	{
 		Vector3f.sub(lookTarget, lookStart, HELPER);
 		HELPER.normalise(lookDir);
+		
+		if (lookDir.x != lookDir.x)
+		{
+			System.out.println("Nan");
+		}
 
 		float length = HELPER.length();
 		timeToLook = length / SPEED;

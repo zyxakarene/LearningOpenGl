@@ -1,10 +1,10 @@
 instanceCount=100
 gravity=0,0,0
 areaX=-5,5
-areaY=-0,0
-areaZ=-5,5
-speed=0,2.5,0
-speedVariance=0.8,2,0.8
+areaY=-5,5
+areaZ=-0,0
+speed=0,0,2.5
+speedVariance=0.8,0.8,2
 startColor=0.0,0.2,0.0,1
 endColor=0.1,0.4,0.1,0.8
 startScale=3

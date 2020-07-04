@@ -10,16 +10,28 @@ public class Fridge extends NpcFurniture<AnimatedMesh>
 		super(true);
 	}
 	
-	public void open()
+	@Override
+	public void interactWith(boolean started)
 	{
-		view.setAnimation("open");
+		if (started)
+		{
+			view.setAnimation("open");
+		}
+		else
+		{
+			view.setAnimation("close");
+		}
 	}
-
+	
 	@Override
 	protected String getResource()
 	{
 		return "mesh.furniture.fridge";
 	}
 
-	
+	@Override
+	public String getInteractionAnimation()
+	{
+		return "action";
+	}
 }

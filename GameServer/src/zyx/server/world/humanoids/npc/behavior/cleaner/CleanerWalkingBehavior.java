@@ -7,15 +7,9 @@ import zyx.server.world.interactable.BaseInteractableItem;
 
 public abstract class CleanerWalkingBehavior<P extends BaseInteractableItem<Cleaner>> extends BaseNpcWalkingBehavior<Cleaner, CleanerBehaviorType, P>
 {
-
+ 
 	public CleanerWalkingBehavior(Cleaner npc, CleanerBehaviorType type)
 	{
 		super(npc, type);
-	}
-
-	@Override
-	protected void onEnter()
-	{
-		setTarget(params.x, params.y, params.z);
 	}
 }

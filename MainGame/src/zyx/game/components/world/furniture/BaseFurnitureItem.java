@@ -82,6 +82,10 @@ public abstract class BaseFurnitureItem<V extends SimpleMesh> extends GameObject
 	{
 	}
 
+	public void interactWith(boolean started)
+	{
+	}
+	
 	protected abstract String getResource();
 
 	@Override
@@ -100,6 +104,11 @@ public abstract class BaseFurnitureItem<V extends SimpleMesh> extends GameObject
 	public Matrix4f getBoneMatrix(int boneId)
 	{
 		return view.getBoneMatrix(boneId);
+	}
+
+	public String getInteractionAnimation()
+	{
+		return "idle";
 	}
 
 }

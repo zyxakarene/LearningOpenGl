@@ -6,6 +6,7 @@ import zyx.game.behavior.player.OnlinePositionInterpolator;
 import zyx.game.components.AnimatedMesh;
 import zyx.game.components.GameObject;
 import zyx.game.components.world.IItemHolder;
+import zyx.game.components.world.furniture.BaseFurnitureItem;
 import zyx.game.components.world.interactable.InteractionAction;
 import zyx.game.components.world.items.GameItem;
 import zyx.game.vo.CharacterType;
@@ -41,7 +42,7 @@ public class GameCharacter extends GameObject implements IItemHolder
 	
 	public void load(CharacterSetupVo vo)
 	{
-		mesh.load("mesh.player");
+		mesh.load("mesh.jasper");
 
 		setPosition(false, vo.pos);
 		lookAt(vo.look);
@@ -111,5 +112,16 @@ public class GameCharacter extends GameObject implements IItemHolder
 		{
 			return EMPTY_LIST;
 		}
+	}
+
+	public void interactWith(BaseFurnitureItem furniture)
+	{
+		String interactionAnimation = furniture.getInteractionAnimation();
+		mesh.setAnimation(interactionAnimation);
+	}
+
+	public void stopInteracting()
+	{
+		mesh.setAnimation("idle");
 	}
 }

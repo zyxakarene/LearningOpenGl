@@ -11,7 +11,6 @@ import zyx.engine.scene.loading.WaitingProcess;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.worldpicker.ClickedInfo;
 import zyx.engine.utils.worldpicker.IWorldPickedItem;
-import zyx.game.components.AnimatedMesh;
 import zyx.game.components.screen.hud.BaseHud;
 import zyx.game.components.screen.hud.DinerHud;
 import zyx.game.components.world.interactable.IInteractable;

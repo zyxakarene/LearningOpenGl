@@ -17,7 +17,11 @@ public class EntityInteractWithRequest extends BaseNetworkRequest
 	protected void getDataObject(WriteableDataObject data, Object... params)
 	{
 		int entityId = (int) params[0];
+		int userId = (int) params[1];
+		boolean started = (boolean) params[2];
 
 		data.addInteger(ENTITY_ID, entityId);
+		data.addInteger(USER_ID, userId);
+		data.addBoolean(STARTED, started);
 	}
 }

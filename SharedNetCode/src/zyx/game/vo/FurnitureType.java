@@ -11,7 +11,8 @@ public enum FurnitureType
 	STOVE(7),
 	FOOD_TABLE(8),
 	DISHWASHER(9),
-	GUEST_EXIT(10);
+	GUEST_EXIT(10),
+	FLOOR_ITEM(11);
 
 	private static final FurnitureType[] values = values();
 
