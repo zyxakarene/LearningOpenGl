@@ -11,6 +11,7 @@ import zyx.engine.scene.loading.WaitingProcess;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.worldpicker.ClickedInfo;
 import zyx.engine.utils.worldpicker.IWorldPickedItem;
+import zyx.game.components.AnimatedMesh;
 import zyx.game.components.screen.hud.BaseHud;
 import zyx.game.components.screen.hud.DinerHud;
 import zyx.game.components.world.interactable.IInteractable;
@@ -22,17 +23,20 @@ import zyx.game.vo.Gender;
 
 public class DinerScene extends GameScene
 {
-	private static final boolean ONLINE = true;
-	
+
+	private static final boolean ONLINE = false;
+
 	public DinerHud dinerHud;
-	
+	public DinerSceneData sceneData;
+
 	private IWorldPickedItem interactionCallback;
+	private AnimatedMesh jasper1;
 
 	public DinerScene()
 	{
 		interactionCallback = this::onInteractionCallback;
 	}
-	
+
 	@Override
 	protected void onPreloadResources()
 	{
@@ -44,6 +48,8 @@ public class DinerScene extends GameScene
 	@Override
 	protected void onInitializeGameScene()
 	{
+		sceneData = new DinerSceneData(this);
+
 		if (ONLINE)
 		{
 			addLoadingScreenProcess(new AuthenticateLoadingProcess("Zyx", Gender.random()));
@@ -61,14 +67,28 @@ public class DinerScene extends GameScene
 		CubemapManager.getInstance().load("cubemap.dragon");
 
 		world.setSunRotation(new Vector3f(-33, -5, -21));
-		
+
 		dinerHud = (DinerHud) hud;
+		
+		jasper1 = new AnimatedMesh();
+		jasper1.debugging = true;
+		jasper1.load("mesh.jasper");
+		jasper1.setAnimation("walking");
+		world.addChild(jasper1);
 	}
 
 	@Override
 	protected BaseHud createHud()
 	{
 		return new DinerHud();
+	}
+
+	@Override
+	public void createPlayerObject()
+	{
+		super.createPlayerObject();
+
+		sceneData.holderHandler.addItemHolder(player.getUniqueId(), player);
 	}
 
 	public void addInteractableObject(IInteractable item)
@@ -82,7 +102,7 @@ public class DinerScene extends GameScene
 		removePickedObject(item, GameModels.selection);
 		removePickedObject(item, interactionCallback);
 	}
-	
+
 	public void onInteractionCallback(ClickedInfo info)
 	{
 		CursorManager.getInstance().setCursor(GameCursor.HAND);
@@ -97,9 +117,39 @@ public class DinerScene extends GameScene
 			{
 				IInteractable target = ((IInteractable) worldObject);
 				ArrayList<InteractionAction> availibleInteractions = target.getInteractions();
-				
+
 				dinerHud.showInteractions(availibleInteractions);
 			}
 		}
 	}
+
+	@Override
+	protected void onUpdate(long timestamp, int elapsedTime)
+	{
+		super.onUpdate(timestamp, elapsedTime);
+
+		if (sceneData != null)
+		{
+			sceneData.update(timestamp, elapsedTime);
+		}
+	}
+
+	@Override
+	protected void onDispose()
+	{
+		super.onDispose();
+
+		if (sceneData != null)
+		{
+			sceneData.dispose();
+			sceneData = null;
+		}
+		
+		if (jasper1 != null)
+		{
+			jasper1.dispose();
+			jasper1 = null;
+		}
+	}
+
 }

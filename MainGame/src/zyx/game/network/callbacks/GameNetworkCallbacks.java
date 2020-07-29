@@ -1,6 +1,5 @@
 package zyx.game.network.callbacks;
 
-import java.util.HashMap;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.World3D;
 import zyx.engine.scene.SceneManager;
@@ -20,43 +19,27 @@ import zyx.game.models.GameModels;
 import zyx.game.network.PingManager;
 import zyx.game.joining.data.GameSetupVo;
 import zyx.game.joining.data.ItemSetupData;
-import zyx.game.scene.ItemHolderHandler;
 import zyx.game.login.data.AuthenticationData;
 import zyx.game.position.data.CharacterMassPositionData;
-import zyx.game.scene.ItemHandler;
 import zyx.game.scene.game.GameScene;
 import zyx.game.vo.DishType;
 import zyx.game.vo.FoodState;
 import zyx.game.vo.HandheldItemType;
 import zyx.game.world.entities.data.EntityInteractData;
-import zyx.game.world.guests.data.GuestOrderData;
-import zyx.net.io.controllers.NetworkCallbacks;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.INetworkCallback;
 import zyx.utils.cheats.Print;
 
-public class GameNetworkCallbacks extends NetworkCallbacks
+public class GameNetworkCallbacks extends AbstractDinerNetworkCallbacks
 {
 
-	private ItemHolderHandler itemHolderHandler;
-	private ItemHandler itemHandler;
-
-	private HashMap<Integer, GameCharacter> characterMap;
-	private HashMap<Integer, BaseFurnitureItem> furnitureMap;
-
-	public GameNetworkCallbacks(ItemHolderHandler playerHandler, ItemHandler itemHandler)
+	public GameNetworkCallbacks()
 	{
-		this.itemHolderHandler = playerHandler;
-		this.itemHandler = itemHandler;
-		this.characterMap = new HashMap<>();
-		this.furnitureMap = new HashMap<>();
-
 		registerCallback(NetworkCommands.AUTHENTICATE, (INetworkCallback<AuthenticationData>) this::onAuthenticate);
 		registerCallback(NetworkCommands.SETUP_GAME, (INetworkCallback<GameSetupVo>) this::onGameSetup);
 		registerCallback(NetworkCommands.CHARACTER_JOINED_GAME, (INetworkCallback<CharacterJoinedData>) this::onCharacterJoined);
 		registerCallback(NetworkCommands.CHARACTER_LEFT_GAME, (INetworkCallback<Integer>) this::onCharacterLeft);
 		registerCallback(NetworkCommands.CHARACTER_MASS_POSITION, (INetworkCallback<CharacterMassPositionData>) this::onCharacterMassPosition);
-		registerCallback(NetworkCommands.GUEST_GIVE_ORDER, (INetworkCallback<GuestOrderData>) this::onGiveOrder);
 		registerCallback(NetworkCommands.ENTITY_INTERACT, (INetworkCallback<EntityInteractData>) this::onInteractWith);
 	}
 
@@ -210,16 +193,5 @@ public class GameNetworkCallbacks extends NetworkCallbacks
 		onCharacterJoined(setup.characters);
 		onFurnitureAdded(setup.furniture);
 		onItemAdded(setup.items);
-	}
-
-	private void onGiveOrder(GuestOrderData data)
-	{
-		GameCharacter guest = characterMap.get(data.characterId);
-
-		if (guest != null)
-		{
-//			guest.TellDishAnimation();
-			Print.out("Guest", guest, "wanted the dish", DishType.getFromId(data.dishTypeId));
-		}
 	}
 }

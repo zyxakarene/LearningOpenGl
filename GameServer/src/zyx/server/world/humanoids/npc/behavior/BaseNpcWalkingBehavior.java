@@ -172,11 +172,6 @@ public abstract class BaseNpcWalkingBehavior<NPC extends BaseNpc, T extends Enum
 		Vector3f.sub(lookTarget, lookStart, HELPER);
 		HELPER.normalise(lookDir);
 		
-		if (lookDir.x != lookDir.x)
-		{
-			System.out.println("Nan");
-		}
-
 		float length = HELPER.length();
 		timeToLook = length / SPEED;
 		timeLooked = 0;

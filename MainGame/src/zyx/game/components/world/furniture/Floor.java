@@ -1,33 +1,45 @@
 package zyx.game.components.world.furniture;
 
 import java.util.ArrayList;
+import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.World3D;
+import zyx.engine.scene.SceneManager;
 import zyx.game.components.SimpleMesh;
 import zyx.game.components.world.interactable.InteractionAction;
 import zyx.game.components.world.items.GameItem;
+import zyx.game.components.world.player.PlayerObject;
 import zyx.game.models.GameModels;
+import zyx.game.scene.game.DinerScene;
 import zyx.utils.GeometryUtils;
 
 public class Floor extends BaseFurnitureItem<SimpleMesh>
 {
 
+	private PlayerObject player;
+
 	public Floor()
 	{
 		super(false);
-		setScale(0.01f, 0.01f, 0.01f);
+		
+		player = SceneManager.getInstance().<DinerScene>getSceneAs().player;
 	}
 
 	@Override
 	protected String getResource()
 	{
-		return "mesh.box";
+		return "mesh.furniture.floor";
 	}
 
 	@Override
 	protected void onGotItem(GameItem item)
 	{
+		Vector3f pos = player.getPosition(false, null);
+		pos.z = 0;
+		
 		World3D.instance.addChild(item);
-		item.setDir(true, GeometryUtils.ROTATION_X);
+		item.setRotation(0, 0, 0);
+		
+		item.setPosition(false, 0, 0, 0);
 	}
 
 	@Override
@@ -39,9 +51,21 @@ public class Floor extends BaseFurnitureItem<SimpleMesh>
 	@Override
 	public boolean isInteractable()
 	{
-		return false;
+		return true;
 	}
 
+	@Override
+	protected void onUpdate(long timestamp, int elapsedTime)
+	{
+		if (player != null)
+		{
+			Vector3f pos = player.getPosition(false, null);
+			pos.z = 0;
+			
+			setPosition(false, pos);
+		}
+	}
+	
 	@Override
 	public ArrayList<InteractionAction> getInteractions()
 	{

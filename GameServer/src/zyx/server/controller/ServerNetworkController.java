@@ -13,9 +13,7 @@ import zyx.game.ping.PingResponse;
 import zyx.game.position.CharacterMassPositionsRequest;
 import zyx.game.position.CharacterPosResponse;
 import zyx.game.world.entities.EntityInteractWithRequest;
-import zyx.game.world.guests.GuestGrabFoodRequest;
-import zyx.game.world.guests.GuestNoOrdersRequest;
-import zyx.game.world.guests.GuestPayRequest;
+import zyx.game.world.guests.*;
 import zyx.game.world.items.*;
 import zyx.game.world.player.*;
 import zyx.net.io.controllers.BaseNetworkController;
@@ -49,6 +47,7 @@ public class ServerNetworkController extends BaseNetworkController
 		dispatcher.addRequestHandler(new GuestPayRequest());
 		dispatcher.addRequestHandler(new GuestGrabFoodRequest());
 		dispatcher.addRequestHandler(new GuestNoOrdersRequest());
+		dispatcher.addRequestHandler(new GuestFullTableRequest());
 		dispatcher.addRequestHandler(new ItemDestroyRequest());
 		dispatcher.addRequestHandler(new ItemSetOwnerRequest());
 		dispatcher.addRequestHandler(new ItemSetFoodStateRequest());

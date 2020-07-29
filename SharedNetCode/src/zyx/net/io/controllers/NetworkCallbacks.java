@@ -3,7 +3,7 @@ package zyx.net.io.controllers;
 import java.util.HashMap;
 import zyx.net.io.responses.INetworkCallback;
 
-public class NetworkCallbacks
+public abstract class NetworkCallbacks
 {
 	private HashMap<String, INetworkCallback> callbacks;
 

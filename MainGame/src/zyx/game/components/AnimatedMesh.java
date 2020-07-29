@@ -1,7 +1,6 @@
 package zyx.game.components;
 
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
-import zyx.utils.cheats.Print;
 
 public class AnimatedMesh extends SimpleMesh
 {
@@ -37,11 +36,6 @@ public class AnimatedMesh extends SimpleMesh
 	{
 		if (model != null && model.ready)
 		{
-			if (debugging)
-			{
-				Print.out();
-			}
-			
 			model.setAnimation(animationController);
 		}
 

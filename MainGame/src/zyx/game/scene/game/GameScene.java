@@ -14,8 +14,6 @@ import zyx.game.components.world.player.PlayerObject;
 import zyx.game.models.GameModels;
 import zyx.game.network.GameNetworkController;
 import zyx.game.network.PingManager;
-import zyx.game.scene.ItemHandler;
-import zyx.game.scene.ItemHolderHandler;
 import zyx.net.io.controllers.BaseNetworkController;
 import zyx.net.io.controllers.NetworkChannel;
 import zyx.net.io.controllers.NetworkCommands;
@@ -28,11 +26,9 @@ public class GameScene extends Scene
 
 	private WorldPicker picker;
 
-	protected ItemHandler itemHandler;
-	protected ItemHolderHandler itemHolderHandler;
 	protected BaseNetworkController networkController;
 
-	protected PlayerObject player;
+	public PlayerObject player;
 
 	private ArrayList<GameObject> gameObjects;
 
@@ -79,20 +75,16 @@ public class GameScene extends Scene
 			gameObject.update(timestamp, elapsedTime);
 		}
 
-		itemHolderHandler.update(timestamp, elapsedTime);
 		picker.update();
 	}
 
 	@Override
 	protected final void onInitialize()
 	{
-		itemHolderHandler = new ItemHolderHandler();
-		itemHandler = new ItemHandler(itemHolderHandler);
+		onInitializeGameScene();
 		
 		networkController = createNetworkDispatcher();
 		networkController.addListeners();
-		
-		onInitializeGameScene();
 	}
 
 	protected void onInitializeGameScene()
@@ -109,14 +101,12 @@ public class GameScene extends Scene
 		Camera.getInstance().setViewObject(player);
 
 		world.addChild(player);
-		
-		itemHolderHandler.addItemHolder(player.getUniqueId(), player);
 	}
 
 	@Override
 	protected BaseNetworkController createNetworkDispatcher()
 	{
-		return new GameNetworkController(itemHolderHandler, itemHandler);
+		return new GameNetworkController();
 	}
 	
 	@Override
@@ -154,18 +144,6 @@ public class GameScene extends Scene
 		CubemapManager.getInstance().clean();
 		TooltipManager.getInstance().clean();
 		MeshBatchManager.getInstance().clean();
-
-		if (itemHandler != null)
-		{
-			itemHandler.dispose();
-			itemHandler = null;
-		}
-
-		if (itemHolderHandler != null)
-		{
-			itemHolderHandler.dispose();
-			itemHolderHandler = null;
-		}
 
 		super.onDispose();
 	}

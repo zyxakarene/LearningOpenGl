@@ -52,10 +52,6 @@ public abstract class WorldEntity
 	
 	public void updateLook(float lx, float ly, float lz)
 	{
-		if (lx != lx)
-		{
-			System.out.println("nan");
-		}
 		this.lx = lx;
 		this.ly = ly;
 		this.lz = lz;

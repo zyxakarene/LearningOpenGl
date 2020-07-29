@@ -3,23 +3,16 @@ package zyx.game.network.callbacks;
 import zyx.game.components.world.items.BillItem;
 import zyx.game.components.world.items.FoodItem;
 import zyx.game.components.world.items.GameItem;
-import zyx.game.scene.ItemHandler;
 import zyx.game.vo.DishType;
 import zyx.game.vo.FoodState;
 import zyx.game.world.items.data.ItemChangedData;
-import zyx.net.io.controllers.NetworkCallbacks;
 import zyx.net.io.controllers.NetworkCommands;
 import zyx.net.io.responses.INetworkCallback;
 
-public class ItemNetworkCallbacks extends NetworkCallbacks
+public class ItemNetworkCallbacks extends AbstractDinerNetworkCallbacks
 {
-
-	private ItemHandler itemHandler;
-
-	public ItemNetworkCallbacks(ItemHandler itemHandler)
+	public ItemNetworkCallbacks()
 	{
-		this.itemHandler = itemHandler;
-
 		registerCallback(NetworkCommands.ITEM_CREATE_FOOD, (INetworkCallback<ItemChangedData>) this::onCreateFood);
 		registerCallback(NetworkCommands.ITEM_CREATE_BILL, (INetworkCallback<ItemChangedData>) this::onCreateBill);
 		registerCallback(NetworkCommands.ITEM_DESTROY, (INetworkCallback<Integer>) this::onDestroyItem);

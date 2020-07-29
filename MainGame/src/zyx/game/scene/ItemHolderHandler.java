@@ -2,7 +2,6 @@ package zyx.game.scene;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import zyx.engine.scene.SceneManager;
 import zyx.game.components.world.IItemHolder;
 import zyx.game.scene.game.DinerScene;
 import zyx.utils.interfaces.IUpdateable;
@@ -14,12 +13,12 @@ public class ItemHolderHandler implements IUpdateable
 	private ArrayList<IItemHolder> holderList;
 	private DinerScene scene;
 
-	public ItemHolderHandler()
+	public ItemHolderHandler(DinerScene scene)
 	{
 		holderMap = new HashMap<>();
 		holderList = new ArrayList<>();
 		
-		scene = SceneManager.getInstance().<DinerScene>getSceneAs();
+		this.scene = scene;
 	}
 
 	public void addItemHolder(int uniqueId, IItemHolder holder)

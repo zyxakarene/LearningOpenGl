@@ -3,7 +3,10 @@ package zyx.game.scene.dev;
 import org.lwjgl.input.Keyboard;
 import zyx.game.components.AnimatedMesh;
 import zyx.game.components.SimpleMesh;
+import zyx.game.components.world.furniture.Floor;
+import zyx.game.components.world.furniture.FurnitureSetupVo;
 import zyx.game.controls.input.KeyboardData;
+import zyx.game.joining.data.FurnitureSetupData;
 import zyx.utils.FloatMath;
 
 public class TestScene extends DebugScene
@@ -39,6 +42,12 @@ public class TestScene extends DebugScene
 		jasper2.setX(50);
 		objects.add(jasper2);
 		world.addChild(jasper2);
+		
+		Floor floor = new Floor();
+		FurnitureSetupVo setup = new FurnitureSetupVo();
+		setup.fromData(FurnitureSetupData.INSTANCE, 0);
+		floor.load(setup);
+		world.addChild(floor);
 	}
 
 //	@Override

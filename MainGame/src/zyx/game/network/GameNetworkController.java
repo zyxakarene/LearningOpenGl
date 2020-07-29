@@ -11,16 +11,13 @@ import zyx.game.login.AuthenticateResponse;
 import zyx.game.login.LoginRequest;
 import zyx.game.login.LoginResponse;
 import zyx.game.joining.SetupGameResponse;
+import zyx.game.network.callbacks.GuestNetworkCallbacks;
 import zyx.game.ping.PingRequest;
 import zyx.game.ping.PingResponse;
 import zyx.game.position.CharacterMassPositionsResponse;
 import zyx.game.position.CharacterPosRequest;
-import zyx.game.scene.ItemHolderHandler;
-import zyx.game.scene.ItemHandler;
 import zyx.game.world.entities.EntityInteractWithResponse;
-import zyx.game.world.guests.GuestGrabFoodResponse;
-import zyx.game.world.guests.GuestNoOrdersResponse;
-import zyx.game.world.guests.GuestPayResponse;
+import zyx.game.world.guests.*;
 import zyx.game.world.items.*;
 import zyx.game.world.player.*;
 import zyx.net.io.controllers.BaseNetworkController;
@@ -30,10 +27,11 @@ import zyx.net.io.responses.NetworkResponseDispatcher;
 public class GameNetworkController extends BaseNetworkController
 {
 
-	public GameNetworkController(ItemHolderHandler playerHandler, ItemHandler itemHandler)
+	public GameNetworkController()
 	{
-		addCallbackMap(new GameNetworkCallbacks(playerHandler, itemHandler));
-		addCallbackMap(new ItemNetworkCallbacks(itemHandler));
+		addCallbackMap(new GameNetworkCallbacks());
+		addCallbackMap(new ItemNetworkCallbacks());
+		addCallbackMap(new GuestNetworkCallbacks());
 		addCallbackMap(new PingPongNetworkCallbacks());
 	}
 
@@ -66,6 +64,7 @@ public class GameNetworkController extends BaseNetworkController
 		dispatcher.addResponseCallback(new GuestGiveOrdersResponse());
 		dispatcher.addResponseCallback(new GuestGrabFoodResponse());
 		dispatcher.addResponseCallback(new GuestNoOrdersResponse());
+		dispatcher.addResponseCallback(new GuestFullTableResponse());
 		dispatcher.addResponseCallback(new GuestPayResponse());
 		
 		dispatcher.addResponseCallback(new ItemDropOnFloorResponse());
