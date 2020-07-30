@@ -5,6 +5,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.controls.SharedPools;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
+import zyx.opengl.models.implementations.PhysicsModel;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
@@ -125,7 +126,7 @@ public class DebugPhysDrawing
 		vo.setDiffuseTexture(new ColorTexture(0xFF0000, TextureSlot.SHARED_DIFFUSE));
 		vo.setSpecularTexture(new ColorTexture(0x000000, TextureSlot.WORLD_SPECULAR));
 		vo.setNormalTexture(new ColorTexture(0x000000, TextureSlot.WORLD_NORMAL));
-		WorldModel model = new WorldModel(vo);
+		PhysicsModel model = new PhysicsModel(vo);
 
 		SKELETON_MAP_MESH.put(box, skeleton);
 		
@@ -224,7 +225,7 @@ public class DebugPhysDrawing
 		vo.setDiffuseTexture(new ColorTexture(0x00FF00, TextureSlot.SHARED_DIFFUSE));
 		vo.setSpecularTexture(new ColorTexture(0x000000, TextureSlot.WORLD_SPECULAR));
 		vo.setNormalTexture(new ColorTexture(0x000000, TextureSlot.WORLD_NORMAL));
-		WorldModel model = new WorldModel(vo);
+		PhysicsModel model = new PhysicsModel(vo);
 
 		SKELETON_MAP_BOUNDING.put(physBox, skeleton);
 		
