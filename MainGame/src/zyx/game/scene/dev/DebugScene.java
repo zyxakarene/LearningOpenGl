@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import zyx.engine.components.cubemaps.CubemapManager;
 import zyx.engine.components.world.WorldObject;
 import zyx.engine.scene.Scene;
+import zyx.engine.utils.worldpicker.WorldPicker;
 import zyx.game.behavior.camera.CameraUpdateViewBehavior;
 import zyx.game.behavior.freefly.FreeFlyBehavior;
 import zyx.game.components.GameObject;
@@ -12,12 +13,14 @@ import zyx.utils.interfaces.IUpdateable;
 
 public class DebugScene extends Scene
 {
+	protected WorldPicker picker;
 
 	protected ArrayList<WorldObject> objects;
 
 	public DebugScene()
 	{
 		objects = new ArrayList<>();
+		picker = new WorldPicker();
 	}
 
 	protected void addPlayerControls()
@@ -46,6 +49,8 @@ public class DebugScene extends Scene
 				((IUpdateable) object).update(timestamp, elapsedTime);
 			}
 		}
+		
+		picker.update();
 	}
 
 	@Override
@@ -56,6 +61,9 @@ public class DebugScene extends Scene
 			object.dispose();
 		}
 
+		picker.dispose();
+		picker = null;
+		
 		super.onDispose();
 	}
 

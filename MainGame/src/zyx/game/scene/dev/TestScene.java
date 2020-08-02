@@ -1,19 +1,16 @@
 package zyx.game.scene.dev;
 
 import org.lwjgl.input.Keyboard;
-import zyx.game.components.AnimatedMesh;
+import org.lwjgl.util.vector.Vector3f;
+import zyx.OnTeaPotClicked;
 import zyx.game.components.SimpleMesh;
-import zyx.game.components.world.furniture.Floor;
-import zyx.game.components.world.furniture.FurnitureSetupVo;
 import zyx.game.controls.input.KeyboardData;
-import zyx.game.joining.data.FurnitureSetupData;
-import zyx.utils.FloatMath;
+import zyx.opengl.models.implementations.shapes.Box;
 
 public class TestScene extends DebugScene
 {
 
-	AnimatedMesh jasper1;
-	AnimatedMesh jasper2;
+	private SimpleMesh teapot;
 
 	public TestScene()
 	{
@@ -29,57 +26,43 @@ public class TestScene extends DebugScene
 	{
 		addPlayerControls();
 
-		jasper1 = new AnimatedMesh();
-		jasper1.debugging = true;
-		jasper1.load("mesh.jasper");
-		jasper1.setAnimation("walking");
-		objects.add(jasper1);
-		world.addChild(jasper1);
-
-		jasper2 = new AnimatedMesh();
-		jasper2.load("mesh.jasper");
-		jasper2.setAnimation("walking");
-		jasper2.setX(50);
-		objects.add(jasper2);
-		world.addChild(jasper2);
+		teapot = new SimpleMesh();
+		teapot.load("mesh.player");
+		objects.add(teapot);
+		world.addChild(teapot);
 		
-		Floor floor = new Floor();
-		FurnitureSetupVo setup = new FurnitureSetupVo();
-		setup.fromData(FurnitureSetupData.INSTANCE, 0);
-		floor.load(setup);
-		world.addChild(floor);
+		Box box = new Box();
+		box.setScale(0.005f, 1, 0.005f);
+		world.addChild(box);
+		
+		picker.addObject(teapot, new OnTeaPotClicked());
 	}
 
-//	@Override
-//	protected MainHud createHud()
-//	{
-//		return new MainHud();
-//	}
 	@Override
 	protected void onUpdate(long timestamp, int elapsedTime)
 	{
 		super.onUpdate(timestamp, elapsedTime);
 
-		if (KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
+		Vector3f pos = teapot.getPosition(true, null);
+		
+		if (KeyboardData.data.isDown(Keyboard.KEY_RIGHT))
 		{
-//			AnimatedMesh tempJasper = new AnimatedMesh();
-//			tempJasper.setX((FloatMath.random() * 400) - 200);
-//			tempJasper.setY((FloatMath.random() * 400) - 200);
-//			tempJasper.setRotZ(FloatMath.random() * 360);
-//
-//			tempJasper.load("mesh.jasper");
-
-			if (Math.random() > 0.5)
-			{
-				jasper2.setAnimation("walking");
-			}
-			else
-			{
-				jasper2.setAnimation("action");
-			}
-
-//			objects.add(tempJasper);
-//			world.addChild(tempJasper);
+			pos.x += 1f;
 		}
+		else if	(KeyboardData.data.isDown(Keyboard.KEY_LEFT))
+		{
+			pos.x -= 1f;
+		}
+		
+		if (KeyboardData.data.isDown(Keyboard.KEY_UP))
+		{
+			pos.z += 1f;
+		}
+		else if	(KeyboardData.data.isDown(Keyboard.KEY_DOWN))
+		{
+			pos.z -= 1f;
+		}
+		
+		teapot.setPosition(true, pos);
 	}
 }

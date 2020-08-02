@@ -17,7 +17,7 @@ public class OnTeaPotClicked implements IWorldPickedItem
 
 		if (MouseData.data.isLeftClicked())
 		{
-			DebugPoint.addToScene(info.position, 1000);
+			DebugPoint.addToScene(info.position, 5000);
 			SoundManager.getInstance().playSound("sound.Explosion", info.position);
 		}
 	}
