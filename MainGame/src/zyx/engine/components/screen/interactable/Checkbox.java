@@ -27,6 +27,19 @@ public class Checkbox extends Button
 		checkImg.load(resource);
 	}
 
+	@Override
+	public void setTextures(String[] textures)
+	{
+		super.setTextures(textures);
+		addChild(checkImg);
+	}
+
+	@Override
+	protected void onDraw()
+	{
+		super.onDraw();
+	}
+
 	private void onCheckImageLoaded(AbstractImage data)
 	{
 		if (loaded)

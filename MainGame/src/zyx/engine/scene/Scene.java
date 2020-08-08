@@ -1,6 +1,7 @@
 package zyx.engine.scene;
 
 import zyx.engine.components.screen.base.Stage;
+import zyx.engine.components.screen.base.generic.window.Window;
 import zyx.engine.components.world.World3D;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;
@@ -39,7 +40,7 @@ public class Scene implements ILoadingScreenDone
 
 	private boolean ready;
 
-	public DebugPanel debugPanel;
+	public Window debugPanel;
 
 	public Scene()
 	{
@@ -70,8 +71,9 @@ public class Scene implements ILoadingScreenDone
 		hud = createHud();
 		stage.hudLayer.addChild(hud);
 
-//		debugPanel = new DebugPanel();
-//		stage.addChild(debugPanel);
+		debugPanel = new DebugPanel();
+		stage.hudLayer.addChild(debugPanel);
+
 		onPreloadResources();
 
 		onInitialize();

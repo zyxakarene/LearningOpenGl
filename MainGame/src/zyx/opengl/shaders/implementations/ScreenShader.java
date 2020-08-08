@@ -63,6 +63,14 @@ public class ScreenShader extends AbstractShader implements ICallback<Vector2Int
 		UniformUtils.setUniform2F(ClipYVecTrans, ScreenSize.height - clipY.x + 1, ScreenSize.height - clipY.y - 1);
 	}
 
+	public void setClipRect(Rectangle rect)
+	{
+		clipX.x = rect.x;
+		clipX.y = rect.width;
+		clipY.x = rect.y;
+		clipY.y = rect.height;
+	}
+	
 	public void setClipRect(float left, float right, float upper, float lower)
 	{
 		clipX.x = left;

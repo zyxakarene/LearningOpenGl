@@ -7,8 +7,8 @@ public final class TouchData
 	{
 	}
 	
-	public float x;
-	public float y;
+	public int x;
+	public int y;
 	
 	public float dX;
 	public float dY;

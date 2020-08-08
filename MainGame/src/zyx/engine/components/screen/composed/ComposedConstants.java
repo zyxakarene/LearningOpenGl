@@ -15,7 +15,7 @@ public class ComposedConstants
 	private static final String COLOR_GREEN_INV = "greenInv";
 	
 	private static final String COLOR_GRAY = "gray";
-
+	
 	private static final HashMap<String, String[]> TEXTURE_MAP = new HashMap<>();
 	private static final HashMap<String, Vector3f[]> IMAGE_COLOR_MAP = new HashMap<>();
 	private static final HashMap<String, ComposedButtonColorMap> BUTTON_COLOR_MAP = new HashMap<>();

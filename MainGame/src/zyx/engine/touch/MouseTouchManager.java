@@ -200,10 +200,7 @@ public class MouseTouchManager implements IUpdateable
 		
 		if (entry != null)
 		{
-			for (ITouched touch : entry.touches)
-			{
-				touch.onTouched(state, collision, data);
-			}
+			entry.touch(state, collision, data);
 		}
 		
 		DisplayObjectContainer parent = target.getParent();

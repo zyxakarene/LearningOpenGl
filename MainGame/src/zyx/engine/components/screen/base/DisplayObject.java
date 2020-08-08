@@ -40,6 +40,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 	private boolean dirty;
 	private boolean dirtyInv;
 
+	private Rectangle globalClipRect;
 	protected Rectangle clipRect;
 	protected Matrix4f invWorldMatrix;
 	protected Matrix4f worldMatrix;
@@ -253,22 +254,27 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		Rectangle oldClipData = null;
 		if (clipRect != null)
 		{
+			if (globalClipRect == null)
+			{
+				globalClipRect = CLIP_POOL.getInstance();
+			}
+			
 			oldClipData = CLIP_POOL.getInstance();
 			shader.getClipRect(oldClipData);
 			getPosition(true, HELPER_VEC2);
-			float clipX = FloatMath.max(oldClipData.x, clipRect.x + HELPER_VEC2.x);
-			float clipY = FloatMath.max(oldClipData.y, clipRect.y + HELPER_VEC2.y);
-			float clipW = FloatMath.min(oldClipData.width, clipRect.x + HELPER_VEC2.x + clipRect.width);
-			float clipH = FloatMath.min(oldClipData.height, clipRect.y + HELPER_VEC2.y + clipRect.height);
+			globalClipRect.x = FloatMath.max(oldClipData.x, clipRect.x + HELPER_VEC2.x);
+			globalClipRect.y = FloatMath.max(oldClipData.y, clipRect.y + HELPER_VEC2.y);
+			globalClipRect.width = FloatMath.min(oldClipData.width, clipRect.x + HELPER_VEC2.x + clipRect.width);
+			globalClipRect.height = FloatMath.min(oldClipData.height, clipRect.y + HELPER_VEC2.y + clipRect.height);
 			
-			shader.setClipRect(clipX, clipW, clipY, clipH);
+			shader.setClipRect(globalClipRect);
 		}
 		
 		onDraw();
 		
 		if (oldClipData != null)
 		{
-			shader.setClipRect(oldClipData.x, oldClipData.width, oldClipData.y, oldClipData.height);
+			shader.setClipRect(oldClipData);
 			CLIP_POOL.releaseInstance(oldClipData);
 		}
 	}
@@ -285,6 +291,12 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 
 		removeFromParent(false);
 
+		if (globalClipRect != null)
+		{
+			CLIP_POOL.releaseInstance(globalClipRect);
+			globalClipRect = null;
+		}
+		
 		SharedPools.MATRIX_POOL.releaseInstance(invWorldMatrix);
 		SharedPools.MATRIX_POOL.releaseInstance(worldMatrix);
 		SharedPools.MATRIX_POOL.releaseInstance(localMatrix);
@@ -472,10 +484,11 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 			return false;
 		}
 
-		if (clipRect != null)
+		Rectangle hierachyClip = getHierachyClip();
+		if (hierachyClip != null)
 		{
-			boolean insideClip = x > clipRect.x && x < clipRect.width && y > clipRect.y && y < clipRect.height;
-			if (!insideClip)
+			boolean outsideClip = x < hierachyClip.x || x > hierachyClip.width || y < hierachyClip.y || y > hierachyClip.height;
+			if (outsideClip)
 			{
 				return false;
 			}
@@ -506,5 +519,20 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 	public void setData(Object get)
 	{
 		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	protected Rectangle getHierachyClip()
+	{
+		if (globalClipRect != null)
+		{
+			return globalClipRect;
+		}
+		
+		if (parent != null)
+		{
+			return parent.getHierachyClip();
+		}
+		
+		return null;
 	}
 }
