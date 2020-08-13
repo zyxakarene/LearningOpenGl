@@ -42,7 +42,7 @@ public class DisplayObjectContainer extends DisplayObject
 		out.addAll(children);
 	}
 	
-	public void addChild(DisplayObject child)
+	public void addChildAt(DisplayObject child, int index)
 	{
 		if (child == this)
 		{
@@ -57,10 +57,22 @@ public class DisplayObjectContainer extends DisplayObject
 		
 		child.setParent(this);
 		
-		children.add(child);
+		if (index >= 0)
+		{
+			children.add(index, child);
+		}
+		else
+		{
+			children.add(child);
+		}
 		numChildren++;
 		
 		childAdded(child);
+	}
+	
+	public void addChild(DisplayObject child)
+	{
+		addChildAt(child, -1);
 	}
 
 	public boolean removeChild(int index)

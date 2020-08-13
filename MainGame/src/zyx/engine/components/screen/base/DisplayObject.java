@@ -261,7 +261,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 			
 			oldClipData = CLIP_POOL.getInstance();
 			shader.getClipRect(oldClipData);
-			getPosition(true, HELPER_VEC2);
+			getPosition(false, HELPER_VEC2);
 			globalClipRect.x = FloatMath.max(oldClipData.x, clipRect.x + HELPER_VEC2.x);
 			globalClipRect.y = FloatMath.max(oldClipData.y, clipRect.y + HELPER_VEC2.y);
 			globalClipRect.width = FloatMath.min(oldClipData.width, clipRect.x + HELPER_VEC2.x + clipRect.width);
@@ -455,12 +455,12 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		return position.y;
 	}
 
-	protected void addTouchListener(ITouched listener)
+	public void addTouchListener(ITouched listener)
 	{
 		MouseTouchManager.getInstance().registerTouch(this, listener);
 	}
 
-	protected void removeTouchListener(ITouched listener)
+	public void removeTouchListener(ITouched listener)
 	{
 		MouseTouchManager.getInstance().unregisterTouch(this, listener);
 	}
@@ -521,6 +521,19 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
+	public void setClipRect(int x, int y, int width, int height)
+	{
+		if (clipRect == null)
+		{
+			clipRect = new Rectangle();
+		}
+		
+		clipRect.x = x;
+		clipRect.y = y;
+		clipRect.width = width;
+		clipRect.height = height;
+	}
+	
 	protected Rectangle getHierachyClip()
 	{
 		if (globalClipRect != null)

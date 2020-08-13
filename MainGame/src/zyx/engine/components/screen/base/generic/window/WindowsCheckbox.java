@@ -31,7 +31,7 @@ public class WindowsCheckbox extends DisplayObjectContainer
 		textfield.setHAlign(HAlignment.LEFT);
 		textfield.setPosition(true, 16 + 5, 0);
 		textfield.setSize(100, 16);
-		textfield.setShowBorders(true);
+		textfield.showBorders(true);
 
 		addChild(check);
 		addChild(textfield);

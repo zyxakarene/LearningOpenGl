@@ -299,7 +299,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 		caret.visible = false;
 	}
 
-	public void setShowBorders(boolean showBorders)
+	public void showBorders(boolean showBorders)
 	{
 		this.showBorders = showBorders;
 		updateBorders();
@@ -343,6 +343,11 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 		borders[1] = bottom;
 		borders[2] = left;
 		borders[3] = right;
+		
+		for (Quad border : borders)
+		{
+			border.touchable = false;
+		}
 	}
 
 	public void setFontSize(float fontSize)

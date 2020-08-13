@@ -10,15 +10,64 @@ public class WindowsButton extends Button
 	{
 		"container",
 	};
+	
+	private WindowsTextfield label;
 
 	public WindowsButton()
 	{
+		this("");
+	}
+
+	public WindowsButton(String text)
+	{
 		super(true);
 
-		setWidth(256);
+		setWidth(16);
 		setHeight(16);
 		setColors(ComposedConstants.buttonColorsFromScheme("gray"));
 		setTextures(TEXTURES);
+		
+		if (text.isEmpty() == false)
+		{
+			label = new WindowsTextfield(text);
+			addChild(label);
+			
+			label.setSize(getWidth(), getHeight());
+		}
+	}
+	
+	public void setText(String text)
+	{
+		if (label == null)
+		{
+			label = new WindowsTextfield(text);
+			addChild(label);
+		}
+		else
+		{
+			label.setText(text);
+		}
 	}
 
+	@Override
+	public void setWidth(float value)
+	{
+		super.setWidth(value);
+		
+		if (label != null)
+		{
+			label.setWidth(value);
+		}
+	}
+
+	@Override
+	public void setHeight(float value)
+	{
+		super.setHeight(value);
+		
+		if (label != null)
+		{
+			label.setHeight(value);
+		}
+	}
 }
