@@ -35,7 +35,7 @@ public class JsonTextfieldConsumer extends JsonBaseConsumer<Textfield>
 				break;
 			case SHOW_BORDERS:
 				boolean borderVisibility = toBoolean(value);
-				currentDisplayObject.setShowBorders(borderVisibility);
+				currentDisplayObject.showBorders(borderVisibility);
 				break;
 			case COLOR:
 				toColor(value, HELPER_VECTOR_3);

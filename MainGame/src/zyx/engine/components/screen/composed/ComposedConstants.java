@@ -15,7 +15,7 @@ public class ComposedConstants
 	private static final String COLOR_GREEN_INV = "greenInv";
 	
 	private static final String COLOR_GRAY = "gray";
-
+	
 	private static final HashMap<String, String[]> TEXTURE_MAP = new HashMap<>();
 	private static final HashMap<String, Vector3f[]> IMAGE_COLOR_MAP = new HashMap<>();
 	private static final HashMap<String, ComposedButtonColorMap> BUTTON_COLOR_MAP = new HashMap<>();
@@ -41,7 +41,7 @@ public class ComposedConstants
 		Vector3f grayOutLower = getColor("818181");
 
 		Vector3f grayHighlight = getColor("7A7A7A");
-		Vector3f grayHighlightUpper = getColor("D0D0D0");
+		Vector3f grayHighlightUpper = getColor("E4E4E4");
 		Vector3f grayHighlightLower = getColor("808080");
 
 		addImageColor(COLOR_GREEN, greenOutUpper, greenOutLower, greenCenter);

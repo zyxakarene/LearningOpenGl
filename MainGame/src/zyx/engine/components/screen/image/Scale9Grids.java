@@ -24,6 +24,11 @@ class Scale9Grids
 	private static final String PANEL_2_A = "panel_02_center";
 	private static final String PANEL_2_B = "panel_02_downright";
 	private static final String PANEL_2_C = "panel_02_upleft";
+	
+	private static final String TITLEBAR = "titlebar";
+	private static final String CONTAINER = "container";
+	private static final String CONTAINER_DOWN = "container_down";
+	private static final String CHECKBOX = "checkbox";
 
 	public static Rectangle getGridFor(String name)
 	{
@@ -66,12 +71,21 @@ class Scale9Grids
 				grid = new Rectangle(4, 4, 0, 0);
 				keys = new String[] {LOADING};
 				break;
+			case CHECKBOX:
+				grid = new Rectangle(2, 2, 12, 12);
+				keys = new String[] {CHECKBOX};
+				break;
+			case TITLEBAR:
+			case CONTAINER:
+			case CONTAINER_DOWN:
+				grid = new Rectangle(4, 4, 24, 24);
+				keys = new String[] {TITLEBAR, CONTAINER, CONTAINER_DOWN};
+				break;
 			default:
 				grid = new Rectangle(22, 22, 20, 20);
 				keys = new String[] {name};
 				Print.err("[Warning] Unknown Scale9Grid name:", name);
 		}
-		
 		for (String key : keys)
 		{
 			CACHE.put(key, grid);

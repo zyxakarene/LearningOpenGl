@@ -68,7 +68,7 @@ public class SpriteSheetResource extends TextureResource implements IResourceRea
 				float y = rect.y * ratioH;
 				float w = x + (rect.width * ratioW);
 				float h = y + (rect.height * ratioH);
-
+				
 				Rectangle uvs = new Rectangle(x, y, w, h);
 
 				subTexture = new SubTexture(textureSheet, uvs, path);

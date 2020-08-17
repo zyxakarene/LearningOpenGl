@@ -18,7 +18,8 @@ import zyx.opengl.textures.bitmapfont.alignment.VAlignment;
 
 public class Textfield extends InteractableContainer implements IFocusable, IResourceReady<FontResource>, ILoadable
 {
-
+	public static final String DEFAULT_RESOURCE = "font.console";
+	
 	private Text glText;
 	private String text;
 	private float fontSize;
@@ -180,24 +181,34 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 		}
 	}
 
-	public void setVAlign(String alignment)
+	public void setHAlign(HAlignment alignment)
 	{
-		vAlign = VAlignment.getFrom(alignment);
-		
+		hAlign = alignment;
 		if (loaded)
 		{
 			glText.setAlignment(vAlign, hAlign);
 		}
 	}
-
-	public void setHAlign(String alignment)
+	
+	public void setVAlign(VAlignment alignment)
 	{
-		hAlign = HAlignment.getFrom(alignment);
-		
+		vAlign = alignment;
 		if (loaded)
 		{
 			glText.setAlignment(vAlign, hAlign);
 		}
+	}
+	
+	public void setVAlign(String alignment)
+	{
+		VAlignment align = VAlignment.getFrom(alignment);
+		setVAlign(align);
+	}
+
+	public void setHAlign(String alignment)
+	{
+		HAlignment align = HAlignment.getFrom(alignment);
+		setHAlign(align);
 	}
 
 	@Override
@@ -288,7 +299,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 		caret.visible = false;
 	}
 
-	public void setShowBorders(boolean showBorders)
+	public void showBorders(boolean showBorders)
 	{
 		this.showBorders = showBorders;
 		updateBorders();
@@ -332,6 +343,11 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 		borders[1] = bottom;
 		borders[2] = left;
 		borders[3] = right;
+		
+		for (Quad border : borders)
+		{
+			border.touchable = false;
+		}
 	}
 
 	public void setFontSize(float fontSize)

@@ -157,6 +157,16 @@ public class Scale9Image extends AbstractImage implements IResourceReady<Texture
 			return false;
 		}
 
+		Rectangle hierachyClip = getHierachyClip();
+		if (hierachyClip != null)
+		{
+			boolean outsideClip = x < hierachyClip.x || x > hierachyClip.width || y < hierachyClip.y || y > hierachyClip.height;
+			if (outsideClip)
+			{
+				return false;
+			}
+		}
+		
 		HELPER_VEC4.x = x;
 		HELPER_VEC4.y = -y;
 		HELPER_VEC4.z = -1;

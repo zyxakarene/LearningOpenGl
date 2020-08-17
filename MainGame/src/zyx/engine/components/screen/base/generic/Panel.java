@@ -1,18 +1,22 @@
 package zyx.engine.components.screen.base.generic;
 
 import zyx.engine.components.screen.base.DisplayObjectContainer;
-import zyx.engine.components.screen.base.Quad;
+import zyx.engine.components.screen.image.Scale9Image;
 import zyx.utils.geometry.Rectangle;
 
 public class Panel extends DisplayObjectContainer
 {
 	private static final Rectangle CLIP_HELPER = new Rectangle();
-	private Quad bg;
+	private Scale9Image bgImage;
 	
-	public Panel(int width, int height, int color)
+	public Panel(int width, int height)
 	{
-		bg =  new Quad(width, height, color);
-		addChild(bg);
+		bgImage = new Scale9Image();
+		bgImage.load("container");
+		
+		bgImage.setSize(width, height);
+		
+		addChild(bgImage);
 	}
 	
 //	@Override
