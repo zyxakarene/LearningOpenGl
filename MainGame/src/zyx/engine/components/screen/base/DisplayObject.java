@@ -516,11 +516,6 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		return collision;
 	}
 
-	public void setData(Object get)
-	{
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
-
 	public void setClipRect(int x, int y, int width, int height)
 	{
 		if (clipRect == null)

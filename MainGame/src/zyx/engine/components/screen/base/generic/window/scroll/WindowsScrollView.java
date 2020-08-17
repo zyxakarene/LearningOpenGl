@@ -6,12 +6,9 @@ import zyx.engine.components.screen.base.Quad;
 import zyx.engine.components.screen.base.generic.window.WindowsButton;
 import zyx.engine.components.screen.image.Scale9Image;
 import zyx.engine.components.screen.interactable.InteractableContainer;
-import zyx.engine.touch.ITouched;
-import zyx.engine.touch.TouchData;
-import zyx.engine.touch.TouchState;
 import zyx.engine.utils.callbacks.ICallback;
 
-public class WindowsScrollView extends DisplayObjectContainer implements ICallback<InteractableContainer>, IScrollViewScrolled
+public class WindowsScrollView extends DisplayObjectContainer implements IScrollViewScrolled
 {
 	private static final int SCROLL_BTN_SIZE = 16;
 	private static final int SCROLLER_SIZE = 32;
@@ -36,8 +33,13 @@ public class WindowsScrollView extends DisplayObjectContainer implements ICallba
 	private float maxClicks;
 	private float scrollerPerClick;
 	
+	private ICallback<InteractableContainer> scrollBtnClicked;
+	private ICallback<Integer> scrollViewHeightChanged;
+	
 	public WindowsScrollView(int width, int height)
 	{
+		scrollBtnClicked = this::onScrollBtnClicked;
+		scrollViewHeightChanged = this::onScrollViewHeightChanged;
 		
 		bg = new Scale9Image();
 		bg.load("container_down");
@@ -66,16 +68,26 @@ public class WindowsScrollView extends DisplayObjectContainer implements ICallba
 		scrollHeight = height - FRAME_PADDING_2;
 		leftoverScroll = scrollHeight - SCROLLER_SIZE - SCROLL_BTN_SIZE - SCROLL_BTN_SIZE + FRAME_PADDING_2;
 		
-		scrollUpBtn.onButtonClicked.addCallback(this);
-		scrollDownBtn.onButtonClicked.addCallback(this);
+		scrollUpBtn.onButtonClicked.addCallback(scrollBtnClicked);
+		scrollDownBtn.onButtonClicked.addCallback(scrollBtnClicked);
 	}
 	
-	public void setView(DisplayObject view)
+	public void setView(DisplayObject disp)
 	{
-		this.view = view;
+		view = disp;
 		viewContainer.addChild(view);
-		viewHeight = view.getHeight();
 		view.setPosition(true, 0, 0);
+		
+		if (view instanceof IScrollableView)
+		{
+			IScrollableView scrollable = (IScrollableView) view;
+			viewHeight = scrollable.getTotalHeight();
+			scrollable.addHeightChangedListener(scrollViewHeightChanged);
+		}
+		else
+		{
+			viewHeight = view.getHeight();
+		}
 		
 		rescaleComponents();
 	}
@@ -114,8 +126,13 @@ public class WindowsScrollView extends DisplayObjectContainer implements ICallba
 		currentScroll = 0;
 	}
 
-	@Override
-	public void onCallback(InteractableContainer btn)
+	private void onScrollViewHeightChanged(Integer height)
+	{
+		viewHeight = height;
+		rescaleComponents();
+	}
+	
+	private void onScrollBtnClicked(InteractableContainer btn)
 	{
 		if (btn == scrollUpBtn)
 		{
@@ -140,8 +157,14 @@ public class WindowsScrollView extends DisplayObjectContainer implements ICallba
 	}
 
 	@Override
-	public void onScrolled(int pixels)
+	public void onScrolled(float pixels)
 	{
-		throw new UnsupportedOperationException("Not supported yet.");
+		pixels -= SCROLL_BTN_SIZE;
+		
+		float fraction = -(pixels / leftoverScroll);
+		float toScroll = viewHeight - scrollHeight;
+		view.setY(fraction * toScroll);
+		
+		currentScroll = (int) -((fraction * toScroll) / scrollPerClick);
 	}
 }

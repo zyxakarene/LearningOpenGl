@@ -11,5 +11,5 @@ package zyx.engine.components.screen.base.generic.window.scroll;
  */
 public interface IScrollViewScrolled
 {
-	void onScrolled(int pixels);
+	void onScrolled(float pixels);
 }

@@ -54,29 +54,39 @@ public class WindowsScrollButton extends WindowsButton implements ITouched
 		}
 		else if (state == TouchState.DRAG)
 		{
+			int change = 0;
 			if (data.y < minGlobalMouseY)
 			{
+				change = min - currentY;
 				currentY = min;
 			}
 			else if (data.y > maxGlobalMouseY)
 			{
+				change = max - currentY;
 				currentY = max;
 			}
 			else
 			{
-				currentY -= (int) data.dY;
+				change = (int) data.dY;
+				currentY -= change;
 
 				if (currentY < min)
 				{
+					change -= (min - currentY);
 					currentY = min;
 				}
 				else if (currentY > max)
 				{
+					change += (currentY - max);
 					currentY = max;
 				}
 			}
 			
-			setY(currentY);
+			if (change != 0)
+			{
+				setY(currentY);
+				scrollView.onScrolled(currentY);
+			}
 		}
 	}
 }
