@@ -3,6 +3,7 @@ package zyx.game.behavior;
 
 public enum BehaviorType
 {
+	CHARACTER_ANIMATOR,
 	CLIP_BOARD_VIEWING,
 	CLIP_BOARD_DRAWING,
 	FIRST_PERSON,

@@ -24,13 +24,12 @@ import zyx.game.vo.Gender;
 public class DinerScene extends GameScene
 {
 
-	private static final boolean ONLINE = false;
+	private static final boolean ONLINE = true;
 
 	public DinerHud dinerHud;
 	public DinerSceneData sceneData;
 
 	private IWorldPickedItem interactionCallback;
-	private AnimatedMesh jasper1;
 
 	public DinerScene()
 	{
@@ -69,12 +68,6 @@ public class DinerScene extends GameScene
 		world.setSunRotation(new Vector3f(-33, -5, -21));
 
 		dinerHud = (DinerHud) hud;
-		
-		jasper1 = new AnimatedMesh();
-		jasper1.debugging = true;
-		jasper1.load("mesh.jasper");
-		jasper1.setAnimation("walking");
-		world.addChild(jasper1);
 	}
 
 	@Override
@@ -143,12 +136,6 @@ public class DinerScene extends GameScene
 		{
 			sceneData.dispose();
 			sceneData = null;
-		}
-		
-		if (jasper1 != null)
-		{
-			jasper1.dispose();
-			jasper1 = null;
 		}
 	}
 

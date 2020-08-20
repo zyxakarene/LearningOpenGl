@@ -9,7 +9,10 @@ public class CharacterInfo
 	public int uniqueId;
 	public GameItem heldItem;
 	public boolean moving;
+	public boolean sitting;
+	public boolean eating;
 	public String name;
 	public Gender gender;
 	public CharacterType type;
+	public boolean interacting;
 }

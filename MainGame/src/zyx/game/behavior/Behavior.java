@@ -5,7 +5,7 @@ import zyx.game.components.GameObject;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IUpdateable;
 
-public abstract class Behavior implements IUpdateable, IDisposeable
+public abstract class Behavior<TType extends GameObject> implements IUpdateable, IDisposeable
 {
 
 	protected final static Vector3f HELPER_DIR = new Vector3f();
@@ -15,7 +15,7 @@ public abstract class Behavior implements IUpdateable, IDisposeable
 	BehaviorType type;
 	boolean active;
 	
-	protected GameObject gameObject;
+	protected TType gameObject;
 
 	public Behavior(BehaviorType type)
 	{
@@ -40,7 +40,7 @@ public abstract class Behavior implements IUpdateable, IDisposeable
 		}
 	}
 	
-	void setGameObject(GameObject gameObject)
+	void setGameObject(TType gameObject)
 	{
 		this.gameObject = gameObject;
 	}

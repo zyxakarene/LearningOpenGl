@@ -28,10 +28,4 @@ public class Fridge extends NpcFurniture<AnimatedMesh>
 	{
 		return "mesh.furniture.fridge";
 	}
-
-	@Override
-	public String getInteractionAnimation()
-	{
-		return "action";
-	}
 }

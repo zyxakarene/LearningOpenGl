@@ -3,10 +3,10 @@ package zyx.game.behavior.player;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
+import zyx.game.components.world.characters.CharacterInfo;
 import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
 import zyx.utils.cheats.DebugPoint;
-import zyx.utils.cheats.Print;
 
 public class OnlinePositionInterpolator extends Behavior
 {
@@ -24,10 +24,15 @@ public class OnlinePositionInterpolator extends Behavior
 
 	private boolean hasPosChange;
 	private boolean hasLookChange;
+	private CharacterInfo info;
+	private int timeSinceMoveStart;
+	private boolean debug;
 
-	public OnlinePositionInterpolator()
+	public OnlinePositionInterpolator(CharacterInfo info, boolean debug)
 	{
 		super(BehaviorType.ONLINE_POSITION);
+		this.info = info;
+		this.debug = debug;
 
 		startLook = new Vector3f();
 		startPos = new Vector3f();
@@ -56,8 +61,10 @@ public class OnlinePositionInterpolator extends Behavior
 		{
 			Vector3f.sub(position, startPos, moveDir);
 			moveDir.normalise();
+			info.moving = true;
+			timeSinceMoveStart = 0;
 		}
-
+		
 		if (hasLookChange)
 		{
 			Vector3f.sub(lookAt, startLook, lookAtDir);
@@ -69,6 +76,7 @@ public class OnlinePositionInterpolator extends Behavior
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
+		timeSinceMoveStart += elapsedTime;
 		moveTime += elapsedTime;
 		if (moveTime >= MAX_WAIT)
 		{
@@ -81,6 +89,7 @@ public class OnlinePositionInterpolator extends Behavior
 			float y = startPos.y + (moveDir.y * moveTime * moveFract);
 			float z = startPos.z + (moveDir.z * moveTime * moveFract);
 			gameObject.setPosition(false, x, y, z);
+			info.moving = true;
 		}
 
 		if (hasLookChange)
@@ -90,12 +99,16 @@ public class OnlinePositionInterpolator extends Behavior
 			float z = startLook.z + (lookAtDir.z * moveTime * lookFract);
 			gameObject.lookAt(x, y, z);
 		}
-
+		
+		if (timeSinceMoveStart >= MAX_WAIT * 2)
+		{
+			info.moving = false;
+		}
+		
 		if (moveTime >= MAX_WAIT)
 		{
 			hasPosChange = false;
 			hasLookChange = false;
 		}
-
 	}
 }

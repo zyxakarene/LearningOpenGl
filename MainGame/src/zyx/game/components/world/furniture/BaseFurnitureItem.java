@@ -105,10 +105,4 @@ public abstract class BaseFurnitureItem<V extends SimpleMesh> extends GameObject
 	{
 		return view.getBoneMatrix(boneId);
 	}
-
-	public String getInteractionAnimation()
-	{
-		return "idle";
-	}
-
 }

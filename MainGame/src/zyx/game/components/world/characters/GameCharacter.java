@@ -2,6 +2,7 @@ package zyx.game.components.world.characters;
 
 import java.util.ArrayList;
 import org.lwjgl.util.vector.Matrix4f;
+import zyx.game.behavior.characters.CharacterAnimationBehavior;
 import zyx.game.behavior.player.OnlinePositionInterpolator;
 import zyx.game.components.AnimatedMesh;
 import zyx.game.components.GameObject;
@@ -30,8 +31,13 @@ public class GameCharacter extends GameObject implements IItemHolder
 	{
 		info = new CharacterInfo();
 		mesh = new AnimatedMesh();
-
+		
 		addChild(mesh);
+	}
+	
+	public void setAnimation(String anim)
+	{
+		mesh.setAnimation(anim);
 	}
 
 	@Override
@@ -42,12 +48,12 @@ public class GameCharacter extends GameObject implements IItemHolder
 	
 	public void load(CharacterSetupVo vo)
 	{
-		mesh.load("mesh.jasper");
-
+		mesh.load("mesh.character");
 		setPosition(false, vo.pos);
 		lookAt(vo.look);
 
-		addBehavior(new OnlinePositionInterpolator());
+		addBehavior(new OnlinePositionInterpolator(info, vo.type == CharacterType.CHEF));
+		addBehavior(new CharacterAnimationBehavior());
 
 		info.uniqueId = vo.id;
 		info.name = vo.name;
@@ -55,11 +61,38 @@ public class GameCharacter extends GameObject implements IItemHolder
 		info.type = vo.type;
 	}
 
+	private boolean wasMoving;
+	
+	@Override
+	protected void onUpdate(long timestamp, int elapsedTime)
+	{
+		if (info.moving != wasMoving)
+		{
+			wasMoving = info.moving;
+			
+			if (info.moving)
+			{
+				if (info.heldItem != null)
+				{
+					mesh.setAnimation("walkCarry");
+				}
+				else
+				{
+					mesh.setAnimation("walk");
+				}
+			}
+			else
+			{
+				mesh.setAnimation("idle");
+			}
+		}
+	}
+
 	@Override
 	public void hold(GameItem item)
 	{
 		info.heldItem = item;
-		mesh.addChildAsAttachment(item, "Character_hand");
+		mesh.addChildAsAttachment(item, "bone_r_elbow");
 	}
 
 	@Override
@@ -116,12 +149,11 @@ public class GameCharacter extends GameObject implements IItemHolder
 
 	public void interactWith(BaseFurnitureItem furniture)
 	{
-		String interactionAnimation = furniture.getInteractionAnimation();
-		mesh.setAnimation(interactionAnimation);
+		info.interacting = true;
 	}
 
 	public void stopInteracting()
 	{
-		mesh.setAnimation("idle");
+		info.interacting = false;
 	}
 }
