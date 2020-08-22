@@ -94,6 +94,16 @@ public class GameNetworkCallbacks extends AbstractDinerNetworkCallbacks
 			itemHolderHandler.addItemHolder(id, furniture);
 			furnitureMap.put(id, furniture);
 
+			int userId = data.usingIds[i];
+			if (userId > 0)
+			{
+				GameCharacter user = characterMap.get(userId);
+				if (user != null)
+				{
+					user.info.interacting = furniture;
+				}
+			}
+			
 			World3D.instance.addChild(furniture);
 		}
 	}
@@ -120,11 +130,11 @@ public class GameNetworkCallbacks extends AbstractDinerNetworkCallbacks
 		{
 			if (data.started)
 			{
-				character.interactWith(furniture);
+				character.info.interacting = furniture;
 			}
 			else
 			{
-				character.stopInteracting();
+				character.info.interacting = null;
 			}
 		}
 	}

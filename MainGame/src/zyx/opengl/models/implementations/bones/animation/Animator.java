@@ -20,9 +20,9 @@ public class Animator implements IDisposeable
 	private Byte[] keys;
 
 	private Animation lastAnimation;
-	private long timeSinceLastStarted;
-	private long timeAtChange;
 	private int blendDuration;
+	
+	private AnimationController currentController;
 
 	public Animator(HashMap<Byte, Joint> joints, HashMap<String, Animation> animations)
 	{
@@ -35,6 +35,8 @@ public class Animator implements IDisposeable
 
 	public void setCurrentAnimation(AnimationController controller)
 	{
+		currentController = controller;
+		
 		Animation newAnimation = animations.get(controller.animation);
 		if (newAnimation != null)
 		{
@@ -43,8 +45,6 @@ public class Animator implements IDisposeable
 			if (blendDuration > controller.blendTimer)
 			{
 				lastAnimation = animations.get(controller.lastAnimation);
-				timeSinceLastStarted = controller.timeSinceLastAninmation;
-				timeAtChange = controller.animationStartedAt;				
 			}
 			else
 			{
@@ -65,7 +65,7 @@ public class Animator implements IDisposeable
 
 			if (lastAnimation != null)
 			{
-				float timeSinceLastStart = timeSinceLastStarted;
+				float timeSinceLastStart = currentController.timeSinceLastAninmation;
 				int lastAnimationLength = lastAnimation.length;
 				float lastFrame = (timeSinceLastStart / GameConstants.ANIMATION_MS_PER_FRAME);
 
@@ -80,7 +80,7 @@ public class Animator implements IDisposeable
 
 				int prevFrame = FloatMath.floor(lastFrame);
 
-				float timeSinceBlend = DeltaTime.getTimestamp() - timeAtChange;
+				float timeSinceBlend = DeltaTime.getTimestamp() - currentController.animationStartedAt;
 				blendPercent = timeSinceBlend / blendDuration;
 
 				if (blendPercent > 1)
@@ -115,6 +115,7 @@ public class Animator implements IDisposeable
 			if (nextFrame >= animationLength)
 			{
 				nextFrame = currentAnimation.looping ? 0 : animationLength - 1;
+				currentController.animationLooped();
 			}
 
 			float percentage = currentFrame - prevFrame;

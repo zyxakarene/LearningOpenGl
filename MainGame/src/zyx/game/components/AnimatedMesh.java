@@ -1,24 +1,36 @@
 package zyx.game.components;
 
+import zyx.engine.utils.callbacks.ICallback;
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
 
-public class AnimatedMesh extends SimpleMesh
+public class AnimatedMesh extends SimpleMesh implements IAnimatedMesh
 {
 
 	private AnimationController animationController;
 	private String animation;
-	
-	public boolean debugging;
 
 	public AnimatedMesh()
 	{
 		animationController = new AnimationController();
 	}
 
+	@Override
 	public void setAnimation(String animation)
 	{
 		this.animation = animation;
 		animationController.setAnimation(animation);
+	}
+	
+	@Override
+	public void addAnimationCompletedCallback(ICallback<String> callback)
+	{
+		animationController.addAnimationCompletedCallback(callback);
+	}
+	
+	@Override
+	public void removeAnimationCompletedCallback(ICallback<String> callback)
+	{
+		animationController.removeAnimationCompletedCallback(callback);
 	}
 	
 	public void clearBlend()

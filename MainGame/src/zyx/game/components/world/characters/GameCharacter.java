@@ -6,8 +6,8 @@ import zyx.game.behavior.characters.CharacterAnimationBehavior;
 import zyx.game.behavior.player.OnlinePositionInterpolator;
 import zyx.game.components.AnimatedMesh;
 import zyx.game.components.GameObject;
+import zyx.game.components.IAnimatedMesh;
 import zyx.game.components.world.IItemHolder;
-import zyx.game.components.world.furniture.BaseFurnitureItem;
 import zyx.game.components.world.interactable.InteractionAction;
 import zyx.game.components.world.items.GameItem;
 import zyx.game.vo.CharacterType;
@@ -35,9 +35,9 @@ public class GameCharacter extends GameObject implements IItemHolder
 		addChild(mesh);
 	}
 	
-	public void setAnimation(String anim)
+	public IAnimatedMesh getAnimatedMesh()
 	{
-		mesh.setAnimation(anim);
+		return mesh;
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class GameCharacter extends GameObject implements IItemHolder
 		setPosition(false, vo.pos);
 		lookAt(vo.look);
 
-		addBehavior(new OnlinePositionInterpolator(info, vo.type == CharacterType.CHEF));
+		addBehavior(new OnlinePositionInterpolator(info));
 		addBehavior(new CharacterAnimationBehavior());
 
 		info.uniqueId = vo.id;
@@ -61,38 +61,11 @@ public class GameCharacter extends GameObject implements IItemHolder
 		info.type = vo.type;
 	}
 
-	private boolean wasMoving;
-	
-	@Override
-	protected void onUpdate(long timestamp, int elapsedTime)
-	{
-		if (info.moving != wasMoving)
-		{
-			wasMoving = info.moving;
-			
-			if (info.moving)
-			{
-				if (info.heldItem != null)
-				{
-					mesh.setAnimation("walkCarry");
-				}
-				else
-				{
-					mesh.setAnimation("walk");
-				}
-			}
-			else
-			{
-				mesh.setAnimation("idle");
-			}
-		}
-	}
-
 	@Override
 	public void hold(GameItem item)
 	{
 		info.heldItem = item;
-		mesh.addChildAsAttachment(item, "bone_r_elbow");
+		mesh.addChildAsAttachment(item, "bone_carry");
 	}
 
 	@Override
@@ -145,15 +118,5 @@ public class GameCharacter extends GameObject implements IItemHolder
 		{
 			return EMPTY_LIST;
 		}
-	}
-
-	public void interactWith(BaseFurnitureItem furniture)
-	{
-		info.interacting = true;
-	}
-
-	public void stopInteracting()
-	{
-		info.interacting = false;
 	}
 }

@@ -73,6 +73,7 @@ public class SetupGameResponse extends BaseNetworkResponse<GameSetupVo>
 			OUT.furniture.lookAts[i].x = furnitureData.getFloat(LOOK_X);
 			OUT.furniture.lookAts[i].y = furnitureData.getFloat(LOOK_Y);
 			OUT.furniture.lookAts[i].z = furnitureData.getFloat(LOOK_Z);
+			OUT.furniture.usingIds[i] = furnitureData.getInteger(USER_ID);
 			int type = furnitureData.getInteger(TYPE);
 			OUT.furniture.types[i] = FurnitureType.getFromId(type);
 		}

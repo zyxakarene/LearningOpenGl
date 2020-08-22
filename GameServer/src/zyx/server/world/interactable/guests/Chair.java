@@ -3,6 +3,7 @@ package zyx.server.world.interactable.guests;
 import java.awt.Color;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.vo.FurnitureType;
+import zyx.server.controller.services.FurnitureService;
 import zyx.server.controller.services.NpcService;
 import zyx.server.world.humanoids.npc.Guest;
 import zyx.server.world.humanoids.npc.behavior.guest.GuestBehaviorType;
@@ -26,6 +27,12 @@ public class Chair extends GuestItem implements IPlayerInteractable
 	{
 		this.table = table;
 	}
+	
+	@Override
+	public boolean isPersistentUsing()
+	{
+		return true;
+	}
 
 	@Override
 	public void makeAvailible()
@@ -42,6 +49,7 @@ public class Chair extends GuestItem implements IPlayerInteractable
 		{
 			guestSitting = true;
 			currentUser.requestBehavior(GuestBehaviorType.WAITING_TO_ORDER);
+			FurnitureService.interactWith(this, guest.id, true);
 		}
 	}
 

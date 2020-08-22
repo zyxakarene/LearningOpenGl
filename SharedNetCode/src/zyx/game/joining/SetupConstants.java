@@ -12,6 +12,7 @@ public final class SetupConstants
 	public static final String NAME = "name";
 	public static final String DISH = "dish";
 	public static final String TYPE = "type";
+	public static final String USER_ID = "userId";
 	public static final String FOOD_STATE = "state";
 	public static final String ID = "id";
 	public static final String X = "x";

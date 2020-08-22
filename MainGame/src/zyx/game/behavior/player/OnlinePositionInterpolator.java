@@ -26,13 +26,11 @@ public class OnlinePositionInterpolator extends Behavior
 	private boolean hasLookChange;
 	private CharacterInfo info;
 	private int timeSinceMoveStart;
-	private boolean debug;
 
-	public OnlinePositionInterpolator(CharacterInfo info, boolean debug)
+	public OnlinePositionInterpolator(CharacterInfo info)
 	{
 		super(BehaviorType.ONLINE_POSITION);
 		this.info = info;
-		this.debug = debug;
 
 		startLook = new Vector3f();
 		startPos = new Vector3f();

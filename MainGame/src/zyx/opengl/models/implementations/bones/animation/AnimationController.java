@@ -2,11 +2,15 @@ package zyx.opengl.models.implementations.bones.animation;
 
 import zyx.engine.components.animations.IAnimateableMesh;
 import zyx.engine.components.animations.MeshAnimator;
+import zyx.engine.utils.callbacks.CustomCallback;
+import zyx.engine.utils.callbacks.ICallback;
 import zyx.utils.DeltaTime;
 
 public class AnimationController implements IAnimateableMesh
 {
 	private static final String DEFAULT_ANIMATION = "idle";
+	
+	private CustomCallback<String> animationCompleted;
 	
 	String animation;
 	long animationStartedAt;
@@ -21,6 +25,7 @@ public class AnimationController implements IAnimateableMesh
 		setAnimation(DEFAULT_ANIMATION);
 		
 		MeshAnimator.getInstance().addAnimatedMesh(this);
+		animationCompleted = new CustomCallback<>();
 	}
 	
 	public final void setAnimation(String name)
@@ -56,11 +61,32 @@ public class AnimationController implements IAnimateableMesh
 	public void dispose()
 	{
 		MeshAnimator.getInstance().removeAnimatedMesh(this);
+		
+		if (animationCompleted != null)
+		{
+			animationCompleted.dispose();
+			animationCompleted = null;
+		}
 	}
 
 	public void clearBlend()
 	{
 		lastAnimation = null;
 		timeSinceLastAninmation = 0;
+	}
+
+	void animationLooped()
+	{
+		animationCompleted.dispatch(animation);
+	}
+	
+	public void addAnimationCompletedCallback(ICallback<String> callback)
+	{
+		animationCompleted.addCallback(callback);
+	}
+	
+	public void removeAnimationCompletedCallback(ICallback<String> callback)
+	{
+		animationCompleted.removeCallback(callback);
 	}
 }

@@ -35,6 +35,11 @@ public abstract class BaseInteractableItem<User extends HumanoidEntity> extends 
 		inUse = false;
 		currentUser = null;
 	}
+	
+	public boolean isPersistentUsing()
+	{
+		return false;
+	}
 
 	public boolean canUse(User user)
 	{

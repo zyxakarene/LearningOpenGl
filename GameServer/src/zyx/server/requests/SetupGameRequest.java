@@ -84,7 +84,11 @@ public class SetupGameRequest extends BaseNetworkRequest
 			furnitureData.addFloat(LOOK_Y, item.ly);
 			furnitureData.addFloat(LOOK_Z, item.lz);
 			furnitureData.addInteger(TYPE, item.type.id);
-
+			if (item.currentUser != null && item.isPersistentUsing())
+			{
+				furnitureData.addInteger(USER_ID, item.currentUser.id);
+			}
+			
 			dataArray.add(furnitureData);
 		}
 	}

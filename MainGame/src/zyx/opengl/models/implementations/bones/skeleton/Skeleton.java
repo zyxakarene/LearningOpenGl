@@ -30,6 +30,7 @@ public class Skeleton implements IDisposeable
 		animations = new HashMap<>();
 		animationList = new LinkedList<>();
 		
+		jointIdMap.put((byte)0, meshJoint);
 		
 		rootJoint.calcInverseBindTransform(DUMMY_MATRIX);
 		rootJoint.addToMap(jointNameMap, jointIdMap);
