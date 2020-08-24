@@ -1,7 +1,6 @@
 package zyx.engine.scene;
 
 import zyx.engine.components.screen.base.Stage;
-import zyx.engine.components.screen.base.generic.window.Window;
 import zyx.engine.components.world.World3D;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;
@@ -10,11 +9,9 @@ import zyx.engine.scene.loading.LoadingScreenProcess;
 import zyx.engine.scene.loading.LoadingScreenProcessQueue;
 import zyx.engine.scene.preloading.ResourcePreloadProcess;
 import zyx.engine.utils.worldpicker.calculating.RayPicker;
-import zyx.game.components.SimpleMesh;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.MegaManager;
 import zyx.opengl.GLUtils;
-import zyx.game.components.screen.debug.DebugPanel;
 import zyx.game.components.screen.hud.BaseHud;
 import zyx.game.controls.input.MouseData;
 import zyx.game.controls.lights.LightsManager;
@@ -39,8 +36,6 @@ public class Scene implements ILoadingScreenDone
 	protected LoadingScreenProcessQueue loadingQueue;
 
 	private boolean ready;
-
-	public Window debugPanel;
 
 	public Scene()
 	{
@@ -70,9 +65,6 @@ public class Scene implements ILoadingScreenDone
 		world.addChild(debugContainer);
 		hud = createHud();
 		stage.hudLayer.addChild(hud);
-
-//		debugPanel = new DebugPanel();
-//		stage.hudLayer.addChild(debugPanel);
 
 		onPreloadResources();
 
@@ -192,12 +184,6 @@ public class Scene implements ILoadingScreenDone
 		{
 			loadingQueue.dispose();
 			loadingQueue = null;
-		}
-
-		if (debugPanel != null)
-		{
-			debugPanel.dispose();
-			debugPanel = null;
 		}
 
 		if (world != null)

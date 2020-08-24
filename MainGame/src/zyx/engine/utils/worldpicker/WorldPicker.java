@@ -16,6 +16,7 @@ import zyx.utils.pooling.model.PoolableVector3f;
 
 public class WorldPicker implements IDisposeable
 {
+	private static final int MAX_DISTANCE = 5000;
 
 	private ArrayList<PickEntity> pickables;
 	private HashMap<IPhysbox, PickEntity> pickableMap;
@@ -131,7 +132,7 @@ public class WorldPicker implements IDisposeable
 			positionPool.releaseInstance(pos);
 		}
 
-		if (closestDistance <= 5000 && closestObject != null)
+		if (closestDistance <= MAX_DISTANCE && closestObject != null)
 		{
 			ClickedInfo info = new ClickedInfo();
 			info.position = closestPos;
