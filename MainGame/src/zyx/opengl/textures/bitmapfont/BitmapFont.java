@@ -6,20 +6,19 @@ import zyx.opengl.textures.AbstractTexture;
 
 public class BitmapFont
 {
-	AbstractTexture texture;
 	FontFile fontFile;
 	ScreenModelMaterial material;
 
 	BitmapFont(AbstractTexture texture, FontFile fontFile)
 	{
-		this.texture = texture;
 		this.fontFile = fontFile;
-		this.material = new ScreenModelMaterial(Shader.SCREEN);
+		
+		material = new ScreenModelMaterial(Shader.SCREEN);
+		material.setDiffuse(texture);
 	}
 
 	public void dispose()
 	{
-		texture = null;
 		fontFile = null;
 	}
 }

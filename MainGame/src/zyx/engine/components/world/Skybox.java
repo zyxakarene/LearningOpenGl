@@ -101,7 +101,7 @@ public class Skybox extends WorldObject
 
 			shader.bind();
 			shader.upload();
-			model.draw();
+			model.draw(skyboxMaterial);
 
 			GLUtils.enableDepthWrite();
 			GLUtils.enableDepthTest();

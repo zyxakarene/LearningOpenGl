@@ -13,6 +13,7 @@ public enum Culling
 	public final boolean enabled;
 	
 	private static boolean currentEnabledValue;
+	private static Culling currentCulling;
 
 	private Culling(int glValue, boolean enabled)
 	{
@@ -33,6 +34,11 @@ public enum Culling
 			{
 				GL11.glDisable(GL11.GL_CULL_FACE);
 			}
+		}
+		
+		if (currentCulling != this)
+		{
+			GL11.glCullFace(glValue);
 		}
 	}
 }
