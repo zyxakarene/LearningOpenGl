@@ -3,13 +3,14 @@ package zyx.opengl.models.implementations;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.WorldObject;
+import zyx.opengl.materials.Material;
+import zyx.opengl.materials.impl.ParticleModelMaterial;
 import zyx.opengl.models.AbstractInstancedModel;
-import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.WorldParticleShader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.FloatMath;
 
-public class WorldParticleModel extends AbstractInstancedModel implements IParticleModel
+public class WorldParticleModel extends AbstractInstancedModel<ParticleModelMaterial> implements IParticleModel
 {
 	private static final int[] SHARED_ELEMENT_DATA =
 	{
@@ -30,7 +31,7 @@ public class WorldParticleModel extends AbstractInstancedModel implements IParti
 	
 	public WorldParticleModel(LoadableParticleVO loadableVo)
 	{
-		super(Shader.WORLD_PARTICLE);
+		super(loadableVo.materialWorld);
 
 		shader = (WorldParticleShader) meshShader;
 		refresh(loadableVo);
@@ -39,9 +40,10 @@ public class WorldParticleModel extends AbstractInstancedModel implements IParti
 	@Override
 	public void refresh(LoadableParticleVO loadedVo)
 	{
-		this.vo = loadedVo;
+		vo = loadedVo;
+		defaultMaterial = vo.materialWorld;
 		
-		AbstractTexture t = vo.gameTexture;
+		AbstractTexture t = defaultMaterial.getDiffuse();
 		
 		float[] vertexData =
 		{
@@ -62,7 +64,6 @@ public class WorldParticleModel extends AbstractInstancedModel implements IParti
 
 		setInstanceData(instanceData, instanceData.length / INSTANCE_DATA_COUNT);
 		setVertexData(vertexData, SHARED_ELEMENT_DATA);
-		setTexture(vo.gameTexture);
 	}
 	
 	@Override
@@ -139,12 +140,12 @@ public class WorldParticleModel extends AbstractInstancedModel implements IParti
 	}
 	
 	@Override
-	public void draw()
+	public void draw(Material material)
 	{
 		shader.bind();
 		shader.uploadFromVo(vo);
 		shader.upload();
-		super.draw();
+		super.draw(material);
 	}
 
 	@Override

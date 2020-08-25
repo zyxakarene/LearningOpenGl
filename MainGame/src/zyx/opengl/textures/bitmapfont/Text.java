@@ -2,14 +2,15 @@ package zyx.opengl.textures.bitmapfont;
 
 import java.nio.FloatBuffer;
 import org.lwjgl.util.vector.Vector4f;
+import zyx.opengl.materials.Material;
+import zyx.opengl.materials.impl.ScreenModelMaterial;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.models.BufferWrapper;
 import zyx.opengl.models.DebugDrawCalls;
-import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.bitmapfont.alignment.HAlignment;
 import zyx.opengl.textures.bitmapfont.alignment.VAlignment;
 
-public class Text extends AbstractModel
+public class Text extends AbstractModel<ScreenModelMaterial>
 {
 
 	private BitmapFont font;
@@ -30,7 +31,7 @@ public class Text extends AbstractModel
 	
 	public Text(BitmapFont font, float fontScale, float width, float height)
 	{
-		super(Shader.SCREEN);
+		super(font.material);
 		setup();
 		
 		this.font = font;
@@ -45,8 +46,6 @@ public class Text extends AbstractModel
 		
 		lastText = "";
 		lastColor = new Vector4f(1, 1, 1, 1);
-
-		setTexture(font.texture);
 	}
 
 	@Override
@@ -56,7 +55,7 @@ public class Text extends AbstractModel
 	}
 
 	@Override
-	public void draw()
+	public void draw(Material material)
 	{
 		if (shouldUpdate)
 		{
@@ -64,7 +63,7 @@ public class Text extends AbstractModel
 			update();
 		}
 		
-		super.draw();
+		super.draw(material);
 	}
 	
 	private void update()

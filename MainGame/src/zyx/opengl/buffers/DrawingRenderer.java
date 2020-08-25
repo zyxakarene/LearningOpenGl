@@ -2,6 +2,7 @@ package zyx.opengl.buffers;
 
 import java.util.ArrayList;
 import zyx.opengl.GLUtils;
+import zyx.opengl.materials.impl.DrawMaterial;
 import zyx.opengl.models.implementations.FullScreenQuadModel;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.ShaderManager;
@@ -34,6 +35,7 @@ public class DrawingRenderer extends BaseFrameBuffer
 	private float g;
 	private float r;
 	private int textureSize;
+	private DrawMaterial material;
 
 	public DrawingRenderer()
 	{
@@ -56,7 +58,11 @@ public class DrawingRenderer extends BaseFrameBuffer
 
 		overlayTexture.setBrushColor(1, 0, 0, 0.15f, 0.05f);
 
-		model = new FullScreenQuadModel(Shader.DRAW, underlayTexture, overlayTexture);
+		material = new DrawMaterial(Shader.DRAW);
+		material.setOver(overlayTexture);
+		material.setUnder(underlayTexture);
+		
+		model = new FullScreenQuadModel(material);
 	}
 
 	public void draw()

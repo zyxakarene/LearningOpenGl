@@ -1,18 +1,17 @@
 package zyx.opengl.models;
 
 import zyx.opengl.materials.Material;
-import zyx.opengl.shaders.implementations.Shader;
 
-public abstract class AbstractInstancedModel extends AbstractModel
+public abstract class AbstractInstancedModel<TMaterial extends Material> extends AbstractModel<TMaterial>
 {
 
 	private int instanceVbo;
 	
 	private int instanceCount;
 
-	public AbstractInstancedModel(Shader shader)
+	public AbstractInstancedModel(TMaterial material)
 	{
-		super(shader);
+		super(material);
 		setup();
 	}
 

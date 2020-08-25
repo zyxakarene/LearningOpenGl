@@ -2,17 +2,15 @@ package zyx.opengl.models.implementations;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
-import org.lwjgl.util.vector.Vector4f;
-import zyx.game.controls.SharedPools;
+import org.lwjgl.util.vector.Vector3f;
+import zyx.opengl.materials.impl.ScreenModelMaterial;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.models.BufferWrapper;
 import zyx.opengl.models.DebugDrawCalls;
-import zyx.opengl.shaders.implementations.Shader;
-import zyx.opengl.shaders.implementations.ScreenShader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.ListUtils;
 
-public class ScreenModel extends AbstractModel
+public class ScreenModel extends AbstractModel<ScreenModelMaterial>
 {
 	private static final int FLOATS_PER_QUAD = 32;
 	private static final int INTS_PER_QUAD = 6;
@@ -23,21 +21,10 @@ public class ScreenModel extends AbstractModel
 	private int currentVertexCount;
 	private int tempVertexCount;
 	
-	public final ScreenShader shader;
-
-	private Vector4f colors;
-	
-	public ScreenModel(AbstractTexture texture, Vector4f color)
+	public ScreenModel(ScreenModelMaterial material)
 	{
-		super(Shader.SCREEN);
+		super(material);
 		setup();
-		
-		colors = SharedPools.VECTOR_POOL_4F.getInstance();
-		shader = (ScreenShader) meshShader;
-
-		colors.set(color);
-
-		setTexture(texture);
 	}
 	
 	@Override
@@ -67,16 +54,17 @@ public class ScreenModel extends AbstractModel
 	public void addVertexData(float x, float y, float width, float height, AbstractTexture tex)
 	{
 		AbstractTexture t = tex;
-		Vector4f c = colors;
+		Vector3f c = defaultMaterial.color;
+		float alpha = defaultMaterial.alpha;
 		float w = width;
 		float h = height;
 		float vertexData[] =
 		{
 			//x			y			Texcoords	//Colors
-			x,			-y,			t.x, t.y,	c.x, c.y, c.z, c.w, // Top-left
-			x + w,		-y,			t.u, t.y,	c.x, c.y, c.z, c.w, // Top-right
-			x + w,		-h - y,		t.u, t.v,	c.x, c.y, c.z, c.w, // Bottom-right
-			x,			-h - y,		t.x, t.v,	c.x, c.y, c.z, c.w,// Bottom-left
+			x,			-y,			t.x, t.y,	c.x, c.y, c.z, alpha, // Top-left
+			x + w,		-y,			t.u, t.y,	c.x, c.y, c.z, alpha, // Top-right
+			x + w,		-h - y,		t.u, t.v,	c.x, c.y, c.z, alpha, // Bottom-right
+			x,			-h - y,		t.x, t.v,	c.x, c.y, c.z, alpha,// Bottom-left
 		};
 		
 		int elementData[] =
@@ -109,14 +97,15 @@ public class ScreenModel extends AbstractModel
 		return elementData;
 	}
 	
-	public void setColors(Vector4f color)
+	public void updateColors()
 	{
-		colors.set(color);
 		bindVao();
 		
+		Vector3f colors = defaultMaterial.color;
+		float alpha = defaultMaterial.alpha;
 		float vertexData[] = new float[]
 		{
-			colors.x, colors.y, colors.z, colors.w
+			colors.x, colors.y, colors.z, alpha
 		};
 		FloatBuffer buffer = BufferWrapper.toBuffer(vertexData);
 
@@ -132,12 +121,12 @@ public class ScreenModel extends AbstractModel
 	
 	public float getWidth()
 	{
-		return getDefaultTexture().getWidth();
+		return defaultMaterial.getDiffuse().getWidth();
 	}
 	
 	public float getHeight()
 	{
-		return getDefaultTexture().getHeight();
+		return defaultMaterial.getDiffuse().getHeight();
 	}
 	
 	@Override
@@ -146,18 +135,6 @@ public class ScreenModel extends AbstractModel
 		addAttribute("position", 2, 8, 0);
 		addAttribute("texcoord", 2, 8, 2);
 		addAttribute("color", 4, 8, 4);
-	}
-
-	@Override
-	public void dispose()
-	{
-		super.dispose();
-		
-		if(colors != null)
-		{
-			SharedPools.VECTOR_POOL_4F.releaseInstance(colors);
-			colors = null;
-		}
 	}
 
 	public void prepareBatchCount(int count)

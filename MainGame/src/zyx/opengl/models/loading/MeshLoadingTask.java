@@ -10,7 +10,7 @@ public class MeshLoadingTask extends ScheduledTask<LoadableWorldModelVO>
 {
 	private ResourceDataInputStream inputData;
 	private String id;
-
+	
 	public MeshLoadingTask(ITaskCompleted<LoadableWorldModelVO> taskDoneCallback, ResourceDataInputStream data, String id)
 	{
 		super(taskDoneCallback);

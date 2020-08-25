@@ -1,21 +1,18 @@
 package zyx.opengl.buffers;
 
-import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_STENCIL_BUFFER_BIT;
-import org.lwjgl.opengl.GL30;
 import static org.lwjgl.opengl.GL30.GL_DRAW_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.GL_READ_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 import static org.lwjgl.opengl.GL30.glBlitFramebuffer;
 import zyx.engine.components.cubemaps.saving.ICubemapRenderer;
 import zyx.opengl.GLUtils;
+import zyx.opengl.materials.impl.DeferredMaterial;
 import zyx.opengl.models.implementations.FullScreenQuadModel;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
-import zyx.opengl.stencils.StencilControl;
-import zyx.opengl.stencils.StencilLayer;
 import zyx.opengl.textures.FrameBufferTexture;
 import zyx.opengl.textures.TextureFromInt;
 import zyx.opengl.textures.enums.TextureAttachment;
@@ -51,6 +48,7 @@ public class DeferredRenderer extends BaseFrameBuffer
 	{
 		return INSTANCE;
 	}
+	private DeferredMaterial material;
 
 	public DeferredRenderer()
 	{
@@ -83,9 +81,16 @@ public class DeferredRenderer extends BaseFrameBuffer
 		ambientOcclusionTexture = new TextureFromInt(w, h, ambientInt, TextureSlot.DEFERRED_AO);
 		cubeIndexTexture = new TextureFromInt(w, h, cubeIndexBuffer.id, TextureSlot.DEFERRED_CUBE_INDEX);
 
-		model = new FullScreenQuadModel(Shader.DEFERED_LIGHT_PASS,
-										positionTexture, normalTexture, colorTexture, depthTexture, shadowDepthTexture,
-										ambientOcclusionTexture, cubeIndexTexture);
+		material = new DeferredMaterial(Shader.DEFERED_LIGHT_PASS);
+		material.setPosition(positionTexture);
+		material.setNormal(normalTexture);
+		material.setColorSpec(colorTexture);
+		material.setDepth(depthTexture);
+		material.setShadow(shadowDepthTexture);
+		material.setAmbientOcclusion(ambientOcclusionTexture);
+		material.setCubeIndex(cubeIndexTexture);
+		
+		model = new FullScreenQuadModel(material);
 	}
 
 	public void draw()

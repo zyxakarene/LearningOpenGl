@@ -1,8 +1,10 @@
 package zyx.opengl.models.implementations;
 
 import org.lwjgl.util.vector.Vector3f;
+import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.implementations.physics.PhysBox;
+import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.AbstractTexture;
 
@@ -40,9 +42,8 @@ public class LoadableWorldModelVO
 	Shader shadowShader;
 	int boneCount;
 	
-	AbstractTexture gameTexture;
-	AbstractTexture normalTexture;
-	AbstractTexture specularTexture;
+	WorldModelMaterial material;
+	WorldModelMaterial shadowMaterial;
 
 	public LoadableWorldModelVO(int boneCount, float[] vertexData, int[] elementData, PhysBox physBox, String diffuse, String normal, String specular,
 			Vector3f radiusCenter, float radius, String skeletonId)
@@ -59,6 +60,9 @@ public class LoadableWorldModelVO
 		this.radiusCenter = radiusCenter;
 		this.radius = radius;
 		this.skeletonId = skeletonId;
+		
+		material = new WorldModelMaterial(worldShader);
+		shadowMaterial = new WorldModelMaterial(shadowShader);
 	}
 
 	public void setSkeleton(Skeleton skeleton)
@@ -88,17 +92,17 @@ public class LoadableWorldModelVO
 	
 	public void setDiffuseTexture(AbstractTexture gameTexture)
 	{
-		this.gameTexture = gameTexture;
+		material.setDiffuse(gameTexture);
 	}
 	
 	public void setNormalTexture(AbstractTexture gameTexture)
 	{
-		normalTexture = gameTexture;
+		material.setNormal(gameTexture);
 	}
 
 	public void setSpecularTexture(AbstractTexture gameTexture)
 	{
-		specularTexture = gameTexture;
+		material.setSpecular(gameTexture);
 	}
 	
 	public void dispose()
@@ -112,15 +116,32 @@ public class LoadableWorldModelVO
 		elementData = null;
 		physBox = null;
 		
-		gameTexture = null;
-		normalTexture = null;
-		specularTexture = null;
 		skeleton = null;
+		
+		material = null;
+		shadowMaterial = null;
 	}
 
 	public void clean()
 	{
 		vertexData = null;
 		elementData = null;
+	}
+
+	public void toSkybox()
+	{
+		//TODO: Make not a hack
+		material.shaderType = Shader.SKYBOX;
+		material.shader = ShaderManager.getInstance().get(Shader.SKYBOX);
+	}
+
+	public void toMeshBatch()
+	{
+		//TODO: Make not a hack
+		material.shaderType = Shader.MESH_BATCH;
+		material.shader = ShaderManager.getInstance().get(Shader.MESH_BATCH);
+		
+		shadowMaterial.shaderType = Shader.MESH_BATCH_DEPTH;
+		shadowMaterial.shader = ShaderManager.getInstance().get(Shader.MESH_BATCH_DEPTH);
 	}
 }

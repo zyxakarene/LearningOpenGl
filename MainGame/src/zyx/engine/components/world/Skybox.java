@@ -5,6 +5,7 @@ import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.SkyboxResource;
 import zyx.engine.resources.impl.textures.TextureResource;
 import zyx.opengl.GLUtils;
+import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.implementations.SkyboxModel;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
@@ -25,6 +26,7 @@ public class Skybox extends WorldObject
 	private IResourceReady<TextureResource> onTextureLoaded;
 	
 	private SkyboxShader shader;
+	private WorldModelMaterial skyboxMaterial;
 
 	Skybox()
 	{
@@ -33,6 +35,7 @@ public class Skybox extends WorldObject
 		onMeshLoaded = (SkyboxResource resource) ->
 		{
 			model = resource.getContent();
+			skyboxMaterial = model.getClonedMaterial();
 			onResourceLoaded();
 		};
 		
@@ -56,10 +59,10 @@ public class Skybox extends WorldObject
 
 	private void onResourceLoaded()
 	{
-		if (model != null && texture != null)
+		if (skyboxMaterial != null && texture != null)
 		{
 			loaded = true;
-			model.setSkyboxTexture(texture);
+			skyboxMaterial.setDiffuse(texture);
 		}
 	}
 	
@@ -81,10 +84,10 @@ public class Skybox extends WorldObject
 		
 		texture = null;
 		
-		if (model != null)
+		if (skyboxMaterial != null)
 		{
-			model.removeSkyboxTexture();
-			model = null;
+			skyboxMaterial.setDiffuse(null);
+			skyboxMaterial = null;
 		}
 	}
 	

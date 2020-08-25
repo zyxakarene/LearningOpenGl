@@ -73,6 +73,7 @@ public class SkyboxResource extends BaseRequiredSubResource implements ISubResou
 	public void onTaskCompleted(LoadableWorldModelVO data)
 	{
 		loadedVo = data;
+		loadedVo.toSkybox();
 		
 		String diffuse = loadedVo.getDiffuseTextureId();
 		addResourceBatch(new SubResourceBatch(this, diffuse));

@@ -1,11 +1,10 @@
 package zyx.opengl.models.implementations;
 
+import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.models.DebugDrawCalls;
-import zyx.opengl.shaders.implementations.Shader;
-import zyx.opengl.textures.AbstractTexture;
 
-public class SkyboxModel extends AbstractModel
+public class SkyboxModel extends AbstractModel<WorldModelMaterial>
 {
 
 	private static final int POSITION_LENGTH = 3;
@@ -13,29 +12,15 @@ public class SkyboxModel extends AbstractModel
 	private static final int TEX_COORDS_LENGTH = 2;
 	private static final int BONE_LENGTH = 2;
 
-	private AbstractTexture originalTexture;
 	private int boneCount;
 
 	public SkyboxModel(LoadableWorldModelVO vo)
 	{
-		super(Shader.SKYBOX);
+		super(vo.material);
 		boneCount = vo.boneCount;
 		setup();
 
-		originalTexture = vo.gameTexture;
-
 		setVertexData(vo.vertexData, vo.elementData);
-		setTexture(vo.gameTexture);
-	}
-
-	public void setSkyboxTexture(AbstractTexture texture)
-	{
-		setTexture(texture);
-	}
-
-	public void removeSkyboxTexture()
-	{
-		setTexture(originalTexture);
 	}
 
 	@Override
@@ -52,13 +37,5 @@ public class SkyboxModel extends AbstractModel
 		addAttribute("position", POSITION_LENGTH, stride, 0);
 //		addAttribute("normals", NORMALS_LENGTH, stride, 3);
 		addAttribute("texcoord", TEX_COORDS_LENGTH, stride, 6);
-	}
-
-	@Override
-	public void dispose()
-	{
-		super.dispose();
-
-		originalTexture = null;
 	}
 }

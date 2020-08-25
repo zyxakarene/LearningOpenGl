@@ -1,20 +1,14 @@
 package zyx.opengl.materials.impl;
 
 import zyx.opengl.materials.Material;
-import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.enums.TextureSlot;
 
-public class WorldObjectMaterial extends Material
+public class WorldModelMaterial extends Material
 {
 
-	public WorldObjectMaterial(Shader shader)
-	{
-		super(shader);
-	}
-	
-	public WorldObjectMaterial(AbstractShader shader)
+	public WorldModelMaterial(Shader shader)
 	{
 		super(shader);
 	}
@@ -58,7 +52,7 @@ public class WorldObjectMaterial extends Material
 	@Override
 	protected Material createInstance()
 	{
-		return new WorldObjectMaterial(shader);
+		return new WorldModelMaterial(shaderType);
 	}
 
 }

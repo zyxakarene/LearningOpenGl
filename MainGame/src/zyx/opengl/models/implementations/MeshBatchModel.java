@@ -3,12 +3,13 @@ package zyx.opengl.models.implementations;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
+import zyx.opengl.materials.Material;
+import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.AbstractInstancedModel;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.MeshBatchDepthShader;
 import zyx.opengl.shaders.implementations.MeshBatchShader;
 import zyx.opengl.shaders.implementations.Shader;
-import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.interfaces.IShadowable;
 
 public class MeshBatchModel extends AbstractInstancedModel implements IShadowable
@@ -18,14 +19,16 @@ public class MeshBatchModel extends AbstractInstancedModel implements IShadowabl
 	
 	private MeshBatchShader shader;
 	private MeshBatchDepthShader shadowShader;
+	private WorldModelMaterial shadowMaterial;
 
 	private Vector3f radiusCenter;
 	private float radius;
 
 	public MeshBatchModel(LoadableWorldModelVO vo)
 	{
-		super(Shader.MESH_BATCH);
+		super(vo.material);
 
+		this.shadowMaterial = vo.shadowMaterial;
 		this.shader = (MeshBatchShader) meshShader;
 		this.shadowShader = ShaderManager.getInstance().<MeshBatchDepthShader>get(Shader.MESH_BATCH_DEPTH);
 
@@ -36,14 +39,12 @@ public class MeshBatchModel extends AbstractInstancedModel implements IShadowabl
 	{
 		radiusCenter = vo.radiusCenter;
 		radius = vo.radius;
-
+		
+		defaultMaterial = vo.material;
+		shadowMaterial = vo.shadowMaterial;
+		
 		bindVao();
 		setVertexData(vo.vertexData, vo.elementData);
-		AbstractTexture[] texs = new AbstractTexture[]
-		{
-			vo.gameTexture, vo.normalTexture, vo.specularTexture
-		};
-		setTextures(texs);
 	}
 	
 	public void setMeshBatchData(float[] instanceData)
@@ -52,13 +53,13 @@ public class MeshBatchModel extends AbstractInstancedModel implements IShadowabl
 	}
 	
 	@Override
-	public void draw()
+	public void draw(Material material)
 	{
 		DeferredRenderer.getInstance().bindBuffer();
 		shader.bind();
 		shader.upload();
 
-		super.draw();
+		super.draw(material);
 
 		DepthRenderer.getInstance().drawShadowable(this);
 	}
@@ -70,16 +71,16 @@ public class MeshBatchModel extends AbstractInstancedModel implements IShadowabl
 		shadowShader.upload();
 
 		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_0);
-		super.draw();
+		super.draw(shadowMaterial);
 
 		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_1);
-		super.draw();
+		super.draw(shadowMaterial);
 
 		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_2);
-		super.draw();
+		super.draw(shadowMaterial);
 
 		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_3);
-		super.draw();
+		super.draw(shadowMaterial);
 	}
 
 	public Vector3f getRadiusCenter()

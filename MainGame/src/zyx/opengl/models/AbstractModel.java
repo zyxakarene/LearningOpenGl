@@ -3,11 +3,9 @@ package zyx.opengl.models;
 import java.nio.FloatBuffer;
 import zyx.opengl.materials.Material;
 import zyx.opengl.shaders.AbstractShader;
-import zyx.opengl.shaders.ShaderManager;
-import zyx.opengl.shaders.implementations.Shader;
 import zyx.utils.interfaces.IDisposeable;
 
-public abstract class AbstractModel implements IDisposeable
+public abstract class AbstractModel<TMaterial extends Material> implements IDisposeable
 {
 
 	protected final AbstractShader meshShader;
@@ -17,10 +15,13 @@ public abstract class AbstractModel implements IDisposeable
 	protected int ebo;
 
 	protected int elementCount;
+	
+	protected TMaterial defaultMaterial;
 
-	public AbstractModel(Shader shader)
+	public AbstractModel(TMaterial defaultMaterial)
 	{
-		meshShader = ShaderManager.getInstance().get(shader);
+		this.meshShader = defaultMaterial.shader;
+		this.defaultMaterial = defaultMaterial;
 	}
 
 	protected final void setup()
@@ -64,6 +65,16 @@ public abstract class AbstractModel implements IDisposeable
 		ModelUtils.setVBOSub(buffer, offset);
 	}
 
+	public TMaterial getClonedMaterial()
+	{
+		return (TMaterial) defaultMaterial.cloneMaterial();
+	}
+	
+	public final void draw()
+	{
+		draw(defaultMaterial);
+	}
+	
 	public void draw(Material material)
 	{
 		if (elementCount > 0)

@@ -55,6 +55,7 @@ public class MeshBatchResource extends BaseRequiredSubResource implements ISubRe
 	public void onTaskCompleted(LoadableWorldModelVO data)
 	{
 		loadedVo = data;
+		loadedVo.toMeshBatch();
 
 		String diffuse = loadedVo.getDiffuseTextureId();
 		String normal = loadedVo.getNormalTextureId();

@@ -12,26 +12,28 @@ public abstract class Material
 	public Culling culling;
 	public BlendMode blend;
 	
-	public final AbstractShader shader;
+	public Shader shaderType;
+	public AbstractShader shader;
 	
 	protected final AbstractTexture[] textures;
 
-	public Material(AbstractShader shader)
+	public Material(Shader shader)
 	{
-		this.shader = shader;
+		this.shaderType = shader;
+		this.shader = ShaderManager.getInstance().get(shader);
 		
 		int textureCount = getTextureCount();
 		textures = new AbstractTexture[textureCount];
 		
+		setDefaultValues();
+	}
+	
+	protected void setDefaultValues()
+	{
 		zWrite = ZWrite.ENABLED;
 		zTest = ZTest.LESS;
 		culling = Culling.BACK;
 		blend = BlendMode.NORMAL;
-	}
-	
-	public Material(Shader shader)
-	{
-		this(ShaderManager.getInstance().get(shader));
 	}
 	
 	public void bind()
@@ -40,7 +42,10 @@ public abstract class Material
 		
 		for (AbstractTexture texture : textures)
 		{
-			texture.bind();
+			if (texture != null)
+			{
+				texture.bind();
+			}
 		}
 		
 		zWrite.invoke();

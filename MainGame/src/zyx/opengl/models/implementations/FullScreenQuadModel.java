@@ -1,18 +1,16 @@
 package zyx.opengl.models.implementations;
 
+import zyx.opengl.materials.Material;
 import zyx.opengl.models.AbstractModel;
-import zyx.opengl.shaders.implementations.Shader;
-import zyx.opengl.textures.AbstractTexture;
 
 public class FullScreenQuadModel extends AbstractModel
 {
-	public FullScreenQuadModel(Shader shader, AbstractTexture... textures)
+	public FullScreenQuadModel(Material material)
 	{
-		super(shader);
+		super(material);
 
 		setup();
 		
-		setTextures(textures);
 		setVertexData();
 	}
 	

@@ -55,7 +55,7 @@ public abstract class AbstractQuad extends DisplayObject
 	{
 		if (loaded)
 		{
-			model.setColors(colors);
+			model.updateColors();
 		}
 	}
 	

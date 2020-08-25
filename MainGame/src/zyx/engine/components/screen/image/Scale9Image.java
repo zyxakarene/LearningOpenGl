@@ -5,7 +5,9 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.impl.textures.TextureResource;
+import zyx.opengl.materials.impl.ScreenModelMaterial;
 import zyx.opengl.models.implementations.ScreenModel;
+import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.geometry.Rectangle;
 import zyx.utils.math.Scale9Texture;
@@ -17,6 +19,7 @@ public class Scale9Image extends AbstractImage implements IResourceReady<Texture
 	private float scaleY;
 	
 	private AbstractTexture gameTexture;
+	private ScreenModelMaterial material;
 
 	public Scale9Image()
 	{
@@ -29,7 +32,12 @@ public class Scale9Image extends AbstractImage implements IResourceReady<Texture
 	{
 		gameTexture = texture;
 		
-		model = new ScreenModel(texture, colors);
+		material = new ScreenModelMaterial(Shader.SCREEN);
+		material.setDiffuse(texture);
+		material.color.set(colors);
+		material.alpha = colors.w;
+		
+		model = new ScreenModel(material);
 
 		constructModel(texture.getWidth(), texture.getHeight());
 

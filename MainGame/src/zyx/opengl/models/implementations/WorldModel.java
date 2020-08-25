@@ -3,6 +3,8 @@ package zyx.opengl.models.implementations;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
+import zyx.opengl.materials.Material;
+import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.shaders.implementations.WorldShader;
@@ -12,10 +14,9 @@ import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.DepthShader;
-import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.interfaces.IShadowable;
 
-public class WorldModel extends AbstractModel implements IShadowable
+public class WorldModel extends AbstractModel<WorldModelMaterial> implements IShadowable
 {
 
 	private static final int POSITION_LENGTH = 3;
@@ -35,10 +36,13 @@ public class WorldModel extends AbstractModel implements IShadowable
 	private int boneCount;
 	
 	public boolean ready;
+	
+	private WorldModelMaterial shadowMaterial;
 
 	public WorldModel(LoadableWorldModelVO vo)
 	{
-		super(vo.worldShader);
+		super(vo.material);
+		shadowMaterial = vo.shadowMaterial;
 		boneCount = vo.boneCount;
 		setup();
 
@@ -54,6 +58,9 @@ public class WorldModel extends AbstractModel implements IShadowable
 		physBox = vo.physBox;
 		radiusCenter = vo.radiusCenter;
 		radius = vo.radius;
+		
+		defaultMaterial = vo.material;
+		shadowMaterial = vo.shadowMaterial;
 
 		bindVao();
 
@@ -64,11 +71,6 @@ public class WorldModel extends AbstractModel implements IShadowable
 		}
 
 		setVertexData(vo.vertexData, vo.elementData);
-		AbstractTexture[] texs = new AbstractTexture[]
-		{
-			vo.gameTexture, vo.normalTexture, vo.specularTexture
-		};
-		setTextures(texs);
 		
 		ready = true;
 	}
@@ -90,12 +92,12 @@ public class WorldModel extends AbstractModel implements IShadowable
 	}
 
 	@Override
-	public void draw()
+	public void draw(Material material)
 	{
 		DeferredRenderer.getInstance().bindBuffer();
 		skeleton.update();
 		shader.uploadBones();
-		super.draw();
+		super.draw(material);
 
 		DepthRenderer.getInstance().drawShadowable(this);
 		DeferredRenderer.getInstance().bindBuffer();
@@ -109,16 +111,16 @@ public class WorldModel extends AbstractModel implements IShadowable
 		shadowShader.uploadBones();
 
 		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_0);
-		super.draw();
+		super.draw(shadowMaterial);
 
 		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_1);
-		super.draw();
+		super.draw(shadowMaterial);
 
 		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_2);
-		super.draw();
+		super.draw(shadowMaterial);
 
 		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_3);
-		super.draw();
+		super.draw(shadowMaterial);
 	}
 
 	public PhysBox getPhysbox()

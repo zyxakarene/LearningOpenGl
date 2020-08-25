@@ -1,13 +1,14 @@
 package zyx.opengl.models.implementations;
 
 import zyx.engine.components.world.WorldObject;
+import zyx.opengl.materials.Material;
+import zyx.opengl.materials.impl.ParticleModelMaterial;
 import zyx.opengl.models.AbstractInstancedModel;
-import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.ParticleShader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.FloatMath;
 
-public class ParticleModel extends AbstractInstancedModel implements IParticleModel
+public class ParticleModel extends AbstractInstancedModel<ParticleModelMaterial> implements IParticleModel
 {
 
 	private static final int[] SHARED_ELEMENT_DATA =
@@ -21,7 +22,7 @@ public class ParticleModel extends AbstractInstancedModel implements IParticleMo
 
 	public ParticleModel(LoadableParticleVO loadableVo)
 	{
-		super(Shader.PARTICLE);
+		super(loadableVo.materialLocal);
 
 		shader = (ParticleShader) meshShader;
 		refresh(loadableVo);
@@ -31,8 +32,10 @@ public class ParticleModel extends AbstractInstancedModel implements IParticleMo
 	public void refresh(LoadableParticleVO loadedVo)
 	{
 		vo = loadedVo;
+		
+		defaultMaterial = vo.materialLocal;
 
-		AbstractTexture t = vo.gameTexture;
+		AbstractTexture t = defaultMaterial.getDiffuse();
 
 		float[] vertexData =
 		{
@@ -54,7 +57,6 @@ public class ParticleModel extends AbstractInstancedModel implements IParticleMo
 		}
 		setInstanceData(instanceData, instanceData.length / instanceDataAmount);
 		setVertexData(vertexData, SHARED_ELEMENT_DATA);
-		setTexture(vo.gameTexture);
 	}
 
 	@Override
@@ -64,12 +66,12 @@ public class ParticleModel extends AbstractInstancedModel implements IParticleMo
 	}
 
 	@Override
-	public void draw()
+	public void draw(Material material)
 	{
 		shader.bind();
 		shader.uploadFromVo(vo);
 		shader.upload();
-		super.draw();
+		super.draw(material);
 	}
 
 	@Override

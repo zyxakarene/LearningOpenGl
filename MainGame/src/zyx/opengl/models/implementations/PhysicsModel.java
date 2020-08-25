@@ -1,5 +1,7 @@
 package zyx.opengl.models.implementations;
 
+import zyx.opengl.materials.Material;
+
 public class PhysicsModel extends WorldModel
 {
 
@@ -9,12 +11,12 @@ public class PhysicsModel extends WorldModel
 	}
 	
 	@Override
-	public void draw()
+	public void draw(Material material)
 	{
 		meshShader.bind();
 		meshShader.upload();
 		
-		super.draw();
+		super.draw(material);
 	}
 
 	@Override
