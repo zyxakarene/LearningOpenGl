@@ -1,17 +1,14 @@
 package zyx.opengl.models;
 
 import java.nio.FloatBuffer;
+import zyx.opengl.materials.Material;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
-import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.interfaces.IDisposeable;
-import zyx.utils.interfaces.IDrawable;
 
-public abstract class AbstractModel implements IDrawable, IDisposeable
+public abstract class AbstractModel implements IDisposeable
 {
-
-	private static final AbstractTexture[] NO_TEXTURES = new AbstractTexture[0];
 
 	protected final AbstractShader meshShader;
 
@@ -20,8 +17,6 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 	protected int ebo;
 
 	protected int elementCount;
-
-	private AbstractTexture[] textures = NO_TEXTURES;
 
 	public AbstractModel(Shader shader)
 	{
@@ -69,53 +64,16 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 		ModelUtils.setVBOSub(buffer, offset);
 	}
 
-	protected void setTexture(AbstractTexture texture)
-	{
-		textures = new AbstractTexture[]
-		{
-			texture
-		};
-	}
-
-	public void setDiffuse(AbstractTexture tex)
-	{
-		textures[0] = tex;
-	}
-	
-	protected void setTextures(AbstractTexture[] texture)
-	{
-		textures = texture;
-	}
-
-	public AbstractTexture getDefaultTexture()
-	{
-		return textures[0];
-	}
-
-	public AbstractTexture[] getTextures()
-	{
-		return textures;
-	}
-
-	@Override
-	public void draw()
+	public void draw(Material material)
 	{
 		if (elementCount > 0)
 		{
 			if (canDraw())
 			{
-				bindTextures();
-
+				material.bind();
+				
 				ModelUtils.drawElements(vao, elementCount);
 			}
-		}
-	}
-
-	protected void bindTextures()
-	{
-		for (AbstractTexture texture : textures)
-		{
-			texture.bind();
 		}
 	}
 
@@ -133,8 +91,6 @@ public abstract class AbstractModel implements IDrawable, IDisposeable
 		ModelUtils.disposeBuffer(vbo);
 		ModelUtils.disposeBuffer(ebo);
 		ModelUtils.disposeVertexArray(vao);
-
-		textures = null;
 	}
 
 	protected boolean canDraw()

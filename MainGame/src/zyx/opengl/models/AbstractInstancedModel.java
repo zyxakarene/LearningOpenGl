@@ -1,5 +1,6 @@
 package zyx.opengl.models;
 
+import zyx.opengl.materials.Material;
 import zyx.opengl.shaders.implementations.Shader;
 
 public abstract class AbstractInstancedModel extends AbstractModel
@@ -36,13 +37,14 @@ public abstract class AbstractInstancedModel extends AbstractModel
 	}
 	
 	@Override
-	public void draw()
+	public void draw(Material material)
 	{
 		if (elementCount > 0 && instanceCount > 0)
 		{
 			if (canDraw())
 			{
-				bindTextures();
+				material.bind();
+				
 				ModelUtils.drawInstancedElements(vao, elementCount, instanceCount);
 			}
 		}
