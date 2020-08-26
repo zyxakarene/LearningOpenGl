@@ -1,24 +1,23 @@
 package zyx.opengl.textures.bitmapfont;
 
-import zyx.opengl.materials.impl.ScreenModelMaterial;
-import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.AbstractTexture;
+import zyx.utils.interfaces.IDisposeable;
 
-public class BitmapFont
+public class BitmapFont implements IDisposeable
 {
-	FontFile fontFile;
-	ScreenModelMaterial material;
+	public FontFile fontFile;
+	public AbstractTexture texture;
 
 	BitmapFont(AbstractTexture texture, FontFile fontFile)
 	{
 		this.fontFile = fontFile;
-		
-		material = new ScreenModelMaterial(Shader.SCREEN);
-		material.setDiffuse(texture);
+		this.texture = texture;
 	}
 
+	@Override
 	public void dispose()
 	{
+		texture = null;
 		fontFile = null;
 	}
 }

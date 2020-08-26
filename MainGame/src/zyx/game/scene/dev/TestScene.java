@@ -5,7 +5,6 @@ import org.lwjgl.util.vector.Vector3f;
 import zyx.OnTeaPotClicked;
 import zyx.game.components.SimpleMesh;
 import zyx.game.controls.input.KeyboardData;
-import zyx.opengl.models.implementations.shapes.Box;
 
 public class TestScene extends DebugScene
 {
@@ -30,10 +29,6 @@ public class TestScene extends DebugScene
 		teapot.load("mesh.player");
 		objects.add(teapot);
 		world.addChild(teapot);
-		
-		Box box = new Box();
-		box.setScale(0.005f, 1, 0.005f);
-		world.addChild(box);
 		
 		picker.addObject(teapot, new OnTeaPotClicked());
 	}

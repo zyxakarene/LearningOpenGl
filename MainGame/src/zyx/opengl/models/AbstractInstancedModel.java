@@ -36,7 +36,7 @@ public abstract class AbstractInstancedModel<TMaterial extends Material> extends
 	}
 	
 	@Override
-	public void draw(Material material)
+	public void draw(TMaterial material)
 	{
 		if (elementCount > 0 && instanceCount > 0)
 		{

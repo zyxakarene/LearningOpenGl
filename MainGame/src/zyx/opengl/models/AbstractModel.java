@@ -75,7 +75,7 @@ public abstract class AbstractModel<TMaterial extends Material> implements IDisp
 		draw(defaultMaterial);
 	}
 	
-	public void draw(Material material)
+	public void draw(TMaterial material)
 	{
 		if (elementCount > 0)
 		{

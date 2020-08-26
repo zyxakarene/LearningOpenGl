@@ -3,7 +3,6 @@ package zyx.opengl.models.implementations;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.WorldObject;
-import zyx.opengl.materials.Material;
 import zyx.opengl.materials.impl.ParticleModelMaterial;
 import zyx.opengl.models.AbstractInstancedModel;
 import zyx.opengl.shaders.implementations.WorldParticleShader;
@@ -140,7 +139,7 @@ public class WorldParticleModel extends AbstractInstancedModel<ParticleModelMate
 	}
 	
 	@Override
-	public void draw(Material material)
+	public void draw(ParticleModelMaterial material)
 	{
 		shader.bind();
 		shader.uploadFromVo(vo);

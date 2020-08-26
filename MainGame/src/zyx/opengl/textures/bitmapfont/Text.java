@@ -1,19 +1,17 @@
 package zyx.opengl.textures.bitmapfont;
 
 import java.nio.FloatBuffer;
-import org.lwjgl.util.vector.Vector4f;
-import zyx.opengl.materials.Material;
-import zyx.opengl.materials.impl.ScreenModelMaterial;
+import org.lwjgl.util.vector.Vector3f;
+import zyx.opengl.materials.impl.BitmapTextMaterial;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.models.BufferWrapper;
 import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.textures.bitmapfont.alignment.HAlignment;
 import zyx.opengl.textures.bitmapfont.alignment.VAlignment;
 
-public class Text extends AbstractModel<ScreenModelMaterial>
+public class Text extends AbstractModel<BitmapTextMaterial>
 {
 
-	private BitmapFont font;
 	private int characterCount;
 	private int vertexCount;
 
@@ -23,18 +21,16 @@ public class Text extends AbstractModel<ScreenModelMaterial>
 	private float height;
 	
 	private String lastText;
-	private Vector4f lastColor;
 	
 	private boolean shouldUpdate;
 	private HAlignment hAlign;
 	private VAlignment vAlign;
 	
-	public Text(BitmapFont font, float fontScale, float width, float height)
+	public Text(BitmapTextMaterial material, float fontScale, float width, float height)
 	{
-		super(font.material);
+		super(material);
 		setup();
 		
-		this.font = font;
 		this.fontScale = fontScale;
 		this.width = width;
 		this.height = height;
@@ -45,7 +41,6 @@ public class Text extends AbstractModel<ScreenModelMaterial>
 		shouldUpdate = true;
 		
 		lastText = "";
-		lastColor = new Vector4f(1, 1, 1, 1);
 	}
 
 	@Override
@@ -55,20 +50,20 @@ public class Text extends AbstractModel<ScreenModelMaterial>
 	}
 
 	@Override
-	public void draw(Material material)
+	public void draw(BitmapTextMaterial material)
 	{
 		if (shouldUpdate)
 		{
 			shouldUpdate = false;
-			update();
+			update(material);
 		}
 		
 		super.draw(material);
 	}
 	
-	private void update()
+	private void update(BitmapTextMaterial material)
 	{
-		TextGenerator generator = new TextGenerator(font.fontFile, lastColor, width, height, fontScale);
+		TextGenerator generator = new TextGenerator(material, width, height, fontScale);
 		generator.sethAlign(hAlign, vAlign);
 		
 		characterCount = lastText.length();
@@ -102,14 +97,6 @@ public class Text extends AbstractModel<ScreenModelMaterial>
 		addAttribute("color", 4, 8, 4);
 	}
 
-	@Override
-	public void dispose()
-	{
-		super.dispose();
-
-		font = null;
-	}
-
 	public float getWidth()
 	{
 		return width;
@@ -120,17 +107,18 @@ public class Text extends AbstractModel<ScreenModelMaterial>
 		return height;
 	}
 
-	public void setColors(Vector4f colors)
+	public void updateColors()
 	{
-		lastColor.set(colors);
-		
 		if (vertexCount > 0)
 		{
 			bindVao();
-
+			
+			Vector3f colors = defaultMaterial.color;
+			float alpha = defaultMaterial.alpha;
+			
 			float vertexData[] = new float[]
 			{
-				colors.x, colors.y, colors.z, colors.w
+				colors.x, colors.y, colors.z, alpha
 			};
 			FloatBuffer buffer = BufferWrapper.toBuffer(vertexData);
 

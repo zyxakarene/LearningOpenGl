@@ -3,7 +3,7 @@ package zyx.opengl.textures.bitmapfont;
 import zyx.utils.ListUtils;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
-import org.lwjgl.util.vector.Vector4f;
+import zyx.opengl.materials.impl.BitmapTextMaterial;
 import zyx.opengl.textures.bitmapfont.alignment.HAlignment;
 import zyx.opengl.textures.bitmapfont.alignment.VAlignment;
 
@@ -25,18 +25,24 @@ class TextGenerator
 	private int currentValueX;
 	private int currentValueY;
 	private int currentElementCount;
-	private Vector4f color;
+	private float red;
+	private float green;
+	private float blue;
+	private float alpha;
 	private float scale;
 
 	private float maxWidth;
 	private float maxHeight;
 	
-	TextGenerator(FontFile fontFile, Vector4f color, float width, float height, float scale)
+	TextGenerator(BitmapTextMaterial material, float width, float height, float scale)
 	{
 		this.vertexData = new LinkedList<>();
 		this.elementData = new LinkedList<>();
-		this.fontFile = fontFile;
-		this.color = color;
+		this.fontFile = material.font;
+		this.red = material.color.x;
+		this.green = material.color.y;
+		this.blue = material.color.z;
+		this.alpha = material.alpha;
 		this.scale = scale;
 
 		this.maxWidth = width;
@@ -95,40 +101,40 @@ class TextGenerator
 		vertexData.add(up);
 		vertexData.add(fontChar.x);
 		vertexData.add(fontChar.y);
-		vertexData.add(color.x);
-		vertexData.add(color.y);
-		vertexData.add(color.z);
-		vertexData.add(color.w);
+		vertexData.add(red);
+		vertexData.add(green);
+		vertexData.add(blue);
+		vertexData.add(alpha);
 
 		//Top right
 		vertexData.add(right);
 		vertexData.add(up);
 		vertexData.add(fontChar.x + fontChar.u);
 		vertexData.add(fontChar.y);
-		vertexData.add(color.x);
-		vertexData.add(color.y);
-		vertexData.add(color.z);
-		vertexData.add(color.w);
+		vertexData.add(red);
+		vertexData.add(green);
+		vertexData.add(blue);
+		vertexData.add(alpha);
 
 		//Bottom right
 		vertexData.add(right);
 		vertexData.add(down);
 		vertexData.add(fontChar.x + fontChar.u);
 		vertexData.add(fontChar.y + fontChar.v);
-		vertexData.add(color.x);
-		vertexData.add(color.y);
-		vertexData.add(color.z);
-		vertexData.add(color.w);
+		vertexData.add(red);
+		vertexData.add(green);
+		vertexData.add(blue);
+		vertexData.add(alpha);
 
 		//Bottom left
 		vertexData.add(left);
 		vertexData.add(down);
 		vertexData.add(fontChar.x);
 		vertexData.add(fontChar.y + fontChar.v);
-		vertexData.add(color.x);
-		vertexData.add(color.y);
-		vertexData.add(color.z);
-		vertexData.add(color.w);
+		vertexData.add(red);
+		vertexData.add(green);
+		vertexData.add(blue);
+		vertexData.add(alpha);
 
 		elementData.add(currentElementCount + 2);
 		elementData.add(currentElementCount + 1);

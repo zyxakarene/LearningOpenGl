@@ -3,7 +3,7 @@ package zyx.opengl.textures.bitmapfont;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-class FontFile
+public class FontFile
 {
 	private static final FontKerning NULL_KERNING = new FontKerning();
 	

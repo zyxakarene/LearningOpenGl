@@ -1,7 +1,6 @@
 package zyx.opengl.models.implementations;
 
 import zyx.engine.components.world.WorldObject;
-import zyx.opengl.materials.Material;
 import zyx.opengl.materials.impl.ParticleModelMaterial;
 import zyx.opengl.models.AbstractInstancedModel;
 import zyx.opengl.shaders.implementations.ParticleShader;
@@ -66,7 +65,7 @@ public class ParticleModel extends AbstractInstancedModel<ParticleModelMaterial>
 	}
 
 	@Override
-	public void draw(Material material)
+	public void draw(ParticleModelMaterial material)
 	{
 		shader.bind();
 		shader.uploadFromVo(vo);

@@ -3,7 +3,6 @@ package zyx.engine.components.screen.text;
 import zyx.engine.components.animations.IFocusable;
 import zyx.engine.components.screen.interactable.InteractableContainer;
 import java.awt.event.KeyEvent;
-import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.components.animations.ILoadable;
 import zyx.engine.components.screen.base.Quad;
 import zyx.engine.curser.GameCursor;
@@ -11,6 +10,8 @@ import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.FontResource;
 import zyx.engine.resources.impl.Resource;
+import zyx.opengl.materials.impl.BitmapTextMaterial;
+import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.bitmapfont.BitmapFont;
 import zyx.opengl.textures.bitmapfont.Text;
 import zyx.opengl.textures.bitmapfont.alignment.HAlignment;
@@ -23,7 +24,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	private Text glText;
 	private String text;
 	private float fontSize;
-	private Vector4f colors;
+
 	private HAlignment hAlign;
 	private VAlignment vAlign;
 	private boolean loaded;
@@ -37,12 +38,14 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 
 	private Quad[] borders;
 	private boolean showBorders;
+	
+	private BitmapTextMaterial material;
 
 	public Textfield(String text)
 	{
 		this.text = text;
-		this.colors = new Vector4f(1, 1, 1, 1);
 
+		material = new BitmapTextMaterial(Shader.SCREEN);
 		width = 100;
 		height = 100;
 		fontSize = 1f;
@@ -69,13 +72,13 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 
 	public void setColor(float r, float g, float b)
 	{
-		colors.set(r, g, b);
+		material.color.set(r, g, b);
 		updateMesh();
 	}
 
 	public void setAlpha(float a)
 	{
-		colors.w = a;
+		material.alpha = a;
 		updateMesh();
 	}
 
@@ -83,7 +86,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	{
 		if (loaded)
 		{
-			glText.setColors(colors);
+			glText.updateColors();
 		}
 	}
 
@@ -92,10 +95,13 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	{
 		loaded = true;
 
-		BitmapFont font = resource.getContent();
-		glText = new Text(font, fontSize, width, height);
+		BitmapFont bitmapFont = resource.getContent();
+		
+		material.setDiffuse(bitmapFont.texture);
+		material.font = bitmapFont.fontFile;
+		
+		glText = new Text(material, fontSize, width, height);
 		glText.setAlignment(vAlign, hAlign);
-		glText.setColors(colors);
 		glText.setText(text);
 
 		caret = new Quad(1, height, 0xFF0000);
