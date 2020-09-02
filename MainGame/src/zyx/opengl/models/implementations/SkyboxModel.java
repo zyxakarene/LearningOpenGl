@@ -3,6 +3,7 @@ package zyx.opengl.models.implementations;
 import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.models.DebugDrawCalls;
+import zyx.opengl.models.implementations.renderers.SkyboxRenderer;
 
 public class SkyboxModel extends AbstractModel<WorldModelMaterial>
 {
@@ -37,5 +38,11 @@ public class SkyboxModel extends AbstractModel<WorldModelMaterial>
 		addAttribute("position", POSITION_LENGTH, stride, 0);
 //		addAttribute("normals", NORMALS_LENGTH, stride, 3);
 		addAttribute("texcoord", TEX_COORDS_LENGTH, stride, 6);
+	}
+
+	@Override
+	public SkyboxRenderer createRenderer()
+	{
+		return new SkyboxRenderer(this, defaultMaterial);
 	}
 }

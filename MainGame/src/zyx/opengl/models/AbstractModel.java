@@ -2,6 +2,7 @@ package zyx.opengl.models;
 
 import java.nio.FloatBuffer;
 import zyx.opengl.materials.Material;
+import zyx.opengl.models.implementations.renderers.MeshRenderer;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.utils.interfaces.IDisposeable;
 
@@ -69,6 +70,8 @@ public abstract class AbstractModel<TMaterial extends Material> implements IDisp
 	{
 		return (TMaterial) defaultMaterial.cloneMaterial();
 	}
+	
+	public abstract MeshRenderer createRenderer();
 	
 	public final void draw()
 	{

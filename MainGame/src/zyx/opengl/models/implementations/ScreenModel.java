@@ -7,6 +7,7 @@ import zyx.opengl.materials.impl.ScreenModelMaterial;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.models.BufferWrapper;
 import zyx.opengl.models.DebugDrawCalls;
+import zyx.opengl.models.implementations.renderers.MeshRenderer;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.ListUtils;
 
@@ -141,5 +142,11 @@ public class ScreenModel extends AbstractModel<ScreenModelMaterial>
 	{
 		tempVertexData.ensureCapacity(count * FLOATS_PER_QUAD);
 		tempElementData.ensureCapacity(count * INTS_PER_QUAD);
+	}
+
+	@Override
+	public MeshRenderer createRenderer()
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 }

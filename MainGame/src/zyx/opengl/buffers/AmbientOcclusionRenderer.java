@@ -73,7 +73,7 @@ public class AmbientOcclusionRenderer extends BaseFrameBuffer
 		int normalTextureId = DeferredRenderer.getInstance().screenNormalInt();
 		normalTexture = new TextureFromInt(w, h, normalTextureId, TextureSlot.AO_SCREEN_NORMAL);
 
-		noiseTexture = new TextureFromInt(4, 4, noiseTextureId, TextureSlot.AO_NOISE);
+		noiseTexture = new TextureFromInt(16, 16, noiseTextureId, TextureSlot.AO_NOISE);
 
 		material = new AmbientOcclusionMaterial(Shader.AMBIENT_OCCLUSION);
 		material.setPosition(positionTexture);

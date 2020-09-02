@@ -11,6 +11,7 @@ import zyx.opengl.models.implementations.bones.animation.AnimationController;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.implementations.physics.PhysBox;
+import zyx.opengl.models.implementations.renderers.WorldModelRenderer;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.DepthShader;
 import zyx.utils.interfaces.IShadowable;
@@ -75,6 +76,12 @@ public class WorldModel extends AbstractModel<WorldModelMaterial> implements ISh
 	}
 
 	@Override
+	public WorldModelRenderer createRenderer()
+	{
+		return new WorldModelRenderer(this, defaultMaterial);
+	}
+
+	@Override
 	protected boolean canDraw()
 	{
 		return DebugDrawCalls.canDrawWorld();
@@ -98,8 +105,11 @@ public class WorldModel extends AbstractModel<WorldModelMaterial> implements ISh
 		shader.uploadBones();
 		super.draw(material);
 
-		DepthRenderer.getInstance().drawShadowable(this);
-		DeferredRenderer.getInstance().bindBuffer();
+		if (material.castsShadows)
+		{
+			DepthRenderer.getInstance().drawShadowable(this);
+			DeferredRenderer.getInstance().bindBuffer();
+		}
 	}
 
 	@Override

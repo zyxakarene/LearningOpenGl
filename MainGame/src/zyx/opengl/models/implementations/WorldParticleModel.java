@@ -4,12 +4,12 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.WorldObject;
 import zyx.opengl.materials.impl.ParticleModelMaterial;
-import zyx.opengl.models.AbstractInstancedModel;
+import zyx.opengl.models.implementations.renderers.WorldParticleRenderer;
 import zyx.opengl.shaders.implementations.WorldParticleShader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.FloatMath;
 
-public class WorldParticleModel extends AbstractInstancedModel<ParticleModelMaterial> implements IParticleModel
+public class WorldParticleModel extends BaseParticleModel
 {
 	private static final int[] SHARED_ELEMENT_DATA =
 	{
@@ -63,12 +63,6 @@ public class WorldParticleModel extends AbstractInstancedModel<ParticleModelMate
 
 		setInstanceData(instanceData, instanceData.length / INSTANCE_DATA_COUNT);
 		setVertexData(vertexData, SHARED_ELEMENT_DATA);
-	}
-	
-	@Override
-	public IParticleModel cloneParticle()
-	{
-		return new WorldParticleModel(vo);
 	}
 	
 	@Override
@@ -189,5 +183,12 @@ public class WorldParticleModel extends AbstractInstancedModel<ParticleModelMate
 	public boolean isWorldParticle()
 	{
 		return true;
+	}
+
+	@Override
+	public WorldParticleRenderer createRenderer()
+	{
+		WorldParticleModel clone = new WorldParticleModel(vo);
+		return new WorldParticleRenderer(clone, defaultMaterial);
 	}
 }

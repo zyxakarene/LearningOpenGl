@@ -2,12 +2,12 @@ package zyx.opengl.models.implementations;
 
 import zyx.engine.components.world.WorldObject;
 import zyx.opengl.materials.impl.ParticleModelMaterial;
-import zyx.opengl.models.AbstractInstancedModel;
+import zyx.opengl.models.implementations.renderers.ParticleRenderer;
 import zyx.opengl.shaders.implementations.ParticleShader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.FloatMath;
 
-public class ParticleModel extends AbstractInstancedModel<ParticleModelMaterial> implements IParticleModel
+public class ParticleModel extends BaseParticleModel
 {
 
 	private static final int[] SHARED_ELEMENT_DATA =
@@ -109,10 +109,10 @@ public class ParticleModel extends AbstractInstancedModel<ParticleModelMaterial>
 	public void update(long timestamp, int elapsedTime)
 	{
 	}
-
+	
 	@Override
-	public IParticleModel cloneParticle()
+	public ParticleRenderer createRenderer()
 	{
-		return new ParticleModel(vo);
+		return new ParticleRenderer(this, defaultMaterial);
 	}
 }

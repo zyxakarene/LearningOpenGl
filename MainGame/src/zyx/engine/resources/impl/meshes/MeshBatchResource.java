@@ -7,6 +7,7 @@ import zyx.engine.resources.impl.sub.SubResourceBatch;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.MeshBatchModel;
+import zyx.opengl.models.implementations.renderers.MeshBatchRenderer;
 import zyx.opengl.models.loading.MeshLoadingTask;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.tasks.ITaskCompleted;
@@ -24,9 +25,9 @@ public class MeshBatchResource extends BaseRequiredSubResource implements ISubRe
 	}
 
 	@Override
-	public MeshBatchModel getContent()
+	public MeshBatchRenderer getContent()
 	{
-		return model;
+		return model.createRenderer();
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.ParticleResource;
 import zyx.opengl.camera.Camera;
-import zyx.opengl.models.implementations.IParticleModel;
+import zyx.opengl.models.implementations.renderers.AbstractParticleRenderer;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.FloatMath;
 
@@ -19,7 +19,7 @@ public class ParticleSystem extends WorldObject implements IResourceReady<Partic
 
 	protected boolean loaded;
 	protected String resource;
-	protected IParticleModel model;
+	protected AbstractParticleRenderer model;
 	
 	private ParticleResource particleResource;
 

@@ -7,10 +7,19 @@ import zyx.opengl.textures.enums.TextureSlot;
 
 public class WorldModelMaterial extends Material
 {
-
+	public boolean castsShadows;
+	
 	public WorldModelMaterial(Shader shader)
 	{
 		super(shader);
+	}
+
+	@Override
+	protected void setDefaultValues()
+	{
+		super.setDefaultValues();
+		
+		castsShadows = true;
 	}
 	
 	public AbstractTexture getDiffuse()

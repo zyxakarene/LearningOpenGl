@@ -2,6 +2,7 @@ package zyx.opengl.models.implementations;
 
 import zyx.opengl.materials.Material;
 import zyx.opengl.models.AbstractModel;
+import zyx.opengl.models.implementations.renderers.MeshRenderer;
 
 public class FullScreenQuadModel extends AbstractModel
 {
@@ -39,5 +40,11 @@ public class FullScreenQuadModel extends AbstractModel
 	{
 		addAttribute("position", 2, 4, 0);
 		addAttribute("texcoord", 2, 4, 2);
+	}
+
+	@Override
+	public MeshRenderer createRenderer()
+	{
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 }

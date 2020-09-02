@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
-import zyx.opengl.models.implementations.IParticleModel;
-import zyx.opengl.models.implementations.LoadableParticleVO;
-import zyx.opengl.models.implementations.ParticleModel;
-import zyx.opengl.models.implementations.WorldParticleModel;
+import zyx.opengl.models.implementations.*;
+import zyx.opengl.models.implementations.renderers.AbstractParticleRenderer;
 import zyx.opengl.models.loading.ParticleLoadingTask;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.tasks.ITaskCompleted;
@@ -18,8 +16,8 @@ public class ParticleResource extends ExternalResource implements IResourceReady
 	private LoadableParticleVO loadedVo;
 	private Resource textureResource;
 
-	private IParticleModel model;
-	private ArrayList<IParticleModel> clones;
+	private BaseParticleModel model;
+	private ArrayList<AbstractParticleRenderer> clones;
 	private ParticleLoadingTask particleTask;
 
 	public ParticleResource(String path)
@@ -30,17 +28,15 @@ public class ParticleResource extends ExternalResource implements IResourceReady
 	}
 
 	@Override
-	public IParticleModel getContent()
+	public AbstractParticleRenderer getContent()
 	{
-		IParticleModel particleModel = model;
-
-		if (model != null && model.isWorldParticle())
+		AbstractParticleRenderer renderer = model.createRenderer();
+		if (renderer.isWorldParticle())
 		{
-			particleModel = model.cloneParticle();
-			clones.add(particleModel);
+			clones.add(renderer);
 		}
 
-		return particleModel;
+		return renderer;
 	}
 
 	@Override
@@ -117,8 +113,6 @@ public class ParticleResource extends ExternalResource implements IResourceReady
 				model = new ParticleModel(loadedVo);
 			}
 
-			clones.add(model);
-
 			onContentLoaded(model);
 		}
 		else
@@ -130,7 +124,7 @@ public class ParticleResource extends ExternalResource implements IResourceReady
 		}
 	}
 
-	public void removeParticleInstance(IParticleModel model)
+	public void removeParticleInstance(AbstractParticleRenderer model)
 	{
 		clones.remove(model);
 	}

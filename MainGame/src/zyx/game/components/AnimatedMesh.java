@@ -46,9 +46,9 @@ public class AnimatedMesh extends SimpleMesh implements IAnimatedMesh
 	@Override
 	protected void onDraw()
 	{
-		if (model != null && model.ready)
+		if (renderer != null)
 		{
-			model.setAnimation(animationController);
+			renderer.setAnimation(animationController);
 		}
 
 		super.onDraw();

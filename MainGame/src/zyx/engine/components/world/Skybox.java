@@ -4,9 +4,10 @@ import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.SkyboxResource;
 import zyx.engine.resources.impl.textures.TextureResource;
-import zyx.opengl.GLUtils;
+import zyx.opengl.materials.ZTest;
+import zyx.opengl.materials.ZWrite;
 import zyx.opengl.materials.impl.WorldModelMaterial;
-import zyx.opengl.models.implementations.SkyboxModel;
+import zyx.opengl.models.implementations.renderers.SkyboxRenderer;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.SkyboxShader;
@@ -18,7 +19,7 @@ public class Skybox extends WorldObject
 	private SkyboxResource meshResource;
 	private TextureResource textureResource;
 
-	private SkyboxModel model;
+	private SkyboxRenderer renderer;
 	private AbstractTexture texture;
 	private boolean loaded;
 	
@@ -34,8 +35,10 @@ public class Skybox extends WorldObject
 
 		onMeshLoaded = (SkyboxResource resource) ->
 		{
-			model = resource.getContent();
-			skyboxMaterial = model.getClonedMaterial();
+			renderer = resource.getContent();
+			skyboxMaterial = renderer.clonMaterial();
+			skyboxMaterial.zWrite = ZWrite.DISABLED;
+			skyboxMaterial.zTest = ZTest.ALWAYS;
 			onResourceLoaded();
 		};
 		
@@ -96,15 +99,9 @@ public class Skybox extends WorldObject
 	{
 		if (loaded)
 		{
-			GLUtils.disableDepthWrite();
-			GLUtils.disableDepthTest();
-
 			shader.bind();
 			shader.upload();
-			model.draw(skyboxMaterial);
-
-			GLUtils.enableDepthWrite();
-			GLUtils.enableDepthTest();
+			renderer.draw();
 		}
 	}
 

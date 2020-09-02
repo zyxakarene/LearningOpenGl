@@ -60,7 +60,7 @@ public class GameCharacter extends GameObject implements IItemHolder
 		info.gender = vo.gender;
 		info.type = vo.type;
 	}
-
+	
 	@Override
 	public void hold(GameItem item)
 	{

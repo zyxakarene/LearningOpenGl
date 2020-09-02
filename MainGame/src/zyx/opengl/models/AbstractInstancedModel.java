@@ -12,7 +12,6 @@ public abstract class AbstractInstancedModel<TMaterial extends Material> extends
 	public AbstractInstancedModel(TMaterial material)
 	{
 		super(material);
-		setup();
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.meshes.MeshBatchResource;
 import zyx.opengl.models.implementations.MeshBatchModel;
+import zyx.opengl.models.implementations.renderers.MeshBatchRenderer;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IDrawable;
 import zyx.utils.interfaces.IUpdateable;
@@ -15,7 +16,7 @@ class MeshBatch<E extends MeshBatchEntity> implements IResourceReady<MeshBatchRe
 {
 
 	private MeshBatchResource meshResource;
-	private MeshBatchModel model;
+	private MeshBatchRenderer renderer;
 	
 	private ArrayList<E> entities;
 	private int entityCount;
@@ -34,7 +35,7 @@ class MeshBatch<E extends MeshBatchEntity> implements IResourceReady<MeshBatchRe
 	@Override
 	public void onResourceReady(MeshBatchResource resource)
 	{
-		model = resource.getContent();
+		renderer = resource.getContent();
 	}
 
 	public void addEntity(E entity)
@@ -101,17 +102,17 @@ class MeshBatch<E extends MeshBatchEntity> implements IResourceReady<MeshBatchRe
 		
 		entityCount = 0;
 		entities = null;
-		model = null;
+		renderer = null;
 		batchData = null;
 	}
 
 	@Override
 	public void draw()
 	{
-		if (model != null)
+		if (renderer != null)
 		{
-			model.setMeshBatchData(batchData);
-			model.draw();
+			renderer.setMeshBatchData(batchData);
+			renderer.draw();
 		}
 	}
 }

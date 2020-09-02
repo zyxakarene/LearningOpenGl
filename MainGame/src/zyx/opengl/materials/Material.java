@@ -62,6 +62,12 @@ public abstract class Material
 		clone.culling = culling;
 		clone.blend = blend;
 		
+		int textureCount = textures.length;
+		for (int i = 0; i < textureCount; i++)
+		{
+			clone.textures[i] = textures[i];
+		}
+		
 		return clone;
 	}
 
