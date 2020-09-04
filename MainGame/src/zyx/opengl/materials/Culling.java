@@ -9,6 +9,8 @@ public enum Culling
 	ALL(GL11.GL_FRONT_AND_BACK, true),
 	NONE(GL11.GL_BACK, false);
 	
+	public static final Culling[] values = values();
+	
 	public final int glValue;
 	public final boolean enabled;
 	
@@ -40,5 +42,18 @@ public enum Culling
 		{
 			GL11.glCullFace(glValue);
 		}
+	}
+	
+	public static Culling fromGlValue(int testValue)
+	{
+		for (Culling value : values)
+		{
+			if (value.glValue == testValue)
+			{
+				return value;
+			}
+		}
+		
+		return BACK;
 	}
 }

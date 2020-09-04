@@ -121,8 +121,13 @@ public class DebugPhysDrawing
 		}
 
 		Skeleton skeleton = new Skeleton(getMeshJoint("root"), getMeshJoint("dummy"));
-		LoadableWorldModelVO vo = new LoadableWorldModelVO(1, vertexData, elementData, null, "", "", "", new Vector3f(), 1000, "");
+		LoadableWorldModelVO vo = new LoadableWorldModelVO();
+		vo.setBoneCount(1);
+		vo.asWorldModel();
+		vo.setVertexData(vertexData, elementData);
+		vo.setRadius(new Vector3f(), 1000);
 		vo.setSkeleton(skeleton);
+		
 		vo.setDiffuseTexture(new ColorTexture(0xFF0000, TextureSlot.SHARED_DIFFUSE));
 		vo.setSpecularTexture(new ColorTexture(0x000000, TextureSlot.WORLD_SPECULAR));
 		vo.setNormalTexture(new ColorTexture(0x000000, TextureSlot.WORLD_NORMAL));
@@ -220,7 +225,11 @@ public class DebugPhysDrawing
 
 		fillData(boundingBox, vertexData, elementData);
 		Skeleton skeleton = new Skeleton(getMeshJoint("root11"), getMeshJoint("dummy22"));
-		LoadableWorldModelVO vo = new LoadableWorldModelVO(1, vertexData, elementData, null, "", "", "", new Vector3f(), 1000, "");
+		LoadableWorldModelVO vo = new LoadableWorldModelVO();
+		vo.setBoneCount(1);
+		vo.asWorldModel();
+		vo.setVertexData(vertexData, elementData);
+		vo.setRadius(new Vector3f(), 1000);
 		vo.setSkeleton(skeleton);
 		vo.setDiffuseTexture(new ColorTexture(0x00FF00, TextureSlot.SHARED_DIFFUSE));
 		vo.setSpecularTexture(new ColorTexture(0x000000, TextureSlot.WORLD_SPECULAR));

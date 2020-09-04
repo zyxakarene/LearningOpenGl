@@ -8,7 +8,7 @@ import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.MeshBatchModel;
 import zyx.opengl.models.implementations.renderers.MeshBatchRenderer;
-import zyx.opengl.models.loading.MeshLoadingTask;
+import zyx.opengl.models.loading.MeshBatchLoadingTask;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.tasks.ITaskCompleted;
 
@@ -17,7 +17,7 @@ public class MeshBatchResource extends BaseRequiredSubResource implements ISubRe
 
 	private LoadableWorldModelVO loadedVo;
 	private MeshBatchModel model;
-	private MeshLoadingTask task;
+	private MeshBatchLoadingTask task;
 
 	public MeshBatchResource(String path)
 	{
@@ -33,7 +33,7 @@ public class MeshBatchResource extends BaseRequiredSubResource implements ISubRe
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		task = new MeshLoadingTask(this, data, path);
+		task = new MeshBatchLoadingTask(this, data, path);
 		task.start();
 	}
 
@@ -48,7 +48,7 @@ public class MeshBatchResource extends BaseRequiredSubResource implements ISubRe
 			task = null;
 		}
 		
-		task = new MeshLoadingTask(this, data, path);
+		task = new MeshBatchLoadingTask(this, data, path);
 		task.start();
 	}
 	
@@ -56,7 +56,6 @@ public class MeshBatchResource extends BaseRequiredSubResource implements ISubRe
 	public void onTaskCompleted(LoadableWorldModelVO data)
 	{
 		loadedVo = data;
-		loadedVo.toMeshBatch();
 
 		String diffuse = loadedVo.getDiffuseTextureId();
 		String normal = loadedVo.getNormalTextureId();

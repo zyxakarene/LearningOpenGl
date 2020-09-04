@@ -11,6 +11,7 @@ public abstract class Material
 	public ZTest zTest;
 	public Culling culling;
 	public BlendMode blend;
+	public int priority;
 	
 	public Shader shaderType;
 	public AbstractShader shader;

@@ -18,6 +18,7 @@ zaf
 	float							radius
 	
 	UtfString						skeleton
+	MaterialInformation				materialInfo
 }
 
 SmdPhysInformation
@@ -26,6 +27,16 @@ SmdPhysInformation
 	Vector3F						boundingBoxMax
 	int								physBoxCount
 	SmdPhysBox[physBoxCount]		physBoxes
+}
+
+MaterialInformation
+{
+	boolean							zWrite
+	int								zTest
+	int								culling
+	int								blendSrc
+	int								blendDst
+	int								priority
 }
 
 SmdPhysbox

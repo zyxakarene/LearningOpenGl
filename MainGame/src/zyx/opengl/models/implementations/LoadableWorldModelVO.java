@@ -4,7 +4,7 @@ import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.implementations.physics.PhysBox;
-import zyx.opengl.shaders.ShaderManager;
+import zyx.opengl.models.loading.meshes.IMaterialObject;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.AbstractTexture;
 
@@ -45,24 +45,72 @@ public class LoadableWorldModelVO
 	WorldModelMaterial material;
 	WorldModelMaterial shadowMaterial;
 
-	public LoadableWorldModelVO(int boneCount, float[] vertexData, int[] elementData, PhysBox physBox, String diffuse, String normal, String specular,
-			Vector3f radiusCenter, float radius, String skeletonId)
+	public LoadableWorldModelVO()
+	{
+	}
+
+	public void setBoneCount(int boneCount)
 	{
 		this.boneCount = boneCount;
+	}
+	
+	public void asWorldModel()
+	{
 		this.worldShader = WORLD_SHADERS[boneCount];
 		this.shadowShader = SHADOW_SHADERS[boneCount];
+		
+		createMaterials();
+	}
+	
+	public void asMeshBatch()
+	{
+		this.worldShader = Shader.MESH_BATCH;
+		this.shadowShader = Shader.MESH_BATCH_DEPTH;
+		
+		createMaterials();
+	}
+	
+	public void asSkybox()
+	{
+		this.worldShader = Shader.SKYBOX;
+		this.shadowShader = Shader.DEPTH_1;
+		
+		createMaterials();
+	}
+	
+	private void createMaterials()
+	{
+		material = new WorldModelMaterial(worldShader);
+		shadowMaterial = new WorldModelMaterial(shadowShader);
+	}
+	
+	public void setVertexData(float[] vertexData, int[] elementData)
+	{
 		this.vertexData = vertexData;
 		this.elementData = elementData;
+	}
+	
+	public void setTextureIds(String diffuse, String normal, String specular)
+	{
 		this.diffuseTextureId = diffuse;
 		this.normalTextureId = normal;
 		this.specularTextureId = specular;
+	}
+	
+	public void setSkeletonId(String skeletonId)
+	{
+		this.skeletonId = skeletonId;
+	}
+	
+	public void setPhysBox(PhysBox physBox)
+	{
 		this.physBox = physBox;
+	}
+	
+	public void setRadius(Vector3f radiusCenter, float radius)
+	{
 		this.radiusCenter = radiusCenter;
 		this.radius = radius;
-		this.skeletonId = skeletonId;
-		
-		material = new WorldModelMaterial(worldShader);
-		shadowMaterial = new WorldModelMaterial(shadowShader);
 	}
 
 	public void setSkeleton(Skeleton skeleton)
@@ -128,20 +176,16 @@ public class LoadableWorldModelVO
 		elementData = null;
 	}
 
-	public void toSkybox()
+	public void setMaterialData(IMaterialObject info)
 	{
-		//TODO: Make not a hack
-		material.shaderType = Shader.SKYBOX;
-		material.shader = ShaderManager.getInstance().get(Shader.SKYBOX);
-	}
-
-	public void toMeshBatch()
-	{
-		//TODO: Make not a hack
-		material.shaderType = Shader.MESH_BATCH;
-		material.shader = ShaderManager.getInstance().get(Shader.MESH_BATCH);
+		if (material != null)
+		{
+			info.applyTo(material);
+		}
 		
-		shadowMaterial.shaderType = Shader.MESH_BATCH_DEPTH;
-		shadowMaterial.shader = ShaderManager.getInstance().get(Shader.MESH_BATCH_DEPTH);
+		if (shadowMaterial != null)
+		{
+			info.applyTo(shadowMaterial);
+		}
 	}
 }

@@ -21,6 +21,7 @@ public class SmdObject
 	private String normalTexturePath;
 	private String specularTexturePath;
 	private boolean isSkeleton;
+	private MaterialInformation materialInfo = new MaterialInformation();
 
 	private Vector3f radiusCenter = new Vector3f();
 	private float radius = 0;
@@ -213,5 +214,7 @@ public class SmdObject
 		out.writeFloat(radius);
 
 		out.writeUTF(skeletonPath);
+		
+		materialInfo.save(out);
 	}
 }

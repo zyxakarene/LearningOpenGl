@@ -12,6 +12,8 @@ public enum ZTest
 	GREATER_EQUAL(GL11.GL_GEQUAL),
 	ALWAYS(GL11.GL_ALWAYS);
 	
+	public static final ZTest[] values = values();
+	
 	public final int glValue;
 	
 	private static ZTest currentTest;
@@ -28,5 +30,18 @@ public enum ZTest
 			currentTest = this;
 			GL11.glDepthFunc(glValue);
 		}
+	}
+	
+	public static ZTest fromGlValue(int testValue)
+	{
+		for (ZTest value : values)
+		{
+			if (value.glValue == testValue)
+			{
+				return value;
+			}
+		}
+		
+		return LESS_EQUAL;
 	}
 }
