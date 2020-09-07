@@ -1,6 +1,6 @@
 package zyx.opengl.materials.impl;
 
-import zyx.opengl.materials.Material;
+import zyx.opengl.materials.*;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.enums.TextureSlot;
@@ -10,6 +10,16 @@ public class ParticleModelMaterial extends Material
 	public ParticleModelMaterial(Shader shader)
 	{
 		super(shader);
+	}
+
+	@Override
+	protected void setDefaultValues()
+	{
+		zWrite = ZWrite.DISABLED;
+		zTest = ZTest.LESS;
+		culling = Culling.NONE;
+		blend = BlendMode.PARTICLES;
+		priority = MaterialPriority.TRANSPARENT_MIN;
 	}
 	
 	public AbstractTexture getDiffuse()

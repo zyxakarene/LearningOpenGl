@@ -129,12 +129,12 @@ public class Scene implements ILoadingScreenDone
 			onDraw();
 		}
 
-		GLUtils.disableDepthTest();
-		GLUtils.disableCulling();
-		GLUtils.setBlendAlpha();
+//		GLUtils.disableDepthTest();
+//		GLUtils.disableCulling();
+//		GLUtils.setBlendAlpha();
 		stage.drawStage();
-		GLUtils.enableCulling();
-		GLUtils.enableDepthTest();
+//		GLUtils.enableCulling();
+//		GLUtils.enableDepthTest();
 
 		GLUtils.errorCheck();
 	}

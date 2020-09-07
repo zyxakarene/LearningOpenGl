@@ -1,7 +1,6 @@
 package zyx.opengl.buffers;
 
 import java.util.ArrayList;
-import zyx.opengl.GLUtils;
 import zyx.opengl.materials.impl.DrawMaterial;
 import zyx.opengl.models.implementations.FullScreenQuadModel;
 import zyx.opengl.shaders.AbstractShader;
@@ -72,11 +71,7 @@ public class DrawingRenderer extends BaseFrameBuffer
 		AbstractShader drawShader = ShaderManager.getInstance().get(Shader.DRAW);
 		drawShader.upload();
 
-		GLUtils.disableDepthWrite();
-		GLUtils.disableDepthTest();
 		model.draw();
-		GLUtils.enableDepthTest();
-		GLUtils.enableDepthWrite();
 	}
 
 	@Override

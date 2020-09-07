@@ -101,11 +101,6 @@ public class ParticleModel extends BaseParticleModel
 	}
 
 	@Override
-	public void setParent(WorldObject parent)
-	{
-	}
-
-	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
 	}

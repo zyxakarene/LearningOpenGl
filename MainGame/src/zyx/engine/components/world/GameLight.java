@@ -35,11 +35,6 @@ public class GameLight extends WorldObject implements ILight
 	}
 
 	@Override
-	protected void onDraw()
-	{
-	}
-
-	@Override
 	public int getPower()
 	{
 		return power;

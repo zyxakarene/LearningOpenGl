@@ -1,9 +1,9 @@
 package zyx.engine.components.world;
 
 import org.lwjgl.util.vector.Vector3f;
-import zyx.engine.components.meshbatch.MeshBatchManager;
 import zyx.opengl.GLUtils;
 import zyx.opengl.buffers.*;
+import zyx.opengl.models.implementations.renderers.MeshRenderList;
 import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.shaders.SharedShaderObjects;
 
@@ -34,7 +34,7 @@ public final class World3D extends WorldObject
 		ambientOcclusion = AmbientOcclusionRenderer.getInstance();
 
 		skybox = new Skybox();
-		
+
 		sun = new GameSun();
 		Vector3f startSunDir = new Vector3f(-0.0626f, 0.7103f, -0.701f);
 		setSunDir(startSunDir);
@@ -42,28 +42,18 @@ public final class World3D extends WorldObject
 
 	public void drawScene()
 	{
-		GLUtils.enableDepthWrite();
-		GLUtils.enableCulling();
-		GLUtils.setBlendNormal();
-
 		drawing.prepareRender();
 		depth.prepareRender();
 		ambientOcclusion.prepareRender();
 		renderer.prepareRender();
 
-		skybox.draw();
-		
-		drawing.draw();
-		draw();
+		MeshRenderList.getInstance().draw();
 
-		MeshBatchManager.getInstance().draw();
-		
-		
 		ambientOcclusion.drawAmbientOcclusion();
 
 		renderer.draw();
-		
-		ParticleManager.getInstance().draw();
+
+		MeshRenderList.getInstance().drawTransparent();
 	}
 
 	public void loadSkybox(String res)
@@ -75,7 +65,7 @@ public final class World3D extends WorldObject
 	{
 		skybox.clean();
 	}
-	
+
 	public void setSunDir(Vector3f dir)
 	{
 		sun.setDir(false, dir);
@@ -89,11 +79,6 @@ public final class World3D extends WorldObject
 	public void setSunEnabled(boolean enabled)
 	{
 		sun.setEnabled(enabled);
-	}
-
-	@Override
-	protected void onDraw()
-	{
 	}
 
 	@Override

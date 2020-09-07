@@ -90,9 +90,7 @@ public class AmbientOcclusionRenderer extends BaseFrameBuffer
 		AbstractShader aoShader = ShaderManager.getInstance().get(Shader.AMBIENT_OCCLUSION);
 		aoShader.upload();
 
-		GLUtils.disableDepthWrite();
 		model.draw();
-		GLUtils.enableDepthWrite();
 	}
 
 	@Override

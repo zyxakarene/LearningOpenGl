@@ -9,7 +9,6 @@ import zyx.debug.views.base.IDebugIcon;
 import zyx.game.controls.SharedPools;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.camera.IFrustumHideable;
-import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IPositionable;
 import zyx.utils.math.DecomposedMatrix;
@@ -39,7 +38,6 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 	private ArrayList<WorldObject> children;
 
 	private Collider collider;
-	public boolean drawable = true;
 
 	public WorldObject()
 	{
@@ -206,24 +204,24 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 		dirtyInv = true;
 	}
 
-	protected final void draw()
-	{
-		if (!drawable)
-		{
-			return;
-		}
-
-		SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM.load(worldMatrix());
-
-		onDraw();
-
-		for (WorldObject child : children)
-		{
-			child.draw();
-		}
-		
-		onPostDraw();
-	}
+//	protected final void draw()
+//	{
+//		if (!drawable)
+//		{
+//			return;
+//		}
+//
+//		SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM.load(worldMatrix());
+//
+//		onDraw();
+//
+//		for (WorldObject child : children)
+//		{
+//			child.draw();
+//		}
+//		
+//		onPostDraw();
+//	}
 
 	@Override
 	public final void dispose()
@@ -369,16 +367,6 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 	public void setScale(Vector3f scale)
 	{
 		setScale(scale.x, scale.y, scale.z);
-	}
-
-	protected void onDraw()
-	{
-
-	}
-
-	protected void onPostDraw()
-	{
-
 	}
 
 	protected void onTransform()

@@ -8,7 +8,6 @@ import static org.lwjgl.opengl.GL30.GL_READ_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 import static org.lwjgl.opengl.GL30.glBlitFramebuffer;
 import zyx.engine.components.cubemaps.saving.ICubemapRenderer;
-import zyx.opengl.GLUtils;
 import zyx.opengl.materials.impl.DeferredMaterial;
 import zyx.opengl.models.implementations.FullScreenQuadModel;
 import zyx.opengl.shaders.ShaderManager;
@@ -99,11 +98,7 @@ public class DeferredRenderer extends BaseFrameBuffer
 		ShaderManager.getInstance().bind(Shader.DEFERED_LIGHT_PASS);
 		ShaderManager.getInstance().get(Shader.DEFERED_LIGHT_PASS).upload();
 
-		GLUtils.disableDepthWrite();
-		GLUtils.disableDepthTest();
 		model.draw();
-		GLUtils.enableDepthTest();
-		GLUtils.enableDepthWrite();
 		
 		if (cubemapRenderer != null)
 		{

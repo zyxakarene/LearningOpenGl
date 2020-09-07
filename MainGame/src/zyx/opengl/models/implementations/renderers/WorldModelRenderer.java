@@ -10,10 +10,25 @@ import zyx.opengl.shaders.implementations.WorldShader;
 
 public class WorldModelRenderer extends MeshRenderer<WorldModelMaterial, WorldModel>
 {
+	private static final AnimationController DEFAULT_CONTROLLER = new AnimationController();
+	
+	private int cubemapIndex;
+	private AnimationController animController;
 
 	public WorldModelRenderer(WorldModel model, WorldModelMaterial material)
 	{
 		super(model, material);
+		animController = DEFAULT_CONTROLLER;
+	}
+	
+	@Override
+	protected void onPreDraw()
+	{
+		WorldShader.cubemapIndex = cubemapIndex;
+		if (model.ready)
+		{
+			model.setAnimation(animController);
+		}
 	}
 
 	@Override
@@ -57,10 +72,12 @@ public class WorldModelRenderer extends MeshRenderer<WorldModelMaterial, WorldMo
 
 	public void setAnimation(AnimationController animationController)
 	{
-		if (model.ready)
-		{
-			model.setAnimation(animationController);
-		}
+		animController = animationController;
+	}
+
+	public void SetCubemapIndex(int index)
+	{
+		cubemapIndex = index;
 	}
 
 }

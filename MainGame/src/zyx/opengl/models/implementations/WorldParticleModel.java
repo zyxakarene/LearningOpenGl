@@ -2,7 +2,6 @@ package zyx.opengl.models.implementations;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.engine.components.world.WorldObject;
 import zyx.opengl.materials.impl.ParticleModelMaterial;
 import zyx.opengl.models.implementations.renderers.WorldParticleRenderer;
 import zyx.opengl.shaders.implementations.WorldParticleShader;
@@ -23,7 +22,6 @@ public class WorldParticleModel extends BaseParticleModel
 	
 	private WorldParticleShader shader;
 	private LoadableParticleVO vo;
-	private WorldObject parent;
 
 	private float[] instanceData;
 	private int[] particleAge;
@@ -75,11 +73,7 @@ public class WorldParticleModel extends BaseParticleModel
 			int age = particleAge[i];
 			if (age >= vo.lifespan)
 			{
-				if(!preloaded)
-				{
-					preloaded = true;
-					loadParentData();
-				}
+				preloaded = true;
 				
 				age = (int) (age - vo.lifespan);
 				resetParticle(i);
@@ -165,18 +159,6 @@ public class WorldParticleModel extends BaseParticleModel
 		super.dispose();
 
 		shader = null;
-	}
-
-	@Override
-	public void setParent(WorldObject parent)
-	{
-		this.parent = parent;
-	}
-
-	private void loadParentData()
-	{
-		parent.getPosition(false, PARENT_POS);
-		PARENT_ROTATION.load(parent.worldMatrix());
 	}
 
 	@Override

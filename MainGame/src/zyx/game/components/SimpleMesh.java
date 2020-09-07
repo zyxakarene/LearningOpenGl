@@ -19,7 +19,6 @@ import zyx.opengl.models.implementations.bones.attachments.AttachmentRequest;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.models.implementations.renderers.WorldModelRenderer;
-import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.utils.GeometryUtils;
 import zyx.utils.cheats.DebugPhysics;
 import zyx.utils.cheats.Print;
@@ -41,8 +40,6 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	private ArrayList<WorldObject> attachedObjects;
 	private ArrayList<Attachment> attachments;
 	private LinkedList<AttachmentRequest> attachmentRequests;
-
-	private WorldShader shader;
 
 	public SimpleMesh()
 	{
@@ -78,31 +75,32 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	{
 		if (renderer != null)
 		{
-			return renderer.clonMaterial();
+			return renderer.cloneMaterial();
 		}
 		
 		return null;
 	}
 
-	@Override
-	protected void onDraw()
-	{
-		if (renderer != null && inView())
-		{
-			WorldShader.cubemapIndex = cubemapIndex;
-			shader.bind();
-			shader.upload();
-
-			renderer.draw();
-
-			DebugPhysics.getInstance().draw(this);
-
-			for (Attachment attachment : attachments)
-			{
-				attachment.child.drawAsAttachment(attachment);
-			}
-		}
-	}
+//TODO: DebugPhysics and Attatchments
+//	@Override
+//	protected void onDraw()
+//	{
+//		if (renderer != null && inView())
+//		{
+//			WorldShader.cubemapIndex = cubemapIndex;
+//			shader.bind();
+//			shader.upload();
+//
+//			renderer.draw();
+//
+//			DebugPhysics.getInstance().draw(this);
+//
+//			for (Attachment attachment : attachments)
+//			{
+//				attachment.child.drawAsAttachment(attachment);
+//			}
+//		}
+//	}
 
 	@Override
 	protected void updateTransforms(boolean alsoChildren)
@@ -131,13 +129,14 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 		}
 	}
 
-	private void drawAsAttachment(Attachment attachment)
-	{
-		Matrix4f.mul(attachment.parent.worldMatrix(), attachment.joint.getAttachmentTransform(), localMatrix);
-		updateTransforms(true);
-
-		draw();
-	}
+//TODO: DebugPhysics and Attatchments
+//	private void drawAsAttachment(Attachment attachment)
+//	{
+//		Matrix4f.mul(attachment.parent.worldMatrix(), attachment.joint.getAttachmentTransform(), localMatrix);
+//		updateTransforms(true);
+//
+//		draw();
+//	}
 
 	public void onLoaded(ICallback<SimpleMesh> callback)
 	{
@@ -215,11 +214,11 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	@Override
 	public void onResourceReady(MeshResource resource)
 	{
-		WorldModelRenderer data = resource.getContent();
-
-		shader = data.getShader();
-		physbox = data.getPhysbox();
-		renderer = data;
+		renderer = resource.getContent();
+		renderer.setup(this);
+		renderer.SetCubemapIndex(cubemapIndex);
+		
+		physbox = renderer.getPhysbox();
 		loaded = true;
 		
 		DebugPhysics.getInstance().registerPhysbox(this);
@@ -257,7 +256,12 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 		attachedObjects.clear();
 		attachments.clear();
 
-		renderer = null;
+		if (renderer != null)
+		{
+			renderer.dispose();
+			renderer = null;
+		}
+		
 		physbox = null;
 		loaded = false;
 	}
@@ -310,6 +314,10 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	public void setCubemapIndex(int index)
 	{
 		cubemapIndex = index;
+		if (renderer != null)
+		{
+			renderer.SetCubemapIndex(cubemapIndex);
+		}
 	}
 
 	@Override

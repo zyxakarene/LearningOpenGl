@@ -25,7 +25,7 @@ public class ParticleScene extends DebugScene
 	@Override
 	protected void onInitialize()
 	{
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 0; i++)
 		{
 			CubeEntity cube = new CubeEntity();
 			float x = (FloatMath.random() * 200f) - 100f;
@@ -36,7 +36,7 @@ public class ParticleScene extends DebugScene
 			MeshBatchManager.getInstance().addEntity(cube);
 		}
 		
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			MeshObject model = new MeshObject();
 			model.load("mesh.box");
@@ -87,4 +87,14 @@ public class ParticleScene extends DebugScene
 
 		GLUtils.errorCheck();
 	}
+
+	@Override
+	protected void onDispose()
+	{
+		super.onDispose();
+		
+		MeshBatchManager.getInstance().clean();
+	}
+	
+	
 }

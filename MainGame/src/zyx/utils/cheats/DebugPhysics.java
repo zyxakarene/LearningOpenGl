@@ -45,7 +45,7 @@ public class DebugPhysics
 		if (entryMap.containsKey(parent))
 		{
 			GLUtils.setWireframe(true);
-			GLUtils.disableCulling();
+//			GLUtils.disableCulling();
 			WorldModel[] models = entryMap.get(parent);
 
 			if (GameConstants.DRAW_PHYSICS)
@@ -54,7 +54,7 @@ public class DebugPhysics
 				models[DebugPhysDrawing.INDEX_MESH].draw();
 			}
 
-			GLUtils.enableCulling();
+//			GLUtils.enableCulling();
 			GLUtils.setWireframe(false);
 		}
 	}

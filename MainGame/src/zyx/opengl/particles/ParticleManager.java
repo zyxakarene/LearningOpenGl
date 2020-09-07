@@ -1,13 +1,11 @@
 package zyx.opengl.particles;
 
 import java.util.ArrayList;
-import zyx.opengl.GLUtils;
 import zyx.opengl.shaders.implementations.ParticleShader;
 import zyx.opengl.shaders.implementations.WorldParticleShader;
-import zyx.utils.interfaces.IDrawable;
 import zyx.utils.interfaces.IUpdateable;
 
-public class ParticleManager implements IDrawable, IUpdateable
+public class ParticleManager implements IUpdateable
 {
 	private static final ParticleManager INSTANCE = new ParticleManager();
 
@@ -33,21 +31,21 @@ public class ParticleManager implements IDrawable, IUpdateable
 		systems.remove(system);
 	}
 	
-	@Override
-	public void draw()
-	{
-		GLUtils.setBlendAdditive();
-		GLUtils.disableCulling();
-		GLUtils.disableDepthWrite();
-		for (ParticleSystem system : systems)
-		{
-			ParticleShader.elapsedTime = system.particleTime;
-			WorldParticleShader.elapsedTime = system.particleTime;
-			ParticleShader.parentScale = system.parentScale;
-			WorldParticleShader.parentScale = system.parentScale;
-			system.drawParticle();
-		}
-	}
+//	@Override
+//	public void draw()
+//	{
+//		GLUtils.setBlendAdditive();
+//		GLUtils.disableCulling();
+//		GLUtils.disableDepthWrite();
+//		for (ParticleSystem system : systems)
+//		{
+//			ParticleShader.elapsedTime = system.particleTime;
+//			WorldParticleShader.elapsedTime = system.particleTime;
+//			ParticleShader.parentScale = system.parentScale;
+//			WorldParticleShader.parentScale = system.parentScale;
+//			system.drawParticle();
+//		}
+//	}
 
 	@Override
 	public void update(long timestamp, int elapsedTime)

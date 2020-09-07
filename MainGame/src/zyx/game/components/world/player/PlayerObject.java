@@ -7,10 +7,7 @@ import zyx.game.components.world.IItemHolder;
 import zyx.game.components.world.interactable.InteractionAction;
 import zyx.game.components.world.items.GameItem;
 import zyx.game.models.GameModels;
-import zyx.opengl.buffers.Buffer;
 import zyx.opengl.models.implementations.physics.PhysBox;
-import zyx.opengl.stencils.StencilControl;
-import zyx.opengl.stencils.StencilLayer;
 
 public class PlayerObject extends GameObject implements IItemHolder
 {
@@ -36,17 +33,18 @@ public class PlayerObject extends GameObject implements IItemHolder
 		}
 	}
 
-	@Override
-	protected void onDraw()
-	{
-		StencilControl.getInstance().startDrawingToLayer(StencilLayer.PLAYER_CHARACTER, Buffer.DEFERRED);
-	}
-
-	@Override
-	protected void onPostDraw()
-	{
-		StencilControl.getInstance().stopDrawingToLayer(StencilLayer.PLAYER_CHARACTER, Buffer.DEFERRED);
-	}
+//TODO: Stencils
+//	@Override
+//	protected void onDraw()
+//	{
+//		StencilControl.getInstance().startDrawingToLayer(StencilLayer.PLAYER_CHARACTER, Buffer.DEFERRED);
+//	}
+//
+//	@Override
+//	protected void onPostDraw()
+//	{
+//		StencilControl.getInstance().stopDrawingToLayer(StencilLayer.PLAYER_CHARACTER, Buffer.DEFERRED);
+//	}
 
 	@Override
 	public int getUniqueId()

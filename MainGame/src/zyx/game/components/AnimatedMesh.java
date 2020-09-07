@@ -3,15 +3,16 @@ package zyx.game.components;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
 
-public class AnimatedMesh extends SimpleMesh implements IAnimatedMesh
+public class AnimatedMesh extends SimpleMesh implements IAnimatedMesh, ICallback<SimpleMesh>
 {
 
 	private AnimationController animationController;
 	private String animation;
-
+	
 	public AnimatedMesh()
 	{
-		animationController = new AnimationController();
+		animationController = new AnimationController();		
+		onLoaded(this);
 	}
 
 	@Override
@@ -44,17 +45,6 @@ public class AnimatedMesh extends SimpleMesh implements IAnimatedMesh
 	}
 
 	@Override
-	protected void onDraw()
-	{
-		if (renderer != null)
-		{
-			renderer.setAnimation(animationController);
-		}
-
-		super.onDraw();
-	}
-
-	@Override
 	protected void onDispose()
 	{
 		super.onDispose();
@@ -72,4 +62,9 @@ public class AnimatedMesh extends SimpleMesh implements IAnimatedMesh
 		return "animatedmesh.png";
 	}
 
+	@Override
+	public void onCallback(SimpleMesh data)
+	{
+		renderer.setAnimation(animationController);
+	}
 }

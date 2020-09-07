@@ -1,23 +1,16 @@
 package zyx.opengl.models.implementations.renderers;
 
-import zyx.engine.components.world.WorldObject;
 import zyx.opengl.materials.impl.ParticleModelMaterial;
 import zyx.opengl.models.implementations.LoadableParticleVO;
 import zyx.opengl.models.implementations.ParticleModel;
 
 public class ParticleRenderer extends AbstractParticleRenderer<ParticleModel>
-{
+{	
 	public ParticleRenderer(ParticleModel model, ParticleModelMaterial defaultMaterial)
 	{
 		super(model, defaultMaterial);
 	}
-
-	@Override
-	public void setParent(WorldObject parent)
-	{
-		model.setParent(parent);
-	}
-
+	
 	@Override
 	public boolean isWorldParticle()
 	{
@@ -37,7 +30,7 @@ public class ParticleRenderer extends AbstractParticleRenderer<ParticleModel>
 	}
 
 	@Override
-	public void dispose()
+	protected void onDispose()
 	{
 		model.dispose();
 	}
