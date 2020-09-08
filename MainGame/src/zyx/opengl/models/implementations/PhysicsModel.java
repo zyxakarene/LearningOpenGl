@@ -1,11 +1,12 @@
 package zyx.opengl.models.implementations;
 
 import zyx.opengl.materials.impl.WorldModelMaterial;
+import zyx.opengl.models.implementations.renderers.PhysicsModelRenderer;
 
 public class PhysicsModel extends WorldModel
 {
 
-	public PhysicsModel(LoadableWorldModelVO vo)
+	public PhysicsModel(LoadablePhysicsModelVO vo)
 	{
 		super(vo);
 	}
@@ -20,7 +21,10 @@ public class PhysicsModel extends WorldModel
 	}
 
 	@Override
-	public void drawShadow()
+	public PhysicsModelRenderer createRenderer()
 	{
+		return new PhysicsModelRenderer(this, defaultMaterial);
 	}
+	
+	
 }

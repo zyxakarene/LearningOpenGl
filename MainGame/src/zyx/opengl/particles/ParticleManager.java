@@ -31,22 +31,6 @@ public class ParticleManager implements IUpdateable
 		systems.remove(system);
 	}
 	
-//	@Override
-//	public void draw()
-//	{
-//		GLUtils.setBlendAdditive();
-//		GLUtils.disableCulling();
-//		GLUtils.disableDepthWrite();
-//		for (ParticleSystem system : systems)
-//		{
-//			ParticleShader.elapsedTime = system.particleTime;
-//			WorldParticleShader.elapsedTime = system.particleTime;
-//			ParticleShader.parentScale = system.parentScale;
-//			WorldParticleShader.parentScale = system.parentScale;
-//			system.drawParticle();
-//		}
-//	}
-
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{

@@ -3,13 +3,16 @@ package zyx.game.scene.dev;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.OnTeaPotClicked;
+import zyx.game.components.AnimatedMesh;
 import zyx.game.components.SimpleMesh;
 import zyx.game.controls.input.KeyboardData;
+import zyx.opengl.models.implementations.shapes.Box;
 
 public class TestScene extends DebugScene
 {
 
-	private SimpleMesh teapot;
+	private AnimatedMesh mesh;
+	private Box box;
 
 	public TestScene()
 	{
@@ -25,12 +28,19 @@ public class TestScene extends DebugScene
 	{
 		addPlayerControls();
 
-		teapot = new SimpleMesh();
-		teapot.load("mesh.player");
-		objects.add(teapot);
-		world.addChild(teapot);
+		mesh = new AnimatedMesh();
+		mesh.load("mesh.character");
+		world.addChild(mesh);
+		mesh.setAnimation("idleCarry");
 		
-		picker.addObject(teapot, new OnTeaPotClicked());
+		
+		box = new Box(1, 1, 1);
+		mesh.addChildAsAttachment(box, "bone_carry");
+		
+		picker.addObject(mesh, new OnTeaPotClicked());
+		
+		objects.add(mesh);
+		objects.add(box);
 	}
 
 	@Override
@@ -38,7 +48,7 @@ public class TestScene extends DebugScene
 	{
 		super.onUpdate(timestamp, elapsedTime);
 
-		Vector3f pos = teapot.getPosition(true, null);
+		Vector3f pos = mesh.getPosition(true, null);
 		
 		if (KeyboardData.data.isDown(Keyboard.KEY_RIGHT))
 		{
@@ -58,6 +68,6 @@ public class TestScene extends DebugScene
 			pos.z -= 1f;
 		}
 		
-		teapot.setPosition(true, pos);
+		mesh.setPosition(true, pos);
 	}
 }

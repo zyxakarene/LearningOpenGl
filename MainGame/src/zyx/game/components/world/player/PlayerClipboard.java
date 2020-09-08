@@ -23,9 +23,15 @@ public class PlayerClipboard extends GameObject implements IPhysbox
 		board.load("mesh.player.clipboard");
 		paper.load("mesh.player.paper");
 		paper.setScale(25, 17, 1);
+		paper.onLoaded(this::onPaperLoaded);
 
 		addChild(board);
 		addChild(paper);
+	}
+	
+	private void onPaperLoaded(SimpleMesh mesh)
+	{
+//		paper.cloneMaterial().priority = 8888;
 	}
 
 	@Override

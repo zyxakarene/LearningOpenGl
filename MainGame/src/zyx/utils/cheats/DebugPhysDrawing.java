@@ -1,18 +1,21 @@
-package zyx.opengl.models.implementations.physics;
+package zyx.utils.cheats;
 
 import java.util.HashMap;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.controls.SharedPools;
-import zyx.opengl.models.implementations.LoadableWorldModelVO;
+import zyx.opengl.models.implementations.LoadablePhysicsModelVO;
 import zyx.opengl.models.implementations.PhysicsModel;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
+import zyx.opengl.models.implementations.physics.PhysBox;
+import zyx.opengl.models.implementations.physics.PhysObject;
+import zyx.opengl.models.implementations.physics.PhysTriangle;
+import zyx.opengl.models.implementations.renderers.WorldModelRenderer;
 import zyx.opengl.textures.ColorTexture;
 import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.FloatMath;
-import zyx.utils.cheats.Print;
 import zyx.utils.geometry.Box;
 import zyx.utils.interfaces.IPhysbox;
 
@@ -27,8 +30,8 @@ public class DebugPhysDrawing
 	private static final HashMap<PhysBox, WorldModel> MESH_MAP = new HashMap<>();
 	private static final HashMap<PhysBox, WorldModel> BOUNDING_BOX_MAP = new HashMap<>();
 	private static final HashMap<PhysBox, Integer> PHYS_COUNT_MAP = new HashMap<>();
-
-	public static WorldModel[] getModelFor(IPhysbox physBox)
+	
+	public static WorldModelRenderer[] getRenderersFor(IPhysbox physBox)
 	{
 		PhysBox box = physBox.getPhysbox();
 		Integer integerCount = PHYS_COUNT_MAP.get(box);
@@ -41,11 +44,11 @@ public class DebugPhysDrawing
 		
 		PHYS_COUNT_MAP.put(box, count + 1);
 
-		WorldModel[] models = new WorldModel[2];
-		models[INDEX_MESH] = MESH_MAP.get(box);
-		models[INDEX_BOUNDING] = BOUNDING_BOX_MAP.get(box);
+		WorldModelRenderer[] renderers = new WorldModelRenderer[2];
+		renderers[INDEX_MESH] = MESH_MAP.get(box).createRenderer();
+		renderers[INDEX_BOUNDING] = BOUNDING_BOX_MAP.get(box).createRenderer();
 
-		return models;
+		return renderers;
 	}
 
 	public static void removeModelFor(IPhysbox physBox)
@@ -121,7 +124,7 @@ public class DebugPhysDrawing
 		}
 
 		Skeleton skeleton = new Skeleton(getMeshJoint("root"), getMeshJoint("dummy"));
-		LoadableWorldModelVO vo = new LoadableWorldModelVO();
+		LoadablePhysicsModelVO vo = new LoadablePhysicsModelVO();
 		vo.setBoneCount(1);
 		vo.asWorldModel();
 		vo.setVertexData(vertexData, elementData);
@@ -225,7 +228,7 @@ public class DebugPhysDrawing
 
 		fillData(boundingBox, vertexData, elementData);
 		Skeleton skeleton = new Skeleton(getMeshJoint("root11"), getMeshJoint("dummy22"));
-		LoadableWorldModelVO vo = new LoadableWorldModelVO();
+		LoadablePhysicsModelVO vo = new LoadablePhysicsModelVO();
 		vo.setBoneCount(1);
 		vo.asWorldModel();
 		vo.setVertexData(vertexData, elementData);

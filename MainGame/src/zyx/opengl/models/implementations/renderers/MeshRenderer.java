@@ -40,7 +40,6 @@ public abstract class MeshRenderer<TMaterial extends Material, TModel extends Ab
 		}
 		
 		onPreDraw();
-//		drawMaterial.bind();
 		drawMaterial.shader.bind();
 		drawMaterial.shader.upload();
 

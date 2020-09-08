@@ -39,7 +39,7 @@ public class WorldModel extends AbstractModel<WorldModelMaterial> implements ISh
 	
 	private WorldModelMaterial shadowMaterial;
 
-	public WorldModel(LoadableWorldModelVO vo)
+	public WorldModel(AbstractLoadableModelVO vo)
 	{
 		super(vo.material);
 		shadowMaterial = vo.shadowMaterial;
@@ -52,7 +52,7 @@ public class WorldModel extends AbstractModel<WorldModelMaterial> implements ISh
 		refresh(vo);
 	}
 
-	public void refresh(LoadableWorldModelVO vo)
+	public void refresh(AbstractLoadableModelVO vo)
 	{
 		skeleton = vo.skeleton;
 		physBox = vo.physBox;

@@ -27,7 +27,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 
 	public boolean disposed;
 
-	boolean dirty;
+	private boolean dirty;
 	private boolean dirtyInv;
 	protected Matrix4f invWorldMatrix;
 	protected Matrix4f worldMatrix;
@@ -203,25 +203,6 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 		dirty = true;
 		dirtyInv = true;
 	}
-
-//	protected final void draw()
-//	{
-//		if (!drawable)
-//		{
-//			return;
-//		}
-//
-//		SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM.load(worldMatrix());
-//
-//		onDraw();
-//
-//		for (WorldObject child : children)
-//		{
-//			child.draw();
-//		}
-//		
-//		onPostDraw();
-//	}
 
 	@Override
 	public final void dispose()

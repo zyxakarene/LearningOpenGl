@@ -1,6 +1,5 @@
 package zyx.game.components;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
@@ -37,17 +36,13 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 
 	private CustomCallback<SimpleMesh> onLoaded;
 
-	private ArrayList<WorldObject> attachedObjects;
-	private ArrayList<Attachment> attachments;
 	private LinkedList<AttachmentRequest> attachmentRequests;
+	private Attachment attachmentInfo;
 
 	public SimpleMesh()
 	{
 		loaded = false;
 		onLoaded = new CustomCallback<>(true);
-
-		attachedObjects = new ArrayList<>();
-		attachments = new ArrayList<>();
 
 		enableCubemaps();
 	}
@@ -81,27 +76,6 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 		return null;
 	}
 
-//TODO: DebugPhysics and Attatchments
-//	@Override
-//	protected void onDraw()
-//	{
-//		if (renderer != null && inView())
-//		{
-//			WorldShader.cubemapIndex = cubemapIndex;
-//			shader.bind();
-//			shader.upload();
-//
-//			renderer.draw();
-//
-//			DebugPhysics.getInstance().draw(this);
-//
-//			for (Attachment attachment : attachments)
-//			{
-//				attachment.child.drawAsAttachment(attachment);
-//			}
-//		}
-//	}
-
 	@Override
 	protected void updateTransforms(boolean alsoChildren)
 	{
@@ -129,15 +103,6 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 		}
 	}
 
-//TODO: DebugPhysics and Attatchments
-//	private void drawAsAttachment(Attachment attachment)
-//	{
-//		Matrix4f.mul(attachment.parent.worldMatrix(), attachment.joint.getAttachmentTransform(), localMatrix);
-//		updateTransforms(true);
-//
-//		draw();
-//	}
-
 	public void onLoaded(ICallback<SimpleMesh> callback)
 	{
 		if (loaded)
@@ -150,6 +115,27 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 		}
 	}
 
+	@Override
+	public Matrix4f worldMatrix()
+	{
+		if (attachmentInfo != null)
+		{
+			Matrix4f.mul(attachmentInfo.parent.worldMatrix(), attachmentInfo.joint.getAttachmentTransform(), worldMatrix);
+			Matrix4f.mul(worldMatrix, localMatrix, worldMatrix);
+			
+			return worldMatrix;
+		}
+		else
+		{
+			return super.worldMatrix();
+		}
+	}
+	
+	public void attachTo(SimpleMesh parent, String attachmentPoint)
+	{
+		parent.addChildAsAttachment(this, attachmentPoint);
+	}
+		
 	public void addChildAsAttachment(SimpleMesh child, String attachmentPoint)
 	{
 		if (loaded)
@@ -161,13 +147,10 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 			}
 			else
 			{
-				Attachment attachment = new Attachment();
-				attachment.child = child;
-				attachment.parent = this;
-				attachment.joint = attachJoint;
-
-				attachments.add(attachment);
-				attachedObjects.add(child);
+				child.attachmentInfo = new Attachment();
+				child.attachmentInfo.child = child;
+				child.attachmentInfo.parent = this;
+				child.attachmentInfo.joint = attachJoint;
 			}
 		}
 		else
@@ -186,17 +169,7 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	{
 		child.setPosition(true, 0, 0, 0);
 		child.setDir(true, GeometryUtils.ROTATION_X);
-
-		attachedObjects.remove(child);
-
-		for (Attachment attachment : attachments)
-		{
-			if (attachment.child == child)
-			{
-				attachments.remove(attachment);
-				break;
-			}
-		}
+		child.attachmentInfo = null;
 
 		if (attachmentRequests != null)
 		{
@@ -252,9 +225,6 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 			attachmentRequests.clear();
 			attachmentRequests = null;
 		}
-
-		attachedObjects.clear();
-		attachments.clear();
 
 		if (renderer != null)
 		{

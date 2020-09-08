@@ -3,6 +3,7 @@ package zyx.opengl.models.implementations.renderers;
 import java.util.ArrayList;
 import java.util.Comparator;
 import zyx.opengl.materials.MaterialPriority;
+import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IDrawable;
 
 public class MeshRenderList implements IDrawable, Comparator<MeshRenderer>
@@ -65,6 +66,11 @@ public class MeshRenderList implements IDrawable, Comparator<MeshRenderer>
 		for (int i = 0; i < transparentLength; i++)
 		{
 			MeshRenderer renderer = list.get(i);
+			
+			if (renderer.drawMaterial.priority == 8888)
+			{
+			}
+			
 			renderer.draw();
 		}
 	}
