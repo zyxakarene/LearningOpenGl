@@ -47,11 +47,11 @@ public final class World3D extends WorldObject
 		ambientOcclusion.prepareRender();
 		renderer.prepareRender();
 
+		drawing.draw();
 		MeshRenderList.getInstance().draw();
 
 		ambientOcclusion.drawAmbientOcclusion();
 
-		drawing.draw();
 		renderer.draw();
 
 		MeshRenderList.getInstance().drawTransparent();

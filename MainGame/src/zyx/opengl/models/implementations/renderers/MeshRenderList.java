@@ -2,8 +2,8 @@ package zyx.opengl.models.implementations.renderers;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.materials.MaterialPriority;
-import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IDrawable;
 
 public class MeshRenderList implements IDrawable, Comparator<MeshRenderer>
@@ -62,8 +62,10 @@ public class MeshRenderList implements IDrawable, Comparator<MeshRenderer>
 
 	private void draw(ArrayList<MeshRenderer> list)
 	{
-		int transparentLength = list.size();
-		for (int i = 0; i < transparentLength; i++)
+		DeferredRenderer.getInstance().bindBuffer();
+		
+		int len = list.size();
+		for (int i = 0; i < len; i++)
 		{
 			MeshRenderer renderer = list.get(i);
 			

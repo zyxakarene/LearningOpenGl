@@ -34,6 +34,7 @@ public enum Culling
 			}
 			else
 			{
+				currentCulling = null;
 				GL11.glDisable(GL11.GL_CULL_FACE);
 			}
 		}
