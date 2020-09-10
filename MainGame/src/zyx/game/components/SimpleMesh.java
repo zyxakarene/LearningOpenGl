@@ -1,5 +1,6 @@
 package zyx.game.components;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
@@ -37,6 +38,7 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	private CustomCallback<SimpleMesh> onLoaded;
 
 	private LinkedList<AttachmentRequest> attachmentRequests;
+	private ArrayList<Attachment> attachments;
 	private Attachment attachmentInfo;
 
 	public SimpleMesh()
@@ -120,14 +122,26 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	{
 		if (attachmentInfo != null)
 		{
-			Matrix4f.mul(attachmentInfo.parent.worldMatrix(), attachmentInfo.joint.getAttachmentTransform(), worldMatrix);
-			Matrix4f.mul(worldMatrix, localMatrix, worldMatrix);
+			Matrix4f.mul(attachmentInfo.parent.worldMatrix(), attachmentInfo.lastMatrix, worldMatrix);
 			
 			return worldMatrix;
 		}
 		else
 		{
 			return super.worldMatrix();
+		}
+	}
+
+	@Override
+	public void onPostDraw()
+	{
+		if (attachments != null)
+		{
+			for (Attachment attachment : attachments)
+			{
+				attachment.loadBoneTransform();
+				System.out.println("Load " + attachment.lastMatrix);
+			}
 		}
 	}
 	
@@ -138,6 +152,11 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 		
 	public void addChildAsAttachment(SimpleMesh child, String attachmentPoint)
 	{
+		if (attachments == null)
+		{
+			attachments = new ArrayList<>();
+		}
+		
 		if (loaded)
 		{
 			Joint attachJoint = renderer.getBoneByName(attachmentPoint);
@@ -147,10 +166,15 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 			}
 			else
 			{
+				child.setPosition(true, 0, 0, 0);
+				child.setDir(true, GeometryUtils.ROTATION_X);
+				
 				child.attachmentInfo = new Attachment();
 				child.attachmentInfo.child = child;
 				child.attachmentInfo.parent = this;
 				child.attachmentInfo.joint = attachJoint;
+				
+				attachments.add(child.attachmentInfo);
 			}
 		}
 		else
@@ -167,6 +191,11 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 
 	public void removeChildAsAttachment(SimpleMesh child)
 	{
+		if (attachments != null)
+		{
+			attachments.remove(child.attachmentInfo);
+		}
+		
 		child.setPosition(true, 0, 0, 0);
 		child.setDir(true, GeometryUtils.ROTATION_X);
 		child.attachmentInfo = null;

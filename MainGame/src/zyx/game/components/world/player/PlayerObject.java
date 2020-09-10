@@ -33,19 +33,6 @@ public class PlayerObject extends GameObject implements IItemHolder
 		}
 	}
 
-//TODO: Stencils
-//	@Override
-//	protected void onDraw()
-//	{
-//		StencilControl.getInstance().startDrawingToLayer(StencilLayer.PLAYER_CHARACTER, Buffer.DEFERRED);
-//	}
-//
-//	@Override
-//	protected void onPostDraw()
-//	{
-//		StencilControl.getInstance().stopDrawingToLayer(StencilLayer.PLAYER_CHARACTER, Buffer.DEFERRED);
-//	}
-
 	@Override
 	public int getUniqueId()
 	{

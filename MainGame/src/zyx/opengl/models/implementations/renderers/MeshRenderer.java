@@ -44,6 +44,11 @@ public abstract class MeshRenderer<TMaterial extends Material, TModel extends Ab
 		drawMaterial.shader.upload();
 
 		model.draw(drawMaterial);
+		
+		if (parent != null)
+		{
+			parent.onPostDraw();
+		}
 	}
 	
 	public TMaterial cloneMaterial()

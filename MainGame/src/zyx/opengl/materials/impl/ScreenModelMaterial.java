@@ -1,10 +1,7 @@
 package zyx.opengl.materials.impl;
 
 import org.lwjgl.util.vector.Vector3f;
-import zyx.opengl.materials.BlendMode;
-import zyx.opengl.materials.Culling;
-import zyx.opengl.materials.Material;
-import zyx.opengl.materials.ZTest;
+import zyx.opengl.materials.*;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.enums.TextureSlot;
@@ -30,6 +27,9 @@ public class ScreenModelMaterial extends Material
 
 		color = new Vector3f(1f, 1f, 1f);
 		alpha = 1f;
+		
+		stencilMode = StencilMode.MASKING;
+		stencilLayer = StencilLayer.PLAYER_CHARACTER;
 	}
 	
 	public AbstractTexture getDiffuse()

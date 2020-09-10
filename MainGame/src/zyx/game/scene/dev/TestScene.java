@@ -5,14 +5,16 @@ import org.lwjgl.util.vector.Vector3f;
 import zyx.OnTeaPotClicked;
 import zyx.game.components.AnimatedMesh;
 import zyx.game.components.SimpleMesh;
+import zyx.game.components.world.items.FoodItem;
 import zyx.game.controls.input.KeyboardData;
+import zyx.game.vo.DishType;
 import zyx.opengl.models.implementations.shapes.Box;
 
 public class TestScene extends DebugScene
 {
 
 	private AnimatedMesh mesh;
-	private Box box;
+	private FoodItem box;
 
 	public TestScene()
 	{
@@ -34,7 +36,8 @@ public class TestScene extends DebugScene
 		mesh.setAnimation("idleCarry");
 		
 		
-		box = new Box(1, 1, 1);
+		box = new FoodItem(DishType.STEAK);
+		box.load();
 		mesh.addChildAsAttachment(box, "bone_carry");
 		
 		picker.addObject(mesh, new OnTeaPotClicked());

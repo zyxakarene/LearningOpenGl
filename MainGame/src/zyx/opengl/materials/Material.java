@@ -16,6 +16,9 @@ public abstract class Material
 	public Shader shaderType;
 	public AbstractShader shader;
 	
+	public StencilMode stencilMode;
+	public StencilLayer stencilLayer;
+	
 	protected final AbstractTexture[] textures;
 
 	public Material(Shader shader)
@@ -35,6 +38,9 @@ public abstract class Material
 		zTest = ZTest.LESS;
 		culling = Culling.BACK;
 		blend = BlendMode.NORMAL;
+		
+		stencilMode = StencilMode.NOTHING;
+		stencilLayer = StencilLayer.NOTHING;
 	}
 	
 	public void bind()
@@ -53,6 +59,8 @@ public abstract class Material
 		zTest.invoke();
 		culling.invoke();
 		blend.invoke();
+		
+		stencilMode.invoke(stencilLayer);
 	}
 	
 	public Material cloneMaterial()

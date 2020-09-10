@@ -39,8 +39,9 @@ public enum Culling
 			}
 		}
 		
-		if (currentCulling != this)
+		if (enabled && currentCulling != this)
 		{
+			currentCulling = this;
 			GL11.glCullFace(glValue);
 		}
 	}

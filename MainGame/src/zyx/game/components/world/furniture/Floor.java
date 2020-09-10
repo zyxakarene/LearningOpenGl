@@ -10,7 +10,6 @@ import zyx.game.components.world.items.GameItem;
 import zyx.game.components.world.player.PlayerObject;
 import zyx.game.models.GameModels;
 import zyx.game.scene.game.DinerScene;
-import zyx.utils.GeometryUtils;
 
 public class Floor extends BaseFurnitureItem<SimpleMesh>
 {
@@ -33,12 +32,8 @@ public class Floor extends BaseFurnitureItem<SimpleMesh>
 	@Override
 	protected void onGotItem(GameItem item)
 	{
-		Vector3f pos = player.getPosition(false, null);
-		pos.z = 0;
-		
 		World3D.instance.addChild(item);
 		item.setRotation(0, 0, 0);
-		
 		item.setPosition(false, 0, 0, 0);
 	}
 

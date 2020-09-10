@@ -203,6 +203,10 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 		dirty = true;
 		dirtyInv = true;
 	}
+	
+	public void onPostDraw()
+	{
+	}
 
 	@Override
 	public final void dispose()
