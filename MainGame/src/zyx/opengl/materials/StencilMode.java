@@ -5,9 +5,9 @@ import zyx.opengl.stencils.StencilControl;
 
 public enum StencilMode
 {
-	NOTHING,
-	WRITING,
-	MASKING;
+	NOTHING(0),
+	WRITING(1),
+	MASKING(2);
 	
 	public static final StencilMode[] values = values();
 	
@@ -15,8 +15,11 @@ public enum StencilMode
 	private static StencilLayer currentDrawLayer = StencilLayer.NOTHING;
 	private static StencilLayer currentMaskLayer = StencilLayer.NOTHING;
 
-	private StencilMode()
+	public final int value;
+	
+	private StencilMode(int value)
 	{
+		this.value = value;
 	}
 	
 	public void invoke(StencilLayer layer)
@@ -69,5 +72,18 @@ public enum StencilMode
 			
 			currentStencilMode = this;
 		}
+	}
+	
+	public static StencilMode fromValue(int value)
+	{
+		for (StencilMode mode : values)
+		{
+			if (mode.value == value)
+			{
+				return mode;
+			}
+		}
+		
+		return NOTHING;
 	}
 }

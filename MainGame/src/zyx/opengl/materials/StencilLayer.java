@@ -5,8 +5,8 @@ import zyx.opengl.stencils.StencilControl;
 
 public enum StencilLayer
 {
-	NOTHING(0), //0
-	PLAYER_CHARACTER(1 << 0); //1//1
+	NOTHING(0),
+	PLAYER_CHARACTER(1 << 0); //1
 	
 	public static final StencilLayer[] values = values();
 	
@@ -52,5 +52,18 @@ public enum StencilLayer
 			
 			currentWriteStencil = this;
 		}
+	}
+	
+	public static StencilLayer fromValue(int value)
+	{
+		for (StencilLayer layer : values)
+		{
+			if (layer.maskValue == value)
+			{
+				return layer;
+			}
+		}
+		
+		return NOTHING;
 	}
 }

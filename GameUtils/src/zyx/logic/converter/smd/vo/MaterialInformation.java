@@ -12,6 +12,8 @@ public class MaterialInformation
 	private int blendSrc;
 	private int blendDst;
 	private int priority;
+	private byte stencilMode;
+	private int stencilLayer;
 
 	public MaterialInformation()
 	{
@@ -20,6 +22,8 @@ public class MaterialInformation
 		blendSrc = GL11.GL_ONE;
 		blendDst = GL11.GL_ZERO;
 		priority = 5000;
+		stencilMode = 0;
+		stencilLayer = 0;
 	}
 
 	void save(DataOutputStream out) throws IOException
@@ -30,5 +34,7 @@ public class MaterialInformation
 		out.writeInt(blendSrc);
 		out.writeInt(blendDst);
 		out.writeInt(priority);
+		out.writeByte(stencilMode);
+		out.writeInt(stencilLayer);
 	}
 }

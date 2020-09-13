@@ -37,6 +37,8 @@ MaterialInformation
 	int								blendSrc
 	int								blendDst
 	int								priority
+	byte							stencilMode
+	int								stencilLayer
 }
 
 SmdPhysbox

@@ -7,7 +7,7 @@ public enum Culling
 	FRONT(GL11.GL_FRONT, true),
 	BACK(GL11.GL_BACK, true),
 	ALL(GL11.GL_FRONT_AND_BACK, true),
-	NONE(GL11.GL_BACK, false);
+	NONE(GL11.GL_NONE, false);
 	
 	public static final Culling[] values = values();
 	
