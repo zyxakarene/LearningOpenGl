@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JPanel;
 
 public class DragDropper extends DropTarget
 {
@@ -64,13 +63,5 @@ public class DragDropper extends DropTarget
 		List<File> droppedFiles = getFilesFrom(evt.getTransferable());
 
 		listener.filesDropped(droppedFiles);
-	}
-
-	public static interface IFilesDropped
-	{
-
-		public void filesDropped(List<File> files);
-
-		public JPanel getDropPanel();
 	}
 }
