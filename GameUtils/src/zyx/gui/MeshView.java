@@ -1,29 +1,117 @@
 package zyx.gui;
 
 import java.awt.CardLayout;
-import zyx.logic.DragDropper;
-import zyx.logic.IFilesDropped;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import zyx.UtilConstants;
+import zyx.gui.files.FileSelector;
+import zyx.gui.files.FileSelectorType;
+import zyx.logic.converter.smd.control.json.JsonMesh;
+import zyx.logic.converter.smd.control.json.JsonMeshAnimation;
 
 public class MeshView extends javax.swing.JFrame
 {
+
 	private TextureDropper diffuseDropper;
 	private TextureDropper normalDropper;
 	private TextureDropper specularDropper;
-	
-	public MeshView()
+
+	private JsonMesh mesh;
+
+	private JList<JsonMeshAnimation> animationList;
+	private DefaultListModel<JsonMeshAnimation> animationListModel;
+
+	public MeshView(JsonMesh mesh)
 	{
+		this.mesh = mesh;
+
 		initComponents();
 
-		CardLayout layout = (CardLayout) cardLayoutPanel.getLayout();
+		animationListModel = new DefaultListModel<>();
+		animationList = new JList(animationListModel);
+		animationScrollPane.setViewportView(animationList);
+		animationList.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				handleAnimationClick(e);
+			}
+		});
+
+		animationList.addKeyListener(new KeyAdapter()
+		{
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+				handleAnimationKeyTyped(e);
+			}
+		});
+
 		cardLayoutPanel.add(skeletonPanel, skeletonPanel.getName());
 		cardLayoutPanel.add(meshPanel, meshPanel.getName());
 
-		meshRadioBtn.setSelected(true);
-		layout.show(cardLayoutPanel, meshPanel.getName());
-		
 		diffuseDropper = new TextureDropper(diffuseLabel, diffuseText);
 		normalDropper = new TextureDropper(normalLabel, normalText);
 		specularDropper = new TextureDropper(specularLabel, specularText);
+
+		setup();
+	}
+
+	private void handleAnimationClick(MouseEvent e)
+	{
+		if (e.getClickCount() == 2)
+		{
+			new AnimationDialog(this, animationList.getSelectedValue()).setVisible(true);
+		}
+	}
+
+	private void handleAnimationKeyTyped(KeyEvent e)
+	{
+		if (e.getKeyChar() == KeyEvent.VK_DELETE && animationList.getSelectedIndex() > -1)
+		{
+			JsonMeshAnimation selection = animationList.getSelectedValue();
+			animationListModel.removeElement(selection);
+			mesh.animations.animations.remove(selection);
+		}
+	}
+
+	private void setup()
+	{
+		CardLayout layout = (CardLayout) cardLayoutPanel.getLayout();
+
+		if (mesh.isMesh())
+		{
+			meshRadioBtn.setSelected(true);
+			layout.show(cardLayoutPanel, meshPanel.getName());
+		}
+		else
+		{
+			skeletonRadioBtn.setSelected(true);
+			layout.show(cardLayoutPanel, skeletonPanel.getName());
+		}
+
+		meshSkeletonTextfield.setText(mesh.meshSkeleton);
+		meshOutputTextfield.setText(mesh.meshOutput);
+
+		skeletonMeshTextfield.setText(mesh.skeletonMesh);
+		skeletonOutputTextfield.setText(mesh.SkeletonOutput);
+
+		diffuseDropper.setFile(mesh.textureFiles.diffuseFile);
+		normalDropper.setFile(mesh.textureFiles.normalFile);
+		specularDropper.setFile(mesh.textureFiles.specularFile);
+
+		ArrayList<JsonMeshAnimation> animations = mesh.animations.animations;
+		for (JsonMeshAnimation animation : animations)
+		{
+			animationListModel.addElement(animation);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -38,15 +126,12 @@ public class MeshView extends javax.swing.JFrame
         cardLayoutPanel = new javax.swing.JPanel();
         meshPanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        meshSkeletonTextfield = new javax.swing.JTextField();
+        meshSkeletonBtn = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        meshOutputTextfield = new javax.swing.JTextField();
+        meshOutputBtn = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
@@ -71,20 +156,21 @@ public class MeshView extends javax.swing.JFrame
         skeletonPanel = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jButton9 = new javax.swing.JButton();
+        skeletonMeshTextfield = new javax.swing.JTextField();
+        skeletonMeshBtn = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
-        jButton10 = new javax.swing.JButton();
+        skeletonOutputTextfield = new javax.swing.JTextField();
+        skeletonOutputBtn = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
-        jButton6 = new javax.swing.JButton();
+        animationScrollPane = new javax.swing.JScrollPane();
+        addAnimationBtn = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jButton7 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Mesh Editor");
 
         typeLabel.setText("Type:");
 
@@ -115,21 +201,45 @@ public class MeshView extends javax.swing.JFrame
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel1.setText("Mesh:");
-
-        jButton1.setText("Find");
-
         jLabel2.setText("Skeleton:");
 
-        jButton2.setText("Find");
+        meshSkeletonBtn.setText("Find");
+        meshSkeletonBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                meshSkeletonBtnActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Output:");
 
-        jButton3.setText("Find");
+        meshOutputBtn.setText("Find");
+        meshOutputBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                meshOutputBtnActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Mesh Files");
+        jButton4.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setText("Mesh Properties");
+        jButton5.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -139,23 +249,17 @@ public class MeshView extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(meshSkeletonTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(meshSkeletonBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(meshOutputTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(meshOutputBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -167,19 +271,14 @@ public class MeshView extends javax.swing.JFrame
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                    .addComponent(meshSkeletonTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(meshSkeletonBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
+                    .addComponent(meshOutputTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(meshOutputBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton4)
@@ -401,11 +500,25 @@ public class MeshView extends javax.swing.JFrame
 
         jLabel6.setText("Mesh:");
 
-        jButton9.setText("Find");
+        skeletonMeshBtn.setText("Find");
+        skeletonMeshBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                skeletonMeshBtnActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Output:");
 
-        jButton10.setText("Find");
+        skeletonOutputBtn.setText("Find");
+        skeletonOutputBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                skeletonOutputBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -417,15 +530,15 @@ public class MeshView extends javax.swing.JFrame
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(skeletonMeshTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(skeletonMeshBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(skeletonOutputTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(skeletonOutputBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -434,13 +547,13 @@ public class MeshView extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton9))
+                    .addComponent(skeletonMeshTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(skeletonMeshBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton10))
+                    .addComponent(skeletonOutputTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(skeletonOutputBtn))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -449,10 +562,14 @@ public class MeshView extends javax.swing.JFrame
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Animations");
 
-        jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(jList1);
-
-        jButton6.setText("Add");
+        addAnimationBtn.setText("Add");
+        addAnimationBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                addAnimationBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -462,10 +579,10 @@ public class MeshView extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1)
+                    .addComponent(animationScrollPane)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 268, Short.MAX_VALUE)
+                        .addComponent(addAnimationBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -474,9 +591,9 @@ public class MeshView extends javax.swing.JFrame
                 .addContainerGap()
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                .addComponent(animationScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton6)
+                .addComponent(addAnimationBtn)
                 .addContainerGap())
         );
 
@@ -501,20 +618,26 @@ public class MeshView extends javax.swing.JFrame
 
         jButton7.setText("Save");
 
+        jButton1.setText("Compile");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton7)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton7)
+                    .addComponent(jButton1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -579,57 +702,119 @@ public class MeshView extends javax.swing.JFrame
 		specularDropper.clear();
     }//GEN-LAST:event_specularClearBtnActionPerformed
 
+    private void addAnimationBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_addAnimationBtnActionPerformed
+    {//GEN-HEADEREND:event_addAnimationBtnActionPerformed
+		JsonMeshAnimation animation = new JsonMeshAnimation();
+		new AnimationDialog(this, animation).setVisible(true);
+
+		if (animation.file != null)
+		{
+			animationListModel.addElement(animation);
+			mesh.animations.animations.add(animation);
+		}
+    }//GEN-LAST:event_addAnimationBtnActionPerformed
+
+    private void meshSkeletonBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_meshSkeletonBtnActionPerformed
+    {//GEN-HEADEREND:event_meshSkeletonBtnActionPerformed
+		File file = FileSelector.openFile(this, FileSelectorType.SKELETON, UtilConstants.SKELETON_OUTPUT);
+		if (file != null)
+		{
+			String name = file.getName();
+			meshSkeletonTextfield.setText(name);
+			mesh.meshSkeleton = name;
+		}
+    }//GEN-LAST:event_meshSkeletonBtnActionPerformed
+
+    private void meshOutputBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_meshOutputBtnActionPerformed
+    {//GEN-HEADEREND:event_meshOutputBtnActionPerformed
+        File file = FileSelector.saveFile(this, FileSelectorType.ZAF, UtilConstants.MESH_OUTPUT);
+		if (file != null)
+		{
+			String fullPath = file.getAbsolutePath();
+			String subPath = fullPath.replace(UtilConstants.ASSETS_OUTPUT, "");
+			meshOutputTextfield.setText(subPath);
+			mesh.meshOutput = subPath;
+		}
+    }//GEN-LAST:event_meshOutputBtnActionPerformed
+
+    private void skeletonMeshBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_skeletonMeshBtnActionPerformed
+    {//GEN-HEADEREND:event_skeletonMeshBtnActionPerformed
+        File file = FileSelector.openFile(this, FileSelectorType.SMD, mesh.file.getAbsolutePath());
+		if (file != null)
+		{
+			String fullPath = file.getAbsolutePath();
+			String subPath = fullPath.replace(UtilConstants.BASE_FOLDER, "");
+			skeletonMeshTextfield.setText(subPath);
+			mesh.skeletonMesh = subPath;
+		}
+    }//GEN-LAST:event_skeletonMeshBtnActionPerformed
+
+    private void skeletonOutputBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_skeletonOutputBtnActionPerformed
+    {//GEN-HEADEREND:event_skeletonOutputBtnActionPerformed
+        File file = FileSelector.openFile(this, FileSelectorType.SKELETON, UtilConstants.SKELETON_OUTPUT);
+		if (file != null)
+		{
+			String fullPath = file.getAbsolutePath();
+			String subPath = fullPath.replace(UtilConstants.ASSETS_OUTPUT, "");
+			skeletonOutputTextfield.setText(subPath);
+			mesh.SkeletonOutput = subPath;
+		}
+    }//GEN-LAST:event_skeletonOutputBtnActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton4ActionPerformed
+    {//GEN-HEADEREND:event_jButton4ActionPerformed
+        new MeshFiledDialog(this, mesh).setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton5ActionPerformed
+    {//GEN-HEADEREND:event_jButton5ActionPerformed
+        new MeshPropertiesDialog(this, mesh).setVisible(true);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
 	public static void main(String args[])
 	{
-		new MeshView().setVisible(true);
+		File file = new File("C:\\Users\\Rene\\Desktop\\Game Assets\\meshes\\meshFormat.json");
+		JsonMesh mesh = new JsonMesh(file);
+		new MeshView(mesh).setVisible(true);
 	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addAnimationBtn;
+    private javax.swing.JScrollPane animationScrollPane;
     private javax.swing.JPanel cardLayoutPanel;
-    private javax.swing.JButton clearBtn1;
-    private javax.swing.JButton clearBtn2;
-    private javax.swing.JButton clearBtn3;
     private javax.swing.JButton diffuseClearBtn;
     private javax.swing.JLabel diffuseLabel;
     private javax.swing.JPanel diffusePreview;
     private javax.swing.JLabel diffuseText;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton9;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JButton meshOutputBtn;
+    private javax.swing.JTextField meshOutputTextfield;
     private javax.swing.JPanel meshPanel;
     private javax.swing.JRadioButton meshRadioBtn;
+    private javax.swing.JButton meshSkeletonBtn;
+    private javax.swing.JTextField meshSkeletonTextfield;
     private javax.swing.JButton normalClearBtn;
     private javax.swing.JLabel normalLabel;
     private javax.swing.JPanel normalPanel;
     private javax.swing.JPanel normalPreview;
     private javax.swing.JLabel normalText;
-    private javax.swing.JPanel previewPanel1;
-    private javax.swing.JPanel previewPanel2;
-    private javax.swing.JPanel previewPanel3;
+    private javax.swing.JButton skeletonMeshBtn;
+    private javax.swing.JTextField skeletonMeshTextfield;
+    private javax.swing.JButton skeletonOutputBtn;
+    private javax.swing.JTextField skeletonOutputTextfield;
     private javax.swing.JPanel skeletonPanel;
     private javax.swing.JRadioButton skeletonRadioBtn;
     private javax.swing.JButton specularClearBtn;
@@ -638,13 +823,7 @@ public class MeshView extends javax.swing.JFrame
     private javax.swing.JPanel specularPreview;
     private javax.swing.JLabel specularText;
     private javax.swing.JPanel texturePanel;
-    private javax.swing.JPanel texturePreview1;
-    private javax.swing.JPanel texturePreview2;
-    private javax.swing.JPanel texturePreview3;
     private javax.swing.JLabel titleLabel;
-    private javax.swing.JLabel titleLabel1;
-    private javax.swing.JLabel titleLabel2;
-    private javax.swing.JLabel titleLabel3;
     private javax.swing.JLabel titleLabel4;
     private javax.swing.JLabel titleLabel5;
     private javax.swing.ButtonGroup typeBtnGroup;
