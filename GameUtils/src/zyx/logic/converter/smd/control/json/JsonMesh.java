@@ -22,7 +22,7 @@ public class JsonMesh
 	public static final String PROPERTY_MESH_PROPERTIES = "meshProperties";
 	public static final String PROPERTY_TEXTURE_FILES = "textureFiles";
 	public static final String PROPERTY_ANIMATIONS = "animations";
-	
+
 	public File file;
 	
 	public String type;
@@ -91,5 +91,37 @@ public class JsonMesh
 		}
 		
 		return type.equals(TYPE_MESH);
+	}
+
+	public void save() throws IOException
+	{
+		JSONObject json = new JSONObject();
+		JSONObject jsonFiles = new JSONObject();
+		JSONObject jsonProperties = new JSONObject();
+		JSONObject jsonTextures = new JSONObject();
+		JSONArray jsonAnimations = new JSONArray();
+		
+		json.put(PROPERTY_TYPE, type);
+		json.put(PROPERTY_MESH_SKELETON, meshSkeleton);
+		json.put(PROPERTY_MESH_OUT, meshOutput);
+		json.put(PROPERTY_SKELETON_MESH, skeletonMesh);
+		json.put(PROPERTY_SKELETON_OUT, SkeletonOutput);
+		
+		json.put(PROPERTY_MESH_FILES, jsonFiles);
+		json.put(PROPERTY_MESH_PROPERTIES, jsonProperties);
+		json.put(PROPERTY_TEXTURE_FILES, jsonTextures);
+		json.put(PROPERTY_ANIMATIONS, jsonAnimations);
+		
+		meshFiles.save(jsonFiles);
+		meshProperties.save(jsonProperties);
+		textureFiles.save(jsonTextures);
+		animations.save(jsonAnimations);
+		
+		String output = json.toJSONString();
+		try (FileWriter writer = new FileWriter(file))
+		{
+			writer.write(output);
+			writer.flush();
+		}
 	}
 }

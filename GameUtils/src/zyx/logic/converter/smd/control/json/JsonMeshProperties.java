@@ -26,12 +26,24 @@ public class JsonMeshProperties
 	void read(JSONObject jsonProperties)
 	{
 		zWrite = JsonMethods.getBoolean(jsonProperties, PROPERTY_Z_WRITE, true);
-		zTest = JsonMethods.getInt(jsonProperties, PROPERTY_Z_WRITE, GL11.GL_LEQUAL);
-		culling = JsonMethods.getInt(jsonProperties, PROPERTY_Z_WRITE, GL11.GL_BACK);
+		zTest = JsonMethods.getInt(jsonProperties, PROPERTY_Z_TEST, GL11.GL_LEQUAL);
+		culling = JsonMethods.getInt(jsonProperties, PROPERTY_CULLING, GL11.GL_BACK);
 		blendSrc = JsonMethods.getInt(jsonProperties, PROPERTY_BLEND_SRC, GL11.GL_ONE);
 		blendDst = JsonMethods.getInt(jsonProperties, PROPERTY_BLEND_DST, GL11.GL_ZERO);
 		priority = JsonMethods.getInt(jsonProperties, PROPERTY_PRIORITY, 10000);
 		stencilMode = JsonMethods.getInt(jsonProperties, PROPERTY_STENCIL_MODE, 0);
 		stencilLayer = JsonMethods.getInt(jsonProperties, PROPERTY_STENCIL_LAYER, 0);
+	}
+
+	void save(JSONObject json)
+	{
+		json.put(PROPERTY_Z_WRITE, zWrite);
+		json.put(PROPERTY_Z_TEST, zTest);
+		json.put(PROPERTY_CULLING, culling);
+		json.put(PROPERTY_BLEND_SRC, blendSrc);
+		json.put(PROPERTY_BLEND_DST, blendDst);
+		json.put(PROPERTY_PRIORITY, priority);
+		json.put(PROPERTY_STENCIL_MODE, stencilMode);
+		json.put(PROPERTY_STENCIL_LAYER, stencilLayer);
 	}
 }

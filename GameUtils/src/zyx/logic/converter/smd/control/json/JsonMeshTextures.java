@@ -16,14 +16,14 @@ public class JsonMeshTextures
 
 	void read(JSONObject json)
 	{
-		String meshPath = JsonMethods.getString(json, PROPERTY_DIFFUSE_FILE);
-		String physPath = JsonMethods.getString(json, PROPERTY_NORMAL_FILE);
-		String boundingPath = JsonMethods.getString(json, PROPERTY_SPECULAR_FILE);
+		String diffusePath = JsonMethods.getString(json, PROPERTY_DIFFUSE_FILE);
+		String normalPath = JsonMethods.getString(json, PROPERTY_NORMAL_FILE);
+		String specularPath = JsonMethods.getString(json, PROPERTY_SPECULAR_FILE);
 
 		String root = UtilConstants.BASE_FOLDER;
-		diffuseFile = new File(root + meshPath);
-		normalFile = new File(root + physPath);
-		specularFile = new File(root + boundingPath);
+		diffuseFile = new File(root + diffusePath);
+		normalFile = new File(root + normalPath);
+		specularFile = new File(root + specularPath);
 
 		if (diffuseFile.exists() == false || diffuseFile.isDirectory())
 		{
@@ -41,4 +41,10 @@ public class JsonMeshTextures
 		}
 	}
 
+	void save(JSONObject json)
+	{
+		JsonMethods.putFile(json, PROPERTY_DIFFUSE_FILE, diffuseFile);
+		JsonMethods.putFile(json, PROPERTY_NORMAL_FILE, normalFile);
+		JsonMethods.putFile(json, PROPERTY_SPECULAR_FILE, specularFile);
+	}
 }

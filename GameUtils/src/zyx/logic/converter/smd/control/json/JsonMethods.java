@@ -1,10 +1,23 @@
 package zyx.logic.converter.smd.control.json;
 
+import java.io.File;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import zyx.UtilConstants;
 
 class JsonMethods
 {
+	static void putFile(JSONObject json, String name, File file)
+	{
+		if (file != null)
+		{
+			String root = UtilConstants.BASE_FOLDER;
+			String filePath = file.getAbsolutePath().replace(root, "");
+			filePath = filePath.replaceAll("\\\\", "/");
+			json.put(name, filePath);
+		}
+	}
+	
 	static String getString(JSONObject json, String name)
 	{
 		return getString(json, name, "");

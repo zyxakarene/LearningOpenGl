@@ -6,9 +6,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JDialog;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import zyx.UtilConstants;
 import zyx.gui.files.FileSelector;
 import zyx.gui.files.FileSelectorType;
@@ -166,8 +171,8 @@ public class MeshView extends javax.swing.JFrame
         animationScrollPane = new javax.swing.JScrollPane();
         addAnimationBtn = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        jButton7 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        saveBtn = new javax.swing.JButton();
+        compileBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mesh Editor");
@@ -616,9 +621,23 @@ public class MeshView extends javax.swing.JFrame
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jButton7.setText("Save");
+        saveBtn.setText("Save");
+        saveBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                saveBtnActionPerformed(evt);
+            }
+        });
 
-        jButton1.setText("Compile");
+        compileBtn.setText("Compile");
+        compileBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                compileBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -626,9 +645,9 @@ public class MeshView extends javax.swing.JFrame
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(compileBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(saveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -636,8 +655,8 @@ public class MeshView extends javax.swing.JFrame
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton7)
-                    .addComponent(jButton1))
+                    .addComponent(saveBtn)
+                    .addComponent(compileBtn))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -771,6 +790,23 @@ public class MeshView extends javax.swing.JFrame
         new MeshPropertiesDialog(this, mesh).setVisible(true);
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void saveBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveBtnActionPerformed
+    {//GEN-HEADEREND:event_saveBtnActionPerformed
+		try
+		{
+			mesh.save();
+		}
+		catch (IOException ex)
+		{
+			JOptionPane.showMessageDialog(this, "Could not save the file!");
+		}
+    }//GEN-LAST:event_saveBtnActionPerformed
+
+    private void compileBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_compileBtnActionPerformed
+    {//GEN-HEADEREND:event_compileBtnActionPerformed
+        
+    }//GEN-LAST:event_compileBtnActionPerformed
+
 	public static void main(String args[])
 	{
 		File file = new File("C:\\Users\\Rene\\Desktop\\Game Assets\\meshes\\meshFormat.json");
@@ -782,14 +818,13 @@ public class MeshView extends javax.swing.JFrame
     private javax.swing.JButton addAnimationBtn;
     private javax.swing.JScrollPane animationScrollPane;
     private javax.swing.JPanel cardLayoutPanel;
+    private javax.swing.JButton compileBtn;
     private javax.swing.JButton diffuseClearBtn;
     private javax.swing.JLabel diffuseLabel;
     private javax.swing.JPanel diffusePreview;
     private javax.swing.JLabel diffuseText;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -811,6 +846,7 @@ public class MeshView extends javax.swing.JFrame
     private javax.swing.JPanel normalPanel;
     private javax.swing.JPanel normalPreview;
     private javax.swing.JLabel normalText;
+    private javax.swing.JButton saveBtn;
     private javax.swing.JButton skeletonMeshBtn;
     private javax.swing.JTextField skeletonMeshTextfield;
     private javax.swing.JButton skeletonOutputBtn;

@@ -23,7 +23,7 @@ public class JsonMeshAnimation
 
 	void read(JSONObject json)
 	{
-		String filePath = JsonMethods.getString(json, PROPERTY_FILE, "missing_name");
+		String filePath = JsonMethods.getString(json, PROPERTY_FILE);
 		file = new File(UtilConstants.BASE_FOLDER + filePath);
 		if (file.exists() == false || file.isDirectory())
 		{
@@ -42,5 +42,15 @@ public class JsonMeshAnimation
 	{
 		String fileName = file != null ? file.getName() : "[Missing File]";
 		return String.format("%s - %s Blend: %s, frames [%s - %s]", name, fileName, blend, framesStart, framesEnd);
+	}
+
+	void save(JSONObject json)
+	{
+		JsonMethods.putFile(json, PROPERTY_FILE, file);
+		json.put(PROPERTY_NAME, name);
+		json.put(PROPERTY_BLEND, blend);
+		json.put(PROPERTY_LOOP, loop);
+		json.put(PROPERTY_FRAMES_START, framesStart);
+		json.put(PROPERTY_FRAMES_END, framesEnd);
 	}
 }

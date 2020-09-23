@@ -27,4 +27,15 @@ public class JsonMeshAnimations
 			animations.add(anim);
 		}
 	}
+
+	void save(JSONArray json)
+	{
+		for (JsonMeshAnimation animation : animations)
+		{
+			JSONObject jsonAnim = new JSONObject();
+			animation.save(jsonAnim);
+			
+			json.add(jsonAnim);
+		}
+	}
 }
