@@ -46,7 +46,7 @@ public class JsonMeshAnimation
 
 	void save(JSONObject json)
 	{
-		JsonMethods.putFile(json, PROPERTY_FILE, file);
+		JsonMethods.putSourceFile(json, PROPERTY_FILE, file);
 		json.put(PROPERTY_NAME, name);
 		json.put(PROPERTY_BLEND, blend);
 		json.put(PROPERTY_LOOP, loop);

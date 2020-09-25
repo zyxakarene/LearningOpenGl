@@ -24,7 +24,7 @@ import zyx.game.vo.Gender;
 public class DinerScene extends GameScene
 {
 
-	private static final boolean ONLINE = false;
+	private static final boolean ONLINE = true;
 
 	public DinerHud dinerHud;
 	public DinerSceneData sceneData;

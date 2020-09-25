@@ -44,8 +44,8 @@ public class JsonMeshFiles
 
 	void save(JSONObject json)
 	{
-		JsonMethods.putFile(json, PROPERTY_MESH, meshFile);
-		JsonMethods.putFile(json, PROPERTY_PHYS, physFile);
-		JsonMethods.putFile(json, PROPERTY_BOUNDING, boundingFile);
+		JsonMethods.putSourceFile(json, PROPERTY_MESH, meshFile);
+		JsonMethods.putSourceFile(json, PROPERTY_PHYS, physFile);
+		JsonMethods.putSourceFile(json, PROPERTY_BOUNDING, boundingFile);
 	}
 }

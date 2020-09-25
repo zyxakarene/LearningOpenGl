@@ -30,7 +30,13 @@ public class FileSelector
 
 	private static File openInner(Component parent, String folder, FileSelectorType view, boolean isOpen)
 	{
-		JFileChooser chooser = new JFileChooser(folder);
+		File startFolder = new File(folder);
+		if (startFolder.isFile() || !startFolder.exists())
+		{
+			startFolder = startFolder.getParentFile();
+		}
+		
+		JFileChooser chooser = new JFileChooser(startFolder);
 		chooser.setFileFilter(view.filter);
 		
 		int result;

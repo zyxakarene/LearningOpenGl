@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import zyx.gui.files.FileSelector;
 import zyx.gui.files.FileSelectorType;
+import zyx.logic.converter.smd.control.json.JsonMesh;
 import zyx.logic.converter.smd.control.json.JsonMeshAnimation;
 
 public class AnimationDialog extends javax.swing.JDialog
@@ -14,14 +15,16 @@ public class AnimationDialog extends javax.swing.JDialog
 
 	private JsonMeshAnimation animation;
 	private File file;
+	private JsonMesh mesh;
 
-	public AnimationDialog(Frame parent, JsonMeshAnimation animation)
+	public AnimationDialog(Frame parent, JsonMesh mesh, JsonMeshAnimation animation)
 	{
 		super(parent, true);
 		initComponents();
 		setLocationRelativeTo(parent);
 
 		this.animation = animation;
+		this.mesh = mesh;
 		nameField.setText(animation.name);
 		if (animation.file != null)
 		{
@@ -163,7 +166,7 @@ public class AnimationDialog extends javax.swing.JDialog
 
     private void locateFileBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_locateFileBtnActionPerformed
     {//GEN-HEADEREND:event_locateFileBtnActionPerformed
-		File result = FileSelector.openFile(this, FileSelectorType.SMD);
+		File result = FileSelector.openFile(this, FileSelectorType.SMD, mesh.file.getAbsolutePath());
 		if (result != null)
 		{
 			file = result;

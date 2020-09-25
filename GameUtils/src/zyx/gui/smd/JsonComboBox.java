@@ -3,19 +3,19 @@ package zyx.gui.smd;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
-import zyx.logic.converter.smd.control.QcScanner;
+import zyx.logic.converter.smd.control.JsonScanner;
 
-public class QcComboBox extends JComboBox<File>
+public class JsonComboBox extends JComboBox<File>
 {
 
-	public QcComboBox()
+	public JsonComboBox()
 	{
 		addItem(new File("=ALL="));
 		
-		ArrayList<File> qcFiles = QcScanner.getQcFiles();
-		for (File qcFile : qcFiles)
+		ArrayList<File> jsonFiles = JsonScanner.getJsonFiles();
+		for (File jsonFile : jsonFiles)
 		{
-			addItem(qcFile);
+			addItem(jsonFile);
 		}
 	}
 

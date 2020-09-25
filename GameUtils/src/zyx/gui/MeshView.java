@@ -8,10 +8,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
-import javax.swing.JDialog;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import zyx.UtilConstants;
@@ -38,6 +35,8 @@ public class MeshView extends javax.swing.JFrame
 
 		initComponents();
 
+		setTitle("MeshEditor: [" + mesh.file.getName() + "]");
+		
 		animationListModel = new DefaultListModel<>();
 		animationList = new JList(animationListModel);
 		animationScrollPane.setViewportView(animationList);
@@ -62,18 +61,18 @@ public class MeshView extends javax.swing.JFrame
 		cardLayoutPanel.add(skeletonPanel, skeletonPanel.getName());
 		cardLayoutPanel.add(meshPanel, meshPanel.getName());
 
-		diffuseDropper = new TextureDropper(diffuseLabel, diffuseText);
-		normalDropper = new TextureDropper(normalLabel, normalText);
-		specularDropper = new TextureDropper(specularLabel, specularText);
+		diffuseDropper = new TextureDropper(diffuseLabel, diffuseText, mesh.textureFiles, TextureDropper.DIFFUSE);
+		normalDropper = new TextureDropper(normalLabel, normalText, mesh.textureFiles, TextureDropper.NORMAL);
+		specularDropper = new TextureDropper(specularLabel, specularText, mesh.textureFiles, TextureDropper.SPECULAR);
 
 		setup();
 	}
 
 	private void handleAnimationClick(MouseEvent e)
 	{
-		if (e.getClickCount() == 2)
+		if (e.getClickCount() == 2 && animationList.getSelectedIndex() >= 0)
 		{
-			new AnimationDialog(this, animationList.getSelectedValue()).setVisible(true);
+			new AnimationDialog(this, mesh, animationList.getSelectedValue()).setVisible(true);
 		}
 	}
 
@@ -83,7 +82,7 @@ public class MeshView extends javax.swing.JFrame
 		{
 			JsonMeshAnimation selection = animationList.getSelectedValue();
 			animationListModel.removeElement(selection);
-			mesh.animations.animations.remove(selection);
+			mesh.meshAnimations.animations.remove(selection);
 		}
 	}
 
@@ -103,16 +102,32 @@ public class MeshView extends javax.swing.JFrame
 		}
 
 		meshSkeletonTextfield.setText(mesh.meshSkeleton);
-		meshOutputTextfield.setText(mesh.meshOutput);
+		if (mesh.meshOutput != null)
+		{
+			String fullPath = mesh.meshOutput.getAbsolutePath();
+			String subPath = fullPath.replace(UtilConstants.ASSETS_OUTPUT, "");
+			meshOutputTextfield.setText(subPath);
+		}
 
-		skeletonMeshTextfield.setText(mesh.skeletonMesh);
-		skeletonOutputTextfield.setText(mesh.SkeletonOutput);
+		if (mesh.skeletonMesh != null)
+		{
+			String fullPath = mesh.skeletonMesh.getAbsolutePath();
+			String subPath = fullPath.replace(UtilConstants.BASE_FOLDER, "");
+			skeletonMeshTextfield.setText(subPath);
+		}
+		
+		if (mesh.SkeletonOutput != null)
+		{
+			String fullPath = mesh.SkeletonOutput.getAbsolutePath();
+			String subPath = fullPath.replace(UtilConstants.ASSETS_OUTPUT, "");
+			skeletonOutputTextfield.setText(subPath);
+		}
 
 		diffuseDropper.setFile(mesh.textureFiles.diffuseFile);
 		normalDropper.setFile(mesh.textureFiles.normalFile);
 		specularDropper.setFile(mesh.textureFiles.specularFile);
 
-		ArrayList<JsonMeshAnimation> animations = mesh.animations.animations;
+		ArrayList<JsonMeshAnimation> animations = mesh.meshAnimations.animations;
 		for (JsonMeshAnimation animation : animations)
 		{
 			animationListModel.addElement(animation);
@@ -174,8 +189,9 @@ public class MeshView extends javax.swing.JFrame
         saveBtn = new javax.swing.JButton();
         compileBtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Mesh Editor");
+        setResizable(false);
 
         typeLabel.setText("Type:");
 
@@ -698,10 +714,12 @@ public class MeshView extends javax.swing.JFrame
 
 		if (skeletonRadioBtn.isSelected())
 		{
+			mesh.type = JsonMesh.TYPE_SKELETON;
 			layout.show(cardLayoutPanel, skeletonPanel.getName());
 		}
 		else
 		{
+			mesh.type = JsonMesh.TYPE_MESH;
 			layout.show(cardLayoutPanel, meshPanel.getName());
 		}
     }//GEN-LAST:event_onTypeChanged
@@ -724,12 +742,12 @@ public class MeshView extends javax.swing.JFrame
     private void addAnimationBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_addAnimationBtnActionPerformed
     {//GEN-HEADEREND:event_addAnimationBtnActionPerformed
 		JsonMeshAnimation animation = new JsonMeshAnimation();
-		new AnimationDialog(this, animation).setVisible(true);
+		new AnimationDialog(this, mesh, animation).setVisible(true);
 
 		if (animation.file != null)
 		{
 			animationListModel.addElement(animation);
-			mesh.animations.animations.add(animation);
+			mesh.meshAnimations.animations.add(animation);
 		}
     }//GEN-LAST:event_addAnimationBtnActionPerformed
 
@@ -752,7 +770,7 @@ public class MeshView extends javax.swing.JFrame
 			String fullPath = file.getAbsolutePath();
 			String subPath = fullPath.replace(UtilConstants.ASSETS_OUTPUT, "");
 			meshOutputTextfield.setText(subPath);
-			mesh.meshOutput = subPath;
+			mesh.meshOutput = file;
 		}
     }//GEN-LAST:event_meshOutputBtnActionPerformed
 
@@ -764,7 +782,7 @@ public class MeshView extends javax.swing.JFrame
 			String fullPath = file.getAbsolutePath();
 			String subPath = fullPath.replace(UtilConstants.BASE_FOLDER, "");
 			skeletonMeshTextfield.setText(subPath);
-			mesh.skeletonMesh = subPath;
+			mesh.skeletonMesh = file;
 		}
     }//GEN-LAST:event_skeletonMeshBtnActionPerformed
 
@@ -776,7 +794,7 @@ public class MeshView extends javax.swing.JFrame
 			String fullPath = file.getAbsolutePath();
 			String subPath = fullPath.replace(UtilConstants.ASSETS_OUTPUT, "");
 			skeletonOutputTextfield.setText(subPath);
-			mesh.SkeletonOutput = subPath;
+			mesh.SkeletonOutput = file;
 		}
     }//GEN-LAST:event_skeletonOutputBtnActionPerformed
 
@@ -807,12 +825,6 @@ public class MeshView extends javax.swing.JFrame
         
     }//GEN-LAST:event_compileBtnActionPerformed
 
-	public static void main(String args[])
-	{
-		File file = new File("C:\\Users\\Rene\\Desktop\\Game Assets\\meshes\\meshFormat.json");
-		JsonMesh mesh = new JsonMesh(file);
-		new MeshView(mesh).setVisible(true);
-	}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addAnimationBtn;

@@ -6,6 +6,7 @@ import zyx.UtilConstants;
 
 public class JsonMeshTextures
 {
+
 	public static final String PROPERTY_DIFFUSE_FILE = "diffuse";
 	public static final String PROPERTY_NORMAL_FILE = "normal";
 	public static final String PROPERTY_SPECULAR_FILE = "specular";
@@ -43,8 +44,47 @@ public class JsonMeshTextures
 
 	void save(JSONObject json)
 	{
-		JsonMethods.putFile(json, PROPERTY_DIFFUSE_FILE, diffuseFile);
-		JsonMethods.putFile(json, PROPERTY_NORMAL_FILE, normalFile);
-		JsonMethods.putFile(json, PROPERTY_SPECULAR_FILE, specularFile);
+		JsonMethods.putSourceFile(json, PROPERTY_DIFFUSE_FILE, diffuseFile);
+		JsonMethods.putSourceFile(json, PROPERTY_NORMAL_FILE, normalFile);
+		JsonMethods.putSourceFile(json, PROPERTY_SPECULAR_FILE, specularFile);
+	}
+
+	public String getDiffuseTextureName()
+	{
+		if (diffuseFile != null)
+		{
+			return fileToId("texture.", diffuseFile);
+		}
+
+		return "texture.default_diffuse";
+	}
+
+	public String getNormalTextureName()
+	{
+		if (normalFile != null)
+		{
+			return fileToId("normal.", normalFile);
+		}
+
+		return "normal.default_normal";
+	}
+
+	public String getSpecularTextureName()
+	{
+		if (specularFile != null)
+		{
+			return fileToId("specular.", specularFile);
+		}
+
+		return "specular.default_specular";
+	}
+
+	private String fileToId(String prefix, File file)
+	{
+		String root = UtilConstants.TEXTURES_FOLDER;
+		String filePath = file.getAbsolutePath().replace(root, "");
+		
+		String id = filePath.replaceAll("\\\\", ".");
+		return prefix + id;
 	}
 }

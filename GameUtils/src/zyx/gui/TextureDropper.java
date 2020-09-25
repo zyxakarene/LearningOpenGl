@@ -10,18 +10,26 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import zyx.logic.DragDropper;
 import zyx.logic.IFilesDropped;
+import zyx.logic.converter.smd.control.json.JsonMeshTextures;
 
 public class TextureDropper implements IFilesDropped
 {
-
+	public static final int DIFFUSE = 0;
+	public static final int NORMAL = 1;
+	public static final int SPECULAR = 2;
+	
 	private JLabel label;
 	private DragDropper dropper;
 	private JLabel textLabel;
+	private int type;
+	private JsonMeshTextures textures;
 
-	public TextureDropper(JLabel label, JLabel textLabel)
+	public TextureDropper(JLabel label, JLabel textLabel, JsonMeshTextures textures, int type)
 	{
 		this.label = label;
 		this.textLabel = textLabel;
+		this.textures = textures;
+		this.type = type;
 		dropper = new DragDropper("png", this);
 
 		textLabel.setVisible(false);
@@ -33,6 +41,19 @@ public class TextureDropper implements IFilesDropped
 
 		label.setIcon(null);
 		label.setText("N/A");
+		
+		switch (type)
+		{
+			case DIFFUSE:
+				textures.diffuseFile = null;
+				break;
+			case NORMAL:
+				textures.normalFile = null;
+				break;
+			case SPECULAR:
+				textures.specularFile = null;
+				break;
+		}
 	}
 
 	@Override
@@ -74,6 +95,19 @@ public class TextureDropper implements IFilesDropped
 
 			textLabel.setText(file.getName());
 			textLabel.setVisible(true);
+			
+			switch (type)
+			{
+				case DIFFUSE:
+					textures.diffuseFile = file;
+					break;
+				case NORMAL:
+					textures.normalFile = file;
+					break;
+				case SPECULAR:
+					textures.specularFile = file;
+					break;
+			}
 		}
 		catch (IOException ex)
 		{

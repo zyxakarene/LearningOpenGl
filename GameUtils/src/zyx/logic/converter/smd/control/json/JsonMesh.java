@@ -5,6 +5,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import zyx.UtilConstants;
 
 public class JsonMesh
 {
@@ -28,15 +29,15 @@ public class JsonMesh
 	public String type;
 	
 	public String meshSkeleton;
-	public String meshOutput;
+	public File meshOutput;
 	
-	public String skeletonMesh;
-	public String SkeletonOutput;
+	public File skeletonMesh;
+	public File SkeletonOutput;
 	
 	public JsonMeshProperties meshProperties;
 	public JsonMeshFiles meshFiles;
 	public JsonMeshTextures textureFiles;
-	public JsonMeshAnimations animations;
+	public JsonMeshAnimations meshAnimations;
 	
 	public JsonMesh(File file)
 	{
@@ -45,19 +46,41 @@ public class JsonMesh
 		meshProperties = new JsonMeshProperties();
 		meshFiles = new JsonMeshFiles();
 		textureFiles = new JsonMeshTextures();
-		animations = new JsonMeshAnimations();
+		meshAnimations = new JsonMeshAnimations();
 		
-		JSONObject obj = parseFrom(file);
-		readFrom(obj);
+		if (file.exists())
+		{
+			JSONObject obj = parseFrom(file);
+			readFrom(obj);
+		}
 	}
 	
 	private void readFrom(JSONObject obj)
 	{
 		type = JsonMethods.getString(obj, PROPERTY_TYPE);
 		meshSkeleton = JsonMethods.getString(obj, PROPERTY_MESH_SKELETON);
-		meshOutput = JsonMethods.getString(obj, PROPERTY_MESH_OUT);
-		skeletonMesh = JsonMethods.getString(obj, PROPERTY_SKELETON_MESH);
-		SkeletonOutput = JsonMethods.getString(obj, PROPERTY_SKELETON_OUT);
+		String meshOut = JsonMethods.getString(obj, PROPERTY_MESH_OUT);
+		String skeletonRefMesh = JsonMethods.getString(obj, PROPERTY_SKELETON_MESH);
+		String skeletonOut = JsonMethods.getString(obj, PROPERTY_SKELETON_OUT);
+		
+		meshOutput = new File(UtilConstants.ASSETS_OUTPUT + meshOut);
+		skeletonMesh = new File(UtilConstants.BASE_FOLDER + skeletonRefMesh);
+		SkeletonOutput = new File(UtilConstants.ASSETS_OUTPUT + skeletonOut);
+
+		if (meshOutput.exists() == false || meshOutput.isDirectory())
+		{
+			meshOutput = null;
+		}
+
+		if (skeletonMesh.exists() == false || skeletonMesh.isDirectory())
+		{
+			skeletonMesh = null;
+		}
+
+		if (SkeletonOutput.exists() == false || SkeletonOutput.isDirectory())
+		{
+			SkeletonOutput = null;
+		}
 		
 		JSONObject jsonFiles = JsonMethods.getObject(obj, PROPERTY_MESH_FILES);
 		JSONObject jsonProperties = JsonMethods.getObject(obj, PROPERTY_MESH_PROPERTIES);
@@ -67,7 +90,7 @@ public class JsonMesh
 		meshFiles.read(jsonFiles);
 		meshProperties.read(jsonProperties);
 		textureFiles.read(jsonTextures);
-		animations.read(jsonAnimations);
+		meshAnimations.read(jsonAnimations);
 	}
 
 	private JSONObject parseFrom(File file)
@@ -92,6 +115,11 @@ public class JsonMesh
 		
 		return type.equals(TYPE_MESH);
 	}
+	
+	public boolean isSkeleton()
+	{
+		return !isMesh();
+	}
 
 	public void save() throws IOException
 	{
@@ -102,11 +130,10 @@ public class JsonMesh
 		JSONArray jsonAnimations = new JSONArray();
 		
 		json.put(PROPERTY_TYPE, type);
-		json.put(PROPERTY_MESH_SKELETON, meshSkeleton);
-		json.put(PROPERTY_MESH_OUT, meshOutput);
-		json.put(PROPERTY_SKELETON_MESH, skeletonMesh);
-		json.put(PROPERTY_SKELETON_OUT, SkeletonOutput);
-		
+		JsonMethods.putOutputFile(json, PROPERTY_MESH_OUT, meshOutput);
+		JsonMethods.putOutputFile(json, PROPERTY_SKELETON_OUT, SkeletonOutput);
+		JsonMethods.putSourceFile(json, PROPERTY_SKELETON_MESH, skeletonMesh);
+		json.put(PROPERTY_MESH_SKELETON, meshSkeleton);		
 		json.put(PROPERTY_MESH_FILES, jsonFiles);
 		json.put(PROPERTY_MESH_PROPERTIES, jsonProperties);
 		json.put(PROPERTY_TEXTURE_FILES, jsonTextures);
@@ -115,7 +142,7 @@ public class JsonMesh
 		meshFiles.save(jsonFiles);
 		meshProperties.save(jsonProperties);
 		textureFiles.save(jsonTextures);
-		animations.save(jsonAnimations);
+		meshAnimations.save(jsonAnimations);
 		
 		String output = json.toJSONString();
 		try (FileWriter writer = new FileWriter(file))
@@ -123,5 +150,15 @@ public class JsonMesh
 			writer.write(output);
 			writer.flush();
 		}
+	}
+
+	public String getSkeletonResourceName()
+	{
+		if (meshSkeleton != null)
+		{
+			return meshSkeleton;
+		}
+
+		return "skeleton.default";
 	}
 }

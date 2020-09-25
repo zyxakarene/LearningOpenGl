@@ -23,6 +23,18 @@ public class JsonMeshProperties
 	public int stencilMode;
 	public int stencilLayer;
 
+	public JsonMeshProperties()
+	{
+		zWrite = true;
+		zTest = GL11.GL_LEQUAL;
+		culling = GL11.GL_BACK;
+		blendSrc = GL11.GL_ONE;
+		blendDst = GL11.GL_ZERO;
+		priority = 10000;
+		stencilMode = 0;
+		stencilLayer = 0;
+	}
+	
 	void read(JSONObject jsonProperties)
 	{
 		zWrite = JsonMethods.getBoolean(jsonProperties, PROPERTY_Z_WRITE, true);

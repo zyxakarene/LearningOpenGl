@@ -1,9 +1,9 @@
 package zyx.logic.converter.smd;
 
 import java.io.*;
-import zyx.logic.converter.smd.control.QcAnimation;
 import zyx.logic.converter.smd.vo.SmdObject;
-import zyx.logic.converter.smd.control.QcFile;
+import zyx.logic.converter.smd.control.json.JsonMesh;
+import zyx.logic.converter.smd.control.json.JsonMeshAnimation;
 import zyx.logic.converter.smd.reader.SmdImporter;
 
 public class SmdParser
@@ -14,24 +14,24 @@ public class SmdParser
 	private File ref;
 	private File phys;
 	private File bounding;
-	private QcAnimation[] animations;
+	private JsonMeshAnimation[] animations;
 
 	private File outputModel;
-	private final QcFile qc;
+	private final JsonMesh jsonMesh;
 
-	public SmdParser(QcFile parsedQc)
+	public SmdParser(JsonMesh mesh)
 	{
-		this.qc = parsedQc;
+		this.jsonMesh = mesh;
 		
-		isSkeleton = parsedQc.isSkeleton;
+		isSkeleton = mesh.isSkeleton();
 		
-		ref = parsedQc.meshFile;
-		phys = parsedQc.physFile;
-		bounding = parsedQc.boundingFile;
-		outputModel = parsedQc.outModel;
+		ref = isSkeleton ? mesh.skeletonMesh : mesh.meshFiles.meshFile;
+		phys = mesh.meshFiles.physFile;
+		bounding = mesh.meshFiles.boundingFile;
+		outputModel = isSkeleton ? mesh.SkeletonOutput : mesh.meshOutput;
 		
-		animations = new QcAnimation[parsedQc.animations.size()];
-		parsedQc.animations.toArray(animations);
+		animations = new JsonMeshAnimation[mesh.meshAnimations.animations.size()];
+		mesh.meshAnimations.animations.toArray(animations);
 	}
 
 	public void parseFiles() throws IOException
@@ -43,11 +43,11 @@ public class SmdParser
 		importer.importAnimations(animations);
 		
 		SmdObject smd = importer.getSmd();
-		smd.setSkeleton(qc.isSkeleton);
-		smd.setSkeletonPath(qc.getSkeletonResourceName());
-		smd.setDiffuseTexturePath(qc.getDiffuseTextureName());
-		smd.setNormalTexturePath(qc.getNormalTextureName());
-		smd.setSpecularTexturePath(qc.getSpecularTextureName());
+		smd.setSkeleton(jsonMesh.isSkeleton());
+		smd.setSkeletonPath(jsonMesh.getSkeletonResourceName());
+		smd.setDiffuseTexturePath(jsonMesh.textureFiles.getDiffuseTextureName());
+		smd.setNormalTexturePath(jsonMesh.textureFiles.getNormalTextureName());
+		smd.setSpecularTexturePath(jsonMesh.textureFiles.getSpecularTextureName());
 		
 		if (outputModel.exists() == false)
 		{
