@@ -234,7 +234,7 @@ public class MeshFiledDialog extends javax.swing.JDialog
     private void meshClearBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_meshClearBtnActionPerformed
     {//GEN-HEADEREND:event_meshClearBtnActionPerformed
         meshField.setText("");
-		meshField = null;
+		meshFile = null;
     }//GEN-LAST:event_meshClearBtnActionPerformed
 
     private void physClearBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_physClearBtnActionPerformed

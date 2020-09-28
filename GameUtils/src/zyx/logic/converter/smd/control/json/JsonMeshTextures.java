@@ -81,10 +81,14 @@ public class JsonMeshTextures
 
 	private String fileToId(String prefix, File file)
 	{
-		String root = UtilConstants.TEXTURES_FOLDER;
-		String filePath = file.getAbsolutePath().replace(root, "");
+		String fileName = file.getName();
+		fileName = fileName.replace(".png", "");
 		
-		String id = filePath.replaceAll("\\\\", ".");
-		return prefix + id;
+		if (fileName.startsWith("special."))
+		{
+			return fileName;
+		}
+		
+		return prefix + fileName;
 	}
 }

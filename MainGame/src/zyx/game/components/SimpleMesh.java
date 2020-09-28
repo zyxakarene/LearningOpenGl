@@ -140,7 +140,6 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 			for (Attachment attachment : attachments)
 			{
 				attachment.loadBoneTransform();
-				System.out.println("Load " + attachment.lastMatrix);
 			}
 		}
 	}

@@ -154,8 +154,14 @@ public class JsonMesh
 
 	public String getSkeletonResourceName()
 	{
-		if (meshSkeleton != null)
+		if (meshSkeleton != null && meshSkeleton.length() > 0)
 		{
+			if (meshSkeleton.endsWith(".skeleton"))
+			{
+				String prePart = meshSkeleton.replace(".skeleton", "");
+				return "skeleton." + prePart;
+			}
+			
 			return meshSkeleton;
 		}
 

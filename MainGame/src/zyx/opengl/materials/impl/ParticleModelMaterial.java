@@ -20,6 +20,9 @@ public class ParticleModelMaterial extends Material
 		culling = Culling.NONE;
 		blend = BlendMode.PARTICLES;
 		priority = MaterialPriority.TRANSPARENT_MIN;
+		
+		stencilMode = StencilMode.NOTHING;
+		stencilLayer = StencilLayer.NOTHING;
 	}
 	
 	public AbstractTexture getDiffuse()

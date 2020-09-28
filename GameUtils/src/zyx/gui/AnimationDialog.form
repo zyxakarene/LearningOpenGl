@@ -81,6 +81,13 @@
         </Component>
         <Component class="javax.swing.JCheckBox" name="loopCheckbox">
         </Component>
+        <Component class="javax.swing.JLabel" name="jLabel7">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Frames for entire file"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="fullFileAnimationCheck">
+        </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
             <Property name="text" type="java.lang.String" value="Frame Start"/>

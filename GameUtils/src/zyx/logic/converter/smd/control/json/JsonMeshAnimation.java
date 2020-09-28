@@ -41,7 +41,27 @@ public class JsonMeshAnimation
 	public String toString()
 	{
 		String fileName = file != null ? file.getName() : "[Missing File]";
-		return String.format("%s - %s Blend: %s, frames [%s - %s]", name, fileName, blend, framesStart, framesEnd);
+		
+		StringBuilder builder = new StringBuilder();
+		builder.append(name);
+		builder.append(" - ");
+		builder.append(fileName);
+		if (blend > 0)
+		{
+			builder.append(" Blend: ");
+			builder.append(blend);
+		}
+		
+		if (isFullFileAnimation() == false)
+		{
+			builder.append(" Frames: [");
+			builder.append(framesStart);
+			builder.append(" - ");
+			builder.append(framesEnd);
+			builder.append("]");
+		}
+		
+		return builder.toString();
 	}
 
 	void save(JSONObject json)
@@ -52,5 +72,16 @@ public class JsonMeshAnimation
 		json.put(PROPERTY_LOOP, loop);
 		json.put(PROPERTY_FRAMES_START, framesStart);
 		json.put(PROPERTY_FRAMES_END, framesEnd);
+	}
+
+	public boolean isFullFileAnimation()
+	{
+		return framesStart == 0 && framesEnd == Short.MAX_VALUE;
+	}
+	
+	public void setFullFileAnimation()
+	{
+		framesStart = 0;
+		framesEnd = Short.MAX_VALUE;
 	}
 }

@@ -2,6 +2,7 @@ package zyx.gui;
 
 import java.awt.Color;
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -35,6 +36,15 @@ public class AnimationDialog extends javax.swing.JDialog
 		loopCheckbox.setSelected(animation.loop);
 		frameStartField.setText(String.valueOf(animation.framesStart));
 		frameEndField.setText(String.valueOf(animation.framesEnd));
+		
+		if (animation.isFullFileAnimation())
+		{
+			frameStartField.setEditable(false);
+			frameEndField.setEditable(false);
+			
+			frameStartField.setText("");
+			frameEndField.setText("");
+		}
 
 		KeyAdapter closeListener = new KeyAdapter()
 		{
@@ -57,8 +67,30 @@ public class AnimationDialog extends javax.swing.JDialog
 		frameEndField.addKeyListener(closeListener);
 		saveBtn.addKeyListener(closeListener);
 		locateFileBtn.addKeyListener(closeListener);
+		fullFileAnimationCheck.addKeyListener(closeListener);
+		
+		fullFileAnimationCheck.addActionListener(this::OnChangedFullFileAnimation);
 	}
 
+	private void OnChangedFullFileAnimation(ActionEvent evt)
+	{
+		boolean selected = fullFileAnimationCheck.isSelected();
+		
+		frameStartField.setEditable(!selected);
+		frameEndField.setEditable(!selected);
+		
+		if (selected)
+		{
+			frameStartField.setText("");
+			frameEndField.setText("");
+		}
+		else
+		{
+			frameStartField.setText(String.valueOf(animation.framesStart));
+			frameEndField.setText(String.valueOf(animation.framesEnd));
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents()
@@ -73,6 +105,8 @@ public class AnimationDialog extends javax.swing.JDialog
         blendField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         loopCheckbox = new javax.swing.JCheckBox();
+        jLabel7 = new javax.swing.JLabel();
+        fullFileAnimationCheck = new javax.swing.JCheckBox();
         jLabel5 = new javax.swing.JLabel();
         frameStartField = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -102,6 +136,10 @@ public class AnimationDialog extends javax.swing.JDialog
         jLabel3.setText("Looping");
         jPanel1.add(jLabel3);
         jPanel1.add(loopCheckbox);
+
+        jLabel7.setText("Frames for entire file");
+        jPanel1.add(jLabel7);
+        jPanel1.add(fullFileAnimationCheck);
 
         jLabel5.setText("Frame Start");
         jPanel1.add(jLabel5);
@@ -159,8 +197,16 @@ public class AnimationDialog extends javax.swing.JDialog
 			animation.file = file;
 			animation.blend = Integer.parseInt(blendField.getText());
 			animation.loop = loopCheckbox.isSelected();
-			animation.framesStart = Integer.parseInt(frameStartField.getText());
-			animation.framesEnd = Integer.parseInt(frameEndField.getText());
+			
+			if (fullFileAnimationCheck.isSelected())
+			{
+				animation.setFullFileAnimation();
+			}
+			else
+			{
+				animation.framesStart = Integer.parseInt(frameStartField.getText());
+				animation.framesEnd = Integer.parseInt(frameEndField.getText());
+			}
 		}
     }//GEN-LAST:event_saveBtnActionPerformed
 
@@ -212,34 +258,37 @@ public class AnimationDialog extends javax.swing.JDialog
 			blendField.setBackground(Color.RED);
 		}
 
-		try
+		if (fullFileAnimationCheck.isSelected() == false)
 		{
-			if (frameStartField.getText().isEmpty())
+			try
 			{
-				frameStartField.setText("0");
+				if (frameStartField.getText().isEmpty())
+				{
+					frameStartField.setText("0");
+				}
+				Integer.parseInt(frameStartField.getText());
+				frameStartField.setBackground(Color.WHITE);
 			}
-			Integer.parseInt(frameStartField.getText());
-			frameStartField.setBackground(Color.WHITE);
-		}
-		catch (Exception e)
-		{
-			result = false;
-			frameStartField.setBackground(Color.RED);
-		}
+			catch (Exception e)
+			{
+				result = false;
+				frameStartField.setBackground(Color.RED);
+			}
 
-		try
-		{
-			if (frameEndField.getText().isEmpty())
+			try
 			{
-				frameEndField.setText("0");
+				if (frameEndField.getText().isEmpty())
+				{
+					frameEndField.setText("0");
+				}
+				Integer.parseInt(frameEndField.getText());
+				frameEndField.setBackground(Color.WHITE);
 			}
-			Integer.parseInt(frameEndField.getText());
-			frameEndField.setBackground(Color.WHITE);
-		}
-		catch (Exception e)
-		{
-			result = false;
-			frameEndField.setBackground(Color.RED);
+			catch (Exception e)
+			{
+				result = false;
+				frameEndField.setBackground(Color.RED);
+			}
 		}
 
 		return result;
@@ -250,12 +299,14 @@ public class AnimationDialog extends javax.swing.JDialog
     private javax.swing.JTextField fileField;
     private javax.swing.JTextField frameEndField;
     private javax.swing.JTextField frameStartField;
+    private javax.swing.JCheckBox fullFileAnimationCheck;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton locateFileBtn;
     private javax.swing.JCheckBox loopCheckbox;

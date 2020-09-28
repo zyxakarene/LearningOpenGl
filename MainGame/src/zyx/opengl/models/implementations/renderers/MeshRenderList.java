@@ -2,6 +2,8 @@ package zyx.opengl.models.implementations.renderers;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import zyx.opengl.buffers.Buffer;
+import zyx.opengl.buffers.BufferBinder;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.materials.MaterialPriority;
 import zyx.utils.interfaces.IDrawable;
@@ -57,21 +59,16 @@ public class MeshRenderList implements IDrawable, Comparator<MeshRenderer>
 			dirty = false;
 		}
 
+		DeferredRenderer.getInstance().bindBuffer();
 		draw(geometryRenderers);
 	}
 
 	private void draw(ArrayList<MeshRenderer> list)
 	{
-		DeferredRenderer.getInstance().bindBuffer();
-		
 		int len = list.size();
 		for (int i = 0; i < len; i++)
 		{
 			MeshRenderer renderer = list.get(i);
-			
-			if (renderer.drawMaterial.priority == 8888)
-			{
-			}
 			
 			renderer.draw();
 		}
@@ -79,6 +76,7 @@ public class MeshRenderList implements IDrawable, Comparator<MeshRenderer>
 	
 	public void drawTransparent()
 	{
+		BufferBinder.bindBuffer(Buffer.DEFAULT);
 		draw(transparentRenderers);
 	}
 
