@@ -1,14 +1,17 @@
 package zyx.gui;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JPopupMenu;
 import zyx.UtilConstants;
 import zyx.gui.files.FileSelector;
 import zyx.gui.files.FileSelectorType;
-import zyx.gui.smd.JsonComboBox;
+import zyx.gui.tree.JsonTree;
 import zyx.logic.UtilsLogger;
 import zyx.logic.converter.fnt.FntConverter;
 import zyx.logic.converter.smd.SmdParser;
@@ -23,25 +26,48 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
 	private FntConverter fntConverter;
 
 	private WatcherManager watcher;
-
-	private JsonComboBox qcCombo;
+	
+	private JsonTree jsonTree;
 
 	public UtilsGui()
 	{
 		initComponents();
 
-		qcCombo = new JsonComboBox();
-		jPanel1.add(qcCombo);
-
-		qcCombo.addActionListener(this::actionPerformed);
-
+		jsonTree = new JsonTree();
+		jsonMeshScrollPanel.setViewportView(jsonTree);
+		jsonTree.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (e.getButton() == 3)
+				{
+					JPopupMenu menu = new JPopupMenu();
+					menu.add("View");
+					menu.add("Compile");
+					menu.show(jsonTree, e.getX(), e.getY());
+				}
+				else if (e.getClickCount() == 2)
+				{
+					handleClickTree();
+				}
+			}
+		});
+		
 		windowCreated = new WindowCreatedListener(this);
 		addWindowListener(windowCreated);
 	}
 
-	private void actionPerformed(ActionEvent e)
+	private void handleClickTree()
 	{
-		viewJsonBtn.setEnabled(qcCombo.getSelectedIndex() > 0);
+		File selectedItem = jsonTree.getSelectedItem();
+		if (selectedItem != null && selectedItem.isFile())
+		{
+			JsonMesh mesh = new JsonMesh(selectedItem);
+			MeshView view = new MeshView(mesh);
+			view.setVisible(true);
+			view.setLocationRelativeTo(this);
+		}
 	}
 	
 	@Override
@@ -67,10 +93,9 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
         jLabel2 = new javax.swing.JLabel();
         fntPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
         smdCompileButton = new javax.swing.JButton();
-        viewJsonBtn = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jsonMeshScrollPanel = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("GameUtils");
@@ -106,25 +131,12 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
                 .addContainerGap())
         );
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
-
         smdCompileButton.setText("Convert");
         smdCompileButton.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
                 smdCompileButtonActionPerformed(evt);
-            }
-        });
-
-        viewJsonBtn.setText("View");
-        viewJsonBtn.setEnabled(false);
-        viewJsonBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                viewJsonBtnActionPerformed(evt);
             }
         });
 
@@ -145,16 +157,13 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(smdCompileButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(viewJsonBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(fntPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jsonMeshScrollPanel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(fntPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(smdCompileButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -162,14 +171,15 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(fntPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jsonMeshScrollPanel)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(fntPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(90, 90, 90)
+                        .addComponent(smdCompileButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)
+                        .addGap(0, 76, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(smdCompileButton)
-                    .addComponent(viewJsonBtn)
-                    .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -184,23 +194,15 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
 		{
 			logArea.setText("");
 
-			if (qcCombo.getSelectedIndex() == 0)
+			File[] files = jsonTree.getSelectedSubItems();
+			int len = files.length;
+			for (int i = 0; i < len; i++)
 			{
-				int len = qcCombo.getItemCount();
-				for (int i = 1; i < len; i++)
-				{
-					File inputJson = qcCombo.getItemAt(i);
-					JsonMesh mesh = new JsonMesh(inputJson);
-					new SmdParser(mesh).parseFiles();
-
-					logArea.append("=====\n");
-				}
-			}
-			else
-			{
-				File inputJson = qcCombo.getSelectedItem();
+				File inputJson = files[i];
 				JsonMesh mesh = new JsonMesh(inputJson);
 				new SmdParser(mesh).parseFiles();
+
+				logArea.append("=====\n");
 			}
 		}
 		catch (IOException ex)
@@ -212,18 +214,6 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
 			UtilsLogger.log("[FATAL] runtime exception", ex);
 		}
     }//GEN-LAST:event_smdCompileButtonActionPerformed
-
-    private void viewJsonBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_viewJsonBtnActionPerformed
-    {//GEN-HEADEREND:event_viewJsonBtnActionPerformed
-		if (qcCombo.getSelectedIndex() > 0)
-		{
-			File inputJson = qcCombo.getSelectedItem();
-			JsonMesh mesh = new JsonMesh(inputJson);
-			MeshView view = new MeshView(mesh);
-			view.setVisible(true);
-			view.setLocationRelativeTo(this);
-		}
-    }//GEN-LAST:event_viewJsonBtnActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
     {//GEN-HEADEREND:event_jButton1ActionPerformed
@@ -242,11 +232,10 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jsonMeshScrollPanel;
     private javax.swing.JTextArea logArea;
     private javax.swing.JButton smdCompileButton;
-    private javax.swing.JButton viewJsonBtn;
     // End of variables declaration//GEN-END:variables
 
 }
