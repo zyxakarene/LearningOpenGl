@@ -12,5 +12,6 @@ public class UtilConstants
 	public static final String ASSETS_OUTPUT = "D:\\Programmering\\LearningOpenGl\\MainGame\\assets\\";
 	public static final String MESH_OUTPUT = ASSETS_OUTPUT + "models\\";
 	public static final String FONT_OUTPUT = ASSETS_OUTPUT + "fonts\\";
+	public static final String TEXTURE_OUTPUT = ASSETS_OUTPUT + "textures\\";
 	public static final String SKELETON_OUTPUT = MESH_OUTPUT + "skeletons\\";
 }
