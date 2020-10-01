@@ -2,21 +2,24 @@ package zyx.engine.components.screen.image;
 
 import zyx.engine.components.screen.base.DisplayObject;
 import org.lwjgl.util.vector.Vector4f;
+import zyx.opengl.materials.impl.ScreenModelMaterial;
 import zyx.opengl.models.implementations.ScreenModel;
+import zyx.opengl.shaders.implementations.Shader;
 import zyx.utils.Color;
 
 public abstract class AbstractQuad extends DisplayObject
 {
 
-	protected Vector4f colors;
 	protected float originalWidth;
 	protected float originalHeight;
 	protected ScreenModel model;
 	protected boolean loaded;
 	
+	protected final ScreenModelMaterial material;
+	
 	public AbstractQuad()
 	{
-		colors = new Vector4f(1, 1, 1, 1);
+		material = new ScreenModelMaterial(Shader.SCREEN);
 		
 		originalWidth = 0;
 		originalHeight = 0;
@@ -24,38 +27,39 @@ public abstract class AbstractQuad extends DisplayObject
 
 	public void setColor(Vector4f color)
 	{
-		colors.set(color);
+		material.color.set(color);
+		material.alpha = color.w;
 		updateMesh();
 	}
 
 	public void setColor(int color)
 	{
-		Color.toVector(color, colors);
+		Color.toVector(color, material.color);
 		updateMesh();
 	}
 
 	public void setColor(float r, float g, float b)
 	{
-		colors.set(r, g, b);
+		material.color.set(r, g, b);
 		updateMesh();
 	}
 
 	public void setAlpha(float a)
 	{
-		colors.w = a;
+		material.alpha = a;
 		updateMesh();
 	}
 
 	public int getColor()
 	{
-		return Color.toInt(colors);
+		return Color.toInt(material.color);
 	}
 	
 	private void updateMesh()
 	{
 		if (loaded)
 		{
-			model.setColors(colors);
+			model.updateColors();
 		}
 	}
 	

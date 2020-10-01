@@ -8,6 +8,7 @@ import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
+import zyx.opengl.models.implementations.renderers.WorldModelRenderer;
 import zyx.opengl.models.loading.MeshLoadingTask;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.tasks.ITaskCompleted;
@@ -31,9 +32,9 @@ public class MeshResource extends BaseRequiredSubResource implements ITaskComple
 	}
 
 	@Override
-	public WorldModel getContent()
+	public WorldModelRenderer getContent()
 	{
-		return model;
+		return model.createRenderer();
 	}
 
 	@Override

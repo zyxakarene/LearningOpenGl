@@ -2,42 +2,18 @@ package zyx.opengl.models.loading;
 
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
-import zyx.opengl.models.loading.meshes.ZafLoader;
 import zyx.utils.tasks.ITaskCompleted;
-import zyx.utils.tasks.ScheduledTask;
 
-public class MeshLoadingTask extends ScheduledTask<LoadableWorldModelVO>
+public class MeshLoadingTask extends AbstractMeshLoadingTask
 {
-	private ResourceDataInputStream inputData;
-	private String id;
-
 	public MeshLoadingTask(ITaskCompleted<LoadableWorldModelVO> taskDoneCallback, ResourceDataInputStream data, String id)
 	{
-		super(taskDoneCallback);
-		inputData = data;
-		this.id = id;
+		super(taskDoneCallback, data, id);
 	}
-
+	
 	@Override
-	protected void performTask()
+	protected void postProcessVo(LoadableWorldModelVO vo)
 	{
-//		try
-//		{
-//			Thread.sleep((long) (1000 + (10000 * Math.random())));
-//		}
-//		catch (InterruptedException ex)
-//		{
-//		}
-		
-		LoadableWorldModelVO result = ZafLoader.loadMeshFrom(inputData, id);
-		taskCompleted(result);
-		
-		inputData = null;
-	}
-
-	@Override
-	protected void onCanceled(LoadableWorldModelVO result)
-	{
-		result.dispose();
+		vo.asWorldModel();
 	}
 }

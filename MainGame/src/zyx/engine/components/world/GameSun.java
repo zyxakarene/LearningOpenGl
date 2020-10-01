@@ -139,11 +139,6 @@ public class GameSun extends WorldObject implements ISun
 
 		dirtyPos = true;
 	}
-	
-	@Override
-	protected void onDraw()
-	{
-	}
 
 	@Override
 	public void getSunDirection(Vector3f out)

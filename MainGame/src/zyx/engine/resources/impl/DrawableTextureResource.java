@@ -1,5 +1,8 @@
 package zyx.engine.resources.impl;
 
+import zyx.opengl.buffers.BufferRenderer;
+import zyx.opengl.buffers.DeferredRenderer;
+import zyx.opengl.buffers.DepthRenderer;
 import zyx.opengl.buffers.DrawingRenderer;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.TextureFromInt;

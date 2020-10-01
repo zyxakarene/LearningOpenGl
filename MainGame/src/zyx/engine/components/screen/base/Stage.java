@@ -4,8 +4,6 @@ import zyx.engine.components.animations.IFocusable;
 import zyx.engine.utils.ScreenSize;
 import zyx.opengl.buffers.Buffer;
 import zyx.opengl.buffers.BufferBinder;
-import zyx.opengl.stencils.StencilControl;
-import zyx.opengl.stencils.StencilLayer;
 import zyx.utils.math.Vector2Int;
 
 public final class Stage extends DisplayObjectContainer implements IFocusable
@@ -55,10 +53,8 @@ public final class Stage extends DisplayObjectContainer implements IFocusable
 		shader.bind();
 		shader.setClipRect(0, ScreenSize.width, 0, ScreenSize.height);
 
-		StencilControl.getInstance().startMaskingLayer(StencilLayer.PLAYER_CHARACTER, Buffer.DEFAULT);
 		tooltipLayer.draw();
 		hudLayer.draw();
-		StencilControl.getInstance().stopMaskingLayer(StencilLayer.PLAYER_CHARACTER, Buffer.DEFAULT);
 
 		loadingScreenLayer.draw();
 	}

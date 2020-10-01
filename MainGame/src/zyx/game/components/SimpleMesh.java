@@ -13,14 +13,12 @@ import zyx.engine.resources.impl.meshes.MeshResource;
 import zyx.engine.resources.impl.Resource;
 import zyx.engine.utils.callbacks.CustomCallback;
 import zyx.engine.utils.callbacks.ICallback;
-import zyx.opengl.models.implementations.WorldModel;
+import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.implementations.bones.attachments.Attachment;
 import zyx.opengl.models.implementations.bones.attachments.AttachmentRequest;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.physics.PhysBox;
-import zyx.opengl.shaders.ShaderManager;
-import zyx.opengl.shaders.implementations.Shader;
-import zyx.opengl.shaders.implementations.WorldShader;
+import zyx.opengl.models.implementations.renderers.WorldModelRenderer;
 import zyx.utils.GeometryUtils;
 import zyx.utils.cheats.DebugPhysics;
 import zyx.utils.cheats.Print;
@@ -31,7 +29,7 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 
 	protected String resource;
 	protected boolean loaded;
-	protected WorldModel model;
+	protected WorldModelRenderer renderer;
 
 	private PhysBox physbox;
 	private Resource modelResource;
@@ -39,19 +37,14 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 
 	private CustomCallback<SimpleMesh> onLoaded;
 
-	private ArrayList<WorldObject> attachedObjects;
-	private ArrayList<Attachment> attachments;
 	private LinkedList<AttachmentRequest> attachmentRequests;
-
-	private WorldShader shader;
+	private ArrayList<Attachment> attachments;
+	private Attachment attachmentInfo;
 
 	public SimpleMesh()
 	{
 		loaded = false;
 		onLoaded = new CustomCallback<>(true);
-
-		attachedObjects = new ArrayList<>();
-		attachments = new ArrayList<>();
 
 		enableCubemaps();
 	}
@@ -74,25 +67,15 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	{
 		return resource;
 	}
-
-	@Override
-	protected void onDraw()
+	
+	public WorldModelMaterial cloneMaterial()
 	{
-		if (model != null && model.ready && inView())
+		if (renderer != null)
 		{
-			WorldShader.cubemapIndex = cubemapIndex;
-			shader.bind();
-			shader.upload();
-
-			model.draw();
-
-			DebugPhysics.getInstance().draw(this);
-
-			for (Attachment attachment : attachments)
-			{
-				attachment.child.drawAsAttachment(attachment);
-			}
+			return renderer.cloneMaterial();
 		}
+		
+		return null;
 	}
 
 	@Override
@@ -106,7 +89,7 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	@Override
 	public float getRadius()
 	{
-		return loaded ? model.getRadius() : 0;
+		return loaded ? renderer.getRadius() : 0;
 	}
 
 	@Override
@@ -114,20 +97,12 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	{
 		if (loaded)
 		{
-			out.set(model.getRadiusCenter());
+			out.set(renderer.getRadiusCenter());
 		}
 		else
 		{
 			out.set(0, 0, 0);
 		}
-	}
-
-	private void drawAsAttachment(Attachment attachment)
-	{
-		Matrix4f.mul(attachment.parent.worldMatrix(), attachment.joint.getAttachmentTransform(), localMatrix);
-		updateTransforms(true);
-
-		draw();
 	}
 
 	public void onLoaded(ICallback<SimpleMesh> callback)
@@ -142,24 +117,63 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 		}
 	}
 
+	@Override
+	public Matrix4f worldMatrix()
+	{
+		if (attachmentInfo != null)
+		{
+			Matrix4f.mul(attachmentInfo.parent.worldMatrix(), attachmentInfo.lastMatrix, worldMatrix);
+			
+			return worldMatrix;
+		}
+		else
+		{
+			return super.worldMatrix();
+		}
+	}
+
+	@Override
+	public void onPostDraw()
+	{
+		if (attachments != null)
+		{
+			for (Attachment attachment : attachments)
+			{
+				attachment.loadBoneTransform();
+			}
+		}
+	}
+	
+	public void attachTo(SimpleMesh parent, String attachmentPoint)
+	{
+		parent.addChildAsAttachment(this, attachmentPoint);
+	}
+		
 	public void addChildAsAttachment(SimpleMesh child, String attachmentPoint)
 	{
+		if (attachments == null)
+		{
+			attachments = new ArrayList<>();
+		}
+		
 		if (loaded)
 		{
-			Joint attachJoint = model.getBoneByName(attachmentPoint);
+			Joint attachJoint = renderer.getBoneByName(attachmentPoint);
 			if (attachJoint == null)
 			{
 				Print.out("Warning: No such bone", attachmentPoint, "on", this);
 			}
 			else
 			{
-				Attachment attachment = new Attachment();
-				attachment.child = child;
-				attachment.parent = this;
-				attachment.joint = attachJoint;
-
-				attachments.add(attachment);
-				attachedObjects.add(child);
+				child.setPosition(true, 0, 0, 0);
+				child.setDir(true, GeometryUtils.ROTATION_X);
+				
+				child.attachmentInfo = new Attachment();
+				child.attachmentInfo.child = child;
+				child.attachmentInfo.parent = this;
+				child.attachmentInfo.joint = attachJoint;
+				
+				attachments.add(child.attachmentInfo);
 			}
 		}
 		else
@@ -176,19 +190,14 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 
 	public void removeChildAsAttachment(SimpleMesh child)
 	{
+		if (attachments != null)
+		{
+			attachments.remove(child.attachmentInfo);
+		}
+		
 		child.setPosition(true, 0, 0, 0);
 		child.setDir(true, GeometryUtils.ROTATION_X);
-
-		attachedObjects.remove(child);
-
-		for (Attachment attachment : attachments)
-		{
-			if (attachment.child == child)
-			{
-				attachments.remove(attachment);
-				break;
-			}
-		}
+		child.attachmentInfo = null;
 
 		if (attachmentRequests != null)
 		{
@@ -206,13 +215,13 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	@Override
 	public void onResourceReady(MeshResource resource)
 	{
-		WorldModel data = resource.getContent();
-
-		shader = data.getShader();
-		physbox = data.getPhysbox();
-		model = data;
+		renderer = resource.getContent();
+		renderer.setup(this);
+		renderer.SetCubemapIndex(cubemapIndex);
+		
+		physbox = renderer.getPhysbox();
 		loaded = true;
-
+		
 		DebugPhysics.getInstance().registerPhysbox(this);
 
 		onLoaded.dispatch(this);
@@ -245,10 +254,12 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 			attachmentRequests = null;
 		}
 
-		attachedObjects.clear();
-		attachments.clear();
-
-		model = null;
+		if (renderer != null)
+		{
+			renderer.dispose();
+			renderer = null;
+		}
+		
 		physbox = null;
 		loaded = false;
 	}
@@ -282,7 +293,7 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	@Override
 	public Matrix4f getBoneMatrix(int boneId)
 	{
-		return model.getBoneById(boneId).getPhysTransform();
+		return renderer.getBoneById(boneId).getPhysTransform();
 	}
 
 	@Override
@@ -301,6 +312,10 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	public void setCubemapIndex(int index)
 	{
 		cubemapIndex = index;
+		if (renderer != null)
+		{
+			renderer.SetCubemapIndex(cubemapIndex);
+		}
 	}
 
 	@Override

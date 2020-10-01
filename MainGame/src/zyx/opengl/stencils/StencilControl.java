@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.opengl.buffers.Buffer;
 import zyx.opengl.buffers.BufferBinder;
+import zyx.opengl.materials.StencilLayer;
 
 public class StencilControl implements ICallback<Buffer>
 {
@@ -94,6 +95,13 @@ public class StencilControl implements ICallback<Buffer>
 		checkBufferStatus(buffer);
 	}
 
+	public void stopDrawingToAllLayers(Buffer buffer)
+	{
+		setMode(buffer, StencilMode.NOTHING);
+		drawMaskValues.put(buffer, 0);
+		checkBufferStatus(buffer);
+	}
+
 	public void startMaskingLayer(StencilLayer layer, Buffer buffer)
 	{
 		setMode(buffer, StencilMode.MASKING);
@@ -113,6 +121,13 @@ public class StencilControl implements ICallback<Buffer>
 		mask = mask & ~layer.maskValue;
 		hideMaskValues.put(buffer, mask);
 
+		checkBufferStatus(buffer);
+	}
+
+	public void stopMaskingAllLayers(Buffer buffer)
+	{
+		setMode(buffer, StencilMode.NOTHING);
+		hideMaskValues.put(buffer, 0);
 		checkBufferStatus(buffer);
 	}
 

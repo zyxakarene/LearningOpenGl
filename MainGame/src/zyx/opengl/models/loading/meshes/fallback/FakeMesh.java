@@ -23,6 +23,15 @@ public class FakeMesh
 		Vector3f radiusCenter = new Vector3f();
 		float radius = sizeH;
 		
-		return new LoadableWorldModelVO(2, vertexData, elementData, physBox, diffuse, normal, specular, radiusCenter, radius, skeleton);
+		LoadableWorldModelVO vo = new LoadableWorldModelVO();
+		vo.setBoneCount(2);
+		vo.asWorldModel();
+		vo.setVertexData(vertexData, elementData);
+		vo.setPhysBox(physBox);
+		vo.setTextureIds(diffuse, normal, specular);
+		vo.setRadius(radiusCenter, radius);
+		vo.setSkeletonId(skeleton);
+		
+		return vo;
 	}
 }

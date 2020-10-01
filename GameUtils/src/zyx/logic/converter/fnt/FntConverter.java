@@ -9,7 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import zyx.UtilConstants;
 import zyx.logic.DragDropper;
-import zyx.logic.DragDropper.IFilesDropped;
+import zyx.logic.IFilesDropped;
 import zyx.logic.converter.InputToOutput;
 import zyx.logic.watcher.IFileUpdated;
 

@@ -29,7 +29,8 @@ public class Scale9Image extends AbstractImage implements IResourceReady<Texture
 	{
 		gameTexture = texture;
 		
-		model = new ScreenModel(texture, colors);
+		material.setDiffuse(texture);
+		model = new ScreenModel(material);
 
 		constructModel(texture.getWidth(), texture.getHeight());
 

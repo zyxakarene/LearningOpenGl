@@ -7,15 +7,15 @@ import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.meshes.MeshBatchResource;
 import zyx.opengl.models.implementations.MeshBatchModel;
+import zyx.opengl.models.implementations.renderers.MeshBatchRenderer;
 import zyx.utils.interfaces.IDisposeable;
-import zyx.utils.interfaces.IDrawable;
 import zyx.utils.interfaces.IUpdateable;
 
-class MeshBatch<E extends MeshBatchEntity> implements IResourceReady<MeshBatchResource>, IUpdateable, IDisposeable, IDrawable
+class MeshBatch<E extends MeshBatchEntity> implements IResourceReady<MeshBatchResource>, IUpdateable, IDisposeable
 {
 
 	private MeshBatchResource meshResource;
-	private MeshBatchModel model;
+	private MeshBatchRenderer renderer;
 	
 	private ArrayList<E> entities;
 	private int entityCount;
@@ -34,7 +34,7 @@ class MeshBatch<E extends MeshBatchEntity> implements IResourceReady<MeshBatchRe
 	@Override
 	public void onResourceReady(MeshBatchResource resource)
 	{
-		model = resource.getContent();
+		renderer = resource.getContent();
 	}
 
 	public void addEntity(E entity)
@@ -77,6 +77,11 @@ class MeshBatch<E extends MeshBatchEntity> implements IResourceReady<MeshBatchRe
 			batchData[entryOffset + 7] = entity.scale;
 			batchData[entryOffset + 8] = entity.cubemapIndex / 255f;
 		}
+		
+		if (renderer != null)
+		{
+			renderer.setMeshBatchData(batchData);
+		}
 	}
 
 	public boolean isEmpty()
@@ -99,19 +104,14 @@ class MeshBatch<E extends MeshBatchEntity> implements IResourceReady<MeshBatchRe
 			entities = null;
 		}
 		
+		if (renderer != null)
+		{
+			renderer.dispose();
+			renderer = null;
+		}
+		
 		entityCount = 0;
 		entities = null;
-		model = null;
 		batchData = null;
-	}
-
-	@Override
-	public void draw()
-	{
-		if (model != null)
-		{
-			model.setMeshBatchData(batchData);
-			model.draw();
-		}
 	}
 }

@@ -1,6 +1,5 @@
 package zyx.opengl.models.loading.meshes;
 
-import java.io.IOException;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 
@@ -28,8 +27,17 @@ public class ZafLoader
 			builder.append("========");
 			Print.out(builder);
 
-			return new LoadableWorldModelVO(obj.boneCount, obj.vertexData, obj.elementData, phys, obj.diffuseTexture, obj.normalTexture, obj.specularTexture,
-											obj.radiusCenter, obj.radius, obj.skeletonId);
+			LoadableWorldModelVO vo = new LoadableWorldModelVO();
+			vo.setBoneCount(obj.boneCount);
+			vo.setVertexData(obj.vertexData, obj.elementData);
+			vo.setPhysBox(phys);
+			vo.setTextureIds(obj.diffuseTexture, obj.normalTexture, obj.specularTexture);
+			vo.setRadius(obj.radiusCenter, obj.radius);
+			vo.setSkeletonId(obj.skeletonId);
+			vo.setMaterialData(obj.materialInformation);
+			
+			return vo;
+			
 		}
 		catch (Exception e)
 		{

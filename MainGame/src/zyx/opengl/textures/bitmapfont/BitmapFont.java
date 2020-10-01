@@ -1,18 +1,20 @@
 package zyx.opengl.textures.bitmapfont;
 
 import zyx.opengl.textures.AbstractTexture;
+import zyx.utils.interfaces.IDisposeable;
 
-public class BitmapFont
+public class BitmapFont implements IDisposeable
 {
-	AbstractTexture texture;
-	FontFile fontFile;
+	public FontFile fontFile;
+	public AbstractTexture texture;
 
 	BitmapFont(AbstractTexture texture, FontFile fontFile)
 	{
-		this.texture = texture;
 		this.fontFile = fontFile;
+		this.texture = texture;
 	}
 
+	@Override
 	public void dispose()
 	{
 		texture = null;

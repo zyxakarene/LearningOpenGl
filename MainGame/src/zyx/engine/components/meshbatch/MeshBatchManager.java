@@ -2,10 +2,9 @@ package zyx.engine.components.meshbatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import zyx.utils.interfaces.IDrawable;
 import zyx.utils.interfaces.IUpdateable;
 
-public class MeshBatchManager implements IUpdateable, IDrawable
+public class MeshBatchManager implements IUpdateable
 {
 	private static final MeshBatchManager INSTANCE = new MeshBatchManager();
 
@@ -77,15 +76,4 @@ public class MeshBatchManager implements IUpdateable, IDrawable
 			meshBatch.update(timestamp, elapsedTime);
 		}
 	}
-
-	@Override
-	public void draw()
-	{
-		for (MeshBatch meshBatch : meshBatchesList)
-		{
-			meshBatch.draw();
-		}
-	}
-	
-	
 }

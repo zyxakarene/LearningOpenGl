@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.SkyboxModel;
-import zyx.opengl.models.loading.MeshLoadingTask;
+import zyx.opengl.models.implementations.renderers.SkyboxRenderer;
+import zyx.opengl.models.loading.SkyboxLoadingTask;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.tasks.ITaskCompleted;
 
@@ -16,7 +17,7 @@ public class SkyboxResource extends BaseRequiredSubResource implements ISubResou
 
 	private LoadableWorldModelVO loadedVo;
 	private SkyboxModel model;
-	private MeshLoadingTask task;
+	private SkyboxLoadingTask task;
 
 	public SkyboxResource(String path)
 	{
@@ -24,9 +25,9 @@ public class SkyboxResource extends BaseRequiredSubResource implements ISubResou
 	}
 
 	@Override
-	public SkyboxModel getContent()
+	public SkyboxRenderer getContent()
 	{
-		return model;
+		return model.createRenderer();
 	}
 
 	@Override
@@ -50,7 +51,7 @@ public class SkyboxResource extends BaseRequiredSubResource implements ISubResou
 	@Override
 	public void resourceLoaded(ResourceDataInputStream data)
 	{
-		task = new MeshLoadingTask(this, data, path);
+		task = new SkyboxLoadingTask(this, data, path);
 		task.start();
 	}
 
@@ -65,7 +66,7 @@ public class SkyboxResource extends BaseRequiredSubResource implements ISubResou
 			task = null;
 		}
 		
-		task = new MeshLoadingTask(this, data, path);
+		task = new SkyboxLoadingTask(this, data, path);
 		task.start();
 	}
 	

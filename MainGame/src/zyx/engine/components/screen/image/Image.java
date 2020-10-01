@@ -1,16 +1,12 @@
 package zyx.engine.components.screen.image;
 
-import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.impl.textures.TextureResource;
 import zyx.opengl.models.implementations.ScreenModel;
-import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.textures.AbstractTexture;
 
 public class Image extends AbstractImage implements IResourceReady<TextureResource>
 {
-
-	protected static final Vector4f COLORS = SharedShaderObjects.SHARED_VECTOR_4F;
 
 	public Image()
 	{
@@ -29,7 +25,8 @@ public class Image extends AbstractImage implements IResourceReady<TextureResour
 			model = null;
 		}
 		
-		model = new ScreenModel(texture, colors);
+		material.setDiffuse(texture);
+		model = new ScreenModel(material);
 		model.addVertexData(0, 0, texture);
 		model.buildModel();
 		
@@ -44,7 +41,8 @@ public class Image extends AbstractImage implements IResourceReady<TextureResour
 			model = null;
 		}
 		
-		model = new ScreenModel(texture, colors);
+		material.setDiffuse(texture);
+		model = new ScreenModel(material);
 		model.addVertexData(0, 0, texture);
 		model.buildModel();
 		

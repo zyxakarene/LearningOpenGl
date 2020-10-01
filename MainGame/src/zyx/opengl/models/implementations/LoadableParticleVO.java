@@ -3,6 +3,8 @@ package zyx.opengl.models.implementations;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import zyx.opengl.materials.impl.ParticleModelMaterial;
+import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.AbstractTexture;
 
 public class LoadableParticleVO
@@ -37,10 +39,13 @@ public class LoadableParticleVO
 	public boolean worldParticle = false;
 	
 	String texture = "missing";
-	AbstractTexture gameTexture;
+	ParticleModelMaterial materialWorld;
+	ParticleModelMaterial materialLocal;
 
 	public LoadableParticleVO()
 	{
+		materialWorld = new ParticleModelMaterial(Shader.WORLD_PARTICLE);
+		materialLocal = new ParticleModelMaterial(Shader.PARTICLE);
 	}
 
 	public String getDiffuseTextureId()
@@ -50,6 +55,7 @@ public class LoadableParticleVO
 	
 	public void setDiffuseTexture(AbstractTexture gameTexture)
 	{
-		this.gameTexture = gameTexture;
+		materialWorld.setDiffuse(gameTexture);
+		materialLocal.setDiffuse(gameTexture);
 	}
 }

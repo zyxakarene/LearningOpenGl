@@ -4,8 +4,11 @@ import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.SkyboxResource;
 import zyx.engine.resources.impl.textures.TextureResource;
-import zyx.opengl.GLUtils;
-import zyx.opengl.models.implementations.SkyboxModel;
+import zyx.opengl.materials.MaterialPriority;
+import zyx.opengl.materials.ZTest;
+import zyx.opengl.materials.ZWrite;
+import zyx.opengl.materials.impl.WorldModelMaterial;
+import zyx.opengl.models.implementations.renderers.SkyboxRenderer;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.SkyboxShader;
@@ -17,7 +20,7 @@ public class Skybox extends WorldObject
 	private SkyboxResource meshResource;
 	private TextureResource textureResource;
 
-	private SkyboxModel model;
+	private SkyboxRenderer renderer;
 	private AbstractTexture texture;
 	private boolean loaded;
 	
@@ -25,6 +28,7 @@ public class Skybox extends WorldObject
 	private IResourceReady<TextureResource> onTextureLoaded;
 	
 	private SkyboxShader shader;
+	private WorldModelMaterial skyboxMaterial;
 
 	Skybox()
 	{
@@ -32,7 +36,12 @@ public class Skybox extends WorldObject
 
 		onMeshLoaded = (SkyboxResource resource) ->
 		{
-			model = resource.getContent();
+			renderer = resource.getContent();
+			skyboxMaterial = renderer.cloneMaterial();
+			skyboxMaterial.zWrite = ZWrite.DISABLED;
+			skyboxMaterial.zTest = ZTest.ALWAYS;
+			skyboxMaterial.priority = MaterialPriority.GEOMETRY_MIN;
+			
 			onResourceLoaded();
 		};
 		
@@ -56,10 +65,10 @@ public class Skybox extends WorldObject
 
 	private void onResourceLoaded()
 	{
-		if (model != null && texture != null)
+		if (skyboxMaterial != null && texture != null)
 		{
 			loaded = true;
-			model.setSkyboxTexture(texture);
+			skyboxMaterial.setDiffuse(texture);
 		}
 	}
 	
@@ -79,29 +88,18 @@ public class Skybox extends WorldObject
 			meshResource = null;
 		}
 		
+		if (renderer != null)
+		{
+			renderer.dispose();
+			renderer = null;
+		}
+		
 		texture = null;
 		
-		if (model != null)
+		if (skyboxMaterial != null)
 		{
-			model.removeSkyboxTexture();
-			model = null;
-		}
-	}
-	
-	@Override
-	protected void onDraw()
-	{
-		if (loaded)
-		{
-			GLUtils.disableDepthWrite();
-			GLUtils.disableDepthTest();
-
-			shader.bind();
-			shader.upload();
-			model.draw();
-
-			GLUtils.enableDepthWrite();
-			GLUtils.enableDepthTest();
+			skyboxMaterial.setDiffuse(null);
+			skyboxMaterial = null;
 		}
 	}
 

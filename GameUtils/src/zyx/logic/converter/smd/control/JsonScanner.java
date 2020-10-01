@@ -4,11 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import zyx.UtilConstants;
 
-public class QcScanner
+public class JsonScanner
 {
-	private static final QcFilter FILTER = new QcFilter();
+	private static final JsonFilter FILTER = new JsonFilter();
 	
-	public static ArrayList<File> getQcFiles()
+	public static ArrayList<File> getJsonFiles()
 	{
 		ArrayList<File> files = new ArrayList<>();
 		File root = new File(UtilConstants.MESH_FOLDER);
@@ -24,7 +24,7 @@ public class QcScanner
 			File[] children = file.listFiles(FILTER);
 			for (File child : children)
 			{
-				scanFile(new QcInputFile(child.getAbsolutePath()), out);
+				scanFile(new JsonInputFile(child.getAbsolutePath()), out);
 			}
 		}
 		else

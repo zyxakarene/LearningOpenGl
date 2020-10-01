@@ -1,18 +1,17 @@
 package zyx.opengl.models;
 
-import zyx.opengl.shaders.implementations.Shader;
+import zyx.opengl.materials.Material;
 
-public abstract class AbstractInstancedModel extends AbstractModel
+public abstract class AbstractInstancedModel<TMaterial extends Material> extends AbstractModel<TMaterial>
 {
 
 	private int instanceVbo;
 	
 	private int instanceCount;
 
-	public AbstractInstancedModel(Shader shader)
+	public AbstractInstancedModel(TMaterial material)
 	{
-		super(shader);
-		setup();
+		super(material);
 	}
 
 	@Override
@@ -36,13 +35,14 @@ public abstract class AbstractInstancedModel extends AbstractModel
 	}
 	
 	@Override
-	public void draw()
+	public void draw(TMaterial material)
 	{
 		if (elementCount > 0 && instanceCount > 0)
 		{
 			if (canDraw())
 			{
-				bindTextures();
+				material.bind();
+				
 				ModelUtils.drawInstancedElements(vao, elementCount, instanceCount);
 			}
 		}

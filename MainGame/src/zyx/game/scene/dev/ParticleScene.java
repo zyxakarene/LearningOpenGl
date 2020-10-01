@@ -1,7 +1,9 @@
 package zyx.game.scene.dev;
 
+import zyx.engine.components.meshbatch.MeshBatchManager;
 import zyx.game.behavior.misc.JiggleBehavior;
 import zyx.game.components.MeshObject;
+import zyx.game.components.world.meshbatch.CubeEntity;
 import zyx.opengl.GLUtils;
 import zyx.opengl.particles.ParticleSystem;
 import zyx.utils.FloatMath;
@@ -23,6 +25,17 @@ public class ParticleScene extends DebugScene
 	@Override
 	protected void onInitialize()
 	{
+		for (int i = 0; i < 0; i++)
+		{
+			CubeEntity cube = new CubeEntity();
+			float x = (FloatMath.random() * 200f) - 100f;
+			float y = (FloatMath.random() * 200f) - 100f;
+			float z = (FloatMath.random() * 200f) - 100f;
+			cube.position.set(x, y, z);
+			cube.scale = 10f;
+			MeshBatchManager.getInstance().addEntity(cube);
+		}
+		
 		for (int i = 0; i < 1; i++)
 		{
 			MeshObject model = new MeshObject();
@@ -74,4 +87,14 @@ public class ParticleScene extends DebugScene
 
 		GLUtils.errorCheck();
 	}
+
+	@Override
+	protected void onDispose()
+	{
+		super.onDispose();
+		
+		MeshBatchManager.getInstance().clean();
+	}
+	
+	
 }

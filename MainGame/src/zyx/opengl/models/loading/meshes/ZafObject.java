@@ -19,6 +19,7 @@ class ZafObject
 	String diffuseTexture;
 	String normalTexture;
 	String specularTexture;
+	MaterialObject materialInformation;
 	
 	Vector3f radiusCenter;
 	float radius;
@@ -65,5 +66,8 @@ class ZafObject
 		
 		skeletonId = in.readUTF();
 		builder.append("↳", "Skeleton:", skeletonId);
+		
+		materialInformation = new MaterialObject();
+		materialInformation.read(in);
 	}
 }

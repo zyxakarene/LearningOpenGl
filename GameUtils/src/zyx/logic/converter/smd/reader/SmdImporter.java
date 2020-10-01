@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import zyx.logic.converter.smd.control.QcAnimation;
+import zyx.logic.converter.smd.control.json.JsonMeshAnimation;
 import zyx.logic.converter.smd.vo.Animation;
 import zyx.logic.converter.smd.vo.Bone;
 import zyx.logic.converter.smd.vo.PhysBox;
@@ -125,20 +125,20 @@ public class SmdImporter
 		importFile(file);
 	}
 
-	public void importAnimations(QcAnimation[] animations) throws FileNotFoundException
+	public void importAnimations(JsonMeshAnimation[] animations) throws FileNotFoundException
 	{
 		currentFileType = FILE_TYPE_ANIMATION;
 		currentToken = TOKEN_NONE;
 		lineHandler = null;
 
-		for (QcAnimation animation : animations)
+		for (JsonMeshAnimation animation : animations)
 		{
 			animationRootBone = null;
 			animationName = animation.name;
-			animationLooping = animation.looping;
-			animationStart = animation.start;
-			animationEnd = animation.end;
-			animationBlendTime = animation.blendTime;
+			animationLooping = animation.loop;
+			animationStart = animation.framesStart;
+			animationEnd = animation.framesEnd;
+			animationBlendTime = (short) animation.blend;
 
 			importFile(animation.file);
 		}

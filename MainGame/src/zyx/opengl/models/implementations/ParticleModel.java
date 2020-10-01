@@ -1,13 +1,13 @@
 package zyx.opengl.models.implementations;
 
 import zyx.engine.components.world.WorldObject;
-import zyx.opengl.models.AbstractInstancedModel;
-import zyx.opengl.shaders.implementations.Shader;
+import zyx.opengl.materials.impl.ParticleModelMaterial;
+import zyx.opengl.models.implementations.renderers.ParticleRenderer;
 import zyx.opengl.shaders.implementations.ParticleShader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.FloatMath;
 
-public class ParticleModel extends AbstractInstancedModel implements IParticleModel
+public class ParticleModel extends BaseParticleModel
 {
 
 	private static final int[] SHARED_ELEMENT_DATA =
@@ -21,7 +21,7 @@ public class ParticleModel extends AbstractInstancedModel implements IParticleMo
 
 	public ParticleModel(LoadableParticleVO loadableVo)
 	{
-		super(Shader.PARTICLE);
+		super(loadableVo.materialLocal);
 
 		shader = (ParticleShader) meshShader;
 		refresh(loadableVo);
@@ -31,8 +31,10 @@ public class ParticleModel extends AbstractInstancedModel implements IParticleMo
 	public void refresh(LoadableParticleVO loadedVo)
 	{
 		vo = loadedVo;
+		
+		defaultMaterial = vo.materialLocal;
 
-		AbstractTexture t = vo.gameTexture;
+		AbstractTexture t = defaultMaterial.getDiffuse();
 
 		float[] vertexData =
 		{
@@ -54,7 +56,6 @@ public class ParticleModel extends AbstractInstancedModel implements IParticleMo
 		}
 		setInstanceData(instanceData, instanceData.length / instanceDataAmount);
 		setVertexData(vertexData, SHARED_ELEMENT_DATA);
-		setTexture(vo.gameTexture);
 	}
 
 	@Override
@@ -64,12 +65,12 @@ public class ParticleModel extends AbstractInstancedModel implements IParticleMo
 	}
 
 	@Override
-	public void draw()
+	public void draw(ParticleModelMaterial material)
 	{
 		shader.bind();
 		shader.uploadFromVo(vo);
 		shader.upload();
-		super.draw();
+		super.draw(material);
 	}
 
 	@Override
@@ -100,18 +101,13 @@ public class ParticleModel extends AbstractInstancedModel implements IParticleMo
 	}
 
 	@Override
-	public void setParent(WorldObject parent)
-	{
-	}
-
-	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
 	}
-
+	
 	@Override
-	public IParticleModel cloneParticle()
+	public ParticleRenderer createRenderer()
 	{
-		return new ParticleModel(vo);
+		return new ParticleRenderer(this, defaultMaterial);
 	}
 }

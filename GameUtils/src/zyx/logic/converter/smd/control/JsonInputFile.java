@@ -3,10 +3,10 @@ package zyx.logic.converter.smd.control;
 import java.io.File;
 import zyx.UtilConstants;
 
-public class QcInputFile extends File
+public class JsonInputFile extends File
 {
 
-	public QcInputFile(String pathname)
+	public JsonInputFile(String pathname)
 	{
 		super(pathname);
 	}

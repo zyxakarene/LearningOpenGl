@@ -2,14 +2,13 @@ package zyx.opengl.models.implementations;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.engine.components.world.WorldObject;
-import zyx.opengl.models.AbstractInstancedModel;
-import zyx.opengl.shaders.implementations.Shader;
+import zyx.opengl.materials.impl.ParticleModelMaterial;
+import zyx.opengl.models.implementations.renderers.WorldParticleRenderer;
 import zyx.opengl.shaders.implementations.WorldParticleShader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.FloatMath;
 
-public class WorldParticleModel extends AbstractInstancedModel implements IParticleModel
+public class WorldParticleModel extends BaseParticleModel
 {
 	private static final int[] SHARED_ELEMENT_DATA =
 	{
@@ -23,14 +22,13 @@ public class WorldParticleModel extends AbstractInstancedModel implements IParti
 	
 	private WorldParticleShader shader;
 	private LoadableParticleVO vo;
-	private WorldObject parent;
 
 	private float[] instanceData;
 	private int[] particleAge;
 	
 	public WorldParticleModel(LoadableParticleVO loadableVo)
 	{
-		super(Shader.WORLD_PARTICLE);
+		super(loadableVo.materialWorld);
 
 		shader = (WorldParticleShader) meshShader;
 		refresh(loadableVo);
@@ -39,9 +37,10 @@ public class WorldParticleModel extends AbstractInstancedModel implements IParti
 	@Override
 	public void refresh(LoadableParticleVO loadedVo)
 	{
-		this.vo = loadedVo;
+		vo = loadedVo;
+		defaultMaterial = vo.materialWorld;
 		
-		AbstractTexture t = vo.gameTexture;
+		AbstractTexture t = defaultMaterial.getDiffuse();
 		
 		float[] vertexData =
 		{
@@ -62,13 +61,6 @@ public class WorldParticleModel extends AbstractInstancedModel implements IParti
 
 		setInstanceData(instanceData, instanceData.length / INSTANCE_DATA_COUNT);
 		setVertexData(vertexData, SHARED_ELEMENT_DATA);
-		setTexture(vo.gameTexture);
-	}
-	
-	@Override
-	public IParticleModel cloneParticle()
-	{
-		return new WorldParticleModel(vo);
 	}
 	
 	@Override
@@ -81,11 +73,7 @@ public class WorldParticleModel extends AbstractInstancedModel implements IParti
 			int age = particleAge[i];
 			if (age >= vo.lifespan)
 			{
-				if(!preloaded)
-				{
-					preloaded = true;
-					loadParentData();
-				}
+				preloaded = true;
 				
 				age = (int) (age - vo.lifespan);
 				resetParticle(i);
@@ -139,12 +127,12 @@ public class WorldParticleModel extends AbstractInstancedModel implements IParti
 	}
 	
 	@Override
-	public void draw()
+	public void draw(ParticleModelMaterial material)
 	{
 		shader.bind();
 		shader.uploadFromVo(vo);
 		shader.upload();
-		super.draw();
+		super.draw(material);
 	}
 
 	@Override
@@ -174,20 +162,15 @@ public class WorldParticleModel extends AbstractInstancedModel implements IParti
 	}
 
 	@Override
-	public void setParent(WorldObject parent)
-	{
-		this.parent = parent;
-	}
-
-	private void loadParentData()
-	{
-		parent.getPosition(false, PARENT_POS);
-		PARENT_ROTATION.load(parent.worldMatrix());
-	}
-
-	@Override
 	public boolean isWorldParticle()
 	{
 		return true;
+	}
+
+	@Override
+	public WorldParticleRenderer createRenderer()
+	{
+		WorldParticleModel clone = new WorldParticleModel(vo);
+		return new WorldParticleRenderer(clone, defaultMaterial);
 	}
 }
