@@ -110,4 +110,9 @@ public class ParticleModel extends BaseParticleModel
 	{
 		return new ParticleRenderer(this, defaultMaterial);
 	}
+
+	@Override
+	public void setParent(WorldObject parent)
+	{
+	}
 }

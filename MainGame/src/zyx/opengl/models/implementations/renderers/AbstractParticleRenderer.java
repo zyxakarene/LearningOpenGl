@@ -37,6 +37,7 @@ public abstract class AbstractParticleRenderer<TModel extends AbstractInstancedM
 	public void setup(ParticleSystem system)
 	{
 		this.system = system;
+		setParent(system);
 		
 		super.setup(system);
 	}

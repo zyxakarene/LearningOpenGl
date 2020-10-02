@@ -1,5 +1,6 @@
 package zyx.opengl.models.implementations.renderers;
 
+import zyx.engine.components.world.WorldObject;
 import zyx.opengl.materials.impl.ParticleModelMaterial;
 import zyx.opengl.models.implementations.LoadableParticleVO;
 import zyx.opengl.models.implementations.WorldParticleModel;
@@ -39,5 +40,11 @@ public class WorldParticleRenderer extends AbstractParticleRenderer<WorldParticl
 	public void update(long timestamp, int elapsedTime)
 	{
 		model.update(timestamp, elapsedTime);
+	}
+
+	@Override
+	public void setParent(WorldObject parent)
+	{
+		model.setParent(parent);
 	}
 }
