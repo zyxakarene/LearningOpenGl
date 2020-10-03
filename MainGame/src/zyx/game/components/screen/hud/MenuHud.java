@@ -12,6 +12,7 @@ public class MenuHud extends BaseHud
 
 	public MenuHud()
 	{
+		super(false);
 	}
 
 	private void playBtnClicked(InteractableContainer data)

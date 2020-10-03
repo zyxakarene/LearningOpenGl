@@ -11,6 +11,11 @@ public class MainHud extends BaseHud
 	private AbstractImage image;
 	private ItemList list;
 
+	public MainHud()
+	{
+		super(false);
+	}
+
 	@Override
 	public String getResource()
 	{

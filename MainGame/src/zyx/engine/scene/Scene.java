@@ -150,7 +150,7 @@ public class Scene implements ILoadingScreenDone
 
 	protected BaseHud createHud()
 	{
-		return new BaseHud();
+		return new BaseHud(true);
 	}
 
 	protected BaseNetworkController createNetworkDispatcher()

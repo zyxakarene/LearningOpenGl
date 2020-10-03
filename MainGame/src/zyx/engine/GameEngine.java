@@ -84,15 +84,47 @@ public class GameEngine
 			}
 			else if (KeyboardData.data.wasPressed(Keyboard.KEY_3))
 			{
-				sceneManager.changeScene(SceneType.PARTICLE);
+				sceneManager.changeScene(SceneType.SHOWCASE_NESTED_OBJECTS);
 			}
 			else if (KeyboardData.data.wasPressed(Keyboard.KEY_4))
 			{
-				sceneManager.changeScene(SceneType.TEST);
+				sceneManager.changeScene(SceneType.SHOWCASE_GUI_INTERACTION);
 			}
 			else if (KeyboardData.data.wasPressed(Keyboard.KEY_5))
 			{
-				sceneManager.changeScene(SceneType.EMPTY);
+				sceneManager.changeScene(SceneType.SHOWCASE_MESH_CLICK);
+			}
+			else if (KeyboardData.data.wasPressed(Keyboard.KEY_6))
+			{
+				sceneManager.changeScene(SceneType.SHOWCASE_PARTICLES);
+			}
+			else if (KeyboardData.data.wasPressed(Keyboard.KEY_7))
+			{
+				sceneManager.changeScene(SceneType.SHOWCASE_SKELETON);
+			}
+			else if (KeyboardData.data.wasPressed(Keyboard.KEY_8))
+			{
+				sceneManager.changeScene(SceneType.SHOWCASE_LIGHT);
+			}
+			else if (KeyboardData.data.wasPressed(Keyboard.KEY_9))
+			{
+				sceneManager.changeScene(SceneType.SHOWCASE_SHADOWS);
+			}
+			else if (KeyboardData.data.wasPressed(Keyboard.KEY_0))
+			{
+				sceneManager.changeScene(SceneType.SHOWCASE_CUBEMAPS);
+			}
+			else if (KeyboardData.data.wasPressed(Keyboard.KEY_NUMPAD1))
+			{
+				sceneManager.changeScene(SceneType.SHOWCASE_DEFERRED);
+			}
+			else if (KeyboardData.data.wasPressed(Keyboard.KEY_NUMPAD2))
+			{
+				sceneManager.changeScene(SceneType.SHOWCASE_DRAWING);
+			}
+			else if (KeyboardData.data.wasPressed(Keyboard.KEY_NUMPAD3))
+			{
+				sceneManager.changeScene(SceneType.SHOWCASE_LOADING);
 			}
 
 			Display.update();
