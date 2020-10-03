@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 public class GameConstants
 {
 	public static final boolean DEBUG = true;
-	public static final boolean DRAW_PHYSICS = true;
+	public static boolean DRAW_PHYSICS = false;
 	
 	public static final int FPS = 60;
 	public static final int MS_PER_FRAME = 1000 / FPS;

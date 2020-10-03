@@ -17,19 +17,26 @@ public class JiggleBehavior extends Behavior
 
 	private float scale;
 	private float randomOffset;
+	private final boolean movement;
 
 	public JiggleBehavior()
 	{
+		this(false);
+	}
+	
+	public JiggleBehavior(boolean movement)
+	{
 		super(BehaviorType.JIGGLE);
 
-		randomOffset = FloatMath.random() * 1000;
+		randomOffset = FloatMath.random() * 10000;
 		scale = 0.1f;
+		this.movement = movement;
 	}
 
 	@Override
 	public void initialize()
 	{
-		gameObject.getPosition(false, HELPER_POS);
+		gameObject.getPosition(true, HELPER_POS);
 		
 		px = HELPER_POS.x;
 		py = HELPER_POS.y;
@@ -50,7 +57,10 @@ public class JiggleBehavior extends Behavior
 		float posZ = pz + FloatMath.cos(d * 0.01f);
 
 		gameObject.setRotation(x, y, z);
-		gameObject.setPosition(false, posX, posY, posZ);
+		if (movement)
+		{
+			gameObject.setPosition(true, posX, posY, posZ);
+		}
 	}
 
 }

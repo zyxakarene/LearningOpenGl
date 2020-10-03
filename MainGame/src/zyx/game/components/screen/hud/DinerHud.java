@@ -13,6 +13,7 @@ public class DinerHud extends BaseHud
 
 	public DinerHud()
 	{
+		super(false);
 	}
 
 	@Override

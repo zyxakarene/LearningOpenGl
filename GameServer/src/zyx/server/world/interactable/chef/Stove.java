@@ -13,7 +13,7 @@ import zyx.server.world.interactable.common.useable.UseableItem;
 public class Stove extends UseableItem<Chef>
 {
 
-	private static final int COOK_TIME = 1000;
+	private static final int COOK_TIME = 3000;
 
 	private FoodItem foodItem;
 

@@ -35,7 +35,7 @@
 			"showBorders":false,
 			"font":"font.console",
 			"color":"0xFF00FF",
-			"text":"Textfield"
+			"text":""
 		}
 	]
 }

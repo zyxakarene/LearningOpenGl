@@ -2,13 +2,17 @@ package zyx.game.scene.dev;
 
 import java.util.ArrayList;
 import zyx.engine.components.cubemaps.CubemapManager;
+import zyx.engine.components.meshbatch.MeshBatchManager;
+import zyx.engine.components.tooltips.TooltipManager;
 import zyx.engine.components.world.WorldObject;
 import zyx.engine.scene.Scene;
 import zyx.engine.utils.worldpicker.WorldPicker;
 import zyx.game.behavior.camera.CameraUpdateViewBehavior;
 import zyx.game.behavior.freefly.FreeFlyBehavior;
 import zyx.game.components.GameObject;
+import zyx.game.components.screen.hud.BaseHud;
 import zyx.opengl.camera.Camera;
+import zyx.utils.GameConstants;
 import zyx.utils.interfaces.IUpdateable;
 
 public class DebugScene extends Scene
@@ -19,6 +23,7 @@ public class DebugScene extends Scene
 
 	public DebugScene()
 	{
+		GameConstants.DRAW_PHYSICS = false;
 		objects = new ArrayList<>();
 		picker = new WorldPicker();
 	}
@@ -54,6 +59,12 @@ public class DebugScene extends Scene
 	}
 
 	@Override
+	protected BaseHud createHud()
+	{
+		return new BaseHud(false);
+	}
+	
+	@Override
 	protected void onDispose()
 	{
 		for (WorldObject object : objects)
@@ -63,6 +74,10 @@ public class DebugScene extends Scene
 
 		picker.dispose();
 		picker = null;
+		
+		CubemapManager.getInstance().clean();
+		TooltipManager.getInstance().clean();
+		MeshBatchManager.getInstance().clean();
 		
 		super.onDispose();
 	}

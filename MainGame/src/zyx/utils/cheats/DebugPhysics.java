@@ -2,6 +2,7 @@ package zyx.utils.cheats;
 
 import java.util.HashMap;
 import zyx.opengl.models.implementations.renderers.WorldModelRenderer;
+import zyx.utils.GameConstants;
 import zyx.utils.interfaces.IPhysbox;
 
 public class DebugPhysics
@@ -23,22 +24,28 @@ public class DebugPhysics
 
 	public void registerPhysbox(IPhysbox obj)
 	{
-//		int count = obj.getPhysbox().getTriangles().length;
-//		if (count > 0)
-//		{
-//			WorldModelRenderer[] renderers = DebugPhysDrawing.getRenderersFor(obj);
-//			entryMap.put(obj, renderers);
-//		}
+		if (GameConstants.DRAW_PHYSICS)
+		{
+			int count = obj.getPhysbox().getTriangles().length;
+			if (count > 0)
+			{
+				WorldModelRenderer[] renderers = DebugPhysDrawing.getRenderersFor(obj);
+				entryMap.put(obj, renderers);
+			}
+		}
 	}
 
 	public void unregisterPhysbox(IPhysbox obj)
 	{
-//		WorldModelRenderer[] renderers = entryMap.remove(obj);
-//		if (renderers != null)
-//		{
-//			renderers[DebugPhysDrawing.INDEX_BOUNDING].dispose();
-//			renderers[DebugPhysDrawing.INDEX_MESH].dispose();
-//		}
-//		DebugPhysDrawing.removeModelFor(obj);
+		if (GameConstants.DRAW_PHYSICS)
+		{
+			WorldModelRenderer[] renderers = entryMap.remove(obj);
+			if (renderers != null)
+			{
+				renderers[DebugPhysDrawing.INDEX_BOUNDING].dispose();
+				renderers[DebugPhysDrawing.INDEX_MESH].dispose();
+			}
+			DebugPhysDrawing.removeModelFor(obj);
+		}
 	}
 }

@@ -1,6 +1,6 @@
 #version 420
-const float AMBIENT_LIGHT = 0.25;//The default light everything is receiving
-const float DIRECT_LIGHT = 1.0 - AMBIENT_LIGHT;//The light recieved when facing the light
+const float AMBIENT_LIGHT = 0.25;// 0.0;//The default light everything is receiving
+const float DIRECT_LIGHT = 1.0 - AMBIENT_LIGHT;// 0.05;//The light recieved when facing the light
 const int LIGHT_COUNT = 100;//How many lights do we support
 const int SHADOW_QUADRANTS = 4;//Amount of quadrants
 

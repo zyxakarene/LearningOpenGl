@@ -14,7 +14,7 @@ import zyx.server.world.interactable.common.useable.UseableItem;
 public class Monitor extends UseableItem<Chef>
 {
 
-	private static final int LOOK_TIME = 1000;
+	private static final int LOOK_TIME = 2500;
 
 	private LinkedList<FoodItem> queue;
 

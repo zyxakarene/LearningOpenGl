@@ -8,12 +8,21 @@ import zyx.opengl.buffers.AmbientOcclusionRenderer;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
 import zyx.opengl.buffers.DrawingRenderer;
+import zyx.opengl.textures.ColorTexture;
 import zyx.opengl.textures.TextureFromInt;
 import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.math.Vector2Int;
 
 public class BaseHud extends JsonSprite implements ICallback<Vector2Int>
 {
+
+	private final boolean showRenderers;
+
+	public BaseHud(boolean showRenderers)
+	{
+		this.showRenderers = showRenderers;
+	}
+	
 	@Override
 	public String getResource()
 	{
@@ -29,15 +38,21 @@ public class BaseHud extends JsonSprite implements ICallback<Vector2Int>
 
 	private void addDebugImages()
 	{
-		if (Math.random() > 0)
-		{
-			//return;
-		}
+		
+		
 		DeferredRenderer renderer = DeferredRenderer.getInstance();
 		DepthRenderer depthRenderer = DepthRenderer.getInstance();
 		AmbientOcclusionRenderer ambientRenderer = AmbientOcclusionRenderer.getInstance();
 		DrawingRenderer drawRenderer = DrawingRenderer.getInstance();
 
+		if (!showRenderers)
+		{
+			Image img = new Image();
+			img.setTexture(new ColorTexture(0xFFFFFF));
+			addChild(img);
+			return;
+		}
+		
 		int screenWidth = ScreenSize.width;
 		int screenHeight = ScreenSize.height;
 		int sizeX = screenWidth / 10;
