@@ -36,6 +36,11 @@ public abstract class MeshRenderer<TMaterial extends Material, TModel extends Ab
 	{
 		if (parent != null)
 		{
+			if (parent.inView() == false)
+			{
+				return;
+			}
+			
 			SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM.load(parent.worldMatrix());
 		}
 		

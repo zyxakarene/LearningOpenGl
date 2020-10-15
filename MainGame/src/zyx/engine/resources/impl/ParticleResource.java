@@ -121,6 +121,11 @@ public class ParticleResource extends ExternalResource implements IResourceReady
 			{
 				clone.refresh(loadedVo);
 			}
+			
+			if (model.isWorldParticle() == false)
+			{
+				model.refresh(loadedVo);
+			}
 		}
 	}
 
