@@ -6,8 +6,6 @@ const int SHADOW_QUADRANTS = 4;//Amount of quadrants
 
 in vec2 TexCoords;
 
-out vec4 FragColor;
-
 layout (binding = 0) uniform sampler2D gPosition;
 layout (binding = 1) uniform sampler2D gNormal;
 layout (binding = 2) uniform sampler2D gAlbedoSpec;
@@ -29,6 +27,8 @@ uniform vec2 shadowUvOffsetPerQuadrant[SHADOW_QUADRANTS];
 uniform vec2 uvLimitsMinPerQuadrant[SHADOW_QUADRANTS];
 uniform vec2 uvLimitsMaxPerQuadrant[SHADOW_QUADRANTS];
 uniform mat4 sunProjViews[SHADOW_QUADRANTS];
+
+layout (location = 0) out vec3 gOutput;
 
 vec3 handleLightInfo(in int index, in vec3 normal, in vec3 fragmentPosition)
 {
@@ -191,6 +191,5 @@ void main()
 	vec3 outColor = Diffuse * sunBrightness * AO;
 	//outColor = outColor * col;
 
-	outColor = blendNormal(outColor, Reflect, Shiny);
-    FragColor = vec4(outColor, 1.0);
+	gOutput = blendNormal(outColor, Reflect, Shiny);
 }

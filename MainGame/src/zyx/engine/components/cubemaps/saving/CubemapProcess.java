@@ -5,6 +5,7 @@ import zyx.engine.components.screen.base.Stage;
 import zyx.engine.utils.ScreenSize;
 import zyx.game.controls.process.BaseProcess;
 import zyx.opengl.buffers.DeferredRenderer;
+import zyx.opengl.buffers.LightingPassRenderer;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.camera.Projection;
 import zyx.opengl.shaders.SharedShaderObjects;
@@ -69,7 +70,7 @@ public class CubemapProcess extends BaseProcess
 					state = STATE_SNAPSHOT;
 					break;
 				case STATE_SNAPSHOT:
-					DeferredRenderer.getInstance().setCubemapRenderer(cubemapRenderer);
+					LightingPassRenderer.getInstance().setCubemapRenderer(cubemapRenderer);
 					state = STATE_WAIT;
 					break;
 				case STATE_WAIT:

@@ -4,12 +4,11 @@ import zyx.engine.components.screen.image.Image;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.components.screen.json.JsonSprite;
-import zyx.opengl.buffers.AmbientOcclusionRenderer;
-import zyx.opengl.buffers.DeferredRenderer;
-import zyx.opengl.buffers.DepthRenderer;
-import zyx.opengl.buffers.DrawingRenderer;
+import zyx.opengl.buffers.*;
 import zyx.opengl.textures.TextureFromInt;
 import zyx.opengl.textures.enums.TextureSlot;
+import zyx.utils.GameConstants;
+import zyx.utils.cheats.Print;
 import zyx.utils.math.Vector2Int;
 
 public class BaseHud extends JsonSprite implements ICallback<Vector2Int>
@@ -37,12 +36,20 @@ public class BaseHud extends JsonSprite implements ICallback<Vector2Int>
 		DepthRenderer depthRenderer = DepthRenderer.getInstance();
 		AmbientOcclusionRenderer ambientRenderer = AmbientOcclusionRenderer.getInstance();
 		DrawingRenderer drawRenderer = DrawingRenderer.getInstance();
+		LightingPassRenderer lightRenderer = LightingPassRenderer.getInstance();
 
 		int screenWidth = ScreenSize.width;
 		int screenHeight = ScreenSize.height;
 		int sizeX = screenWidth / 10;
 		int sizeY = screenHeight / 5;
 				
+//		Image resultImg = new Image();
+//		resultImg.setSize(GameConstants.DEFAULT_GAME_WIDTH, -GameConstants.DEFAULT_GAME_HEIGHT);
+//		resultImg.setPosition(true, 0, screenHeight);
+//		resultImg.setTexture(new TextureFromInt(sizeX, sizeY, lightRenderer.outputInt(), TextureSlot.SHARED_DIFFUSE));
+//		resultImg.touchable = false;
+//		addChild(resultImg);
+
 		Image debugPos = new Image();
 		debugPos.setScale(1, -1);
 		debugPos.setPosition(true, sizeX * 0, screenHeight);

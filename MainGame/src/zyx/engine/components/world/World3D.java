@@ -18,6 +18,7 @@ public final class World3D extends WorldObject
 	private DeferredRenderer renderer;
 	private DepthRenderer depth;
 	private AmbientOcclusionRenderer ambientOcclusion;
+	private LightingPassRenderer lighting;
 
 	private GameSun sun;
 	private Skybox skybox;
@@ -32,6 +33,7 @@ public final class World3D extends WorldObject
 		renderer = DeferredRenderer.getInstance();
 		depth = DepthRenderer.getInstance();
 		ambientOcclusion = AmbientOcclusionRenderer.getInstance();
+		lighting = LightingPassRenderer.getInstance();
 
 		skybox = new Skybox();
 
@@ -46,13 +48,14 @@ public final class World3D extends WorldObject
 		depth.prepareRender();
 		ambientOcclusion.prepareRender();
 		renderer.prepareRender();
+		lighting.prepareRender();
 
 		drawing.draw();
 		MeshRenderList.getInstance().draw();
 
 		ambientOcclusion.drawAmbientOcclusion();
 
-		renderer.draw();
+		lighting.draw();
 
 		MeshRenderList.getInstance().drawTransparent();
 	}

@@ -8,7 +8,8 @@ public enum Buffer
 	DRAWING(BufferBinder.UNKNOWN_BUFFER),
 	DEFERRED(BufferBinder.UNKNOWN_BUFFER),
 	DEPTH(BufferBinder.UNKNOWN_BUFFER),
-	AMBIENT_OCCLUSION(BufferBinder.UNKNOWN_BUFFER);
+	AMBIENT_OCCLUSION(BufferBinder.UNKNOWN_BUFFER),
+	LIGHTING_PASS(BufferBinder.UNKNOWN_BUFFER);
 
 	int bufferId;
 

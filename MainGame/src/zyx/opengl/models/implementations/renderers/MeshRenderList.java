@@ -76,7 +76,7 @@ public class MeshRenderList implements IDrawable, Comparator<MeshRenderer>
 	
 	public void drawTransparent()
 	{
-		BufferBinder.bindBuffer(Buffer.DEFAULT);
+//		BufferBinder.bindBuffer(Buffer.DEFAULT);
 		draw(transparentRenderers);
 	}
 

@@ -20,7 +20,7 @@ public class DepthRenderer extends BaseFrameBuffer
 
 	public DepthRenderer()
 	{
-		super(Buffer.DEPTH, 2f);
+		super(Buffer.DEPTH, 1f);
 	}
 
 	@Override
@@ -33,9 +33,9 @@ public class DepthRenderer extends BaseFrameBuffer
 	{
 		bindBuffer();
 		
-		GL11.glViewport(0, 0, w, h);
+//		GL11.glViewport(0, 0, w, h);
 		shadowable.drawShadow();
-		GL11.glViewport(0, 0, (int) (w / renderScale), (int) (h / renderScale));
+//		GL11.glViewport(0, 0, (int) (w / renderScale), (int) (h / renderScale));
 	}
 
 	@Override

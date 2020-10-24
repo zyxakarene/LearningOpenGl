@@ -64,9 +64,18 @@ public abstract class BaseFrameBuffer
 		GL11.glClearColor(1, 1, 1, 0);
 		GL11.glClearStencil(0x00);
 		
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
+		if (doClearColor)
+		{
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
+		}
+		else
+		{
+			GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
+		}
 	}
 
+	protected boolean doClearColor = true;
+	
 	public void bindBuffer()
 	{
 		BufferBinder.bindBuffer(buffer);

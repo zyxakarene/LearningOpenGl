@@ -8,7 +8,12 @@ import zyx.game.components.SimpleMesh;
 import zyx.game.components.world.items.FoodItem;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.vo.DishType;
+import zyx.opengl.buffers.DeferredRenderer;
+import zyx.opengl.buffers.LightingPassRenderer;
 import zyx.opengl.models.implementations.shapes.Box;
+import zyx.opengl.textures.TextureFromInt;
+import zyx.opengl.textures.enums.TextureSlot;
+import zyx.utils.GameConstants;
 
 public class TestScene extends DebugScene
 {
@@ -51,6 +56,12 @@ public class TestScene extends DebugScene
 	{
 		super.onUpdate(timestamp, elapsedTime);
 
+		if (KeyboardData.data.isDown(Keyboard.KEY_SPACE))
+		{
+			LightingPassRenderer lightRenderer = LightingPassRenderer.getInstance();
+			mesh.cloneMaterial().setDiffuse(new TextureFromInt(128, 128, lightRenderer.outputInt(), TextureSlot.SHARED_DIFFUSE));
+		}
+		
 		Vector3f pos = mesh.getPosition(true, null);
 		
 		if (KeyboardData.data.isDown(Keyboard.KEY_RIGHT))
