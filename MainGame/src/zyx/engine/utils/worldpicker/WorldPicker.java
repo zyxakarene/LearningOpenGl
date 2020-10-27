@@ -20,7 +20,7 @@ public class WorldPicker implements IDisposeable
 
 	private ArrayList<PickEntity> pickables;
 	private HashMap<IPhysbox, PickEntity> pickableMap;
-	private Vector3f currentRay;
+	private RayPickerRay currentRay;
 	private Vector3f currentPos;
 
 	private Camera camera;
@@ -82,7 +82,7 @@ public class WorldPicker implements IDisposeable
 
 	public void update()
 	{
-		if (mouseTouchManager.hasTarget())
+		if (!currentRay.valid || mouseTouchManager.hasTarget())
 		{
 			//Mouse over a UI component, so never hit world geometry
 			return;
