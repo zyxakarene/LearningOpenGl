@@ -52,15 +52,16 @@ public abstract class RadialMenu extends JsonSprite
 	protected void onComponentsCreated()
 	{
 		RadialMenuItemRenderer closeRenderer = new RadialMenuItemRenderer();
+		addChild(closeRenderer);
 		closeRenderer.setData(RadialMenuCloseOption.instance);
 		closeRenderer.addCallback(this::onCloseClicked);
-		addChild(closeRenderer);
 		
 		for (IRadialMenuOption option : allOptions)
 		{
 			RadialMenuItemRenderer renderer = new RadialMenuItemRenderer();
-			renderer.setData(option);
 			addChild(renderer);
+			
+			renderer.setData(option);
 
 			ICallback<RadialMenuItemRenderer> callback = adaptor.getCallback(option);
 			renderer.addCallback(callback);

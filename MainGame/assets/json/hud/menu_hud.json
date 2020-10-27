@@ -6,8 +6,8 @@
 		{
 			"name":"play_button",
 			"type":"composedScale9button",
-			"percentWidth":1,
-			"percentHeight":1,
+			"percentWidth":0.5,
+			"percentHeight":0.5,
 			"centerOffsetX":0,
 			"centerOffsetY":0,
 			"colorScheme":"green",

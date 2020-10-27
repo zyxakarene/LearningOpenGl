@@ -3,6 +3,7 @@ package zyx.game.components.screen.json;
 import zyx.engine.components.screen.base.DisplayObject;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
 import org.json.simple.JSONObject;
+import zyx.engine.components.screen.base.docks.DockType;
 import zyx.utils.pooling.ObjectPool;
 
 class ConsumerFactory
@@ -30,13 +31,13 @@ class ConsumerFactory
 		composedButtons = new ObjectPool<>(JsonComposedButtonConsumer.class, 1);
 	}
 
-	void consumeByType(String type, DisplayObjectContainer parent, DisplayObject child, JSONObject json)
+	void consumeByType(String type, DisplayObjectContainer parent, DisplayObject child, JSONObject json, DockType dockType)
 	{
 		ObjectPool consumerPool = getConsumerByType(type);
 		
 		JsonBaseConsumer consumer = (JsonBaseConsumer) consumerPool.getInstance();
 		
-		consumer.consume(child, json);
+		consumer.consume(child, json, dockType);
 		
 		if (parent != child)
 		{

@@ -2,8 +2,11 @@ package zyx.game.components.screen.json;
 
 import java.util.HashMap;
 import org.json.simple.JSONObject;
+import zyx.engine.components.screen.base.ContainerDock;
 import zyx.engine.components.screen.base.DisplayObject;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
+import zyx.engine.components.screen.base.docks.DockType;
+import zyx.engine.components.screen.base.docks.GameDock;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.IResourceReloaded;
 import zyx.engine.resources.ResourceManager;
@@ -26,13 +29,8 @@ public abstract class JsonSprite extends DisplayObjectContainer implements IReso
 	private Resource[] resourceDependencies;
 	private int dependenciesLoaded;
 	private IResourceReady dependencyLoaded;
-
-	public JsonSprite()
-	{
-		this(true);
-	}
 	
-	public JsonSprite(boolean autoLoad)
+	public JsonSprite()
 	{
 		onPreInitialize();
 
@@ -41,10 +39,17 @@ public abstract class JsonSprite extends DisplayObjectContainer implements IReso
 		dependencyLoaded = (IResourceReady) this::onDependencyLoaded;
 
 		jsonChildren = new HashMap<>();
-		
-		if (autoLoad)
+	}
+
+	@Override
+	protected void onSetParent(DisplayObjectContainer parent)
+	{
+		if (!loaded && resource == null)
 		{
-			load();
+			if (parent != null)
+			{
+				load();
+			}
 		}
 	}
 
@@ -110,12 +115,30 @@ public abstract class JsonSprite extends DisplayObjectContainer implements IReso
 
 	private void onAllResourcesLoaded()
 	{
+		DockType dockType = getDockingType();
+		
 		JSONObject content = resource.getContent();
-		JsonSpriteParser.getInstance().createSpriteFrom(this, content);
+		JsonSpriteParser.getInstance().createSpriteFrom(this, content, dockType);
 
 		onComponentsCreated();
 
 		loaded = true;
+	}
+	
+	private DockType getDockingType()
+	{
+		DisplayObjectContainer item = this;
+		while (item != null)
+		{
+			if (item instanceof ContainerDock)
+			{
+				return ((ContainerDock)item).type;
+			}
+			
+			item = item.getParent();
+		}
+		
+		return null;
 	}
 	
 	@Override

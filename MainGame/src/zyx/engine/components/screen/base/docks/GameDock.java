@@ -11,6 +11,7 @@ public class GameDock extends ContainerDock
 
 	public GameDock()
 	{
+		super(DockType.Top);
 	}
 
 	@Override

@@ -2,11 +2,13 @@ package zyx.engine.components.screen.base;
 
 import org.lwjgl.opengl.GL11;
 import zyx.engine.components.animations.IFocusable;
+import zyx.engine.components.screen.base.docks.DockType;
 import zyx.engine.components.screen.base.docks.GameDock;
 import zyx.engine.utils.ScreenSize;
 import zyx.opengl.buffers.Buffer;
 import zyx.opengl.buffers.BufferBinder;
 import zyx.utils.GameConstants;
+import zyx.utils.geometry.IntRectangle;
 import zyx.utils.math.Vector2Int;
 
 public final class Stage extends DisplayObjectContainer implements IFocusable
@@ -126,5 +128,15 @@ public final class Stage extends DisplayObjectContainer implements IFocusable
 	public String getDebugIcon()
 	{
 		return "stage.png";
+	}
+
+	public void getDockSize(IntRectangle rect, DockType dockType)
+	{
+		switch (dockType)
+		{
+			case Top:
+				gameDock.getBounds(rect);
+				break;
+		}
 	}
 }
