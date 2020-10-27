@@ -2,13 +2,10 @@ package zyx.engine.components.screen.base;
 
 import org.lwjgl.opengl.GL11;
 import zyx.engine.components.animations.IFocusable;
-import zyx.engine.components.screen.image.Image;
+import zyx.engine.components.screen.base.docks.GameDock;
 import zyx.engine.utils.ScreenSize;
 import zyx.opengl.buffers.Buffer;
 import zyx.opengl.buffers.BufferBinder;
-import zyx.opengl.buffers.LightingPassRenderer;
-import zyx.opengl.textures.TextureFromInt;
-import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.GameConstants;
 import zyx.utils.math.Vector2Int;
 
@@ -20,7 +17,8 @@ public final class Stage extends DisplayObjectContainer implements IFocusable
 	private InteractionCrawler crawler;
 	private IFocusable focusedTarget;
 
-	public final DisplayObjectContainer gameScreen;
+	private final ContainerDock gameDock;
+
 	public final DisplayObjectContainer loadingScreenLayer;
 	public final DisplayObjectContainer tooltipLayer;
 	public final DisplayObjectContainer hudLayer;
@@ -29,24 +27,10 @@ public final class Stage extends DisplayObjectContainer implements IFocusable
 	{
 		name = "";
 
-		LightingPassRenderer lightRenderer = LightingPassRenderer.getInstance();
-				
-		int gameWidth = GameConstants.DEFAULT_GAME_WIDTH;
-		int gameHeight = GameConstants.DEFAULT_GAME_HEIGHT;
-		
-		Image resultImg = new Image();
-		resultImg.setSize(gameWidth, -gameHeight);
-		resultImg.setPosition(true, 0, gameHeight);
-		resultImg.setTexture(new TextureFromInt(gameWidth, gameHeight, lightRenderer.outputInt(), TextureSlot.SHARED_DIFFUSE));
-		resultImg.touchable = false;
-		
-		gameScreen = new DisplayObjectContainer();
-		gameScreen.addChild(resultImg);
-//		gameScreen.setWidth(GameConstants.DEFAULT_GAME_WIDTH);
-//		gameScreen.setHeight(GameConstants.DEFAULT_GAME_HEIGHT);
-		gameScreen.setPosition(true, 0, 0);
-		gameScreen.name = "GameScreen";
-		
+		gameDock = new GameDock();
+		gameDock.setBounds(GameConstants.DEFAULT_GAME_POS_X, GameConstants.DEFAULT_GAME_WIDTH, GameConstants.DEFAULT_GAME_POS_Y, GameConstants.DEFAULT_GAME_HEIGHT);
+		addChild(gameDock);
+
 		loadingScreenLayer = new DisplayObjectContainer();
 		loadingScreenLayer.name = "LoadingContainer";
 
@@ -56,29 +40,30 @@ public final class Stage extends DisplayObjectContainer implements IFocusable
 		hudLayer = new DisplayObjectContainer();
 		hudLayer.name = "HudContainer";
 
-		crawler = new InteractionCrawler(this, hudLayer, tooltipLayer, loadingScreenLayer);
+		crawler = new InteractionCrawler(this, gameDock);
 		stage = this;
 
-		ScreenSize.addListener(this::onScreenSizeChanged);		
-		gameScreen.addChild(tooltipLayer);
-		gameScreen.addChild(hudLayer);
-		gameScreen.addChild(loadingScreenLayer);
-		addChild(gameScreen);
+		ScreenSize.addListener(this::onScreenSizeChanged);
+		gameDock.addChild(tooltipLayer);
+		gameDock.addChild(hudLayer);
+		gameDock.addChild(loadingScreenLayer);
+		addChild(gameDock);
 	}
 
 	private void onScreenSizeChanged(Vector2Int size)
 	{
 		updateTransforms(true);
 	}
-	
+
 	public final void drawStage()
 	{
 		BufferBinder.bindBuffer(Buffer.DEFAULT);
-
-		shader.bind();
-		shader.setClipRect(0, ScreenSize.width, 0, ScreenSize.height);
+		GL11.glViewport(0, 0, GameConstants.WINDOW_WIDTH, GameConstants.WINDOW_HEIGHT);
 		
-		gameScreen.draw();
+		shader.bind();
+		shader.setClipRect(0, GameConstants.WINDOW_WIDTH, 0, GameConstants.WINDOW_HEIGHT);
+
+		gameDock.draw();
 	}
 
 	public final void checkStageMouseInteractions(int x, int y)

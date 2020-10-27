@@ -38,8 +38,8 @@ public class BaseHud extends JsonSprite implements ICallback<Vector2Int>
 		DrawingRenderer drawRenderer = DrawingRenderer.getInstance();
 		LightingPassRenderer lightRenderer = LightingPassRenderer.getInstance();
 
-		int screenWidth = ScreenSize.width;
-		int screenHeight = ScreenSize.height;
+		int screenWidth = GameConstants.DEFAULT_GAME_WIDTH;
+		int screenHeight = GameConstants.DEFAULT_GAME_HEIGHT;
 		int sizeX = screenWidth / 10;
 		int sizeY = screenHeight / 5;
 				

@@ -6,6 +6,7 @@ import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.utils.GameConstants;
 import zyx.utils.geometry.Rectangle;
 import zyx.utils.math.Vector2Int;
 
@@ -47,7 +48,7 @@ public class ScreenShader extends AbstractShader implements ICallback<Vector2Int
 	private void onScreenSizeChanged()
 	{
 		MATRIX_VIEW.setIdentity();
-		MATRIX_VIEW.translate(new Vector2f(-ScreenSize.width / 2, ScreenSize.height / 2));
+		MATRIX_VIEW.translate(new Vector2f(-GameConstants.WINDOW_WIDTH / 2, GameConstants.WINDOW_HEIGHT / 2));
 	}
 	
 	@Override

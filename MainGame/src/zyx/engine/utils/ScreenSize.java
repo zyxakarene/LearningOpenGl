@@ -7,8 +7,8 @@ import zyx.utils.math.Vector2Int;
 
 public class ScreenSize
 {
-	public static int width = GameConstants.DEFAULT_GAME_WIDTH;
-	public static int height = GameConstants.DEFAULT_GAME_HEIGHT;
+	public static int width = GameConstants.WINDOW_WIDTH;
+	public static int height = GameConstants.WINDOW_HEIGHT;
 	
 	private static ArrayList<ICallback<Vector2Int>> listeners = new ArrayList<>();
 	

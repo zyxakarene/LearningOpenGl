@@ -20,7 +20,7 @@ public class DepthRenderer extends BaseFrameBuffer
 
 	public DepthRenderer()
 	{
-		super(Buffer.DEPTH, 1f);
+		super(Buffer.DEPTH, 4f);
 	}
 
 	@Override

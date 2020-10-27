@@ -15,8 +15,8 @@ public class GameConstants
 	public static final int WINDOW_WIDTH = (int) (800);
 	public static final int WINDOW_HEIGHT = (int) (600);
 	
-	public static final int DEFAULT_GAME_WIDTH = (int) (WINDOW_WIDTH / 1);
-	public static final int DEFAULT_GAME_HEIGHT = (int) (WINDOW_HEIGHT / 1);
+	public static final int DEFAULT_GAME_WIDTH = (int) (WINDOW_WIDTH * 0.9);
+	public static final int DEFAULT_GAME_HEIGHT = (int) (WINDOW_HEIGHT * 0.9);
 	public static final int DEFAULT_GAME_POS_X = (WINDOW_WIDTH / 2) - (DEFAULT_GAME_WIDTH / 2);
 	public static final int DEFAULT_GAME_POS_Y = (WINDOW_HEIGHT / 2) - (DEFAULT_GAME_HEIGHT / 2);
 	public static final float FOV = 70f;

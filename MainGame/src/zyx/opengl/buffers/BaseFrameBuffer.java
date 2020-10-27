@@ -17,6 +17,7 @@ import static org.lwjgl.opengl.GL30.glFramebufferRenderbuffer;
 import static org.lwjgl.opengl.GL30.glRenderbufferStorage;
 import static org.lwjgl.opengl.GL30.glGenRenderbuffers;
 import zyx.engine.utils.ScreenSize;
+import zyx.utils.GameConstants;
 
 public abstract class BaseFrameBuffer
 {
@@ -35,7 +36,7 @@ public abstract class BaseFrameBuffer
 		this.buffer = bufferEnum;
 		this.renderScale = renderScale;
 
-		resize(ScreenSize.width, ScreenSize.height);
+		resize(GameConstants.DEFAULT_GAME_WIDTH, GameConstants.DEFAULT_GAME_HEIGHT);
 	}
 
 	void resize(int width, int height)
@@ -61,6 +62,7 @@ public abstract class BaseFrameBuffer
 	public void prepareRender()
 	{
 		BufferBinder.bindBuffer(buffer);
+		GL11.glViewport(0, 0, w, h);
 		GL11.glClearColor(1, 1, 1, 0);
 		GL11.glClearStencil(0x00);
 		
@@ -79,6 +81,7 @@ public abstract class BaseFrameBuffer
 	public void bindBuffer()
 	{
 		BufferBinder.bindBuffer(buffer);
+		GL11.glViewport(0, 0, w, h);
 	}
 
 	private void setupBufferValues()
