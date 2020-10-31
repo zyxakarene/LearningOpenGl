@@ -9,6 +9,8 @@ import zyx.opengl.textures.enums.TextureSlot;
 public class GameDock extends ContainerDock
 {
 
+	private Image sceneImage;
+
 	public GameDock()
 	{
 		super(DockType.Top);
@@ -18,14 +20,21 @@ public class GameDock extends ContainerDock
 	protected void setup()
 	{
 		LightingPassRenderer lightRenderer = LightingPassRenderer.getInstance();
-		
-		Image resultImg = new Image();
-		resultImg.setSize(width, -height);
-		resultImg.setPosition(true, 0, height);
-		resultImg.setTexture(new TextureFromInt(width, height, lightRenderer.outputInt(), TextureSlot.SHARED_DIFFUSE));
-		resultImg.touchable = false;
-		
-		addChild(resultImg);
+
+		sceneImage = new Image();
+		sceneImage.setSize(width, -height);
+		sceneImage.setPosition(true, 0, height);
+		sceneImage.setTexture(new TextureFromInt(width, height, lightRenderer.outputInt(), TextureSlot.SHARED_DIFFUSE));
+		sceneImage.touchable = false;
+
+		addChild(sceneImage);
 	}
 
+	@Override
+	protected void onSizeChanged()
+	{
+		sceneImage.setSize(width, -height);
+		sceneImage.setPosition(true, 0, height);
+
+	}
 }

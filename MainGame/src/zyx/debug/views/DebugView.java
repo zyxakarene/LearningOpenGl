@@ -40,6 +40,8 @@ public class DebugView extends javax.swing.JFrame
 		{
 			tabPane.addTab(panel.getTabName(), panel);
 		}
+		
+		tabPane.setSelectedIndex(2);
 	}
 	
 	void update()

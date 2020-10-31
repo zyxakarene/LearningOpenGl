@@ -41,7 +41,7 @@ public class ScreenModelMaterial extends Material
 	{
 		textures[TextureSlot.SHARED_DIFFUSE.index] = texture;
 	}
-	
+
 	@Override
 	protected int getTextureCount()
 	{

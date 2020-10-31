@@ -1,6 +1,5 @@
 package zyx.opengl.buffers;
 
-import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_NEAREST;
 import static org.lwjgl.opengl.GL11.GL_STENCIL_BUFFER_BIT;
@@ -35,7 +34,7 @@ public class LightingPassRenderer extends BaseFrameBuffer
 	private TextureFromInt cubeIndexTexture;
 
 	private FullScreenQuadModel model;
-	
+
 	private ICubemapRenderer cubemapRenderer;
 
 	public static LightingPassRenderer getInstance()
@@ -79,7 +78,7 @@ public class LightingPassRenderer extends BaseFrameBuffer
 		material.setShadow(shadowDepthTexture);
 		material.setAmbientOcclusion(ambientOcclusionTexture);
 		material.setCubeIndex(cubeIndexTexture);
-		
+
 		model = new FullScreenQuadModel(material);
 	}
 
@@ -90,12 +89,12 @@ public class LightingPassRenderer extends BaseFrameBuffer
 		ShaderManager.getInstance().get(Shader.DEFERED_LIGHT_PASS).upload();
 
 		model.draw();
-		
+
 		if (cubemapRenderer != null)
 		{
 			cubemapRenderer.renderCubemap();
 		}
-		
+
 		DeferredRenderer renderer = DeferredRenderer.getInstance();
 		int readBufferId = renderer.depthBufferId;
 		int writeBufferId = bufferId;
@@ -132,7 +131,26 @@ public class LightingPassRenderer extends BaseFrameBuffer
 			outputBuffer.dispose();
 			outputBuffer = null;
 		}
-		
+
+		if (positionTexture != null)
+		{
+			positionTexture.dispose();
+			normalTexture.dispose();
+			colorTexture.dispose();
+			depthTexture.dispose();
+			shadowDepthTexture.dispose();
+			ambientOcclusionTexture.dispose();
+			cubeIndexTexture.dispose();
+			
+			positionTexture = null;
+			normalTexture = null;
+			colorTexture = null;
+			depthTexture = null;
+			shadowDepthTexture = null;
+			ambientOcclusionTexture = null;
+			cubeIndexTexture = null;
+		}
+
 		if (model != null)
 		{
 			model.dispose();

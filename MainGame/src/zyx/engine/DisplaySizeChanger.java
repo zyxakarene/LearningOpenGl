@@ -19,16 +19,16 @@ public class DisplaySizeChanger implements ICallback<Vector2Int>
 	@Override
 	public void onCallback(Vector2Int data)
 	{
-		try
-		{
-			Display.setDisplayMode(new DisplayMode(data.x, data.y));
-		}
-		catch (LWJGLException ex)
-		{
-			String msg = "[Error] Could not change LWGL Display size.";
-			Print.err(msg, ex.getMessage());
-			
-			System.exit(-1);
-		}
+//		try
+//		{
+//			Display.setDisplayMode(new DisplayMode(data.x, data.y));
+//		}
+//		catch (LWJGLException ex)
+//		{
+//			String msg = "[Error] Could not change LWGL Display size.";
+//			Print.err(msg, ex.getMessage());
+//			
+//			System.exit(-1);
+//		}
 	}
 }

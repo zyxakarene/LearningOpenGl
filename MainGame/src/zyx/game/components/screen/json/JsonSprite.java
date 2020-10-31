@@ -147,6 +147,7 @@ public abstract class JsonSprite extends DisplayObjectContainer implements IReso
 		if (loaded)
 		{
 			removeChildren(true);
+			jsonChildren.clear();
 			onAllResourcesLoaded();
 		}
 	}

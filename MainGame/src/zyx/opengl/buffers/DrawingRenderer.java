@@ -97,6 +97,18 @@ public class DrawingRenderer extends BaseFrameBuffer
 			underlayBuffer = null;
 		}
 
+		if (underlayTexture != null)
+		{
+			underlayTexture.dispose();
+			underlayTexture = null;
+		}
+
+		if (overlayTexture != null)
+		{
+			overlayTexture.dispose();
+			overlayTexture = null;
+		}
+		
 		if (model != null)
 		{
 			model.dispose();

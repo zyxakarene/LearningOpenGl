@@ -36,8 +36,8 @@ public class CubemapProcess extends BaseProcess
 	{
 		this.positions = positions;
 
-		startWidth = ScreenSize.width;
-		startHeight = ScreenSize.height;
+		startWidth = ScreenSize.windowWidth;
+		startHeight = ScreenSize.windowHeight;
 				
 		rotations = new Vector3f[]
 		{

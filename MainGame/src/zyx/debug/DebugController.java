@@ -12,11 +12,11 @@ public class DebugController
 	{
 		if (view == null)
 		{
-			java.awt.EventQueue.invokeLater(() ->
-			{
-				view = new DebugView();
-				view.setVisible(true);
-			});
+//			java.awt.EventQueue.invokeLater(() ->
+//			{
+//				view = new DebugView();
+//				view.setVisible(true);
+//			});
 		}
 	}
 

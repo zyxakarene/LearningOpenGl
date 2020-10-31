@@ -3,11 +3,11 @@ package zyx.engine.components.screen.base;
 import org.lwjgl.opengl.GL11;
 import zyx.engine.components.animations.IFocusable;
 import zyx.engine.components.screen.base.docks.DockType;
+import zyx.engine.components.screen.base.docks.EditorDock;
 import zyx.engine.components.screen.base.docks.GameDock;
 import zyx.engine.utils.ScreenSize;
 import zyx.opengl.buffers.Buffer;
 import zyx.opengl.buffers.BufferBinder;
-import zyx.utils.GameConstants;
 import zyx.utils.geometry.IntRectangle;
 import zyx.utils.math.Vector2Int;
 
@@ -20,6 +20,9 @@ public final class Stage extends DisplayObjectContainer implements IFocusable
 	private IFocusable focusedTarget;
 
 	private final ContainerDock gameDock;
+	private final ContainerDock hierarchyDock;
+	private final ContainerDock resourcesDock;
+	private final ContainerDock propertyDock;
 
 	public final DisplayObjectContainer loadingScreenLayer;
 	public final DisplayObjectContainer tooltipLayer;
@@ -28,10 +31,17 @@ public final class Stage extends DisplayObjectContainer implements IFocusable
 	private Stage()
 	{
 		name = "";
-
 		gameDock = new GameDock();
-		gameDock.setBounds(GameConstants.DEFAULT_GAME_POS_X, GameConstants.DEFAULT_GAME_WIDTH, GameConstants.DEFAULT_GAME_POS_Y, GameConstants.DEFAULT_GAME_HEIGHT);
+		hierarchyDock = new EditorDock(DockType.Left);
+		resourcesDock = new EditorDock(DockType.Bottom);
+		propertyDock = new EditorDock(DockType.Right);
+
+		setDockBounds();
+
 		addChild(gameDock);
+		addChild(hierarchyDock);
+		addChild(resourcesDock);
+		addChild(propertyDock);
 
 		loadingScreenLayer = new DisplayObjectContainer();
 		loadingScreenLayer.name = "LoadingContainer";
@@ -52,20 +62,32 @@ public final class Stage extends DisplayObjectContainer implements IFocusable
 		addChild(gameDock);
 	}
 
+	private void setDockBounds()
+	{
+		gameDock.setBounds(ScreenSize.gamePosX, ScreenSize.gameWidth, ScreenSize.gamePosY, ScreenSize.gameHeight);
+		hierarchyDock.setBounds(0, ScreenSize.gamePosX, ScreenSize.gamePosY, ScreenSize.windowHeight);
+		resourcesDock.setBounds(ScreenSize.gamePosX, ScreenSize.gameWidth, ScreenSize.gameHeight, ScreenSize.windowHeight - ScreenSize.gameHeight);
+		propertyDock.setBounds(ScreenSize.gamePosX + ScreenSize.gameWidth, ScreenSize.windowWidth - ScreenSize.gamePosX - ScreenSize.gameWidth, ScreenSize.gamePosY, ScreenSize.windowHeight);
+	}
+
 	private void onScreenSizeChanged(Vector2Int size)
 	{
+		setDockBounds();
 		updateTransforms(true);
 	}
 
 	public final void drawStage()
 	{
 		BufferBinder.bindBuffer(Buffer.DEFAULT);
-		GL11.glViewport(0, 0, GameConstants.WINDOW_WIDTH, GameConstants.WINDOW_HEIGHT);
-		
+		GL11.glViewport(0, 0, ScreenSize.windowWidth, ScreenSize.windowHeight);
+
 		shader.bind();
-		shader.setClipRect(0, GameConstants.WINDOW_WIDTH, 0, GameConstants.WINDOW_HEIGHT);
+		shader.setClipRect(0, ScreenSize.windowWidth, 0, ScreenSize.windowHeight);
 
 		gameDock.draw();
+		hierarchyDock.draw();
+		resourcesDock.draw();
+		propertyDock.draw();
 	}
 
 	public final void checkStageMouseInteractions(int x, int y)
@@ -94,13 +116,13 @@ public final class Stage extends DisplayObjectContainer implements IFocusable
 	@Override
 	public float getWidth()
 	{
-		return ScreenSize.width;
+		return ScreenSize.windowWidth;
 	}
 
 	@Override
 	public float getHeight()
 	{
-		return ScreenSize.height;
+		return ScreenSize.windowHeight;
 	}
 
 	@Override
@@ -132,11 +154,27 @@ public final class Stage extends DisplayObjectContainer implements IFocusable
 
 	public void getDockSize(IntRectangle rect, DockType dockType)
 	{
-		switch (dockType)
+		if (dockType == null)
 		{
-			case Top:
-				gameDock.getBounds(rect);
-				break;
+			gameDock.getBounds(rect);
+		}
+		else
+		{
+			switch (dockType)
+			{
+				case Top:
+					gameDock.getBounds(rect);
+					break;
+				case Left:
+					hierarchyDock.getBounds(rect);
+					break;
+				case Bottom:
+					resourcesDock.getBounds(rect);
+					break;
+				case Right:
+					propertyDock.getBounds(rect);
+					break;
+			}
 		}
 	}
 }

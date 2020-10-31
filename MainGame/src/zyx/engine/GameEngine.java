@@ -4,10 +4,12 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import zyx.debug.DebugController;
-import zyx.debug.views.DebugFrame;
+import zyx.debug.views.DebugFrame; 
+import zyx.engine.components.world.World3D;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.scene.SceneManager;
 import zyx.engine.sound.SoundSystem;
+import zyx.engine.utils.ScreenSize;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.sound.SoundManager;
 import zyx.game.scene.SceneType;
@@ -19,6 +21,7 @@ import zyx.opengl.shaders.ShaderManager;
 import zyx.utils.DeltaTime;
 import zyx.utils.FPSCounter;
 import zyx.utils.GameConstants;
+import zyx.utils.cheats.Print;
 
 public class GameEngine
 {
@@ -38,14 +41,14 @@ public class GameEngine
 		GLUtils.enableGLSettings();
 		
 		sizeChanger = new DisplaySizeChanger();
-
+		
 		ShaderManager.getInstance().initialize();
 		CursorManager.getInstance().initialize();
 		Camera.getInstance().initialize();
 
 		SoundSystem.initialize();
 
-		sceneManager.changeScene(startScene);
+		sceneManager.changeScene(startScene);		
 		beginGameLoop();
 	}
 
@@ -55,6 +58,19 @@ public class GameEngine
 				
 		while (running)
 		{
+			if (KeyboardData.data.wasPressed(Keyboard.KEY_R))
+			{
+				int width = (int) (64 + (Math.random() * 1920 * 0.75));
+				int height = (int) (64 + (Math.random() * 1080 * 0.75));
+				ScreenSize.changeScreenSize(width, height);
+			}
+			
+			if (Display.wasResized())
+			{
+				Print.out(Display.getWidth(), Display.getHeight());
+				ScreenSize.changeScreenSize(Display.getWidth(), Display.getHeight());
+			}
+			
 			running = !Display.isCloseRequested();
 			
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_1))

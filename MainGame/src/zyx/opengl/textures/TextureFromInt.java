@@ -14,7 +14,7 @@ public class TextureFromInt extends AbstractTexture
 	{
 		super("TextureFromId:" + id, slot);
 
-		this.textureId = id + 0;
+		this.textureId = id;
 		
 		setSizes(width, height);
 	}

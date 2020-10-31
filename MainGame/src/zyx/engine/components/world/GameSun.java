@@ -86,7 +86,7 @@ public class GameSun extends WorldObject implements ISun
 			cascadeLimits[i] = -cascades[i];
 		}
 
-		float ar = (float) ScreenSize.height / (float) ScreenSize.width;
+		float ar = (float) ScreenSize.windowHeight / (float) ScreenSize.windowWidth;
 		float tanHalfHFOV = FloatMath.tan(FloatMath.DEG_TO_RAD * (GameConstants.FOV / 2f));
 		float tanHalfVFOV = FloatMath.tan(FloatMath.DEG_TO_RAD * ((GameConstants.FOV * ar) / 2f));
 

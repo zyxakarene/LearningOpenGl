@@ -54,7 +54,7 @@ public class Image extends AbstractImage implements IResourceReady<TextureResour
 	{
 		super.dispose();
 
-		if (loaded)
+		if (model != null)
 		{
 			model.dispose();
 			model = null;

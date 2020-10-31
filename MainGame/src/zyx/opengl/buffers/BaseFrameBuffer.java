@@ -36,7 +36,7 @@ public abstract class BaseFrameBuffer
 		this.buffer = bufferEnum;
 		this.renderScale = renderScale;
 
-		resize(GameConstants.DEFAULT_GAME_WIDTH, GameConstants.DEFAULT_GAME_HEIGHT);
+		resize(ScreenSize.gameWidth, ScreenSize.gameHeight);
 	}
 
 	void resize(int width, int height)

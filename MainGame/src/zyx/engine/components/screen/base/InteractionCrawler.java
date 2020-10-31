@@ -33,8 +33,8 @@ public class InteractionCrawler
 		hitTarget = null;
 		clipRect.x = 0;
 		clipRect.y = 0;
-		clipRect.width = ScreenSize.width;
-		clipRect.height = ScreenSize.height;
+		clipRect.width = ScreenSize.windowWidth;
+		clipRect.height = ScreenSize.windowHeight;
 
 		objects.clear();
 

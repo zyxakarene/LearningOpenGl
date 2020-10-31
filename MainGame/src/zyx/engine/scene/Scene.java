@@ -1,5 +1,6 @@
 package zyx.engine.scene;
 
+import org.lwjgl.input.Keyboard;
 import zyx.engine.components.screen.base.Stage;
 import zyx.engine.components.world.World3D;
 import zyx.engine.curser.CursorManager;
@@ -8,11 +9,13 @@ import zyx.engine.scene.loading.ILoadingScreenDone;
 import zyx.engine.scene.loading.LoadingScreenProcess;
 import zyx.engine.scene.loading.LoadingScreenProcessQueue;
 import zyx.engine.scene.preloading.ResourcePreloadProcess;
+import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.worldpicker.calculating.RayPicker;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.MegaManager;
 import zyx.opengl.GLUtils;
 import zyx.game.components.screen.hud.BaseHud;
+import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.input.MouseData;
 import zyx.game.controls.lights.LightsManager;
 import zyx.net.io.controllers.BaseNetworkController;
@@ -105,7 +108,7 @@ public class Scene implements ILoadingScreenDone
 		RayPicker.getInstance().updateMousePos(MouseData.data.x, MouseData.data.y);
 
 		MegaManager.update(timestamp, elapsedTime);
-		
+
 		if (ready)
 		{
 			onUpdate(timestamp, elapsedTime);

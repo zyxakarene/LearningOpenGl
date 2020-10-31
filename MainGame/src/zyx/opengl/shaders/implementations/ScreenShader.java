@@ -6,7 +6,6 @@ import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.SharedShaderObjects;
-import zyx.utils.GameConstants;
 import zyx.utils.geometry.Rectangle;
 import zyx.utils.math.Vector2Int;
 
@@ -24,8 +23,8 @@ public class ScreenShader extends AbstractShader implements ICallback<Vector2Int
 	private int ClipXVecTrans;
 	private int ClipYVecTrans;
 
-	private Vector2f clipX = new Vector2f(0, ScreenSize.width);
-	private Vector2f clipY = new Vector2f(0, ScreenSize.height);
+	private Vector2f clipX = new Vector2f(0, ScreenSize.windowWidth);
+	private Vector2f clipY = new Vector2f(0, ScreenSize.windowHeight);
 	
 	public ScreenShader(Object lock)
 	{
@@ -48,7 +47,7 @@ public class ScreenShader extends AbstractShader implements ICallback<Vector2Int
 	private void onScreenSizeChanged()
 	{
 		MATRIX_VIEW.setIdentity();
-		MATRIX_VIEW.translate(new Vector2f(-GameConstants.WINDOW_WIDTH / 2, GameConstants.WINDOW_HEIGHT / 2));
+		MATRIX_VIEW.translate(new Vector2f(-ScreenSize.windowWidth / 2, ScreenSize.windowHeight / 2));
 	}
 	
 	@Override
@@ -61,7 +60,7 @@ public class ScreenShader extends AbstractShader implements ICallback<Vector2Int
 		UniformUtils.setUniformMatrix(projectionMatrixTrans, MATRIX_PROJECTION);
 		
 		UniformUtils.setUniform2F(ClipXVecTrans, clipX.x - 1, clipX.y + 1);
-		UniformUtils.setUniform2F(ClipYVecTrans, ScreenSize.height - clipY.x + 1, ScreenSize.height - clipY.y - 1);
+		UniformUtils.setUniform2F(ClipYVecTrans, ScreenSize.windowHeight - clipY.x + 1, ScreenSize.windowHeight - clipY.y - 1);
 	}
 
 	public void setClipRect(Rectangle rect)

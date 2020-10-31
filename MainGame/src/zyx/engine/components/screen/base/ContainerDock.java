@@ -4,7 +4,7 @@ import zyx.engine.components.screen.base.docks.DockType;
 import zyx.utils.geometry.IntRectangle;
 import zyx.utils.geometry.Rectangle;
 
-public class ContainerDock extends DisplayObjectContainer
+public abstract class ContainerDock extends DisplayObjectContainer
 {
 
 	public final DockType type;
@@ -13,9 +13,12 @@ public class ContainerDock extends DisplayObjectContainer
 	protected int y;
 	protected int width;
 	protected int height;
+	
+	private boolean hasSetup;
 			
 	public ContainerDock(DockType type)
 	{
+		hasSetup = false;
 		name = getClass().getSimpleName();
 		this.type = type;
 	}
@@ -29,7 +32,16 @@ public class ContainerDock extends DisplayObjectContainer
 		setPosition(true, this.x, this.y);
 		clipRect = new Rectangle(0, 0, width, height);
 
-		setup();
+		if (hasSetup)
+		{
+			onSizeChanged();
+		}
+		else
+		{
+			hasSetup = true;
+			setup();
+		}
+		
 	}
 
 	void getBounds(IntRectangle rect)
@@ -40,8 +52,7 @@ public class ContainerDock extends DisplayObjectContainer
 		rect.height = height;
 	}
 	
-	protected void setup()
-	{
-		
-	}
+	protected abstract void setup();
+	
+	protected abstract void onSizeChanged();
 }

@@ -103,7 +103,7 @@ public class DinerScene extends GameScene
 		if (MouseData.data.isLeftClicked())
 		{
 			Mouse.setGrabbed(false);
-			Mouse.setCursorPosition(ScreenSize.width / 2, ScreenSize.height / 2);
+			Mouse.setCursorPosition(ScreenSize.windowWidth / 2, ScreenSize.windowHeight / 2);
 
 			WorldObject worldObject = info.worldObject;
 			if (worldObject instanceof IInteractable)
