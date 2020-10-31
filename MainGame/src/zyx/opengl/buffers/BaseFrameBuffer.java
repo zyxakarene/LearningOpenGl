@@ -123,8 +123,8 @@ public abstract class BaseFrameBuffer
 
 		buffer.bufferId = BufferBinder.UNKNOWN_BUFFER;
 		
-		GL15.glDeleteBuffers(depthBufferId);
-		GL15.glDeleteBuffers(bufferId);
+		GL30.glDeleteFramebuffers(depthBufferId);
+		GL30.glDeleteRenderbuffers(bufferId);
 	}
 
 	protected abstract void onDispose();
