@@ -3,7 +3,6 @@ package zyx.opengl.buffers;
 import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import static org.lwjgl.opengl.GL30.GL_DEPTH24_STENCIL8;
@@ -17,7 +16,6 @@ import static org.lwjgl.opengl.GL30.glFramebufferRenderbuffer;
 import static org.lwjgl.opengl.GL30.glRenderbufferStorage;
 import static org.lwjgl.opengl.GL30.glGenRenderbuffers;
 import zyx.engine.utils.ScreenSize;
-import zyx.utils.GameConstants;
 
 public abstract class BaseFrameBuffer
 {

@@ -40,6 +40,7 @@ public class RenderTextureDebth extends AbstractTexture
 	protected void onDispose()
 	{
 		GL30.glDeleteFramebuffers(bufferId);
+		GL30.glDeleteRenderbuffers(stencilBufferId);
 	}
 
 	private void setupRenderTexture()
