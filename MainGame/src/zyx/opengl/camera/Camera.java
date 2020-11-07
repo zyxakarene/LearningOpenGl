@@ -31,7 +31,7 @@ public class Camera
 		initialized = false;
 		frustum = new ViewFrustum();
 	
-		target = World3D.instance;
+		target = World3D.getInstance();
 	}
 
 	private void onScreenSizeChanged(Vector2Int data)
@@ -46,7 +46,7 @@ public class Camera
 	
 	public void clearViewObject()
 	{
-		this.target = World3D.instance;
+		this.target = World3D.getInstance();
 	}
 	
 	public void initialize()

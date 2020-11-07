@@ -16,6 +16,7 @@ public class TooltipManager implements IUpdateable
 	private ArrayList<AbstractTooltip> tooltips;
 	private Vector2f outVector;
 	private Vector3f cameraPos;
+	private Stage stage;
 
 	public static TooltipManager getInstance()
 	{
@@ -27,11 +28,13 @@ public class TooltipManager implements IUpdateable
 		tooltips = new ArrayList<>();
 		outVector = new Vector2f();
 		cameraPos = new Vector3f();
+		
+		stage = Stage.getInstance();
 	}
 
 	public void register(AbstractTooltip tooltip)
 	{
-		Stage.instance.tooltipLayer.addChild(tooltip);
+		stage.tooltipLayer.addChild(tooltip);
 
 		if (tooltips.contains(tooltip) == false)
 		{
@@ -74,7 +77,7 @@ public class TooltipManager implements IUpdateable
 			
 			if(next != null && next.currentDistance < temp.currentDistance)
 			{
-				Stage.instance.tooltipLayer.flipChildren(i, i-1);
+				stage.tooltipLayer.flipChildren(i, i-1);
 				
 				tooltips.set(i - 1, temp);
 				tooltips.set(i, next);
@@ -84,7 +87,7 @@ public class TooltipManager implements IUpdateable
 
 	public void clean()
 	{
-		Stage.instance.tooltipLayer.removeChildren(true);
+		stage.tooltipLayer.removeChildren(true);
 		tooltips.clear();
 	}
 }

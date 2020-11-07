@@ -51,7 +51,7 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 	{
 		currentDisplayObject = container;
 		currentDockType = dockType;
-		Stage.instance.getDockSize(currentDockSize, dockType);
+		Stage.getInstance().getDockSize(currentDockSize, dockType);
 
 		if (json.containsKey(NAME))
 		{

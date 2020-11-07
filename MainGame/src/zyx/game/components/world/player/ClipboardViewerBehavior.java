@@ -77,7 +77,7 @@ public class ClipboardViewerBehavior extends Behavior implements ICallback<BaseT
 	{
 		viewingBoard = !viewingBoard;
 		MouseTouchManager.getInstance().setEnabled(!viewingBoard);
-		Stage.instance.touchable = !viewingBoard;
+		Stage.getInstance().touchable = !viewingBoard;
 
 		int timeToMove = tweening ? tweenTime : DEFAULT_MOVE_TIME;
 

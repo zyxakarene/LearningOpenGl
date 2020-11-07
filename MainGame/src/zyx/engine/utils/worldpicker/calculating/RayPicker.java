@@ -40,7 +40,7 @@ public class RayPicker
 		inverseProjection.load(matrix);
 		inverseProjection.invert();
 		
-		Stage.instance.getDockSize(dockSize, DockType.Top);
+		Stage.getInstance().getDockSize(dockSize, DockType.Top);
 	}
 	
 	public static RayPicker getInstance()

@@ -1,16 +1,14 @@
 package zyx.engine.components.world;
 
 import org.lwjgl.util.vector.Vector3f;
-import zyx.opengl.GLUtils;
 import zyx.opengl.buffers.*;
 import zyx.opengl.models.implementations.renderers.MeshRenderList;
-import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.shaders.SharedShaderObjects;
 
 public final class World3D extends WorldObject
 {
 
-	public static final World3D instance = new World3D();
+	private static final World3D INSTANCE = new World3D();
 
 	public final Physics physics;
 
@@ -23,12 +21,18 @@ public final class World3D extends WorldObject
 	private GameSun sun;
 	private Skybox skybox;
 
+	public static World3D getInstance()
+	{
+		return INSTANCE;
+	}
+	
 	private World3D()
 	{
 		physics = new Physics();
-
-		BufferRenderer.setupBuffers();
-
+	}
+	
+	public void initialize()
+	{
 		drawing = DrawingRenderer.getInstance();
 		renderer = DeferredRenderer.getInstance();
 		depth = DepthRenderer.getInstance();

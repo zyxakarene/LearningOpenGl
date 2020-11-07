@@ -14,23 +14,32 @@ import zyx.utils.math.Vector2Int;
 public final class Stage extends DisplayObjectContainer implements IFocusable
 {
 
-	public static final Stage instance = new Stage();
+	private static final Stage INSTANCE = new Stage();
 
 	private InteractionCrawler crawler;
 	private IFocusable focusedTarget;
 
-	private final ContainerDock gameDock;
-	private final ContainerDock hierarchyDock;
-	private final ContainerDock resourcesDock;
-	private final ContainerDock propertyDock;
+	private ContainerDock gameDock;
+	private ContainerDock hierarchyDock;
+	private ContainerDock resourcesDock;
+	private ContainerDock propertyDock;
 
-	public final DisplayObjectContainer loadingScreenLayer;
-	public final DisplayObjectContainer tooltipLayer;
-	public final DisplayObjectContainer hudLayer;
+	public DisplayObjectContainer loadingScreenLayer;
+	public DisplayObjectContainer tooltipLayer;
+	public DisplayObjectContainer hudLayer;
 
+	public static Stage getInstance()
+	{
+		return INSTANCE;
+	}
+	
 	private Stage()
 	{
 		name = "";
+	}
+
+	public void initialize()
+	{
 		gameDock = new GameDock();
 		hierarchyDock = new EditorDock(DockType.Left);
 		resourcesDock = new EditorDock(DockType.Bottom);
@@ -61,7 +70,7 @@ public final class Stage extends DisplayObjectContainer implements IFocusable
 		gameDock.addChild(loadingScreenLayer);
 		addChild(gameDock);
 	}
-
+	
 	private void setDockBounds()
 	{
 		gameDock.setBounds(ScreenSize.gamePosX, ScreenSize.gameWidth, ScreenSize.gamePosY, ScreenSize.gameHeight);

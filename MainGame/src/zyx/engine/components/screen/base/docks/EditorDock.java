@@ -16,15 +16,13 @@ public class EditorDock extends ContainerDock
 	@Override
 	protected void setup()
 	{
-//		debugQuad = new Quad(width, height, (int) (0xFFFFFF * Math.random()));
-//		addChild(debugQuad);
-		
-//		addChild(new LoadingScreen());
+		debugQuad = new Quad(width, height, (int) (0xFFFFFF * Math.random()));
+		addChild(debugQuad);
 	}
 
 	@Override
 	protected void onSizeChanged()
 	{
-//		debugQuad.setSize(width, height);
+		debugQuad.setSize(width, height);
 	}
 }

@@ -5,6 +5,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import zyx.debug.DebugController;
 import zyx.debug.views.DebugFrame; 
+import zyx.engine.components.screen.base.Stage;
 import zyx.engine.components.world.World3D;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.scene.SceneManager;
@@ -15,6 +16,7 @@ import zyx.game.controls.sound.SoundManager;
 import zyx.game.scene.SceneType;
 import zyx.opengl.GLUtils;
 import zyx.opengl.OpenGlStarter;
+import zyx.opengl.buffers.BufferRenderer;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.shaders.ShaderManager;
@@ -44,6 +46,9 @@ public class GameEngine
 		
 		ShaderManager.getInstance().initialize();
 		CursorManager.getInstance().initialize();
+		BufferRenderer.setupBuffers();
+		World3D.getInstance().initialize();
+		Stage.getInstance().initialize();
 		Camera.getInstance().initialize();
 
 		SoundSystem.initialize();

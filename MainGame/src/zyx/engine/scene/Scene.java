@@ -42,8 +42,8 @@ public class Scene implements ILoadingScreenDone
 
 	public Scene()
 	{
-		world = World3D.instance;
-		stage = Stage.instance;
+		world = World3D.getInstance();
+		stage = Stage.getInstance();
 		camera = new CameraController();
 
 		debugContainer = DebugContainer.getInstance();

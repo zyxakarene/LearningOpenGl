@@ -100,7 +100,7 @@ public class CubemapProcess extends BaseProcess
 		ScreenSize.changeScreenSize(startWidth, startHeight);
 
 		cubemapRenderer.writeToFile();
-		Stage.instance.visible = true;
+		Stage.getInstance().visible = true;
 		Projection.createPerspective(startWidth, startHeight, GameConstants.FOV, 1f, 1000f, SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION);
 	}
 
@@ -112,6 +112,6 @@ public class CubemapProcess extends BaseProcess
 		ScreenSize.changeScreenSize(size, size);
 		
 		Projection.createPerspective(size, size, 90, 1f, 1000f, SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION);
-		Stage.instance.visible = false;
+		Stage.getInstance().visible = false;
 	}
 }

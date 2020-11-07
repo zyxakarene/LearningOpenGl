@@ -42,7 +42,7 @@ public class LoadingScreenManager implements IUpdateable, ICallback<ProcessQueue
 	public void initialize()
 	{
 		screen = new LoadingScreen();
-		Stage.instance.loadingScreenLayer.addChild(screen);
+		Stage.getInstance().loadingScreenLayer.addChild(screen);
 	}
 
 	@Override
