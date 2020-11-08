@@ -3,6 +3,7 @@ package zyx.engine.utils;
 import java.util.ArrayList;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.utils.GameConstants;
+import zyx.utils.cheats.Print;
 import zyx.utils.math.Vector2Int;
 
 public class ScreenSize
@@ -20,11 +21,22 @@ public class ScreenSize
 	
 	public static void changeScreenSize(int width, int height)
 	{
+		if (width < 128)
+		{
+			width = 128;
+		}
+		if (height < 128)
+		{
+			height = 128;
+		}
+		
+		Print.out(width, height);
+		
 		ScreenSize.windowWidth = width;
 		ScreenSize.windowHeight = height;
 		
-		ScreenSize.gameWidth = (int) (width * 0.5f);
-		ScreenSize.gameHeight = (int) (height * 0.75f);
+		ScreenSize.gameWidth = (int) (width * GameConstants.DEFAULT_GAME_WIDTH_RATIO);
+		ScreenSize.gameHeight = (int) (height * GameConstants.DEFAULT_GAME_HEIGHT_RATIO);
 		
 		ScreenSize.gamePosX = (int) (ScreenSize.windowWidth / 2) - (ScreenSize.gameWidth / 2);
 		ScreenSize.gamePosY = 0;

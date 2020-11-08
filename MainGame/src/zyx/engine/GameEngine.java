@@ -72,7 +72,6 @@ public class GameEngine
 			
 			if (Display.wasResized())
 			{
-				Print.out(Display.getWidth(), Display.getHeight());
 				ScreenSize.changeScreenSize(Display.getWidth(), Display.getHeight());
 			}
 			
