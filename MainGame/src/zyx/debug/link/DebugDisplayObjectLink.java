@@ -34,7 +34,7 @@ public class DebugDisplayObjectLink
 		{
 			update = false;
 			
-			Stage base = Stage.instance;
+			Stage base = Stage.getInstance();
 			
 			return new DisplayObjectNode(base);
 		}

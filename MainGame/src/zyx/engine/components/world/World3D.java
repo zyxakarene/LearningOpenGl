@@ -1,16 +1,14 @@
 package zyx.engine.components.world;
 
 import org.lwjgl.util.vector.Vector3f;
-import zyx.opengl.GLUtils;
 import zyx.opengl.buffers.*;
 import zyx.opengl.models.implementations.renderers.MeshRenderList;
-import zyx.opengl.particles.ParticleManager;
 import zyx.opengl.shaders.SharedShaderObjects;
 
 public final class World3D extends WorldObject
 {
 
-	public static final World3D instance = new World3D();
+	private static final World3D INSTANCE = new World3D();
 
 	public final Physics physics;
 
@@ -18,20 +16,28 @@ public final class World3D extends WorldObject
 	private DeferredRenderer renderer;
 	private DepthRenderer depth;
 	private AmbientOcclusionRenderer ambientOcclusion;
+	private LightingPassRenderer lighting;
 
 	private GameSun sun;
 	private Skybox skybox;
 
+	public static World3D getInstance()
+	{
+		return INSTANCE;
+	}
+	
 	private World3D()
 	{
 		physics = new Physics();
-
-		BufferRenderer.setupBuffers();
-
+	}
+	
+	public void initialize()
+	{
 		drawing = DrawingRenderer.getInstance();
 		renderer = DeferredRenderer.getInstance();
 		depth = DepthRenderer.getInstance();
 		ambientOcclusion = AmbientOcclusionRenderer.getInstance();
+		lighting = LightingPassRenderer.getInstance();
 
 		skybox = new Skybox();
 
@@ -46,13 +52,14 @@ public final class World3D extends WorldObject
 		depth.prepareRender();
 		ambientOcclusion.prepareRender();
 		renderer.prepareRender();
+		lighting.prepareRender();
 
 		drawing.draw();
 		MeshRenderList.getInstance().draw();
 
 		ambientOcclusion.drawAmbientOcclusion();
 
-		renderer.draw();
+		lighting.draw();
 
 		MeshRenderList.getInstance().drawTransparent();
 	}

@@ -41,7 +41,7 @@ public class JsonContainerConsumer<T extends DisplayObjectContainer> extends Jso
 			for (int i = 0; i < len; i++)
 			{
 				JSONObject obj = (JSONObject) array.get(i);
-				JsonSpriteParser.getInstance().createSprite(currentDisplayObject, obj);
+				JsonSpriteParser.getInstance().createSprite(currentDisplayObject, obj, currentDockType);
 			}
 		}
 		

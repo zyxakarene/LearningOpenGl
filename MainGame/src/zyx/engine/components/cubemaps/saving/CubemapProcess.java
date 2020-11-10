@@ -5,6 +5,7 @@ import zyx.engine.components.screen.base.Stage;
 import zyx.engine.utils.ScreenSize;
 import zyx.game.controls.process.BaseProcess;
 import zyx.opengl.buffers.DeferredRenderer;
+import zyx.opengl.buffers.LightingPassRenderer;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.camera.Projection;
 import zyx.opengl.shaders.SharedShaderObjects;
@@ -35,8 +36,8 @@ public class CubemapProcess extends BaseProcess
 	{
 		this.positions = positions;
 
-		startWidth = ScreenSize.width;
-		startHeight = ScreenSize.height;
+		startWidth = ScreenSize.windowWidth;
+		startHeight = ScreenSize.windowHeight;
 				
 		rotations = new Vector3f[]
 		{
@@ -69,7 +70,7 @@ public class CubemapProcess extends BaseProcess
 					state = STATE_SNAPSHOT;
 					break;
 				case STATE_SNAPSHOT:
-					DeferredRenderer.getInstance().setCubemapRenderer(cubemapRenderer);
+					LightingPassRenderer.getInstance().setCubemapRenderer(cubemapRenderer);
 					state = STATE_WAIT;
 					break;
 				case STATE_WAIT:
@@ -99,7 +100,7 @@ public class CubemapProcess extends BaseProcess
 		ScreenSize.changeScreenSize(startWidth, startHeight);
 
 		cubemapRenderer.writeToFile();
-		Stage.instance.visible = true;
+		Stage.getInstance().visible = true;
 		Projection.createPerspective(startWidth, startHeight, GameConstants.FOV, 1f, 1000f, SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION);
 	}
 
@@ -111,6 +112,6 @@ public class CubemapProcess extends BaseProcess
 		ScreenSize.changeScreenSize(size, size);
 		
 		Projection.createPerspective(size, size, 90, 1f, 1000f, SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION);
-		Stage.instance.visible = false;
+		Stage.getInstance().visible = false;
 	}
 }

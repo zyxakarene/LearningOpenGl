@@ -25,16 +25,19 @@ public class BufferRenderer
 		DeferredRenderer deferred = DeferredRenderer.getInstance();
 		DepthRenderer depth = DepthRenderer.getInstance();
 		DrawingRenderer draw = DrawingRenderer.getInstance();
+		LightingPassRenderer lighting = LightingPassRenderer.getInstance();
 
 		depth.initialize();
 		ao.initialize();
 		deferred.initialize();
 		draw.initialize();
+		lighting.initialize();
 
 		depth.onBuffersCreated();
 		ao.onBuffersCreated();
 		deferred.onBuffersCreated();
 		draw.onBuffersCreated();
+		lighting.onBuffersCreated();
 		
 		TextureBinder.unbindTextures();
 	}
@@ -45,16 +48,19 @@ public class BufferRenderer
 		DeferredRenderer deferred = DeferredRenderer.getInstance();
 		DepthRenderer depth = DepthRenderer.getInstance();
 		DrawingRenderer draw = DrawingRenderer.getInstance();
+		LightingPassRenderer lighting = LightingPassRenderer.getInstance();
 
 		depth.dispose();
 		ao.dispose();
 		deferred.dispose();
 		draw.dispose();
+		lighting.dispose();
 
 		depth.resize(width, height);
 		ao.resize(width, height);
 		deferred.resize(width, height);
 		draw.resize(width, height);
+		lighting.resize(width, height);
 
 		setupBuffers();
 	}

@@ -28,8 +28,8 @@ public class Projection
 
 	public static Matrix4f createOrthographic(float near, float far, float scale, Matrix4f out)
 	{
-		final float WIDTH = ScreenSize.width;
-		final float HEIGHT = ScreenSize.height;
+		final float WIDTH = ScreenSize.windowWidth;
+		final float HEIGHT = ScreenSize.windowHeight;
 
 		float left = -WIDTH / scale;
 		float right = WIDTH / scale;

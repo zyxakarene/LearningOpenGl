@@ -15,7 +15,7 @@ public abstract class AbstractQuad extends DisplayObject
 	protected ScreenModel model;
 	protected boolean loaded;
 	
-	protected final ScreenModelMaterial material;
+	public final ScreenModelMaterial material;
 	
 	public AbstractQuad()
 	{

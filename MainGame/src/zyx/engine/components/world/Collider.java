@@ -19,7 +19,7 @@ public abstract class Collider implements IUpdateable, IDisposeable
 	{
 		this.isStatic = isStatic;
 		velocity = SharedPools.VECTOR_POOL.getInstance();
-		World3D.instance.physics.addCollider(this);
+		World3D.getInstance().physics.addCollider(this);
 	}
 	
 	@Override
@@ -57,7 +57,7 @@ public abstract class Collider implements IUpdateable, IDisposeable
 	public final void dispose()
 	{
 		SharedPools.VECTOR_POOL.releaseInstance(velocity);
-		World3D.instance.physics.removeCollider(this);
+		World3D.getInstance().physics.removeCollider(this);
 		
 		velocity = null;
 		

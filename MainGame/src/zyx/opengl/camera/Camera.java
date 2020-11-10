@@ -31,7 +31,7 @@ public class Camera
 		initialized = false;
 		frustum = new ViewFrustum();
 	
-		target = World3D.instance;
+		target = World3D.getInstance();
 	}
 
 	private void onScreenSizeChanged(Vector2Int data)
@@ -46,7 +46,7 @@ public class Camera
 	
 	public void clearViewObject()
 	{
-		this.target = World3D.instance;
+		this.target = World3D.getInstance();
 	}
 	
 	public void initialize()
@@ -64,8 +64,8 @@ public class Camera
 
 	protected void createMatrices()
 	{
-		float w = ScreenSize.width;
-		float h = ScreenSize.height;
+		float w = ScreenSize.windowWidth;
+		float h = ScreenSize.windowHeight;
 		Projection.createPerspective(w, h, GameConstants.FOV, 1f, 1000f, SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION);
 		Projection.createOrthographic(1f, 2f, 2, SharedShaderObjects.UI_ORTHOGRAPHIC_PROJECTION);
 		

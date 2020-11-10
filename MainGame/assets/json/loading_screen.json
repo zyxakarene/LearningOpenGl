@@ -52,7 +52,7 @@
 		{
 			"name":"loading_dot_container",
 			"type":"container",
-			"x":200,
+			"centerOffsetX":-100,
 			"centerOffsetY":-50,
 			"children":
 			[

@@ -1,12 +1,14 @@
 package zyx.opengl;
 
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.io.File;
 import java.io.IOException;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.*;
-import zyx.engine.utils.ScreenSize;
 import zyx.utils.GameConstants;
+import zyx.utils.cheats.Print;
 import zyx.utils.exceptions.Msg;
 
 public class OpenGlStarter
@@ -47,9 +49,11 @@ public class OpenGlStarter
 		contextAtrributes.withForwardCompatible(false);
 		contextAtrributes.withProfileCore(true);
 
-		Display.setDisplayMode(new DisplayMode(ScreenSize.width, ScreenSize.height));
+		Display.setDisplayMode(new DisplayMode(GameConstants.WINDOW_WIDTH, GameConstants.WINDOW_HEIGHT));
+		Display.setResizable(true);
 		Display.create(pixelFormat, contextAtrributes);
 
+		GL11.glViewport(0, 0, GameConstants.WINDOW_WIDTH, GameConstants.WINDOW_HEIGHT);
 		GL11.glClearColor(0.60f, 0.80f, 0.92f, 1);
 		GL11.glClearColor(0.1f, 0.1f, 0.1f, 1);
 		

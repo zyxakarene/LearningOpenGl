@@ -214,20 +214,26 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		return height;
 	}
 
-	protected final void setParent(DisplayObjectContainer parent)
+	protected final void setParent(DisplayObjectContainer newParent)
 	{
-		if (parent != null && parent.stage != null)
+		if (newParent != null && newParent.stage != null)
 		{
-			stage = parent.stage;
+			stage = newParent.stage;
 		}
 		else
 		{
 			stage = null;
 		}
 
-		this.parent = parent;
+		parent = newParent;
+		
+		onSetParent(parent);
 	}
 
+	protected void onSetParent(DisplayObjectContainer parent)
+	{
+	}
+	
 	public void removeFromParent(boolean dispose)
 	{
 		if (parent != null)
@@ -453,6 +459,11 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 	public float getY()
 	{
 		return position.y;
+	}
+	
+	public boolean isOnStage()
+	{
+		return stage != null;
 	}
 
 	public void addTouchListener(ITouched listener)

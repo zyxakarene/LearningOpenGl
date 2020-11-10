@@ -15,7 +15,6 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
 import static org.lwjgl.opengl.GL11.glBindTexture;
 import static org.lwjgl.opengl.GL11.glTexParameteri;
 import static org.lwjgl.opengl.GL11.GL_REPEAT;
-import zyx.opengl.GLUtils;
 import zyx.opengl.models.implementations.FullScreenQuadModel;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.ShaderManager;
@@ -139,6 +138,30 @@ public class AmbientOcclusionRenderer extends BaseFrameBuffer
 	@Override
 	protected void onDispose()
 	{
+		if (normalTexture != null)
+		{
+			normalTexture.dispose();
+			normalTexture = null;
+		}
+		
+		if (positionTexture != null)
+		{
+			positionTexture.dispose();
+			positionTexture = null;
+		}
+		
+		if (noiseTexture != null)
+		{
+			noiseTexture.dispose();
+			noiseTexture = null;
+		}
+		
+		if (noiseTextureId > 0)
+		{
+			GL11.glDeleteTextures(noiseTextureId);
+			noiseTextureId = 0;
+		}
+		
 		if (ambientOcclusionBuffer != null)
 		{
 			ambientOcclusionBuffer.dispose();

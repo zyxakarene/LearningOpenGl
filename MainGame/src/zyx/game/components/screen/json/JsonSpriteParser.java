@@ -8,6 +8,7 @@ import zyx.engine.components.screen.image.Scale9Image;
 import zyx.engine.components.screen.base.DisplayObject;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
 import org.json.simple.JSONObject;
+import zyx.engine.components.screen.base.docks.DockType;
 import zyx.engine.components.screen.composed.ComposedImage;
 import zyx.engine.components.screen.list.ItemList;
 import zyx.engine.components.screen.text.Textfield;
@@ -54,14 +55,14 @@ class JsonSpriteParser
 		currentChildDepth = 0;
 	}
 
-	void createSpriteFrom(DisplayObjectContainer parent, JSONObject json)
+	void createSpriteFrom(DisplayObjectContainer parent, JSONObject json, DockType dockType)
 	{
 		currentChildDepth = 0;
 
-		createSprite(parent, json);
+		createSprite(parent, json, dockType);
 	}
 
-	void createSprite(DisplayObjectContainer parent, JSONObject json)
+	void createSprite(DisplayObjectContainer parent, JSONObject json, DockType dockType)
 	{
 		String type = String.valueOf(json.get(TYPE));
 		DisplayObject child = null;
@@ -117,7 +118,7 @@ class JsonSpriteParser
 		
 		if (child != null)
 		{
-			factory.consumeByType(type, parent, child, json);
+			factory.consumeByType(type, parent, child, json, dockType);
 		}
 	}
 }

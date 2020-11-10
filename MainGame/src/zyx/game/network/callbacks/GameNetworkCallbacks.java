@@ -60,7 +60,8 @@ public class GameNetworkCallbacks extends AbstractDinerNetworkCallbacks
 	private void onCharacterJoined(CharacterJoinedData data)
 	{
 		CharacterSetupVo vo = new CharacterSetupVo();
-
+		World3D world = World3D.getInstance();
+		
 		Print.out(data.joinCount, "new characters joined my game!");
 		for (int i = 0; i < data.joinCount; i++)
 		{
@@ -74,14 +75,15 @@ public class GameNetworkCallbacks extends AbstractDinerNetworkCallbacks
 			itemHolderHandler.addItemHolder(id, character);
 			characterMap.put(id, character);
 
-			World3D.instance.addChild(character);
+			world.addChild(character);
 		}
 	}
 
 	private void onFurnitureAdded(FurnitureSetupData data)
 	{
 		FurnitureSetupVo vo = new FurnitureSetupVo();
-
+		World3D world = World3D.getInstance();
+		
 		for (int i = 0; i < data.furnitureCount; i++)
 		{
 			vo.fromData(data, i);
@@ -104,7 +106,7 @@ public class GameNetworkCallbacks extends AbstractDinerNetworkCallbacks
 				}
 			}
 			
-			World3D.instance.addChild(furniture);
+			world.addChild(furniture);
 		}
 	}
 

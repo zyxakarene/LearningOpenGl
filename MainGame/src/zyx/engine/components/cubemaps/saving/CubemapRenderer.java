@@ -6,6 +6,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.buffers.DeferredRenderer;
+import zyx.opengl.buffers.LightingPassRenderer;
 import zyx.utils.cheats.Print;
 
 public class CubemapRenderer implements ICubemapRenderer
@@ -85,7 +86,7 @@ public class CubemapRenderer implements ICubemapRenderer
 			byteData.write(b);
 		}
 
-		DeferredRenderer.getInstance().setCubemapRenderer(null);
+		LightingPassRenderer.getInstance().setCubemapRenderer(null);
 	}
 
 }

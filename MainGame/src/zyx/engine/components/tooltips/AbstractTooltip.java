@@ -63,11 +63,11 @@ public abstract class AbstractTooltip extends JsonSprite
 			out.x = (out.x + 1) / 2;
 			out.y = (out.y + 1) / 2;
 
-			//Convert from [0, 1] space to [0, width]
-			out.x = out.x * ScreenSize.width;
+			//Convert from [0, 1] space to [0, windowWidth]
+			out.x = out.x * ScreenSize.windowWidth;
 
-			//Convert from [0, 1] space to [0, height]
-			out.y = ScreenSize.height - (out.y * ScreenSize.height);
+			//Convert from [0, 1] space to [0, windowHeight]
+			out.y = ScreenSize.windowHeight - (out.y * ScreenSize.windowHeight);
 
 			currentDistance = FloatMath.distance(HELPER_VEC3, cameraPos, true);
 			float scale = 8f / currentDistance;

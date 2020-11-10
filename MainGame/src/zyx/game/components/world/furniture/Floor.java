@@ -15,12 +15,14 @@ public class Floor extends BaseFurnitureItem<SimpleMesh>
 {
 
 	private PlayerObject player;
+	private World3D world;
 
 	public Floor()
 	{
 		super(false);
 		
 		player = SceneManager.getInstance().<DinerScene>getSceneAs().player;
+		world = World3D.getInstance();
 	}
 
 	@Override
@@ -32,7 +34,7 @@ public class Floor extends BaseFurnitureItem<SimpleMesh>
 	@Override
 	protected void onGotItem(GameItem item)
 	{
-		World3D.instance.addChild(item);
+		world.addChild(item);
 		item.setRotation(0, 0, 0);
 		item.setPosition(false, 0, 0, 0);
 	}
@@ -40,7 +42,7 @@ public class Floor extends BaseFurnitureItem<SimpleMesh>
 	@Override
 	protected void onLostItem(GameItem item)
 	{
-		World3D.instance.removeChild(item);
+		world.removeChild(item);
 	}
 	
 	@Override

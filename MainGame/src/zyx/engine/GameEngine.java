@@ -4,15 +4,19 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import zyx.debug.DebugController;
-import zyx.debug.views.DebugFrame;
+import zyx.debug.views.DebugFrame; 
+import zyx.engine.components.screen.base.Stage;
+import zyx.engine.components.world.World3D;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.scene.SceneManager;
 import zyx.engine.sound.SoundSystem;
+import zyx.engine.utils.ScreenSize;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.sound.SoundManager;
 import zyx.game.scene.SceneType;
 import zyx.opengl.GLUtils;
 import zyx.opengl.OpenGlStarter;
+import zyx.opengl.buffers.BufferRenderer;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.shaders.ShaderManager;
@@ -25,7 +29,6 @@ public class GameEngine
 	public static int drawCalls = 0;
 
 	private SceneManager sceneManager;
-	private DisplaySizeChanger sizeChanger;
 	
 	public GameEngine()
 	{
@@ -37,15 +40,16 @@ public class GameEngine
 		OpenGlStarter.setupOpenGl();
 		GLUtils.enableGLSettings();
 		
-		sizeChanger = new DisplaySizeChanger();
-
 		ShaderManager.getInstance().initialize();
 		CursorManager.getInstance().initialize();
+		BufferRenderer.setupBuffers();
+		World3D.getInstance().initialize();
+		Stage.getInstance().initialize();
 		Camera.getInstance().initialize();
 
 		SoundSystem.initialize();
 
-		sceneManager.changeScene(startScene);
+		sceneManager.changeScene(startScene);		
 		beginGameLoop();
 	}
 
@@ -55,6 +59,18 @@ public class GameEngine
 				
 		while (running)
 		{
+			if (KeyboardData.data.wasPressed(Keyboard.KEY_R))
+			{
+				int width = (int) (64 + (Math.random() * 1920 * 0.75));
+				int height = (int) (64 + (Math.random() * 1080 * 0.75));
+				ScreenSize.changeScreenSize(width, height);
+			}
+			
+			if (Display.wasResized())
+			{
+				ScreenSize.changeScreenSize(Display.getWidth(), Display.getHeight());
+			}
+			
 			running = !Display.isCloseRequested();
 			
 			if (KeyboardData.data.wasPressed(Keyboard.KEY_1))

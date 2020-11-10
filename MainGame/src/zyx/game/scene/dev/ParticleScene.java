@@ -1,15 +1,23 @@
 package zyx.game.scene.dev;
 
+import org.lwjgl.input.Keyboard;
 import zyx.engine.components.meshbatch.MeshBatchManager;
 import zyx.game.behavior.misc.JiggleBehavior;
 import zyx.game.components.MeshObject;
 import zyx.game.components.world.meshbatch.CubeEntity;
+import zyx.game.controls.input.KeyboardData;
 import zyx.opengl.GLUtils;
+import zyx.opengl.buffers.DeferredRenderer;
+import zyx.opengl.buffers.LightingPassRenderer;
 import zyx.opengl.particles.ParticleSystem;
+import zyx.opengl.textures.TextureFromInt;
+import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.FloatMath;
 
 public class ParticleScene extends DebugScene
 {
+
+	private MeshObject model;
 
 	public ParticleScene()
 	{
@@ -20,6 +28,18 @@ public class ParticleScene extends DebugScene
 	{
 		preloadResource("sprite_sheet_png");
 		preloadResource("sprite_sheet_json");
+	}
+
+	@Override
+	protected void onUpdate(long timestamp, int elapsedTime)
+	{
+		super.onUpdate(timestamp, elapsedTime);
+		
+		if (KeyboardData.data.isDown(Keyboard.KEY_SPACE))
+		{
+			LightingPassRenderer lightRenderer = LightingPassRenderer.getInstance();
+			model.mesh.cloneMaterial().setDiffuse(new TextureFromInt(128, 128, lightRenderer.outputInt(), TextureSlot.SHARED_DIFFUSE));
+		}
 	}
 
 	@Override
@@ -38,8 +58,9 @@ public class ParticleScene extends DebugScene
 		
 		for (int i = 0; i < 1; i++)
 		{
-			MeshObject model = new MeshObject();
+			model = new MeshObject();
 			model.load("mesh.box");
+			model.setRotation(0, 180, 0);
 			if (i > 0)
 			{
 				model.setX(FloatMath.random() * 50);

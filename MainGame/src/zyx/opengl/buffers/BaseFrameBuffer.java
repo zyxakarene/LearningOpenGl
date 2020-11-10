@@ -3,7 +3,6 @@ package zyx.opengl.buffers;
 import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import static org.lwjgl.opengl.GL30.GL_DEPTH24_STENCIL8;
@@ -35,7 +34,7 @@ public abstract class BaseFrameBuffer
 		this.buffer = bufferEnum;
 		this.renderScale = renderScale;
 
-		resize(ScreenSize.width, ScreenSize.height);
+		resize(ScreenSize.gameWidth, ScreenSize.gameHeight);
 	}
 
 	void resize(int width, int height)
@@ -61,15 +60,26 @@ public abstract class BaseFrameBuffer
 	public void prepareRender()
 	{
 		BufferBinder.bindBuffer(buffer);
+		GL11.glViewport(0, 0, w, h);
 		GL11.glClearColor(1, 1, 1, 0);
 		GL11.glClearStencil(0x00);
 		
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
+		if (doClearColor)
+		{
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
+		}
+		else
+		{
+			GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
+		}
 	}
 
+	protected boolean doClearColor = true;
+	
 	public void bindBuffer()
 	{
 		BufferBinder.bindBuffer(buffer);
+		GL11.glViewport(0, 0, w, h);
 	}
 
 	private void setupBufferValues()
@@ -111,8 +121,8 @@ public abstract class BaseFrameBuffer
 
 		buffer.bufferId = BufferBinder.UNKNOWN_BUFFER;
 		
-		GL15.glDeleteBuffers(depthBufferId);
-		GL15.glDeleteBuffers(bufferId);
+		GL30.glDeleteFramebuffers(depthBufferId);
+		GL30.glDeleteRenderbuffers(bufferId);
 	}
 
 	protected abstract void onDispose();

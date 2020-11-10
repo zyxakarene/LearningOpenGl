@@ -2,8 +2,6 @@ package zyx.opengl.models.implementations.renderers;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import zyx.opengl.buffers.Buffer;
-import zyx.opengl.buffers.BufferBinder;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.materials.MaterialPriority;
 import zyx.utils.interfaces.IDrawable;
@@ -76,7 +74,6 @@ public class MeshRenderList implements IDrawable, Comparator<MeshRenderer>
 	
 	public void drawTransparent()
 	{
-		BufferBinder.bindBuffer(Buffer.DEFAULT);
 		draw(transparentRenderers);
 	}
 

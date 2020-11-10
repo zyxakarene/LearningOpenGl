@@ -25,7 +25,7 @@ public class CameraUpdateLightbehavior extends Behavior
 			gameObject.getDir(false, HELPER_DIR);
 			HELPER_DIR.y *= -1;
 			
-			World3D.instance.setSunDir(HELPER_DIR);
+			World3D.getInstance().setSunDir(HELPER_DIR);
 		}
 	}
 }

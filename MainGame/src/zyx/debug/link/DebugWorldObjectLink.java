@@ -35,7 +35,7 @@ public class DebugWorldObjectLink
 		{
 			update = false;
 			
-			WorldObject base = World3D.instance;
+			WorldObject base = World3D.getInstance();
 			
 			return new WorldObjectNode(base);
 		}

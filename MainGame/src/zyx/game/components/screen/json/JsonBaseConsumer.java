@@ -6,8 +6,10 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.engine.components.screen.base.DisplayObject;
-import zyx.engine.utils.ScreenSize;
+import zyx.engine.components.screen.base.Stage;
+import zyx.engine.components.screen.base.docks.DockType;
 import zyx.utils.Color;
+import zyx.utils.geometry.IntRectangle;
 
 class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Object>
 {
@@ -37,10 +39,19 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 	protected static final String RIGHT_DOCK = "rightDock";
 
 	protected T currentDisplayObject;
+	protected DockType currentDockType;
+	protected IntRectangle currentDockSize;
 
-	final void consume(T container, JSONObject json)
+	public JsonBaseConsumer()
+	{
+		currentDockSize = new IntRectangle();
+	}
+
+	final void consume(T container, JSONObject json, DockType dockType)
 	{
 		currentDisplayObject = container;
+		currentDockType = dockType;
+		Stage.getInstance().getDockSize(currentDockSize, dockType);
 
 		if (json.containsKey(NAME))
 		{
@@ -139,12 +150,12 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 
 		if (percentWidth != null)
 		{
-			currentDisplayObject.setWidth(toFloat(percentWidth) * ScreenSize.width);
+			currentDisplayObject.setWidth(toFloat(percentWidth) * currentDockSize.width);
 		}
 
 		if (percentHeight != null)
 		{
-			currentDisplayObject.setHeight(toFloat(percentHeight) * ScreenSize.height);
+			currentDisplayObject.setHeight(toFloat(percentHeight) * currentDockSize.height);
 		}
 
 		Object centerX = json.get(CENTER_OFFSET_X);
@@ -159,7 +170,7 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 			if (centerX != null)
 			{
 				float offsetX = toFloat(centerX);
-				float stageWidth = ScreenSize.width;
+				float stageWidth = currentDockSize.width;
 				float currentWidth = currentDisplayObject.getWidth();
 
 				posX = (stageWidth / 2) - (currentWidth / 2) + offsetX;
@@ -168,13 +179,13 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 			if (centerY != null)
 			{
 				float offsetY = toFloat(centerY);
-				float stageHeight = ScreenSize.height;
+				float stageHeight = currentDockSize.height;
 				float currentHeight = currentDisplayObject.getHeight();
 
 				posY = (stageHeight / 2) - (currentHeight / 2) + offsetY;
 			}
 
-			currentDisplayObject.setPosition(false, posX, posY);
+			currentDisplayObject.setPosition(true, posX, posY);
 		}
 
 		Object topDock = json.get(TOP_DOCK);
@@ -195,7 +206,7 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 			else if (bottomDock != null)
 			{
 				float height = currentDisplayObject.getHeight();
-				posY = ScreenSize.height - height - toFloat(bottomDock);
+				posY = currentDockSize.height - height - toFloat(bottomDock);
 			}
 
 			if (leftDock != null)
@@ -205,10 +216,10 @@ class JsonBaseConsumer<T extends DisplayObject> implements BiConsumer<String, Ob
 			else if (rightDock != null)
 			{
 				float width = currentDisplayObject.getWidth();
-				posX = ScreenSize.width - width - toFloat(rightDock);
+				posX = currentDockSize.width - width - toFloat(rightDock);
 			}
 
-			currentDisplayObject.setPosition(false, posX, posY);
+			currentDisplayObject.setPosition(true, posX, posY);
 		}
 	}
 }

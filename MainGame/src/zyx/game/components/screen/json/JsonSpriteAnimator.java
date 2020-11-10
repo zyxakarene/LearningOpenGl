@@ -1,7 +1,9 @@
 package zyx.game.components.screen.json;
 
 import java.util.ArrayList;
+import zyx.engine.utils.ScreenSize;
 import zyx.utils.interfaces.IUpdateable;
+import zyx.utils.math.Vector2Int;
 
 public class JsonSpriteAnimator implements IUpdateable
 {
@@ -17,6 +19,19 @@ public class JsonSpriteAnimator implements IUpdateable
 	private JsonSpriteAnimator()
 	{
 		jsonSprites = new ArrayList<>();
+		ScreenSize.addListener(this::onSizeChanged);
+	}
+	
+	private void onSizeChanged(Vector2Int size)
+	{
+		JsonSprite[] array = jsonSprites.toArray(new JsonSprite[jsonSprites.size()]);
+		for (JsonSprite sprite : array)
+		{
+			if (sprite.disposed == false)
+			{
+				sprite.onResourceReloaded(null);
+			}
+		}
 	}
 	
 	void addJsonSprite(JsonSprite sprite)

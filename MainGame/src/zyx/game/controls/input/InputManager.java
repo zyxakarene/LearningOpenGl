@@ -55,8 +55,8 @@ public class InputManager implements IUpdateable
 			//Position
 			if (mouseData.grabbed)
 			{
-				mouseData.x = ScreenSize.width / 2;
-				mouseData.y = ScreenSize.height / 2;
+				mouseData.x = ScreenSize.windowWidth / 2;
+				mouseData.y = ScreenSize.windowHeight / 2;
 
 				combinedX += Mouse.getEventDX();
 				combinedY += Mouse.getEventDY();
@@ -64,7 +64,7 @@ public class InputManager implements IUpdateable
 			else
 			{
 				mouseData.x = Mouse.getX();
-				mouseData.y = ScreenSize.height - Mouse.getY();
+				mouseData.y = ScreenSize.windowHeight - Mouse.getY();
 			}
 
 			//Movements
