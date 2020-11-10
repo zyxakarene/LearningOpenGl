@@ -23,14 +23,12 @@ import zyx.opengl.shaders.ShaderManager;
 import zyx.utils.DeltaTime;
 import zyx.utils.FPSCounter;
 import zyx.utils.GameConstants;
-import zyx.utils.cheats.Print;
 
 public class GameEngine
 {
 	public static int drawCalls = 0;
 
 	private SceneManager sceneManager;
-	private DisplaySizeChanger sizeChanger;
 	
 	public GameEngine()
 	{
@@ -41,8 +39,6 @@ public class GameEngine
 	{
 		OpenGlStarter.setupOpenGl();
 		GLUtils.enableGLSettings();
-		
-		sizeChanger = new DisplaySizeChanger();
 		
 		ShaderManager.getInstance().initialize();
 		CursorManager.getInstance().initialize();

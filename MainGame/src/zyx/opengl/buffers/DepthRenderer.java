@@ -1,6 +1,5 @@
 package zyx.opengl.buffers;
 
-import org.lwjgl.opengl.GL11;
 import zyx.opengl.textures.FrameBufferTexture;
 import zyx.opengl.textures.enums.TextureAttachment;
 import zyx.opengl.textures.enums.TextureFormat;
@@ -32,10 +31,7 @@ public class DepthRenderer extends BaseFrameBuffer
 	public void drawShadowable(IShadowable shadowable)
 	{
 		bindBuffer();
-		
-//		GL11.glViewport(0, 0, w, h);
 		shadowable.drawShadow();
-//		GL11.glViewport(0, 0, (int) (w / renderScale), (int) (h / renderScale));
 	}
 
 	@Override

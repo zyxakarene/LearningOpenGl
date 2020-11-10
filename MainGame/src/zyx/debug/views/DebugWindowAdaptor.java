@@ -39,14 +39,6 @@ public class DebugWindowAdaptor extends WindowAdapter implements Runnable
 	@Override
 	public void run()
 	{
-//		try
-//		{
-//			Thread.sleep(1000);
-//		}
-//		catch (InterruptedException ex)
-//		{
-//		}
-		
 		while (active)
 		{
 			view.update();

@@ -8,6 +8,8 @@ import static org.lwjgl.opengl.GL30.GL_READ_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 import static org.lwjgl.opengl.GL30.glBlitFramebuffer;
 import zyx.engine.components.cubemaps.saving.ICubemapRenderer;
+import zyx.opengl.materials.StencilLayer;
+import zyx.opengl.materials.StencilMode;
 import zyx.opengl.materials.impl.DeferredMaterial;
 import zyx.opengl.models.implementations.FullScreenQuadModel;
 import zyx.opengl.shaders.ShaderManager;
@@ -78,6 +80,8 @@ public class LightingPassRenderer extends BaseFrameBuffer
 		material.setShadow(shadowDepthTexture);
 		material.setAmbientOcclusion(ambientOcclusionTexture);
 		material.setCubeIndex(cubeIndexTexture);
+		material.stencilMode = StencilMode.NOTHING;
+		material.stencilLayer = StencilLayer.NOTHING;
 
 		model = new FullScreenQuadModel(material);
 	}
@@ -101,7 +105,11 @@ public class LightingPassRenderer extends BaseFrameBuffer
 
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, readBufferId);
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, writeBufferId);
-		glBlitFramebuffer(0, 0, w, h, 0, 0, w, h, GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
+		glBlitFramebuffer(0, 0, w, h, 0, 0, w, h, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, renderer.bufferId);
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+		glBlitFramebuffer(0, 0, w, h, 0, 0, w, h, GL_STENCIL_BUFFER_BIT, GL_NEAREST);
 	}
 
 	@Override
