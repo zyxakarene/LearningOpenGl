@@ -108,6 +108,12 @@ public class GameCharacter extends GameObject implements IItemHolder
 	}
 
 	@Override
+	public GameObject getWorldObject()
+	{
+		return this;
+	}
+	
+	@Override
 	public ArrayList<InteractionAction> getInteractions()
 	{
 		if (info.type == CharacterType.GUEST)

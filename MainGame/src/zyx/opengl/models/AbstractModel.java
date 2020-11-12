@@ -46,8 +46,6 @@ public abstract class AbstractModel<TMaterial extends Material> implements IDisp
 	protected void bindVao()
 	{
 		ModelUtils.bindVertexArray(vao);
-		ModelUtils.bindBufferObject_Array(vbo);
-		ModelUtils.bindBufferObject_Element(ebo);
 	}
 
 	protected void setVertexData(float[] vertexData, int[] elementData)
