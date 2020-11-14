@@ -9,9 +9,9 @@ public class WindowsTreeNode<TData>
 	boolean isOpened;
 	byte level;
 	TData data;
+	WindowsTreeNode<TData> parent;
 	
 	ArrayList<WindowsTreeNode<TData>> children;
-	private WindowsTreeNode<TData> parent;
 	
 	private ICallback<WindowsTreeNode> onHierachyChanged;
 	
@@ -21,7 +21,7 @@ public class WindowsTreeNode<TData>
 		this.children = new ArrayList<>();
 		
 		isOpened = true;
-		level = 0;
+		level = 1;
 		isLeaf = true;
 	}
 
@@ -101,5 +101,16 @@ public class WindowsTreeNode<TData>
 		{
 			onHierachyChanged.onCallback(this);
 		}
+	}
+
+	boolean isLastChild(WindowsTreeNode node)
+	{
+		int size = children.size();
+		if (size == 0)
+		{
+			return false;
+		}
+		
+		return children.get(size - 1) == node;
 	}
 }

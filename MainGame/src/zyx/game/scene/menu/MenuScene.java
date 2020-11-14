@@ -55,7 +55,7 @@ public class MenuScene extends Scene
 		WindowsButton addBtn = new WindowsButton("Add");
 		addBtn.setWidth(100);
 		addBtn.setHeight(100);
-		addBtn.setPosition(true, 500, 50);
+		addBtn.setPosition(true, 400, 50);
 		addBtn.onButtonClicked.addCallback(this::onAddButtonClicked);
 		stage.hudLayer.addChild(addBtn);
 	}
