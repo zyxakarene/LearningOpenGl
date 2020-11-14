@@ -1,6 +1,7 @@
 package zyx.engine.utils.callbacks;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import zyx.utils.interfaces.IDisposeable;
 
 public class CustomCallback<T> implements IDisposeable
@@ -39,8 +40,10 @@ public class CustomCallback<T> implements IDisposeable
 	
 	public void dispatch(T data)
 	{
-		for (ICallback<T> callback : callbacks)
+		int len = callbacks.size();
+		for (int i = 0; i < len; i++)
 		{
+			ICallback<T> callback = callbacks.get(i);
 			if (callback != null)
 			{
 				callback.onCallback(data);

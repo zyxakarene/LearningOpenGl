@@ -2,6 +2,7 @@ package zyx.opengl.models.implementations;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.materials.impl.ScreenModelMaterial;
 import zyx.opengl.models.AbstractModel;
@@ -10,6 +11,7 @@ import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.models.implementations.renderers.MeshRenderer;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.ListUtils;
+import zyx.utils.cheats.Print;
 
 public class ScreenModel extends AbstractModel<ScreenModelMaterial>
 {
@@ -36,6 +38,8 @@ public class ScreenModel extends AbstractModel<ScreenModelMaterial>
 	
 	public void buildModel()
 	{
+		bindVao();
+		
 		float[] vertexData = ListUtils.toFloatArray(tempVertexData);
 		int[] elementData = ListUtils.toIntArray(tempElementData);
 		
