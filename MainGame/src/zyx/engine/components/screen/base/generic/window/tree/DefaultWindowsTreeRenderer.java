@@ -1,32 +1,36 @@
 package zyx.engine.components.screen.base.generic.window.tree;
 
+import zyx.engine.components.screen.base.DisplayObject;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
 import zyx.engine.components.screen.base.generic.window.WindowsTextfield;
 import zyx.opengl.textures.bitmapfont.alignment.HAlignment;
 
 public class DefaultWindowsTreeRenderer<TData> extends DisplayObjectContainer
 {
-	protected TData data;
-	private WindowsTextfield textfield;
+	private DisplayObject display;
 
 	final void setData(TData data)
 	{
-		this.data = data;
-		
-		onSetData();
-	}
-
-	protected void onSetData()
-	{
-		if (textfield != null)
+		if (display != null)
 		{
-			textfield.removeFromParent(true);
+			display.removeFromParent(true);
 		}
 		
-		textfield= new WindowsTextfield(data.toString());
+		display = createDisplayObject(data);
+		addChild(display);
+	}
+
+	protected DisplayObject createDisplayObject(TData data)
+	{
+		WindowsTextfield textfield = new WindowsTextfield(data.toString());
 		textfield.setSize(200, 16);
 		textfield.setHAlign(HAlignment.LEFT);
 		
-		addChild(textfield);
+		return textfield;
+	}
+	
+	protected float getRendererHeight()
+	{
+		return 16;
 	}
 }

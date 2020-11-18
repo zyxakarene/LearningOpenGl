@@ -10,6 +10,7 @@ public class WindowsTreeNode<TData>
 	byte level;
 	TData data;
 	WindowsTreeNode<TData> parent;
+	WindowsTreeRowRenderer<TData> rowRenderer;
 	
 	ArrayList<WindowsTreeNode<TData>> children;
 	
@@ -33,7 +34,7 @@ public class WindowsTreeNode<TData>
 	void toggleOpened()
 	{
 		isOpened = !isOpened;
-		onHierachyChanged();
+		onHierachyChanged(this);
 	}
 	
 	protected DefaultWindowsTreeRenderer<TData> createRenderer()
@@ -58,7 +59,7 @@ public class WindowsTreeNode<TData>
 		child.level = (byte) (level + 1);
 		isLeaf = false;
 		
-		onHierachyChanged();
+		onHierachyChanged(this);
 	}
 	
 	public void removeChild(WindowsTreeNode<TData> child)
@@ -68,7 +69,7 @@ public class WindowsTreeNode<TData>
 		child.level = 0;
 		isLeaf = children.isEmpty();
 		
-		onHierachyChanged();
+		onHierachyChanged(this);
 	}
 	
 	public boolean isLeaf()
@@ -88,18 +89,19 @@ public class WindowsTreeNode<TData>
 		
 		children = null;
 		data = null;
+		rowRenderer = null;
 	}
 
-	private void onHierachyChanged()
+	private void onHierachyChanged(WindowsTreeNode<TData> originNode)
 	{
 		if (parent != null)
 		{
-			parent.onHierachyChanged();
+			parent.onHierachyChanged(originNode);
 		}
 		
 		if (onHierachyChanged != null)
 		{
-			onHierachyChanged.onCallback(this);
+			onHierachyChanged.onCallback(originNode);
 		}
 	}
 
