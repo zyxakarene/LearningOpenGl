@@ -74,12 +74,7 @@ final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer
 		lineImage.setImages(res, pos);
 		lineImage.touchable = false;
 
-		icon = new Image();
-		icon.load("container");
-		icon.setSize(16, 16);
-
 		addChild(lineImage);
-		addChild(icon);
 
 		if(node.isLeaf == false)
 		{
@@ -126,6 +121,12 @@ final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer
 		renderer = activeNode.createRenderer();
 		renderer.setData(activeNode.data);
 
+		float height = getRendererHeight();
+		icon = new Image();
+		icon.load(renderer.getIcon());
+		icon.setSize(height, height);
+		addChild(icon);
+		
 		renderer.setX(16);
 		addChild(renderer);
 	}

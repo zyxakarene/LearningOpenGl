@@ -22,8 +22,10 @@ public class DefaultWindowsTreeRenderer<TData> extends DisplayObjectContainer
 
 	protected DisplayObject createDisplayObject(TData data)
 	{
+		float height = getRendererHeight();
+		
 		WindowsTextfield textfield = new WindowsTextfield(data.toString());
-		textfield.setSize(200, 16);
+		textfield.setSize(200, height);
 		textfield.setHAlign(HAlignment.LEFT);
 		
 		return textfield;
@@ -32,5 +34,10 @@ public class DefaultWindowsTreeRenderer<TData> extends DisplayObjectContainer
 	protected float getRendererHeight()
 	{
 		return 16;
+	}
+	
+	protected String getIcon()
+	{
+		return "container";
 	}
 }

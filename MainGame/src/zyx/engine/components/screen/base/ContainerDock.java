@@ -3,8 +3,9 @@ package zyx.engine.components.screen.base;
 import zyx.engine.components.screen.base.docks.DockType;
 import zyx.utils.geometry.IntRectangle;
 import zyx.utils.geometry.Rectangle;
+import zyx.utils.interfaces.IUpdateable;
 
-public abstract class ContainerDock extends DisplayObjectContainer
+public abstract class ContainerDock extends DisplayObjectContainer implements IUpdateable
 {
 
 	public final DockType type;
@@ -50,6 +51,11 @@ public abstract class ContainerDock extends DisplayObjectContainer
 		rect.y = y;
 		rect.width = width;
 		rect.height = height;
+	}
+
+	@Override
+	public void update(long timestamp, int elapsedTime)
+	{
 	}
 	
 	protected abstract void setup();

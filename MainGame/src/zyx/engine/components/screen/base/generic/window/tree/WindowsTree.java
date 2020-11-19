@@ -9,7 +9,7 @@ public class WindowsTree<TData> extends DisplayObjectContainer
 {
 	private WindowsTreeNode<TData> root;
 	
-	private ICallback<WindowsTreeNode> hierachyChanged;
+	private ICallback<TreeChangedData> hierachyChanged;
 	private ArrayList<WindowsTreeRowRenderer<TData>> rowRenderers;
 
 	public WindowsTree(WindowsTreeNode<TData> root)
@@ -33,13 +33,15 @@ public class WindowsTree<TData> extends DisplayObjectContainer
 		createTree();
 	}
 
-	private void onHierachyChanged(WindowsTreeNode data)
+	private void onHierachyChanged(TreeChangedData data)
 	{
-		if (data.isLeaf == false && data.isOpened == false)
+		WindowsTreeNode node = data.node;
+		
+		if (node.isLeaf == false && node.isOpened == false && data.removed)
 		{
-			int startIndex = rowRenderers.indexOf(data.rowRenderer);
+			int startIndex = rowRenderers.indexOf(node.rowRenderer);
 			int endIndex = rowRenderers.size() - 1;
-			int startLevel = data.level;
+			int startLevel = node.level;
 			
 			int len = rowRenderers.size();
 			for (int i = startIndex + 1; i < len; i++)
@@ -56,7 +58,6 @@ public class WindowsTree<TData> extends DisplayObjectContainer
 			for (int i = endIndex; i > startIndex; i--)
 			{
 				WindowsTreeRowRenderer<TData> row = rowRenderers.remove(i);
-				System.out.println("Removing " + row.activeNode.data);
 				row.removeFromParent(true);
 			}
 			

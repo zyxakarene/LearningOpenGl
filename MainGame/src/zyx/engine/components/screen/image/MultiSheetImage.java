@@ -8,7 +8,6 @@ import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.sheet.SpriteSheetResource;
 import zyx.opengl.models.implementations.ScreenModel;
 import zyx.opengl.textures.AbstractTexture;
-import zyx.utils.cheats.Print;
 
 public class MultiSheetImage extends AbstractQuad implements IResourceReady<SpriteSheetResource>
 {
@@ -28,10 +27,8 @@ public class MultiSheetImage extends AbstractQuad implements IResourceReady<Spri
 	
 	public void setImages(String[] resourceIds, Vector2f[] imagePositions)
 	{
-		System.out.println("Creating a multi sheey image!");
 		if (model != null)
 		{
-			System.out.println("Disposing old one first..");
 			originalWidth = 0;
 			originalHeight = 0;
 			

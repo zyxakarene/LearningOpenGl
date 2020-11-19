@@ -1,10 +1,13 @@
 package zyx.engine.components.screen.base.generic.window.tree;
 
 import java.util.ArrayList;
+import java.util.List;
 import zyx.engine.utils.callbacks.ICallback;
 
 public class WindowsTreeNode<TData>
 {
+	private static final TreeChangedData changedData = new TreeChangedData();
+	
 	boolean isLeaf;
 	boolean isOpened;
 	byte level;
@@ -14,19 +17,19 @@ public class WindowsTreeNode<TData>
 	
 	ArrayList<WindowsTreeNode<TData>> children;
 	
-	private ICallback<WindowsTreeNode> onHierachyChanged;
+	private ICallback<TreeChangedData> onHierachyChanged;
 	
 	public WindowsTreeNode(TData data)
 	{
 		this.data = data;
 		this.children = new ArrayList<>();
 		
-		isOpened = true;
+		isOpened = false;
 		level = 1;
 		isLeaf = true;
 	}
 
-	void setHierachyCallback(ICallback<WindowsTreeNode> callback)
+	void setHierachyCallback(ICallback<TreeChangedData> callback)
 	{
 		onHierachyChanged = callback;
 	}
@@ -34,7 +37,11 @@ public class WindowsTreeNode<TData>
 	void toggleOpened()
 	{
 		isOpened = !isOpened;
-		onHierachyChanged(this);
+		
+		changedData.node = this;
+		changedData.added = false;
+		changedData.removed = false;
+		onHierachyChanged(changedData);
 	}
 	
 	protected DefaultWindowsTreeRenderer<TData> createRenderer()
@@ -56,10 +63,22 @@ public class WindowsTreeNode<TData>
 		
 		children.add(child);
 		child.parent = this;
-		child.level = (byte) (level + 1);
+		child.setLevel((byte) (level + 1));
 		isLeaf = false;
 		
-		onHierachyChanged(this);
+		changedData.node = this;
+		changedData.added = true;
+		changedData.removed = false;
+		onHierachyChanged(changedData);
+	}
+	
+	private void setLevel(byte level)
+	{
+		this.level = level;
+		for (WindowsTreeNode<TData> child : children)
+		{
+			child.setLevel((byte) (level + 1));
+		}
 	}
 	
 	public void removeChild(WindowsTreeNode<TData> child)
@@ -69,7 +88,42 @@ public class WindowsTreeNode<TData>
 		child.level = 0;
 		isLeaf = children.isEmpty();
 		
-		onHierachyChanged(this);
+		changedData.node = this;
+		changedData.added = false;
+		changedData.removed = true;
+		onHierachyChanged(changedData);
+	}
+	
+	public void getChildren(List<WindowsTreeNode<TData>> out)
+	{
+		getChildren(out, false);
+	}
+	
+	public void getChildren(List<WindowsTreeNode<TData>> out, boolean includeGrandChildren)
+	{
+		out.addAll(children);
+		
+		if (includeGrandChildren)
+		{
+			for (WindowsTreeNode<TData> child : children)
+			{
+				child.getChildren(out, includeGrandChildren);
+			}
+		}
+	}
+	
+	public WindowsTreeNode<TData> getParent()
+	{
+		return parent;
+	}
+	
+	public void removeFromParent()
+	{
+		if (parent != null)
+		{
+			parent.removeChild(this);
+			parent = null;
+		}
 	}
 	
 	public boolean isLeaf()
@@ -92,7 +146,7 @@ public class WindowsTreeNode<TData>
 		rowRenderer = null;
 	}
 
-	private void onHierachyChanged(WindowsTreeNode<TData> originNode)
+	private void onHierachyChanged(TreeChangedData originNode)
 	{
 		if (parent != null)
 		{
