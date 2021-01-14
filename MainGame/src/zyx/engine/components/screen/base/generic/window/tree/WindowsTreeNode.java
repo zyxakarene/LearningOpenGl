@@ -6,7 +6,7 @@ import zyx.engine.utils.callbacks.ICallback;
 
 public class WindowsTreeNode<TData>
 {
-	private static final TreeChangedData changedData = new TreeChangedData();
+	private static final TreeChangedData TREE_CHANGED_DATA = new TreeChangedData();
 	
 	boolean isLeaf;
 	boolean isOpened;
@@ -38,10 +38,9 @@ public class WindowsTreeNode<TData>
 	{
 		isOpened = !isOpened;
 		
-		changedData.node = this;
-		changedData.added = false;
-		changedData.removed = false;
-		onHierachyChanged(changedData);
+		TREE_CHANGED_DATA.node = this;
+		TREE_CHANGED_DATA.type = isOpened ? TreeChangedType.Opening : TreeChangedType.Closing;
+		onHierachyChanged(TREE_CHANGED_DATA);
 	}
 	
 	protected DefaultWindowsTreeRenderer<TData> createRenderer()
@@ -61,15 +60,16 @@ public class WindowsTreeNode<TData>
 			child.parent.removeChild(child);
 		}
 		
+		boolean wasLeaf = isLeaf;
+		
 		children.add(child);
 		child.parent = this;
 		child.setLevel((byte) (level + 1));
 		isLeaf = false;
 		
-		changedData.node = this;
-		changedData.added = true;
-		changedData.removed = false;
-		onHierachyChanged(changedData);
+		TREE_CHANGED_DATA.node = wasLeaf ? this : child;
+		TREE_CHANGED_DATA.type = TreeChangedType.Addition;
+		onHierachyChanged(TREE_CHANGED_DATA);
 	}
 	
 	private void setLevel(byte level)
@@ -88,10 +88,22 @@ public class WindowsTreeNode<TData>
 		child.level = 0;
 		isLeaf = children.isEmpty();
 		
-		changedData.node = this;
-		changedData.added = false;
-		changedData.removed = true;
-		onHierachyChanged(changedData);
+		TREE_CHANGED_DATA.node = isLeaf ? this : child;
+		TREE_CHANGED_DATA.type = TreeChangedType.Removal;
+		onHierachyChanged(TREE_CHANGED_DATA);
+	}
+	
+	void getRowRenderers(List<WindowsTreeRowRenderer<TData>> out)
+	{
+		if (rowRenderer != null)
+		{
+			out.add(rowRenderer);
+			
+			for (WindowsTreeNode<TData> child : children)
+			{
+				child.getRowRenderers(out);
+			}
+		}
 	}
 	
 	public void getChildren(List<WindowsTreeNode<TData>> out)
@@ -131,19 +143,21 @@ public class WindowsTreeNode<TData>
 		return isLeaf;
 	}
 	
-	void destroy()
+	void removeRenderer(boolean fromSelf, boolean fromChildren)
 	{
-		if (children != null)
+		if (fromChildren)
 		{
 			for (WindowsTreeNode<TData> child : children)
 			{
-				child.destroy();
+				child.removeRenderer(true, true);
 			}
 		}
 		
-		children = null;
-		data = null;
-		rowRenderer = null;
+		if (fromSelf && rowRenderer != null)
+		{
+			rowRenderer.dispose();
+			rowRenderer = null;
+		}
 	}
 
 	private void onHierachyChanged(TreeChangedData originNode)

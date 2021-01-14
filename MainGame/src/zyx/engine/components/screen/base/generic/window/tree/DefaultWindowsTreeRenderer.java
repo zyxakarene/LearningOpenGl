@@ -8,9 +8,13 @@ import zyx.opengl.textures.bitmapfont.alignment.HAlignment;
 public class DefaultWindowsTreeRenderer<TData> extends DisplayObjectContainer
 {
 	private DisplayObject display;
+	
+	protected TData data;
 
 	final void setData(TData data)
 	{
+		this.data = data;
+		
 		if (display != null)
 		{
 			display.removeFromParent(true);

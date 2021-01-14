@@ -44,6 +44,7 @@ public class WindowsScrollView extends DisplayObjectContainer implements IScroll
 		bg = new Scale9Image();
 		bg.load("container_down");
 		bg.setSize(width, height);
+		bg.setColor(0);
 		addChild(bg);
 		
 		viewContainer = new DisplayObjectContainer();

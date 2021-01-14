@@ -1,7 +1,6 @@
 package zyx.engine.components.screen.base.generic.window.tree;
 
-class TreeChangedData
+public enum TreeChangedType
 {
-	WindowsTreeNode node;
-	TreeChangedType type;
+	Addition, Removal, Opening, Closing;
 }

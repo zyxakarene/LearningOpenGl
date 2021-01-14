@@ -2,20 +2,20 @@ package zyx.engine.components.screen.base.generic.window.tree;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
+import zyx.engine.components.screen.base.generic.window.scroll.IScrollableView;
 import zyx.engine.utils.callbacks.ICallback;
 
-public class WindowsTree<TData> extends DisplayObjectContainer
+public class WindowsTree<TData> extends DisplayObjectContainer implements IScrollableView
 {
 	private WindowsTreeNode<TData> root;
 	
 	private ICallback<TreeChangedData> hierachyChanged;
-	private ArrayList<WindowsTreeRowRenderer<TData>> rowRenderers;
 
 	public WindowsTree(WindowsTreeNode<TData> root)
 	{
 		hierachyChanged = this::onHierachyChanged;
-		rowRenderers = new ArrayList<>();
 		
 		setRoot(root);
 	}
@@ -30,52 +30,53 @@ public class WindowsTree<TData> extends DisplayObjectContainer
 		root = newRoot;
 		root.setHierachyCallback(hierachyChanged);
 		
-		createTree();
+		createTreeFrom(root);
 	}
 
 	private void onHierachyChanged(TreeChangedData data)
 	{
 		WindowsTreeNode node = data.node;
 		
-		if (node.isLeaf == false && node.isOpened == false && data.removed)
+		switch (data.type)
 		{
-			int startIndex = rowRenderers.indexOf(node.rowRenderer);
-			int endIndex = rowRenderers.size() - 1;
-			int startLevel = node.level;
-			
-			int len = rowRenderers.size();
-			for (int i = startIndex + 1; i < len; i++)
+			case Closing:
 			{
-				WindowsTreeRowRenderer<TData> row = rowRenderers.get(i);
-				int nextLevel = row.level;
-				if (nextLevel <= startLevel)
+				node.removeRenderer(false, true);
+				break;
+			}
+			case Removal:
+			{
+				node.removeRenderer(true, true);
+				break;
+			}
+			case Addition:
+			case Opening:
+			{
+				if (node == root || node.parent != null && node.parent.isOpened)
 				{
-					endIndex = i - 1;
-					break;
+					createTreeFrom(node);	
 				}
+				break;
 			}
-			
-			for (int i = endIndex; i > startIndex; i--)
-			{
-				WindowsTreeRowRenderer<TData> row = rowRenderers.remove(i);
-				row.removeFromParent(true);
-			}
-			
-			positionRows();
+			default:
+				createTreeFrom(root);
+				break;
 		}
-		else
+		
+		positionRows();
+		
+		if (changed != null)
 		{
-			createTree();
+			changed.onCallback(getTotalHeight());
 		}
 	}
 
-	private void createTree()
+	private void createTreeFrom(WindowsTreeNode<TData> start)
 	{
-		removeChildren(true);
-		rowRenderers.clear();
+		start.removeRenderer(true, true);
 		
 		LinkedList<WindowsTreeNode<TData>> nodes = new LinkedList<>();
-		nodes.add(root);
+		nodes.add(start);
 		
 		float y = 0;
 		
@@ -90,7 +91,6 @@ public class WindowsTree<TData> extends DisplayObjectContainer
 			WindowsTreeRowRenderer<TData> row = new WindowsTreeRowRenderer<>(node);
 			addChild(row);
 			row.setPosition(true, node.level * 16, y);
-			rowRenderers.add(row);
 			node.rowRenderer = row;
 			
 			y += row.getRendererHeight();
@@ -101,24 +101,41 @@ public class WindowsTree<TData> extends DisplayObjectContainer
 	public void dispose()
 	{
 		super.dispose();
-		
-		if (rowRenderers != null)
-		{
-			rowRenderers.clear();
-			rowRenderers = null;
-		}
 	}
 
 	private void positionRows()
 	{
+		List<WindowsTreeRowRenderer<TData>> renderesList = new ArrayList<>();
+		root.getRowRenderers(renderesList);
+		
 		float y = 0;
 		
-		int len = rowRenderers.size();
+		int len = renderesList.size();
 		for (int i = 0; i < len; i++)
 		{
-			WindowsTreeRowRenderer<TData> row = rowRenderers.get(i);
+			WindowsTreeRowRenderer<TData> row = renderesList.get(i);
 			row.setPosition(true, row.level * 16, y);
 			y += row.getRendererHeight();
 		}
+	}
+
+	@Override
+	public int getTotalHeight()
+	{
+		return (int) getHeight();
+	}
+
+	private ICallback<Integer> changed;
+	
+	@Override
+	public void addHeightChangedListener(ICallback<Integer> callback)
+	{
+		changed = callback;
+	}
+
+	@Override
+	public void removeHeightChangedListener()
+	{
+		changed = null;
 	}
 }

@@ -40,6 +40,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	private boolean showBorders;
 	
 	private BitmapTextMaterial material;
+	private boolean allowMultiline;
 
 	public Textfield(String text)
 	{
@@ -102,6 +103,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 		
 		glText = new Text(material, fontSize, width, height);
 		glText.setAlignment(vAlign, hAlign);
+		glText.setAllowMultiline(allowMultiline);
 		glText.setText(text);
 
 		caret = new Quad(1, height, 0xFF0000);
@@ -151,6 +153,16 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 		super.onDraw();
 	}
 
+	public void setAllowMultiline(boolean value)
+	{
+		allowMultiline = value;
+
+		if (loaded)
+		{
+			glText.setAllowMultiline(value);
+		}
+	}
+	
 	@Override
 	public void setWidth(float value)
 	{

@@ -20,10 +20,22 @@ public class DebugHiearchyRenderer extends DefaultWindowsTreeRenderer<WorldObjec
 
 		String text = getLabel(data);
 		WindowsTextfield textfield = new WindowsTextfield(text);
+		textfield.setFontSize(4);
+		textfield.setAllowMultiline(false);
+		textfield.setColor(1f, 1f, 1f);
 		textfield.setSize(200, height);
 		textfield.setHAlign(HAlignment.LEFT);
 
 		return textfield;
+	}
+
+	@Override
+	protected String getIcon()
+	{
+		String icon = data.getDebugIcon();
+		icon = icon.replace(".png", "");
+		
+		return "texture.world." + icon;
 	}
 	
 	private String getLabel(WorldObject data)

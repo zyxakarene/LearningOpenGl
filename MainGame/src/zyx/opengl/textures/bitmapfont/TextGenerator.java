@@ -33,6 +33,7 @@ class TextGenerator
 
 	private float maxWidth;
 	private float maxHeight;
+	private boolean allowMultiline;
 	
 	TextGenerator(BitmapTextMaterial material, float width, float height, float scale)
 	{
@@ -50,6 +51,7 @@ class TextGenerator
 
 		hAlign = HAlignment.CENTER;
 		vAlign = VAlignment.MIDDLE;
+		allowMultiline = true;
 		
 		currentValueX = 0;
 		currentValueY = 0;
@@ -58,10 +60,15 @@ class TextGenerator
 		highestY = 0;
 	}
 
-	void sethAlign(HAlignment h, VAlignment v)
+	void setAlign(HAlignment h, VAlignment v)
 	{
 		hAlign = h;
 		vAlign = v;
+	}
+
+	void setAllowMultiline(boolean value)
+	{
+		allowMultiline = value;
 	}
 
 	void addCharacter(char character)
@@ -74,14 +81,14 @@ class TextGenerator
 			//Don't add the space character. Just add some empty room
 			currentValueX += (fontChar.xAdvance + fontKerning.amount) * scale;
 
-			if (currentValueX >= maxWidth)
+			if (allowMultiline && currentValueX >= maxWidth)
 			{
 				currentValueX = 0;
 				currentValueY += (fontFile.lineHeight);
 			}
 			return;
 		}
-		else if (character == '\r' || character == '\n')
+		else if (allowMultiline && (character == '\r' || character == '\n'))
 		{
 			currentValueX = 0;
 			currentValueY += (fontFile.lineHeight * scale);
