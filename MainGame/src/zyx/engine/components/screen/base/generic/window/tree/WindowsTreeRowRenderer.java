@@ -1,6 +1,5 @@
 package zyx.engine.components.screen.base.generic.window.tree;
 
-import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector2f;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
 import zyx.engine.components.screen.base.generic.window.WindowsButton;
@@ -12,10 +11,6 @@ import zyx.engine.utils.callbacks.ICallback;
 final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer
 {
 
-	private static final ArrayList<String> LINE_IMAGES = new ArrayList<>();
-	private static final ArrayList<Vector2f> LINE_POSITIONS = new ArrayList<>();
-	private static final ArrayList<TreeLineType> LAST_LEVEL_TYPE = new ArrayList<>(10);
-
 	private DefaultWindowsTreeRenderer<TData> renderer;
 	private WindowsButton expandButton;
 	private Image icon;
@@ -24,59 +19,17 @@ final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer
 	private ICallback<InteractableContainer> onFoldChange;
 
 	byte level;
-	
+
 	WindowsTreeNode<TData> activeNode;
 
 	WindowsTreeRowRenderer(WindowsTreeNode<TData> node)
 	{
-		LINE_IMAGES.clear();
-		LINE_POSITIONS.clear();
-
 		activeNode = node;
 		onFoldChange = this::onFoldChange;
 
 		level = node.level;
-		
-		int i = 0;
-		WindowsTreeNode childNode = node;
-		WindowsTreeNode parentNode = node.parent;
-		while (parentNode != null)
-		{
-			i++;
-			if (i == 1)
-			{
-				if (parentNode.isLastChild(childNode))
-				{
-					addLinePart(TreeLineType.CORNER, childNode.level, i);
-				}
-				else
-				{
-					addLinePart(TreeLineType.JUNCTION, childNode.level, i);
-				}
-			}
-			else
-			{
-				TreeLineType lastType = LAST_LEVEL_TYPE.get(childNode.level);
 
-				if (lastType == TreeLineType.JUNCTION || lastType == TreeLineType.LINE)
-				{
-					addLinePart(TreeLineType.LINE, childNode.level, i);
-				}
-			}
-
-			childNode = parentNode;
-			parentNode = parentNode.parent;
-		}
-
-		String[] res = LINE_IMAGES.toArray(new String[LINE_IMAGES.size()]);
-		Vector2f[] pos = LINE_POSITIONS.toArray(new Vector2f[LINE_POSITIONS.size()]);
-		lineImage = new MultiSheetImage();
-		lineImage.setImages(res, pos);
-		lineImage.touchable = false;
-
-		addChild(lineImage);
-
-		if(node.isLeaf == false)
+		if (node.isLeaf == false)
 		{
 			expandButton = new WindowsButton();
 			expandButton.onButtonClicked.addCallback(onFoldChange);
@@ -97,20 +50,6 @@ final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer
 		addRenderer();
 	}
 
-	private void addLinePart(TreeLineType type, byte level, int positionIndex)
-	{
-		int missingElements = level - LAST_LEVEL_TYPE.size() + 1;
-		for (int i = 0; i < missingElements; i++)
-		{
-			LAST_LEVEL_TYPE.add(null);
-		}
-
-		LINE_IMAGES.add(type.resourceID);
-		LAST_LEVEL_TYPE.set(level, type);
-
-		LINE_POSITIONS.add(new Vector2f(positionIndex * -16, 0));
-	}
-
 	float getRendererHeight()
 	{
 		return renderer.getRendererHeight();
@@ -126,15 +65,20 @@ final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer
 		icon.load(renderer.getIcon());
 		icon.setSize(height, height);
 		addChild(icon);
-		
+
 		renderer.setX(16);
 		addChild(renderer);
+
+		lineImage = new MultiSheetImage();
+		lineImage.touchable = false;
+		addChild(lineImage);
+
 	}
 
 	private void onFoldChange(InteractableContainer container)
 	{
 		activeNode.toggleOpened();
-		
+
 		if (expandButton != null)
 		{
 			expandButton.touchable = !activeNode.isLeaf;
@@ -169,4 +113,47 @@ final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer
 		super.dispose();
 	}
 
+	void buildLines(TreeLineStructure lineStructure)
+	{
+		TreeLineRowStructure lineData = lineStructure.getLineDataFor(activeNode);
+
+		int len = lineData.length;
+		String[] res = new String[len];
+		Vector2f[] pos = new Vector2f[len];
+
+		for (int i = 0; i < len; i++)
+		{
+			TreeLineType value = lineData.types[i];
+			int offset = lineData.offsets[i];
+			res[i] = value.resourceID;
+			pos[i] = new Vector2f(offset * 16, 0);
+		}
+
+		lineImage.setImages(res, pos);
+		lineImage.setX(activeNode.level * -16);
+	}
+
+	void updateSelf()
+	{
+		if (expandButton != null)
+		{
+			if (activeNode.isLeaf)
+			{
+				expandButton.visible = false;
+			}
+			else if (activeNode.isOpened)
+			{
+				expandButton.setColor(0, 1, 0);
+			}
+			else
+			{
+				expandButton.setColor(0, 0.5f, 0);
+			}
+		}
+
+		if (renderer != null)
+		{
+			renderer.setData(activeNode.data);
+		}
+	}
 }

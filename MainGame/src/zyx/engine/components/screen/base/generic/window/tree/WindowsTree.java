@@ -9,6 +9,7 @@ import zyx.engine.utils.callbacks.ICallback;
 
 public class WindowsTree<TData> extends DisplayObjectContainer implements IScrollableView
 {
+	private TreeLineStructure lineStructure;
 	private WindowsTreeNode<TData> root;
 	
 	private ICallback<TreeChangedData> hierachyChanged;
@@ -16,6 +17,7 @@ public class WindowsTree<TData> extends DisplayObjectContainer implements IScrol
 	public WindowsTree(WindowsTreeNode<TData> root)
 	{
 		hierachyChanged = this::onHierachyChanged;
+		lineStructure = new TreeLineStructure();
 		
 		setRoot(root);
 	}
@@ -56,6 +58,10 @@ public class WindowsTree<TData> extends DisplayObjectContainer implements IScrol
 				{
 					createTreeFrom(node);	
 				}
+				else if (node.parent != null)
+				{
+					node.parent.updateSelf();
+				}
 				break;
 			}
 			default:
@@ -63,6 +69,7 @@ public class WindowsTree<TData> extends DisplayObjectContainer implements IScrol
 				break;
 		}
 		
+		lineStructure.buildLines(root);
 		positionRows();
 		
 		if (changed != null)
@@ -114,6 +121,7 @@ public class WindowsTree<TData> extends DisplayObjectContainer implements IScrol
 		for (int i = 0; i < len; i++)
 		{
 			WindowsTreeRowRenderer<TData> row = renderesList.get(i);
+			row.buildLines(lineStructure);
 			row.setPosition(true, row.level * 16, y);
 			y += row.getRendererHeight();
 		}

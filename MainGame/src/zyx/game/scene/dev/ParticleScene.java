@@ -16,16 +16,17 @@ import zyx.opengl.particles.ParticleSystem;
 import zyx.opengl.textures.TextureFromInt;
 import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.FloatMath;
+import zyx.utils.cheats.DebugPoint;
 
 public class ParticleScene extends DebugScene
 {
 
-	private ArrayList<Box> boxes;
+	private ArrayList<DebugPoint> points;
 	private MeshObject model;
 
 	public ParticleScene()
 	{
-		boxes = new ArrayList<>();
+		points = new ArrayList<>();
 	}
 
 	@Override
@@ -35,26 +36,65 @@ public class ParticleScene extends DebugScene
 		preloadResource("sprite_sheet_json");
 	}
 
+	private int timer = 0;
+	private int index = 0;
+	private boolean adding;
+	
 	@Override
 	protected void onUpdate(long timestamp, int elapsedTime)
 	{
 		super.onUpdate(timestamp, elapsedTime);
 		
+		timer += elapsedTime;
+//		if (timer >= 16)
+//		{
+//			index++;
+//			timer = 0;
+//			
+//			if (index >= 15)
+//			{
+//				System.out.println("Switched");
+//				adding = !adding;
+//				index = 0;
+//			}
+//			
+//			if (adding)
+//			{
+//				System.out.println("Added");
+//				DebugPoint addToScene = DebugPoint.addToScene(0, 0, 0, -1);
+//			}
+//			else
+//			{
+//				System.out.println("Removed");
+//			}
+//		}
+		
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
 		{
-			Box b = new Box();
-			
-			model.addChild(b);
-			boxes.add(b);
+			addBox();
 		}
 		
-		if (!boxes.isEmpty() && KeyboardData.data.wasPressed(Keyboard.KEY_E))
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_E))
 		{
-			int index = (int) (Math.random() * boxes.size());
-			
-			WorldObject obj = boxes.remove(index);
-			obj.dispose();
+			removeBox();
 		}
+	}
+
+	private void removeBox()
+	{
+		if (!points.isEmpty())
+		{
+			int index = (int) (Math.random() * points.size());
+			index = points.size() - 1;
+			
+			DebugPoint obj = points.remove(index);
+			obj.kill();
+		}
+	}
+
+	private void addBox()
+	{
+		points.add(DebugPoint.addToScene(0, 0, 0, -1));
 	}
 
 	@Override
@@ -71,7 +111,7 @@ public class ParticleScene extends DebugScene
 			MeshBatchManager.getInstance().addEntity(cube);
 		}
 		
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < 0; i++)
 		{
 			model = new MeshObject();
 			model.load("mesh.box");

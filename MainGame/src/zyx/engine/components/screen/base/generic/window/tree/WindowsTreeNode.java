@@ -84,13 +84,18 @@ public class WindowsTreeNode<TData>
 	public void removeChild(WindowsTreeNode<TData> child)
 	{
 		children.remove(child);
-		child.parent = null;
-		child.level = 0;
 		isLeaf = children.isEmpty();
+		if (isLeaf)
+		{
+			isOpened = false;
+		}
 		
-		TREE_CHANGED_DATA.node = isLeaf ? this : child;
+		TREE_CHANGED_DATA.node = child;
 		TREE_CHANGED_DATA.type = TreeChangedType.Removal;
 		onHierachyChanged(TREE_CHANGED_DATA);
+		
+		child.parent = null;
+		child.level = 0;
 	}
 	
 	void getRowRenderers(List<WindowsTreeRowRenderer<TData>> out)
@@ -145,6 +150,11 @@ public class WindowsTreeNode<TData>
 	
 	void removeRenderer(boolean fromSelf, boolean fromChildren)
 	{
+		if (parent != null)
+		{
+			parent.updateSelf();
+		}
+		
 		if (fromChildren)
 		{
 			for (WindowsTreeNode<TData> child : children)
@@ -182,5 +192,13 @@ public class WindowsTreeNode<TData>
 		}
 		
 		return children.get(size - 1) == node;
+	}
+
+	void updateSelf()
+	{
+		if (rowRenderer != null)
+		{
+			rowRenderer.updateSelf();
+		}
 	}
 }
