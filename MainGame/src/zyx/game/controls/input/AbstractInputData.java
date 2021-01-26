@@ -1,14 +1,16 @@
 package zyx.game.controls.input;
 
-import java.util.Arrays;
-
 abstract class AbstractInputData
 {
-
+	private static final int PREV_KEY_MAX = 15;
+	
 	public boolean[] btnDown;
 	public boolean[] btnClicked;
 	
 	private final int maxId;
+	
+	private int[] prevKeys;
+	private int prevKeyCount;
 
 	protected AbstractInputData(int count)
 	{
@@ -16,11 +18,20 @@ abstract class AbstractInputData
 		btnClicked = new boolean[count];
 		
 		maxId = count - 1;
+		
+		prevKeys = new int[PREV_KEY_MAX];
+		prevKeyCount = 0;
 	}
 
 	void reset()
 	{
-		Arrays.fill(btnClicked, false);
+		for (int i = 0; i < prevKeyCount; i++)
+		{
+			int prevKey = prevKeys[i];
+			btnClicked[prevKey] = false;
+		}
+		
+		prevKeyCount = 0;
 	}
 
 	void setClickData(int id, boolean isDown)
@@ -30,10 +41,16 @@ abstract class AbstractInputData
 			return;
 		}
 		
-		boolean wasDown = btnDown[id];
+		if (prevKeyCount < PREV_KEY_MAX)
+		{
+			boolean wasDown = btnDown[id];
 
-		btnClicked[id] = wasDown && !isDown;
-		btnDown[id] = isDown;
+			btnClicked[id] = !wasDown && isDown;
+			btnDown[id] = isDown;
+		
+			prevKeys[prevKeyCount] = id;
+			prevKeyCount++;
+		}
 	}
 	
 	public boolean isDown(int id)

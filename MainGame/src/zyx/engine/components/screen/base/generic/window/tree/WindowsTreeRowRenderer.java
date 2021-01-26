@@ -1,14 +1,16 @@
 package zyx.engine.components.screen.base.generic.window.tree;
 
 import org.lwjgl.util.vector.Vector2f;
+import zyx.engine.components.animations.IFocusable;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
+import zyx.engine.components.screen.base.Quad;
 import zyx.engine.components.screen.base.generic.window.WindowsButton;
 import zyx.engine.components.screen.image.Image;
 import zyx.engine.components.screen.image.MultiSheetImage;
 import zyx.engine.components.screen.interactable.InteractableContainer;
 import zyx.engine.utils.callbacks.ICallback;
 
-final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer
+final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer implements IFocusable
 {
 
 	private DefaultWindowsTreeRenderer<TData> renderer;
@@ -24,6 +26,9 @@ final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer
 
 	WindowsTreeRowRenderer(WindowsTreeNode<TData> node)
 	{
+		focusable = true;
+		touchable = true;
+		
 		activeNode = node;
 		onFoldChange = this::onFoldChange;
 
@@ -48,6 +53,11 @@ final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer
 		}
 
 		addRenderer();
+		
+		Quad quad = new Quad(getWidth(), getHeight(), 0xFFFF00);
+		quad.touchable = false;
+		quad.focusable = false;
+		addChild(quad);
 	}
 
 	float getRendererHeight()
@@ -154,6 +164,29 @@ final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer
 		if (renderer != null)
 		{
 			renderer.setData(activeNode.data);
+		}
+	}
+
+	@Override
+	public void onKeyPressed(char character)
+	{
+	}
+
+	@Override
+	public void onFocused()
+	{
+		if (icon != null)
+		{
+			icon.setColor(0xFF0000);
+		}
+	}
+
+	@Override
+	public void onUnFocused()
+	{
+		if (icon != null)
+		{
+			icon.setColor(0xFFFFFF);
 		}
 	}
 }

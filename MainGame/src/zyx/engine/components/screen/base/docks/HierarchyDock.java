@@ -27,7 +27,7 @@ public class HierarchyDock extends EditorDock
 		WindowsTreeNode<WorldObject> root = info.getGlRootNode();
 		tree = new WindowsTree<>(root);
 		
-		WindowsScrollView scrollView = new WindowsScrollView((int) getWidth(), 600);
+		WindowsScrollView scrollView = new WindowsScrollView((int) getWidth(), 200);
 		scrollView.setView(tree);
 		
 		addChild(scrollView);

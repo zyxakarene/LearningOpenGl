@@ -1,8 +1,6 @@
 package zyx.engine.components.screen.text;
 
-import zyx.engine.components.animations.IFocusable;
 import zyx.engine.components.screen.interactable.InteractableContainer;
-import java.awt.event.KeyEvent;
 import zyx.engine.components.animations.ILoadable;
 import zyx.engine.components.screen.base.Quad;
 import zyx.engine.curser.GameCursor;
@@ -17,7 +15,7 @@ import zyx.opengl.textures.bitmapfont.Text;
 import zyx.opengl.textures.bitmapfont.alignment.HAlignment;
 import zyx.opengl.textures.bitmapfont.alignment.VAlignment;
 
-public class Textfield extends InteractableContainer implements IFocusable, IResourceReady<FontResource>, ILoadable
+public class Textfield extends InteractableContainer implements IResourceReady<FontResource>, ILoadable
 {
 	public static final String DEFAULT_RESOURCE = "font.console";
 	
@@ -284,37 +282,6 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	@Override
 	protected void onMouseClick()
 	{
-		stage.setFocusedObject(this);
-	}
-
-	@Override
-	public void onKeyPressed(char character)
-	{
-		if (character == KeyEvent.VK_BACK_SPACE)
-		{
-			setText(text.substring(0, text.length() - 1));
-		}
-		else
-		{
-			setText(text + character);
-		}
-
-		caret.setPosition(true, width, 0);
-	}
-
-	@Override
-	public void onFocused()
-	{
-		hasFocus = true;
-		caret.visible = true;
-		caret.setPosition(true, width, 0);
-	}
-
-	@Override
-	public void onUnFocused()
-	{
-		hasFocus = false;
-		caret.visible = false;
 	}
 
 	public void showBorders(boolean showBorders)

@@ -4,6 +4,7 @@ import zyx.engine.components.animations.MeshAnimator;
 import zyx.engine.components.cubemaps.CubemapManager;
 import zyx.engine.components.meshbatch.MeshBatchManager;
 import zyx.engine.components.tooltips.TooltipManager;
+import zyx.engine.focus.FocusManager;
 import zyx.engine.touch.MouseTouchManager;
 import zyx.engine.utils.ClickDispatcher;
 import zyx.game.components.screen.json.JsonSpriteAnimator;
@@ -36,7 +37,7 @@ public class MegaManager
 		PingManager.getInstance().update(timestamp, elapsed);
 		MeshBatchManager.getInstance().update(timestamp, elapsed);
 		TweenManager.getInstance().update(timestamp, elapsed);
-
+		FocusManager.getInstance().update(timestamp, elapsed);
 		SoundManager.getInstance().update(timestamp, elapsed);
 	}
 }
