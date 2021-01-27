@@ -72,7 +72,6 @@ public class FocusManager implements IUpdateable, ITouched
 	@Override
 	public void onTouched(TouchState state, boolean collided, TouchData data)
 	{
-		System.out.println(data.target);
 		if (currentFocus != null)
 		{
 			currentFocus.onUnFocused();

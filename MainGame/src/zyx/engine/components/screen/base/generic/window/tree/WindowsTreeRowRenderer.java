@@ -3,14 +3,16 @@ package zyx.engine.components.screen.base.generic.window.tree;
 import org.lwjgl.util.vector.Vector2f;
 import zyx.engine.components.animations.IFocusable;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
-import zyx.engine.components.screen.base.Quad;
+import zyx.engine.components.screen.base.events.types.touch.TouchEvent;
+import zyx.engine.components.screen.base.events.types.touch.TouchedAdaptor;
 import zyx.engine.components.screen.base.generic.window.WindowsButton;
 import zyx.engine.components.screen.image.Image;
 import zyx.engine.components.screen.image.MultiSheetImage;
 import zyx.engine.components.screen.interactable.InteractableContainer;
 import zyx.engine.utils.callbacks.ICallback;
 
-final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer implements IFocusable
+//todo: Not public, but invisible
+public final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer implements IFocusable
 {
 
 	private DefaultWindowsTreeRenderer<TData> renderer;
@@ -53,11 +55,15 @@ final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer impleme
 		}
 
 		addRenderer();
-		
-		Quad quad = new Quad(getWidth(), getHeight(), 0xFFFF00);
-		quad.touchable = false;
-		quad.focusable = false;
-		addChild(quad);
+
+		addListener(new TouchedAdaptor()
+		{
+			@Override
+			public void mouseClick(TouchEvent event)
+			{
+				System.out.println("CLICKED ME: " + event.target);
+			}
+		});
 	}
 
 	float getRendererHeight()

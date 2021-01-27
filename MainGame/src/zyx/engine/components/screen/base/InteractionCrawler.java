@@ -2,6 +2,7 @@ package zyx.engine.components.screen.base;
 
 import java.util.LinkedList;
 import org.lwjgl.util.vector.Vector2f;
+import zyx.engine.components.screen.text.Textfield;
 import zyx.engine.touch.MouseTouchManager;
 import zyx.engine.utils.ScreenSize;
 import zyx.utils.FloatMath;
@@ -60,9 +61,13 @@ public class InteractionCrawler
 			
 			if (child instanceof DisplayObjectContainer)
 			{
-				childContainer = (DisplayObjectContainer) child;
-				childContainer.getChildren(objects);
-				continue;
+				//Todo: Not like this..
+				if ((child instanceof Textfield) == false)
+				{
+					childContainer = (DisplayObjectContainer) child;
+					childContainer.getChildren(objects);
+					continue;
+				}
 			}
 
 			if (child.clipRect != null)

@@ -3,6 +3,8 @@ package zyx.engine.touch;
 import java.util.HashMap;
 import zyx.engine.components.screen.base.DisplayObject;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
+import zyx.engine.components.screen.base.events.types.touch.TouchEvent;
+import zyx.engine.components.screen.base.events.types.touch.TouchEventType;
 import zyx.engine.curser.CursorManager;
 import zyx.game.controls.input.MouseData;
 import zyx.utils.interfaces.IUpdateable;
@@ -186,6 +188,11 @@ public class MouseTouchManager implements IUpdateable
 
 	public void setTouchedObject(DisplayObject target)
 	{
+		if (target != null)
+		{
+			target.dispatchEvent(new TouchEvent(TouchEventType.Click, currentTarget));
+		}
+
 		if (!hasDownTarget && currentTarget != null && currentTarget != target)
 		{
 			dispatchTo(currentTarget, currentState, false);

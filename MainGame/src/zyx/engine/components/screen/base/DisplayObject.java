@@ -7,6 +7,11 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.debug.link.DebugInfo;
 import zyx.debug.views.base.IDebugIcon;
+import zyx.engine.components.screen.base.events.EventListenerMap;
+import zyx.engine.components.screen.base.events.IEventListener;
+import zyx.engine.components.screen.base.events.types.DisplayObjectEvent;
+import zyx.engine.components.screen.base.events.types.IDisplayObjectEventListener;
+import zyx.engine.components.screen.base.generic.window.tree.WindowsTreeRowRenderer;
 import zyx.engine.curser.GameCursor;
 import zyx.engine.touch.MouseTouchManager;
 import zyx.game.controls.SharedPools;
@@ -24,7 +29,7 @@ import zyx.utils.pooling.GenericPool;
 import zyx.utils.pooling.ObjectPool;
 import zyx.utils.pooling.model.PoolableRectangle;
 
-public abstract class DisplayObject implements IPositionable2D, IDisposeable, IDebugIcon
+public abstract class DisplayObject implements IPositionable2D, IDisposeable, IDebugIcon, IEventListener
 {
 	private static int instanceCounter;
 
@@ -62,11 +67,14 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 
 	protected final ScreenShader shader;
 	protected Stage stage;
+	
+	private EventListenerMap eventListener;
 
 	public DisplayObject()
 	{
 		DebugInfo.screenObjects.updateList();
 		
+		eventListener = new EventListenerMap();
 		name = String.format("I%s", instanceCounter++);
 		
 		invWorldMatrix = SharedPools.MATRIX_POOL.getInstance();
@@ -87,6 +95,38 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		pivotY = 0f;
 		
 		shader = ShaderManager.getInstance().<ScreenShader>get(Shader.SCREEN);
+	}
+	
+	@Override
+	public final void dispatchEvent(DisplayObjectEvent event)
+	{
+		if (eventListener != null)
+		{
+			eventListener.dispatchEvent(event);
+			
+			if (event.bubbles && parent != null)
+			{
+				parent.dispatchEvent(event);
+			}
+		}
+	}
+
+	@Override
+	public void addListener(IDisplayObjectEventListener listener)
+	{
+		if (eventListener != null)
+		{
+			eventListener.addListener(listener);
+		}
+	}
+
+	@Override
+	public void removeListener(IDisplayObjectEventListener listener)
+	{
+		if (eventListener != null)
+		{
+			eventListener.removeListener(listener);
+		}
 	}
 
 	public Matrix4f worldMatrix()
@@ -301,6 +341,12 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		{
 			CLIP_POOL.releaseInstance(globalClipRect);
 			globalClipRect = null;
+		}
+		
+		if (eventListener != null)
+		{
+			eventListener.dispose();
+			eventListener = null;
 		}
 		
 		SharedPools.MATRIX_POOL.releaseInstance(invWorldMatrix);
