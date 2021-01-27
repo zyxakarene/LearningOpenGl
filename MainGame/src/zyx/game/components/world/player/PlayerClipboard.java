@@ -79,4 +79,10 @@ public class PlayerClipboard extends GameObject implements IPhysbox
 	{
 		return paper.getBoneMatrix(boneId);
 	}
+
+	@Override
+	public GameObject getWorldObject()
+	{
+		return this;
+	}
 }

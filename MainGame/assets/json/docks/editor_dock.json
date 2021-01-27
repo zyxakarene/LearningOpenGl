@@ -1,0 +1,14 @@
+{
+	"name":"editor_dock",
+	"type":"container",
+	"children":
+	[
+		{
+			"name":"background",
+			"type":"quad",
+			"percentWidth":1,
+			"percentHeight":1,
+			"color":"0xCCCCCC"
+		}
+	]
+}

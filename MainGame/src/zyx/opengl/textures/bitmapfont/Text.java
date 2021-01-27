@@ -26,6 +26,7 @@ public class Text extends AbstractModel<BitmapTextMaterial>
 	private boolean shouldUpdate;
 	private HAlignment hAlign;
 	private VAlignment vAlign;
+	private boolean allowMultiline;
 	
 	public Text(BitmapTextMaterial material, float fontScale, float width, float height)
 	{
@@ -65,7 +66,8 @@ public class Text extends AbstractModel<BitmapTextMaterial>
 	private void update(BitmapTextMaterial material)
 	{
 		TextGenerator generator = new TextGenerator(material, width, height, fontScale);
-		generator.sethAlign(hAlign, vAlign);
+		generator.setAlign(hAlign, vAlign);
+		generator.setAllowMultiline(allowMultiline);
 		
 		characterCount = lastText.length();
 		char character;
@@ -164,6 +166,13 @@ public class Text extends AbstractModel<BitmapTextMaterial>
 	{
 		this.vAlign = vAlign;
 		this.hAlign = hAlign;
+		
+		shouldUpdate = true;
+	}
+
+	public void setAllowMultiline(boolean value)
+	{
+		allowMultiline = value;
 		
 		shouldUpdate = true;
 	}

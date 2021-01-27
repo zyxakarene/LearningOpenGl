@@ -1,7 +1,9 @@
 package zyx.game.scene.dev;
 
+import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
 import zyx.engine.components.meshbatch.MeshBatchManager;
+import zyx.engine.components.world.WorldObject;
 import zyx.game.behavior.misc.JiggleBehavior;
 import zyx.game.components.MeshObject;
 import zyx.game.components.world.meshbatch.CubeEntity;
@@ -9,18 +11,22 @@ import zyx.game.controls.input.KeyboardData;
 import zyx.opengl.GLUtils;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.LightingPassRenderer;
+import zyx.opengl.models.implementations.shapes.Box;
 import zyx.opengl.particles.ParticleSystem;
 import zyx.opengl.textures.TextureFromInt;
 import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.FloatMath;
+import zyx.utils.cheats.DebugPoint;
 
 public class ParticleScene extends DebugScene
 {
 
+	private ArrayList<DebugPoint> points;
 	private MeshObject model;
 
 	public ParticleScene()
 	{
+		points = new ArrayList<>();
 	}
 
 	@Override
@@ -30,16 +36,65 @@ public class ParticleScene extends DebugScene
 		preloadResource("sprite_sheet_json");
 	}
 
+	private int timer = 0;
+	private int index = 0;
+	private boolean adding;
+	
 	@Override
 	protected void onUpdate(long timestamp, int elapsedTime)
 	{
 		super.onUpdate(timestamp, elapsedTime);
 		
-		if (KeyboardData.data.isDown(Keyboard.KEY_SPACE))
+		timer += elapsedTime;
+//		if (timer >= 16)
+//		{
+//			index++;
+//			timer = 0;
+//			
+//			if (index >= 15)
+//			{
+//				System.out.println("Switched");
+//				adding = !adding;
+//				index = 0;
+//			}
+//			
+//			if (adding)
+//			{
+//				System.out.println("Added");
+//				DebugPoint addToScene = DebugPoint.addToScene(0, 0, 0, -1);
+//			}
+//			else
+//			{
+//				System.out.println("Removed");
+//			}
+//		}
+		
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
 		{
-			LightingPassRenderer lightRenderer = LightingPassRenderer.getInstance();
-			model.mesh.cloneMaterial().setDiffuse(new TextureFromInt(128, 128, lightRenderer.outputInt(), TextureSlot.SHARED_DIFFUSE));
+			addBox();
 		}
+		
+		if (KeyboardData.data.wasPressed(Keyboard.KEY_E))
+		{
+			removeBox();
+		}
+	}
+
+	private void removeBox()
+	{
+		if (!points.isEmpty())
+		{
+			int index = (int) (Math.random() * points.size());
+			index = points.size() - 1;
+			
+			DebugPoint obj = points.remove(index);
+			obj.kill();
+		}
+	}
+
+	private void addBox()
+	{
+		points.add(DebugPoint.addToScene(0, 0, 0, -1));
 	}
 
 	@Override
@@ -56,7 +111,7 @@ public class ParticleScene extends DebugScene
 			MeshBatchManager.getInstance().addEntity(cube);
 		}
 		
-		for (int i = 0; i < 1; i++)
+		for (int i = 0; i < 0; i++)
 		{
 			model = new MeshObject();
 			model.load("mesh.box");

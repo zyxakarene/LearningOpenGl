@@ -42,6 +42,5 @@ public class GameDock extends ContainerDock
 	{
 		sceneImage.setSize(width, -height);
 		sceneImage.setPosition(true, 0, height);
-
 	}
 }

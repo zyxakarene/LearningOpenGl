@@ -1,6 +1,7 @@
 package zyx.utils.cheats;
 
 import java.util.HashMap;
+import zyx.engine.components.world.WorldObject;
 import zyx.opengl.models.implementations.renderers.WorldModelRenderer;
 import zyx.utils.interfaces.IPhysbox;
 
@@ -28,6 +29,12 @@ public class DebugPhysics
 		{
 			WorldModelRenderer[] renderers = DebugPhysDrawing.getRenderersFor(obj);
 			entryMap.put(obj, renderers);
+			
+			WorldObject parent = obj.getWorldObject();
+			for (WorldModelRenderer renderer : renderers)
+			{
+				renderer.setup(parent);
+			}
 		}
 	}
 

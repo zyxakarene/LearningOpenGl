@@ -85,5 +85,10 @@ public class PlayerObject extends GameObject implements IItemHolder
 	{
 		return null;
 	}
-
+	
+	@Override
+	public GameObject getWorldObject()
+	{
+		return this;
+	}
 }

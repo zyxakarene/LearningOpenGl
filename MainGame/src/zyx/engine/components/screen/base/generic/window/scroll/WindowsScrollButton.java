@@ -36,6 +36,11 @@ public class WindowsScrollButton extends WindowsButton implements ITouched
 	@Override
 	public void onTouched(TouchState state, boolean collided, TouchData data)
 	{
+		if (min == 0 && max == 0)
+		{
+			return;
+		}
+		
 		if (state == TouchState.DOWN)
 		{
 			HELPER_VEC2.setY(position.y - min);

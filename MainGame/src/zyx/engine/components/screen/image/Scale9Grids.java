@@ -29,6 +29,7 @@ class Scale9Grids
 	private static final String CONTAINER = "container";
 	private static final String CONTAINER_DOWN = "container_down";
 	private static final String CHECKBOX = "checkbox";
+	private static final String TREE_LINE = "tree_line";
 
 	public static Rectangle getGridFor(String name)
 	{
@@ -80,6 +81,10 @@ class Scale9Grids
 			case CONTAINER_DOWN:
 				grid = new Rectangle(4, 4, 24, 24);
 				keys = new String[] {TITLEBAR, CONTAINER, CONTAINER_DOWN};
+				break;
+			case TREE_LINE:
+				grid = new Rectangle(8, 2, 6, 6);
+				keys = new String[] {TREE_LINE};
 				break;
 			default:
 				grid = new Rectangle(22, 22, 20, 20);

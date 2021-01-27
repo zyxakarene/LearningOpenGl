@@ -16,7 +16,8 @@ public class EditorDock extends ContainerDock
 	@Override
 	protected void setup()
 	{
-		debugQuad = new Quad(width, height, (int) (0xFFFFFF * Math.random()));
+		int bgColor = getBgColor();
+		debugQuad = new Quad(width, height, bgColor);
 		addChild(debugQuad);
 	}
 
@@ -24,5 +25,10 @@ public class EditorDock extends ContainerDock
 	protected void onSizeChanged()
 	{
 		debugQuad.setSize(width, height);
+	}
+
+	protected int getBgColor()
+	{
+		return (int) (0xFFFFFF * Math.random());
 	}
 }

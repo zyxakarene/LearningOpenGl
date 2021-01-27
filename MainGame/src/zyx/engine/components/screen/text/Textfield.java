@@ -1,8 +1,6 @@
 package zyx.engine.components.screen.text;
 
-import zyx.engine.components.animations.IFocusable;
 import zyx.engine.components.screen.interactable.InteractableContainer;
-import java.awt.event.KeyEvent;
 import zyx.engine.components.animations.ILoadable;
 import zyx.engine.components.screen.base.Quad;
 import zyx.engine.curser.GameCursor;
@@ -17,7 +15,7 @@ import zyx.opengl.textures.bitmapfont.Text;
 import zyx.opengl.textures.bitmapfont.alignment.HAlignment;
 import zyx.opengl.textures.bitmapfont.alignment.VAlignment;
 
-public class Textfield extends InteractableContainer implements IFocusable, IResourceReady<FontResource>, ILoadable
+public class Textfield extends InteractableContainer implements IResourceReady<FontResource>, ILoadable
 {
 	public static final String DEFAULT_RESOURCE = "font.console";
 	
@@ -40,6 +38,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	private boolean showBorders;
 	
 	private BitmapTextMaterial material;
+	private boolean allowMultiline;
 
 	public Textfield(String text)
 	{
@@ -102,6 +101,7 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 		
 		glText = new Text(material, fontSize, width, height);
 		glText.setAlignment(vAlign, hAlign);
+		glText.setAllowMultiline(allowMultiline);
 		glText.setText(text);
 
 		caret = new Quad(1, height, 0xFF0000);
@@ -151,6 +151,16 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 		super.onDraw();
 	}
 
+	public void setAllowMultiline(boolean value)
+	{
+		allowMultiline = value;
+
+		if (loaded)
+		{
+			glText.setAllowMultiline(value);
+		}
+	}
+	
 	@Override
 	public void setWidth(float value)
 	{
@@ -272,37 +282,6 @@ public class Textfield extends InteractableContainer implements IFocusable, IRes
 	@Override
 	protected void onMouseClick()
 	{
-		stage.setFocusedObject(this);
-	}
-
-	@Override
-	public void onKeyPressed(char character)
-	{
-		if (character == KeyEvent.VK_BACK_SPACE)
-		{
-			setText(text.substring(0, text.length() - 1));
-		}
-		else
-		{
-			setText(text + character);
-		}
-
-		caret.setPosition(true, width, 0);
-	}
-
-	@Override
-	public void onFocused()
-	{
-		hasFocus = true;
-		caret.visible = true;
-		caret.setPosition(true, width, 0);
-	}
-
-	@Override
-	public void onUnFocused()
-	{
-		hasFocus = false;
-		caret.visible = false;
 	}
 
 	public void showBorders(boolean showBorders)

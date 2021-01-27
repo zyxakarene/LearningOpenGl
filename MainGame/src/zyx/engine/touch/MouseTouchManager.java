@@ -167,6 +167,7 @@ public class MouseTouchManager implements IUpdateable
 			data.y = mouseData.y;
 			data.dX = mouseData.dX;
 			data.dY = mouseData.dY;
+			data.target = currentTarget;
 			
 			if (hasDownTarget)
 			{

@@ -1,6 +1,7 @@
 package zyx.game.components;
 
 import org.lwjgl.util.vector.Matrix4f;
+import zyx.engine.components.world.WorldObject;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.utils.GeometryUtils;
 import zyx.utils.interfaces.IPhysbox;
@@ -60,4 +61,9 @@ public class MeshObject extends GameObject implements IPhysbox
 		return mesh.getBoneMatrix(boneId);
 	}
 
+	@Override
+	public WorldObject getWorldObject()
+	{
+		return this;
+	}
 }

@@ -5,13 +5,16 @@ import zyx.engine.components.animations.IFocusable;
 import zyx.engine.components.screen.base.docks.DockType;
 import zyx.engine.components.screen.base.docks.EditorDock;
 import zyx.engine.components.screen.base.docks.GameDock;
+import zyx.engine.components.screen.base.docks.HierarchyDock;
+import zyx.engine.focus.FocusManager;
 import zyx.engine.utils.ScreenSize;
 import zyx.opengl.buffers.Buffer;
 import zyx.opengl.buffers.BufferBinder;
 import zyx.utils.geometry.IntRectangle;
+import zyx.utils.interfaces.IUpdateable;
 import zyx.utils.math.Vector2Int;
 
-public final class Stage extends DisplayObjectContainer implements IFocusable
+public final class Stage extends DisplayObjectContainer implements IFocusable, IUpdateable
 {
 
 	private static final Stage INSTANCE = new Stage();
@@ -41,7 +44,7 @@ public final class Stage extends DisplayObjectContainer implements IFocusable
 	public void initialize()
 	{
 		gameDock = new GameDock();
-		hierarchyDock = new EditorDock(DockType.Left);
+		hierarchyDock = new HierarchyDock();
 		resourcesDock = new EditorDock(DockType.Bottom);
 		propertyDock = new EditorDock(DockType.Right);
 
@@ -99,11 +102,40 @@ public final class Stage extends DisplayObjectContainer implements IFocusable
 		propertyDock.draw();
 	}
 
+	@Override
+	public void update(long timestamp, int elapsedTime)
+	{
+		gameDock.update(timestamp, elapsedTime);
+		hierarchyDock.update(timestamp, elapsedTime);
+		resourcesDock.update(timestamp, elapsedTime);
+		propertyDock.update(timestamp, elapsedTime);
+	}
+	
 	public final void checkStageMouseInteractions(int x, int y)
 	{
 		if (touchable)
 		{
 			crawler.interactionTest(x, y);
+		}
+	}
+
+	@Override
+	protected void onChildAdded(DisplayObject child)
+	{
+		if (child instanceof IFocusable)
+		{
+			IFocusable focusableChild = (IFocusable) child;
+			FocusManager.getInstance().add(focusableChild);
+		}
+	}
+
+	@Override
+	protected void onChildRemoved(DisplayObject child)
+	{
+		if (child instanceof IFocusable)
+		{
+			IFocusable focusableChild = (IFocusable) child;
+			FocusManager.getInstance().remove(focusableChild);
 		}
 	}
 

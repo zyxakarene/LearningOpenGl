@@ -289,6 +289,12 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	{
 		return worldMatrix();
 	}
+	
+	@Override
+	public WorldObject getWorldObject()
+	{
+		return this;
+	}
 
 	@Override
 	public Matrix4f getBoneMatrix(int boneId)

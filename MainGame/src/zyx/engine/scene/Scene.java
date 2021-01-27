@@ -112,6 +112,7 @@ public class Scene implements ILoadingScreenDone
 		if (ready)
 		{
 			onUpdate(timestamp, elapsedTime);
+			stage.update(timestamp, elapsedTime);
 		}
 
 		CursorManager.getInstance().update();

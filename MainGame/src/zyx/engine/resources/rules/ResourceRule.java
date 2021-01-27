@@ -37,7 +37,8 @@ public enum ResourceRule
 	SKYBOX_TEXTURE		("skybox.texture.#",	"assets/textures/skybox/#.png",	TextureResource.class),
 	SKYBOX				("skybox.mesh.#",		"assets/models/skybox/#.zaf",	SkyboxResource.class),
 	
-	TEXTURES_BASE		("texture.#",			"assets/textures/#.png",	TextureResource.class),
+	TEXTURES_BASE_0_FOLDER	("texture.#",			"assets/textures/#.png",	TextureResource.class),
+	TEXTURES_BASE_1_FOLDER	("texture.#.#",			"assets/textures/#/#.png",	TextureResource.class),
 	TEXTURES_NORMAL		("normal.#",			"assets/textures/#.png",	NormalTextureResource.class),
 	TEXTURES_SPECULAR	("specular.#",			"assets/textures/#.png",	SpecularTextureResource.class),
 	SOUNDS				("sound.#",				"assets/sounds/#.wav",		SoundResource.class),

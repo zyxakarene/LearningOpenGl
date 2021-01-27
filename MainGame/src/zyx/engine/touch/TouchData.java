@@ -1,5 +1,7 @@
 package zyx.engine.touch;
 
+import zyx.engine.components.screen.base.DisplayObject;
+
 public final class TouchData
 {
 
@@ -12,4 +14,6 @@ public final class TouchData
 	
 	public float dX;
 	public float dY;
+	
+	public DisplayObject target;
 }

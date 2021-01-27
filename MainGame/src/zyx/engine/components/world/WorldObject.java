@@ -132,6 +132,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 
 			child.parent = this;
 			children.add(child);
+			DebugInfo.worldObjects.addNode(child, this);
 
 			updateTransforms(true);
 		}
@@ -143,6 +144,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 		{
 			child.parent = null;
 			children.remove(child);
+			DebugInfo.worldObjects.removeNode(child);
 		}
 		else
 		{
@@ -190,6 +192,16 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 			out.addAll(children);
 		}
 	}
+	
+	public int getChildrenCount()
+	{
+		if (children != null)
+		{
+			return children.size();
+		}
+		
+		return 0;
+	}
 
 	protected void updateTransforms(boolean alsoChildren)
 	{
@@ -216,6 +228,7 @@ public abstract class WorldObject implements IPositionable, IDisposeable, IFrust
 			return;
 		}
 		DebugInfo.worldObjects.updateList();
+		DebugInfo.worldObjects.removeNode(this);
 		
 		onDispose();
 

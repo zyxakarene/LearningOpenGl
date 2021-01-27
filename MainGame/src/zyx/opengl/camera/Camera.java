@@ -64,8 +64,8 @@ public class Camera
 
 	protected void createMatrices()
 	{
-		float w = ScreenSize.windowWidth;
-		float h = ScreenSize.windowHeight;
+		float w = ScreenSize.gameWidth;
+		float h = ScreenSize.gameHeight;
 		Projection.createPerspective(w, h, GameConstants.FOV, 1f, 1000f, SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION);
 		Projection.createOrthographic(1f, 2f, 2, SharedShaderObjects.UI_ORTHOGRAPHIC_PROJECTION);
 		

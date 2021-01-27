@@ -97,10 +97,12 @@ public class InputManager implements IUpdateable
 	{
 		while (Keyboard.next())
 		{
+			char character = Keyboard.getEventCharacter();
 			int key = Keyboard.getEventKey();
 			boolean isDown = Keyboard.getEventKeyState();
 
 			keyboardData.setClickData(key, isDown);
+			keyboardData.setKeyData(key, character);
 		}
 
 		scheme.tryMap(keyboardData);
