@@ -11,8 +11,7 @@ import zyx.engine.components.screen.image.MultiSheetImage;
 import zyx.engine.components.screen.interactable.InteractableContainer;
 import zyx.engine.utils.callbacks.ICallback;
 
-//todo: Not public, but invisible
-public final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer implements IFocusable
+final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer implements IFocusable
 {
 
 	private DefaultWindowsTreeRenderer<TData> renderer;
@@ -28,7 +27,6 @@ public final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer 
 
 	WindowsTreeRowRenderer(WindowsTreeNode<TData> node)
 	{
-		focusable = true;
 		touchable = true;
 		
 		activeNode = node;

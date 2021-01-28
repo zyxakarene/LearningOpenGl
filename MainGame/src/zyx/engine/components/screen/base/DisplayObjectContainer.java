@@ -2,6 +2,7 @@ package zyx.engine.components.screen.base;
 
 import java.util.ArrayList;
 import java.util.List;
+import zyx.engine.curser.GameCursor;
 
 public class DisplayObjectContainer extends DisplayObject
 {
@@ -40,6 +41,17 @@ public class DisplayObjectContainer extends DisplayObject
 	public void getChildren(List<DisplayObject> out)
 	{
 		out.addAll(children);
+	}
+
+	@Override
+	void setStage(Stage stage, GameCursor hoverIcon)
+	{
+		super.setStage(stage, hoverIcon);
+		
+		for (DisplayObject child : children)
+		{
+			child.setStage(stage, hoverIcon);
+		}
 	}
 	
 	public void addChildAt(DisplayObject child, int index)

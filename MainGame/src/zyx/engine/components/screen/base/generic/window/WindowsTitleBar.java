@@ -17,8 +17,6 @@ public class WindowsTitleBar extends DisplayObjectContainer
 		addChild(textfield);
 		textfield.setSize(width, 32);
 		
-		buttonMode = true;
-		focusable = true;
 		hoverIcon = GameCursor.HAND;
 		
 	}

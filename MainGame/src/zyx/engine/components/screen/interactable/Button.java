@@ -1,6 +1,7 @@
 package zyx.engine.components.screen.interactable;
 
 import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.components.screen.base.events.types.touch.TouchEvent;
 import zyx.engine.components.screen.composed.ComposedButtonColorMap;
 import zyx.engine.components.screen.composed.IComposedButton;
 import zyx.engine.components.screen.image.AbstractImage;
@@ -40,8 +41,6 @@ public class Button extends InteractableContainer implements IComposedButton
 
 		onButtonClicked = new CustomCallback<>();
 
-		buttonMode = true;
-		focusable = true;
 		hoverIcon = GameCursor.HAND;
 	}
 
@@ -250,26 +249,42 @@ public class Button extends InteractableContainer implements IComposedButton
 	}
 
 	@Override
-	protected void onMouseEnter()
+	protected void onMouseEnter(TouchEvent event)
 	{
+		System.out.println("Enter");
 		changeStateTo(ButtonState.HOVER);
 	}
 
 	@Override
-	protected void onMouseExit()
+	protected void onMouseExit(TouchEvent event)
 	{
+		System.out.println("Exit");
 		changeStateTo(ButtonState.UP);
 	}
 
 	@Override
-	protected void onMouseDown()
+	protected void onMouseDown(TouchEvent event)
 	{
+		System.out.println("Down");
 		changeStateTo(ButtonState.DOWN);
 	}
 
 	@Override
-	protected void onMouseClick()
+	protected void onMouseUp(TouchEvent event)
 	{
+		System.out.println("Up");
+	}
+
+	@Override
+	protected void onMouseDragged(TouchEvent event)
+	{
+		System.out.println("Drag");
+	}
+	
+	@Override
+	protected void onMouseClick(TouchEvent event)
+	{
+		System.out.println("Click");
 		changeStateTo(ButtonState.HOVER);
 
 		if (onButtonClicked.hasEntries())

@@ -7,4 +7,5 @@ public enum TouchEventType
 	Down,
 	Up,
 	Click,
+	Drag,
 }

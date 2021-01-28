@@ -27,7 +27,7 @@ class TouchDispatcher extends AbstractDispatcher<TouchEvent, ITouchedListener>
 			{
 				for (ITouchedListener listener : listeners)
 				{
-					listener.mouseLeave(event);
+					listener.mouseExit(event);
 				}
 				break;
 			}
@@ -52,6 +52,14 @@ class TouchDispatcher extends AbstractDispatcher<TouchEvent, ITouchedListener>
 				for (ITouchedListener listener : listeners)
 				{
 					listener.mouseClick(event);
+				}
+				break;
+			}
+			case Drag:
+			{
+				for (ITouchedListener listener : listeners)
+				{
+					listener.mouseDragged(event);
 				}
 				break;
 			}

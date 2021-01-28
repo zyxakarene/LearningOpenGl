@@ -5,8 +5,9 @@ import zyx.engine.components.screen.base.events.types.IDisplayObjectEventListene
 public interface ITouchedListener extends IDisplayObjectEventListener<TouchEventType, TouchEvent>
 {
 	void mouseEnter(TouchEvent event);
-	void mouseLeave(TouchEvent event);
+	void mouseExit(TouchEvent event);
 	void mouseDown(TouchEvent event);
 	void mouseUp(TouchEvent event);
 	void mouseClick(TouchEvent event);
+	void mouseDragged(TouchEvent event);
 }

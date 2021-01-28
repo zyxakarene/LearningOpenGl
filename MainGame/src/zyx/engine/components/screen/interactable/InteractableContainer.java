@@ -1,92 +1,101 @@
 package zyx.engine.components.screen.interactable;
 
 import zyx.engine.components.screen.base.DisplayObjectContainer;
-import zyx.engine.touch.ITouched;
-import zyx.engine.touch.TouchData;
-import zyx.engine.touch.TouchState;
-import zyx.game.controls.input.MouseData;
-import zyx.utils.cheats.Print;
+import zyx.engine.components.screen.base.events.types.touch.ITouchedListener;
+import zyx.engine.components.screen.base.events.types.touch.TouchEvent;
 
 public abstract class InteractableContainer extends DisplayObjectContainer
 {
 
-	private boolean wasMouseOver;
-	private boolean wasMouseDown;
-	private boolean wasMouseDownOutside;
-	
-	private ITouched touchListener;
+	private InteractableTouchAdaptor touchedAdaptor;
 
 	public InteractableContainer()
 	{
-		touchListener = (TouchState state, boolean collided, TouchData data) ->
-		{
-			if (focusable)
-			{
-				updateButtonState(collided);
-			}
-		};
-		
-		addTouchListener(touchListener);
+		touchedAdaptor = new InteractableTouchAdaptor(this);
+		addListener(touchedAdaptor);
 	}
 
-	protected abstract void onMouseEnter();
-
-	protected abstract void onMouseExit();
-
-	protected abstract void onMouseDown();
-
-	protected abstract void onMouseClick();
-
-	public void updateButtonState(boolean mouseCollision)
+	protected void onMouseEnter(TouchEvent event)
 	{
-		boolean isLeftDown = MouseData.data.isLeftDown();
+	}
 
-		if (!wasMouseOver && isLeftDown)
-		{
-			wasMouseDownOutside = true;
-		}
+	protected void onMouseExit(TouchEvent event)
+	{
+	}
 
-		if (!wasMouseOver && mouseCollision)
-		{
-			wasMouseOver = true;
-			onMouseEnter();
-		}
-		else if (wasMouseOver && !mouseCollision)
-		{
-			wasMouseOver = false;
-			onMouseExit();
-		}
+	protected void onMouseDown(TouchEvent event)
+	{
+	}
 
-		if (!wasMouseDownOutside && mouseCollision)
-		{
-			if (!wasMouseDown && isLeftDown)
-			{
-				onMouseDown();
-				wasMouseDown = true;
-			}
-			else if (wasMouseDown && !isLeftDown)
-			{
-				onMouseClick();
-				wasMouseDown = false;
-			}
-		}
+	protected void onMouseUp(TouchEvent event)
+	{
+	}
 
-		if (isLeftDown == false)
-		{
-			wasMouseDownOutside = false;
-			wasMouseDown = false;
-		}
+	protected void onMouseClick(TouchEvent event)
+	{
+	}
+
+	protected void onMouseDragged(TouchEvent event)
+	{
 	}
 
 	@Override
 	public void dispose()
 	{
-		super.dispose();
-		
-		if(touchListener != null)
+		if (touchedAdaptor != null)
 		{
-			removeTouchListener(touchListener);
-			touchListener = null;
+			removeListener(touchedAdaptor);
+			touchedAdaptor = null;
 		}
+
+		super.dispose();
+	}
+
+	private static class InteractableTouchAdaptor implements ITouchedListener
+	{
+
+		private final InteractableContainer container;
+
+		private InteractableTouchAdaptor(InteractableContainer container)
+		{
+			this.container = container;
+		}
+
+		@Override
+		public void mouseEnter(TouchEvent event)
+		{
+			container.onMouseEnter(event);
+		}
+
+		@Override
+		public void mouseExit(TouchEvent event)
+		{
+			container.onMouseExit(event);
+		}
+
+		@Override
+		public void mouseDown(TouchEvent event)
+		{
+			container.onMouseDown(event);
+		}
+
+		@Override
+		public void mouseUp(TouchEvent event)
+		{
+			container.onMouseUp(event);
+		}
+
+		@Override
+		public void mouseClick(TouchEvent event)
+		{
+			container.onMouseClick(event);
+		}
+
+		@Override
+		public void mouseDragged(TouchEvent event)
+		{
+			container.onMouseDragged(event);
+		}
+
 	}
 }

@@ -2,6 +2,7 @@ package zyx.engine.components.screen.base.events.types.touch;
 
 import zyx.engine.components.screen.base.DisplayObject;
 import zyx.engine.components.screen.base.events.types.DisplayObjectEvent;
+import zyx.game.controls.input.MouseData;
 
 public class TouchEvent extends DisplayObjectEvent<TouchEventType>
 {
@@ -18,9 +19,9 @@ public class TouchEvent extends DisplayObjectEvent<TouchEventType>
 		this(type, target, 0, 0, 0, 0);
 	}
 
-	public TouchEvent(TouchEventType type, DisplayObject target, int x, int y)
+	public TouchEvent(TouchEventType type, DisplayObject target, MouseData mouseData)
 	{
-		this(type, target, x, y, 0, 0);
+		this(type, target, mouseData.x, mouseData.y, mouseData.dX, mouseData.dY);
 	}
 
 	public TouchEvent(TouchEventType type, DisplayObject target, int x, int y, int dX, int dY)

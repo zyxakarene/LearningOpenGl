@@ -39,6 +39,7 @@ public final class Stage extends DisplayObjectContainer implements IFocusable, I
 	private Stage()
 	{
 		name = "";
+		stage = this;
 	}
 
 	public void initialize()

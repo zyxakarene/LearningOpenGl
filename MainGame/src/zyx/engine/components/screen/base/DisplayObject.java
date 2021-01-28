@@ -11,9 +11,7 @@ import zyx.engine.components.screen.base.events.EventListenerMap;
 import zyx.engine.components.screen.base.events.IEventListener;
 import zyx.engine.components.screen.base.events.types.DisplayObjectEvent;
 import zyx.engine.components.screen.base.events.types.IDisplayObjectEventListener;
-import zyx.engine.components.screen.base.generic.window.tree.WindowsTreeRowRenderer;
 import zyx.engine.curser.GameCursor;
-import zyx.engine.touch.MouseTouchManager;
 import zyx.game.controls.SharedPools;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.SharedShaderObjects;
@@ -31,6 +29,7 @@ import zyx.utils.pooling.model.PoolableRectangle;
 
 public abstract class DisplayObject implements IPositionable2D, IDisposeable, IDebugIcon, IEventListener
 {
+
 	private static int instanceCounter;
 
 	private static final ObjectPool<Rectangle> CLIP_POOL = new GenericPool(PoolableRectangle.class, 10);
@@ -53,11 +52,10 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 	protected Vector2f position;
 
 	public boolean visible;
-	public boolean buttonMode;
 	public boolean touchable;
-	public boolean focusable;
 	public boolean disposed;
-	
+	public boolean mouseChildren;
+
 	private float pivotX;
 	private float pivotY;
 
@@ -67,43 +65,42 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 
 	protected final ScreenShader shader;
 	protected Stage stage;
-	
+
 	private EventListenerMap eventListener;
 
 	public DisplayObject()
 	{
 		DebugInfo.screenObjects.updateList();
-		
+
 		eventListener = new EventListenerMap();
 		name = String.format("I%s", instanceCounter++);
-		
+
 		invWorldMatrix = SharedPools.MATRIX_POOL.getInstance();
 		worldMatrix = SharedPools.MATRIX_POOL.getInstance();
 		localMatrix = SharedPools.MATRIX_POOL.getInstance();
 		position = SharedPools.VECTOR_POOL_2F.getInstance();
 
 		visible = true;
-		buttonMode = false;
 		touchable = true;
-		focusable = false;
 		disposed = false;
+		mouseChildren = true;
 
 		dirty = true;
 		dirtyInv = true;
 
 		pivotX = 0f;
 		pivotY = 0f;
-		
+
 		shader = ShaderManager.getInstance().<ScreenShader>get(Shader.SCREEN);
 	}
-	
+
 	@Override
 	public final void dispatchEvent(DisplayObjectEvent event)
 	{
 		if (eventListener != null)
 		{
 			eventListener.dispatchEvent(event);
-			
+
 			if (event.bubbles && parent != null)
 			{
 				parent.dispatchEvent(event);
@@ -218,7 +215,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		{
 			out = new Vector2f();
 		}
-		
+
 		out.x = pivotX;
 		out.y = pivotY;
 		return out;
@@ -229,7 +226,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		pivotX = value.x;
 		pivotY = value.y;
 	}
-	
+
 	public float getWidth(boolean local)
 	{
 		float width = getWidth();
@@ -256,24 +253,34 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 
 	protected final void setParent(DisplayObjectContainer newParent)
 	{
-		if (newParent != null && newParent.stage != null)
+		if (newParent != null)
 		{
-			stage = newParent.stage;
+			setStage(newParent.stage, newParent.hoverIcon);
 		}
 		else
 		{
-			stage = null;
+			setStage(null, null);
 		}
-
-		parent = newParent;
 		
+		parent = newParent;
+
 		onSetParent(parent);
+	}
+	
+	void setStage(Stage stage, GameCursor hoverIcon)
+	{
+		this.stage = stage;
+		
+		if (hoverIcon != null)
+		{
+			this.hoverIcon = hoverIcon;
+		}
 	}
 
 	protected void onSetParent(DisplayObjectContainer parent)
 	{
 	}
-	
+
 	public void removeFromParent(boolean dispose)
 	{
 		if (parent != null)
@@ -304,7 +311,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 			{
 				globalClipRect = CLIP_POOL.getInstance();
 			}
-			
+
 			oldClipData = CLIP_POOL.getInstance();
 			shader.getClipRect(oldClipData);
 			getPosition(false, HELPER_VEC2);
@@ -312,12 +319,12 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 			globalClipRect.y = FloatMath.max(oldClipData.y, clipRect.y + HELPER_VEC2.y);
 			globalClipRect.width = FloatMath.min(oldClipData.width, clipRect.x + HELPER_VEC2.x + clipRect.width);
 			globalClipRect.height = FloatMath.min(oldClipData.height, clipRect.y + HELPER_VEC2.y + clipRect.height);
-			
+
 			shader.setClipRect(globalClipRect);
 		}
-		
+
 		onDraw();
-		
+
 		if (oldClipData != null)
 		{
 			shader.setClipRect(oldClipData);
@@ -342,13 +349,13 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 			CLIP_POOL.releaseInstance(globalClipRect);
 			globalClipRect = null;
 		}
-		
+
 		if (eventListener != null)
 		{
 			eventListener.dispose();
 			eventListener = null;
 		}
-		
+
 		SharedPools.MATRIX_POOL.releaseInstance(invWorldMatrix);
 		SharedPools.MATRIX_POOL.releaseInstance(worldMatrix);
 		SharedPools.MATRIX_POOL.releaseInstance(localMatrix);
@@ -390,8 +397,8 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 
 	public void setPosition(boolean local, float x, float y)
 	{
-		x = (int)x;
-		y = (int)y;
+		x = (int) x;
+		y = (int) y;
 		HELPER_VEC2.set(x, y);
 
 		if (!local && parent != null)
@@ -506,7 +513,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 	{
 		return position.y;
 	}
-	
+
 	public boolean isOnStage()
 	{
 		return stage != null;
@@ -514,12 +521,12 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 
 	public void addTouchListener(ITouched listener)
 	{
-		MouseTouchManager.getInstance().registerTouch(this, listener);
+//		MouseTouchManager.getInstance().registerTouch(this, listener);
 	}
 
 	public void removeTouchListener(ITouched listener)
 	{
-		MouseTouchManager.getInstance().unregisterTouch(this, listener);
+//		MouseTouchManager.getInstance().unregisterTouch(this, listener);
 	}
 
 	@Override
@@ -533,7 +540,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 	{
 		return "screen";
 	}
-	
+
 	public boolean hitTest(int x, int y)
 	{
 		if (!touchable || !visible)
@@ -550,7 +557,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 				return false;
 			}
 		}
-		
+
 		HELPER_VEC4.x = x;
 		HELPER_VEC4.y = -y;
 		HELPER_VEC4.z = -1;
@@ -579,25 +586,25 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		{
 			clipRect = new Rectangle();
 		}
-		
+
 		clipRect.x = x;
 		clipRect.y = y;
 		clipRect.width = width;
 		clipRect.height = height;
 	}
-	
+
 	protected Rectangle getHierachyClip()
 	{
 		if (globalClipRect != null)
 		{
 			return globalClipRect;
 		}
-		
+
 		if (parent != null)
 		{
 			return parent.getHierachyClip();
 		}
-		
+
 		return null;
 	}
 }

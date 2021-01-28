@@ -19,7 +19,6 @@ public abstract class ItemRenderer extends JsonSprite implements ITouched
 		{
 			addTouchListener(this);
 
-			buttonMode = true;
 			hoverIcon = GameCursor.HAND;
 		}
 	}

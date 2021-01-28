@@ -1,7 +1,7 @@
 package zyx.engine.components.screen.text;
 
-import zyx.engine.components.screen.interactable.InteractableContainer;
 import zyx.engine.components.animations.ILoadable;
+import zyx.engine.components.screen.base.DisplayObjectContainer;
 import zyx.engine.components.screen.base.Quad;
 import zyx.engine.curser.GameCursor;
 import zyx.engine.resources.IResourceReady;
@@ -15,7 +15,7 @@ import zyx.opengl.textures.bitmapfont.Text;
 import zyx.opengl.textures.bitmapfont.alignment.HAlignment;
 import zyx.opengl.textures.bitmapfont.alignment.VAlignment;
 
-public class Textfield extends InteractableContainer implements IResourceReady<FontResource>, ILoadable
+public class Textfield extends DisplayObjectContainer implements IResourceReady<FontResource>, ILoadable
 {
 	public static final String DEFAULT_RESOURCE = "font.console";
 	
@@ -53,7 +53,6 @@ public class Textfield extends InteractableContainer implements IResourceReady<F
 		
 		borders = new Quad[4];
 
-		focusable = false;
 		hoverIcon = GameCursor.TEXT;
 	}
 
@@ -262,26 +261,6 @@ public class Textfield extends InteractableContainer implements IResourceReady<F
 				border.dispose();
 			}
 		}
-	}
-
-	@Override
-	protected void onMouseEnter()
-	{
-	}
-
-	@Override
-	protected void onMouseExit()
-	{
-	}
-
-	@Override
-	protected void onMouseDown()
-	{
-	}
-
-	@Override
-	protected void onMouseClick()
-	{
 	}
 
 	public void showBorders(boolean showBorders)

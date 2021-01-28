@@ -26,7 +26,6 @@ public class ComposedImage extends DisplayObjectContainer implements IComposedIm
 		this.scale9 = scale9;
 
 		alpha = 1;
-		focusable = true;
 	}
 
 	@Override
