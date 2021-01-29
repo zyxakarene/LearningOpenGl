@@ -7,6 +7,8 @@ import zyx.engine.components.screen.base.DisplayObject;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
 import zyx.engine.components.screen.base.docks.DockType;
 import zyx.engine.components.screen.base.docks.GameDock;
+import zyx.engine.components.screen.base.events.types.stage.StageAdaptor;
+import zyx.engine.components.screen.base.events.types.stage.StageEvent;
 import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.IResourceReloaded;
 import zyx.engine.resources.ResourceManager;
@@ -29,27 +31,39 @@ public abstract class JsonSprite extends DisplayObjectContainer implements IReso
 	private Resource[] resourceDependencies;
 	private int dependenciesLoaded;
 	private IResourceReady dependencyLoaded;
-	
+
+	private StageAdaptor stageAdaptor;
+
 	public JsonSprite()
 	{
 		onPreInitialize();
 
 		JsonSpriteAnimator.getInstance().addJsonSprite(this);
-		
+
 		dependencyLoaded = (IResourceReady) this::onDependencyLoaded;
 
 		jsonChildren = new HashMap<>();
+
+		stageAdaptor = new StageAdaptor()
+		{
+			@Override
+			public void addedToStage(StageEvent event)
+			{
+				onAddedToStage();
+			}
+		};
+		
+		addListener(stageAdaptor);
 	}
 
-	@Override
-	protected void onSetParent(DisplayObjectContainer parent)
+	private void onAddedToStage()
 	{
 		if (!loaded && resource == null)
 		{
-			if (parent != null)
-			{
-				load();
-			}
+			load();
+			
+			removeListener(stageAdaptor);
+			stageAdaptor = null;
 		}
 	}
 
@@ -66,7 +80,7 @@ public abstract class JsonSprite extends DisplayObjectContainer implements IReso
 			resource.registerAndLoad(this);
 		}
 	}
-	
+
 	public abstract String getResource();
 
 	protected String[] getDependencies()
@@ -116,7 +130,7 @@ public abstract class JsonSprite extends DisplayObjectContainer implements IReso
 	private void onAllResourcesLoaded()
 	{
 		DockType dockType = getDockingType();
-		
+
 		JSONObject content = resource.getContent();
 		JsonSpriteParser.getInstance().createSpriteFrom(this, content, dockType);
 
@@ -124,7 +138,7 @@ public abstract class JsonSprite extends DisplayObjectContainer implements IReso
 
 		loaded = true;
 	}
-	
+
 	private DockType getDockingType()
 	{
 		DisplayObjectContainer item = this;
@@ -132,15 +146,15 @@ public abstract class JsonSprite extends DisplayObjectContainer implements IReso
 		{
 			if (item instanceof ContainerDock)
 			{
-				return ((ContainerDock)item).type;
+				return ((ContainerDock) item).type;
 			}
-			
+
 			item = item.getParent();
 		}
-		
+
 		return null;
 	}
-	
+
 	@Override
 	public void onResourceReloaded(JsonResource resource)
 	{
@@ -199,7 +213,7 @@ public abstract class JsonSprite extends DisplayObjectContainer implements IReso
 		super.dispose();
 
 		JsonSpriteAnimator.getInstance().removeJsonSprite(this);
-		
+
 		jsonChildren.clear();
 		jsonChildren = null;
 

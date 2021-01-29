@@ -11,6 +11,8 @@ import zyx.engine.components.screen.base.events.EventListenerMap;
 import zyx.engine.components.screen.base.events.IEventListener;
 import zyx.engine.components.screen.base.events.types.DisplayObjectEvent;
 import zyx.engine.components.screen.base.events.types.IDisplayObjectEventListener;
+import zyx.engine.components.screen.base.events.types.stage.StageEvent;
+import zyx.engine.components.screen.base.events.types.stage.StageEventType;
 import zyx.engine.curser.GameCursor;
 import zyx.game.controls.SharedPools;
 import zyx.opengl.shaders.ShaderManager;
@@ -140,15 +142,9 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 
 			dirty = false;
 			dirtyInv = true;
-
-			onWorldMatrixUpdated();
 		}
 
 		return worldMatrix;
-	}
-
-	protected void onWorldMatrixUpdated()
-	{
 	}
 
 	public Matrix4f invWorldMatrix()
@@ -263,22 +259,25 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		}
 		
 		parent = newParent;
-
-		onSetParent(parent);
 	}
 	
 	void setStage(Stage stage, GameCursor hoverIcon)
 	{
 		this.stage = stage;
 		
+		if (stage == null)
+		{
+			dispatchEvent(new StageEvent(StageEventType.RemovedFromStage, stage));
+		}
+		else
+		{
+			dispatchEvent(new StageEvent(StageEventType.AddedToStage, stage));
+		}
+		
 		if (hoverIcon != null)
 		{
 			this.hoverIcon = hoverIcon;
 		}
-	}
-
-	protected void onSetParent(DisplayObjectContainer parent)
-	{
 	}
 
 	public void removeFromParent(boolean dispose)
