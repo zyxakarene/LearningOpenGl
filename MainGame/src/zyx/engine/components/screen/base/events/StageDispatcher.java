@@ -1,30 +1,37 @@
 package zyx.engine.components.screen.base.events;
 
 import java.util.ArrayList;
-import zyx.engine.components.screen.base.events.types.stage.IStageListener;
-import zyx.engine.components.screen.base.events.types.stage.StageEvent;
+import zyx.engine.components.screen.base.events.types.stage.*;
 
 class StageDispatcher extends AbstractDispatcher<StageEvent, IStageListener>
 {
+
 	private ArrayList<IStageListener> cloneList;
-	
+
 	StageDispatcher()
 	{
 		cloneList = new ArrayList<>();
 	}
 
 	@Override
-	void dispatch(StageEvent event)
+	protected void addRegistrations()
+	{
+		registerEventInterface(IAddedToStageListener.class, StageEventType.AddedToStage);
+		registerEventInterface(IRemovedFromStageListener.class, StageEventType.RemovedFromStage);
+	}
+
+	@Override
+	protected void dispatchEvent(StageEvent event, ArrayList<IStageListener> listeners)
 	{
 		cloneList.addAll(listeners);
-		
+
 		switch (event.type)
 		{
 			case AddedToStage:
 			{
 				for (IStageListener listener : cloneList)
 				{
-					listener.addedToStage(event);
+					((IAddedToStageListener) listener).addedToStage(event);
 				}
 				break;
 			}
@@ -32,16 +39,26 @@ class StageDispatcher extends AbstractDispatcher<StageEvent, IStageListener>
 			{
 				for (IStageListener listener : cloneList)
 				{
-					listener.removedFromStage(event);
+					((IRemovedFromStageListener) listener).removedFromStage(event);
 				}
 				break;
 			}
-			default:
 		}
-		
 		cloneList.clear();
 	}
 
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+		
+		if (cloneList != null)
+		{
+			cloneList.clear();
+			cloneList = null;
+		}
+	}
+	
 	@Override
 	Class<StageEvent> getEventClass()
 	{

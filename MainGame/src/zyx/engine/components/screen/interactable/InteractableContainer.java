@@ -1,18 +1,33 @@
 package zyx.engine.components.screen.interactable;
 
 import zyx.engine.components.screen.base.DisplayObjectContainer;
-import zyx.engine.components.screen.base.events.types.touch.ITouchedListener;
-import zyx.engine.components.screen.base.events.types.touch.TouchEvent;
+import zyx.engine.components.screen.base.events.types.touch.*;
 
 public abstract class InteractableContainer extends DisplayObjectContainer
 {
 
-	private InteractableTouchAdaptor touchedAdaptor;
+	private IMouseClickedListener clickListener;
+	private IMouseDownListener downListener;
+	private IMouseDraggedListener dragListener;
+	private IMouseEnteredListener enterListener;
+	private IMouseExitedListener exitListener;
+	private IMouseUpListener upListener;
 
 	public InteractableContainer()
 	{
-		touchedAdaptor = new InteractableTouchAdaptor(this);
-		addListener(touchedAdaptor);
+		clickListener = this::onMouseClick;
+		downListener = this::onMouseDown;
+		dragListener = this::onMouseDragged;
+		enterListener = this::onMouseEnter;
+		exitListener = this::onMouseExit;
+		upListener = this::onMouseUp;
+		
+		addListener(clickListener);
+		addListener(downListener);
+		addListener(dragListener);
+		addListener(enterListener);
+		addListener(exitListener);
+		addListener(upListener);
 	}
 
 	protected void onMouseEnter(TouchEvent event)
@@ -42,60 +57,6 @@ public abstract class InteractableContainer extends DisplayObjectContainer
 	@Override
 	public void dispose()
 	{
-		if (touchedAdaptor != null)
-		{
-			removeListener(touchedAdaptor);
-			touchedAdaptor = null;
-		}
-
 		super.dispose();
-	}
-
-	private static class InteractableTouchAdaptor implements ITouchedListener
-	{
-
-		private final InteractableContainer container;
-
-		private InteractableTouchAdaptor(InteractableContainer container)
-		{
-			this.container = container;
-		}
-
-		@Override
-		public void mouseEnter(TouchEvent event)
-		{
-			container.onMouseEnter(event);
-		}
-
-		@Override
-		public void mouseExit(TouchEvent event)
-		{
-			container.onMouseExit(event);
-		}
-
-		@Override
-		public void mouseDown(TouchEvent event)
-		{
-			container.onMouseDown(event);
-		}
-
-		@Override
-		public void mouseUp(TouchEvent event)
-		{
-			container.onMouseUp(event);
-		}
-
-		@Override
-		public void mouseClick(TouchEvent event)
-		{
-			container.onMouseClick(event);
-		}
-
-		@Override
-		public void mouseDragged(TouchEvent event)
-		{
-			container.onMouseDragged(event);
-		}
-
 	}
 }

@@ -273,6 +273,7 @@ public class Button extends InteractableContainer implements IComposedButton
 	protected void onMouseUp(TouchEvent event)
 	{
 		System.out.println("Up");
+		changeStateTo(ButtonState.UP);
 	}
 
 	@Override

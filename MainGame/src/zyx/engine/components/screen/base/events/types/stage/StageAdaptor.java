@@ -1,6 +1,6 @@
 package zyx.engine.components.screen.base.events.types.stage;
 
-public abstract class StageAdaptor implements IStageListener
+public abstract class StageAdaptor implements IRemovedFromStageListener, IAddedToStageListener
 {
 
 	@Override

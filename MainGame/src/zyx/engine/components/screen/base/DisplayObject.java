@@ -74,7 +74,6 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 	{
 		DebugInfo.screenObjects.updateList();
 
-		eventListener = new EventListenerMap();
 		name = String.format("I%s", instanceCounter++);
 
 		invWorldMatrix = SharedPools.MATRIX_POOL.getInstance();
@@ -102,17 +101,22 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		if (eventListener != null)
 		{
 			eventListener.dispatchEvent(event);
-
-			if (event.bubbles && parent != null)
-			{
-				parent.dispatchEvent(event);
-			}
+		}
+		
+		if (event.bubbles && parent != null)
+		{
+			parent.dispatchEvent(event);
 		}
 	}
 
 	@Override
 	public void addListener(IDisplayObjectEventListener listener)
 	{
+		if (eventListener == null)
+		{
+			eventListener = new EventListenerMap();
+		}
+		
 		if (eventListener != null)
 		{
 			eventListener.addListener(listener);

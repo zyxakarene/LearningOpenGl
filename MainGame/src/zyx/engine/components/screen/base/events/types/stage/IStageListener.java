@@ -4,6 +4,4 @@ import zyx.engine.components.screen.base.events.types.IDisplayObjectEventListene
 
 public interface IStageListener extends IDisplayObjectEventListener<StageEventType, StageEvent>
 {
-	void addedToStage(StageEvent event);
-	void removedFromStage(StageEvent event);
 }

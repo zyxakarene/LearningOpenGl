@@ -1,9 +1,9 @@
 package zyx.engine.components.screen.base.events;
 
-import zyx.engine.components.screen.base.events.types.touch.ITouchedListener;
-import zyx.engine.components.screen.base.events.types.touch.TouchEvent;
+import java.util.ArrayList;
+import zyx.engine.components.screen.base.events.types.touch.*;
 
-class TouchDispatcher extends AbstractDispatcher<TouchEvent, ITouchedListener>
+class TouchDispatcher extends AbstractDispatcher<TouchEvent, IMouseListener>
 {
 
 	TouchDispatcher()
@@ -11,55 +11,66 @@ class TouchDispatcher extends AbstractDispatcher<TouchEvent, ITouchedListener>
 	}
 
 	@Override
-	void dispatch(TouchEvent event)
+	protected void addRegistrations()
+	{
+		registerEventInterface(IMouseClickedListener.class, TouchEventType.Click);
+		registerEventInterface(IMouseDownListener.class, TouchEventType.Down);
+		registerEventInterface(IMouseDraggedListener.class, TouchEventType.Drag);
+		registerEventInterface(IMouseEnteredListener.class, TouchEventType.Enter);
+		registerEventInterface(IMouseExitedListener.class, TouchEventType.Exit);
+		registerEventInterface(IMouseUpListener.class, TouchEventType.Up);
+	}
+	
+	@Override
+	protected void dispatchEvent(TouchEvent event, ArrayList<IMouseListener> listeners)
 	{
 		switch (event.type)
 		{
 			case Enter:
 			{
-				for (ITouchedListener listener : listeners)
+				for (IMouseListener listener : listeners)
 				{
-					listener.mouseEnter(event);
+					((IMouseEnteredListener)listener).mouseEnter(event);
 				}
 				break;
 			}
-			case Leave:
+			case Exit:
 			{
-				for (ITouchedListener listener : listeners)
+				for (IMouseListener listener : listeners)
 				{
-					listener.mouseExit(event);
+					((IMouseExitedListener)listener).mouseExit(event);
 				}
 				break;
 			}
 			case Down:
 			{
-				for (ITouchedListener listener : listeners)
+				for (IMouseListener listener : listeners)
 				{
-					listener.mouseDown(event);
+					((IMouseDownListener)listener).mouseDown(event);
 				}
 				break;
 			}
 			case Up:
 			{
-				for (ITouchedListener listener : listeners)
+				for (IMouseListener listener : listeners)
 				{
-					listener.mouseUp(event);
+					((IMouseUpListener)listener).mouseUp(event);
 				}
 				break;
 			}
 			case Click:
 			{
-				for (ITouchedListener listener : listeners)
+				for (IMouseListener listener : listeners)
 				{
-					listener.mouseClick(event);
+					((IMouseClickedListener)listener).mouseClick(event);
 				}
 				break;
 			}
 			case Drag:
 			{
-				for (ITouchedListener listener : listeners)
+				for (IMouseListener listener : listeners)
 				{
-					listener.mouseDragged(event);
+					((IMouseDraggedListener)listener).mouseDragged(event);
 				}
 				break;
 			}
@@ -73,8 +84,8 @@ class TouchDispatcher extends AbstractDispatcher<TouchEvent, ITouchedListener>
 	}
 
 	@Override
-	Class<ITouchedListener> getListenerClass()
+	Class<IMouseListener> getListenerClass()
 	{
-		return ITouchedListener.class;
+		return IMouseListener.class;
 	}
 }

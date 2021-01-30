@@ -21,6 +21,7 @@ public class MouseTouchManager implements IUpdateable
 
 	private HashMap<DisplayObject, TouchEntry> touchListeners;
 
+	private DisplayObject nextTarget;
 	private DisplayObject currentTarget;
 	private DisplayObject mouseDownTarget;
 	private boolean enabled;
@@ -49,7 +50,7 @@ public class MouseTouchManager implements IUpdateable
 		if (currentTarget != null)
 		{
 			currentTarget.dispatchEvent(new TouchEvent(TouchEventType.Up, currentTarget));
-			currentTarget.dispatchEvent(new TouchEvent(TouchEventType.Leave, currentTarget));
+			currentTarget.dispatchEvent(new TouchEvent(TouchEventType.Exit, currentTarget));
 
 			currentTarget = null;
 		}
@@ -102,6 +103,7 @@ public class MouseTouchManager implements IUpdateable
 			{
 				if (leftDown)
 				{
+					nextTarget = currentTarget;
 					mouseDownTarget = currentTarget;
 					newState = TouchEventType.Down;
 				}
@@ -111,7 +113,7 @@ public class MouseTouchManager implements IUpdateable
 				}
 				break;
 			}
-			case Leave:
+			case Exit:
 			{
 				newState = TouchEventType.Up;
 				break;
@@ -137,7 +139,14 @@ public class MouseTouchManager implements IUpdateable
 			{
 				if (!leftDown)
 				{
-					newState = TouchEventType.Up;
+					if (currentTarget == nextTarget)
+					{
+						newState = TouchEventType.Click;
+					}
+					else
+					{
+						newState = TouchEventType.Up;
+					}
 				}
 				break;
 			}
@@ -171,13 +180,17 @@ public class MouseTouchManager implements IUpdateable
 		if (currentState == TouchEventType.Drag)
 		{
 			//Don't change target while dragging
+
+			nextTarget = target;
+			System.out.println("Next target " + nextTarget);
+			setCursor(mouseDownTarget);
 			return;
 		}
 
 		if (target == null && currentTarget != null)
 		{
 			//Going from something to nothing
-			currentTarget.dispatchEvent(new TouchEvent(TouchEventType.Leave, currentTarget, mouseData));
+			currentTarget.dispatchEvent(new TouchEvent(TouchEventType.Exit, currentTarget, mouseData));
 			currentTarget = null;
 
 			CursorManager.getInstance().setCursor(GameCursor.POINTER);
@@ -185,24 +198,29 @@ public class MouseTouchManager implements IUpdateable
 		else if (target != null)
 		{
 			//Hitting something, anything
-			
+
 			if (target != currentTarget)
 			{
 				//Going from something to something else
 				if (currentTarget != null)
 				{
-					currentTarget.dispatchEvent(new TouchEvent(TouchEventType.Leave, currentTarget, mouseData));
+					currentTarget.dispatchEvent(new TouchEvent(TouchEventType.Exit, currentTarget, mouseData));
 				}
 
 				currentTarget = target;
 				currentTarget.dispatchEvent(new TouchEvent(TouchEventType.Enter, currentTarget, mouseData));
 			}
-			
-			if (target.hoverIcon != null)
-			{
-				//The target needs a hover icon
-				CursorManager.getInstance().setCursor(target.hoverIcon);
-			}
+
+			setCursor(target);
+		}
+	}
+
+	private void setCursor(DisplayObject target)
+	{
+		if (target != null && target.hoverIcon != null)
+		{
+			//The target needs a hover icon
+			CursorManager.getInstance().setCursor(target.hoverIcon);
 		}
 	}
 
