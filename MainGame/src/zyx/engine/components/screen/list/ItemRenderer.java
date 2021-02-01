@@ -1,15 +1,16 @@
 package zyx.engine.components.screen.list;
 
-import zyx.engine.touch.ITouched;
+import zyx.engine.components.screen.base.events.types.touch.IMouseClickedListener;
+import zyx.engine.components.screen.base.events.types.touch.TouchEvent;
 import zyx.engine.curser.GameCursor;
-import zyx.engine.touch.TouchData;
-import zyx.engine.touch.TouchState;
 import zyx.game.components.screen.json.JsonSprite;
 
-public abstract class ItemRenderer extends JsonSprite implements ITouched
+public abstract class ItemRenderer extends JsonSprite
 {
 
 	protected Object data;
+	
+	private IMouseClickedListener clickedListener;
 
 	public ItemRenderer(boolean button)
 	{
@@ -17,9 +18,10 @@ public abstract class ItemRenderer extends JsonSprite implements ITouched
 
 		if (button)
 		{
-			addTouchListener(this);
-
 			hoverIcon = GameCursor.HAND;
+			
+			clickedListener = this::onMouseClicked;
+			addListener(clickedListener);
 		}
 	}
 
@@ -37,10 +39,17 @@ public abstract class ItemRenderer extends JsonSprite implements ITouched
 	protected void onDataSet()
 	{
 	}
-
-	@Override
-	public void onTouched(TouchState state, boolean collided, TouchData data)
+	
+	protected void onMouseClicked(TouchEvent event)
 	{
+		
 	}
 
+	@Override
+	protected void onDispose()
+	{
+		super.onDispose();
+		
+		clickedListener = null;
+	}
 }

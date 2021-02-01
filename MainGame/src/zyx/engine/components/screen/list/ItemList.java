@@ -3,13 +3,12 @@ package zyx.engine.components.screen.list;
 import java.util.ArrayList;
 import java.util.Collection;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
-import zyx.engine.touch.ITouched;
 import zyx.engine.components.screen.base.Quad;
-import zyx.engine.touch.TouchData;
-import zyx.engine.touch.TouchState;
+import zyx.engine.components.screen.base.events.types.touch.IMouseDraggedListener;
+import zyx.engine.components.screen.base.events.types.touch.TouchEvent;
 import zyx.utils.geometry.Rectangle;
 
-public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer implements ITouched
+public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer
 {
 	private static final Rectangle CLIP_HELPER = new Rectangle();
 
@@ -20,6 +19,8 @@ public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer imp
 
 	private DisplayObjectContainer container;
 	private Quad background;
+	
+	private IMouseDraggedListener draggedListener;
 	
 	public ItemList()
 	{
@@ -35,7 +36,8 @@ public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer imp
 		addChild(background);
 		addChild(container);
 		
-		addTouchListener(this);
+		draggedListener = this::onMouseDragged;
+		addListener(draggedListener);
 	}
 
 	public void setItemRenderer(Class<T> clazz)
@@ -98,13 +100,17 @@ public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer imp
 		clipRect.height = value;
 	}
 
-	@Override
-	public void onTouched(TouchState state, boolean collided, TouchData data)
+	private void onMouseDragged(TouchEvent event)
 	{
-		if (state == TouchState.DRAG)
-		{
-			float x = container.getX();
-			container.setX(x + data.dX);
-		}
+		float x = container.getX();
+		container.setX(x + event.dX);
+	}
+
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+		
+		draggedListener = null; 
 	}
 }

@@ -1,6 +1,6 @@
 package zyx.engine.touch;
 
-public enum TouchState
+enum TouchState
 {
 	HOVER,
 	DOWN,

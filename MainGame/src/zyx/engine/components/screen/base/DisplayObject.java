@@ -1,12 +1,12 @@
 package zyx.engine.components.screen.base;
 
-import zyx.engine.touch.ITouched;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import zyx.debug.link.DebugInfo;
 import zyx.debug.views.base.IDebugIcon;
+import zyx.engine.components.animations.IFocusable;
 import zyx.engine.components.screen.base.events.EventListenerMap;
 import zyx.engine.components.screen.base.events.IEventListener;
 import zyx.engine.components.screen.base.events.types.DisplayObjectEvent;
@@ -14,6 +14,7 @@ import zyx.engine.components.screen.base.events.types.IDisplayObjectEventListene
 import zyx.engine.components.screen.base.events.types.stage.StageEvent;
 import zyx.engine.components.screen.base.events.types.stage.StageEventType;
 import zyx.engine.curser.GameCursor;
+import zyx.engine.focus.FocusManager;
 import zyx.game.controls.SharedPools;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.SharedShaderObjects;
@@ -132,6 +133,11 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		}
 	}
 
+	protected void makeFocusable(IFocusable focusable)
+	{
+		FocusManager.getInstance().add(focusable);
+	}
+	
 	public Matrix4f worldMatrix()
 	{
 		if (dirty)
@@ -520,16 +526,6 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 	public boolean isOnStage()
 	{
 		return stage != null;
-	}
-
-	public void addTouchListener(ITouched listener)
-	{
-//		MouseTouchManager.getInstance().registerTouch(this, listener);
-	}
-
-	public void removeTouchListener(ITouched listener)
-	{
-//		MouseTouchManager.getInstance().unregisterTouch(this, listener);
 	}
 
 	@Override

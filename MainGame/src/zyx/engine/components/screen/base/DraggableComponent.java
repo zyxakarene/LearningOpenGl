@@ -1,12 +1,12 @@
 package zyx.engine.components.screen.base;
 
 import org.lwjgl.util.vector.Vector2f;
-import zyx.engine.touch.ITouched;
-import zyx.engine.touch.TouchData;
-import zyx.engine.touch.TouchState;
+import zyx.engine.components.screen.base.events.types.touch.IMouseDownListener;
+import zyx.engine.components.screen.base.events.types.touch.IMouseDraggedListener;
+import zyx.engine.components.screen.base.events.types.touch.TouchEvent;
 import zyx.utils.interfaces.IDisposeable;
 
-public class DraggableComponent implements ITouched, IDisposeable
+public class DraggableComponent implements IDisposeable
 {
 	private static final Vector2f HELPER_POS = new Vector2f();
 
@@ -15,38 +15,50 @@ public class DraggableComponent implements ITouched, IDisposeable
 	
 	private float downPosX;
 	private float downPosY;
+	
+	private IMouseDownListener downListener;
+	private IMouseDraggedListener dragListener;
 
 	public DraggableComponent(DisplayObject draggable, DisplayObject moveable)
 	{
 		component = draggable;
-		component.addTouchListener(this);
 		moving = moveable;
+		
+		downListener = this::onMouseDown;
+		dragListener = this::onMouseDragged;
+		
+		component.addListener(downListener);
+		component.addListener(dragListener);
 	}
 
-	@Override
-	public void onTouched(TouchState state, boolean collided, TouchData data)
+	private void onMouseDown(TouchEvent event)
 	{
-		if (state == TouchState.DOWN)
-		{
-			moving.getPosition(false, HELPER_POS);
-			downPosX = data.x - HELPER_POS.x;
-			downPosY = data.y - HELPER_POS.y;
-		}
-		else if (state == TouchState.DRAG)
-		{
-			moving.setPosition(false, data.x - downPosX, data.y - downPosY);
-		}
+		moving.getPosition(false, HELPER_POS);
+		downPosX = event.x - HELPER_POS.x;
+		downPosY = event.y - HELPER_POS.y;
 	}
 
+	private void onMouseDragged(TouchEvent event)
+	{
+		moving.setPosition(false, event.x - downPosX, event.y - downPosY);
+	}
+	
 	@Override
 	public void dispose()
 	{
-		if (component != null)
+		if (downListener != null)
 		{
-			component.removeTouchListener(this);
-			component = null;
+			component.removeListener(downListener);
+			downListener = null;
+		}
+		
+		if (dragListener != null)
+		{
+			component.removeListener(dragListener);
+			dragListener = null;
 		}
 		
 		moving = null;
+		component = null;
 	}
 }

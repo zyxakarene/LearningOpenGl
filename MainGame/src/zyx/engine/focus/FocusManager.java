@@ -3,16 +3,11 @@ package zyx.engine.focus;
 import java.util.ArrayList;
 import java.util.List;
 import zyx.engine.components.animations.IFocusable;
-import zyx.engine.components.screen.base.DisplayObject;
-import zyx.engine.touch.ITouched;
-import zyx.engine.touch.MouseTouchManager;
-import zyx.engine.touch.TouchData;
-import zyx.engine.touch.TouchState;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.input.PressedKey;
 import zyx.utils.interfaces.IUpdateable;
 
-public class FocusManager implements IUpdateable, ITouched
+public class FocusManager implements IUpdateable
 {
 
 	private static final FocusManager INSTANCE = new FocusManager();
@@ -37,9 +32,7 @@ public class FocusManager implements IUpdateable, ITouched
 			currentFocus.onUnFocused();
 			currentFocus = null;
 		}
-		
-		MouseTouchManager.getInstance().unregisterTouch((DisplayObject) focusable, this);
-		
+				
 		focusables.remove(focusable);
 	}
 
@@ -48,8 +41,6 @@ public class FocusManager implements IUpdateable, ITouched
 		if (focusables.contains(focusable) == false)
 		{
 			focusables.add(focusable);
-			
-			MouseTouchManager.getInstance().registerTouch((DisplayObject) focusable, this);
 		}
 	}
 
@@ -66,26 +57,6 @@ public class FocusManager implements IUpdateable, ITouched
 				PressedKey key = charList.get(i);
 				currentFocus.onKeyPressed(key.character);
 			}
-		}
-	}
-
-	@Override
-	public void onTouched(TouchState state, boolean collided, TouchData data)
-	{
-		if (currentFocus != null)
-		{
-			currentFocus.onUnFocused();
-			currentFocus = null;
-		}
-		
-		if (data.target instanceof IFocusable)
-		{
-			currentFocus = (IFocusable) data.target;
-		}
-		
-		if (currentFocus != null)
-		{
-			currentFocus.onFocused();
 		}
 	}
 }

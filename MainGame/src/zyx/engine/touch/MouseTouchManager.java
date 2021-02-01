@@ -1,6 +1,5 @@
 package zyx.engine.touch;
 
-import java.util.HashMap;
 import zyx.engine.components.screen.base.DisplayObject;
 import zyx.engine.components.screen.base.events.types.touch.TouchEvent;
 import zyx.engine.components.screen.base.events.types.touch.TouchEventType;
@@ -14,12 +13,9 @@ public class MouseTouchManager implements IUpdateable
 
 	private static final MouseTouchManager INSTANCE = new MouseTouchManager();
 
-	private TouchData data;
 	private TouchEventType currentState;
 	private MouseData mouseData;
 	private boolean forceUpdate;
-
-	private HashMap<DisplayObject, TouchEntry> touchListeners;
 
 	private DisplayObject nextTarget;
 	private DisplayObject currentTarget;
@@ -30,8 +26,6 @@ public class MouseTouchManager implements IUpdateable
 	{
 		currentState = TouchEventType.Up;
 		mouseData = MouseData.data;
-		data = new TouchData();
-		touchListeners = new HashMap<>();
 		enabled = true;
 	}
 
@@ -56,32 +50,6 @@ public class MouseTouchManager implements IUpdateable
 		}
 
 		enabled = value;
-	}
-
-	public void registerTouch(DisplayObject target, ITouched listener)
-	{
-		if (touchListeners.containsKey(target) == false)
-		{
-			touchListeners.put(target, new TouchEntry(target));
-		}
-
-		TouchEntry entry = touchListeners.get(target);
-		entry.addListener(listener);
-	}
-
-	public void unregisterTouch(DisplayObject target, ITouched listener)
-	{
-		TouchEntry entry = touchListeners.get(target);
-
-		if (entry != null)
-		{
-			entry.removeListener(listener);
-
-			if (entry.touches.isEmpty())
-			{
-				touchListeners.remove(target);
-			}
-		}
 	}
 
 	@Override
@@ -148,6 +116,10 @@ public class MouseTouchManager implements IUpdateable
 						newState = TouchEventType.Up;
 					}
 				}
+				else
+				{
+					forceUpdate = true;
+				}
 				break;
 			}
 
@@ -157,12 +129,6 @@ public class MouseTouchManager implements IUpdateable
 		{
 			forceUpdate = false;
 			currentState = newState;
-
-			data.x = mouseData.x;
-			data.y = mouseData.y;
-			data.dX = mouseData.dX;
-			data.dY = mouseData.dY;
-			data.target = currentTarget;
 
 			if (mouseDownTarget != null)
 			{
@@ -182,7 +148,6 @@ public class MouseTouchManager implements IUpdateable
 			//Don't change target while dragging
 
 			nextTarget = target;
-			System.out.println("Next target " + nextTarget);
 			setCursor(mouseDownTarget);
 			return;
 		}

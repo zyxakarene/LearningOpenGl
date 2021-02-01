@@ -11,6 +11,7 @@ import zyx.engine.scene.loading.LoadingScreenProcessQueue;
 import zyx.engine.scene.preloading.ResourcePreloadProcess;
 import zyx.engine.utils.ScreenSize;
 import zyx.engine.utils.worldpicker.calculating.RayPicker;
+import zyx.game.components.screen.debug.DebugPanel;
 import zyx.game.components.world.camera.CameraController;
 import zyx.game.controls.MegaManager;
 import zyx.opengl.GLUtils;
@@ -68,6 +69,7 @@ public class Scene implements ILoadingScreenDone
 		world.addChild(debugContainer);
 		hud = createHud();
 		stage.hudLayer.addChild(hud);
+		stage.hudLayer.addChild(new DebugPanel());
 
 		onPreloadResources();
 
