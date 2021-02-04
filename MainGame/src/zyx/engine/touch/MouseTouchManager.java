@@ -1,8 +1,8 @@
 package zyx.engine.touch;
 
 import zyx.engine.components.screen.base.DisplayObject;
-import zyx.engine.components.screen.base.events.types.touch.TouchEvent;
-import zyx.engine.components.screen.base.events.types.touch.TouchEventType;
+import zyx.engine.components.screen.base.EventCache;
+import zyx.engine.components.screen.base.events.types.mouse.MouseEventType;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;
 import zyx.game.controls.input.MouseData;
@@ -13,7 +13,7 @@ public class MouseTouchManager implements IUpdateable
 
 	private static final MouseTouchManager INSTANCE = new MouseTouchManager();
 
-	private TouchEventType currentState;
+	private MouseEventType currentState;
 	private MouseData mouseData;
 	private boolean forceUpdate;
 
@@ -24,7 +24,7 @@ public class MouseTouchManager implements IUpdateable
 
 	private MouseTouchManager()
 	{
-		currentState = TouchEventType.Up;
+		currentState = MouseEventType.Up;
 		mouseData = MouseData.data;
 		enabled = true;
 	}
@@ -34,7 +34,7 @@ public class MouseTouchManager implements IUpdateable
 		return INSTANCE;
 	}
 
-	public TouchEventType currentState()
+	public MouseEventType currentState()
 	{
 		return currentState;
 	}
@@ -43,8 +43,8 @@ public class MouseTouchManager implements IUpdateable
 	{
 		if (currentTarget != null)
 		{
-			currentTarget.dispatchEvent(new TouchEvent(TouchEventType.Up, currentTarget));
-			currentTarget.dispatchEvent(new TouchEvent(TouchEventType.Exit, currentTarget));
+			currentTarget.dispatchEvent(EventCache.get(MouseEventType.Up).setup(currentTarget, mouseData));
+			currentTarget.dispatchEvent(EventCache.get(MouseEventType.Exit).setup(currentTarget, mouseData));
 
 			currentTarget = null;
 		}
@@ -57,7 +57,7 @@ public class MouseTouchManager implements IUpdateable
 	{
 		boolean leftDown = mouseData.isLeftDown();
 		boolean hasMovement = mouseData.dX != 0 || mouseData.dY != 0;
-		TouchEventType newState = currentState;
+		MouseEventType newState = currentState;
 
 		if (mouseData.grabbed || !enabled)
 		{
@@ -73,7 +73,7 @@ public class MouseTouchManager implements IUpdateable
 				{
 					nextTarget = currentTarget;
 					mouseDownTarget = currentTarget;
-					newState = TouchEventType.Down;
+					newState = MouseEventType.Down;
 				}
 				else
 				{
@@ -83,24 +83,24 @@ public class MouseTouchManager implements IUpdateable
 			}
 			case Exit:
 			{
-				newState = TouchEventType.Up;
+				newState = MouseEventType.Up;
 				break;
 			}
 			case Down:
 			{
 				if (hasMovement)
 				{
-					newState = TouchEventType.Drag;
+					newState = MouseEventType.Drag;
 				}
 				else if (!leftDown)
 				{
-					newState = TouchEventType.Click;
+					newState = MouseEventType.Click;
 				}
 				break;
 			}
 			case Click:
 			{
-				newState = TouchEventType.Up;
+				newState = MouseEventType.Up;
 				break;
 			}
 			case Drag:
@@ -109,11 +109,11 @@ public class MouseTouchManager implements IUpdateable
 				{
 					if (currentTarget == nextTarget)
 					{
-						newState = TouchEventType.Click;
+						newState = MouseEventType.Click;
 					}
 					else
 					{
-						newState = TouchEventType.Up;
+						newState = MouseEventType.Up;
 					}
 				}
 				else
@@ -132,18 +132,18 @@ public class MouseTouchManager implements IUpdateable
 
 			if (mouseDownTarget != null)
 			{
-				mouseDownTarget.dispatchEvent(new TouchEvent(currentState, mouseDownTarget, mouseData));
+				mouseDownTarget.dispatchEvent(EventCache.get(currentState).setup(mouseDownTarget, mouseData));
 			}
 			else if (currentTarget != null)
 			{
-				currentTarget.dispatchEvent(new TouchEvent(currentState, currentTarget, mouseData));
+				currentTarget.dispatchEvent(EventCache.get(currentState).setup(currentTarget, mouseData));
 			}
 		}
 	}
 
 	public void setTouchedObject(DisplayObject target)
 	{
-		if (currentState == TouchEventType.Drag)
+		if (currentState == MouseEventType.Drag)
 		{
 			//Don't change target while dragging
 
@@ -155,7 +155,7 @@ public class MouseTouchManager implements IUpdateable
 		if (target == null && currentTarget != null)
 		{
 			//Going from something to nothing
-			currentTarget.dispatchEvent(new TouchEvent(TouchEventType.Exit, currentTarget, mouseData));
+			currentTarget.dispatchEvent(EventCache.get(MouseEventType.Exit).setup(currentTarget, mouseData));
 			currentTarget = null;
 
 			CursorManager.getInstance().setCursor(GameCursor.POINTER);
@@ -169,11 +169,11 @@ public class MouseTouchManager implements IUpdateable
 				//Going from something to something else
 				if (currentTarget != null)
 				{
-					currentTarget.dispatchEvent(new TouchEvent(TouchEventType.Exit, currentTarget, mouseData));
+					currentTarget.dispatchEvent(EventCache.get(MouseEventType.Exit).setup(currentTarget, mouseData));
 				}
 
 				currentTarget = target;
-				currentTarget.dispatchEvent(new TouchEvent(TouchEventType.Enter, currentTarget, mouseData));
+				currentTarget.dispatchEvent(EventCache.get(MouseEventType.Enter).setup(currentTarget, mouseData));
 			}
 
 			setCursor(target);

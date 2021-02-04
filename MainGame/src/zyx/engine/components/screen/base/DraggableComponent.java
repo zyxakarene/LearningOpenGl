@@ -1,9 +1,9 @@
 package zyx.engine.components.screen.base;
 
 import org.lwjgl.util.vector.Vector2f;
-import zyx.engine.components.screen.base.events.types.touch.IMouseDownListener;
-import zyx.engine.components.screen.base.events.types.touch.IMouseDraggedListener;
-import zyx.engine.components.screen.base.events.types.touch.TouchEvent;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseDownListener;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseDraggedListener;
+import zyx.engine.components.screen.base.events.types.mouse.MouseEvent;
 import zyx.utils.interfaces.IDisposeable;
 
 public class DraggableComponent implements IDisposeable
@@ -31,14 +31,14 @@ public class DraggableComponent implements IDisposeable
 		component.addListener(dragListener);
 	}
 
-	private void onMouseDown(TouchEvent event)
+	private void onMouseDown(MouseEvent event)
 	{
 		moving.getPosition(false, HELPER_POS);
 		downPosX = event.x - HELPER_POS.x;
 		downPosY = event.y - HELPER_POS.y;
 	}
 
-	private void onMouseDragged(TouchEvent event)
+	private void onMouseDragged(MouseEvent event)
 	{
 		moving.setPosition(false, event.x - downPosX, event.y - downPosY);
 	}

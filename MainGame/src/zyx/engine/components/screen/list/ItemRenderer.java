@@ -1,7 +1,7 @@
 package zyx.engine.components.screen.list;
 
-import zyx.engine.components.screen.base.events.types.touch.IMouseClickedListener;
-import zyx.engine.components.screen.base.events.types.touch.TouchEvent;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseClickedListener;
+import zyx.engine.components.screen.base.events.types.mouse.MouseEvent;
 import zyx.engine.curser.GameCursor;
 import zyx.game.components.screen.json.JsonSprite;
 
@@ -40,7 +40,7 @@ public abstract class ItemRenderer extends JsonSprite
 	{
 	}
 	
-	protected void onMouseClicked(TouchEvent event)
+	protected void onMouseClicked(MouseEvent event)
 	{
 		
 	}

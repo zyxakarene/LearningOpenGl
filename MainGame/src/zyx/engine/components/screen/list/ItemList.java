@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
 import zyx.engine.components.screen.base.Quad;
-import zyx.engine.components.screen.base.events.types.touch.IMouseDraggedListener;
-import zyx.engine.components.screen.base.events.types.touch.TouchEvent;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseDraggedListener;
+import zyx.engine.components.screen.base.events.types.mouse.MouseEvent;
 import zyx.utils.geometry.Rectangle;
 
 public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer
@@ -100,7 +100,7 @@ public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer
 		clipRect.height = value;
 	}
 
-	private void onMouseDragged(TouchEvent event)
+	private void onMouseDragged(MouseEvent event)
 	{
 		float x = container.getX();
 		container.setX(x + event.dX);

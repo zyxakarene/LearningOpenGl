@@ -1,9 +1,17 @@
 package zyx.engine.components.screen.base.events;
 
+import zyx.engine.components.screen.base.events.types.mouse.IMouseUpListener;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseListener;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseDownListener;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseClickedListener;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseExitedListener;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseDraggedListener;
+import zyx.engine.components.screen.base.events.types.mouse.MouseEvent;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseEnteredListener;
+import zyx.engine.components.screen.base.events.types.mouse.MouseEventType;
 import java.util.ArrayList;
-import zyx.engine.components.screen.base.events.types.touch.*;
 
-class TouchDispatcher extends AbstractDispatcher<TouchEvent, IMouseListener>
+class TouchDispatcher extends AbstractDispatcher<MouseEvent, IMouseListener>
 {
 
 	TouchDispatcher()
@@ -13,16 +21,16 @@ class TouchDispatcher extends AbstractDispatcher<TouchEvent, IMouseListener>
 	@Override
 	protected void addRegistrations()
 	{
-		registerEventInterface(IMouseClickedListener.class, TouchEventType.Click);
-		registerEventInterface(IMouseDownListener.class, TouchEventType.Down);
-		registerEventInterface(IMouseDraggedListener.class, TouchEventType.Drag);
-		registerEventInterface(IMouseEnteredListener.class, TouchEventType.Enter);
-		registerEventInterface(IMouseExitedListener.class, TouchEventType.Exit);
-		registerEventInterface(IMouseUpListener.class, TouchEventType.Up);
+		registerEventInterface(IMouseClickedListener.class, MouseEventType.Click);
+		registerEventInterface(IMouseDownListener.class, MouseEventType.Down);
+		registerEventInterface(IMouseDraggedListener.class, MouseEventType.Drag);
+		registerEventInterface(IMouseEnteredListener.class, MouseEventType.Enter);
+		registerEventInterface(IMouseExitedListener.class, MouseEventType.Exit);
+		registerEventInterface(IMouseUpListener.class, MouseEventType.Up);
 	}
 	
 	@Override
-	protected void dispatchEvent(TouchEvent event, ArrayList<IMouseListener> listeners)
+	protected void dispatchEvent(MouseEvent event, ArrayList<IMouseListener> listeners)
 	{
 		switch (event.type)
 		{
@@ -78,9 +86,9 @@ class TouchDispatcher extends AbstractDispatcher<TouchEvent, IMouseListener>
 	}
 
 	@Override
-	Class<TouchEvent> getEventClass()
+	Class<MouseEvent> getEventClass()
 	{
-		return TouchEvent.class;
+		return MouseEvent.class;
 	}
 
 	@Override

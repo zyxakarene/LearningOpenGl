@@ -11,7 +11,6 @@ import zyx.engine.components.screen.base.events.EventListenerMap;
 import zyx.engine.components.screen.base.events.IEventListener;
 import zyx.engine.components.screen.base.events.types.DisplayObjectEvent;
 import zyx.engine.components.screen.base.events.types.IDisplayObjectEventListener;
-import zyx.engine.components.screen.base.events.types.stage.StageEvent;
 import zyx.engine.components.screen.base.events.types.stage.StageEventType;
 import zyx.engine.curser.GameCursor;
 import zyx.engine.focus.FocusManager;
@@ -107,6 +106,10 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		if (event.bubbles && parent != null)
 		{
 			parent.dispatchEvent(event);
+		}
+		else
+		{
+			EventCache.returnEvent(event);
 		}
 	}
 
@@ -277,11 +280,11 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		
 		if (stage == null)
 		{
-			dispatchEvent(new StageEvent(StageEventType.RemovedFromStage, stage));
+			dispatchEvent(EventCache.get(StageEventType.RemovedFromStage).setup(stage));
 		}
 		else
 		{
-			dispatchEvent(new StageEvent(StageEventType.AddedToStage, stage));
+			dispatchEvent(EventCache.get(StageEventType.AddedToStage).setup(stage));
 		}
 		
 		if (hoverIcon != null)

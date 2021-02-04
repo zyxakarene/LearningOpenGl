@@ -3,8 +3,8 @@ package zyx.engine.components.screen.base.generic.window.tree;
 import org.lwjgl.util.vector.Vector2f;
 import zyx.engine.components.animations.IFocusable;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
-import zyx.engine.components.screen.base.events.types.touch.TouchEvent;
-import zyx.engine.components.screen.base.events.types.touch.TouchedAdaptor;
+import zyx.engine.components.screen.base.events.types.mouse.MouseEvent;
+import zyx.engine.components.screen.base.events.types.mouse.MouseAdaptor;
 import zyx.engine.components.screen.base.generic.window.WindowsButton;
 import zyx.engine.components.screen.image.Image;
 import zyx.engine.components.screen.image.MultiSheetImage;
@@ -54,10 +54,10 @@ final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer impleme
 
 		addRenderer();
 
-		addListener(new TouchedAdaptor()
+		addListener(new MouseAdaptor()
 		{
 			@Override
-			public void mouseClick(TouchEvent event)
+			public void mouseClick(MouseEvent event)
 			{
 				System.out.println("CLICKED ME: " + event.target);
 			}

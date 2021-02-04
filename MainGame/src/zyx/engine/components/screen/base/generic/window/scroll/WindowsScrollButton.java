@@ -1,8 +1,8 @@
 package zyx.engine.components.screen.base.generic.window.scroll;
 
-import zyx.engine.components.screen.base.events.types.touch.IMouseDownListener;
-import zyx.engine.components.screen.base.events.types.touch.IMouseDraggedListener;
-import zyx.engine.components.screen.base.events.types.touch.TouchEvent;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseDownListener;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseDraggedListener;
+import zyx.engine.components.screen.base.events.types.mouse.MouseEvent;
 import zyx.engine.components.screen.base.generic.window.WindowsButton;
 
 public class WindowsScrollButton extends WindowsButton
@@ -40,7 +40,7 @@ public class WindowsScrollButton extends WindowsButton
 	{
 	}
 
-	private void onScrollerMouseDown(TouchEvent event)
+	private void onScrollerMouseDown(MouseEvent event)
 	{
 		if (min == 0 && max == 0)
 		{
@@ -62,7 +62,7 @@ public class WindowsScrollButton extends WindowsButton
 		currentY = (int) position.y;
 	}
 
-	private void onScrollerMouseDragged(TouchEvent event)
+	private void onScrollerMouseDragged(MouseEvent event)
 	{
 		if (min == 0 && max == 0)
 		{

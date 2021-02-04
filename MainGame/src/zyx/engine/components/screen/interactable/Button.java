@@ -1,7 +1,7 @@
 package zyx.engine.components.screen.interactable;
 
 import org.lwjgl.util.vector.Vector3f;
-import zyx.engine.components.screen.base.events.types.touch.TouchEvent;
+import zyx.engine.components.screen.base.events.types.mouse.MouseEvent;
 import zyx.engine.components.screen.composed.ComposedButtonColorMap;
 import zyx.engine.components.screen.composed.IComposedButton;
 import zyx.engine.components.screen.image.AbstractImage;
@@ -249,41 +249,41 @@ public class Button extends InteractableContainer implements IComposedButton
 	}
 
 	@Override
-	protected void onMouseEnter(TouchEvent event)
+	protected void onMouseEnter(MouseEvent event)
 	{
 		System.out.println("Enter");
 		changeStateTo(ButtonState.HOVER);
 	}
 
 	@Override
-	protected void onMouseExit(TouchEvent event)
+	protected void onMouseExit(MouseEvent event)
 	{
 		System.out.println("Exit");
 		changeStateTo(ButtonState.UP);
 	}
 
 	@Override
-	protected void onMouseDown(TouchEvent event)
+	protected void onMouseDown(MouseEvent event)
 	{
 		System.out.println("Down");
 		changeStateTo(ButtonState.DOWN);
 	}
 
 	@Override
-	protected void onMouseUp(TouchEvent event)
+	protected void onMouseUp(MouseEvent event)
 	{
 		System.out.println("Up");
 		changeStateTo(ButtonState.UP);
 	}
 
 	@Override
-	protected void onMouseDragged(TouchEvent event)
+	protected void onMouseDragged(MouseEvent event)
 	{
 		System.out.println("Drag");
 	}
 	
 	@Override
-	protected void onMouseClick(TouchEvent event)
+	protected void onMouseClick(MouseEvent event)
 	{
 		System.out.println("Click");
 		changeStateTo(ButtonState.HOVER);

@@ -1,7 +1,13 @@
 package zyx.engine.components.screen.interactable;
 
+import zyx.engine.components.screen.base.events.types.mouse.IMouseUpListener;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseDownListener;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseClickedListener;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseExitedListener;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseDraggedListener;
+import zyx.engine.components.screen.base.events.types.mouse.MouseEvent;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseEnteredListener;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
-import zyx.engine.components.screen.base.events.types.touch.*;
 
 public abstract class InteractableContainer extends DisplayObjectContainer
 {
@@ -30,27 +36,27 @@ public abstract class InteractableContainer extends DisplayObjectContainer
 		addListener(upListener);
 	}
 
-	protected void onMouseEnter(TouchEvent event)
+	protected void onMouseEnter(MouseEvent event)
 	{
 	}
 
-	protected void onMouseExit(TouchEvent event)
+	protected void onMouseExit(MouseEvent event)
 	{
 	}
 
-	protected void onMouseDown(TouchEvent event)
+	protected void onMouseDown(MouseEvent event)
 	{
 	}
 
-	protected void onMouseUp(TouchEvent event)
+	protected void onMouseUp(MouseEvent event)
 	{
 	}
 
-	protected void onMouseClick(TouchEvent event)
+	protected void onMouseClick(MouseEvent event)
 	{
 	}
 
-	protected void onMouseDragged(TouchEvent event)
+	protected void onMouseDragged(MouseEvent event)
 	{
 	}
 

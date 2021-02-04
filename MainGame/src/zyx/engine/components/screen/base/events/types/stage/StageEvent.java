@@ -5,13 +5,17 @@ import zyx.engine.components.screen.base.events.types.DisplayObjectEvent;
 
 public class StageEvent extends DisplayObjectEvent<StageEventType>
 {
-	public final Stage stage;
+	public Stage stage;
 	
-	public StageEvent(StageEventType type, Stage stage)
+	public StageEvent(StageEventType type)
 	{
 		super(type);
-		
-		this.stage = stage;
 	}
-
+	
+	public StageEvent setup(Stage stage)
+	{
+		this.stage = stage;
+		
+		return this;
+	}
 }

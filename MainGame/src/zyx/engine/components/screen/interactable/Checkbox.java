@@ -1,6 +1,6 @@
 package zyx.engine.components.screen.interactable;
 
-import zyx.engine.components.screen.base.events.types.touch.TouchEvent;
+import zyx.engine.components.screen.base.events.types.mouse.MouseEvent;
 import zyx.engine.components.screen.image.AbstractImage;
 import zyx.engine.components.screen.image.Image;
 
@@ -65,7 +65,7 @@ public class Checkbox extends Button
 	}
 
 	@Override
-	protected void onMouseClick(TouchEvent event)
+	protected void onMouseClick(MouseEvent event)
 	{
 		super.onMouseClick(event);
 		
