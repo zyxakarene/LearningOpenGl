@@ -251,41 +251,30 @@ public class Button extends InteractableContainer implements IComposedButton
 	@Override
 	protected void onMouseEnter(MouseEvent event)
 	{
-		System.out.println("Enter");
 		changeStateTo(ButtonState.HOVER);
 	}
 
 	@Override
 	protected void onMouseExit(MouseEvent event)
 	{
-		System.out.println("Exit");
 		changeStateTo(ButtonState.UP);
 	}
 
 	@Override
 	protected void onMouseDown(MouseEvent event)
 	{
-		System.out.println("Down");
 		changeStateTo(ButtonState.DOWN);
 	}
 
 	@Override
 	protected void onMouseUp(MouseEvent event)
 	{
-		System.out.println("Up");
 		changeStateTo(ButtonState.UP);
-	}
-
-	@Override
-	protected void onMouseDragged(MouseEvent event)
-	{
-		System.out.println("Drag");
 	}
 	
 	@Override
 	protected void onMouseClick(MouseEvent event)
 	{
-		System.out.println("Click");
 		changeStateTo(ButtonState.HOVER);
 
 		if (onButtonClicked.hasEntries())

@@ -3,13 +3,13 @@ package zyx.engine.components.screen.base.generic.window.tree;
 import org.lwjgl.util.vector.Vector2f;
 import zyx.engine.components.animations.IFocusable;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
-import zyx.engine.components.screen.base.events.types.mouse.MouseEvent;
-import zyx.engine.components.screen.base.events.types.mouse.MouseAdaptor;
+import zyx.engine.components.screen.base.Quad;
 import zyx.engine.components.screen.base.generic.window.WindowsButton;
 import zyx.engine.components.screen.image.Image;
 import zyx.engine.components.screen.image.MultiSheetImage;
 import zyx.engine.components.screen.interactable.InteractableContainer;
 import zyx.engine.utils.callbacks.ICallback;
+import zyx.utils.FloatMath;
 
 final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer implements IFocusable
 {
@@ -18,6 +18,7 @@ final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer impleme
 	private WindowsButton expandButton;
 	private Image icon;
 	private MultiSheetImage lineImage;
+	private Quad bg;
 
 	private ICallback<InteractableContainer> onFoldChange;
 
@@ -27,6 +28,9 @@ final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer impleme
 
 	WindowsTreeRowRenderer(WindowsTreeNode<TData> node)
 	{
+		bg = new Quad(16, 16, 0xFFFFFF);
+		addChild(bg);
+
 		touchable = true;
 		
 		activeNode = node;
@@ -53,15 +57,8 @@ final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer impleme
 		}
 
 		addRenderer();
-
-		addListener(new MouseAdaptor()
-		{
-			@Override
-			public void mouseClick(MouseEvent event)
-			{
-				System.out.println("CLICKED ME: " + event.target);
-			}
-		});
+		
+		makeFocusable(this);
 	}
 
 	float getRendererHeight()
@@ -86,6 +83,8 @@ final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer impleme
 		lineImage = new MultiSheetImage();
 		lineImage.touchable = false;
 		addChild(lineImage);
+		
+		bg.setSize(renderer.getWidth(), height);
 
 	}
 
@@ -174,23 +173,6 @@ final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer impleme
 	@Override
 	public void onKeyPressed(char character)
 	{
-	}
-
-	@Override
-	public void onFocused()
-	{
-		if (icon != null)
-		{
-			icon.setColor(0xFF0000);
-		}
-	}
-
-	@Override
-	public void onUnFocused()
-	{
-		if (icon != null)
-		{
-			icon.setColor(0xFFFFFF);
-		}
+		bg.setColor((int) (0xFFFFFF * FloatMath.random()));
 	}
 }

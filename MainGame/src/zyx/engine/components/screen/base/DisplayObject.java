@@ -100,6 +100,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 	{
 		if (eventListener != null)
 		{
+			event.target = this;
 			eventListener.dispatchEvent(event);
 		}
 		

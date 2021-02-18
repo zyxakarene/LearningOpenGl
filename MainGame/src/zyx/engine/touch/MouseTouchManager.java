@@ -2,6 +2,7 @@ package zyx.engine.touch;
 
 import zyx.engine.components.screen.base.DisplayObject;
 import zyx.engine.components.screen.base.EventCache;
+import zyx.engine.components.screen.base.events.types.focus.FocusEventType;
 import zyx.engine.components.screen.base.events.types.mouse.MouseEventType;
 import zyx.engine.curser.CursorManager;
 import zyx.engine.curser.GameCursor;
@@ -137,6 +138,11 @@ public class MouseTouchManager implements IUpdateable
 			else if (currentTarget != null)
 			{
 				currentTarget.dispatchEvent(EventCache.get(currentState).setup(currentTarget, mouseData));
+				
+				if (currentState == MouseEventType.Click)
+				{
+					currentTarget.dispatchEvent(EventCache.get(FocusEventType.Changed).setup(currentTarget, true));
+				}
 			}
 		}
 	}

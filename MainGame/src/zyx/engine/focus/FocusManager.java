@@ -3,6 +3,9 @@ package zyx.engine.focus;
 import java.util.ArrayList;
 import java.util.List;
 import zyx.engine.components.animations.IFocusable;
+import zyx.engine.components.screen.base.DisplayObject;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseClickedListener;
+import zyx.engine.components.screen.base.events.types.mouse.MouseEvent;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.input.PressedKey;
 import zyx.utils.interfaces.IUpdateable;
@@ -13,11 +16,13 @@ public class FocusManager implements IUpdateable
 	private static final FocusManager INSTANCE = new FocusManager();
 	
 	private ArrayList<IFocusable> focusables;
+	private ArrayList<IMouseClickedListener> clickListeners;
 	private IFocusable currentFocus;
 	
 	private FocusManager()
 	{
 		focusables = new ArrayList<>();
+		clickListeners = new ArrayList<>();
 	}
 
 	public static FocusManager getInstance()
@@ -29,7 +34,6 @@ public class FocusManager implements IUpdateable
 	{
 		if (focusable == currentFocus)
 		{
-			currentFocus.onUnFocused();
 			currentFocus = null;
 		}
 				
@@ -40,7 +44,20 @@ public class FocusManager implements IUpdateable
 	{
 		if (focusables.contains(focusable) == false)
 		{
+			IMouseClickedListener listener = this::onFocusObjectClicked;
+			focusable.addListener(listener);
+			
 			focusables.add(focusable);
+			clickListeners.add(listener);
+		}
+	}
+	
+	private void onFocusObjectClicked(MouseEvent event)
+	{
+		DisplayObject target = event.target;
+		if (target instanceof IFocusable)
+		{
+			currentFocus = (IFocusable) target;
 		}
 	}
 

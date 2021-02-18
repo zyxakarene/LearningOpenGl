@@ -6,7 +6,7 @@ import zyx.game.controls.input.MouseData;
 
 public class MouseEvent extends DisplayObjectEvent<MouseEventType>
 {
-	public DisplayObject target;
+	public DisplayObject mouseTarget;
 	
 	public int x;
 	public int y;
@@ -21,7 +21,7 @@ public class MouseEvent extends DisplayObjectEvent<MouseEventType>
 	
 	public MouseEvent setup(DisplayObject target, MouseData mouseData)
 	{
-		this.target = target;
+		this.mouseTarget = target;
 		this.x = mouseData.x;
 		this.y = mouseData.y;
 		this.dX = mouseData.dX;

@@ -1,5 +1,6 @@
 package zyx.engine.components.screen.text;
 
+import zyx.engine.components.animations.IFocusable;
 import zyx.engine.components.animations.ILoadable;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
 import zyx.engine.components.screen.base.Quad;
@@ -15,7 +16,7 @@ import zyx.opengl.textures.bitmapfont.Text;
 import zyx.opengl.textures.bitmapfont.alignment.HAlignment;
 import zyx.opengl.textures.bitmapfont.alignment.VAlignment;
 
-public class Textfield extends DisplayObjectContainer implements IResourceReady<FontResource>, ILoadable
+public class Textfield extends DisplayObjectContainer implements IResourceReady<FontResource>, ILoadable, IFocusable
 {
 	public static final String DEFAULT_RESOURCE = "font.console";
 	
@@ -54,6 +55,8 @@ public class Textfield extends DisplayObjectContainer implements IResourceReady<
 		borders = new Quad[4];
 
 		hoverIcon = GameCursor.TEXT;
+		
+		makeFocusable(this);
 	}
 
 	public Textfield()
@@ -229,11 +232,6 @@ public class Textfield extends DisplayObjectContainer implements IResourceReady<
 	@Override
 	public void dispose()
 	{
-		if (hasFocus)
-		{
-			stage.setFocusedObject(null);
-		}
-
 		super.dispose();
 
 		if (fontResource != null)
@@ -328,5 +326,10 @@ public class Textfield extends DisplayObjectContainer implements IResourceReady<
 	public String getDebugIcon()
 	{
 		return "textfield.png";
+	}
+
+	@Override
+	public void onKeyPressed(char character)
+	{
 	}
 }
