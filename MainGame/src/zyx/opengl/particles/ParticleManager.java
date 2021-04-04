@@ -1,8 +1,6 @@
 package zyx.opengl.particles;
 
 import java.util.ArrayList;
-import zyx.opengl.shaders.implementations.ParticleShader;
-import zyx.opengl.shaders.implementations.WorldParticleShader;
 import zyx.utils.interfaces.IUpdateable;
 
 public class ParticleManager implements IUpdateable
@@ -43,8 +41,5 @@ public class ParticleManager implements IUpdateable
 	public void clear()
 	{
 		systems.clear();
-		
-		ParticleShader.elapsedTime = 0;
-		WorldParticleShader.elapsedTime = 0;
 	}
 }

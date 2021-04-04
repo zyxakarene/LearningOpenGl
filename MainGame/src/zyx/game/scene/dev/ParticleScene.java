@@ -111,7 +111,7 @@ public class ParticleScene extends DebugScene
 			MeshBatchManager.getInstance().addEntity(cube);
 		}
 		
-		for (int i = 0; i < 0; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			model = new MeshObject();
 			model.load("mesh.box");
@@ -146,10 +146,10 @@ public class ParticleScene extends DebugScene
 //			localSystem2.setX(20);
 //			model.addChild(localSystem2);
 //
-//			ParticleSystem worldSystem1 = new ParticleSystem();
-//			worldSystem1.load("particles.world");
-//			worldSystem1.setX(-10);
-//			model.addChild(worldSystem1);
+			ParticleSystem worldSystem1 = new ParticleSystem();
+			worldSystem1.load("particles.world");
+			worldSystem1.setX(-10);
+			model.addChild(worldSystem1);
 //
 //			ParticleSystem worldSystem2 = new ParticleSystem();
 //			worldSystem2.load("particles.world");

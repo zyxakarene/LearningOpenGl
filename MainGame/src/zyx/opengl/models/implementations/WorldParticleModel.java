@@ -7,6 +7,7 @@ import zyx.opengl.materials.impl.ParticleModelMaterial;
 import zyx.opengl.models.implementations.renderers.WorldParticleRenderer;
 import zyx.opengl.shaders.implementations.WorldParticleShader;
 import zyx.opengl.textures.AbstractTexture;
+import zyx.utils.DeltaTime;
 import zyx.utils.FloatMath;
 
 public class WorldParticleModel extends BaseParticleModel
@@ -113,7 +114,7 @@ public class WorldParticleModel extends BaseParticleModel
 		instanceData[dataIndex + 10] = PARENT_ROTATION.m21;
 		instanceData[dataIndex + 11] = PARENT_ROTATION.m22;
 		
-		instanceData[dataIndex + 12] = WorldParticleShader.elapsedTime;
+		instanceData[dataIndex + 12] = DeltaTime.getTimestamp();
 		instanceData[dataIndex + 13] = vo.lifespan;
 		
 		instanceData[dataIndex + 14] = FloatMath.random(); //Speed random x

@@ -25,11 +25,8 @@ public abstract class AbstractParticleRenderer<TModel extends AbstractInstancedM
 		
 		if (system != null)
 		{
-			ParticleShader.elapsedTime = system.particleTime;
-			WorldParticleShader.elapsedTime = system.particleTime;
 			ParticleShader.parentScale = system.parentScale;
 			WorldParticleShader.parentScale = system.parentScale;
-
 			SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM.load(system.worldMatrix());
 		}
 	}

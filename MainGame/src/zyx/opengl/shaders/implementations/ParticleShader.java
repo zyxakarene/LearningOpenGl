@@ -5,6 +5,7 @@ import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.models.implementations.LoadableParticleVO;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.utils.DeltaTime;
 
 public class ParticleShader extends AbstractShader
 {
@@ -13,7 +14,6 @@ public class ParticleShader extends AbstractShader
 	private static final Matrix4f MATRIX_VIEW = SharedShaderObjects.SHARED_WORLD_VIEW_TRANSFORM;
 	private static final Matrix4f MATRIX_MODEL = SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM;
 
-	public static float elapsedTime = 0;
 	public static float parentScale = 1;
 	
 	private int projectionMatrixTrans;
@@ -101,7 +101,7 @@ public class ParticleShader extends AbstractShader
 		UniformUtils.setUniformMatrix(viewMatrixTrans, MATRIX_VIEW);
 		UniformUtils.setUniformMatrix(modelMatrixTrans, MATRIX_MODEL);
 		
-		UniformUtils.setUniformFloat(timeUniform, elapsedTime);
+		UniformUtils.setUniformFloat(timeUniform, DeltaTime.getTimestamp());
 		UniformUtils.setUniformFloat(parentScaleUniform, parentScale);
 		UniformUtils.setUniformInt(debugColorTrans, DebugDrawCalls.shouldHighlightWorld() ? 1 : 0);
 	}
