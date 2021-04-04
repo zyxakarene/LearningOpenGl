@@ -31,12 +31,6 @@ public class WorldParticleRenderer extends AbstractParticleRenderer<WorldParticl
 	}
 
 	@Override
-	protected void onDispose()
-	{
-		model.dispose();
-	}
-
-	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
 		model.update(timestamp, elapsedTime);

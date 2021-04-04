@@ -31,12 +31,6 @@ public class ParticleRenderer extends AbstractParticleRenderer<ParticleModel>
 	}
 
 	@Override
-	protected void onDispose()
-	{
-		model.dispose();
-	}
-
-	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
 		model.update(timestamp, elapsedTime);

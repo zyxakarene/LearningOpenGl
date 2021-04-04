@@ -71,8 +71,6 @@ public abstract class MeshRenderer<TMaterial extends Material, TModel extends Ab
 	{
 		MeshRenderList.getInstance().remove(this);
 		
-		onDispose();
-		
 		parent = null;
 		model = null;
 		drawMaterial = null;
@@ -81,10 +79,6 @@ public abstract class MeshRenderer<TMaterial extends Material, TModel extends Ab
 	}
 
 	protected void onPreDraw()
-	{
-	}
-
-	protected void onDispose()
 	{
 	}
 }
