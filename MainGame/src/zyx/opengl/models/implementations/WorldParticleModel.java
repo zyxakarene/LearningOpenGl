@@ -9,6 +9,7 @@ import zyx.opengl.shaders.implementations.WorldParticleShader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.DeltaTime;
 import zyx.utils.FloatMath;
+import zyx.utils.math.MatrixUtils;
 
 public class WorldParticleModel extends BaseParticleModel
 {
@@ -177,7 +178,7 @@ public class WorldParticleModel extends BaseParticleModel
 	private void loadParentData()
 	{
 		parent.getPosition(false, PARENT_POS);
-		PARENT_ROTATION.load(parent.worldMatrix());
+		MatrixUtils.RemoveScaleFrom(parent.worldMatrix(), PARENT_ROTATION);
 	}
 
 	@Override

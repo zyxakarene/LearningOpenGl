@@ -107,7 +107,7 @@ void main(void)
 	z += applyGravity(localTime, 1.5, gravity.z);
 
 	//Applying Speed
-	vec4 speedVec = worldRot * vec4(speed * parentScale, 0);
+	vec4 speedVec = worldRot * vec4(speed, 0);
 	vec4 speedVarianceVec = worldRot * vec4(speedVariance, 0);
 	x += applySpeed(speedVec.x, speedVarianceVec.x, speedRandom.x, localTime);
 	y += applySpeed(speedVec.y, speedVarianceVec.y, speedRandom.y, localTime);
@@ -116,7 +116,6 @@ void main(void)
 	float percentDone = localTime / lifespan;
 
 	float scale = mix(startScale, endScale, percentDone) + (scaleVariance * scaleRandom);
-	scale = scale * parentScale;
 
 	mat4 translateMatrix = mat4(1);
 	translateMatrix[3].xyz = vec3(x, y, z);

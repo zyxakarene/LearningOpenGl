@@ -138,4 +138,26 @@ public class MatrixUtils
 		out.y = HELPER_SCALE_Y.length();
 		out.z = HELPER_SCALE_Z.length();
 	}
+
+	public static void RemoveScaleFrom(Matrix4f mat, Matrix4f out)
+	{
+		getScaleFrom(mat, HELPER_SCALE);
+		
+		float invScaleX = 1 / HELPER_SCALE.x;
+		float invScaleY = 1 / HELPER_SCALE.y;
+		float invScaleZ = 1 / HELPER_SCALE.z;
+		
+		out.load(mat);
+		out.m00 *= invScaleX;
+		out.m01 *= invScaleX;
+		out.m02 *= invScaleX;
+		
+		out.m10 *= invScaleY;
+		out.m11 *= invScaleY;
+		out.m12 *= invScaleY;
+		
+		out.m20 *= invScaleZ;
+		out.m21 *= invScaleZ;
+		out.m22 *= invScaleZ;
+	}
 }

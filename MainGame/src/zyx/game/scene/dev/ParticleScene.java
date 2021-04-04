@@ -2,6 +2,7 @@ package zyx.game.scene.dev;
 
 import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.meshbatch.MeshBatchManager;
 import zyx.engine.components.world.WorldObject;
 import zyx.game.behavior.misc.JiggleBehavior;
@@ -111,57 +112,30 @@ public class ParticleScene extends DebugScene
 			MeshBatchManager.getInstance().addEntity(cube);
 		}
 		
-		for (int i = 0; i < 1; i++)
-		{
-			model = new MeshObject();
-			model.load("mesh.box");
-			model.setRotation(0, 180, 0);
-			if (i > 0)
-			{
-				model.setX(FloatMath.random() * 50);
-				model.setY(FloatMath.random() * 50);
-				model.setZ(FloatMath.random() * 50);
-				model.setRotation(0, 90, 0);
-			}
+		model = new MeshObject();
+		model.load("mesh.box");
+		model.setScale(0.1f, 0.1f, 0.1f);
 
-			if (i == 0)
-			{
-				model.setPosition(true, 0, 10, 0);
-				world.addChild(model);
-				model.setScale(0.1f, 0.1f, 0.1f);
-			}
-			else
-			{
-				objects.get(i - 1).addChild(model);
-			}
+		objects.add(model);
+		ParticleSystem localSystem1 = new ParticleSystem();
+		localSystem1.load("particles.particle2");
+		localSystem1.setZ(40);
+		localSystem1.setX(-20);
+		localSystem1.setScale(10, 10, 10);
+		model.addChild(localSystem1);
 
-			objects.add(model);
-			ParticleSystem localSystem1 = new ParticleSystem();
-			localSystem1.load("particles.particle2");
-			localSystem1.setZ(40);
-			model.addChild(localSystem1);
+		ParticleSystem worldSystem1 = new ParticleSystem();
+		worldSystem1.load("particles.world");
+		worldSystem1.setZ(40);
+		worldSystem1.setX(20);
+		worldSystem1.setScale(10, 10, 10);
+		model.addChild(worldSystem1);
 
-//			ParticleSystem localSystem2 = new ParticleSystem();
-//			localSystem2.load("particles.particle2");
-//			localSystem2.setX(20);
-//			model.addChild(localSystem2);
-//
-			ParticleSystem worldSystem1 = new ParticleSystem();
-			worldSystem1.load("particles.world");
-			worldSystem1.setX(-10);
-			model.addChild(worldSystem1);
-//
-//			ParticleSystem worldSystem2 = new ParticleSystem();
-//			worldSystem2.load("particles.world");
-//			worldSystem2.setX(-20);
-//			model.addChild(worldSystem2);
-
-//			model.addBehavior(new JiggleBehavior());
-		}
-
+		model.addBehavior(new JiggleBehavior());
 		addPlayerControls();
 
 		GLUtils.errorCheck();
+		
 	}
 
 	@Override
