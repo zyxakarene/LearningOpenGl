@@ -48,9 +48,9 @@ public class Window extends Panel implements ICallback<InteractableContainer>
 	}
 
 	@Override
-	public void dispose()
+	protected void onDispose()
 	{
-		super.dispose();
+		super.onDispose();
 		
 		if (draggable != null)
 		{

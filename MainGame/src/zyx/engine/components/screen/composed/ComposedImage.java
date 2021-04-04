@@ -207,11 +207,11 @@ public class ComposedImage extends DisplayObjectContainer implements IComposedIm
 	}
 
 	@Override
-	public void dispose()
+	protected void onDispose()
 	{
 		clean();
 		
-		super.dispose();
+		super.onDispose();
 	}
 
 	private void clean()

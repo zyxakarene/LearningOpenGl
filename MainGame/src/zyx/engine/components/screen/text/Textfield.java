@@ -230,9 +230,9 @@ public class Textfield extends DisplayObjectContainer implements IResourceReady<
 	}
 
 	@Override
-	public void dispose()
+	protected void onDispose()
 	{
-		super.dispose();
+		super.onDispose();
 
 		if (fontResource != null)
 		{

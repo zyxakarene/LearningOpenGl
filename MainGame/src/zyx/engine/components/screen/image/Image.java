@@ -50,9 +50,9 @@ public class Image extends AbstractImage implements IResourceReady<TextureResour
 	}
 
 	@Override
-	public void dispose()
+	protected void onDispose()
 	{
-		super.dispose();
+		super.onDispose();
 
 		if (model != null)
 		{

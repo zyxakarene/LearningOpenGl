@@ -59,10 +59,4 @@ public abstract class InteractableContainer extends DisplayObjectContainer
 	protected void onMouseDragged(MouseEvent event)
 	{
 	}
-
-	@Override
-	public void dispose()
-	{
-		super.dispose();
-	}
 }

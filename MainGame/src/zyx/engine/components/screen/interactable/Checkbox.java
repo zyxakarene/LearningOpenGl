@@ -58,9 +58,9 @@ public class Checkbox extends Button
 	}
 
 	@Override
-	public void dispose()
+	protected void onDispose()
 	{
-		super.dispose();
+		super.onDispose();
 		checkImg = null;
 	}
 

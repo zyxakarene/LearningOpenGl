@@ -27,9 +27,9 @@ public class Quad extends AbstractQuad
 	}
 	
 	@Override
-	public void dispose()
+	protected void onDispose()
 	{
-		super.dispose();
+		super.onDispose();
 		
 		if(model != null)
 		{

@@ -293,11 +293,11 @@ public class Button extends InteractableContainer implements IComposedButton
 	}
 
 	@Override
-	public void dispose()
+	protected void onDispose()
 	{
 		clean();
 
-		super.dispose();
+		super.onDispose();
 
 		if (onButtonClicked != null)
 		{

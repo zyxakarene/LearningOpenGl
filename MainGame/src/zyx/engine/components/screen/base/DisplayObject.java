@@ -346,7 +346,7 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 	}
 
 	@Override
-	public void dispose()
+	public final void dispose()
 	{
 		if (disposed)
 		{
@@ -356,6 +356,8 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		disposed = true;
 
 		removeFromParent(false);
+		
+		onDispose();
 
 		if (globalClipRect != null)
 		{
@@ -378,6 +380,10 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 		worldMatrix = null;
 		localMatrix = null;
 		position = null;
+	}
+	
+	protected void onDispose()
+	{
 	}
 
 	public Vector2f globalToLocal(Vector2f point, Vector2f out)

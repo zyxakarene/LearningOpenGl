@@ -47,9 +47,9 @@ public abstract class AbstractImage extends AbstractQuad implements ILoadable, I
 	}
 
 	@Override
-	public void dispose()
+	protected void onDispose()
 	{
-		super.dispose();
+		super.onDispose();
 
 		if (textureResource != null)
 		{

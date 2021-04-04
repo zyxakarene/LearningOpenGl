@@ -105,9 +105,9 @@ public class WindowsScrollButton extends WindowsButton
 	}
 
 	@Override
-	public void dispose()
+	protected void onDispose()
 	{
-		super.dispose();
+		super.onDispose();
 		
 		downListener = null;
 		dragListener = null;

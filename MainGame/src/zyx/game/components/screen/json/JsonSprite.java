@@ -6,7 +6,6 @@ import zyx.engine.components.screen.base.ContainerDock;
 import zyx.engine.components.screen.base.DisplayObject;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
 import zyx.engine.components.screen.base.docks.DockType;
-import zyx.engine.components.screen.base.docks.GameDock;
 import zyx.engine.components.screen.base.events.types.stage.StageAdaptor;
 import zyx.engine.components.screen.base.events.types.stage.StageEvent;
 import zyx.engine.resources.IResourceReady;
@@ -208,9 +207,9 @@ public abstract class JsonSprite extends DisplayObjectContainer implements IReso
 	}
 
 	@Override
-	public final void dispose()
+	protected void onDispose()
 	{
-		super.dispose();
+		super.onDispose();
 
 		JsonSpriteAnimator.getInstance().removeJsonSprite(this);
 
@@ -232,11 +231,5 @@ public abstract class JsonSprite extends DisplayObjectContainer implements IReso
 
 			resourceDependencies = null;
 		}
-
-		onDispose();
-	}
-
-	protected void onDispose()
-	{
 	}
 }

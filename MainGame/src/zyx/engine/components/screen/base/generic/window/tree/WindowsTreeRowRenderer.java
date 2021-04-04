@@ -107,7 +107,7 @@ final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer impleme
 	}
 
 	@Override
-	public void dispose()
+	protected void onDispose()
 	{
 		if (expandButton != null)
 		{
@@ -122,8 +122,7 @@ final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer impleme
 		}
 
 		onFoldChange = null;
-
-		super.dispose();
+		super.onDispose();
 	}
 
 	void buildLines(TreeLineStructure lineStructure)

@@ -137,9 +137,9 @@ public class Scale9Image extends AbstractImage implements IResourceReady<Texture
 	}
 
 	@Override
-	public void dispose()
+	protected void onDispose()
 	{
-		super.dispose();
+		super.onDispose();
 		
 		if (model != null)
 		{

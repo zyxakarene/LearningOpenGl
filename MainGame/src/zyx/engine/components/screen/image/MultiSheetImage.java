@@ -96,9 +96,9 @@ public class MultiSheetImage extends AbstractQuad implements IResourceReady<Spri
 	}
 	
 	@Override
-	public void dispose()
+	protected void onDispose()
 	{
-		super.dispose();
+		super.onDispose();
 
 		clean();
 		

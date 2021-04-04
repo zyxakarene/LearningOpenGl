@@ -104,12 +104,6 @@ public class WindowsTree<TData> extends DisplayObjectContainer implements IScrol
 		}
 	}
 
-	@Override
-	public void dispose()
-	{
-		super.dispose();
-	}
-
 	private void positionRows()
 	{
 		List<WindowsTreeRowRenderer<TData>> renderesList = new ArrayList<>();

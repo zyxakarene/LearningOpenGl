@@ -237,17 +237,20 @@ public class DisplayObjectContainer extends DisplayObject
 	}
 
 	@Override
-	public void dispose()
+	protected void onDispose()
 	{
-		super.dispose();
+		super.onDispose();
 
-		for (int i = numChildren - 1; i >= 0; i--)
+		if (children != null)
 		{
-			children.get(i).dispose();
-		}
+			for (int i = numChildren - 1; i >= 0; i--)
+			{
+				children.get(i).dispose();
+			}
 
-		children.clear();
-		children = null;
+			children.clear();
+			children = null;
+		}
 	}
 	
 	protected final void childAdded(DisplayObject child)

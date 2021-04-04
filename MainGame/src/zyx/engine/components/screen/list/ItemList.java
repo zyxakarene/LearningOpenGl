@@ -107,9 +107,9 @@ public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer
 	}
 
 	@Override
-	public void dispose()
+	protected void onDispose()
 	{
-		super.dispose();
+		super.onDispose();
 		
 		draggedListener = null; 
 	}

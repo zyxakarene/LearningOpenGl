@@ -152,7 +152,7 @@ public final class Stage extends DisplayObjectContainer implements IFocusable, I
 	}
 
 	@Override
-	public void dispose()
+	protected void onDispose()
 	{
 		throw new RuntimeException("Do not dispose the stage please");
 	}
