@@ -103,13 +103,13 @@ public class LightingPassRenderer extends BaseFrameBuffer
 		int readBufferId = renderer.depthBufferId;
 		int writeBufferId = bufferId;
 
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, readBufferId);
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, writeBufferId);
-		glBlitFramebuffer(0, 0, w, h, 0, 0, w, h, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
-
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, renderer.bufferId);
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 		glBlitFramebuffer(0, 0, w, h, 0, 0, w, h, GL_STENCIL_BUFFER_BIT, GL_NEAREST);
+		
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, readBufferId);
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, writeBufferId);
+		glBlitFramebuffer(0, 0, w, h, 0, 0, w, h, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 	}
 
 	@Override
