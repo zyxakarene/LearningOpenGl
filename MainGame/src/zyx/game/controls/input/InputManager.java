@@ -102,7 +102,10 @@ public class InputManager implements IUpdateable
 			boolean isDown = Keyboard.getEventKeyState();
 
 			keyboardData.setClickData(key, isDown);
-			keyboardData.setKeyData(key, character);
+			if (isDown)
+			{
+				keyboardData.setKeyData(key, character);
+			}
 		}
 
 		scheme.tryMap(keyboardData);

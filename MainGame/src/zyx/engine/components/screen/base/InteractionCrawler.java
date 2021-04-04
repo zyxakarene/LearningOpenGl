@@ -60,6 +60,7 @@ public class InteractionCrawler
 			
 			if (child instanceof DisplayObjectContainer)
 			{
+				//Todo: Not like this..
 				childContainer = (DisplayObjectContainer) child;
 				childContainer.getChildren(objects);
 				continue;
@@ -81,7 +82,17 @@ public class InteractionCrawler
 			{
 				clipRect.copyFrom(clipRectBackup);
 			}
-
+			
+			if (hit)
+			{
+				while(child != null && child.touchable && !child.mouseChildren)
+				{
+					child = child.getParent();
+				}
+				
+				hit = child != null;
+			}
+				
 			if (hit)
 			{
 				objects.clear();

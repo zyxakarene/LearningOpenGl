@@ -1,92 +1,68 @@
 package zyx.engine.components.screen.interactable;
 
+import zyx.engine.components.screen.base.events.types.mouse.IMouseUpListener;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseDownListener;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseClickedListener;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseExitedListener;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseDraggedListener;
+import zyx.engine.components.screen.base.events.types.mouse.MouseEvent;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseEnteredListener;
 import zyx.engine.components.screen.base.DisplayObjectContainer;
-import zyx.engine.touch.ITouched;
-import zyx.engine.touch.TouchData;
-import zyx.engine.touch.TouchState;
-import zyx.game.controls.input.MouseData;
-import zyx.utils.cheats.Print;
 
 public abstract class InteractableContainer extends DisplayObjectContainer
 {
 
-	private boolean wasMouseOver;
-	private boolean wasMouseDown;
-	private boolean wasMouseDownOutside;
-	
-	private ITouched touchListener;
+	private IMouseClickedListener clickListener;
+	private IMouseDownListener downListener;
+	private IMouseDraggedListener dragListener;
+	private IMouseEnteredListener enterListener;
+	private IMouseExitedListener exitListener;
+	private IMouseUpListener upListener;
 
 	public InteractableContainer()
 	{
-		touchListener = (TouchState state, boolean collided, TouchData data) ->
-		{
-			if (focusable)
-			{
-				updateButtonState(collided);
-			}
-		};
+		clickListener = this::onMouseClick;
+		downListener = this::onMouseDown;
+		dragListener = this::onMouseDragged;
+		enterListener = this::onMouseEnter;
+		exitListener = this::onMouseExit;
+		upListener = this::onMouseUp;
 		
-		addTouchListener(touchListener);
+		addListener(clickListener);
+		addListener(downListener);
+		addListener(dragListener);
+		addListener(enterListener);
+		addListener(exitListener);
+		addListener(upListener);
 	}
 
-	protected abstract void onMouseEnter();
-
-	protected abstract void onMouseExit();
-
-	protected abstract void onMouseDown();
-
-	protected abstract void onMouseClick();
-
-	public void updateButtonState(boolean mouseCollision)
+	protected void onMouseEnter(MouseEvent event)
 	{
-		boolean isLeftDown = MouseData.data.isLeftDown();
+	}
 
-		if (!wasMouseOver && isLeftDown)
-		{
-			wasMouseDownOutside = true;
-		}
+	protected void onMouseExit(MouseEvent event)
+	{
+	}
 
-		if (!wasMouseOver && mouseCollision)
-		{
-			wasMouseOver = true;
-			onMouseEnter();
-		}
-		else if (wasMouseOver && !mouseCollision)
-		{
-			wasMouseOver = false;
-			onMouseExit();
-		}
+	protected void onMouseDown(MouseEvent event)
+	{
+	}
 
-		if (!wasMouseDownOutside && mouseCollision)
-		{
-			if (!wasMouseDown && isLeftDown)
-			{
-				onMouseDown();
-				wasMouseDown = true;
-			}
-			else if (wasMouseDown && !isLeftDown)
-			{
-				onMouseClick();
-				wasMouseDown = false;
-			}
-		}
+	protected void onMouseUp(MouseEvent event)
+	{
+	}
 
-		if (isLeftDown == false)
-		{
-			wasMouseDownOutside = false;
-			wasMouseDown = false;
-		}
+	protected void onMouseClick(MouseEvent event)
+	{
+	}
+
+	protected void onMouseDragged(MouseEvent event)
+	{
 	}
 
 	@Override
 	public void dispose()
 	{
 		super.dispose();
-		
-		if(touchListener != null)
-		{
-			removeTouchListener(touchListener);
-			touchListener = null;
-		}
 	}
 }

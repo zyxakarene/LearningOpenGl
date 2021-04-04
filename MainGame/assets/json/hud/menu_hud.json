@@ -11,7 +11,20 @@
 			"centerOffsetX":0,
 			"centerOffsetY":0,
 			"colorScheme":"green",
-			"style":"panel_01"
+			"style":"panel_01",
+			"children":
+			[
+				{
+					"name":"test_button",
+					"type":"composedScale9image",
+					"percentWidth":0.2,
+					"percentHeight":0.1,
+					"centerOffsetX":0,
+					"centerOffsetY":50,
+					"colorScheme":"greenInv",
+					"style":"panel_02"
+				}
+			]
 		},
 		{
 			"name":"menu_panel",
@@ -32,7 +45,7 @@
 			"height":150,
 			"fontSize":15,
 			"hAlign":"left",
-			"showBorders":false,
+			"showBorders":true,
 			"font":"font.console",
 			"color":"0xFF00FF",
 			"text":"Textfield"

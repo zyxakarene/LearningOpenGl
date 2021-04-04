@@ -4,25 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 import zyx.engine.components.animations.IFocusable;
 import zyx.engine.components.screen.base.DisplayObject;
-import zyx.engine.touch.ITouched;
-import zyx.engine.touch.MouseTouchManager;
-import zyx.engine.touch.TouchData;
-import zyx.engine.touch.TouchState;
+import zyx.engine.components.screen.base.events.types.mouse.IMouseClickedListener;
+import zyx.engine.components.screen.base.events.types.mouse.MouseEvent;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.controls.input.PressedKey;
 import zyx.utils.interfaces.IUpdateable;
 
-public class FocusManager implements IUpdateable, ITouched
+public class FocusManager implements IUpdateable
 {
 
 	private static final FocusManager INSTANCE = new FocusManager();
 	
 	private ArrayList<IFocusable> focusables;
+	private ArrayList<IMouseClickedListener> clickListeners;
 	private IFocusable currentFocus;
 	
 	private FocusManager()
 	{
 		focusables = new ArrayList<>();
+		clickListeners = new ArrayList<>();
 	}
 
 	public static FocusManager getInstance()
@@ -34,12 +34,9 @@ public class FocusManager implements IUpdateable, ITouched
 	{
 		if (focusable == currentFocus)
 		{
-			currentFocus.onUnFocused();
 			currentFocus = null;
 		}
-		
-		MouseTouchManager.getInstance().unregisterTouch((DisplayObject) focusable, this);
-		
+				
 		focusables.remove(focusable);
 	}
 
@@ -47,9 +44,20 @@ public class FocusManager implements IUpdateable, ITouched
 	{
 		if (focusables.contains(focusable) == false)
 		{
-			focusables.add(focusable);
+			IMouseClickedListener listener = this::onFocusObjectClicked;
+			focusable.addListener(listener);
 			
-			MouseTouchManager.getInstance().registerTouch((DisplayObject) focusable, this);
+			focusables.add(focusable);
+			clickListeners.add(listener);
+		}
+	}
+	
+	private void onFocusObjectClicked(MouseEvent event)
+	{
+		DisplayObject target = event.target;
+		if (target instanceof IFocusable)
+		{
+			currentFocus = (IFocusable) target;
 		}
 	}
 
@@ -66,27 +74,6 @@ public class FocusManager implements IUpdateable, ITouched
 				PressedKey key = charList.get(i);
 				currentFocus.onKeyPressed(key.character);
 			}
-		}
-	}
-
-	@Override
-	public void onTouched(TouchState state, boolean collided, TouchData data)
-	{
-		System.out.println(data.target);
-		if (currentFocus != null)
-		{
-			currentFocus.onUnFocused();
-			currentFocus = null;
-		}
-		
-		if (data.target instanceof IFocusable)
-		{
-			currentFocus = (IFocusable) data.target;
-		}
-		
-		if (currentFocus != null)
-		{
-			currentFocus.onFocused();
 		}
 	}
 }

@@ -1,39 +1,32 @@
 package zyx.engine.touch;
 
-import java.util.HashMap;
 import zyx.engine.components.screen.base.DisplayObject;
-import zyx.engine.components.screen.base.DisplayObjectContainer;
+import zyx.engine.components.screen.base.EventCache;
+import zyx.engine.components.screen.base.events.types.focus.FocusEventType;
+import zyx.engine.components.screen.base.events.types.mouse.MouseEventType;
 import zyx.engine.curser.CursorManager;
+import zyx.engine.curser.GameCursor;
 import zyx.game.controls.input.MouseData;
 import zyx.utils.interfaces.IUpdateable;
 
 public class MouseTouchManager implements IUpdateable
 {
 
-	private static final int LONG_PRESS_TIME = 1000;
-
 	private static final MouseTouchManager INSTANCE = new MouseTouchManager();
 
-	private TouchData data;
-	private TouchState currentState;
+	private MouseEventType currentState;
 	private MouseData mouseData;
-	private int pressTimer;
 	private boolean forceUpdate;
-	
-	private HashMap<DisplayObject, TouchEntry> touchListeners;
-	
+
+	private DisplayObject nextTarget;
 	private DisplayObject currentTarget;
 	private DisplayObject mouseDownTarget;
-	private boolean hasDownTarget;
 	private boolean enabled;
 
 	private MouseTouchManager()
 	{
-		currentState = TouchState.HOVER;
+		currentState = MouseEventType.Up;
 		mouseData = MouseData.data;
-		pressTimer = 0;
-		data = new TouchData();
-		touchListeners = new HashMap<>();
 		enabled = true;
 	}
 
@@ -42,7 +35,7 @@ public class MouseTouchManager implements IUpdateable
 		return INSTANCE;
 	}
 
-	public TouchState currentState()
+	public MouseEventType currentState()
 	{
 		return currentState;
 	}
@@ -51,176 +44,162 @@ public class MouseTouchManager implements IUpdateable
 	{
 		if (currentTarget != null)
 		{
-			dispatchTo(currentTarget, currentState, false);
-			currentState = TouchState.RELEASE;
-			
+			currentTarget.dispatchEvent(EventCache.get(MouseEventType.Up).setup(currentTarget, mouseData));
+			currentTarget.dispatchEvent(EventCache.get(MouseEventType.Exit).setup(currentTarget, mouseData));
+
 			currentTarget = null;
 		}
-		
+
 		enabled = value;
 	}
-	
-	public void registerTouch(DisplayObject target, ITouched listener)
-	{
-		if (touchListeners.containsKey(target) == false)
-		{
-			touchListeners.put(target, new TouchEntry(target));
-		}
-		
-		TouchEntry entry = touchListeners.get(target);
-		entry.addListener(listener);
-	}
-	
-	public void unregisterTouch(DisplayObject target, ITouched listener)
-	{
-		TouchEntry entry = touchListeners.get(target);
-		
-		if (entry != null)
-		{
-			entry.removeListener(listener);
-			
-			if (entry.touches.isEmpty())
-			{
-				touchListeners.remove(target);
-			}
-		}
-	}
-	
+
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
 		boolean leftDown = mouseData.isLeftDown();
 		boolean hasMovement = mouseData.dX != 0 || mouseData.dY != 0;
-		TouchState newState = currentState;
-		boolean update = false;
+		MouseEventType newState = currentState;
 
-		if(mouseData.grabbed || !enabled)
+		if (mouseData.grabbed || !enabled)
 		{
 			return;
 		}
-		
+
 		switch (currentState)
 		{
-			case LONG_PRESSED:
-			{
-				newState = TouchState.LONG_PRESS_WAIT;
-				break;
-			}
-			case CLICK:
-			case RELEASE:
-			{
-				mouseDownTarget = null;
-				hasDownTarget = false;
-				newState = TouchState.HOVER;
-				break;
-			}
-			case HOVER:
+			case Up:
+			case Enter:
 			{
 				if (leftDown)
 				{
-					pressTimer = 0;
+					nextTarget = currentTarget;
 					mouseDownTarget = currentTarget;
-					hasDownTarget = true;
-					newState = TouchState.DOWN;
+					newState = MouseEventType.Down;
+				}
+				else
+				{
+					mouseDownTarget = null;
 				}
 				break;
 			}
-			case DOWN:
+			case Exit:
 			{
-				if (leftDown)
+				newState = MouseEventType.Up;
+				break;
+			}
+			case Down:
+			{
+				if (hasMovement)
 				{
-					pressTimer += elapsedTime;
-
-					if (hasMovement)
+					newState = MouseEventType.Drag;
+				}
+				else if (!leftDown)
+				{
+					newState = MouseEventType.Click;
+				}
+				break;
+			}
+			case Click:
+			{
+				newState = MouseEventType.Up;
+				break;
+			}
+			case Drag:
+			{
+				if (!leftDown)
+				{
+					if (currentTarget == nextTarget)
 					{
-						newState = TouchState.DRAG;
+						newState = MouseEventType.Click;
 					}
-					else if (pressTimer >= LONG_PRESS_TIME)
+					else
 					{
-						newState = TouchState.LONG_PRESSED;
+						newState = MouseEventType.Up;
 					}
 				}
 				else
 				{
-					newState = TouchState.CLICK;
+					forceUpdate = true;
 				}
 				break;
 			}
-			case DRAG:
-			case LONG_PRESS_WAIT:
-			{
-				update = leftDown && hasMovement;
-				if (!leftDown)
-				{
-					newState = TouchState.RELEASE;
-				}
-				break;
-			}
+
 		}
 
-		if (forceUpdate || update || newState != currentState)
+		if (forceUpdate || newState != currentState)
 		{
 			forceUpdate = false;
 			currentState = newState;
-			
-			data.x = mouseData.x;
-			data.y = mouseData.y;
-			data.dX = mouseData.dX;
-			data.dY = mouseData.dY;
-			data.target = currentTarget;
-			
-			if (hasDownTarget)
+
+			if (mouseDownTarget != null)
 			{
-				if (mouseDownTarget != null)
-				{
-					boolean collision = (mouseDownTarget == currentTarget);
-					dispatchTo(mouseDownTarget, currentState, collision);
-				}
+				mouseDownTarget.dispatchEvent(EventCache.get(currentState).setup(mouseDownTarget, mouseData));
 			}
 			else if (currentTarget != null)
 			{
-				dispatchTo(currentTarget, currentState, true);
+				currentTarget.dispatchEvent(EventCache.get(currentState).setup(currentTarget, mouseData));
+				
+				if (currentState == MouseEventType.Click)
+				{
+					currentTarget.dispatchEvent(EventCache.get(FocusEventType.Changed).setup(currentTarget, true));
+				}
 			}
 		}
 	}
 
 	public void setTouchedObject(DisplayObject target)
 	{
-		if (!hasDownTarget && currentTarget != null && currentTarget != target)
+		if (currentState == MouseEventType.Drag)
 		{
-			dispatchTo(currentTarget, currentState, false);
+			//Don't change target while dragging
+
+			nextTarget = target;
+			setCursor(mouseDownTarget);
+			return;
 		}
-		
-		currentTarget = target;
-		forceUpdate = true;
+
+		if (target == null && currentTarget != null)
+		{
+			//Going from something to nothing
+			currentTarget.dispatchEvent(EventCache.get(MouseEventType.Exit).setup(currentTarget, mouseData));
+			currentTarget = null;
+
+			CursorManager.getInstance().setCursor(GameCursor.POINTER);
+		}
+		else if (target != null)
+		{
+			//Hitting something, anything
+
+			if (target != currentTarget)
+			{
+				//Going from something to something else
+				if (currentTarget != null)
+				{
+					currentTarget.dispatchEvent(EventCache.get(MouseEventType.Exit).setup(currentTarget, mouseData));
+				}
+
+				currentTarget = target;
+				currentTarget.dispatchEvent(EventCache.get(MouseEventType.Enter).setup(currentTarget, mouseData));
+			}
+
+			setCursor(target);
+		}
 	}
 
-	private void dispatchTo(DisplayObject target, TouchState state, boolean collision)
+	private void setCursor(DisplayObject target)
 	{
-		TouchEntry entry = touchListeners.get(target);
-		
-		if (entry != null)
+		if (target != null && target.hoverIcon != null)
 		{
-			entry.touch(state, collision, data);
-		}
-		
-		DisplayObjectContainer parent = target.getParent();
-		if (parent != null)
-		{
-			dispatchTo(parent, state, collision);
-		}
-		
-		if (target.focusable && target.hoverIcon != null)
-		{
+			//The target needs a hover icon
 			CursorManager.getInstance().setCursor(target.hoverIcon);
 		}
 	}
-	
+
 	public boolean hasTarget()
 	{
 		return currentTarget != null;
 	}
-	
+
 	public boolean isEnabled()
 	{
 		return enabled;

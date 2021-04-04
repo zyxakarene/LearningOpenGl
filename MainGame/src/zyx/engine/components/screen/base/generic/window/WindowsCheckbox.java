@@ -37,9 +37,7 @@ public class WindowsCheckbox extends DisplayObjectContainer
 		addChild(textfield);
 		
 		Quad q = new Quad(100 + 16 + 5, 16, 0xFFFFFF);
-		q.buttonMode = true;
 		q.hoverIcon = GameCursor.HAND;
-		q.focusable = true;
 		q.setAlpha(0);
 		
 		check.addChild(q);

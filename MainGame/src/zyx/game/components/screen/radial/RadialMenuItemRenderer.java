@@ -62,7 +62,7 @@ public class RadialMenuItemRenderer extends JsonSprite implements ICallback<Inte
 			image.load(data.getIconResource());
 			textfield.setText(data.getText());
 			
-			setEnabled(button.focusable);
+			setEnabled(button.touchable);
 		}
 	}
 	
@@ -75,7 +75,7 @@ public class RadialMenuItemRenderer extends JsonSprite implements ICallback<Inte
 
 	void setEnabled(boolean enabled)
 	{
-		button.focusable = enabled;
+		button.touchable = enabled;
 
 		if (data != null)
 		{

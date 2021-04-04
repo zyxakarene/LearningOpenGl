@@ -1,6 +1,7 @@
 package zyx.engine.components.screen.interactable;
 
 import org.lwjgl.util.vector.Vector3f;
+import zyx.engine.components.screen.base.events.types.mouse.MouseEvent;
 import zyx.engine.components.screen.composed.ComposedButtonColorMap;
 import zyx.engine.components.screen.composed.IComposedButton;
 import zyx.engine.components.screen.image.AbstractImage;
@@ -40,8 +41,6 @@ public class Button extends InteractableContainer implements IComposedButton
 
 		onButtonClicked = new CustomCallback<>();
 
-		buttonMode = true;
-		focusable = true;
 		hoverIcon = GameCursor.HAND;
 	}
 
@@ -250,25 +249,31 @@ public class Button extends InteractableContainer implements IComposedButton
 	}
 
 	@Override
-	protected void onMouseEnter()
+	protected void onMouseEnter(MouseEvent event)
 	{
 		changeStateTo(ButtonState.HOVER);
 	}
 
 	@Override
-	protected void onMouseExit()
+	protected void onMouseExit(MouseEvent event)
 	{
 		changeStateTo(ButtonState.UP);
 	}
 
 	@Override
-	protected void onMouseDown()
+	protected void onMouseDown(MouseEvent event)
 	{
 		changeStateTo(ButtonState.DOWN);
 	}
 
 	@Override
-	protected void onMouseClick()
+	protected void onMouseUp(MouseEvent event)
+	{
+		changeStateTo(ButtonState.UP);
+	}
+	
+	@Override
+	protected void onMouseClick(MouseEvent event)
 	{
 		changeStateTo(ButtonState.HOVER);
 

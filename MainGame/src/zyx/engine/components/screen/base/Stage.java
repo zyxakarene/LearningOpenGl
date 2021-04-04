@@ -20,7 +20,6 @@ public final class Stage extends DisplayObjectContainer implements IFocusable, I
 	private static final Stage INSTANCE = new Stage();
 
 	private InteractionCrawler crawler;
-	private IFocusable focusedTarget;
 
 	private ContainerDock gameDock;
 	private ContainerDock hierarchyDock;
@@ -39,6 +38,7 @@ public final class Stage extends DisplayObjectContainer implements IFocusable, I
 	private Stage()
 	{
 		name = "";
+		stage = this;
 	}
 
 	public void initialize()
@@ -139,21 +139,6 @@ public final class Stage extends DisplayObjectContainer implements IFocusable, I
 		}
 	}
 
-	public void setFocusedObject(IFocusable target)
-	{
-		if (focusedTarget != null)
-		{
-			focusedTarget.onUnFocused();
-		}
-
-		focusedTarget = target;
-
-		if (focusedTarget != null)
-		{
-			focusedTarget.onFocused();
-		}
-	}
-
 	@Override
 	public float getWidth()
 	{
@@ -174,16 +159,6 @@ public final class Stage extends DisplayObjectContainer implements IFocusable, I
 
 	@Override
 	public void onKeyPressed(char character)
-	{
-	}
-
-	@Override
-	public void onFocused()
-	{
-	}
-
-	@Override
-	public void onUnFocused()
 	{
 	}
 
