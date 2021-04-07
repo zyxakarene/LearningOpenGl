@@ -3,6 +3,7 @@ package zyx.utils.cheats;
 import java.util.HashMap;
 import zyx.engine.components.world.WorldObject;
 import zyx.opengl.models.implementations.renderers.WorldModelRenderer;
+import zyx.utils.GameConstants;
 import zyx.utils.interfaces.IPhysbox;
 
 public class DebugPhysics
@@ -24,6 +25,11 @@ public class DebugPhysics
 
 	public void registerPhysbox(IPhysbox obj)
 	{
+		if (GameConstants.DRAW_PHYSICS == false)
+		{
+			return;
+		}
+		
 		int count = obj.getPhysbox().getTriangles().length;
 		if (count > 0)
 		{
@@ -40,6 +46,11 @@ public class DebugPhysics
 
 	public void unregisterPhysbox(IPhysbox obj)
 	{
+		if (GameConstants.DRAW_PHYSICS == false)
+		{
+			return;
+		}
+		
 		WorldModelRenderer[] renderers = entryMap.remove(obj);
 		if (renderers != null)
 		{

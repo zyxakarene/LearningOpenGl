@@ -50,14 +50,8 @@ public class GameSun extends WorldObject implements ISun
 			frustumCornersL[i] = new Vector4f();
 		}
 
-		float[] initialCascadeLimits = new float[]
-		{
-			1f,
-			50,
-			100f,
-			180f,
-			350f
-		};
+		float[] initialCascadeLimits = GameConstants.SHADOW_CASCADES;
+		
 		setCascades(initialCascadeLimits);
 		LightsManager.getInstane().setSun(this);
 	}
@@ -74,7 +68,7 @@ public class GameSun extends WorldObject implements ISun
 		}
 	}
 
-	void setCascades(float[] cascades)
+	private void setCascades(float[] cascades)
 	{
 		if (cascades.length != cascadeLimits.length)
 		{

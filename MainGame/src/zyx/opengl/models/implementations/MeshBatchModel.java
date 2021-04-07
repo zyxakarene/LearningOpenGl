@@ -71,12 +71,12 @@ public class MeshBatchModel extends AbstractInstancedModel<WorldModelMaterial> i
 
 		if (material.castsShadows)
 		{
-			DepthRenderer.getInstance().drawShadowable(this);
+			DepthRenderer.getInstance().drawShadowable(this, material.activeShadowCascades);
 		}
 	}
 
 	@Override
-	public void drawShadow()
+	public void drawShadow(byte activeCascades)
 	{
 		shadowShader.bind();
 		shadowShader.upload();

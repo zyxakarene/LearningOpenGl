@@ -105,31 +105,43 @@ public class WorldModel extends AbstractModel<WorldModelMaterial> implements ISh
 		shader.uploadBones();
 		super.draw(material);
 
-		if (material.castsShadows)
+		if (material.castsShadows && material.activeShadowCascades > 0)
 		{
-			DepthRenderer.getInstance().drawShadowable(this);
+			DepthRenderer.getInstance().drawShadowable(this, material.activeShadowCascades);
 			DeferredRenderer.getInstance().bindBuffer();
 		}
 	}
 
 	@Override
-	public void drawShadow()
+	public void drawShadow(byte activeCascades)
 	{
 		shadowShader.bind();
 		shadowShader.upload();
 		shadowShader.uploadBones();
 
-		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_0);
-		super.draw(shadowMaterial);
+		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_1) == WorldModelMaterial.DRAW_CASCADE_1)
+		{
+			shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_0);
+			super.draw(shadowMaterial);
+		}
 
-		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_1);
-		super.draw(shadowMaterial);
+		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_2) == WorldModelMaterial.DRAW_CASCADE_2)
+		{
+			shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_1);
+			super.draw(shadowMaterial);
+		}
 
-		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_2);
-		super.draw(shadowMaterial);
+		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_3) == WorldModelMaterial.DRAW_CASCADE_3)
+		{
+			shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_2);
+			super.draw(shadowMaterial);
+		}
 
-		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_3);
-		super.draw(shadowMaterial);
+		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_4) == WorldModelMaterial.DRAW_CASCADE_4)
+		{
+			shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_3);
+			super.draw(shadowMaterial);
+		}
 	}
 
 	public PhysBox getPhysbox()

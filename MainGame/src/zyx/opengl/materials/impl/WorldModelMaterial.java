@@ -4,11 +4,17 @@ import zyx.opengl.materials.Material;
 import zyx.opengl.materials.MaterialPriority;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.AbstractTexture;
-import zyx.opengl.textures.TextureFromInt;
 import zyx.opengl.textures.enums.TextureSlot;
+import zyx.utils.GameConstants;
 
 public class WorldModelMaterial extends Material
 {
+	public static final byte DRAW_CASCADE_1 = 1;
+	public static final byte DRAW_CASCADE_2 = 2;
+	public static final byte DRAW_CASCADE_3 = 4;
+	public static final byte DRAW_CASCADE_4 = 8;
+	
+	public byte activeShadowCascades;
 	public boolean castsShadows;
 	
 	public WorldModelMaterial(Shader shader)
@@ -67,4 +73,28 @@ public class WorldModelMaterial extends Material
 		return new WorldModelMaterial(shaderType);
 	}
 
+	public void setShadowDistance(float distance)
+	{
+		activeShadowCascades = 0;
+		
+		if (distance >= GameConstants.CASCADE_MIN_DISTANCE_1 && distance <= GameConstants.CASCADE_MAX_DISTANCE_4)
+		{
+			if (distance > GameConstants.CASCADE_MIN_DISTANCE_1 && distance <= GameConstants.CASCADE_MAX_DISTANCE_1)
+			{
+				activeShadowCascades |= DRAW_CASCADE_1;
+			}
+			if (distance > GameConstants.CASCADE_MIN_DISTANCE_2 && distance <= GameConstants.CASCADE_MAX_DISTANCE_2)
+			{
+				activeShadowCascades |= DRAW_CASCADE_2;
+			}
+			if (distance > GameConstants.CASCADE_MIN_DISTANCE_3 && distance <= GameConstants.CASCADE_MAX_DISTANCE_3)
+			{
+				activeShadowCascades |= DRAW_CASCADE_3;
+			}
+			if (distance > GameConstants.CASCADE_MIN_DISTANCE_4 && distance <= GameConstants.CASCADE_MAX_DISTANCE_4)
+			{
+				activeShadowCascades |= DRAW_CASCADE_4;
+			}
+		}
+	}
 }

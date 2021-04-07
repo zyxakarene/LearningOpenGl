@@ -8,6 +8,7 @@ import static org.lwjgl.opengl.GL30.GL_READ_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL30.glBindFramebuffer;
 import static org.lwjgl.opengl.GL30.glBlitFramebuffer;
 import zyx.engine.components.cubemaps.saving.ICubemapRenderer;
+import zyx.engine.utils.ScreenSize;
 import zyx.opengl.materials.StencilLayer;
 import zyx.opengl.materials.StencilMode;
 import zyx.opengl.materials.impl.DeferredMaterial;
@@ -103,9 +104,12 @@ public class LightingPassRenderer extends BaseFrameBuffer
 		int readBufferId = renderer.depthBufferId;
 		int writeBufferId = bufferId;
 
+		int posX = ScreenSize.gamePosX;
+		int posY = ScreenSize.windowHeight - ScreenSize.gameHeight;
+		
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, renderer.bufferId);
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-		glBlitFramebuffer(0, 0, w, h, 0, 0, w, h, GL_STENCIL_BUFFER_BIT, GL_NEAREST);
+		glBlitFramebuffer(0, 0, w, h, posX, posY, w + posX, h + posY, GL_STENCIL_BUFFER_BIT, GL_NEAREST);
 		
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, readBufferId);
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, writeBufferId);

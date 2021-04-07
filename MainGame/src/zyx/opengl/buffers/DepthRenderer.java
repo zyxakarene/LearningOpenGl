@@ -28,10 +28,10 @@ public class DepthRenderer extends BaseFrameBuffer
 		depthBuffer = new FrameBufferTexture(w, h, TextureAttachment.ATTACHMENT_0, TextureFormat.FORMAT_1_CHANNEL_16F);
 	}
 
-	public void drawShadowable(IShadowable shadowable)
+	public void drawShadowable(IShadowable shadowable, byte activeCascades)
 	{
 		bindBuffer();
-		shadowable.drawShadow();
+		shadowable.drawShadow(activeCascades);
 	}
 
 	@Override

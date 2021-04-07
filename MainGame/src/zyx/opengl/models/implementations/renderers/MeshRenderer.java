@@ -10,12 +10,12 @@ import zyx.utils.interfaces.IDrawable;
 public abstract class MeshRenderer<TMaterial extends Material, TModel extends AbstractModel<TMaterial>> implements IDrawable, IDisposeable
 {
 	protected TModel model;
+	protected WorldObject parent;
 	
 	private TMaterial defaultMaterial;
 	private TMaterial clonedMaterial;
-	TMaterial drawMaterial;
 	
-	private WorldObject parent;
+	TMaterial drawMaterial;
 
 	public MeshRenderer(TModel model, TMaterial defaultMaterial)
 	{

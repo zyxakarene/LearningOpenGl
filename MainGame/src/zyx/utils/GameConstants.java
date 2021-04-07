@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 public class GameConstants
 {
 	public static final boolean DEBUG = true;
-	public static final boolean DRAW_PHYSICS = true;
+	public static final boolean DRAW_PHYSICS = false;
 	
 	public static final int FPS = 60;
 	public static final int MS_PER_FRAME = 1000 / FPS;
@@ -31,4 +31,29 @@ public class GameConstants
 	public static final int PLAYER_POSITION_DELAY = 50;
 	public static final float PLAYER_MIN_MOVEMENT = 0.01f;
 	public static final float PLAYER_MIN_ROTATION = 0.001f;
+		
+	public static final float[] SHADOW_CASCADES = new float[]
+	{
+		1,
+		50,
+		100,
+		180,
+		350
+	};
+	
+	private static final int OFFSET_A = 3000;
+	private static final int OFFSET_B = 5000;
+	private static final int OFFSET_C = 8000;
+	
+	public static final float CASCADE_MIN_DISTANCE_1 = 0;
+	public static final float CASCADE_MAX_DISTANCE_1 = 2000 + OFFSET_A;
+	
+	public static final float CASCADE_MIN_DISTANCE_2 = 2000 - OFFSET_A;
+	public static final float CASCADE_MAX_DISTANCE_2 = 17400 + OFFSET_A;
+	
+	public static final float CASCADE_MIN_DISTANCE_3 = 17400 - OFFSET_B;
+	public static final float CASCADE_MAX_DISTANCE_3 = 33800 + OFFSET_B;
+	
+	public static final float CASCADE_MIN_DISTANCE_4 = 33800 - OFFSET_C;
+	public static final float CASCADE_MAX_DISTANCE_4 = 50000 + OFFSET_C;
 }
