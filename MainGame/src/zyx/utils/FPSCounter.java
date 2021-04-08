@@ -24,7 +24,7 @@ public class FPSCounter
     {
         if (getTime() - lastFPS > 1000)
         {
-            Display.setTitle(FPS + fps + " - Drawcalls: " + GameEngine.drawCalls);
+            Display.setTitle(FPS + fps + " - Drawcalls: " + GameEngine.drawCalls + " - BoneUploads: " + GameEngine.boneUploads);
             fps = 0;
             lastFPS += 1000;
         }

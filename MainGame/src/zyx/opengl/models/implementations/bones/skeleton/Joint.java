@@ -9,10 +9,6 @@ import zyx.utils.interfaces.IDisposeable;
 
 public class Joint implements IDisposeable
 {
-
-	private static Matrix4f[] shaderBones;
-	private static Matrix4f[] inverseTransposeShaderBones;
-
 	public final byte id;
 	public final String name;
 
@@ -34,8 +30,8 @@ public class Joint implements IDisposeable
 		this.id = id;
 		this.name = name;
 
-		outTransform = shaderBones[id];
-		outTransformInverseTranspose = inverseTransposeShaderBones[id];
+		outTransform = BoneProvider.BONES[id];
+		outTransformInverseTranspose = BoneProvider.INVERT_BONES[id];
 
 		children = new ArrayList<>();
 		animatedTransform = SharedPools.MATRIX_POOL.getInstance();
@@ -90,6 +86,8 @@ public class Joint implements IDisposeable
 		
 		outTransformInverseTranspose.load(outTransform);
 		outTransformInverseTranspose.invert().transpose();
+		
+		BoneProvider.BoneChanged(id);
 	}
 
 	public Matrix4f getInverse()
@@ -106,12 +104,6 @@ public class Joint implements IDisposeable
 		{
 			child.addToMap(nameMap, idMap);
 		}
-	}
-
-	public static void setBones(Matrix4f[] bones, Matrix4f[] inverseTransposeBones)
-	{
-		shaderBones = bones;
-		inverseTransposeShaderBones = inverseTransposeBones;
 	}
 
 	public void setTPose()

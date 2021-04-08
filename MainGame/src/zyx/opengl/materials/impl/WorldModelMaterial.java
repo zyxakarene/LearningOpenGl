@@ -5,6 +5,7 @@ import zyx.opengl.materials.MaterialPriority;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.enums.TextureSlot;
+import zyx.utils.FloatMath;
 import zyx.utils.GameConstants;
 
 public class WorldModelMaterial extends Material
@@ -75,6 +76,8 @@ public class WorldModelMaterial extends Material
 
 	public void setShadowDistance(float distance)
 	{
+		distance = FloatMath.abs(distance);
+		
 		activeShadowCascades = 0;
 		
 		if (distance >= GameConstants.CASCADE_MIN_DISTANCE_1 && distance <= GameConstants.CASCADE_MAX_DISTANCE_4)

@@ -27,6 +27,7 @@ import zyx.utils.GameConstants;
 public class GameEngine
 {
 	public static int drawCalls = 0;
+	public static int boneUploads = 0;
 
 	private SceneManager sceneManager;
 	
@@ -105,6 +106,7 @@ public class GameEngine
 
 			DebugDrawCalls.reset();
 			drawCalls = 0;
+			boneUploads = 0;
 			sceneManager.update(timestamp, elapsed);
 			FPSCounter.updateFPS();
 

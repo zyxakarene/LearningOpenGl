@@ -41,11 +41,11 @@ public class GameConstants
 		350
 	};
 	
-	private static final int OFFSET_A = 3000;
-	private static final int OFFSET_B = 5000;
-	private static final int OFFSET_C = 8000;
+	private static final int OFFSET_A = 5000;
+	private static final int OFFSET_B = 8000;
+	private static final int OFFSET_C = 12000;
 	
-	public static final float CASCADE_MIN_DISTANCE_1 = 0;
+	public static final float CASCADE_MIN_DISTANCE_1 = 0 - OFFSET_A;
 	public static final float CASCADE_MAX_DISTANCE_1 = 2000 + OFFSET_A;
 	
 	public static final float CASCADE_MIN_DISTANCE_2 = 2000 - OFFSET_A;
