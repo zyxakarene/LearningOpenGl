@@ -5,6 +5,7 @@ import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.WorldObject;
 import zyx.opengl.lighs.ILight;
 import zyx.opengl.lighs.ISun;
+import zyx.opengl.lighs.LightsProvider;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.DepthShader;
 import zyx.opengl.shaders.implementations.LightingPassShader;
@@ -98,7 +99,7 @@ public class LightsManager
 			}
 		}
 
-		lightShader.uploadLights(nearestLights);
+		LightsProvider.setLights(nearestLights);
 		
 		if (currentSun != null)
 		{

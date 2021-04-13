@@ -2,9 +2,11 @@ package zyx.opengl.shaders.implementations;
 
 import org.lwjgl.util.vector.Matrix4f;
 import zyx.opengl.models.DebugDrawCalls;
+import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.opengl.shaders.source.ShaderReplacement;
 
-public class WorldShader extends BaseBoneShader
+public class WorldShader extends AbstractShader implements IBoneShader
 {
 
 	private static final Matrix4f MATRIX_VIEW = SharedShaderObjects.SHARED_WORLD_VIEW_TRANSFORM;
@@ -23,14 +25,17 @@ public class WorldShader extends BaseBoneShader
 
 	private int modelMatrixTrans_InverseTranspose;
 	private int viewModelMatrixTrans_InverseTranspose;
+	
+	private BoneShaderObject boneShaderObject;
 
 	public WorldShader(Object lock, int boneCount)
 	{
-		super(lock, boneCount);
+		super(lock);
+		boneShaderObject = new BoneShaderObject(boneCount);
 	}
 
 	@Override
-	protected void onPostLoading()
+	protected void postLoading()
 	{
 		debugColor = UniformUtils.createUniform(program, "debugColor");
 		cubemapColor = UniformUtils.createUniform(program, "cubemapColor");
@@ -41,6 +46,8 @@ public class WorldShader extends BaseBoneShader
 
 		modelMatrixTrans_InverseTranspose = UniformUtils.createUniform(program, "modelInverseTranspose");
 		viewModelMatrixTrans_InverseTranspose = UniformUtils.createUniform(program, "viewModelInverseTranspose");
+		
+		boneShaderObject.postLoading(program);
 	}
 
 	@Override
@@ -81,7 +88,18 @@ public class WorldShader extends BaseBoneShader
 	@Override
 	public String getName()
 	{
-		return "WorldShader_" + boneCount;
+		return "WorldShader_" + boneShaderObject.boneCount;
 	}
-	
+
+	@Override
+	public void uploadBones()
+	{
+		boneShaderObject.uploadBones();
+	}
+
+	@Override
+	protected ShaderReplacement[] getVertexReplacements()
+	{
+		return boneShaderObject.getVertexReplacements();
+	}
 }
