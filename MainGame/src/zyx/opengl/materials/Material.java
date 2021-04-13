@@ -11,6 +11,8 @@ public abstract class Material
 	public ZTest zTest;
 	public Culling culling;
 	public BlendMode blend;
+	
+	public RenderQueue queue;
 	public int priority;
 	
 	public Shader shaderType;
@@ -38,6 +40,7 @@ public abstract class Material
 		zTest = ZTest.LESS;
 		culling = Culling.BACK;
 		blend = BlendMode.NORMAL;
+		queue = RenderQueue.GEOMETRY;
 		
 		stencilMode = StencilMode.NOTHING;
 		stencilLayer = StencilLayer.NOTHING;

@@ -2,7 +2,7 @@ package zyx.opengl.materials.impl;
 
 import zyx.opengl.materials.Culling;
 import zyx.opengl.materials.Material;
-import zyx.opengl.materials.MaterialPriority;
+import zyx.opengl.materials.RenderQueue;
 import zyx.opengl.shaders.implementations.Shader;
 
 public class PhysicsModelMaterial extends WorldModelMaterial
@@ -17,7 +17,7 @@ public class PhysicsModelMaterial extends WorldModelMaterial
 	{
 		super.setDefaultValues();
 		
-		priority = MaterialPriority.GEOMETRY_MAX;
+		queue = RenderQueue.GEOMETRY;
 		castsShadows = false;
 		culling = Culling.NONE;
 	}

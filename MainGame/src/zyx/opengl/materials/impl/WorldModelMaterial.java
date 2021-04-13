@@ -1,7 +1,7 @@
 package zyx.opengl.materials.impl;
 
 import zyx.opengl.materials.Material;
-import zyx.opengl.materials.MaterialPriority;
+import zyx.opengl.materials.RenderQueue;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.opengl.textures.enums.TextureSlot;
@@ -28,7 +28,7 @@ public class WorldModelMaterial extends Material
 	{
 		super.setDefaultValues();
 		
-		priority = MaterialPriority.GEOMETRY_MAX;
+		queue = RenderQueue.GEOMETRY;
 		castsShadows = true;
 	}
 	

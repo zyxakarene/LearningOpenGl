@@ -3,7 +3,6 @@ package zyx.opengl.shaders.implementations;
 import org.lwjgl.util.vector.Matrix4f;
 import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.shaders.SharedShaderObjects;
-import zyx.utils.cheats.Print;
 
 public class WorldShader extends BaseBoneShader
 {

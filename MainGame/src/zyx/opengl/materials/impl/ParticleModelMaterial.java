@@ -19,7 +19,7 @@ public class ParticleModelMaterial extends Material
 		zTest = ZTest.LESS;
 		culling = Culling.NONE;
 		blend = BlendMode.PARTICLES;
-		priority = MaterialPriority.TRANSPARENT_MIN;
+		queue = RenderQueue.TRANSPARENT;
 		
 		stencilMode = StencilMode.NOTHING;
 		stencilLayer = StencilLayer.NOTHING;

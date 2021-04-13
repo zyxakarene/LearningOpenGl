@@ -1,8 +1,11 @@
 package zyx.opengl.models.implementations;
 
 import org.lwjgl.util.vector.Vector3f;
+import zyx.opengl.buffers.Buffer;
+import zyx.opengl.buffers.BufferBinder;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
+import zyx.opengl.materials.RenderQueue;
 import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.models.DebugDrawCalls;
@@ -100,12 +103,20 @@ public class WorldModel extends AbstractModel<WorldModelMaterial> implements ISh
 	@Override
 	public void draw(WorldModelMaterial material)
 	{
-		DeferredRenderer.getInstance().bindBuffer();
+		if (material.queue == RenderQueue.GEOMETRY)
+		{
+			DeferredRenderer.getInstance().bindBuffer();
+		}
+		else
+		{
+//			BufferBinder.bindBuffer(Buffer.DEFAULT);
+		}
+		
 		skeleton.update();
 		shader.uploadBones();
 		super.draw(material);
 
-		if (material.castsShadows && material.activeShadowCascades > 0)
+		if (material.queue == RenderQueue.GEOMETRY && material.castsShadows && material.activeShadowCascades > 0)
 		{
 			DepthRenderer.getInstance().drawShadowable(this, material.activeShadowCascades);
 			DeferredRenderer.getInstance().bindBuffer();

@@ -4,7 +4,7 @@ import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.SkyboxResource;
 import zyx.engine.resources.impl.textures.TextureResource;
-import zyx.opengl.materials.MaterialPriority;
+import zyx.opengl.materials.RenderQueue;
 import zyx.opengl.materials.ZTest;
 import zyx.opengl.materials.ZWrite;
 import zyx.opengl.materials.impl.WorldModelMaterial;
@@ -40,7 +40,7 @@ public class Skybox extends WorldObject
 			skyboxMaterial = renderer.cloneMaterial();
 			skyboxMaterial.zWrite = ZWrite.DISABLED;
 			skyboxMaterial.zTest = ZTest.ALWAYS;
-			skyboxMaterial.priority = MaterialPriority.GEOMETRY_MIN;
+			skyboxMaterial.priority = 0;
 			
 			onResourceLoaded();
 		};
