@@ -73,6 +73,36 @@ public class WorldModelMaterial extends Material
 	{
 		return new WorldModelMaterial(shaderType);
 	}
+	
+	public ForwardWorldModelMaterial ToTransparent()
+	{
+		Shader forwardShader;
+		
+		switch(shaderType)
+		{
+			case WORLD_1:
+				forwardShader = Shader.WORLD_FORWARD_1;
+				break;
+			case WORLD_2:
+				forwardShader = Shader.WORLD_FORWARD_2;
+				break;
+			case WORLD_3:
+				forwardShader = Shader.WORLD_FORWARD_3;
+				break;
+			case WORLD_4:
+				forwardShader = Shader.WORLD_FORWARD_4;
+				break;
+			default:
+				throw new AssertionError("Invalid shader type: " + shaderType);
+		}
+		
+		ForwardWorldModelMaterial clone = new ForwardWorldModelMaterial(forwardShader);
+		clone.setDiffuse(getDiffuse());
+		clone.setNormal(getNormal());
+		clone.setSpecular(getSpecular());
+		
+		return clone;
+	}
 
 	public void setShadowDistance(float distance)
 	{

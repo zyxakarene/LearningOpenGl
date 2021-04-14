@@ -24,12 +24,12 @@ import zyx.utils.cheats.DebugPoint;
 public class ParticleScene extends DebugScene
 {
 
-	private ArrayList<DebugPoint> points;
+	private ArrayList<Box> boxes;
 	private MeshObject model;
 
 	public ParticleScene()
 	{
-		points = new ArrayList<>();
+		boxes = new ArrayList<>();
 	}
 
 	@Override
@@ -40,7 +40,6 @@ public class ParticleScene extends DebugScene
 	}
 
 	private int timer = 0;
-	private int index = 0;
 	private boolean adding;
 	
 	@Override
@@ -85,19 +84,21 @@ public class ParticleScene extends DebugScene
 
 	private void removeBox()
 	{
-		if (!points.isEmpty())
+		if (!boxes.isEmpty())
 		{
-			int index = (int) (Math.random() * points.size());
-			index = points.size() - 1;
+			int index = (int) (Math.random() * boxes.size());
 			
-			DebugPoint obj = points.remove(index);
-			obj.kill();
+			Box obj = boxes.remove(index);
+			obj.dispose();
 		}
 	}
 
 	private void addBox()
 	{
-		points.add(DebugPoint.addToScene(0, 0, 0, -1));
+		Box box = new Box();
+		box.setPosition(true, 0, 0, 20f * FloatMath.random());
+		world.addChild(box);
+		boxes.add(box);
 	}
 
 	@Override
@@ -119,26 +120,26 @@ public class ParticleScene extends DebugScene
 		model.setScale(0.1f, 0.1f, 0.1f);
 
 		objects.add(model);
-//		ParticleSystem localSystem1 = new ParticleSystem();
-//		localSystem1.load("particles.particle2");
-//		localSystem1.setZ(40);
-//		localSystem1.setX(-20);
-//		localSystem1.setScale(10, 10, 10);
-//		model.addChild(localSystem1);
-//
-//		ParticleSystem worldSystem1 = new ParticleSystem();
-//		worldSystem1.load("particles.world");
-//		worldSystem1.setZ(40);
-//		worldSystem1.setX(20);
-//		worldSystem1.setScale(10, 10, 10);
-//		model.addChild(worldSystem1);
+		ParticleSystem localSystem1 = new ParticleSystem();
+		localSystem1.load("particles.particle2");
+		localSystem1.setZ(40);
+		localSystem1.setX(-20);
+		localSystem1.setScale(10, 10, 10);
+		model.addChild(localSystem1);
+
+		ParticleSystem worldSystem1 = new ParticleSystem();
+		worldSystem1.load("particles.world");
+		worldSystem1.setZ(40);
+		worldSystem1.setX(20);
+		worldSystem1.setScale(10, 10, 10);
+		model.addChild(worldSystem1);
 
 //		model.addBehavior(new JiggleBehavior());
 		addPlayerControls();
 
 		GLUtils.errorCheck();
 		
-		addLoadingScreenProcess(new AddBoxProcess(world, 2));
+		addLoadingScreenProcess(new AddBoxProcess(world, 20));
 		
 	}
 

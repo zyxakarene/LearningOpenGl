@@ -2,6 +2,7 @@ package zyx.opengl.shaders.implementations;
 
 import org.lwjgl.util.vector.Matrix4f;
 import zyx.engine.GameEngine;
+import zyx.opengl.GLUtils;
 import zyx.opengl.models.implementations.bones.skeleton.BoneProvider;
 import zyx.opengl.shaders.source.ShaderReplacement;
 
@@ -29,6 +30,7 @@ class BoneShaderObject
 
 	public void postLoading(int program)
 	{
+		boneMatrixTrans = -1;
 		boneMatrixTrans = UniformUtils.createUniform(program, "bones");
 		boneMatrixTrans_InverseTranspose = UniformUtils.createUniform(program, "bonesInverseTranspose");
 	}
@@ -38,7 +40,6 @@ class BoneShaderObject
 		synchronized (BONES)
 		{
 			int hash = BoneProvider.GetTotalHash();
-
 			if (lastBoneHash != hash)
 			{
 				GameEngine.boneUploads++;

@@ -17,6 +17,7 @@ import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.models.implementations.renderers.WorldModelRenderer;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.DepthShader;
+import zyx.opengl.shaders.implementations.WorldForwardShader;
 import zyx.utils.interfaces.IShadowable;
 
 public class WorldModel extends AbstractModel<WorldModelMaterial> implements IShadowable
@@ -109,7 +110,13 @@ public class WorldModel extends AbstractModel<WorldModelMaterial> implements ISh
 		}
 		else
 		{
+			int a = 0;
 //			BufferBinder.bindBuffer(Buffer.DEFAULT);
+//			if (material.shader instanceof WorldForwardShader)
+//			{
+//				material.shader.bind();
+//				((WorldForwardShader)material.shader).uploadBones();
+//			}
 		}
 		
 		skeleton.update();
@@ -130,25 +137,25 @@ public class WorldModel extends AbstractModel<WorldModelMaterial> implements ISh
 		shadowShader.upload();
 		shadowShader.uploadBones();
 
-		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_1) == WorldModelMaterial.DRAW_CASCADE_1)
+//		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_1) == WorldModelMaterial.DRAW_CASCADE_1)
 		{
 			shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_0);
 			super.draw(shadowMaterial);
 		}
 
-		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_2) == WorldModelMaterial.DRAW_CASCADE_2)
+//		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_2) == WorldModelMaterial.DRAW_CASCADE_2)
 		{
 			shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_1);
 			super.draw(shadowMaterial);
 		}
 
-		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_3) == WorldModelMaterial.DRAW_CASCADE_3)
+//		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_3) == WorldModelMaterial.DRAW_CASCADE_3)
 		{
 			shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_2);
 			super.draw(shadowMaterial);
 		}
 
-		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_4) == WorldModelMaterial.DRAW_CASCADE_4)
+//		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_4) == WorldModelMaterial.DRAW_CASCADE_4)
 		{
 			shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_3);
 			super.draw(shadowMaterial);

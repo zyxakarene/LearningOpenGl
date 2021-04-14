@@ -43,6 +43,10 @@ public class ShaderManager implements IUpdateable
 		shaderMap.put(Shader.PARTICLE, new ParticleShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.MESH_BATCH, new MeshBatchShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.WORLD_PARTICLE, new WorldParticleShader(AbstractShader.LOCK));
+		shaderMap.put(Shader.WORLD_FORWARD_1, new WorldForwardShader(AbstractShader.LOCK, 1));
+		shaderMap.put(Shader.WORLD_FORWARD_2, new WorldForwardShader(AbstractShader.LOCK, 2));
+		shaderMap.put(Shader.WORLD_FORWARD_3, new WorldForwardShader(AbstractShader.LOCK, 3));
+		shaderMap.put(Shader.WORLD_FORWARD_4, new WorldForwardShader(AbstractShader.LOCK, 4));
 		shaderMap.put(Shader.MESH_BATCH_DEPTH, new MeshBatchDepthShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.AMBIENT_OCCLUSION, new AmbientOcclusionShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.DEFERED_LIGHT_PASS, new LightingPassShader(AbstractShader.LOCK));

@@ -33,6 +33,11 @@ public class WorldShader extends AbstractShader implements IBoneShader
 		super(lock);
 		boneShaderObject = new BoneShaderObject(boneCount);
 	}
+	
+	public int GetBoneCount()
+	{
+		return boneShaderObject.boneCount;
+	}
 
 	@Override
 	protected void postLoading()

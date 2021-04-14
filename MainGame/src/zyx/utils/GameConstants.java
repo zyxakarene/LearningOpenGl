@@ -15,7 +15,7 @@ public class GameConstants
 	public static final int WINDOW_WIDTH = (int) (1920 * 0.75f);
 	public static final int WINDOW_HEIGHT = (int) (1080 * 0.75f);
 	
-	public static final float DEFAULT_GAME_WIDTH_RATIO = 0.5f;
+	public static final float DEFAULT_GAME_WIDTH_RATIO = 1f;
 	public static final float DEFAULT_GAME_HEIGHT_RATIO = 1f;
 	
 	public static final int DEFAULT_GAME_WIDTH = (int) (WINDOW_WIDTH * DEFAULT_GAME_WIDTH_RATIO);

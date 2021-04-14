@@ -78,7 +78,7 @@ public class MeshRenderList implements IDrawable
 						AlphaRenderers.add(renderer);
 						break;
 					case TRANSPARENT:
-						transparentRenderers.add(renderer);
+						AlphaRenderers.add(renderer);
 						break;
 				}
 				
@@ -118,7 +118,7 @@ public class MeshRenderList implements IDrawable
 				addTo(renderer, AlphaRenderers);
 				break;
 			case TRANSPARENT:
-				addTo(renderer, transparentRenderers);
+				addTo(renderer, AlphaRenderers);
 				break;
 		}
 	}

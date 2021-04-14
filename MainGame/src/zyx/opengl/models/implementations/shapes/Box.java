@@ -18,8 +18,16 @@ public class Box extends SimpleMesh
 
 	public Box(float width, float depth, float height)
 	{
-		setScale(width, depth, height);
-		super.load("mesh.simple.box");
+		if (Math.random() > 0.5)
+		{
+			setScale(width, depth, height);
+			super.load("mesh.simple.box");
+		}
+		else
+		{
+			setScale(0.25f, 0.25f, 0.25f);
+			super.load("mesh.dragon");
+		}
 	}
 
 	@Override
@@ -27,11 +35,16 @@ public class Box extends SimpleMesh
 	{
 		super.onResourceReady(resource);
 	
-		WorldModelMaterial mat = cloneMaterial();
-		mat.queue = RenderQueue.ALPHA;
-		mat.blend = BlendMode.NORMAL;
-		mat.zWrite = ZWrite.ENABLED;
-		mat.zTest = ZTest.ALWAYS;
+		if (Math.random() >= 0.5)
+		{
+			WorldModelMaterial mat = renderer.getDefaultMaterial().ToTransparent();
+			renderer.setCustomMaterial(mat);
+			mat.queue = RenderQueue.ALPHA;
+			mat.blend = BlendMode.ALPHA;
+			mat.zWrite = ZWrite.DISABLED;
+			mat.zTest = ZTest.LESS_EQUAL;
+			
+		}
 	}
 	
 	@Override

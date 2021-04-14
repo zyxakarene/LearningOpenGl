@@ -113,7 +113,7 @@ int getQuadrant(float CascadeDepth)
 	return min(3, quadrant);
 }
 
-vec3 getSunBrightness(vec4 FragPos, vec3 Normal, float CascadeDepth, float cubemapIndex, sampler2D shadowMap, vec3 Reflect)
+vec3 getSunBrightness(vec4 FragPos, vec3 Normal, float CascadeDepth, float cubemapIndex, sampler2D shadowMap, out vec3 Reflect)
 {
 	int quadrant = getQuadrant(CascadeDepth);
 	

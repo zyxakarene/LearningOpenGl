@@ -13,7 +13,6 @@ public abstract class MeshRenderer<TMaterial extends Material, TModel extends Ab
 	protected WorldObject parent;
 	
 	private TMaterial defaultMaterial;
-	private TMaterial clonedMaterial;
 	
 	TMaterial drawMaterial;
 
@@ -56,14 +55,34 @@ public abstract class MeshRenderer<TMaterial extends Material, TModel extends Ab
 		}
 	}
 	
+	public TMaterial getDefaultMaterial()
+	{
+		return defaultMaterial;
+	}
+	
+	public TMaterial getActiveMaterial()
+	{
+		if (drawMaterial != null)
+		{
+			return drawMaterial;
+		}
+		
+		return defaultMaterial;
+	}
+	
+	public void setCustomMaterial(TMaterial material)
+	{
+		drawMaterial = material;
+	}
+	
 	public TMaterial cloneMaterial()
 	{
-		if (clonedMaterial == null)
+		if (drawMaterial == null)
 		{
-			clonedMaterial = (TMaterial) defaultMaterial.cloneMaterial();
-			drawMaterial = clonedMaterial;
+			drawMaterial = (TMaterial) defaultMaterial.cloneMaterial();
 		}
-		return clonedMaterial;
+		
+		return drawMaterial;
 	}
 
 	@Override
@@ -75,7 +94,6 @@ public abstract class MeshRenderer<TMaterial extends Material, TModel extends Ab
 		model = null;
 		drawMaterial = null;
 		defaultMaterial = null;
-		clonedMaterial = null;
 	}
 
 	protected void onPreDraw()
