@@ -2,40 +2,31 @@ package zyx.opengl.models.implementations.renderers;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.buffers.DeferredRenderer;
-import zyx.opengl.camera.Camera;
 import zyx.opengl.materials.RenderQueue;
-import zyx.utils.FloatMath;
 import zyx.utils.interfaces.IDrawable;
 
 public class MeshRenderList implements IDrawable
 {
 
 	private static final MeshRenderList INSTANCE = new MeshRenderList();
-
-	private static final Vector3f CAM_POSITION = new Vector3f();
-	private static final Vector3f A_POSITION = new Vector3f();
-	private static final Vector3f B_POSITION = new Vector3f();
 	
 	private ArrayList<MeshRenderer> geometryRenderers;
-	private ArrayList<MeshRenderer> AlphaRenderers;
 	private ArrayList<MeshRenderer> transparentRenderers;
 	
-	private Comparator<MeshRenderer> prioritySorting;
-	private Comparator<MeshRenderer> distanceSorting;
+	private MeshDistanceSorting frontToBackSorting;
+	private MeshDistanceSorting backToFrontSorting;
 	
 	private boolean dirty;
 
 	private MeshRenderList()
 	{
 		geometryRenderers = new ArrayList<>();
-		AlphaRenderers = new ArrayList<>();
 		transparentRenderers = new ArrayList<>();
 		dirty = false;
 		
-		prioritySorting = this::sortByPriority;
-		distanceSorting = this::sortByDistance;
+		frontToBackSorting = new MeshDistanceSorting(true);
+		backToFrontSorting = new MeshDistanceSorting(false);
 	}
 
 	public static MeshRenderList getInstance()
@@ -48,16 +39,15 @@ public class MeshRenderList implements IDrawable
 	{
 		if (dirty)
 		{
-			CheckList(geometryRenderers, RenderQueue.GEOMETRY);
-			CheckList(AlphaRenderers, RenderQueue.ALPHA);
+			CheckList(geometryRenderers, RenderQueue.OPAQUE);
 			CheckList(transparentRenderers, RenderQueue.TRANSPARENT);
-
-			geometryRenderers.sort(prioritySorting);
-			transparentRenderers.sort(prioritySorting);
 			dirty = false;
 		}
 
 		DeferredRenderer.getInstance().bindBuffer();
+		
+		frontToBackSorting.sortMe(geometryRenderers);
+		backToFrontSorting.sortMe(transparentRenderers);
 		draw(geometryRenderers);
 	}
 	
@@ -71,14 +61,11 @@ public class MeshRenderList implements IDrawable
 			{
 				switch (rendererQueue)
 				{
-					case GEOMETRY:
+					case OPAQUE:
 						geometryRenderers.add(renderer);
 						break;
-					case ALPHA:
-						AlphaRenderers.add(renderer);
-						break;
 					case TRANSPARENT:
-						AlphaRenderers.add(renderer);
+						transparentRenderers.add(renderer);
 						break;
 				}
 				
@@ -100,10 +87,6 @@ public class MeshRenderList implements IDrawable
 
 	public void drawTransparent()
 	{
-		Camera.getInstance().getPosition(false, CAM_POSITION);
-		AlphaRenderers.sort(distanceSorting);
-		
-		draw(AlphaRenderers);
 		draw(transparentRenderers);
 	}
 
@@ -111,14 +94,11 @@ public class MeshRenderList implements IDrawable
 	{
 		switch (renderer.drawMaterial.queue)
 		{
-			case GEOMETRY:
+			case OPAQUE:
 				addTo(renderer, geometryRenderers);
 				break;
-			case ALPHA:
-				addTo(renderer, AlphaRenderers);
-				break;
 			case TRANSPARENT:
-				addTo(renderer, AlphaRenderers);
+				addTo(renderer, transparentRenderers);
 				break;
 		}
 	}
@@ -127,67 +107,13 @@ public class MeshRenderList implements IDrawable
 	{
 		switch (renderer.drawMaterial.queue)
 		{
-			case GEOMETRY:
+			case OPAQUE:
 				removeFrom(renderer, geometryRenderers);
-				break;
-			case ALPHA:
-				removeFrom(renderer, AlphaRenderers);
 				break;
 			case TRANSPARENT:
 				removeFrom(renderer, transparentRenderers);
 				break;
 		}
-	}
-
-	private int sortByDistance(MeshRenderer a, MeshRenderer b)
-	{
-		//Someone doesn't have a parent. So that should always be further back.. Probably
-		if (a.parent == null || b.parent == null)
-		{
-			return Boolean.compare(a.parent != null, b.parent != null);
-		}
-		
-		//Make sure we only compare equal priorities
-		if (a.drawMaterial.priority != b.drawMaterial.priority)
-		{
-			return sortByPriority(a, b);
-		}
-
-		a.parent.getPosition(false, A_POSITION);
-		b.parent.getPosition(false, B_POSITION);
-		
-		float distanceToA = FloatMath.distance(A_POSITION, CAM_POSITION);
-		float distanceToB = FloatMath.distance(B_POSITION, CAM_POSITION);
-
-		if (distanceToA < distanceToB)
-		{
-			return 1;
-		}
-
-		if (distanceToA > distanceToB)
-		{
-			return -1;
-		}
-
-		return 0;
-	}
-	
-	private int sortByPriority(MeshRenderer a, MeshRenderer b)
-	{
-		int x = a.drawMaterial.priority;
-		int y = b.drawMaterial.priority;
-
-		if (x < y)
-		{
-			return -1;
-		}
-
-		if (x > y)
-		{
-			return 1;
-		}
-
-		return 0;
 	}
 
 	private void addTo(MeshRenderer renderer, ArrayList<MeshRenderer> list)

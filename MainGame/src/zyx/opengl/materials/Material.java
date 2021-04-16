@@ -4,6 +4,7 @@ import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.AbstractTexture;
+import zyx.opengl.textures.TextureFromInt;
 
 public abstract class Material
 {
@@ -40,7 +41,7 @@ public abstract class Material
 		zTest = ZTest.LESS;
 		culling = Culling.BACK;
 		blend = BlendMode.NORMAL;
-		queue = RenderQueue.GEOMETRY;
+		queue = RenderQueue.OPAQUE;
 		
 		stencilMode = StencilMode.NOTHING;
 		stencilLayer = StencilLayer.NOTHING;
@@ -48,7 +49,9 @@ public abstract class Material
 	
 	public void bind()
 	{
-		shader.bind();
+		AbstractShader activeShader = getActiveShader();
+		activeShader.bind();
+		activeShader.upload();
 		
 		for (AbstractTexture texture : textures)
 		{
@@ -82,7 +85,13 @@ public abstract class Material
 		
 		return clone;
 	}
+	
+	protected AbstractShader getActiveShader()
+	{
+		return shader;
+	}
 
 	protected abstract int getTextureCount();
 	protected abstract Material createInstance();
+
 }

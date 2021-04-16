@@ -120,19 +120,19 @@ public class ParticleScene extends DebugScene
 		model.setScale(0.1f, 0.1f, 0.1f);
 
 		objects.add(model);
-		ParticleSystem localSystem1 = new ParticleSystem();
-		localSystem1.load("particles.particle2");
-		localSystem1.setZ(40);
-		localSystem1.setX(-20);
-		localSystem1.setScale(10, 10, 10);
-		model.addChild(localSystem1);
-
-		ParticleSystem worldSystem1 = new ParticleSystem();
-		worldSystem1.load("particles.world");
-		worldSystem1.setZ(40);
-		worldSystem1.setX(20);
-		worldSystem1.setScale(10, 10, 10);
-		model.addChild(worldSystem1);
+//		ParticleSystem localSystem1 = new ParticleSystem();
+//		localSystem1.load("particles.particle2");
+//		localSystem1.setZ(40);
+//		localSystem1.setX(-20);
+//		localSystem1.setScale(10, 10, 10);
+//		model.addChild(localSystem1);
+//
+//		ParticleSystem worldSystem1 = new ParticleSystem();
+//		worldSystem1.load("particles.world");
+//		worldSystem1.setZ(40);
+//		worldSystem1.setX(20);
+//		worldSystem1.setScale(10, 10, 10);
+//		model.addChild(worldSystem1);
 
 //		model.addBehavior(new JiggleBehavior());
 		addPlayerControls();

@@ -40,7 +40,7 @@ public class Skybox extends WorldObject
 			skyboxMaterial = renderer.cloneMaterial();
 			skyboxMaterial.zWrite = ZWrite.DISABLED;
 			skyboxMaterial.zTest = ZTest.ALWAYS;
-			skyboxMaterial.priority = 0;
+			skyboxMaterial.priority = -9999;
 			
 			onResourceLoaded();
 		};

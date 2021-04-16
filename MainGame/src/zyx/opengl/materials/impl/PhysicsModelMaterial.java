@@ -17,7 +17,7 @@ public class PhysicsModelMaterial extends WorldModelMaterial
 	{
 		super.setDefaultValues();
 		
-		queue = RenderQueue.GEOMETRY;
+		queue = RenderQueue.OPAQUE;
 		castsShadows = false;
 		culling = Culling.NONE;
 	}

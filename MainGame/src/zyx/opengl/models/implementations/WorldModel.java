@@ -1,11 +1,10 @@
 package zyx.opengl.models.implementations;
 
 import org.lwjgl.util.vector.Vector3f;
-import zyx.opengl.buffers.Buffer;
-import zyx.opengl.buffers.BufferBinder;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
 import zyx.opengl.materials.RenderQueue;
+import zyx.opengl.materials.impl.DepthMaterial;
 import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.AbstractModel;
 import zyx.opengl.models.DebugDrawCalls;
@@ -17,7 +16,6 @@ import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.models.implementations.renderers.WorldModelRenderer;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.DepthShader;
-import zyx.opengl.shaders.implementations.WorldForwardShader;
 import zyx.utils.interfaces.IShadowable;
 
 public class WorldModel extends AbstractModel<WorldModelMaterial> implements IShadowable
@@ -30,6 +28,7 @@ public class WorldModel extends AbstractModel<WorldModelMaterial> implements ISh
 
 	private WorldShader shader;
 	private DepthShader shadowShader;
+	private DepthMaterial shadowMaterial;
 
 	private Skeleton skeleton;
 
@@ -41,8 +40,6 @@ public class WorldModel extends AbstractModel<WorldModelMaterial> implements ISh
 	
 	public boolean ready;
 	
-	private WorldModelMaterial shadowMaterial;
-
 	public WorldModel(AbstractLoadableModelVO vo)
 	{
 		super(vo.material);
@@ -104,26 +101,15 @@ public class WorldModel extends AbstractModel<WorldModelMaterial> implements ISh
 	@Override
 	public void draw(WorldModelMaterial material)
 	{
-		if (material.queue == RenderQueue.GEOMETRY)
+		if (material.queue == RenderQueue.OPAQUE)
 		{
 			DeferredRenderer.getInstance().bindBuffer();
 		}
-		else
-		{
-			int a = 0;
-//			BufferBinder.bindBuffer(Buffer.DEFAULT);
-//			if (material.shader instanceof WorldForwardShader)
-//			{
-//				material.shader.bind();
-//				((WorldForwardShader)material.shader).uploadBones();
-//			}
-		}
 		
 		skeleton.update();
-		shader.uploadBones();
 		super.draw(material);
 
-		if (material.queue == RenderQueue.GEOMETRY && material.castsShadows && material.activeShadowCascades > 0)
+		if (material.queue == RenderQueue.OPAQUE && material.castsShadows && material.activeShadowCascades > 0)
 		{
 			DepthRenderer.getInstance().drawShadowable(this, material.activeShadowCascades);
 			DeferredRenderer.getInstance().bindBuffer();
@@ -135,27 +121,26 @@ public class WorldModel extends AbstractModel<WorldModelMaterial> implements ISh
 	{
 		shadowShader.bind();
 		shadowShader.upload();
-		shadowShader.uploadBones();
 
-//		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_1) == WorldModelMaterial.DRAW_CASCADE_1)
+		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_1) == WorldModelMaterial.DRAW_CASCADE_1)
 		{
 			shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_0);
 			super.draw(shadowMaterial);
 		}
 
-//		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_2) == WorldModelMaterial.DRAW_CASCADE_2)
+		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_2) == WorldModelMaterial.DRAW_CASCADE_2)
 		{
 			shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_1);
 			super.draw(shadowMaterial);
 		}
 
-//		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_3) == WorldModelMaterial.DRAW_CASCADE_3)
+		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_3) == WorldModelMaterial.DRAW_CASCADE_3)
 		{
 			shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_2);
 			super.draw(shadowMaterial);
 		}
 
-//		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_4) == WorldModelMaterial.DRAW_CASCADE_4)
+		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_4) == WorldModelMaterial.DRAW_CASCADE_4)
 		{
 			shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_3);
 			super.draw(shadowMaterial);

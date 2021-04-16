@@ -54,6 +54,7 @@ public class DepthShader extends AbstractShader implements IBoneShader
 	public void upload()
 	{
 		UniformUtils.setUniformMatrix(modelMatrixTrans, MATRIX_MODEL);
+		boneShaderObject.uploadBones();
 	}
 
 	public void uploadSunMatrix()
@@ -119,12 +120,6 @@ public class DepthShader extends AbstractShader implements IBoneShader
 	public String getName()
 	{
 		return "DepthShader_" + boneShaderObject.boneCount;
-	}
-
-	@Override
-	public void uploadBones()
-	{
-		boneShaderObject.uploadBones();
 	}
 
 	@Override

@@ -5,15 +5,10 @@ public enum RenderQueue
 	/**
 	 * Normal opaque geometry
 	 */
-	GEOMETRY,
-	
+	OPAQUE,
+		
 	/**
-	 * Alpha transparency, or other modes which requires distance sorting
-	 */
-	ALPHA,
-	
-	/**
-	 * Additive transparency, or other modes which does NOT require distance sorting
+	 * Transparent geometry that should be drawn back-to-front
 	 */
 	TRANSPARENT
 }

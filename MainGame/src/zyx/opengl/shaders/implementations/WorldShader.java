@@ -75,7 +75,8 @@ public class WorldShader extends AbstractShader implements IBoneShader
 
 		float cubemapColorFloat = cubemapIndex / 255f;
 		UniformUtils.setUniformFloat(cubemapColor, cubemapColorFloat);
-		//uploadBones();
+		
+		boneShaderObject.uploadBones();
 	}
 
 	@Override
@@ -94,12 +95,6 @@ public class WorldShader extends AbstractShader implements IBoneShader
 	public String getName()
 	{
 		return "WorldShader_" + boneShaderObject.boneCount;
-	}
-
-	@Override
-	public void uploadBones()
-	{
-		boneShaderObject.uploadBones();
 	}
 
 	@Override
