@@ -44,5 +44,5 @@ void main()
 	gCubeIndex = (cubemapColor + CubemapAddition);
 
     //Pretty normals
-    //outColor = vec4(0.5 + 0.5 * Normal, 1);
+    //gAlbedoSpec = vec4(0.5 + 0.5 * worldNorms, 0);
 }

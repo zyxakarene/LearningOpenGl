@@ -87,6 +87,16 @@ public class LightingPassRenderer extends BaseFrameBuffer
 		model = new FullScreenQuadModel(material);
 	}
 
+	public TextureFromInt getDepthTexture()
+	{
+		return depthTexture;
+	}
+
+	public TextureFromInt getShadowDepthTexture()
+	{
+		return shadowDepthTexture;
+	}
+
 	public void draw()
 	{
 		BufferBinder.bindBuffer(Buffer.LIGHTING_PASS);

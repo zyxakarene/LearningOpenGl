@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.logic.converter.smd.control.json.JsonMeshProperties;
 import zyx.logic.converter.smd.reader.SmdTriangleHandler;
 
 public class SmdObject
@@ -216,5 +217,10 @@ public class SmdObject
 		out.writeUTF(skeletonPath);
 		
 		materialInfo.save(out);
+	}
+
+	public void setMaterialInfo(JsonMeshProperties meshProperties)
+	{
+		materialInfo.SetFrom(meshProperties);
 	}
 }

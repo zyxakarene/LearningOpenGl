@@ -3,6 +3,7 @@ package zyx.opengl.models.implementations;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
+import zyx.opengl.materials.impl.DepthMaterial;
 import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.AbstractInstancedModel;
 import zyx.opengl.models.implementations.renderers.MeshBatchRenderer;
@@ -23,7 +24,7 @@ public class MeshBatchModel extends AbstractInstancedModel<WorldModelMaterial> i
 	
 	private MeshBatchShader shader;
 	private MeshBatchDepthShader shadowShader;
-	private WorldModelMaterial shadowMaterial;
+	private DepthMaterial shadowMaterial;
 	private int boneCount;
 
 	private Vector3f radiusCenter;

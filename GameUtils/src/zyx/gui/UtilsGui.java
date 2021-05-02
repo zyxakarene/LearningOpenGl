@@ -1,20 +1,16 @@
 package zyx.gui;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JPopupMenu;
 import zyx.UtilConstants;
 import zyx.gui.files.FileSelector;
 import zyx.gui.files.FileSelectorType;
 import zyx.gui.tree.JsonTree;
+import zyx.logic.UtilsCompiler;
 import zyx.logic.UtilsLogger;
 import zyx.logic.converter.fnt.FntConverter;
-import zyx.logic.converter.smd.SmdParser;
 import zyx.logic.converter.smd.control.json.JsonMesh;
 import zyx.logic.watcher.WatcherManager;
 
@@ -32,7 +28,8 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
 	public UtilsGui()
 	{
 		initComponents();
-
+		UtilsCompiler.logArea = logArea;
+		
 		jsonTree = new JsonTree();
 		jsonMeshScrollPanel.setViewportView(jsonTree);
 		jsonTree.addMouseListener(new MouseAdapter()
@@ -190,29 +187,8 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
 
     private void smdCompileButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_smdCompileButtonActionPerformed
     {//GEN-HEADEREND:event_smdCompileButtonActionPerformed
-		try
-		{
-			logArea.setText("");
-
-			File[] files = jsonTree.getSelectedSubItems();
-			int len = files.length;
-			for (int i = 0; i < len; i++)
-			{
-				File inputJson = files[i];
-				JsonMesh mesh = new JsonMesh(inputJson);
-				new SmdParser(mesh).parseFiles();
-
-				logArea.append("=====\n");
-			}
-		}
-		catch (IOException ex)
-		{
-			Logger.getLogger(UtilsGui.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		catch (RuntimeException ex)
-		{
-			UtilsLogger.log("[FATAL] runtime exception", ex);
-		}
+		File[] files = jsonTree.getSelectedSubItems();
+		UtilsCompiler.compile(files);
     }//GEN-LAST:event_smdCompileButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed

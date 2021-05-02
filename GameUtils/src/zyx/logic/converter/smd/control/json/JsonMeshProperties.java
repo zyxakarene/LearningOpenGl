@@ -20,7 +20,7 @@ public class JsonMeshProperties
 	public int blendSrc;
 	public int blendDst;
 	public int priority;
-	public int stencilMode;
+	public byte stencilMode;
 	public int stencilLayer;
 
 	public JsonMeshProperties()
@@ -43,7 +43,7 @@ public class JsonMeshProperties
 		blendSrc = JsonMethods.getInt(jsonProperties, PROPERTY_BLEND_SRC, GL11.GL_ONE);
 		blendDst = JsonMethods.getInt(jsonProperties, PROPERTY_BLEND_DST, GL11.GL_ZERO);
 		priority = JsonMethods.getInt(jsonProperties, PROPERTY_PRIORITY, 10000);
-		stencilMode = JsonMethods.getInt(jsonProperties, PROPERTY_STENCIL_MODE, 0);
+		stencilMode = JsonMethods.getByte(jsonProperties, PROPERTY_STENCIL_MODE, (byte) 0);
 		stencilLayer = JsonMethods.getInt(jsonProperties, PROPERTY_STENCIL_LAYER, 0);
 	}
 

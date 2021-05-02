@@ -3,13 +3,12 @@ package zyx.game.controls.lights;
 import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.WorldObject;
+import zyx.opengl.GLUtils;
 import zyx.opengl.lighs.ILight;
 import zyx.opengl.lighs.ISun;
+import zyx.opengl.lighs.LightsProvider;
 import zyx.opengl.shaders.ShaderManager;
-import zyx.opengl.shaders.implementations.DepthShader;
-import zyx.opengl.shaders.implementations.LightingPassShader;
-import zyx.opengl.shaders.implementations.MeshBatchDepthShader;
-import zyx.opengl.shaders.implementations.Shader;
+import zyx.opengl.shaders.implementations.*;
 import zyx.utils.GameConstants;
 
 public class LightsManager
@@ -31,6 +30,7 @@ public class LightsManager
 	private LightSorter lightSorter;
 	private LightingPassShader lightShader;
 	private DepthShader[] depthShaders;
+	private WorldForwardShader[] forwardShaders;
 	private MeshBatchDepthShader batchedDepthShader;
 	
 	private Vector3f sunDir;
@@ -59,6 +59,12 @@ public class LightsManager
 		depthShaders[1] = ShaderManager.getInstance().<DepthShader>get(Shader.DEPTH_2);
 		depthShaders[2] = ShaderManager.getInstance().<DepthShader>get(Shader.DEPTH_3);
 		depthShaders[3] = ShaderManager.getInstance().<DepthShader>get(Shader.DEPTH_4);
+		
+		forwardShaders = new WorldForwardShader[4];
+		forwardShaders[0] = ShaderManager.getInstance().<WorldForwardShader>get(Shader.WORLD_FORWARD_1);
+		forwardShaders[1] = ShaderManager.getInstance().<WorldForwardShader>get(Shader.WORLD_FORWARD_2);
+		forwardShaders[2] = ShaderManager.getInstance().<WorldForwardShader>get(Shader.WORLD_FORWARD_3);
+		forwardShaders[3] = ShaderManager.getInstance().<WorldForwardShader>get(Shader.WORLD_FORWARD_4);
 	}
 
 	public void addLight(ILight light)
@@ -97,8 +103,8 @@ public class LightsManager
 				nearestLights[i] = null;
 			}
 		}
-
-		lightShader.uploadLights(nearestLights);
+		
+		LightsProvider.setLights(nearestLights);
 		
 		if (currentSun != null)
 		{
@@ -112,6 +118,12 @@ public class LightsManager
 			for (DepthShader depthShader : depthShaders)
 			{
 				depthShader.uploadSunMatrix();
+			}
+			
+			for (WorldForwardShader forwardShader : forwardShaders)
+			{
+				forwardShader.uploadLightDirection(sunDir);
+				forwardShader.uploadSunMatrix();
 			}
 		}
 	}

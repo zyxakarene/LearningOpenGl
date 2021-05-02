@@ -51,6 +51,7 @@ public class SmdParser
 		smd.setDiffuseTexturePath(jsonMesh.textureFiles.getDiffuseTextureName());
 		smd.setNormalTexturePath(jsonMesh.textureFiles.getNormalTextureName());
 		smd.setSpecularTexturePath(jsonMesh.textureFiles.getSpecularTextureName());
+		smd.setMaterialInfo(jsonMesh.meshProperties);
 
 		if (outputModel.exists() == false)
 		{

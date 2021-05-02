@@ -3,16 +3,20 @@ package zyx.opengl.models.implementations.renderers;
 import java.util.ArrayList;
 import java.util.Comparator;
 import zyx.opengl.buffers.DeferredRenderer;
-import zyx.opengl.materials.MaterialPriority;
+import zyx.opengl.materials.RenderQueue;
 import zyx.utils.interfaces.IDrawable;
 
-public class MeshRenderList implements IDrawable, Comparator<MeshRenderer>
+public class MeshRenderList implements IDrawable
 {
 
 	private static final MeshRenderList INSTANCE = new MeshRenderList();
-
+	
 	private ArrayList<MeshRenderer> geometryRenderers;
 	private ArrayList<MeshRenderer> transparentRenderers;
+	
+	private MeshDistanceSorting frontToBackSorting;
+	private MeshDistanceSorting backToFrontSorting;
+	
 	private boolean dirty;
 
 	private MeshRenderList()
@@ -20,6 +24,9 @@ public class MeshRenderList implements IDrawable, Comparator<MeshRenderer>
 		geometryRenderers = new ArrayList<>();
 		transparentRenderers = new ArrayList<>();
 		dirty = false;
+		
+		frontToBackSorting = new MeshDistanceSorting(true);
+		backToFrontSorting = new MeshDistanceSorting(false);
 	}
 
 	public static MeshRenderList getInstance()
@@ -32,33 +39,39 @@ public class MeshRenderList implements IDrawable, Comparator<MeshRenderer>
 	{
 		if (dirty)
 		{
-			for (int i = geometryRenderers.size() - 1; i >= 0; i--)
-			{
-				MeshRenderer renderer = geometryRenderers.get(i);
-				if (renderer.drawMaterial.priority > MaterialPriority.GEOMETRY_MAX)
-				{
-					transparentRenderers.add(renderer);
-					geometryRenderers.remove(i);
-				}
-			}
-
-			for (int i = transparentRenderers.size() - 1; i >= 0; i--)
-			{
-				MeshRenderer renderer = transparentRenderers.get(i);
-				if (renderer.drawMaterial.priority <= MaterialPriority.GEOMETRY_MAX)
-				{
-					geometryRenderers.add(renderer);
-					transparentRenderers.remove(i);
-				}
-			}
-
-			geometryRenderers.sort(this);
-			transparentRenderers.sort(this);
+			CheckList(geometryRenderers, RenderQueue.OPAQUE);
+			CheckList(transparentRenderers, RenderQueue.TRANSPARENT);
 			dirty = false;
 		}
 
 		DeferredRenderer.getInstance().bindBuffer();
+		
+		frontToBackSorting.sortMe(geometryRenderers);
+		backToFrontSorting.sortMe(transparentRenderers);
 		draw(geometryRenderers);
+	}
+	
+	private void CheckList(ArrayList<MeshRenderer> list, RenderQueue queue)
+	{
+		for (int i = list.size() - 1; i >= 0; i--)
+		{
+			MeshRenderer renderer = list.get(i);
+			RenderQueue rendererQueue = renderer.drawMaterial.queue;
+			if (rendererQueue != queue)
+			{
+				switch (rendererQueue)
+				{
+					case OPAQUE:
+						geometryRenderers.add(renderer);
+						break;
+					case TRANSPARENT:
+						transparentRenderers.add(renderer);
+						break;
+				}
+				
+				list.remove(i);
+			}
+		}
 	}
 
 	private void draw(ArrayList<MeshRenderer> list)
@@ -67,11 +80,11 @@ public class MeshRenderList implements IDrawable, Comparator<MeshRenderer>
 		for (int i = 0; i < len; i++)
 		{
 			MeshRenderer renderer = list.get(i);
-			
+
 			renderer.draw();
 		}
 	}
-	
+
 	public void drawTransparent()
 	{
 		draw(transparentRenderers);
@@ -79,45 +92,28 @@ public class MeshRenderList implements IDrawable, Comparator<MeshRenderer>
 
 	void add(MeshRenderer renderer)
 	{
-		if (renderer.drawMaterial.priority > MaterialPriority.GEOMETRY_MAX)
+		switch (renderer.drawMaterial.queue)
 		{
-			addTo(renderer, transparentRenderers);
-		}
-		else
-		{
-			addTo(renderer, geometryRenderers);
+			case OPAQUE:
+				addTo(renderer, geometryRenderers);
+				break;
+			case TRANSPARENT:
+				addTo(renderer, transparentRenderers);
+				break;
 		}
 	}
 
 	void remove(MeshRenderer renderer)
 	{
-		if (renderer.drawMaterial.priority > MaterialPriority.GEOMETRY_MAX)
+		switch (renderer.drawMaterial.queue)
 		{
-			removeFrom(renderer, transparentRenderers);
+			case OPAQUE:
+				removeFrom(renderer, geometryRenderers);
+				break;
+			case TRANSPARENT:
+				removeFrom(renderer, transparentRenderers);
+				break;
 		}
-		else
-		{
-			removeFrom(renderer, geometryRenderers);
-		}
-	}
-
-	@Override
-	public int compare(MeshRenderer a, MeshRenderer b)
-	{
-		int x = a.drawMaterial.priority;
-		int y = b.drawMaterial.priority;
-
-		if (x < y)
-		{
-			return -1;
-		}
-
-		if (x > y)
-		{
-			return 1;
-		}
-
-		return 0;
 	}
 
 	private void addTo(MeshRenderer renderer, ArrayList<MeshRenderer> list)
@@ -136,5 +132,10 @@ public class MeshRenderList implements IDrawable, Comparator<MeshRenderer>
 		{
 			dirty = true;
 		}
+	}
+
+	void dirtify()
+	{
+		dirty = true;
 	}
 }

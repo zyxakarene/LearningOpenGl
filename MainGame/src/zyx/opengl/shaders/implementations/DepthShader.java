@@ -1,9 +1,11 @@
 package zyx.opengl.shaders.implementations;
 
 import org.lwjgl.util.vector.Matrix4f;
+import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.opengl.shaders.source.ShaderReplacement;
 
-public class DepthShader extends BaseBoneShader
+public class DepthShader extends AbstractShader implements IBoneShader
 {
 
 	public final int QUADRANT_0 = 0;
@@ -26,14 +28,17 @@ public class DepthShader extends BaseBoneShader
 	private int shadowOffsetMinUniform;
 	private int shadowOffsetMaxUniform;
 	private int currentQuadrantUniform;
+	
+	private BoneShaderObject boneShaderObject;
 
 	public DepthShader(Object lock, int boneCount)
 	{
-		super(lock, boneCount);
+		super(lock);
+		boneShaderObject = new BoneShaderObject(boneCount);
 	}
 
 	@Override
-	protected void onPostLoading()
+	protected void postLoading()
 	{
 		modelMatrixTrans = UniformUtils.createUniform(program, "model");
 		projectionViewMatsUniform = UniformUtils.createUniform(program, "projectionViews");
@@ -41,12 +46,15 @@ public class DepthShader extends BaseBoneShader
 		shadowOffsetMinUniform = UniformUtils.createUniform(program, "shadowOffsetMin");
 		shadowOffsetMaxUniform = UniformUtils.createUniform(program, "shadowOffsetMax");
 		currentQuadrantUniform = UniformUtils.createUniform(program, "currentQuadrant");
+		
+		boneShaderObject.postLoading(program);
 	}
 
 	@Override
 	public void upload()
 	{
 		UniformUtils.setUniformMatrix(modelMatrixTrans, MATRIX_MODEL);
+		boneShaderObject.uploadBones();
 	}
 
 	public void uploadSunMatrix()
@@ -111,6 +119,12 @@ public class DepthShader extends BaseBoneShader
 	@Override
 	public String getName()
 	{
-		return "DepthShader_" + boneCount;
+		return "DepthShader_" + boneShaderObject.boneCount;
+	}
+
+	@Override
+	protected ShaderReplacement[] getVertexReplacements()
+	{
+		return boneShaderObject.getVertexReplacements();
 	}
 }

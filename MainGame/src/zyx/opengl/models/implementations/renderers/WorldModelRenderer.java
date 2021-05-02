@@ -51,6 +51,12 @@ public class WorldModelRenderer extends MeshRenderer<WorldModelMaterial, WorldMo
 	{
 		if (model.ready)
 		{
+			if (model.refreshed)
+			{
+				model.refreshed = false;
+				MeshRenderList.getInstance().dirtify();
+			}
+			
 			super.draw();
 		}
 	}
