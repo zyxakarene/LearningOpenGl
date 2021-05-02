@@ -3,6 +3,7 @@ package zyx.logic.converter.smd.vo;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import org.lwjgl.opengl.GL11;
+import zyx.logic.converter.smd.control.json.JsonMeshProperties;
 
 public class MaterialInformation
 {
@@ -36,5 +37,17 @@ public class MaterialInformation
 		out.writeInt(priority);
 		out.writeByte(stencilMode);
 		out.writeInt(stencilLayer);
+	}
+
+	void SetFrom(JsonMeshProperties meshProperties)
+	{
+		zWrite = meshProperties.zWrite;
+		zTest = meshProperties.zTest;
+		culling = meshProperties.culling;
+		blendSrc = meshProperties.blendSrc;
+		blendDst = meshProperties.blendDst;
+		priority = meshProperties.priority;
+		stencilMode = meshProperties.stencilMode;
+		stencilLayer = meshProperties.stencilLayer;
 	}
 }

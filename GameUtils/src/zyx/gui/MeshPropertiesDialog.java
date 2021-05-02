@@ -153,13 +153,13 @@ public class MeshPropertiesDialog extends javax.swing.JDialog
 	private HashMap<String, Integer> zTestToValue = new HashMap<>();
 	private HashMap<String, Integer> cullingToValue = new HashMap<>();
 	private HashMap<String, SimplePoint> blendToValues = new HashMap<>();
-	private HashMap<String, Integer> stencilModeToValue = new HashMap<>();
+	private HashMap<String, Byte> stencilModeToValue = new HashMap<>();
 	private HashMap<String, Integer> stencilLayerToValue = new HashMap<>();
 	
 	private HashMap<Integer, String> valueToZTest = new HashMap<>();
 	private HashMap<Integer, String> valueToCulling = new HashMap<>();
 	private HashMap<SimplePoint, String> valueToBlend = new HashMap<>();
-	private HashMap<Integer, String> valueToStencilMode = new HashMap<>();
+	private HashMap<Byte, String> valueToStencilMode = new HashMap<>();
 	private HashMap<Integer, String> valueToStencilLayer = new HashMap<>();
 	
 	private void buildComboBoxes()
@@ -182,9 +182,9 @@ public class MeshPropertiesDialog extends javax.swing.JDialog
 		addCombo(blendToValues, valueToBlend, blendCombo, "Alpha", new SimplePoint(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA));
 		addCombo(blendToValues, valueToBlend, blendCombo, "Additive", new SimplePoint(GL11.GL_ONE, GL11.GL_ONE));
 		
-		addCombo(stencilModeToValue, valueToStencilMode, stencilModeCombo, "Nothing", 0);
-		addCombo(stencilModeToValue, valueToStencilMode, stencilModeCombo, "Writing", 1);
-		addCombo(stencilModeToValue, valueToStencilMode, stencilModeCombo, "Masking", 2);
+		addCombo(stencilModeToValue, valueToStencilMode, stencilModeCombo, "Nothing", (byte)0);
+		addCombo(stencilModeToValue, valueToStencilMode, stencilModeCombo, "Writing", (byte)1);
+		addCombo(stencilModeToValue, valueToStencilMode, stencilModeCombo, "Masking", (byte)2);
 		
 		addCombo(stencilLayerToValue, valueToStencilLayer, stencilLayerCombo, "Nothing", 0);
 		addCombo(stencilLayerToValue, valueToStencilLayer, stencilLayerCombo, "Player Character", 1 << 0);

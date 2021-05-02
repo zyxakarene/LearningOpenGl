@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import zyx.UtilConstants;
 import zyx.gui.files.FileSelector;
 import zyx.gui.files.FileSelectorType;
+import zyx.logic.UtilsCompiler;
 import zyx.logic.converter.smd.control.json.JsonMesh;
 import zyx.logic.converter.smd.control.json.JsonMeshAnimation;
 
@@ -822,7 +823,8 @@ public class MeshView extends javax.swing.JFrame
 
     private void compileBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_compileBtnActionPerformed
     {//GEN-HEADEREND:event_compileBtnActionPerformed
-        
+        saveBtnActionPerformed(evt);
+		UtilsCompiler.compile(mesh.file);
     }//GEN-LAST:event_compileBtnActionPerformed
 
 

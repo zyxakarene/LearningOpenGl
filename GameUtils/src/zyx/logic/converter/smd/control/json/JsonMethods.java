@@ -61,6 +61,17 @@ class JsonMethods
 		return defaultValue;
 	}
 	
+	static byte getByte(JSONObject json, String name, byte defaultValue)
+	{
+		Object result = json.get(name);
+		if (result instanceof Number)
+		{
+			return ((Number) result).byteValue();
+		}
+		
+		return defaultValue;
+	}
+	
 	static boolean getBoolean(JSONObject json, String name)
 	{
 		return getBoolean(json, name, false);

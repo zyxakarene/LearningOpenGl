@@ -133,4 +133,9 @@ public class MeshRenderList implements IDrawable
 			dirty = true;
 		}
 	}
+
+	void dirtify()
+	{
+		dirty = true;
+	}
 }

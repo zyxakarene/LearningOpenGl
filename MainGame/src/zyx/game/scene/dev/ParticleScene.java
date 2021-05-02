@@ -2,24 +2,15 @@ package zyx.game.scene.dev;
 
 import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.meshbatch.MeshBatchManager;
 import zyx.engine.components.world.World3D;
-import zyx.engine.components.world.WorldObject;
 import zyx.engine.scene.loading.LoadingScreenProcess;
-import zyx.game.behavior.misc.JiggleBehavior;
 import zyx.game.components.MeshObject;
 import zyx.game.components.world.meshbatch.CubeEntity;
 import zyx.game.controls.input.KeyboardData;
 import zyx.opengl.GLUtils;
-import zyx.opengl.buffers.DeferredRenderer;
-import zyx.opengl.buffers.LightingPassRenderer;
 import zyx.opengl.models.implementations.shapes.Box;
-import zyx.opengl.particles.ParticleSystem;
-import zyx.opengl.textures.TextureFromInt;
-import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.FloatMath;
-import zyx.utils.cheats.DebugPoint;
 
 public class ParticleScene extends DebugScene
 {
@@ -38,38 +29,11 @@ public class ParticleScene extends DebugScene
 		preloadResource("sprite_sheet_png");
 		preloadResource("sprite_sheet_json");
 	}
-
-	private int timer = 0;
-	private boolean adding;
 	
 	@Override
 	protected void onUpdate(long timestamp, int elapsedTime)
 	{
 		super.onUpdate(timestamp, elapsedTime);
-		
-		timer += elapsedTime;
-//		if (timer >= 16)
-//		{
-//			index++;
-//			timer = 0;
-//			
-//			if (index >= 15)
-//			{
-//				System.out.println("Switched");
-//				adding = !adding;
-//				index = 0;
-//			}
-//			
-//			if (adding)
-//			{
-//				System.out.println("Added");
-//				DebugPoint addToScene = DebugPoint.addToScene(0, 0, 0, -1);
-//			}
-//			else
-//			{
-//				System.out.println("Removed");
-//			}
-//		}
 		
 		if (KeyboardData.data.wasPressed(Keyboard.KEY_SPACE))
 		{
@@ -139,7 +103,7 @@ public class ParticleScene extends DebugScene
 
 		GLUtils.errorCheck();
 		
-		addLoadingScreenProcess(new AddBoxProcess(world, 20));
+		addLoadingScreenProcess(new AddBoxProcess(world, 20, boxes));
 		
 	}
 
@@ -147,6 +111,11 @@ public class ParticleScene extends DebugScene
 	protected void onDispose()
 	{
 		super.onDispose();
+		
+		for (Box box : boxes)
+		{
+			box.dispose();
+		}
 		
 		MeshBatchManager.getInstance().clean();
 	}
@@ -158,12 +127,14 @@ public class ParticleScene extends DebugScene
 		private final int size;
 		
 		private int counter;
+		private ArrayList<Box> boxes;
 
-		public AddBoxProcess(World3D world, int size)
+		public AddBoxProcess(World3D world, int size, ArrayList<Box> boxes)
 		{
 			super("Adding boxes!");
 			this.world = world;
 			this.size = size;
+			this.boxes = boxes;
 		}
 
 		@Override
@@ -187,6 +158,8 @@ public class ParticleScene extends DebugScene
 					Box box = new Box();
 					box.setPosition(true, x*10f, y*10f, 50f * FloatMath.random());
 					world.addChild(box);
+					
+					boxes.add(box);
 				}
 			}
 		}
@@ -197,6 +170,4 @@ public class ParticleScene extends DebugScene
 			return size * size;
 		}
 	}
-	
-	
 }

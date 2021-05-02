@@ -4,7 +4,6 @@ import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.AbstractTexture;
-import zyx.opengl.textures.TextureFromInt;
 
 public abstract class Material
 {
@@ -23,7 +22,7 @@ public abstract class Material
 	public StencilLayer stencilLayer;
 	
 	protected final AbstractTexture[] textures;
-
+	
 	public Material(Shader shader)
 	{
 		this.shaderType = shader;
@@ -78,10 +77,7 @@ public abstract class Material
 		clone.blend = blend;
 		
 		int textureCount = textures.length;
-		for (int i = 0; i < textureCount; i++)
-		{
-			clone.textures[i] = textures[i];
-		}
+		System.arraycopy(textures, 0, clone.textures, 0, textureCount);
 		
 		return clone;
 	}
@@ -93,5 +89,20 @@ public abstract class Material
 
 	protected abstract int getTextureCount();
 	protected abstract Material createInstance();
-
+	
+	public void copyFrom(Material source)
+	{
+		this.zWrite = source.zWrite;
+		this.zTest = source.zTest;
+		this.culling = source.culling;
+		this.blend = source.blend;
+		this.queue = source.queue;
+		this.priority = source.priority;
+		this.shaderType = source.shaderType;
+		this.shader = source.shader;
+		this.stencilMode = source.stencilMode;
+		this.stencilLayer = source.stencilLayer;
+		
+		System.arraycopy(source.textures, 0, textures, 0, textures.length);
+	}
 }

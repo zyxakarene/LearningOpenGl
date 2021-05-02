@@ -39,6 +39,7 @@ public class WorldModel extends AbstractModel<WorldModelMaterial> implements ISh
 	private int boneCount;
 	
 	public boolean ready;
+	public boolean refreshed;
 	
 	public WorldModel(AbstractLoadableModelVO vo)
 	{
@@ -60,8 +61,23 @@ public class WorldModel extends AbstractModel<WorldModelMaterial> implements ISh
 		radiusCenter = vo.radiusCenter;
 		radius = vo.radius;
 		
-		defaultMaterial = vo.material;
-		shadowMaterial = vo.shadowMaterial;
+		if (defaultMaterial == null)
+		{
+			defaultMaterial = vo.material;
+		}
+		else
+		{
+			defaultMaterial.copyFrom(vo.material);
+		}
+		
+		if (shadowMaterial == null)
+		{
+			shadowMaterial = vo.shadowMaterial;
+		}
+		else
+		{
+			shadowMaterial.copyFrom(vo.shadowMaterial);
+		}
 
 		bindVao();
 
@@ -73,6 +89,7 @@ public class WorldModel extends AbstractModel<WorldModelMaterial> implements ISh
 
 		setVertexData(vo.vertexData, vo.elementData);
 		
+		refreshed = true;
 		ready = true;
 	}
 

@@ -49,5 +49,6 @@ class MaterialObject implements IMaterialObject
 		material.priority = priority;
 		material.stencilMode = stencilMode;
 		material.stencilLayer = stencilLayer;
+		material.queue = (blend == BlendMode.NORMAL) ? RenderQueue.OPAQUE : RenderQueue.TRANSPARENT;
 	}
 }

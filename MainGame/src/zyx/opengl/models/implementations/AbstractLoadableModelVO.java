@@ -29,6 +29,8 @@ public abstract class AbstractLoadableModelVO<TMaterial extends WorldModelMateri
 		Shader.DEPTH_4,
 	};
 	
+	private IMaterialObject materialInfo;
+	
 	float vertexData[];
 	int elementData[];
 	Skeleton skeleton;
@@ -61,6 +63,11 @@ public abstract class AbstractLoadableModelVO<TMaterial extends WorldModelMateri
 		this.shadowShader = SHADOW_SHADERS[boneCount];
 		
 		createMaterials();
+		
+		if (materialInfo != null)
+		{
+			materialInfo.applyTo(material);
+		}
 	}
 	
 	public void asMeshBatch()
@@ -69,6 +76,11 @@ public abstract class AbstractLoadableModelVO<TMaterial extends WorldModelMateri
 		this.shadowShader = Shader.MESH_BATCH_DEPTH;
 		
 		createMaterials();
+		
+		if (materialInfo != null)
+		{
+			materialInfo.applyTo(material);
+		}
 	}
 	
 	public void asSkybox()
@@ -77,6 +89,11 @@ public abstract class AbstractLoadableModelVO<TMaterial extends WorldModelMateri
 		this.shadowShader = Shader.DEPTH_1;
 		
 		createMaterials();
+		
+		if (materialInfo != null)
+		{
+			materialInfo.applyTo(material);
+		}
 	}
 	
 	protected abstract void createMaterials();
@@ -175,14 +192,6 @@ public abstract class AbstractLoadableModelVO<TMaterial extends WorldModelMateri
 
 	public void setMaterialData(IMaterialObject info)
 	{
-		if (material != null)
-		{
-			info.applyTo(material);
-		}
-		
-		if (shadowMaterial != null)
-		{
-			info.applyTo(shadowMaterial);
-		}
+		materialInfo = info;
 	}
 }
