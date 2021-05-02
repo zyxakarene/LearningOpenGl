@@ -15,6 +15,7 @@ import static org.lwjgl.opengl.GL30.glCheckFramebufferStatus;
 import static org.lwjgl.opengl.GL30.glFramebufferRenderbuffer;
 import static org.lwjgl.opengl.GL30.glRenderbufferStorage;
 import static org.lwjgl.opengl.GL30.glGenRenderbuffers;
+import org.lwjgl.util.vector.Vector2f;
 import zyx.engine.utils.ScreenSize;
 
 public abstract class BaseFrameBuffer
@@ -43,6 +44,11 @@ public abstract class BaseFrameBuffer
 		h = (int) (height * renderScale);
 	}
 
+	public Vector2f GetSize()
+	{
+		return new Vector2f(w, h);
+	}
+	
 	void initialize()
 	{
 		bufferId = GL30.glGenFramebuffers();

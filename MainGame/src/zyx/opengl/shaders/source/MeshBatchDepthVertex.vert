@@ -14,8 +14,6 @@ uniform mat4 projectionViews[SHADOW_QUADRANTS];
 
 uniform int currentQuadrant;
 uniform vec2 shadowOffsets;
-uniform vec2 shadowOffsetMin;
-uniform vec2 shadowOffsetMax;
 
 void main()
 {
@@ -31,8 +29,9 @@ void main()
 
 	float relocatedX = (glView.x / 2) + shadowOffsets.x;
 	float relocatedY = (glView.y / 2) + shadowOffsets.y;
-	glView.x = clamp(relocatedX, shadowOffsetMin.x, shadowOffsetMax.x);
-	glView.y = clamp(relocatedY, shadowOffsetMin.y, shadowOffsetMax.y);
+
+	glView.x = relocatedX;
+	glView.y = relocatedY;
 
     gl_Position = glView;
 }

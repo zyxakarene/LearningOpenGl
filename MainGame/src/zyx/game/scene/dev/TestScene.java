@@ -18,8 +18,8 @@ import zyx.utils.GameConstants;
 public class TestScene extends DebugScene
 {
 
-	private AnimatedMesh mesh;
-	private FoodItem box;
+	private Box floor;
+	private Box box;
 
 	public TestScene()
 	{
@@ -35,19 +35,15 @@ public class TestScene extends DebugScene
 	{
 		addPlayerControls();
 
-		mesh = new AnimatedMesh();
-		mesh.load("mesh.character");
-		world.addChild(mesh);
-		mesh.setAnimation("idleCarry");
+		floor = new Box(400, 400, 10);
+		world.addChild(floor);
 		
 		
-		box = new FoodItem(DishType.STEAK);
-		box.load();
-		mesh.addChildAsAttachment(box, "bone_carry");
+		box = new Box();
+		box.setZ(20);
+		world.addChild(box);
 		
-		picker.addObject(mesh, new OnTeaPotClicked());
-		
-		objects.add(mesh);
+		objects.add(floor);
 		objects.add(box);
 	}
 
@@ -55,33 +51,5 @@ public class TestScene extends DebugScene
 	protected void onUpdate(long timestamp, int elapsedTime)
 	{
 		super.onUpdate(timestamp, elapsedTime);
-
-		if (KeyboardData.data.isDown(Keyboard.KEY_SPACE))
-		{
-			LightingPassRenderer lightRenderer = LightingPassRenderer.getInstance();
-			mesh.cloneMaterial().setDiffuse(new TextureFromInt(128, 128, lightRenderer.outputInt(), TextureSlot.SHARED_DIFFUSE));
-		}
-		
-		Vector3f pos = mesh.getPosition(true, null);
-		
-		if (KeyboardData.data.isDown(Keyboard.KEY_RIGHT))
-		{
-			pos.x += 1f;
-		}
-		else if	(KeyboardData.data.isDown(Keyboard.KEY_LEFT))
-		{
-			pos.x -= 1f;
-		}
-		
-		if (KeyboardData.data.isDown(Keyboard.KEY_UP))
-		{
-			pos.z += 1f;
-		}
-		else if	(KeyboardData.data.isDown(Keyboard.KEY_DOWN))
-		{
-			pos.z -= 1f;
-		}
-		
-		mesh.setPosition(true, pos);
 	}
 }

@@ -1,8 +1,12 @@
 package zyx.opengl.shaders.implementations;
 
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
+import zyx.engine.utils.ScreenSize;
+import zyx.opengl.buffers.DepthRenderer;
 import zyx.opengl.shaders.AbstractShader;
 import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.utils.math.Vector2Int;
 
 public class MeshBatchDepthShader extends AbstractShader
 {
@@ -25,12 +29,22 @@ public class MeshBatchDepthShader extends AbstractShader
 	private int shadowOffsetMinUniform;
 	private int shadowOffsetMaxUniform;
 	private int currentQuadrantUniform;
+	
+	private Vector2f DepthSize;
 
 	public MeshBatchDepthShader(Object lock)
 	{
 		super(lock);
+		
+		DepthSize = DepthRenderer.getInstance().GetSize();
+		ScreenSize.addListener(this::OnScreenChangedSize);
 	}
 
+	private void OnScreenChangedSize(Vector2Int size)
+	{
+		DepthSize = DepthRenderer.getInstance().GetSize();
+	}
+	
 	@Override
 	protected void postLoading()
 	{
@@ -58,6 +72,9 @@ public class MeshBatchDepthShader extends AbstractShader
 		
 		UniformUtils.setUniformInt(currentQuadrantUniform, quadrant);
 		
+		float w = DepthSize.x;
+		float h = DepthSize.y;
+		
 		//0  1
 		//2  3
 		switch (quadrant)
@@ -65,29 +82,29 @@ public class MeshBatchDepthShader extends AbstractShader
 			case QUADRANT_0:
 			{
 				UniformUtils.setUniform2F(shadowOffsetsUniform, -0.5f, 0.5f);
-				UniformUtils.setUniform2F(shadowOffsetMinUniform, -1f, 0f);
-				UniformUtils.setUniform2F(shadowOffsetMaxUniform, 0f, 1f);
+				UniformUtils.setUniform2F(shadowOffsetMinUniform, 0f, h/2f);
+				UniformUtils.setUniform2F(shadowOffsetMaxUniform, w/2f, h);
 				break;
 			}
 			case QUADRANT_1:
 			{
 				UniformUtils.setUniform2F(shadowOffsetsUniform, 0.5f, 0.5f);
-				UniformUtils.setUniform2F(shadowOffsetMinUniform, 0f, 0f);
-				UniformUtils.setUniform2F(shadowOffsetMaxUniform, 1f, 1f);
+				UniformUtils.setUniform2F(shadowOffsetMinUniform, w/2f, h/2f);
+				UniformUtils.setUniform2F(shadowOffsetMaxUniform, w, h);
 				break;
 			}
 			case QUADRANT_2:
 			{
 				UniformUtils.setUniform2F(shadowOffsetsUniform, -0.5f, -0.5f);
-				UniformUtils.setUniform2F(shadowOffsetMinUniform, -1f, -1f);
-				UniformUtils.setUniform2F(shadowOffsetMaxUniform, 0f, 0f);
+				UniformUtils.setUniform2F(shadowOffsetMinUniform, 0f, 0f);
+				UniformUtils.setUniform2F(shadowOffsetMaxUniform, w/2f, h/2f);
 				break;
 			}
 			case QUADRANT_3:
 			{
 				UniformUtils.setUniform2F(shadowOffsetsUniform, 0.5f, -0.5f);
-				UniformUtils.setUniform2F(shadowOffsetMinUniform, 0f, -1f);
-				UniformUtils.setUniform2F(shadowOffsetMaxUniform, 1f, 0f);
+				UniformUtils.setUniform2F(shadowOffsetMinUniform, w/2f, 0f);
+				UniformUtils.setUniform2F(shadowOffsetMaxUniform, w, h/2f);
 				break;
 			}
 		}

@@ -29,7 +29,7 @@ void main()
 	else
 	{
 		// parameters (you'd probably want to use them as uniforms to more easily tweak the effect)
-		int kernelSize = 32;
+		int kernelSize = 64;
 		float radius = 0.8;
 		float bias = 0.025;
 
