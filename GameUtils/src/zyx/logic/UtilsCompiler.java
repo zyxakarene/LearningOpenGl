@@ -23,9 +23,15 @@ public class UtilsCompiler
 			for (int i = 0; i < len; i++)
 			{
 				File inputJson = files[i];
-				JsonMesh mesh = new JsonMesh(inputJson);
-				new SmdParser(mesh).parseFiles();
-
+				if (inputJson.exists())
+				{
+					JsonMesh mesh = new JsonMesh(inputJson);
+					new SmdParser(mesh).parseFiles();
+				}
+				else
+				{
+					logArea.append("Missing file: " + inputJson.getAbsolutePath() + "\n");
+				}
 				logArea.append("=====\n");
 			}
 		}

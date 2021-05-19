@@ -12,7 +12,7 @@ import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 class FileWatcher implements Runnable
 {
 
-	private boolean active = true;
+	private boolean active;
 
 	private final IFileUpdated updater;
 
@@ -30,15 +30,25 @@ class FileWatcher implements Runnable
 
 		try
 		{
-			Path path = new File(folderPath).toPath();
-
-			watcher = FileSystems.getDefault().newWatchService();
-			path.register(watcher, ENTRY_CREATE, ENTRY_MODIFY);
+			File folder = new File(folderPath);
+			
+			if (folder.exists())
+			{
+				Path path = new File(folderPath).toPath();
+				watcher = FileSystems.getDefault().newWatchService();
+				path.register(watcher, ENTRY_CREATE, ENTRY_MODIFY);
+			}
+			else
+			{
+				UtilsLogger.log("Folder does not exist: " + folderPath);
+			}
 		}
 		catch (IOException ex)
 		{
 			UtilsLogger.log("Could not create watcher", ex);
 		}
+		
+		active = watcher != null;
 	}
 
 	@Override

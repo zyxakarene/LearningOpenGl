@@ -58,6 +58,12 @@ public class JsonTree extends JTree
 	private void addSubFiles(JsonTreeNode node, ArrayList<File> fileList)
 	{
 		File file = node.file;
+		
+		if (file.exists() == false)
+		{
+			return;
+		}
+		
 		if (file.isDirectory())
 		{
 			int length = node.getChildCount();

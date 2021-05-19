@@ -28,7 +28,10 @@ public class JsonTreeCellRenderer extends DefaultTreeCellRenderer
 	{
 		if (value instanceof JsonTreeNode)
 		{
-			String name = ((JsonTreeNode) value).file.getName();
+			File nodeFile = ((JsonTreeNode) value).file;
+			leaf = nodeFile.isFile();
+			
+			String name = nodeFile.getName();
 			if (name.contains("skeleton"))
 			{
 				setLeafIcon(skeleton);
@@ -38,6 +41,7 @@ public class JsonTreeCellRenderer extends DefaultTreeCellRenderer
 				setLeafIcon(mesh);
 			}
 		}
+		
 		return super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus); //To change body of generated methods, choose Tools | Templates.
 	}
 

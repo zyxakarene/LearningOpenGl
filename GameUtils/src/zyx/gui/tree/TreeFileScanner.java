@@ -17,6 +17,11 @@ class TreeFileScanner
 		File baseFolder = new File(UtilConstants.MESH_FOLDER);
 		JsonTreeNode root = new JsonTreeNode(baseFolder);
 		
+		if (baseFolder.exists() == false)
+		{
+			return root;
+		}
+		
 		File[] children = baseFolder.listFiles(FILTER);
 		Arrays.sort(children, COMPARATOR);
 		for (File child : children)
