@@ -22,19 +22,19 @@ public class ZafLoader
 			ZafObject obj = new ZafObject();
 			obj.read(in, builder);
 
-			PhysBox phys = createPhysBox(obj.physInformation);
+			PhysBox phys = createPhysBox(obj.subMeshes[0].physInformation);
 
 			builder.append("========");
 			Print.out(builder);
 
 			LoadableWorldModelVO vo = new LoadableWorldModelVO();
-			vo.setBoneCount(obj.boneCount);
-			vo.setVertexData(obj.vertexData, obj.elementData);
+			vo.setBoneCount(obj.subMeshes[0].boneCount);
+			vo.setVertexData(obj.subMeshes[0].vertexData, obj.subMeshes[0].elementData);
 			vo.setPhysBox(phys);
-			vo.setTextureIds(obj.diffuseTexture, obj.normalTexture, obj.specularTexture);
+			vo.setTextureIds(obj.subMeshes[0].diffuseTexture, obj.subMeshes[0].normalTexture, obj.subMeshes[0].specularTexture);
 			vo.setRadius(obj.radiusCenter, obj.radius);
 			vo.setSkeletonId(obj.skeletonId);
-			vo.setMaterialData(obj.materialInformation);
+			vo.setMaterialData(obj.subMeshes[0].materialInformation);
 			
 			return vo;
 			

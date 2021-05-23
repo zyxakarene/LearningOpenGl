@@ -1,5 +1,16 @@
 zaf
 {
+	byte							SubMeshCount
+	SubMesh[SubMeshCount]			SubMeshes
+	
+	Vector3F						CenterPosition
+	float							radius
+	
+	UtfString						skeleton
+}
+
+SubMesh
+{
 	byte							bonesPerVertexCount
 	
 	int								vertexCount
@@ -14,10 +25,6 @@ zaf
 	UtfString						normalTexture
 	UtfString						specularTexture
 	
-	Vector3F						CenterPosition
-	float							radius
-	
-	UtfString						skeleton
 	MaterialInformation				materialInfo
 }
 

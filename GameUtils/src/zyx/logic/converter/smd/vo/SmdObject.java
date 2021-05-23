@@ -189,25 +189,33 @@ public class SmdObject
 
 	private void saveAsMesh(DataOutputStream out) throws IOException
 	{
-		out.writeByte(maxBoneCount);
-
-		out.writeInt(verticies.size());
-		for (Vertex vertex : verticies)
+		byte subMeshCount = 1;
+		out.write(subMeshCount);
+		
+		for (int i = 0; i < subMeshCount; i++)
 		{
-			vertex.save(out);
+			out.writeByte(maxBoneCount);
+
+			out.writeInt(verticies.size());
+			for (Vertex vertex : verticies)
+			{
+				vertex.save(out);
+			}
+
+			out.writeInt(elements.size());
+			for (Integer element : elements)
+			{
+				out.writeShort(element);
+			}
+
+			phys.save(out);
+
+			out.writeUTF(diffuseTexturePath);
+			out.writeUTF(normalTexturePath);
+			out.writeUTF(specularTexturePath);
+			
+			materialInfo.save(out);
 		}
-
-		out.writeInt(elements.size());
-		for (Integer element : elements)
-		{
-			out.writeShort(element);
-		}
-
-		phys.save(out);
-
-		out.writeUTF(diffuseTexturePath);
-		out.writeUTF(normalTexturePath);
-		out.writeUTF(specularTexturePath);
 
 		out.writeFloat(radiusCenter.x);
 		out.writeFloat(radiusCenter.y);
@@ -215,8 +223,6 @@ public class SmdObject
 		out.writeFloat(radius);
 
 		out.writeUTF(skeletonPath);
-		
-		materialInfo.save(out);
 	}
 
 	public void setMaterialInfo(JsonMeshProperties meshProperties)
