@@ -208,14 +208,14 @@ public class SmdObject
 				out.writeShort(element);
 			}
 
-			phys.save(out);
-
 			out.writeUTF(diffuseTexturePath);
 			out.writeUTF(normalTexturePath);
 			out.writeUTF(specularTexturePath);
 			
 			materialInfo.save(out);
 		}
+		
+		phys.save(out);
 
 		out.writeFloat(radiusCenter.x);
 		out.writeFloat(radiusCenter.y);
