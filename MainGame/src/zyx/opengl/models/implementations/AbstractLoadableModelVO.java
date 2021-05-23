@@ -6,6 +6,7 @@ import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 
 public abstract class AbstractLoadableModelVO<TMaterial extends WorldModelMaterial>
 {
+	public final int subMeshCount;
 	AbstractLoadableSubMeshModelVO<TMaterial>[] subMeshes;
 	
 	String skeletonId;
@@ -16,6 +17,8 @@ public abstract class AbstractLoadableModelVO<TMaterial extends WorldModelMateri
 
 	public AbstractLoadableModelVO(int subMeshCount)
 	{
+		this.subMeshCount = subMeshCount;
+		
 		subMeshes = new AbstractLoadableSubMeshModelVO[subMeshCount];
 		for (int i = 0; i < subMeshCount; i++)
 		{
@@ -25,7 +28,7 @@ public abstract class AbstractLoadableModelVO<TMaterial extends WorldModelMateri
 	
 	protected abstract AbstractLoadableSubMeshModelVO<TMaterial> createSubMeshVO();
 	
-	public ISubMeshBuilder getSubMeshBuilder(int index)
+	public ISubMeshVO getSubMeshVO(int index)
 	{
 		return subMeshes[index];
 	}
@@ -58,6 +61,12 @@ public abstract class AbstractLoadableModelVO<TMaterial extends WorldModelMateri
 	{
 		this.skeletonId = skeletonId;
 	}
+
+	public String getSkeletonId()
+	{
+		return skeletonId;
+	}
+	
 
 	public void setSkeleton(Skeleton skeleton)
 	{

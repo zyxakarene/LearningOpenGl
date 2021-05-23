@@ -5,6 +5,7 @@ import zyx.engine.resources.impl.sub.BaseRequiredSubResource;
 import zyx.engine.resources.impl.sub.ISubResourceLoaded;
 import zyx.engine.resources.impl.sub.SubResourceBatch;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
+import zyx.opengl.models.implementations.ISubMeshVO;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
@@ -49,26 +50,33 @@ public class MeshResource extends BaseRequiredSubResource implements ITaskComple
 	{
 		loadedVo = data;
 
-		String diffuse = loadedVo.getDiffuseTextureId();
-		String normal = loadedVo.getNormalTextureId();
-		String specular = loadedVo.getSpecularTextureId();
+		for (int i = 0; i < loadedVo.subMeshCount; i++)
+		{
+			ISubMeshVO subMesh = loadedVo.getSubMeshVO(i);
+			String[] textureIds = subMesh.GetTextureIds();
+			
+			SubResourceBatch<AbstractTexture> textureBatch = new SubResourceBatch(textureLoaded, textureIds);
+			addResourceBatch(textureBatch);
+		}
 
 		String skeleton = loadedVo.getSkeletonId();
 
-		SubResourceBatch<AbstractTexture> textureBatch = new SubResourceBatch(textureLoaded, diffuse, normal, specular);
 		SubResourceBatch<Skeleton> skeletonBatch = new SubResourceBatch(skeletonLoaded, skeleton);
-		addResourceBatch(textureBatch, skeletonBatch);
+		addResourceBatch(skeletonBatch);
 	}
 
 	private void onTextureLoaded(ArrayList<AbstractTexture> data)
 	{
-		AbstractTexture diffuse = data.get(0);
-		AbstractTexture normal = data.get(1);
-		AbstractTexture spec = data.get(2);
-
-		loadedVo.setDiffuseTexture(diffuse);
-		loadedVo.setNormalTexture(normal);
-		loadedVo.setSpecularTexture(spec);
+		for (int i = 0; i < loadedVo.subMeshCount; i++)
+		{
+			int offset = i * 3;
+			AbstractTexture diffuse = data.get(offset + 0);
+			AbstractTexture normal = data.get(offset + 1);
+			AbstractTexture spec = data.get(offset + 2);
+			
+			ISubMeshVO subMesh = loadedVo.getSubMeshVO(i);
+			subMesh.setTextures(diffuse, normal, spec);
+		}
 	}
 
 	private void onSkeletonLoaded(ArrayList<Skeleton> data)

@@ -5,6 +5,7 @@ import zyx.engine.resources.impl.sub.BaseRequiredSubResource;
 import zyx.engine.resources.impl.sub.ISubResourceLoaded;
 import zyx.engine.resources.impl.sub.SubResourceBatch;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
+import zyx.opengl.models.implementations.ISubMeshVO;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.MeshBatchModel;
 import zyx.opengl.models.implementations.renderers.MeshBatchRenderer;
@@ -57,24 +58,29 @@ public class MeshBatchResource extends BaseRequiredSubResource implements ISubRe
 	{
 		loadedVo = data;
 
-		String diffuse = loadedVo.getDiffuseTextureId();
-		String normal = loadedVo.getNormalTextureId();
-		String specular = loadedVo.getSpecularTextureId();
-
-		SubResourceBatch<AbstractTexture> textureBatch = new SubResourceBatch(this, diffuse, normal, specular);
-		addResourceBatch(textureBatch);
+		for (int i = 0; i < loadedVo.subMeshCount; i++)
+		{
+			ISubMeshVO subMesh = loadedVo.getSubMeshVO(i);
+			String[] textures = subMesh.GetTextureIds();
+			
+			SubResourceBatch<AbstractTexture> textureBatch = new SubResourceBatch(this, textures);
+			addResourceBatch(textureBatch);
+		}
 	}
 
 	@Override
 	public void onLoaded(ArrayList<AbstractTexture> data)
 	{
-		AbstractTexture diffuse = data.get(0);
-		AbstractTexture normal = data.get(1);
-		AbstractTexture spec = data.get(2);
-
-		loadedVo.setDiffuseTexture(diffuse);
-		loadedVo.setNormalTexture(normal);
-		loadedVo.setSpecularTexture(spec);
+		for (int i = 0; i < loadedVo.subMeshCount; i++)
+		{
+			int offset = i * 3;
+			AbstractTexture diffuse = data.get(offset + 0);
+			AbstractTexture normal = data.get(offset + 1);
+			AbstractTexture spec = data.get(offset + 2);
+			
+			ISubMeshVO subMesh = loadedVo.getSubMeshVO(i);
+			subMesh.setTextures(diffuse, normal, spec);
+		}
 	}
 
 	@Override

@@ -4,7 +4,7 @@ import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.models.loading.meshes.IMaterialObject;
 import zyx.opengl.textures.AbstractTexture;
 
-public interface ISubMeshBuilder
+public interface ISubMeshVO
 {
 	public void setBoneCount(int boneCount);
 	
@@ -17,4 +17,18 @@ public interface ISubMeshBuilder
 	public void setTextures(AbstractTexture diffuse, AbstractTexture normal, AbstractTexture specular);
 
 	public void setMaterialData(IMaterialObject materialInformation);
+	
+	public String[] GetTextureIds();
+	
+	public String getDiffuseTextureId();
+
+	public String getNormalTextureId();
+
+	public String getSpecularTextureId();
+	
+	public void setDiffuseTexture(AbstractTexture diffuse);
+
+	public void setNormalTexture(AbstractTexture normal);
+
+	public void setSpecularTexture(AbstractTexture specular);
 }

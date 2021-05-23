@@ -5,6 +5,7 @@ import zyx.engine.resources.impl.sub.BaseRequiredSubResource;
 import zyx.engine.resources.impl.sub.SubResourceBatch;
 import java.util.ArrayList;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
+import zyx.opengl.models.implementations.ISubMeshVO;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.SkyboxModel;
 import zyx.opengl.models.implementations.renderers.SkyboxRenderer;
@@ -75,8 +76,13 @@ public class SkyboxResource extends BaseRequiredSubResource implements ISubResou
 	{
 		loadedVo = data;
 		
-		String diffuse = loadedVo.getDiffuseTextureId();
-		addResourceBatch(new SubResourceBatch(this, diffuse));
+		for (int i = 0; i < loadedVo.subMeshCount; i++)
+		{
+			ISubMeshVO subMesh = loadedVo.getSubMeshVO(i);
+			String diffuse = subMesh.getDiffuseTextureId();
+			
+			addResourceBatch(new SubResourceBatch(this, diffuse));
+		}
 	}
 	
 	@Override
@@ -88,7 +94,12 @@ public class SkyboxResource extends BaseRequiredSubResource implements ISubResou
 	@Override
 	public void onLoaded(ArrayList<AbstractTexture> data)
 	{
-		loadedVo.setDiffuseTexture(data.get(0));
+		for (int i = 0; i < loadedVo.subMeshCount; i++)
+		{
+			ISubMeshVO subMesh = loadedVo.getSubMeshVO(i);
+			subMesh.setDiffuseTexture(data.get(i));
+		}
+
 		model = new SkyboxModel(loadedVo);
 	}
 	

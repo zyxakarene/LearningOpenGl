@@ -1,13 +1,13 @@
 package zyx.opengl.models.loading.meshes;
 
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
-import zyx.opengl.models.implementations.ISubMeshBuilder;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.models.loading.meshes.fallback.FakeMesh;
 import zyx.utils.PrintBuilder;
 import zyx.utils.cheats.Print;
+import zyx.opengl.models.implementations.ISubMeshVO;
 
 public class ZafLoader
 {
@@ -32,7 +32,7 @@ public class ZafLoader
 			for (int i = 0; i < obj.subMeshCount; i++)
 			{
 				SubMeshObject subMesh = obj.subMeshes[i];
-				ISubMeshBuilder meshBuilder = vo.getSubMeshBuilder(i);
+				ISubMeshVO meshBuilder = vo.getSubMeshVO(i);
 				
 				meshBuilder.setBoneCount(subMesh.boneCount);
 				meshBuilder.setVertexData(subMesh.vertexData, subMesh.elementData);
