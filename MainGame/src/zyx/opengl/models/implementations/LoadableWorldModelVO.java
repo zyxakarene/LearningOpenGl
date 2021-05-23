@@ -1,15 +1,18 @@
 package zyx.opengl.models.implementations;
 
-import zyx.opengl.materials.impl.DepthMaterial;
 import zyx.opengl.materials.impl.WorldModelMaterial;
 
 public class LoadableWorldModelVO extends AbstractLoadableModelVO<WorldModelMaterial>
 {
+
+	public LoadableWorldModelVO(int subMeshCount)
+	{
+		super(subMeshCount);
+	}
 	
 	@Override
-	protected void createMaterials()
+	protected AbstractLoadableSubMeshModelVO<WorldModelMaterial> createSubMeshVO()
 	{
-		material = new WorldModelMaterial(worldShader);
-		shadowMaterial = new DepthMaterial(shadowShader);
+		return new LoadableWorldSubMeshModelVO();
 	}
 }

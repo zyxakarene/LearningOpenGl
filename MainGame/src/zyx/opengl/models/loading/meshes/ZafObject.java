@@ -7,6 +7,7 @@ import zyx.utils.PrintBuilder;
 
 class ZafObject
 {
+	int subMeshCount;
 	SubMeshObject[] subMeshes;
 	
 	Vector3f radiusCenter;
@@ -16,7 +17,7 @@ class ZafObject
 	
 	public void read(DataInputStream in, PrintBuilder builder) throws IOException
 	{
-		int subMeshCount = in.readByte();
+		subMeshCount = in.readByte();
 		subMeshes = new SubMeshObject[subMeshCount];
 		
 		builder.append("↳", "Submeshes:", subMeshCount);

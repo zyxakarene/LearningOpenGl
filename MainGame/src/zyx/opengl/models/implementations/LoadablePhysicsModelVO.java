@@ -1,15 +1,18 @@
 package zyx.opengl.models.implementations;
 
-import zyx.opengl.materials.impl.DepthMaterial;
 import zyx.opengl.materials.impl.PhysicsModelMaterial;
 
 public class LoadablePhysicsModelVO extends AbstractLoadableModelVO<PhysicsModelMaterial>
 {
-	
-	@Override
-	protected void createMaterials()
+
+	public LoadablePhysicsModelVO(int subMeshCount)
 	{
-		material = new PhysicsModelMaterial(worldShader);
-		shadowMaterial = new DepthMaterial(shadowShader);
+		super(subMeshCount);
+	}
+
+	@Override
+	protected AbstractLoadableSubMeshModelVO<PhysicsModelMaterial> createSubMeshVO()
+	{
+		return new LoadablePhysicsSubMeshModelVO();
 	}
 }

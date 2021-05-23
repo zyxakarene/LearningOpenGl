@@ -1,6 +1,7 @@
 package zyx.opengl.models.loading.meshes;
 
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
+import zyx.opengl.models.implementations.ISubMeshBuilder;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 
 import zyx.opengl.models.implementations.physics.PhysBox;
@@ -27,14 +28,21 @@ public class ZafLoader
 			builder.append("========");
 			Print.out(builder);
 
-			LoadableWorldModelVO vo = new LoadableWorldModelVO();
-			vo.setBoneCount(obj.subMeshes[0].boneCount);
-			vo.setVertexData(obj.subMeshes[0].vertexData, obj.subMeshes[0].elementData);
-			vo.setPhysBox(phys);
-			vo.setTextureIds(obj.subMeshes[0].diffuseTexture, obj.subMeshes[0].normalTexture, obj.subMeshes[0].specularTexture);
-			vo.setRadius(obj.radiusCenter, obj.radius);
+			LoadableWorldModelVO vo = new LoadableWorldModelVO(obj.subMeshCount);
+			for (int i = 0; i < obj.subMeshCount; i++)
+			{
+				SubMeshObject subMesh = obj.subMeshes[i];
+				ISubMeshBuilder meshBuilder = vo.getSubMeshBuilder(i);
+				
+				meshBuilder.setBoneCount(subMesh.boneCount);
+				meshBuilder.setVertexData(subMesh.vertexData, subMesh.elementData);
+				meshBuilder.setPhysBox(phys);
+				meshBuilder.setTextureIds(subMesh.diffuseTexture, subMesh.normalTexture, subMesh.specularTexture);
+				meshBuilder.setMaterialData(subMesh.materialInformation);
+			}
+			
 			vo.setSkeletonId(obj.skeletonId);
-			vo.setMaterialData(obj.subMeshes[0].materialInformation);
+			vo.setRadius(obj.radiusCenter, obj.radius);
 			
 			return vo;
 			
