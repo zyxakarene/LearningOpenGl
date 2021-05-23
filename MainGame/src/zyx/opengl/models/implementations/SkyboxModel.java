@@ -18,10 +18,12 @@ public class SkyboxModel extends AbstractMultiModel<WorldModelMaterial>
 
 	public SkyboxModel(LoadableWorldModelVO vo)
 	{
-		setup();
 		setSubMeshCount(vo.subMeshCount);
-		
 		boneCounts = new int[vo.subMeshCount];
+		
+		setDefaultMaterials(vo.getDefaultMaterials());
+		
+		createObjects();
 
 		for (int i = 0; i < subMeshCount; i++)
 		{
@@ -29,6 +31,8 @@ public class SkyboxModel extends AbstractMultiModel<WorldModelMaterial>
 			boneCounts[i] = subMesh.boneCount;
 			setVertexData(i, subMesh.vertexData, subMesh.elementData);
 		}
+		
+		setupAttributes();
 	}
 
 	@Override

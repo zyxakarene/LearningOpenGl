@@ -31,7 +31,8 @@ public class Text extends AbstractSingleModel<BitmapTextMaterial>
 	public Text(BitmapTextMaterial material, float fontScale, float width, float height)
 	{
 		super(material);
-		setup();
+		createObjects();
+		setupAttributes();
 		
 		this.fontScale = fontScale;
 		this.width = width;

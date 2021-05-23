@@ -83,6 +83,8 @@ public class SkyboxResource extends BaseRequiredSubResource implements ISubResou
 			
 			addResourceBatch(new SubResourceBatch(this, diffuse));
 		}
+		
+		loadBatches();
 	}
 	
 	@Override

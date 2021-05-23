@@ -25,7 +25,8 @@ public class ScreenModel extends AbstractSingleModel<ScreenModelMaterial>
 	public ScreenModel(ScreenModelMaterial material)
 	{
 		super(material);
-		setup();
+		createObjects();
+		setupAttributes();
 	}
 	
 	@Override

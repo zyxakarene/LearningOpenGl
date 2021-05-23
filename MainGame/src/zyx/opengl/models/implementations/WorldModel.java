@@ -38,10 +38,7 @@ public class WorldModel extends AbstractMultiModel<WorldModelMaterial> implement
 	
 	public WorldModel(AbstractLoadableModelVO vo)
 	{
-		setSubMeshCount(vo.subMeshCount);
-		
 		refresh(vo);
-		setup();
 	}
 
 	public void refresh(AbstractLoadableModelVO vo)
@@ -53,6 +50,7 @@ public class WorldModel extends AbstractMultiModel<WorldModelMaterial> implement
 		
 		setSubMeshCount(vo.subMeshCount);
 		setDefaultMaterials(vo.getDefaultMaterials());
+		createObjects();
 		
 		shaderData = new WorldModelShaderData[vo.subMeshCount];
 		for (int i = 0; i < vo.subMeshCount; i++)
@@ -71,7 +69,7 @@ public class WorldModel extends AbstractMultiModel<WorldModelMaterial> implement
 		}
 		
 		setupAttributes();
-		
+
 		refreshed = true;
 		ready = true;
 	}

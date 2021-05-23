@@ -70,12 +70,26 @@ public abstract class AbstractLoadableSubMeshModelVO<TMaterial extends WorldMode
 	{
 		this.worldShader = Shader.MESH_BATCH;
 		this.shadowShader = Shader.MESH_BATCH_DEPTH;
+		
+		createMaterials();
+
+		if (materialInfo != null)
+		{
+			materialInfo.applyTo(material);
+		}
 	}
 
 	void asSkybox()
 	{
 		this.worldShader = Shader.SKYBOX;
 		this.shadowShader = Shader.DEPTH_1;
+		
+		createMaterials();
+
+		if (materialInfo != null)
+		{
+			materialInfo.applyTo(material);
+		}
 	}
 
 	@Override

@@ -6,7 +6,6 @@ import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.WorldObject;
 import zyx.opengl.materials.impl.ParticleModelMaterial;
 import zyx.opengl.models.implementations.renderers.WorldParticleRenderer;
-import zyx.opengl.shaders.implementations.ParticleShader;
 import zyx.opengl.shaders.implementations.WorldParticleShader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.DeltaTime;
@@ -36,19 +35,19 @@ public class WorldParticleModel extends BaseParticleModel
 	{
 		setSubMeshCount(1);
 		
-		refresh(vo);
-		setup();
+		setDefaultMaterials(loadableVo.materialWorld);
+		createObjects();
+		refresh(loadableVo);
+		setupAttributes();
 	}
 
 	@Override
 	public void refresh(LoadableParticleVO loadedVo)
 	{
 		vo = loadedVo;
-		shader = (WorldParticleShader) loadedVo.materialLocal.shader;
-		
-		setDefaultMaterials(vo.materialLocal);
+		shader = (WorldParticleShader) loadedVo.materialWorld.shader;
 
-		AbstractTexture t = vo.materialLocal.getDiffuse();
+		AbstractTexture t = vo.materialWorld.getDiffuse();
 		
 		float[] vertexData =
 		{

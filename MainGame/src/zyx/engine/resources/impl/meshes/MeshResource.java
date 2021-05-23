@@ -63,6 +63,8 @@ public class MeshResource extends BaseRequiredSubResource implements ITaskComple
 
 		SubResourceBatch<Skeleton> skeletonBatch = new SubResourceBatch(skeletonLoaded, skeleton);
 		addResourceBatch(skeletonBatch);
+		
+		loadBatches();
 	}
 
 	private void onTextureLoaded(ArrayList<AbstractTexture> data)

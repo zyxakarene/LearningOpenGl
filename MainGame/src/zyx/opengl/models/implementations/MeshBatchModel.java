@@ -30,7 +30,9 @@ public class MeshBatchModel extends AbstractInstancedModel<WorldModelMaterial> i
 		setSubMeshCount(vo.subMeshCount);
 		
 		refresh(vo);
-		setup();
+		
+		createObjects();
+		setupAttributes();
 	}
 
 	public void refresh(LoadableWorldModelVO vo)
@@ -56,8 +58,6 @@ public class MeshBatchModel extends AbstractInstancedModel<WorldModelMaterial> i
 			bindVao(i);
 			setVertexData(i, subMesh.vertexData, subMesh.elementData);
 		}
-		
-		setupAttributes();
 	}
 	
 	public void setMeshBatchData(int index, float[] instanceData)

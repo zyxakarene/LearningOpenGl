@@ -2,6 +2,7 @@ package zyx.opengl.models.implementations;
 
 import java.util.ArrayList;
 import zyx.engine.components.world.WorldObject;
+import zyx.opengl.GLUtils;
 import zyx.opengl.materials.impl.ParticleModelMaterial;
 import zyx.opengl.models.implementations.renderers.ParticleRenderer;
 import zyx.opengl.shaders.implementations.ParticleShader;
@@ -20,12 +21,16 @@ public class ParticleModel extends BaseParticleModel
 	private ParticleShader shader;
 	private LoadableParticleVO vo;
 
-	public ParticleModel(LoadableParticleVO vo)
+	public ParticleModel(LoadableParticleVO loadedVo)
 	{
 		setSubMeshCount(1);
 		
-		refresh(vo);
-		setup();
+		setDefaultMaterials(loadedVo.materialLocal);
+		createObjects();
+		
+		refresh(loadedVo);
+		
+		setupAttributes();
 	}
 
 	@Override
@@ -34,7 +39,6 @@ public class ParticleModel extends BaseParticleModel
 		vo = loadedVo;
 		shader = (ParticleShader) loadedVo.materialLocal.shader;
 		
-		setDefaultMaterials(vo.materialLocal);
 
 		AbstractTexture t = vo.materialLocal.getDiffuse();
 
@@ -58,6 +62,7 @@ public class ParticleModel extends BaseParticleModel
 		}
 		
 		setInstanceData(0, instanceData, instanceData.length / instanceDataAmount);
+		GLUtils.errorCheck();
 		setVertexData(0, vertexData, SHARED_ELEMENT_DATA);
 	}
 

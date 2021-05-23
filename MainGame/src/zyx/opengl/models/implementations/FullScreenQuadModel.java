@@ -10,7 +10,8 @@ public class FullScreenQuadModel extends AbstractSingleModel
 	{
 		super(material);
 
-		setup();
+		createObjects();
+		setupAttributes();
 		
 		setVertexData();
 	}

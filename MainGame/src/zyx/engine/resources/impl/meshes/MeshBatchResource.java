@@ -66,6 +66,8 @@ public class MeshBatchResource extends BaseRequiredSubResource implements ISubRe
 			SubResourceBatch<AbstractTexture> textureBatch = new SubResourceBatch(this, textures);
 			addResourceBatch(textureBatch);
 		}
+		
+		loadBatches();
 	}
 
 	@Override

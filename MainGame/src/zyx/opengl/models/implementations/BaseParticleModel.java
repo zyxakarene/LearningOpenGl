@@ -9,7 +9,6 @@ public abstract class BaseParticleModel extends AbstractInstancedModel<ParticleM
 
 	public BaseParticleModel()
 	{
-		setup();
 	}
 
 	@Override

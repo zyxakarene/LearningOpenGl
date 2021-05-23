@@ -10,12 +10,6 @@ public abstract class AbstractModel<TMaterial extends Material> implements IDisp
 	protected AbstractModel()
 	{
 	}
-
-	protected final void setup()
-	{
-		createObjects();
-		setupAttributes();
-	}
 	
 	protected abstract void createObjects();
 	

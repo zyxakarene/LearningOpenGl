@@ -2,7 +2,6 @@ package zyx.opengl.models;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
-import java.util.List;
 import zyx.opengl.materials.Material;
 
 public abstract class AbstractMultiModel<TMaterial extends Material> extends AbstractModel<TMaterial>
