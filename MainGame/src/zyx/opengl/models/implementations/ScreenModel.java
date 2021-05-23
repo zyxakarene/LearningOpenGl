@@ -2,18 +2,16 @@ package zyx.opengl.models.implementations;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.materials.impl.ScreenModelMaterial;
-import zyx.opengl.models.AbstractModel;
+import zyx.opengl.models.AbstractSingleModel;
 import zyx.opengl.models.BufferWrapper;
 import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.models.implementations.renderers.MeshRenderer;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.ListUtils;
-import zyx.utils.cheats.Print;
 
-public class ScreenModel extends AbstractModel<ScreenModelMaterial>
+public class ScreenModel extends AbstractSingleModel<ScreenModelMaterial>
 {
 	private static final int FLOATS_PER_QUAD = 32;
 	private static final int INTS_PER_QUAD = 6;
@@ -59,8 +57,8 @@ public class ScreenModel extends AbstractModel<ScreenModelMaterial>
 	public void addVertexData(float x, float y, float width, float height, AbstractTexture tex)
 	{
 		AbstractTexture t = tex;
-		Vector3f c = defaultMaterial.color;
-		float alpha = defaultMaterial.alpha;
+		Vector3f c = modelData.defaultMaterial.color;
+		float alpha = modelData.defaultMaterial.alpha;
 		float w = width;
 		float h = height;
 		float vertexData[] =
@@ -106,8 +104,8 @@ public class ScreenModel extends AbstractModel<ScreenModelMaterial>
 	{
 		bindVao();
 		
-		Vector3f colors = defaultMaterial.color;
-		float alpha = defaultMaterial.alpha;
+		Vector3f colors = modelData.defaultMaterial.color;
+		float alpha = modelData.defaultMaterial.alpha;
 		float vertexData[] = new float[]
 		{
 			colors.x, colors.y, colors.z, alpha
@@ -126,12 +124,12 @@ public class ScreenModel extends AbstractModel<ScreenModelMaterial>
 	
 	public float getWidth()
 	{
-		return defaultMaterial.getDiffuse().getWidth();
+		return modelData.defaultMaterial.getDiffuse().getWidth();
 	}
 	
 	public float getHeight()
 	{
-		return defaultMaterial.getDiffuse().getHeight();
+		return modelData.defaultMaterial.getDiffuse().getHeight();
 	}
 	
 	@Override

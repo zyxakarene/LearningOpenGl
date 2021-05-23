@@ -23,8 +23,6 @@ public class ZafLoader
 			ZafObject obj = new ZafObject();
 			obj.read(in, builder);
 
-			PhysBox phys = createPhysBox(obj.subMeshes[0].physInformation);
-
 			builder.append("========");
 			Print.out(builder);
 
@@ -36,11 +34,12 @@ public class ZafLoader
 				
 				meshBuilder.setBoneCount(subMesh.boneCount);
 				meshBuilder.setVertexData(subMesh.vertexData, subMesh.elementData);
-				meshBuilder.setPhysBox(phys);
+				
 				meshBuilder.setTextureIds(subMesh.diffuseTexture, subMesh.normalTexture, subMesh.specularTexture);
 				meshBuilder.setMaterialData(subMesh.materialInformation);
 			}
-			
+			PhysBox phys = createPhysBox(obj.physInformation);
+			vo.setPhysBox(phys);
 			vo.setSkeletonId(obj.skeletonId);
 			vo.setRadius(obj.radiusCenter, obj.radius);
 			

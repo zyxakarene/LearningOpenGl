@@ -3,6 +3,8 @@ zaf
 	byte							SubMeshCount
 	SubMesh[SubMeshCount]			SubMeshes
 	
+	SmdPhysInformation				physInformation
+
 	Vector3F						CenterPosition
 	float							radius
 	
@@ -18,9 +20,7 @@ SubMesh
 	
 	int								elementCount
 	short[elementCount]				elementData
-	
-	SmdPhysInformation				physInformation
-	
+		
 	UtfString						diffuseTexture
 	UtfString						normalTexture
 	UtfString						specularTexture

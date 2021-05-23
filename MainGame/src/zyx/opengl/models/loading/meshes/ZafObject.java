@@ -10,6 +10,8 @@ class ZafObject
 	int subMeshCount;
 	SubMeshObject[] subMeshes;
 	
+	PhysObject physInformation;
+
 	Vector3f radiusCenter;
 	float radius;
 	
@@ -30,6 +32,11 @@ class ZafObject
 			
 			subMeshes[i] = sub;
 		}
+		
+		physInformation = new PhysObject();
+		physInformation.read(in);
+		
+		builder.append("↳", physInformation.physBoxes.length, "physboxes");
 		
 		radiusCenter = new Vector3f();
 		radiusCenter.x = in.readFloat();

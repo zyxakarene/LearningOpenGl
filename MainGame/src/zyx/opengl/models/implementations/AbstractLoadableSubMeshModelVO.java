@@ -146,12 +146,6 @@ public abstract class AbstractLoadableSubMeshModelVO<TMaterial extends WorldMode
 	}
 
 	@Override
-	public void setPhysBox(PhysBox physBox)
-	{
-		this.physBox = physBox;
-	}
-
-	@Override
 	public void setTextures(AbstractTexture diffuse, AbstractTexture normal, AbstractTexture specular)
 	{
 		material.setDiffuse(diffuse);

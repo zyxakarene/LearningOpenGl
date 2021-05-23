@@ -1,30 +1,32 @@
 package zyx.opengl.models.implementations.renderers;
 
 import zyx.engine.components.world.WorldObject;
-import zyx.opengl.GLUtils;
 import zyx.opengl.materials.Material;
-import zyx.opengl.models.AbstractModel;
+import zyx.opengl.models.AbstractMultiModel;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IDrawable;
 
-public abstract class MeshRenderer<TMaterial extends Material, TModel extends AbstractModel<TMaterial>> implements IDrawable, IDisposeable
+//TODO: Make sure this works with asset reloading
+//TODO: Sorting of sub meshes somehow
+public abstract class MeshRenderer<TMaterial extends Material, TModel extends AbstractMultiModel<TMaterial>> implements IDrawable, IDisposeable
 {
 	protected TModel model;
 	protected WorldObject parent;
 	
-	private TMaterial defaultMaterial;
-	private TMaterial clonedMaterial;
+	private int materialCount;
+	private TMaterial[] defaultMaterials;
 	
-	TMaterial drawMaterial;
+	TMaterial[] drawMaterials;
 
-	public MeshRenderer(TModel model, TMaterial defaultMaterial)
+	public MeshRenderer(TModel model, TMaterial[] defaultMaterials)
 	{
-		this.model = model;
-		this.defaultMaterial = defaultMaterial;
+		materialCount = defaultMaterials.length;
 		
-		clonedMaterial = null;
-		drawMaterial = defaultMaterial;
+		this.model = model;
+		this.defaultMaterials = defaultMaterials;
+		
+		drawMaterials = defaultMaterials;
 		MeshRenderList.getInstance().add(this);
 	}
 	
@@ -47,7 +49,10 @@ public abstract class MeshRenderer<TMaterial extends Material, TModel extends Ab
 		}
 		onPreDraw();
 
-		model.draw(drawMaterial);
+		for (int i = 0; i < materialCount; i++)
+		{
+			model.draw(i, drawMaterials[i]);
+		}
 		
 		if (parent != null)
 		{
@@ -55,36 +60,29 @@ public abstract class MeshRenderer<TMaterial extends Material, TModel extends Ab
 		}
 	}
 	
-	public TMaterial getDefaultMaterial()
+	public TMaterial getDefaultMaterial(int index)
 	{
-		return defaultMaterial;
+		return defaultMaterials[index];
 	}
 	
-	public TMaterial getActiveMaterial()
+	public TMaterial getActiveMaterial(int index)
 	{
-		if (clonedMaterial != null)
+		return drawMaterials[index];
+	}
+	
+	public void setCustomMaterial(int index, TMaterial material)
+	{
+		drawMaterials[index] = material;
+	}
+	
+	public TMaterial cloneMaterial(int index)
+	{
+		if (drawMaterials[index] == defaultMaterials[index])
 		{
-			return clonedMaterial;
+			drawMaterials[index] = (TMaterial) defaultMaterials[index].cloneMaterial();
 		}
 		
-		return drawMaterial;
-	}
-	
-	public void setCustomMaterial(TMaterial material)
-	{
-		clonedMaterial = null;
-		drawMaterial = material;
-	}
-	
-	public TMaterial cloneMaterial()
-	{
-		if (clonedMaterial == null)
-		{
-			clonedMaterial = (TMaterial) defaultMaterial.cloneMaterial();
-			drawMaterial = clonedMaterial;
-		}
-		
-		return drawMaterial;
+		return drawMaterials[index];
 	}
 
 	@Override
@@ -94,9 +92,8 @@ public abstract class MeshRenderer<TMaterial extends Material, TModel extends Ab
 		
 		parent = null;
 		model = null;
-		drawMaterial = null;
-		clonedMaterial = null;
-		defaultMaterial = null;
+		drawMaterials = null;
+		defaultMaterials = null;
 	}
 
 	protected void onPreDraw()

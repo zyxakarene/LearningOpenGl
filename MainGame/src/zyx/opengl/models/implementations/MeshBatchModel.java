@@ -1,16 +1,14 @@
 package zyx.opengl.models.implementations;
 
+import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
-import zyx.opengl.materials.impl.DepthMaterial;
 import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.AbstractInstancedModel;
 import zyx.opengl.models.implementations.renderers.MeshBatchRenderer;
 import zyx.opengl.shaders.ShaderManager;
-import zyx.opengl.shaders.implementations.MeshBatchDepthShader;
-import zyx.opengl.shaders.implementations.MeshBatchShader;
-import zyx.opengl.shaders.implementations.Shader;
+import zyx.opengl.shaders.implementations.*;
 import zyx.utils.interfaces.IShadowable;
 
 public class MeshBatchModel extends AbstractInstancedModel<WorldModelMaterial> implements IShadowable
@@ -22,26 +20,17 @@ public class MeshBatchModel extends AbstractInstancedModel<WorldModelMaterial> i
 
 	public static final int INSTANCE_DATA_AMOUNT = 9;
 	
-	private MeshBatchShader shader;
-	private MeshBatchDepthShader shadowShader;
-	private DepthMaterial shadowMaterial;
-	private int boneCount;
+	private MeshBatchModelShaderData[] shaderData;
 
 	private Vector3f radiusCenter;
 	private float radius;
 
 	public MeshBatchModel(LoadableWorldModelVO vo)
 	{
-		super(vo.material);
+		setSubMeshCount(vo.subMeshCount);
 		
-		boneCount = vo.boneCount;
-		setup();
-
-		this.shadowMaterial = vo.shadowMaterial;
-		this.shader = (MeshBatchShader) meshShader;
-		this.shadowShader = ShaderManager.getInstance().<MeshBatchDepthShader>get(Shader.MESH_BATCH_DEPTH);
-
 		refresh(vo);
+		setup();
 	}
 
 	public void refresh(LoadableWorldModelVO vo)
@@ -49,26 +38,41 @@ public class MeshBatchModel extends AbstractInstancedModel<WorldModelMaterial> i
 		radiusCenter = vo.radiusCenter;
 		radius = vo.radius;
 
-		defaultMaterial = vo.material;
-		shadowMaterial = vo.shadowMaterial;
+		setSubMeshCount(vo.subMeshCount);
+		setDefaultMaterials(vo.getDefaultMaterials());
 		
-		bindVao();
-		setVertexData(vo.vertexData, vo.elementData);
+		shaderData = new MeshBatchModelShaderData[vo.subMeshCount];
+		for (int i = 0; i < vo.subMeshCount; i++)
+		{
+			MeshBatchModelShaderData data = new MeshBatchModelShaderData();
+			AbstractLoadableSubMeshModelVO subMesh = vo.subMeshes[i];
+			data.shadowMaterial = subMesh.shadowMaterial;
+			data.boneCount = subMesh.boneCount;
+			data.shader = (MeshBatchShader) subMesh.material.shader;
+			data.shadowShader = ShaderManager.getInstance().<MeshBatchDepthShader>get(subMesh.shadowShader);
+			
+			shaderData[i] = data;
+			
+			bindVao(i);
+			setVertexData(i, subMesh.vertexData, subMesh.elementData);
+		}
+		
+		setupAttributes();
 	}
 	
-	public void setMeshBatchData(float[] instanceData)
+	public void setMeshBatchData(int index, float[] instanceData)
 	{
-		setInstanceData(instanceData, instanceData.length / INSTANCE_DATA_AMOUNT);
+		setInstanceData(index, instanceData, instanceData.length / INSTANCE_DATA_AMOUNT);
 	}
 	
 	@Override
-	public void draw(WorldModelMaterial material)
+	public void draw(int index, WorldModelMaterial material)
 	{
 		DeferredRenderer.getInstance().bindBuffer();
-		shader.bind();
-		shader.upload();
+		shaderData[index].shader.bind();
+		shaderData[index].shader.upload();
 
-		super.draw(material);
+		super.draw(index, material);
 
 		if (material.castsShadows)
 		{
@@ -79,20 +83,20 @@ public class MeshBatchModel extends AbstractInstancedModel<WorldModelMaterial> i
 	@Override
 	public void drawShadow(byte activeCascades)
 	{
-		shadowShader.bind();
-		shadowShader.upload();
-
-		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_0);
-		super.draw(shadowMaterial);
-
-		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_1);
-		super.draw(shadowMaterial);
-
-		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_2);
-		super.draw(shadowMaterial);
-
-		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_3);
-		super.draw(shadowMaterial);
+//		shadowShader.bind();
+//		shadowShader.upload();
+//
+//		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_0);
+//		super.draw(shadowMaterial);
+//
+//		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_1);
+//		super.draw(shadowMaterial);
+//
+//		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_2);
+//		super.draw(shadowMaterial);
+//
+//		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_3);
+//		super.draw(shadowMaterial);
 	}
 
 	public Vector3f getRadiusCenter()
@@ -108,23 +112,36 @@ public class MeshBatchModel extends AbstractInstancedModel<WorldModelMaterial> i
 	@Override
 	protected void setupAttributes()
 	{
-		int stride = POSITION_LENGTH + NORMALS_LENGTH + TEX_COORDS_LENGTH + (BONE_LENGTH * boneCount);
-		addAttribute("position", POSITION_LENGTH, stride, 0);
-		addAttribute("normals", NORMALS_LENGTH, stride, 3);
-		addAttribute("texcoord", TEX_COORDS_LENGTH, stride, 6);
-//		addAttribute("indexes", boneCount, stride, 8);
-//		addAttribute("weights", boneCount, stride, 8 + boneCount);
+		for (int i = 0; i < subMeshCount; i++)
+		{
+			bindVao(i);
 
-		addInstanceAttribute("insPosition", 3, 9, 0);
-		addInstanceAttribute("insRotation", 4, 9, 3);
-		addInstanceAttribute("insScale", 1, 9, 7);
-		addInstanceAttribute("insCubemap", 1, 9, 8);
+			ModelShaderData data = shaderData[i];
+			int stride = POSITION_LENGTH + NORMALS_LENGTH + TEX_COORDS_LENGTH + (BONE_LENGTH * data.boneCount);
+			
+			addAttribute(i, "position", POSITION_LENGTH, stride, 0);
+			addAttribute(i, "normals", NORMALS_LENGTH, stride, 3);
+			addAttribute(i, "texcoord", TEX_COORDS_LENGTH, stride, 6);
+	//		addAttribute(i, "indexes", boneCount, stride, 8);
+	//		addAttribute(i, "weights", boneCount, stride, 8 + boneCount);
+
+			addInstanceAttribute(i, "insPosition", 3, 9, 0);
+			addInstanceAttribute(i, "insRotation", 4, 9, 3);
+			addInstanceAttribute(i, "insScale", 1, 9, 7);
+			addInstanceAttribute(i, "insCubemap", 1, 9, 8);
+		}
 	}
 
 	@Override
 	public MeshBatchRenderer createRenderer()
 	{
-		return new MeshBatchRenderer(this, defaultMaterial);
+		ArrayList<WorldModelMaterial> materials = getDefaultMaterials();
+		WorldModelMaterial[] array = new WorldModelMaterial[subMeshCount];
+		
+		return new MeshBatchRenderer(this, materials.toArray(array));
 	}
 
+	private class MeshBatchModelShaderData extends ModelShaderData<MeshBatchShader, MeshBatchDepthShader>
+	{
+	}
 }

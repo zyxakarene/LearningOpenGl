@@ -19,25 +19,26 @@ public class WorldModelRenderer extends MeshRenderer<WorldModelMaterial, WorldMo
 	private int cubemapIndex;
 	private AnimationController animController;
 
-	public WorldModelRenderer(WorldModel model, WorldModelMaterial material)
+	public WorldModelRenderer(WorldModel model, WorldModelMaterial[] materials)
 	{
-		super(model, material);
+		super(model, materials);
 		animController = DEFAULT_CONTROLLER;
 	}
 	
+	//TODO: Shadows
 	@Override
 	protected void onPreDraw()
 	{
-		if (parent != null)
-		{
-			Camera.getInstance().getPosition(true, HELPER_CAM_POS);
-			float distance = FloatMath.distance(parent.position, HELPER_CAM_POS);
-			drawMaterial.setShadowDistance(distance);
-		}
-		else
-		{
-			drawMaterial.setShadowDistance(-1);
-		}
+//		if (parent != null)
+//		{
+//			Camera.getInstance().getPosition(true, HELPER_CAM_POS);
+//			float distance = FloatMath.distance(parent.position, HELPER_CAM_POS);
+//			drawMaterials.setShadowDistance(distance);
+//		}
+//		else
+//		{
+//			drawMaterials.setShadowDistance(-1);
+//		}
 
 		WorldShader.cubemapIndex = cubemapIndex;
 		if (model.ready)
@@ -74,11 +75,6 @@ public class WorldModelRenderer extends MeshRenderer<WorldModelMaterial, WorldMo
 	public Joint getBoneByName(String attachmentPoint)
 	{
 		return model.getBoneByName(attachmentPoint);
-	}
-
-	public WorldShader getShader()
-	{
-		return model.getShader();
 	}
 
 	public PhysBox getPhysbox()

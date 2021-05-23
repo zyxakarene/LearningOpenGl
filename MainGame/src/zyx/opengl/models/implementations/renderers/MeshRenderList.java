@@ -1,7 +1,6 @@
 package zyx.opengl.models.implementations.renderers;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.materials.RenderQueue;
 import zyx.utils.interfaces.IDrawable;
@@ -56,7 +55,7 @@ public class MeshRenderList implements IDrawable
 		for (int i = list.size() - 1; i >= 0; i--)
 		{
 			MeshRenderer renderer = list.get(i);
-			RenderQueue rendererQueue = renderer.drawMaterial.queue;
+			RenderQueue rendererQueue = renderer.drawMaterials[0].queue; //TODO: Sorting
 			if (rendererQueue != queue)
 			{
 				switch (rendererQueue)
@@ -92,7 +91,7 @@ public class MeshRenderList implements IDrawable
 
 	void add(MeshRenderer renderer)
 	{
-		switch (renderer.drawMaterial.queue)
+		switch (renderer.drawMaterials[0].queue)
 		{
 			case OPAQUE:
 				addTo(renderer, geometryRenderers);
@@ -105,7 +104,7 @@ public class MeshRenderList implements IDrawable
 
 	void remove(MeshRenderer renderer)
 	{
-		switch (renderer.drawMaterial.queue)
+		switch (renderer.drawMaterials[0].queue)
 		{
 			case OPAQUE:
 				removeFrom(renderer, geometryRenderers);

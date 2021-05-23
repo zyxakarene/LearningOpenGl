@@ -35,7 +35,7 @@ class MeshDistanceSorting implements Comparator<MeshRenderer>
 		}
 		
 		//Make sure we only compare equal priorities
-		if (a.drawMaterial.priority != b.drawMaterial.priority)
+		if (a.drawMaterials[0].priority != b.drawMaterials[0].priority) //TODO: Sorting
 		{
 			return sortByPriority(a, b);
 		}
@@ -61,8 +61,8 @@ class MeshDistanceSorting implements Comparator<MeshRenderer>
 	
 	private int sortByPriority(MeshRenderer a, MeshRenderer b)
 	{
-		int x = a.drawMaterial.priority;
-		int y = b.drawMaterial.priority;
+		int x = a.drawMaterials[0].priority;
+		int y = b.drawMaterials[0].priority;
 
 		if (x < y)
 		{

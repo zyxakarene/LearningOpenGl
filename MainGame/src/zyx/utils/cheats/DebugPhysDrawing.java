@@ -4,6 +4,7 @@ import java.util.HashMap;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.game.controls.SharedPools;
+import zyx.opengl.models.implementations.ISubMeshVO;
 import zyx.opengl.models.implementations.LoadablePhysicsModelVO;
 import zyx.opengl.models.implementations.PhysicsModel;
 import zyx.opengl.models.implementations.WorldModel;
@@ -124,20 +125,21 @@ public class DebugPhysDrawing
 		}
 
 		Skeleton skeleton = new Skeleton(getMeshJoint("root"), getMeshJoint("dummy"));
-		LoadablePhysicsModelVO vo = new LoadablePhysicsModelVO();
-		vo.setBoneCount(1);
+		LoadablePhysicsModelVO vo = new LoadablePhysicsModelVO(1);
+		ISubMeshVO builder = vo.getSubMeshVO(0);
+		builder.setBoneCount(1);
+		builder.setVertexData(vertexData, elementData);
+		
+		builder.setDiffuseTexture(new ColorTexture(0xFF0000, TextureSlot.SHARED_DIFFUSE));
+		builder.setSpecularTexture(new ColorTexture(0x000000, TextureSlot.WORLD_SPECULAR));
+		builder.setNormalTexture(new ColorTexture(0x000000, TextureSlot.WORLD_NORMAL));
 		vo.asWorldModel();
-		vo.setVertexData(vertexData, elementData);
 		vo.setRadius(new Vector3f(), 1000);
 		vo.setSkeleton(skeleton);
-		
-		vo.setDiffuseTexture(new ColorTexture(0xFF0000, TextureSlot.SHARED_DIFFUSE));
-		vo.setSpecularTexture(new ColorTexture(0x000000, TextureSlot.WORLD_SPECULAR));
-		vo.setNormalTexture(new ColorTexture(0x000000, TextureSlot.WORLD_NORMAL));
-		PhysicsModel model = new PhysicsModel(vo);
 
 		SKELETON_MAP_MESH.put(box, skeleton);
 		
+		PhysicsModel model = new PhysicsModel(vo);
 		return model;
 	}
 
@@ -228,19 +230,20 @@ public class DebugPhysDrawing
 
 		fillData(boundingBox, vertexData, elementData);
 		Skeleton skeleton = new Skeleton(getMeshJoint("root11"), getMeshJoint("dummy22"));
-		LoadablePhysicsModelVO vo = new LoadablePhysicsModelVO();
-		vo.setBoneCount(1);
-		vo.asWorldModel();
-		vo.setVertexData(vertexData, elementData);
+		LoadablePhysicsModelVO vo = new LoadablePhysicsModelVO(1);
+		ISubMeshVO builder = vo.getSubMeshVO(0);
+		builder.setBoneCount(1);
+		builder.setVertexData(vertexData, elementData);
+		builder.setDiffuseTexture(new ColorTexture(0x00FF00, TextureSlot.SHARED_DIFFUSE));
+		builder.setSpecularTexture(new ColorTexture(0x000000, TextureSlot.WORLD_SPECULAR));
+		builder.setNormalTexture(new ColorTexture(0x000000, TextureSlot.WORLD_NORMAL));
 		vo.setRadius(new Vector3f(), 1000);
 		vo.setSkeleton(skeleton);
-		vo.setDiffuseTexture(new ColorTexture(0x00FF00, TextureSlot.SHARED_DIFFUSE));
-		vo.setSpecularTexture(new ColorTexture(0x000000, TextureSlot.WORLD_SPECULAR));
-		vo.setNormalTexture(new ColorTexture(0x000000, TextureSlot.WORLD_NORMAL));
-		PhysicsModel model = new PhysicsModel(vo);
+		vo.asWorldModel();
 
 		SKELETON_MAP_BOUNDING.put(physBox, skeleton);
 		
+		PhysicsModel model = new PhysicsModel(vo);
 		return model;
 	}
 

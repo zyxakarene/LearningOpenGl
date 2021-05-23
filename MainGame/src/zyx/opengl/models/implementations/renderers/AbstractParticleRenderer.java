@@ -13,9 +13,9 @@ public abstract class AbstractParticleRenderer<TModel extends AbstractInstancedM
 
 	private ParticleSystem system;
 	
-	public AbstractParticleRenderer(TModel model, ParticleModelMaterial defaultMaterial)
+	public AbstractParticleRenderer(TModel model, ParticleModelMaterial[] defaultMaterials)
 	{
-		super(model, defaultMaterial);
+		super(model, defaultMaterials);
 	}
 
 	@Override

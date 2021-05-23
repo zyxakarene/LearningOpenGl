@@ -3,6 +3,7 @@ package zyx.opengl.models.implementations;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
+import zyx.opengl.models.implementations.physics.PhysBox;
 
 public abstract class AbstractLoadableModelVO<TMaterial extends WorldModelMaterial>
 {
@@ -12,6 +13,7 @@ public abstract class AbstractLoadableModelVO<TMaterial extends WorldModelMateri
 	String skeletonId;
 	Skeleton skeleton;
 
+	PhysBox physBox;
 	Vector3f radiusCenter;
 	float radius;
 
@@ -24,6 +26,17 @@ public abstract class AbstractLoadableModelVO<TMaterial extends WorldModelMateri
 		{
 			subMeshes[i] = createSubMeshVO();
 		}
+	}
+	
+	public WorldModelMaterial[] getDefaultMaterials()
+	{
+		WorldModelMaterial[] list = new WorldModelMaterial[subMeshCount];
+		for (int i = 0; i < subMeshCount; i++)
+		{
+			list[i] = subMeshes[i].material;
+		}
+		
+		return list;
 	}
 	
 	protected abstract AbstractLoadableSubMeshModelVO<TMaterial> createSubMeshVO();
@@ -77,6 +90,11 @@ public abstract class AbstractLoadableModelVO<TMaterial extends WorldModelMateri
 	{
 		this.radiusCenter = radiusCenter;
 		this.radius = radius;
+	}
+	
+	public void setPhysBox(PhysBox phys)
+	{
+		this.physBox = phys;
 	}
 	
 	public void dispose()

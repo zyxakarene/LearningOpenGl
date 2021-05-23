@@ -1,10 +1,12 @@
 package zyx.opengl.models.implementations;
 
+import java.util.ArrayList;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.WorldObject;
 import zyx.opengl.materials.impl.ParticleModelMaterial;
 import zyx.opengl.models.implementations.renderers.WorldParticleRenderer;
+import zyx.opengl.shaders.implementations.ParticleShader;
 import zyx.opengl.shaders.implementations.WorldParticleShader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.DeltaTime;
@@ -32,19 +34,21 @@ public class WorldParticleModel extends BaseParticleModel
 	
 	public WorldParticleModel(LoadableParticleVO loadableVo)
 	{
-		super(loadableVo.materialWorld);
-
-		shader = (WorldParticleShader) meshShader;
-		refresh(loadableVo);
+		setSubMeshCount(1);
+		
+		refresh(vo);
+		setup();
 	}
 
 	@Override
 	public void refresh(LoadableParticleVO loadedVo)
 	{
 		vo = loadedVo;
-		defaultMaterial = vo.materialWorld;
+		shader = (WorldParticleShader) loadedVo.materialLocal.shader;
 		
-		AbstractTexture t = defaultMaterial.getDiffuse();
+		setDefaultMaterials(vo.materialLocal);
+
+		AbstractTexture t = vo.materialLocal.getDiffuse();
 		
 		float[] vertexData =
 		{
@@ -63,8 +67,8 @@ public class WorldParticleModel extends BaseParticleModel
 			particleAge[i] = (int) (i * -(vo.lifespan / vo.instanceCount) + vo.lifespan);
 		}
 
-		setInstanceData(instanceData, instanceData.length / INSTANCE_DATA_COUNT);
-		setVertexData(vertexData, SHARED_ELEMENT_DATA);
+		setInstanceData(0, instanceData, instanceData.length / INSTANCE_DATA_COUNT);
+		setVertexData(0, vertexData, SHARED_ELEMENT_DATA);
 	}
 	
 	@Override
@@ -92,7 +96,7 @@ public class WorldParticleModel extends BaseParticleModel
 		
 		if (preloaded)
 		{
-			setInstanceData(instanceData, instanceData.length / INSTANCE_DATA_COUNT);
+			setInstanceData(0, instanceData, instanceData.length / INSTANCE_DATA_COUNT);
 		}
 	}
 	
@@ -135,30 +139,30 @@ public class WorldParticleModel extends BaseParticleModel
 	}
 	
 	@Override
-	public void draw(ParticleModelMaterial material)
+	public void draw(int index, ParticleModelMaterial material)
 	{
 		shader.bind();
 		shader.uploadFromVo(vo);
 		shader.upload();
-		super.draw(material);
+		super.draw(index, material);
 	}
 
 	@Override
 	protected void setupAttributes()
 	{
-		addAttribute("position", 2, 4, 0);
-		addAttribute("texcoord", 2, 4, 2);
+		addAttribute(0, "position", 2, 4, 0);
+		addAttribute(0, "texcoord", 2, 4, 2);
 		
-		addInstanceAttribute("worldPos",	3, INSTANCE_DATA_COUNT, 0);
-		addInstanceAttribute("worldRot_0",	3, INSTANCE_DATA_COUNT, 3);
-		addInstanceAttribute("worldRot_1",	3, INSTANCE_DATA_COUNT, 6);
-		addInstanceAttribute("worldRot_2",	3, INSTANCE_DATA_COUNT, 9);
-		addInstanceAttribute("spawnTime",	1, INSTANCE_DATA_COUNT, 12);
-		addInstanceAttribute("lifespan",	1, INSTANCE_DATA_COUNT, 13);
-		addInstanceAttribute("speedRandom",	3, INSTANCE_DATA_COUNT, 16);
-		addInstanceAttribute("areaRandom",	3, INSTANCE_DATA_COUNT, 19);
-		addInstanceAttribute("scaleRandom",	1, INSTANCE_DATA_COUNT, 20);
-		addInstanceAttribute("rotRandom",	1, INSTANCE_DATA_COUNT, 21);
+		addInstanceAttribute(0, "worldPos",	3, INSTANCE_DATA_COUNT, 0);
+		addInstanceAttribute(0, "worldRot_0",	3, INSTANCE_DATA_COUNT, 3);
+		addInstanceAttribute(0, "worldRot_1",	3, INSTANCE_DATA_COUNT, 6);
+		addInstanceAttribute(0, "worldRot_2",	3, INSTANCE_DATA_COUNT, 9);
+		addInstanceAttribute(0, "spawnTime",	1, INSTANCE_DATA_COUNT, 12);
+		addInstanceAttribute(0, "lifespan",	1, INSTANCE_DATA_COUNT, 13);
+		addInstanceAttribute(0, "speedRandom",	3, INSTANCE_DATA_COUNT, 16);
+		addInstanceAttribute(0, "areaRandom",	3, INSTANCE_DATA_COUNT, 19);
+		addInstanceAttribute(0, "scaleRandom",	1, INSTANCE_DATA_COUNT, 20);
+		addInstanceAttribute(0, "rotRandom",	1, INSTANCE_DATA_COUNT, 21);
 	}
 	
 	@Override
@@ -190,7 +194,10 @@ public class WorldParticleModel extends BaseParticleModel
 	@Override
 	public WorldParticleRenderer createRenderer()
 	{
+		ArrayList<ParticleModelMaterial> materials = getDefaultMaterials();
+		ParticleModelMaterial[] array = new ParticleModelMaterial[subMeshCount];
+		
 		WorldParticleModel clone = new WorldParticleModel(vo);
-		return new WorldParticleRenderer(clone, defaultMaterial);
+		return new WorldParticleRenderer(clone, materials.toArray(array));
 	}
 }

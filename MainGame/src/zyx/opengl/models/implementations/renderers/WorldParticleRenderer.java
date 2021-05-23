@@ -7,9 +7,9 @@ import zyx.opengl.models.implementations.WorldParticleModel;
 
 public class WorldParticleRenderer extends AbstractParticleRenderer<WorldParticleModel>
 {
-	public WorldParticleRenderer(WorldParticleModel model, ParticleModelMaterial defaultMaterial)
+	public WorldParticleRenderer(WorldParticleModel model, ParticleModelMaterial[] defaultMaterials)
 	{
-		super(model, defaultMaterial);
+		super(model, defaultMaterials);
 	}
 	
 	@Override

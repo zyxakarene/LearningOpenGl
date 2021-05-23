@@ -7,9 +7,8 @@ import zyx.opengl.models.implementations.renderers.AbstractParticleRenderer;
 public abstract class BaseParticleModel extends AbstractInstancedModel<ParticleModelMaterial> implements IParticleModel
 {
 
-	public BaseParticleModel(ParticleModelMaterial material)
+	public BaseParticleModel()
 	{
-		super(material);
 		setup();
 	}
 

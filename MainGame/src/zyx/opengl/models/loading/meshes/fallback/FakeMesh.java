@@ -1,6 +1,7 @@
 package zyx.opengl.models.loading.meshes.fallback;
 
 import org.lwjgl.util.vector.Vector3f;
+import zyx.opengl.models.implementations.ISubMeshVO;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.utils.geometry.Box;
@@ -23,14 +24,15 @@ public class FakeMesh
 		Vector3f radiusCenter = new Vector3f();
 		float radius = sizeH;
 		
-		LoadableWorldModelVO vo = new LoadableWorldModelVO();
-		vo.setBoneCount(2);
-		vo.asWorldModel();
-		vo.setVertexData(vertexData, elementData);
+		LoadableWorldModelVO vo = new LoadableWorldModelVO(1);
+		ISubMeshVO builder = vo.getSubMeshVO(0);
+		builder.setBoneCount(2);
+		builder.setVertexData(vertexData, elementData);
+		builder.setTextureIds(diffuse, normal, specular);
 		vo.setPhysBox(physBox);
-		vo.setTextureIds(diffuse, normal, specular);
 		vo.setRadius(radiusCenter, radius);
 		vo.setSkeletonId(skeleton);
+		vo.asWorldModel();
 		
 		return vo;
 	}

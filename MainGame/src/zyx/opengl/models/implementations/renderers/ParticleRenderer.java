@@ -7,9 +7,9 @@ import zyx.opengl.models.implementations.ParticleModel;
 
 public class ParticleRenderer extends AbstractParticleRenderer<ParticleModel>
 {	
-	public ParticleRenderer(ParticleModel model, ParticleModelMaterial defaultMaterial)
+	public ParticleRenderer(ParticleModel model, ParticleModelMaterial[] defaultMaterials)
 	{
-		super(model, defaultMaterial);
+		super(model, defaultMaterials);
 	}
 	
 	@Override

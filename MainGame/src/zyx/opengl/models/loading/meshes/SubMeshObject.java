@@ -14,7 +14,6 @@ class SubMeshObject
 	int boneCount;
 	float[] vertexData;
 	int[] elementData;
-	PhysObject physInformation;
 	String diffuseTexture;
 	String normalTexture;
 	String specularTexture;
@@ -41,12 +40,7 @@ class SubMeshObject
 		{
 			elementData[i] = in.readShort();
 		}
-				
-		physInformation = new PhysObject();
-		physInformation.read(in);
-		
-		builder.append("↳", physInformation.physBoxes.length, "physboxes");
-		
+						
 		diffuseTexture = in.readUTF();
 		normalTexture = in.readUTF();
 		specularTexture = in.readUTF();

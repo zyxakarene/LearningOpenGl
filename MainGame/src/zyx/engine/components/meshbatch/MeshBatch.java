@@ -80,7 +80,7 @@ class MeshBatch<E extends MeshBatchEntity> implements IResourceReady<MeshBatchRe
 		
 		if (renderer != null)
 		{
-			renderer.setMeshBatchData(batchData);
+			renderer.setMeshBatchData(0, batchData); //TODO Correct index
 		}
 	}
 
