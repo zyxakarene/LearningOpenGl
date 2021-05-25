@@ -4,7 +4,6 @@ import zyx.engine.components.world.WorldObject;
 import zyx.opengl.materials.Material;
 import zyx.opengl.models.AbstractMultiModel;
 import zyx.opengl.models.implementations.renderers.MeshRenderer;
-import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.interfaces.IDisposeable;
 
 public abstract class MeshWrapper
@@ -13,12 +12,11 @@ public abstract class MeshWrapper
 			TModel extends AbstractMultiModel<TMaterial>, 
 			TRenderer extends MeshRenderer<TMaterial, TModel>
 		> 
-		implements IMeshWrapper, IDisposeable
+		implements IDisposeable
 {
 	protected TModel model;
 	protected WorldObject parent;
-	
-	private TRenderer[] renderers;
+	protected TRenderer[] renderers;
 	
 	public MeshWrapper(TRenderer[] renderers, TModel model)
 	{
@@ -39,27 +37,6 @@ public abstract class MeshWrapper
 		for (int i = 0; i < len; i++)
 		{
 			renderers[i].setParent(parent);
-		}
-	}
-	
-	public void draw(int index)
-	{
-		if (parent != null)
-		{
-			if (parent.inView() == false)
-			{
-				return;
-			}
-			
-			SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM.load(parent.worldMatrix());
-		}
-		
-		onPreDraw();
-		renderers[index].draw();
-		
-		if (parent != null)
-		{
-			parent.onPostDraw();
 		}
 	}
 	

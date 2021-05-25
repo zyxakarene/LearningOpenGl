@@ -35,9 +35,14 @@ public class WorldModelRenderer extends MeshRenderer<WorldModelMaterial, WorldMo
 //			drawMaterial.setShadowDistance(-1);
 //		}
 
+		WorldShader.cubemapIndex = cubemapIndex;
 		
+		if (model.ready)
+		{
+			model.setAnimation(animController);
+		}
 	}
-
+	
 	@Override
 	public void draw()
 	{
@@ -51,5 +56,15 @@ public class WorldModelRenderer extends MeshRenderer<WorldModelMaterial, WorldMo
 			
 			super.draw();
 		}
+	}
+
+	public void setAnimationController(AnimationController animationController)
+	{
+		animController = animationController;
+	}
+
+	public void setCubemapIndex(int index)
+	{
+		cubemapIndex = index;
 	}
 }

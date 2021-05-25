@@ -7,13 +7,9 @@ import zyx.opengl.models.implementations.bones.animation.AnimationController;
 import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.models.implementations.renderers.WorldModelRenderer;
-import zyx.opengl.shaders.implementations.WorldShader;
 
 public class WorldModelWrapper extends MeshWrapper<WorldModelMaterial, WorldModel, WorldModelRenderer>
 {
-
-	private int cubemapIndex;
-	private AnimationController animController;
 	
 	public WorldModelWrapper(WorldModelRenderer[] renderers, WorldModel model)
 	{
@@ -45,24 +41,21 @@ public class WorldModelWrapper extends MeshWrapper<WorldModelMaterial, WorldMode
 		return model.getBoneById(boneId);
 	}
 
-	public void SetCubemapIndex(int cubemapIndex)
+	public void setCubemapIndex(int cubemapIndex)
 	{
-		this.cubemapIndex = cubemapIndex;
+		int len = renderers.length;
+		for (int i = 0; i < len; i++)
+		{
+			renderers[i].setCubemapIndex(cubemapIndex);
+		}
 	}
 
 	public void setAnimation(AnimationController animationController)
 	{
-		animController = animationController;
-	}
-	
-	@Override
-	protected void onPreDraw()
-	{
-		WorldShader.cubemapIndex = cubemapIndex;
-		
-		if (model.ready)
+		int len = renderers.length;
+		for (int i = 0; i < len; i++)
 		{
-			model.setAnimation(animController);
+			renderers[i].setAnimationController(animationController);
 		}
 	}
 }

@@ -105,7 +105,7 @@ public class ParticleScene extends DebugScene
 
 		GLUtils.errorCheck();
 		
-//		addLoadingScreenProcess(new AddBoxProcess(world, 20, boxes));
+		addLoadingScreenProcess(new AddBoxProcess(world, 20, boxes));
 		
 	}
 

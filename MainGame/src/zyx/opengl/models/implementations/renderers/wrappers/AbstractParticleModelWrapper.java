@@ -21,21 +21,10 @@ public abstract class AbstractParticleModelWrapper
 {
 
 	private ParticleSystem system;
-	private int rendererCount;
 
 	public AbstractParticleModelWrapper(TRenderer[] renderers, TModel model)
 	{
 		super(renderers, model);
-		
-		rendererCount = renderers.length;
-	}
-	
-	public void draw()
-	{
-		for (int i = 0; i < rendererCount; i++)
-		{
-			draw(i);
-		}
 	}
 	
 	@Override
@@ -54,7 +43,8 @@ public abstract class AbstractParticleModelWrapper
 	public void setup(ParticleSystem system)
 	{
 		this.system = system;
-		setParent(system);
+		
+		model.setParent(system);
 		
 		super.setup(system);
 	}

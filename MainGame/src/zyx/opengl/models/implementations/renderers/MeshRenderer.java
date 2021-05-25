@@ -3,6 +3,7 @@ package zyx.opengl.models.implementations.renderers;
 import zyx.engine.components.world.WorldObject;
 import zyx.opengl.materials.Material;
 import zyx.opengl.models.AbstractMultiModel;
+import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IDrawable;
 
@@ -36,8 +37,23 @@ public abstract class MeshRenderer<TMaterial extends Material, TModel extends Ab
 	@Override
 	public void draw()
 	{
+		if (parent != null)
+		{
+			if (parent.inView() == false)
+			{
+				return;
+			}
+			
+			SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM.load(parent.worldMatrix());
+		}
 		onPreDraw();
+
 		model.draw(meshIndex, drawMaterial);
+		
+		if (parent != null)
+		{
+			parent.onPostDraw();
+		}
 	}
 	
 	public TMaterial getDefaultMaterial()

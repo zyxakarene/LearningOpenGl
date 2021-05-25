@@ -6,9 +6,7 @@ import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.ParticleResource;
 import zyx.opengl.camera.Camera;
-import zyx.opengl.models.implementations.renderers.AbstractParticleRenderer;
 import zyx.opengl.models.implementations.renderers.wrappers.AbstractParticleModelWrapper;
-import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.FloatMath;
 
 public class ParticleSystem extends WorldObject implements IResourceReady<ParticleResource>
@@ -78,16 +76,6 @@ public class ParticleSystem extends WorldObject implements IResourceReady<Partic
 		
 		boolean visible = Camera.getInstance().isInView(HELPER_VECTOR, radius);
 		return visible;
-	}
-
-	void drawParticle()
-	{
-		if (loaded && inView())
-		{
-			SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM.load(worldMatrix());
-			
-			wrapper.draw(0);
-		}
 	}
 
 	@Override

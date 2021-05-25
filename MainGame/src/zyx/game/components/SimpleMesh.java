@@ -217,7 +217,7 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 	{
 		wrapper = resource.getContent();
 		wrapper.setup(this);
-		wrapper.SetCubemapIndex(cubemapIndex);
+		wrapper.setCubemapIndex(cubemapIndex);
 		
 		physbox = wrapper.getPhysbox();
 		loaded = true;
@@ -320,7 +320,7 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 		cubemapIndex = index;
 		if (wrapper != null)
 		{
-			wrapper.SetCubemapIndex(cubemapIndex);
+			wrapper.setCubemapIndex(cubemapIndex);
 		}
 	}
 
