@@ -9,7 +9,7 @@ import zyx.opengl.models.implementations.ISubMeshVO;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
-import zyx.opengl.models.implementations.renderers.WorldModelRenderer;
+import zyx.opengl.models.implementations.renderers.wrappers.WorldModelWrapper;
 import zyx.opengl.models.loading.MeshLoadingTask;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.tasks.ITaskCompleted;
@@ -33,9 +33,9 @@ public class MeshResource extends BaseRequiredSubResource implements ITaskComple
 	}
 
 	@Override
-	public WorldModelRenderer getContent()
+	public WorldModelWrapper getContent()
 	{
-		return model.createRenderer();
+		return model.createWrapper();
 	}
 
 	@Override

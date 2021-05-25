@@ -1,11 +1,11 @@
 package zyx.opengl.models.implementations;
 
-import java.util.ArrayList;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.WorldObject;
 import zyx.opengl.materials.impl.ParticleModelMaterial;
 import zyx.opengl.models.implementations.renderers.WorldParticleRenderer;
+import zyx.opengl.models.implementations.renderers.wrappers.WorldParticleModelWrapper;
 import zyx.opengl.shaders.implementations.WorldParticleShader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.DeltaTime;
@@ -191,12 +191,15 @@ public class WorldParticleModel extends BaseParticleModel
 	}
 
 	@Override
-	public WorldParticleRenderer createRenderer()
+	public WorldParticleModelWrapper createWrapper()
 	{
-		ArrayList<ParticleModelMaterial> materials = getDefaultMaterials();
-		ParticleModelMaterial[] array = new ParticleModelMaterial[subMeshCount];
-		
-		WorldParticleModel clone = new WorldParticleModel(vo);
-		return new WorldParticleRenderer(clone, materials.toArray(array));
+		WorldParticleRenderer[] array = new WorldParticleRenderer[subMeshCount];
+		for (int i = 0; i < subMeshCount; i++)
+		{
+			ParticleModelMaterial material = getDefaultMaterial(i);
+			array[i] = new WorldParticleRenderer(this, i, material);
+		}
+
+		return new WorldParticleModelWrapper(array, this);
 	}
 }

@@ -1,6 +1,5 @@
 package zyx.opengl.models.implementations;
 
-import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
@@ -14,6 +13,7 @@ import zyx.opengl.models.implementations.bones.skeleton.Joint;
 import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.models.implementations.renderers.WorldModelRenderer;
+import zyx.opengl.models.implementations.renderers.wrappers.WorldModelWrapper;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.DepthShader;
 import zyx.utils.interfaces.IShadowable;
@@ -75,12 +75,16 @@ public class WorldModel extends AbstractMultiModel<WorldModelMaterial> implement
 	}
 
 	@Override
-	public WorldModelRenderer createRenderer()
+	public WorldModelWrapper createWrapper()
 	{
-		ArrayList<WorldModelMaterial> materials = getDefaultMaterials();
-		WorldModelMaterial[] array = new WorldModelMaterial[subMeshCount];
-		
-		return new WorldModelRenderer(this, materials.toArray(array));
+		WorldModelRenderer[] array = new WorldModelRenderer[subMeshCount];
+		for (int i = 0; i < subMeshCount; i++)
+		{
+			WorldModelMaterial material = getDefaultMaterial(i);
+			array[i] = new WorldModelRenderer(this, i, material);
+		}
+
+		return new WorldModelWrapper(array, this);
 	}
 
 	@Override

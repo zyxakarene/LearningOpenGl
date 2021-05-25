@@ -6,9 +6,9 @@ import zyx.opengl.models.implementations.WorldModel;
 
 public class PhysicsModelRenderer extends WorldModelRenderer
 {
-	public PhysicsModelRenderer(WorldModel model, WorldModelMaterial[] materials)
+	public PhysicsModelRenderer(WorldModel model, int meshIndex, WorldModelMaterial material)
 	{
-		super(model, materials);
+		super(model, meshIndex, material);
 	}
 	
 	@Override

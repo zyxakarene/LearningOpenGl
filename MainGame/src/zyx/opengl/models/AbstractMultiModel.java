@@ -1,12 +1,10 @@
 package zyx.opengl.models;
 
 import java.nio.FloatBuffer;
-import java.util.ArrayList;
 import zyx.opengl.materials.Material;
 
 public abstract class AbstractMultiModel<TMaterial extends Material> extends AbstractModel<TMaterial>
 {
-
 	protected int subMeshCount;
 	protected ModelData<TMaterial>[] modelData;
 
@@ -47,16 +45,9 @@ public abstract class AbstractMultiModel<TMaterial extends Material> extends Abs
 		}
 	}
 	
-	protected ArrayList<TMaterial> getDefaultMaterials()
+	protected TMaterial getDefaultMaterial(int index)
 	{
-		ArrayList<TMaterial> list = new ArrayList<>();
-		
-		for (int i = 0; i < subMeshCount; i++)
-		{
-			list.add(modelData[i].defaultMaterial);
-		}
-		
-		return list;
+		return modelData[index].defaultMaterial;
 	}
 	
 	@Override

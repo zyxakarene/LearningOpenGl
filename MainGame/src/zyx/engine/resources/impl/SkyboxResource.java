@@ -8,7 +8,7 @@ import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.ISubMeshVO;
 import zyx.opengl.models.implementations.LoadableWorldModelVO;
 import zyx.opengl.models.implementations.SkyboxModel;
-import zyx.opengl.models.implementations.renderers.SkyboxRenderer;
+import zyx.opengl.models.implementations.renderers.wrappers.SkyboxModelWrapper;
 import zyx.opengl.models.loading.SkyboxLoadingTask;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.tasks.ITaskCompleted;
@@ -26,9 +26,9 @@ public class SkyboxResource extends BaseRequiredSubResource implements ISubResou
 	}
 
 	@Override
-	public SkyboxRenderer getContent()
+	public SkyboxModelWrapper getContent()
 	{
-		return model.createRenderer();
+		return model.createWrapper();
 	}
 
 	@Override

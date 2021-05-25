@@ -3,16 +3,20 @@ package zyx.game.components;
 import zyx.engine.utils.callbacks.ICallback;
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
 
-public class AnimatedMesh extends SimpleMesh implements IAnimatedMesh, ICallback<SimpleMesh>
+public class AnimatedMesh extends SimpleMesh implements IAnimatedMesh
 {
 
 	private AnimationController animationController;
 	private String animation;
 	
+	private ICallback<SimpleMesh> meshLoadedCallback;
+	
 	public AnimatedMesh()
 	{
+		meshLoadedCallback = this::onCallback;
+		
 		animationController = new AnimationController();		
-		onLoaded(this);
+		onLoaded(meshLoadedCallback);
 	}
 
 	@Override
@@ -62,9 +66,8 @@ public class AnimatedMesh extends SimpleMesh implements IAnimatedMesh, ICallback
 		return "animatedmesh.png";
 	}
 
-	@Override
 	public void onCallback(SimpleMesh data)
 	{
-		renderer.setAnimation(animationController);
+		wrapper.setAnimation(animationController);
 	}
 }

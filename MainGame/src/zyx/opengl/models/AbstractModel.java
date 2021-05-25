@@ -1,7 +1,7 @@
 package zyx.opengl.models;
 
 import zyx.opengl.materials.Material;
-import zyx.opengl.models.implementations.renderers.MeshRenderer;
+import zyx.opengl.models.implementations.renderers.wrappers.MeshWrapper;
 import zyx.utils.interfaces.IDisposeable;
 
 public abstract class AbstractModel<TMaterial extends Material> implements IDisposeable
@@ -13,7 +13,7 @@ public abstract class AbstractModel<TMaterial extends Material> implements IDisp
 	
 	protected abstract void createObjects();
 	
-	public abstract MeshRenderer createRenderer();
+	public abstract MeshWrapper createWrapper();
 
 	protected final void addAttribute(int vbo, int shaderProgram, String attributeName, int components, int stride, int offset)
 	{

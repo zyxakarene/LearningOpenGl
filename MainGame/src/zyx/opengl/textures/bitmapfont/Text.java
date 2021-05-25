@@ -6,7 +6,7 @@ import zyx.opengl.materials.impl.BitmapTextMaterial;
 import zyx.opengl.models.AbstractSingleModel;
 import zyx.opengl.models.BufferWrapper;
 import zyx.opengl.models.DebugDrawCalls;
-import zyx.opengl.models.implementations.renderers.MeshRenderer;
+import zyx.opengl.models.implementations.renderers.wrappers.MeshWrapper;
 import zyx.opengl.textures.bitmapfont.alignment.HAlignment;
 import zyx.opengl.textures.bitmapfont.alignment.VAlignment;
 
@@ -179,7 +179,7 @@ public class Text extends AbstractSingleModel<BitmapTextMaterial>
 	}
 
 	@Override
-	public MeshRenderer createRenderer()
+	public MeshWrapper createWrapper()
 	{
 		throw new UnsupportedOperationException("Not supported yet.");
 	}

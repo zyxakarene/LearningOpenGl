@@ -1,10 +1,10 @@
 package zyx.opengl.models.implementations;
 
-import java.util.ArrayList;
 import zyx.engine.components.world.WorldObject;
 import zyx.opengl.GLUtils;
 import zyx.opengl.materials.impl.ParticleModelMaterial;
 import zyx.opengl.models.implementations.renderers.ParticleRenderer;
+import zyx.opengl.models.implementations.renderers.wrappers.*;
 import zyx.opengl.shaders.implementations.ParticleShader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.FloatMath;
@@ -114,12 +114,16 @@ public class ParticleModel extends BaseParticleModel
 	}
 	
 	@Override
-	public ParticleRenderer createRenderer()
+	public ParticleModelWrapper createWrapper()
 	{
-		ArrayList<ParticleModelMaterial> materials = getDefaultMaterials();
-		ParticleModelMaterial[] array = new ParticleModelMaterial[subMeshCount];
-		
-		return new ParticleRenderer(this, materials.toArray(array));
+		ParticleRenderer[] array = new ParticleRenderer[subMeshCount];
+		for (int i = 0; i < subMeshCount; i++)
+		{
+			ParticleModelMaterial material = getDefaultMaterial(i);
+			array[i] = new ParticleRenderer(this, i, material);
+		}
+
+		return new ParticleModelWrapper(array, this);
 	}
 
 	@Override

@@ -1,8 +1,8 @@
 package zyx.opengl.models.implementations;
 
-import java.util.ArrayList;
 import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.implementations.renderers.PhysicsModelRenderer;
+import zyx.opengl.models.implementations.renderers.wrappers.WorldModelWrapper;
 
 public class PhysicsModel extends WorldModel
 {
@@ -20,15 +20,17 @@ public class PhysicsModel extends WorldModel
 		
 		super.draw(index, material);
 	}
-
+	
 	@Override
-	public PhysicsModelRenderer createRenderer()
+	public WorldModelWrapper createWrapper()
 	{
-		ArrayList<WorldModelMaterial> materials = getDefaultMaterials();
-		WorldModelMaterial[] array = new WorldModelMaterial[subMeshCount];
-		
-		return new PhysicsModelRenderer(this, materials.toArray(array));
+		PhysicsModelRenderer[] array = new PhysicsModelRenderer[subMeshCount];
+		for (int i = 0; i < subMeshCount; i++)
+		{
+			WorldModelMaterial material = getDefaultMaterial(i);
+			array[i] = new PhysicsModelRenderer(this, i, material);
+		}
+
+		return new WorldModelWrapper(array, this);
 	}
-	
-	
 }

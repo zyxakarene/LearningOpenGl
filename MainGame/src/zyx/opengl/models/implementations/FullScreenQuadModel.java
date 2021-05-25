@@ -2,7 +2,7 @@ package zyx.opengl.models.implementations;
 
 import zyx.opengl.materials.Material;
 import zyx.opengl.models.AbstractSingleModel;
-import zyx.opengl.models.implementations.renderers.MeshRenderer;
+import zyx.opengl.models.implementations.renderers.wrappers.MeshWrapper;
 
 public class FullScreenQuadModel extends AbstractSingleModel
 {
@@ -44,7 +44,7 @@ public class FullScreenQuadModel extends AbstractSingleModel
 	}
 
 	@Override
-	public MeshRenderer createRenderer()
+	public MeshWrapper createWrapper()
 	{
 		throw new UnsupportedOperationException("Not supported yet.");
 	}

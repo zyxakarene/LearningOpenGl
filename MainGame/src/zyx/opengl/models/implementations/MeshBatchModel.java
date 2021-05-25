@@ -1,12 +1,12 @@
 package zyx.opengl.models.implementations;
 
-import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
 import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.AbstractInstancedModel;
 import zyx.opengl.models.implementations.renderers.MeshBatchRenderer;
+import zyx.opengl.models.implementations.renderers.wrappers.MeshBatchModelWrapper;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.*;
 import zyx.utils.interfaces.IShadowable;
@@ -133,12 +133,16 @@ public class MeshBatchModel extends AbstractInstancedModel<WorldModelMaterial> i
 	}
 
 	@Override
-	public MeshBatchRenderer createRenderer()
+	public MeshBatchModelWrapper createWrapper()
 	{
-		ArrayList<WorldModelMaterial> materials = getDefaultMaterials();
-		WorldModelMaterial[] array = new WorldModelMaterial[subMeshCount];
-		
-		return new MeshBatchRenderer(this, materials.toArray(array));
+		MeshBatchRenderer[] array = new MeshBatchRenderer[subMeshCount];
+		for (int i = 0; i < subMeshCount; i++)
+		{
+			WorldModelMaterial material = getDefaultMaterial(i);
+			array[i] = new MeshBatchRenderer(this, i, material);
+		}
+
+		return new MeshBatchModelWrapper(array, this);
 	}
 
 	private class MeshBatchModelShaderData extends ModelShaderData<MeshBatchShader, MeshBatchDepthShader>

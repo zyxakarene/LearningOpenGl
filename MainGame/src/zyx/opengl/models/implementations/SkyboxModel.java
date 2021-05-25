@@ -1,10 +1,10 @@
 package zyx.opengl.models.implementations;
 
-import java.util.ArrayList;
 import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.AbstractMultiModel;
 import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.models.implementations.renderers.SkyboxRenderer;
+import zyx.opengl.models.implementations.renderers.wrappers.*;
 
 public class SkyboxModel extends AbstractMultiModel<WorldModelMaterial>
 {
@@ -58,11 +58,15 @@ public class SkyboxModel extends AbstractMultiModel<WorldModelMaterial>
 	}
 
 	@Override
-	public SkyboxRenderer createRenderer()
+	public SkyboxModelWrapper createWrapper()
 	{
-		ArrayList<WorldModelMaterial> materials = getDefaultMaterials();
-		WorldModelMaterial[] array = new WorldModelMaterial[subMeshCount];
-		
-		return new SkyboxRenderer(this, materials.toArray(array));
+		SkyboxRenderer[] array = new SkyboxRenderer[subMeshCount];
+		for (int i = 0; i < subMeshCount; i++)
+		{
+			WorldModelMaterial material = getDefaultMaterial(i);
+			array[i] = new SkyboxRenderer(this, i, material);
+		}
+
+		return new SkyboxModelWrapper(array, this);
 	}
 }

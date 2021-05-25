@@ -6,9 +6,9 @@ import zyx.opengl.models.implementations.SkyboxModel;
 public class SkyboxRenderer extends MeshRenderer<WorldModelMaterial, SkyboxModel>
 {
 
-	public SkyboxRenderer(SkyboxModel model, WorldModelMaterial[] defaultMaterials)
+	public SkyboxRenderer(SkyboxModel model, int meshIndex, WorldModelMaterial defaultMaterial)
 	{
-		super(model, defaultMaterials);
+		super(model, meshIndex, defaultMaterial);
 	}
 
 }

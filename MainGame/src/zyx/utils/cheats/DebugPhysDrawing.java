@@ -13,7 +13,7 @@ import zyx.opengl.models.implementations.bones.skeleton.Skeleton;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.models.implementations.physics.PhysObject;
 import zyx.opengl.models.implementations.physics.PhysTriangle;
-import zyx.opengl.models.implementations.renderers.WorldModelRenderer;
+import zyx.opengl.models.implementations.renderers.wrappers.WorldModelWrapper;
 import zyx.opengl.textures.ColorTexture;
 import zyx.opengl.textures.enums.TextureSlot;
 import zyx.utils.FloatMath;
@@ -32,7 +32,7 @@ public class DebugPhysDrawing
 	private static final HashMap<PhysBox, WorldModel> BOUNDING_BOX_MAP = new HashMap<>();
 	private static final HashMap<PhysBox, Integer> PHYS_COUNT_MAP = new HashMap<>();
 	
-	public static WorldModelRenderer[] getRenderersFor(IPhysbox physBox)
+	public static WorldModelWrapper[] getWrappersFor(IPhysbox physBox)
 	{
 		PhysBox box = physBox.getPhysbox();
 		Integer integerCount = PHYS_COUNT_MAP.get(box);
@@ -45,9 +45,9 @@ public class DebugPhysDrawing
 		
 		PHYS_COUNT_MAP.put(box, count + 1);
 
-		WorldModelRenderer[] renderers = new WorldModelRenderer[2];
-		renderers[INDEX_MESH] = MESH_MAP.get(box).createRenderer();
-		renderers[INDEX_BOUNDING] = BOUNDING_BOX_MAP.get(box).createRenderer();
+		WorldModelWrapper[] renderers = new WorldModelWrapper[2];
+		renderers[INDEX_MESH] = MESH_MAP.get(box).createWrapper();
+		renderers[INDEX_BOUNDING] = BOUNDING_BOX_MAP.get(box).createWrapper();
 
 		return renderers;
 	}
