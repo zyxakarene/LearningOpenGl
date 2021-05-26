@@ -4,6 +4,7 @@ import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
 import zyx.opengl.materials.RenderQueue;
+import zyx.opengl.materials.impl.DepthMaterial;
 import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.AbstractMultiModel;
 import zyx.opengl.models.DebugDrawCalls;
@@ -116,41 +117,44 @@ public class WorldModel extends AbstractMultiModel<WorldModelMaterial> implement
 
 		if (material.queue == RenderQueue.OPAQUE && material.castsShadows && material.activeShadowCascades > 0)
 		{
-			DepthRenderer.getInstance().drawShadowable(this, material.activeShadowCascades);
+			DepthRenderer.getInstance().drawShadowable(this, index, material.activeShadowCascades);
 			DeferredRenderer.getInstance().bindBuffer();
 		}
 	}
 
 	@Override
-	public void drawShadow(byte activeCascades)
+	public void drawShadow(int meshIndex, byte activeCascades)
 	{
-		//TODO: Shadows for multi meshes
-//		shadowShader.bind();
-//		shadowShader.upload();
-//
-//		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_1) == WorldModelMaterial.DRAW_CASCADE_1)
-//		{
-//			shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_0);
-//			super.draw(shadowMaterial);
-//		}
-//
-//		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_2) == WorldModelMaterial.DRAW_CASCADE_2)
-//		{
-//			shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_1);
-//			super.draw(shadowMaterial);
-//		}
-//
-//		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_3) == WorldModelMaterial.DRAW_CASCADE_3)
-//		{
-//			shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_2);
-//			super.draw(shadowMaterial);
-//		}
-//
-//		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_4) == WorldModelMaterial.DRAW_CASCADE_4)
-//		{
-//			shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_3);
-//			super.draw(shadowMaterial);
-//		}
+		WorldModelShaderData data = shaderData[meshIndex];
+		DepthShader shadowShader = data.shadowShader;
+		DepthMaterial shadowMaterial = data.shadowMaterial;
+		
+		shadowShader.bind();
+		shadowShader.upload();
+
+		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_1) == WorldModelMaterial.DRAW_CASCADE_1)
+		{
+			shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_0);
+			super.draw(meshIndex, shadowMaterial);
+		}
+
+		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_2) == WorldModelMaterial.DRAW_CASCADE_2)
+		{
+			shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_1);
+			super.draw(meshIndex, shadowMaterial);
+		}
+
+		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_3) == WorldModelMaterial.DRAW_CASCADE_3)
+		{
+			shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_2);
+			super.draw(meshIndex, shadowMaterial);
+		}
+
+		if ((activeCascades & WorldModelMaterial.DRAW_CASCADE_4) == WorldModelMaterial.DRAW_CASCADE_4)
+		{
+			shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_3);
+			super.draw(meshIndex, shadowMaterial);
+		}
 	}
 
 	public PhysBox getPhysbox()

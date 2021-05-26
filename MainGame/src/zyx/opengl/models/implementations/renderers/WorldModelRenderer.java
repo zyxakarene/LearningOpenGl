@@ -1,10 +1,12 @@
 package zyx.opengl.models.implementations.renderers;
 
 import org.lwjgl.util.vector.Vector3f;
+import zyx.opengl.camera.Camera;
 import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
 import zyx.opengl.shaders.implementations.WorldShader;
+import zyx.utils.FloatMath;
 
 public class WorldModelRenderer extends MeshRenderer<WorldModelMaterial, WorldModel>
 {
@@ -20,20 +22,19 @@ public class WorldModelRenderer extends MeshRenderer<WorldModelMaterial, WorldMo
 		animController = DEFAULT_CONTROLLER;
 	}
 	
-	//TODO: Shadows
 	@Override
 	protected void onPreDraw()
 	{
-//		if (parent != null)
-//		{
-//			Camera.getInstance().getPosition(true, HELPER_CAM_POS);
-//			float distance = FloatMath.distance(parent.position, HELPER_CAM_POS);
-//			drawMaterial.setShadowDistance(distance);
-//		}
-//		else
-//		{
-//			drawMaterial.setShadowDistance(-1);
-//		}
+		if (parent != null)
+		{
+			Camera.getInstance().getPosition(true, HELPER_CAM_POS);
+			float distance = FloatMath.distance(parent.position, HELPER_CAM_POS);
+			drawMaterial.setShadowDistance(distance);
+		}
+		else
+		{
+			drawMaterial.setShadowDistance(-1);
+		}
 
 		WorldShader.cubemapIndex = cubemapIndex;
 		

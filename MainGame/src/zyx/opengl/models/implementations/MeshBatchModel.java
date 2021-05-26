@@ -3,6 +3,7 @@ package zyx.opengl.models.implementations;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.buffers.DepthRenderer;
+import zyx.opengl.materials.impl.DepthMaterial;
 import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.AbstractInstancedModel;
 import zyx.opengl.models.implementations.renderers.MeshBatchRenderer;
@@ -27,12 +28,7 @@ public class MeshBatchModel extends AbstractInstancedModel<WorldModelMaterial> i
 
 	public MeshBatchModel(LoadableWorldModelVO vo)
 	{
-		setSubMeshCount(vo.subMeshCount);
-		
 		refresh(vo);
-		
-		createObjects();
-		setupAttributes();
 	}
 
 	public void refresh(LoadableWorldModelVO vo)
@@ -42,6 +38,7 @@ public class MeshBatchModel extends AbstractInstancedModel<WorldModelMaterial> i
 
 		setSubMeshCount(vo.subMeshCount);
 		setDefaultMaterials(vo.getDefaultMaterials());
+		createObjects();
 		
 		shaderData = new MeshBatchModelShaderData[vo.subMeshCount];
 		for (int i = 0; i < vo.subMeshCount; i++)
@@ -58,6 +55,8 @@ public class MeshBatchModel extends AbstractInstancedModel<WorldModelMaterial> i
 			bindVao(i);
 			setVertexData(i, subMesh.vertexData, subMesh.elementData);
 		}
+		
+		setupAttributes();
 	}
 	
 	public void setMeshBatchData(int index, float[] instanceData)
@@ -76,27 +75,31 @@ public class MeshBatchModel extends AbstractInstancedModel<WorldModelMaterial> i
 
 		if (material.castsShadows)
 		{
-			DepthRenderer.getInstance().drawShadowable(this, material.activeShadowCascades);
+			DepthRenderer.getInstance().drawShadowable(this, index, material.activeShadowCascades);
 		}
 	}
 
 	@Override
-	public void drawShadow(byte activeCascades)
+	public void drawShadow(int meshIndex, byte activeCascades)
 	{
-//		shadowShader.bind();
-//		shadowShader.upload();
-//
-//		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_0);
-//		super.draw(shadowMaterial);
-//
-//		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_1);
-//		super.draw(shadowMaterial);
-//
-//		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_2);
-//		super.draw(shadowMaterial);
-//
-//		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_3);
-//		super.draw(shadowMaterial);
+		MeshBatchModelShaderData data = shaderData[meshIndex];
+		MeshBatchDepthShader shadowShader = data.shadowShader;
+		DepthMaterial shadowMaterial = data.shadowMaterial;
+		
+		shadowShader.bind();
+		shadowShader.upload();
+
+		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_0);
+		super.draw(meshIndex, shadowMaterial);
+
+		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_1);
+		super.draw(meshIndex, shadowMaterial);
+
+		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_2);
+		super.draw(meshIndex, shadowMaterial);
+
+		shadowShader.prepareShadowQuadrant(shadowShader.QUADRANT_3);
+		super.draw(meshIndex, shadowMaterial);
 	}
 
 	public Vector3f getRadiusCenter()

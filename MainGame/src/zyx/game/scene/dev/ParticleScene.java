@@ -70,7 +70,7 @@ public class ParticleScene extends DebugScene
 	@Override
 	protected void onInitialize()
 	{
-		for (int i = 0; i < 0; i++)
+		for (int i = 0; i < 20; i++)
 		{
 			CubeEntity cube = new CubeEntity();
 			float x = (FloatMath.random() * 200f) - 100f;
@@ -105,7 +105,7 @@ public class ParticleScene extends DebugScene
 
 		GLUtils.errorCheck();
 		
-		addLoadingScreenProcess(new AddBoxProcess(world, 20, boxes));
+//		addLoadingScreenProcess(new AddBoxProcess(world, 20, boxes));
 		
 	}
 

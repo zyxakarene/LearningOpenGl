@@ -55,7 +55,7 @@ public class MeshRenderList implements IDrawable
 		for (int i = list.size() - 1; i >= 0; i--)
 		{
 			MeshRenderer renderer = list.get(i);
-			RenderQueue rendererQueue = renderer.drawMaterial.queue; //TODO: Sorting
+			RenderQueue rendererQueue = renderer.drawMaterial.queue;
 			if (rendererQueue != queue)
 			{
 				switch (rendererQueue)

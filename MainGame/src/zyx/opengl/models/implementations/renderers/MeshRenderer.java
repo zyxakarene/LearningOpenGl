@@ -8,7 +8,6 @@ import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IDrawable;
 
 //TODO: Make sure this works with asset reloading
-//TODO: Sorting of sub meshes somehow
 public abstract class MeshRenderer<TMaterial extends Material, TModel extends AbstractMultiModel<TMaterial>> implements IDrawable, IDisposeable
 {
 	protected TModel model;

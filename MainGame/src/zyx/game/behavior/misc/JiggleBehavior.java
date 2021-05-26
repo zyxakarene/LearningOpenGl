@@ -23,7 +23,6 @@ public class JiggleBehavior extends Behavior
 		super(BehaviorType.JIGGLE);
 
 		randomOffset = FloatMath.random() * 1000;
-		scale = 0.1f;
 	}
 
 	@Override
@@ -49,6 +48,14 @@ public class JiggleBehavior extends Behavior
 		float posY = py + FloatMath.cos(d * 0.01f) * 2;
 		float posZ = pz + FloatMath.cos(d * 0.01f);
 
+		scale = posX / 5f;
+		if (scale == 0)
+		{
+			scale = 0.1f;
+		}
+
+		
+//		gameObject.setScale(scale, scale, scale);
 		gameObject.setRotation(x, y, z);
 		gameObject.setPosition(false, posX, posY, posZ);
 	}
