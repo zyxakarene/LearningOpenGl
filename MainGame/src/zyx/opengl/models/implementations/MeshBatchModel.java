@@ -59,9 +59,12 @@ public class MeshBatchModel extends AbstractInstancedModel<WorldModelMaterial> i
 		setupAttributes();
 	}
 	
-	public void setMeshBatchData(int index, float[] instanceData)
+	public void setMeshBatchData(float[] instanceData)
 	{
-		setInstanceData(index, instanceData, instanceData.length / INSTANCE_DATA_AMOUNT);
+		for (int i = 0; i < subMeshCount; i++)
+		{
+			setInstanceData(i, instanceData, instanceData.length / INSTANCE_DATA_AMOUNT);
+		}
 	}
 	
 	@Override

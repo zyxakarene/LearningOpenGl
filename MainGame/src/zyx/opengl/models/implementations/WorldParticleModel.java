@@ -66,8 +66,11 @@ public class WorldParticleModel extends BaseParticleModel
 			particleAge[i] = (int) (i * -(vo.lifespan / vo.instanceCount) + vo.lifespan);
 		}
 
-		setInstanceData(0, instanceData, instanceData.length / INSTANCE_DATA_COUNT);
-		setVertexData(0, vertexData, SHARED_ELEMENT_DATA);
+		for (int i = 0; i < subMeshCount; i++)
+		{
+			setInstanceData(i, instanceData, instanceData.length / INSTANCE_DATA_COUNT);
+			setVertexData(i, vertexData, SHARED_ELEMENT_DATA);
+		}
 	}
 	
 	@Override

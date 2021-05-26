@@ -68,11 +68,11 @@ public class SimpleMesh extends WorldObject implements IPhysbox, IResourceReady<
 		return resource;
 	}
 	
-	public WorldModelMaterial cloneMaterial()
+	public WorldModelMaterial cloneMaterial(int index)
 	{
 		if (wrapper != null)
 		{
-			return wrapper.cloneMaterial(0);
+			return wrapper.cloneMaterial(index);
 		}
 		
 		return null;
