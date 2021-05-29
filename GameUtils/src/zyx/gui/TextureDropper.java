@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import zyx.logic.DragDropper;
 import zyx.logic.IFilesDropped;
-import zyx.logic.converter.smd.control.json.JsonMeshTextures;
+import zyx.logic.converter.smd.control.json.JsonMeshTextureEntry;
 
 public class TextureDropper implements IFilesDropped
 {
@@ -22,13 +22,13 @@ public class TextureDropper implements IFilesDropped
 	private DragDropper dropper;
 	private JLabel textLabel;
 	private int type;
-	private JsonMeshTextures textures;
+	private JsonMeshTextureEntry textureEntry;
 
-	public TextureDropper(JLabel label, JLabel textLabel, JsonMeshTextures textures, int type)
+	public TextureDropper(JLabel label, JLabel textLabel, JsonMeshTextureEntry textures, int type)
 	{
 		this.label = label;
 		this.textLabel = textLabel;
-		this.textures = textures;
+		this.textureEntry = textures;
 		this.type = type;
 		dropper = new DragDropper("png", this);
 
@@ -45,13 +45,13 @@ public class TextureDropper implements IFilesDropped
 		switch (type)
 		{
 			case DIFFUSE:
-				textures.diffuseFile = null;
+				textureEntry.diffuseFile = null;
 				break;
 			case NORMAL:
-				textures.normalFile = null;
+				textureEntry.normalFile = null;
 				break;
 			case SPECULAR:
-				textures.specularFile = null;
+				textureEntry.specularFile = null;
 				break;
 		}
 	}
@@ -99,13 +99,13 @@ public class TextureDropper implements IFilesDropped
 			switch (type)
 			{
 				case DIFFUSE:
-					textures.diffuseFile = file;
+					textureEntry.diffuseFile = file;
 					break;
 				case NORMAL:
-					textures.normalFile = file;
+					textureEntry.normalFile = file;
 					break;
 				case SPECULAR:
-					textures.specularFile = file;
+					textureEntry.specularFile = file;
 					break;
 			}
 		}

@@ -48,10 +48,10 @@ public class SmdParser
 		SmdObject smd = importer.getSmd();
 		smd.setSkeleton(jsonMesh.isSkeleton());
 		smd.setSkeletonPath(jsonMesh.getSkeletonResourceName());
-		smd.setDiffuseTexturePath(jsonMesh.textureFiles.getDiffuseTextureName());
-		smd.setNormalTexturePath(jsonMesh.textureFiles.getNormalTextureName());
-		smd.setSpecularTexturePath(jsonMesh.textureFiles.getSpecularTextureName());
-		smd.setMaterialInfo(jsonMesh.meshProperties);
+//		smd.setDiffuseTexturePath(jsonMesh.textureFiles.getDiffuseTextureName());
+//		smd.setNormalTexturePath(jsonMesh.textureFiles.getNormalTextureName());
+//		smd.setSpecularTexturePath(jsonMesh.textureFiles.getSpecularTextureName());
+//		smd.setMaterialInfo(jsonMesh.meshProperties);
 
 		if (outputModel.exists() == false)
 		{
@@ -70,9 +70,9 @@ public class SmdParser
 			}
 		}
 
-		copyTextures(jsonMesh.textureFiles.diffuseFile);
-		copyTextures(jsonMesh.textureFiles.normalFile);
-		copyTextures(jsonMesh.textureFiles.specularFile);
+//		copyTextures(jsonMesh.textureFiles.diffuseFile);
+//		copyTextures(jsonMesh.textureFiles.normalFile);
+//		copyTextures(jsonMesh.textureFiles.specularFile);
 	}
 
 	private void copyTextures(File file)

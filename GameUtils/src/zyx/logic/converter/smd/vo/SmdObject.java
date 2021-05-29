@@ -6,27 +6,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.logic.converter.smd.control.json.JsonMeshProperties;
-import zyx.logic.converter.smd.reader.SmdTriangleHandler;
 
 public class SmdObject
 {
-
+	private ArrayList<SmdSubMesh> subMeshes = new ArrayList<>();
 	private Bone rootBone;
-	private ArrayList<Vertex> verticies;
 	private ArrayList<Animation> animations = new ArrayList<>();
 	private PhysInformation phys = new PhysInformation();
-	private ArrayList<Integer> elements;
 	private String skeletonPath;
-	private String diffuseTexturePath;
-	private String normalTexturePath;
-	private String specularTexturePath;
 	private boolean isSkeleton;
-	private MaterialInformation materialInfo = new MaterialInformation();
 
 	private Vector3f radiusCenter = new Vector3f();
 	private float radius = 0;
-	private byte maxBoneCount;
 
 	public void setRootBone(Bone bone)
 	{
@@ -36,21 +27,6 @@ public class SmdObject
 	public void setSkeleton(boolean skeleton)
 	{
 		this.isSkeleton = skeleton;
-	}
-
-	public void setDiffuseTexturePath(String diffuseTexturePath)
-	{
-		this.diffuseTexturePath = diffuseTexturePath;
-	}
-
-	public void setNormalTexturePath(String normalTexturePath)
-	{
-		this.normalTexturePath = normalTexturePath;
-	}
-
-	public void setSpecularTexturePath(String specularTexturePath)
-	{
-		this.specularTexturePath = specularTexturePath;
 	}
 
 	public void setSkeletonPath(String skeletonPath)
@@ -63,15 +39,7 @@ public class SmdObject
 		return rootBone;
 	}
 
-	public void setTriangleData(SmdTriangleHandler.Response response)
-	{
-		this.verticies = response.verticies;
-		this.elements = response.elements;
-
-		calculateRadius(verticies);
-	}
-
-	private void calculateRadius(ArrayList<Vertex> verticies)
+	public void calculateRadius()
 	{
 		float minX = 0;
 		float maxX = 0;
@@ -79,35 +47,39 @@ public class SmdObject
 		float maxY = 0;
 		float minZ = 0;
 		float maxZ = 0;
-		for (Vertex vertex : verticies)
+		
+		for (SmdSubMesh subMesh : subMeshes)
 		{
-			Vector3f position = vertex.getPos();
+			for (Vertex vertex : subMesh.verticies)
+			{
+				Vector3f position = vertex.getPos();
 
-			if (position.x < minX)
-			{
-				minX = position.x;
-			}
-			else if (position.x > maxX)
-			{
-				maxX = position.x;
-			}
+				if (position.x < minX)
+				{
+					minX = position.x;
+				}
+				else if (position.x > maxX)
+				{
+					maxX = position.x;
+				}
 
-			if (position.y < minY)
-			{
-				minY = position.y;
-			}
-			else if (position.y > maxY)
-			{
-				maxY = position.y;
-			}
+				if (position.y < minY)
+				{
+					minY = position.y;
+				}
+				else if (position.y > maxY)
+				{
+					maxY = position.y;
+				}
 
-			if (position.z < minZ)
-			{
-				minZ = position.z;
-			}
-			else if (position.z > maxZ)
-			{
-				maxZ = position.z;
+				if (position.z < minZ)
+				{
+					minZ = position.z;
+				}
+				else if (position.z > maxZ)
+				{
+					maxZ = position.z;
+				}
 			}
 		}
 
@@ -140,16 +112,6 @@ public class SmdObject
 	public void setBoundingBox(Vector3f min, Vector3f max)
 	{
 		this.phys.setBoundingBox(min, max);
-	}
-
-	public void setMaxBoneCount(byte maxBoneCount)
-	{
-		this.maxBoneCount = maxBoneCount;
-	}
-
-	public int getMaxBoneCount()
-	{
-		return maxBoneCount;
 	}
 
 	public void save(DataOutputStream out) throws IOException
@@ -189,30 +151,31 @@ public class SmdObject
 
 	private void saveAsMesh(DataOutputStream out) throws IOException
 	{
-		byte subMeshCount = 1;
+		byte subMeshCount = (byte) subMeshes.size();
 		out.write(subMeshCount);
 		
 		for (int i = 0; i < subMeshCount; i++)
 		{
-			out.writeByte(maxBoneCount);
+			SmdSubMesh subMesh = subMeshes.get(i);
+			out.writeByte(subMesh.maxBoneCount);
 
-			out.writeInt(verticies.size());
-			for (Vertex vertex : verticies)
+			out.writeInt(subMesh.verticies.size());
+			for (Vertex vertex : subMesh.verticies)
 			{
 				vertex.save(out);
 			}
 
-			out.writeInt(elements.size());
-			for (Integer element : elements)
+			out.writeInt(subMesh.elements.size());
+			for (Integer element : subMesh.elements)
 			{
 				out.writeShort(element);
 			}
 
-			out.writeUTF(diffuseTexturePath);
-			out.writeUTF(normalTexturePath);
-			out.writeUTF(specularTexturePath);
+			out.writeUTF(subMesh.diffuseTexturePath);
+			out.writeUTF(subMesh.normalTexturePath);
+			out.writeUTF(subMesh.specularTexturePath);
 			
-			materialInfo.save(out);
+			subMesh.materialInfo.save(out);
 		}
 		
 		phys.save(out);
@@ -223,10 +186,5 @@ public class SmdObject
 		out.writeFloat(radius);
 
 		out.writeUTF(skeletonPath);
-	}
-
-	public void setMaterialInfo(JsonMeshProperties meshProperties)
-	{
-		materialInfo.SetFrom(meshProperties);
 	}
 }

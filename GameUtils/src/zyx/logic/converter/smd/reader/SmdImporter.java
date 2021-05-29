@@ -9,6 +9,8 @@ import zyx.logic.converter.smd.vo.Animation;
 import zyx.logic.converter.smd.vo.Bone;
 import zyx.logic.converter.smd.vo.PhysBox;
 import zyx.logic.converter.smd.vo.SmdObject;
+import zyx.logic.converter.smdV2.SmdFileParser;
+import zyx.logic.converter.smdV2.parsedVo.ParsedSmdFile;
 
 public class SmdImporter
 {
@@ -51,7 +53,8 @@ public class SmdImporter
 		}
 		
 		System.out.println("Importing file: " + file);
-
+		SmdFileParser par = new SmdFileParser(file);
+		ParsedSmdFile result = par.getResult();
 		Scanner scan = new Scanner(file);
 
 		String line;
@@ -191,7 +194,7 @@ public class SmdImporter
 						lineHandler = new SmdBoundsTriangleHandler();
 						break;
 					case FILE_TYPE_REF:
-						lineHandler = new SmdTriangleHandler(smd.getMaxBoneCount());
+//						lineHandler = new SmdTriangleHandler(smd.getMaxBoneCount());
 						break;
 					case FILE_TYPE_BONE_CHECK:
 						lineHandler = new SmdBoneCheckHandler();
@@ -236,12 +239,12 @@ public class SmdImporter
 					if (currentFileType == FILE_TYPE_REF)
 					{
 						SmdTriangleHandler.Response response = (SmdTriangleHandler.Response) lineHandler.getResult();
-						smd.setTriangleData(response);
+//						smd.setTriangleData(response);
 					}
 					else if (currentFileType == FILE_TYPE_BONE_CHECK)
 					{
 						byte maxBoneCount = (byte) lineHandler.getResult();
-						smd.setMaxBoneCount(maxBoneCount);
+//						smd.setMaxBoneCount(maxBoneCount);
 					}
 					else if (currentFileType == FILE_TYPE_PHYS)
 					{

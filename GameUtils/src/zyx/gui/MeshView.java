@@ -21,10 +21,6 @@ import zyx.logic.converter.smd.control.json.JsonMeshAnimation;
 public class MeshView extends javax.swing.JFrame
 {
 
-	private TextureDropper diffuseDropper;
-	private TextureDropper normalDropper;
-	private TextureDropper specularDropper;
-
 	private JsonMesh mesh;
 
 	private JList<JsonMeshAnimation> animationList;
@@ -61,10 +57,6 @@ public class MeshView extends javax.swing.JFrame
 
 		cardLayoutPanel.add(skeletonPanel, skeletonPanel.getName());
 		cardLayoutPanel.add(meshPanel, meshPanel.getName());
-
-		diffuseDropper = new TextureDropper(diffuseLabel, diffuseText, mesh.textureFiles, TextureDropper.DIFFUSE);
-		normalDropper = new TextureDropper(normalLabel, normalText, mesh.textureFiles, TextureDropper.NORMAL);
-		specularDropper = new TextureDropper(specularLabel, specularText, mesh.textureFiles, TextureDropper.SPECULAR);
 
 		setup();
 	}
@@ -124,10 +116,6 @@ public class MeshView extends javax.swing.JFrame
 			skeletonOutputTextfield.setText(subPath);
 		}
 
-		diffuseDropper.setFile(mesh.textureFiles.diffuseFile);
-		normalDropper.setFile(mesh.textureFiles.normalFile);
-		specularDropper.setFile(mesh.textureFiles.specularFile);
-
 		ArrayList<JsonMeshAnimation> animations = mesh.meshAnimations.animations;
 		for (JsonMeshAnimation animation : animations)
 		{
@@ -156,24 +144,6 @@ public class MeshView extends javax.swing.JFrame
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        texturePanel = new javax.swing.JPanel();
-        diffusePreview = new javax.swing.JPanel();
-        diffuseText = new javax.swing.JLabel();
-        diffuseLabel = new javax.swing.JLabel();
-        titleLabel = new javax.swing.JLabel();
-        diffuseClearBtn = new javax.swing.JButton();
-        normalPanel = new javax.swing.JPanel();
-        normalPreview = new javax.swing.JPanel();
-        normalText = new javax.swing.JLabel();
-        normalLabel = new javax.swing.JLabel();
-        titleLabel4 = new javax.swing.JLabel();
-        normalClearBtn = new javax.swing.JButton();
-        specularPanel = new javax.swing.JPanel();
-        specularPreview = new javax.swing.JPanel();
-        specularText = new javax.swing.JLabel();
-        specularLabel = new javax.swing.JLabel();
-        titleLabel5 = new javax.swing.JLabel();
-        specularClearBtn = new javax.swing.JButton();
         skeletonPanel = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -308,194 +278,15 @@ public class MeshView extends javax.swing.JFrame
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        texturePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        diffusePreview.setBackground(new java.awt.Color(255, 255, 255));
-        diffusePreview.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        diffusePreview.setLayout(null);
-
-        diffuseText.setBackground(new java.awt.Color(0, 0, 0));
-        diffuseText.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        diffuseText.setForeground(new java.awt.Color(255, 255, 255));
-        diffuseText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        diffuseText.setText("content_texture_big");
-        diffuseText.setToolTipText("");
-        diffuseText.setOpaque(true);
-        diffusePreview.add(diffuseText);
-        diffuseText.setBounds(0, 80, 100, 13);
-
-        diffuseLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        diffuseLabel.setText("N/A");
-        diffusePreview.add(diffuseLabel);
-        diffuseLabel.setBounds(1, 1, 98, 98);
-
-        titleLabel.setText("Diffuse");
-
-        diffuseClearBtn.setText("Clear");
-        diffuseClearBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                diffuseClearBtnActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout texturePanelLayout = new javax.swing.GroupLayout(texturePanel);
-        texturePanel.setLayout(texturePanelLayout);
-        texturePanelLayout.setHorizontalGroup(
-            texturePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(texturePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(texturePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(titleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(diffusePreview, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(diffuseClearBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        texturePanelLayout.setVerticalGroup(
-            texturePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(texturePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(titleLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(diffusePreview, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(diffuseClearBtn)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        normalPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        normalPreview.setBackground(new java.awt.Color(255, 255, 255));
-        normalPreview.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        normalPreview.setLayout(null);
-
-        normalText.setBackground(new java.awt.Color(0, 0, 0));
-        normalText.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        normalText.setForeground(new java.awt.Color(255, 255, 255));
-        normalText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        normalText.setText("content_texture_big");
-        normalText.setToolTipText("");
-        normalText.setOpaque(true);
-        normalPreview.add(normalText);
-        normalText.setBounds(0, 80, 100, 13);
-
-        normalLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        normalLabel.setText("N/A");
-        normalPreview.add(normalLabel);
-        normalLabel.setBounds(1, 1, 98, 98);
-
-        titleLabel4.setText("Normal");
-
-        normalClearBtn.setText("Clear");
-        normalClearBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                normalClearBtnActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout normalPanelLayout = new javax.swing.GroupLayout(normalPanel);
-        normalPanel.setLayout(normalPanelLayout);
-        normalPanelLayout.setHorizontalGroup(
-            normalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(normalPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(normalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(titleLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(normalPreview, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(normalClearBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        normalPanelLayout.setVerticalGroup(
-            normalPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(normalPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(titleLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(normalPreview, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(normalClearBtn)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        specularPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        specularPreview.setBackground(new java.awt.Color(255, 255, 255));
-        specularPreview.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        specularPreview.setLayout(null);
-
-        specularText.setBackground(new java.awt.Color(0, 0, 0));
-        specularText.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        specularText.setForeground(new java.awt.Color(255, 255, 255));
-        specularText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        specularText.setText("content_texture_big");
-        specularText.setToolTipText("");
-        specularText.setOpaque(true);
-        specularPreview.add(specularText);
-        specularText.setBounds(0, 80, 100, 13);
-
-        specularLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        specularLabel.setText("N/A");
-        specularPreview.add(specularLabel);
-        specularLabel.setBounds(1, 1, 98, 98);
-
-        titleLabel5.setText("Specular");
-
-        specularClearBtn.setText("Clear");
-        specularClearBtn.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                specularClearBtnActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout specularPanelLayout = new javax.swing.GroupLayout(specularPanel);
-        specularPanel.setLayout(specularPanelLayout);
-        specularPanelLayout.setHorizontalGroup(
-            specularPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(specularPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(specularPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(titleLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(specularPreview, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(specularClearBtn, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        specularPanelLayout.setVerticalGroup(
-            specularPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(specularPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(titleLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(specularPreview, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(specularClearBtn)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(texturePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(normalPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(specularPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGap(0, 384, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(normalPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(texturePanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(specularPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 99, Short.MAX_VALUE))
+            .addGap(0, 175, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout meshPanelLayout = new javax.swing.GroupLayout(meshPanel);
@@ -511,7 +302,7 @@ public class MeshView extends javax.swing.JFrame
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
 
         cardLayoutPanel.add(meshPanel, "card2");
@@ -725,21 +516,6 @@ public class MeshView extends javax.swing.JFrame
 		}
     }//GEN-LAST:event_onTypeChanged
 
-    private void diffuseClearBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_diffuseClearBtnActionPerformed
-    {//GEN-HEADEREND:event_diffuseClearBtnActionPerformed
-		diffuseDropper.clear();
-    }//GEN-LAST:event_diffuseClearBtnActionPerformed
-
-    private void normalClearBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_normalClearBtnActionPerformed
-    {//GEN-HEADEREND:event_normalClearBtnActionPerformed
-		normalDropper.clear();
-    }//GEN-LAST:event_normalClearBtnActionPerformed
-
-    private void specularClearBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_specularClearBtnActionPerformed
-    {//GEN-HEADEREND:event_specularClearBtnActionPerformed
-		specularDropper.clear();
-    }//GEN-LAST:event_specularClearBtnActionPerformed
-
     private void addAnimationBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_addAnimationBtnActionPerformed
     {//GEN-HEADEREND:event_addAnimationBtnActionPerformed
 		JsonMeshAnimation animation = new JsonMeshAnimation();
@@ -833,10 +609,6 @@ public class MeshView extends javax.swing.JFrame
     private javax.swing.JScrollPane animationScrollPane;
     private javax.swing.JPanel cardLayoutPanel;
     private javax.swing.JButton compileBtn;
-    private javax.swing.JButton diffuseClearBtn;
-    private javax.swing.JLabel diffuseLabel;
-    private javax.swing.JPanel diffusePreview;
-    private javax.swing.JLabel diffuseText;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel2;
@@ -855,11 +627,6 @@ public class MeshView extends javax.swing.JFrame
     private javax.swing.JRadioButton meshRadioBtn;
     private javax.swing.JButton meshSkeletonBtn;
     private javax.swing.JTextField meshSkeletonTextfield;
-    private javax.swing.JButton normalClearBtn;
-    private javax.swing.JLabel normalLabel;
-    private javax.swing.JPanel normalPanel;
-    private javax.swing.JPanel normalPreview;
-    private javax.swing.JLabel normalText;
     private javax.swing.JButton saveBtn;
     private javax.swing.JButton skeletonMeshBtn;
     private javax.swing.JTextField skeletonMeshTextfield;
@@ -867,15 +634,6 @@ public class MeshView extends javax.swing.JFrame
     private javax.swing.JTextField skeletonOutputTextfield;
     private javax.swing.JPanel skeletonPanel;
     private javax.swing.JRadioButton skeletonRadioBtn;
-    private javax.swing.JButton specularClearBtn;
-    private javax.swing.JLabel specularLabel;
-    private javax.swing.JPanel specularPanel;
-    private javax.swing.JPanel specularPreview;
-    private javax.swing.JLabel specularText;
-    private javax.swing.JPanel texturePanel;
-    private javax.swing.JLabel titleLabel;
-    private javax.swing.JLabel titleLabel4;
-    private javax.swing.JLabel titleLabel5;
     private javax.swing.ButtonGroup typeBtnGroup;
     private javax.swing.JLabel typeLabel;
     // End of variables declaration//GEN-END:variables
