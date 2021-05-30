@@ -141,8 +141,8 @@ public class MeshView extends javax.swing.JFrame
         jLabel3 = new javax.swing.JLabel();
         meshOutputTextfield = new javax.swing.JTextField();
         meshOutputBtn = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        filesButton = new javax.swing.JButton();
+        propertiesButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         skeletonPanel = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -215,21 +215,21 @@ public class MeshView extends javax.swing.JFrame
             }
         });
 
-        jButton4.setText("Mesh Files");
-        jButton4.addActionListener(new java.awt.event.ActionListener()
+        filesButton.setText("Mesh Files");
+        filesButton.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jButton4ActionPerformed(evt);
+                filesButtonActionPerformed(evt);
             }
         });
 
-        jButton5.setText("Mesh Properties");
-        jButton5.addActionListener(new java.awt.event.ActionListener()
+        propertiesButton.setText("Mesh Properties");
+        propertiesButton.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jButton5ActionPerformed(evt);
+                propertiesButtonActionPerformed(evt);
             }
         });
 
@@ -253,9 +253,9 @@ public class MeshView extends javax.swing.JFrame
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(meshOutputBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(filesButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(propertiesButton, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -273,8 +273,8 @@ public class MeshView extends javax.swing.JFrame
                     .addComponent(meshOutputBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5))
+                    .addComponent(filesButton)
+                    .addComponent(propertiesButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -575,15 +575,15 @@ public class MeshView extends javax.swing.JFrame
 		}
     }//GEN-LAST:event_skeletonOutputBtnActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton4ActionPerformed
-    {//GEN-HEADEREND:event_jButton4ActionPerformed
-        new MeshFiledDialog(this, mesh).setVisible(true);
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void filesButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_filesButtonActionPerformed
+    {//GEN-HEADEREND:event_filesButtonActionPerformed
+        new MeshFilesDialog(this, mesh).setVisible(true);
+    }//GEN-LAST:event_filesButtonActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton5ActionPerformed
-    {//GEN-HEADEREND:event_jButton5ActionPerformed
-        new MeshPropertiesDialog(this, mesh).setVisible(true);
-    }//GEN-LAST:event_jButton5ActionPerformed
+    private void propertiesButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_propertiesButtonActionPerformed
+    {//GEN-HEADEREND:event_propertiesButtonActionPerformed
+        new MeshPropertiesDialog(this, mesh.meshProperties).setVisible(true);
+    }//GEN-LAST:event_propertiesButtonActionPerformed
 
     private void saveBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveBtnActionPerformed
     {//GEN-HEADEREND:event_saveBtnActionPerformed
@@ -609,8 +609,7 @@ public class MeshView extends javax.swing.JFrame
     private javax.swing.JScrollPane animationScrollPane;
     private javax.swing.JPanel cardLayoutPanel;
     private javax.swing.JButton compileBtn;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton filesButton;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -627,6 +626,7 @@ public class MeshView extends javax.swing.JFrame
     private javax.swing.JRadioButton meshRadioBtn;
     private javax.swing.JButton meshSkeletonBtn;
     private javax.swing.JTextField meshSkeletonTextfield;
+    private javax.swing.JButton propertiesButton;
     private javax.swing.JButton saveBtn;
     private javax.swing.JButton skeletonMeshBtn;
     private javax.swing.JTextField skeletonMeshTextfield;

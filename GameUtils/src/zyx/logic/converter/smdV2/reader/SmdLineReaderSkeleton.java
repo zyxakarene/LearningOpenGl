@@ -52,12 +52,12 @@ class SmdLineReaderSkeleton extends AbstractSmdLineReader
 
 				Vector3f pos = new Vector3f();
 				pos.x = toFloat(split, POS_X_INDEX);
-				pos.x = toFloat(split, POS_Y_INDEX);
-				pos.x = toFloat(split, POS_Z_INDEX);
+				pos.y = toFloat(split, POS_Y_INDEX);
+				pos.z = toFloat(split, POS_Z_INDEX);
 				Vector3f rot = new Vector3f();
 				rot.x = toFloat(split, ROT_X_INDEX);
-				rot.x = toFloat(split, ROT_Y_INDEX);
-				rot.x = toFloat(split, ROT_Z_INDEX);
+				rot.y = toFloat(split, ROT_Y_INDEX);
+				rot.z = toFloat(split, ROT_Z_INDEX);
 
 				activeFrame.positions.add(pos);
 				activeFrame.rotations.add(rot);

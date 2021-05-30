@@ -3,7 +3,7 @@ package zyx.logic.converter.smd.vo;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import org.lwjgl.opengl.GL11;
-import zyx.logic.converter.smd.control.json.JsonMeshProperties;
+import zyx.logic.converter.smd.control.json.JsonMeshPropertyEntry;
 
 public class MaterialInformation
 {
@@ -39,7 +39,7 @@ public class MaterialInformation
 		out.writeInt(stencilLayer);
 	}
 
-	void SetFrom(JsonMeshProperties meshProperties)
+	void SetFrom(JsonMeshPropertyEntry meshProperties)
 	{
 		zWrite = meshProperties.zWrite;
 		zTest = meshProperties.zTest;

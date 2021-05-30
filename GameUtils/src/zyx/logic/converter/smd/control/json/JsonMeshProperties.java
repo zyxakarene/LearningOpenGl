@@ -1,61 +1,82 @@
 package zyx.logic.converter.smd.control.json;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.lwjgl.opengl.GL11;
+import zyx.logic.converter.smdV2.parsedVo.ParsedSmdSurface;
 
 public class JsonMeshProperties
 {
-	public static final String PROPERTY_Z_WRITE = "zWrite";
-	public static final String PROPERTY_Z_TEST = "zTest";
-	public static final String PROPERTY_CULLING = "culling";
-	public static final String PROPERTY_BLEND_SRC = "blendSrc";
-	public static final String PROPERTY_BLEND_DST = "blendDst";
-	public static final String PROPERTY_PRIORITY = "priority";
-	public static final String PROPERTY_STENCIL_MODE = "stencilMode";
-	public static final String PROPERTY_STENCIL_LAYER = "stencilLayer";
+	public static final String PROPERTY_ENTRIES = "entries";
 
-	public boolean zWrite;
-	public int zTest;
-	public int culling;
-	public int blendSrc;
-	public int blendDst;
-	public int priority;
-	public byte stencilMode;
-	public int stencilLayer;
+	public JsonMeshPropertyEntry[] entries;
 
 	public JsonMeshProperties()
 	{
-		zWrite = true;
-		zTest = GL11.GL_LEQUAL;
-		culling = GL11.GL_BACK;
-		blendSrc = GL11.GL_ONE;
-		blendDst = GL11.GL_ZERO;
-		priority = 10000;
-		stencilMode = 0;
-		stencilLayer = 0;
+		entries = new JsonMeshPropertyEntry[0];
 	}
 	
 	void read(JSONObject jsonProperties)
 	{
-		zWrite = JsonMethods.getBoolean(jsonProperties, PROPERTY_Z_WRITE, true);
-		zTest = JsonMethods.getInt(jsonProperties, PROPERTY_Z_TEST, GL11.GL_LEQUAL);
-		culling = JsonMethods.getInt(jsonProperties, PROPERTY_CULLING, GL11.GL_BACK);
-		blendSrc = JsonMethods.getInt(jsonProperties, PROPERTY_BLEND_SRC, GL11.GL_ONE);
-		blendDst = JsonMethods.getInt(jsonProperties, PROPERTY_BLEND_DST, GL11.GL_ZERO);
-		priority = JsonMethods.getInt(jsonProperties, PROPERTY_PRIORITY, 10000);
-		stencilMode = JsonMethods.getByte(jsonProperties, PROPERTY_STENCIL_MODE, (byte) 0);
-		stencilLayer = JsonMethods.getInt(jsonProperties, PROPERTY_STENCIL_LAYER, 0);
+		JSONArray array = JsonMethods.getArray(jsonProperties, PROPERTY_ENTRIES);
+		
+		int len = array.size();
+		entries = new JsonMeshPropertyEntry[len];
+		for (int i = 0; i < len; i++)
+		{
+			JSONObject jsonEntry = JsonMethods.getObjectFromArray(array, i);
+			JsonMeshPropertyEntry entry = new JsonMeshPropertyEntry();
+			entry.read(jsonEntry);
+			
+			entries[i] = entry;
+		}
 	}
 
 	void save(JSONObject json)
 	{
-		json.put(PROPERTY_Z_WRITE, zWrite);
-		json.put(PROPERTY_Z_TEST, zTest);
-		json.put(PROPERTY_CULLING, culling);
-		json.put(PROPERTY_BLEND_SRC, blendSrc);
-		json.put(PROPERTY_BLEND_DST, blendDst);
-		json.put(PROPERTY_PRIORITY, priority);
-		json.put(PROPERTY_STENCIL_MODE, stencilMode);
-		json.put(PROPERTY_STENCIL_LAYER, stencilLayer);
+		JSONArray array = new JSONArray();
+		for (int i = 0; i < entries.length; i++)
+		{
+			JSONObject jsonEntry = new JSONObject();
+			entries[i].save(jsonEntry);
+			
+			array.add(jsonEntry);
+		}
+		
+		json.put(PROPERTY_ENTRIES, array);
+	}
+
+	public void setSize(HashMap<String, ParsedSmdSurface> surfaces)
+	{
+		JsonMeshPropertyEntry[] clone = Arrays.copyOf(entries, entries.length);
+		Set<String> keys = surfaces.keySet();
+		
+		entries = new JsonMeshPropertyEntry[surfaces.size()];
+		
+		Iterator<String> keyIterator = keys.iterator();
+		
+		for (int i = 0; i < entries.length; i++)
+		{
+			String key = keyIterator.next();
+			entries[i] = findFrom(key, clone);
+		}
+	}
+
+	private JsonMeshPropertyEntry findFrom(String key, JsonMeshPropertyEntry[] list)
+	{
+		for (JsonMeshPropertyEntry entry : list)
+		{
+			if (entry.name.equals(key))
+			{
+				return entry;
+			}
+		}
+		
+		JsonMeshPropertyEntry entry = new JsonMeshPropertyEntry();
+		entry.name = key;
+		return entry;
 	}
 }

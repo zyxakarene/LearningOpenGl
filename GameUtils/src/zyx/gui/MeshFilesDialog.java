@@ -7,8 +7,10 @@ import zyx.UtilConstants;
 import zyx.gui.files.FileSelector;
 import zyx.gui.files.FileSelectorType;
 import zyx.logic.converter.smd.control.json.JsonMesh;
+import zyx.logic.converter.smdV2.SmdFileParser;
+import zyx.logic.converter.smdV2.parsedVo.ParsedSmdFile;
 
-public class MeshFiledDialog extends javax.swing.JDialog
+public class MeshFilesDialog extends javax.swing.JDialog
 {
 
 	private JsonMesh mesh;
@@ -17,7 +19,7 @@ public class MeshFiledDialog extends javax.swing.JDialog
 	private File physFile;
 	private File boundingFile;
 	
-	public MeshFiledDialog(Frame parent, JsonMesh mesh)
+	public MeshFilesDialog(Frame parent, JsonMesh mesh)
 	{
 		super(parent, true);
 		initComponents();
@@ -201,6 +203,11 @@ public class MeshFiledDialog extends javax.swing.JDialog
 		{
 			meshFile = selectedFile;
 			setText(meshField, meshFile);
+			
+			ParsedSmdFile parsedFile = SmdFileParser.parseFile(meshFile);
+			mesh.meshProperties.setSize(parsedFile.surfaces);
+			mesh.textureFiles.setSize(parsedFile.surfaces);
+			
 		}
     }//GEN-LAST:event_meshBtnActionPerformed
 

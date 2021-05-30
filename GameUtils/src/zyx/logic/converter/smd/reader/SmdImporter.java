@@ -53,8 +53,7 @@ public class SmdImporter
 		}
 		
 		System.out.println("Importing file: " + file);
-		SmdFileParser par = new SmdFileParser(file);
-		ParsedSmdFile result = par.getResult();
+		ParsedSmdFile result = SmdFileParser.parseFile(file);
 		Scanner scan = new Scanner(file);
 
 		String line;

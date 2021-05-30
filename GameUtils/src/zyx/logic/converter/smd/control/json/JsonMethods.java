@@ -7,13 +7,25 @@ import zyx.UtilConstants;
 
 class JsonMethods
 {
-	static void putSourceFile(JSONObject json, String name, File file)
+	static String SourceFileToJsonText(File file)
 	{
 		if (file != null)
 		{
 			String root = UtilConstants.BASE_FOLDER;
 			String filePath = file.getAbsolutePath().replace(root, "");
 			filePath = filePath.replaceAll("\\\\", "/");
+			
+			return filePath;
+		}
+		
+		return "";
+	}
+	
+	static void putSourceFile(JSONObject json, String name, File file)
+	{
+		if (file != null)
+		{
+			String filePath = SourceFileToJsonText(file);
 			json.put(name, filePath);
 		}
 	}

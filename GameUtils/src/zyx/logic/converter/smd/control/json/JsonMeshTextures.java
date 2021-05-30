@@ -1,20 +1,25 @@
 package zyx.logic.converter.smd.control.json;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import zyx.logic.converter.smdV2.parsedVo.ParsedSmdSurface;
 
 public class JsonMeshTextures
 {
 	public static final String PROPERTY_ENTRIES = "entries";
 
-	public JsonMeshTextureEntry[] textureEntries;
+	public JsonMeshTextureEntry[] entries;
 
 	void read(JSONObject json)
 	{
 		JSONArray entries = JsonMethods.getArray(json, PROPERTY_ENTRIES);
 		
 		int len = entries.size();
-		textureEntries = new JsonMeshTextureEntry[len];
+		this.entries = new JsonMeshTextureEntry[len];
 		
 		for (int i = 0; i < len; i++)
 		{
@@ -22,19 +27,50 @@ public class JsonMeshTextures
 			JsonMeshTextureEntry textureEntry = new JsonMeshTextureEntry();
 			
 			textureEntry.read(jsonEntry);
-			textureEntries[i] = textureEntry;
+			this.entries[i] = textureEntry;
 		}
 	}
 
 	void save(JSONObject json)
 	{
 		JSONArray array = new JSONArray();
-		for (JsonMeshTextureEntry textureEntry : textureEntries)
+		for (JsonMeshTextureEntry textureEntry : entries)
 		{
 			JSONObject jsonEntry = new JSONObject();
 			textureEntry.save(jsonEntry);
 		}
 		
 		json.put(PROPERTY_ENTRIES, array);
+	}
+
+	public void setSize(HashMap<String, ParsedSmdSurface> surfaces)
+	{
+		JsonMeshTextureEntry[] clone = Arrays.copyOf(entries, entries.length);
+		Set<String> keys = surfaces.keySet();
+		
+		entries = new JsonMeshTextureEntry[surfaces.size()];
+		
+		Iterator<String> keyIterator = keys.iterator();
+		
+		for (int i = 0; i < entries.length; i++)
+		{
+			String key = keyIterator.next();
+			entries[i] = findFrom(key, clone);
+		}
+	}
+
+	private JsonMeshTextureEntry findFrom(String key, JsonMeshTextureEntry[] list)
+	{
+		for (JsonMeshTextureEntry entry : list)
+		{
+			if (entry.name.equals(key))
+			{
+				return entry;
+			}
+		}
+		
+		JsonMeshTextureEntry entry = new JsonMeshTextureEntry();
+		entry.name = key;
+		return entry;
 	}
 }

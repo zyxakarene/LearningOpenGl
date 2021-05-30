@@ -8,23 +8,11 @@ import zyx.logic.converter.smdV2.reader.SmdLineReader;
 
 public class SmdFileParser
 {
-	private SmdLineReader linereader;
-	
-	private final ParsedSmdFile result;
-	private final File file;
-
-	public SmdFileParser(File file)
+	public static ParsedSmdFile parseFile(File file)
 	{
-		this.file = file;
+		ParsedSmdFile result = new ParsedSmdFile();
+		SmdLineReader linereader = new SmdLineReader(result);
 		
-		result = new ParsedSmdFile();
-		linereader = new SmdLineReader(result);
-		
-		parseFile();
-	}
-	
-	private void parseFile()
-	{
 		try (Scanner scan = new Scanner(file))
 		{
 			linereader.read(scan);
@@ -33,10 +21,7 @@ public class SmdFileParser
 		{
 			e.printStackTrace();
 		}
-	}
-
-	public ParsedSmdFile getResult()
-	{
+		
 		return result;
 	}
 }

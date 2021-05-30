@@ -4,23 +4,37 @@ import java.awt.Frame;
 import java.util.HashMap;
 import javax.swing.JComboBox;
 import org.lwjgl.opengl.GL11;
-import zyx.logic.converter.smd.control.json.JsonMesh;
 import zyx.logic.converter.smd.control.json.JsonMeshProperties;
+import zyx.logic.converter.smd.control.json.JsonMeshPropertyEntry;
 
 
 public class MeshPropertiesDialog extends javax.swing.JDialog
 {
 
 	private JsonMeshProperties properties;
+	private JsonMeshPropertyEntry currentEntry;
 	
-	public MeshPropertiesDialog(Frame parent, JsonMesh mesh)
+	public MeshPropertiesDialog(Frame parent, JsonMeshProperties properties)
 	{
 		super(parent, true);
 		initComponents();
 		
-		properties = mesh.meshProperties;
+		this.properties = properties;
+		
+		for (int i = 0; i < properties.entries.length; i++)
+		{
+			JsonMeshPropertyEntry entry = properties.entries[i];
+			materialDropdown.addItem(entry.name);
+		}
+		
 		buildComboBoxes();
-		setupValues();
+		
+		int index = materialDropdown.getSelectedIndex();
+		if (index >= 0)
+		{
+			currentEntry = properties.entries[index];
+			setupValues();
+		}
 		
 		setLocationRelativeTo(parent);
 	}
@@ -45,7 +59,8 @@ public class MeshPropertiesDialog extends javax.swing.JDialog
         stencilModeCombo = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         stencilLayerCombo = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
+        materialDropdown = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Mesh Properties");
@@ -85,12 +100,20 @@ public class MeshPropertiesDialog extends javax.swing.JDialog
 
         jPanel1.add(stencilLayerCombo);
 
-        jButton1.setText("Save");
-        jButton1.addActionListener(new java.awt.event.ActionListener()
+        saveButton.setText("Save");
+        saveButton.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jButton1ActionPerformed(evt);
+                saveButtonActionPerformed(evt);
+            }
+        });
+
+        materialDropdown.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                materialDropdownActionPerformed(evt);
             }
         });
 
@@ -102,39 +125,51 @@ public class MeshPropertiesDialog extends javax.swing.JDialog
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(saveButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(materialDropdown, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(materialDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(saveButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
-    {//GEN-HEADEREND:event_jButton1ActionPerformed
-        properties.zWrite = zWriteCheck.isSelected();
-		properties.zTest = zTestToValue.get(zTestCombo.getSelectedItem().toString());
-		properties.culling = cullingToValue.get(cullingCombo.getSelectedItem().toString());
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveButtonActionPerformed
+    {//GEN-HEADEREND:event_saveButtonActionPerformed
+        currentEntry.zWrite = zWriteCheck.isSelected();
+		currentEntry.zTest = zTestToValue.get(zTestCombo.getSelectedItem().toString());
+		currentEntry.culling = cullingToValue.get(cullingCombo.getSelectedItem().toString());
 		SimplePoint blend = blendToValues.get(blendCombo.getSelectedItem().toString());
-		properties.blendSrc = blend.a;
-		properties.blendDst = blend.b;
-		properties.priority = Integer.valueOf(prioritySpinner.getValue().toString());
-		properties.stencilMode = stencilModeToValue.get(stencilModeCombo.getSelectedItem().toString());
-		properties.stencilLayer = stencilLayerToValue.get(stencilLayerCombo.getSelectedItem().toString());
-    }//GEN-LAST:event_jButton1ActionPerformed
+		currentEntry.blendSrc = blend.a;
+		currentEntry.blendDst = blend.b;
+		currentEntry.priority = Integer.valueOf(prioritySpinner.getValue().toString());
+		currentEntry.stencilMode = stencilModeToValue.get(stencilModeCombo.getSelectedItem().toString());
+		currentEntry.stencilLayer = stencilLayerToValue.get(stencilLayerCombo.getSelectedItem().toString());
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void materialDropdownActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_materialDropdownActionPerformed
+    {//GEN-HEADEREND:event_materialDropdownActionPerformed
+        int index = materialDropdown.getSelectedIndex();
+		if (index >= 0)
+		{
+			currentEntry = properties.entries[index];
+		}
+		setupValues();
+    }//GEN-LAST:event_materialDropdownActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> blendCombo;
     private javax.swing.JComboBox<String> cullingCombo;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -143,7 +178,9 @@ public class MeshPropertiesDialog extends javax.swing.JDialog
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JComboBox<String> materialDropdown;
     private javax.swing.JSpinner prioritySpinner;
+    private javax.swing.JButton saveButton;
     private javax.swing.JComboBox<String> stencilLayerCombo;
     private javax.swing.JComboBox<String> stencilModeCombo;
     private javax.swing.JComboBox<String> zTestCombo;
@@ -192,13 +229,13 @@ public class MeshPropertiesDialog extends javax.swing.JDialog
 
 	private void setupValues()
 	{
-		zWriteCheck.setSelected(properties.zWrite);
-		zTestCombo.setSelectedItem(valueToZTest.get(properties.zTest));
-		cullingCombo.setSelectedItem(valueToCulling.get(properties.culling));
-		blendCombo.setSelectedItem(valueToBlend.get(new SimplePoint(properties.blendSrc, properties.blendDst)));
-		prioritySpinner.setValue(properties.priority);
-		stencilModeCombo.setSelectedItem(valueToStencilMode.get(properties.stencilMode));
-		stencilLayerCombo.setSelectedItem(valueToStencilLayer.get(properties.stencilLayer));
+		zWriteCheck.setSelected(currentEntry.zWrite);
+		zTestCombo.setSelectedItem(valueToZTest.get(currentEntry.zTest));
+		cullingCombo.setSelectedItem(valueToCulling.get(currentEntry.culling));
+		blendCombo.setSelectedItem(valueToBlend.get(new SimplePoint(currentEntry.blendSrc, currentEntry.blendDst)));
+		prioritySpinner.setValue(currentEntry.priority);
+		stencilModeCombo.setSelectedItem(valueToStencilMode.get(currentEntry.stencilMode));
+		stencilLayerCombo.setSelectedItem(valueToStencilLayer.get(currentEntry.stencilLayer));
 	}
 
 	private <T> void addCombo(HashMap<String, T> labelToValue, HashMap<T, String> valueToLabel, JComboBox<String> combobox, String label, T value)
