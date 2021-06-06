@@ -73,6 +73,17 @@ class JsonMethods
 		return defaultValue;
 	}
 	
+	static short getShort(JSONObject json, String name, short defaultValue)
+	{
+		Object result = json.get(name);
+		if (result instanceof Number)
+		{
+			return ((Number) result).shortValue();
+		}
+		
+		return defaultValue;
+	}
+	
 	static byte getByte(JSONObject json, String name, byte defaultValue)
 	{
 		Object result = json.get(name);

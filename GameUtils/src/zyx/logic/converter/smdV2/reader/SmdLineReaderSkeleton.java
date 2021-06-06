@@ -2,7 +2,10 @@ package zyx.logic.converter.smdV2.reader;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
+import zyx.logic.converter.smd.vo.EulerToQuat;
 import zyx.logic.converter.smdV2.parsedVo.ParsedSmdFrame;
 import static zyx.logic.converter.smdV2.reader.AbstractSmdLineReader.TOKEN_END;
 
@@ -59,8 +62,10 @@ class SmdLineReaderSkeleton extends AbstractSmdLineReader
 				rot.y = toFloat(split, ROT_Y_INDEX);
 				rot.z = toFloat(split, ROT_Z_INDEX);
 
+				Quaternion quat = EulerToQuat.transform(rot);
+				
 				activeFrame.positions.add(pos);
-				activeFrame.rotations.add(rot);
+				activeFrame.rotations.add(quat);
 				activeFrame.boneIds.add(boneId);
 			}
 		}

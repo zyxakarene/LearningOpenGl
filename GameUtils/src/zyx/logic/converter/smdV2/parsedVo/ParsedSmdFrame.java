@@ -1,6 +1,7 @@
 package zyx.logic.converter.smdV2.parsedVo;
 
 import java.util.ArrayList;
+import org.lwjgl.util.vector.Quaternion;
 import org.lwjgl.util.vector.Vector3f;
 
 public class ParsedSmdFrame
@@ -8,7 +9,7 @@ public class ParsedSmdFrame
 	public short frame;
 	public final ArrayList<Byte> boneIds;
 	public final ArrayList<Vector3f> positions;
-	public final ArrayList<Vector3f> rotations;
+	public final ArrayList<Quaternion> rotations;
 
 	public ParsedSmdFrame(short frame)
 	{

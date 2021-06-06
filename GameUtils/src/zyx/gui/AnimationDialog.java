@@ -195,7 +195,7 @@ public class AnimationDialog extends javax.swing.JDialog
 		{
 			animation.name = nameField.getText();
 			animation.file = file;
-			animation.blend = Integer.parseInt(blendField.getText());
+			animation.blend = Short.parseShort(blendField.getText());
 			animation.loop = loopCheckbox.isSelected();
 			
 			if (fullFileAnimationCheck.isSelected())
@@ -204,8 +204,8 @@ public class AnimationDialog extends javax.swing.JDialog
 			}
 			else
 			{
-				animation.framesStart = Integer.parseInt(frameStartField.getText());
-				animation.framesEnd = Integer.parseInt(frameEndField.getText());
+				animation.framesStart = Short.parseShort(frameStartField.getText());
+				animation.framesEnd = Short.parseShort(frameEndField.getText());
 			}
 		}
     }//GEN-LAST:event_saveBtnActionPerformed

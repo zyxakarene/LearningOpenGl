@@ -16,7 +16,7 @@ SubMesh
 	byte							bonesPerVertexCount
 	
 	int								vertexCount
-	float[vertexCount * 12]			vertexData
+	float[vertexCount]				vertexData
 	
 	int								elementCount
 	short[elementCount]				elementData

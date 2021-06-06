@@ -16,10 +16,10 @@ public class JsonMeshAnimation
 
 	public String name;
 	public File file;
-	public int blend;
+	public short blend;
 	public boolean loop;
-	public int framesStart;
-	public int framesEnd;
+	public short framesStart;
+	public short framesEnd;
 
 	void read(JSONObject json)
 	{
@@ -31,10 +31,10 @@ public class JsonMeshAnimation
 		}
 		
 		name = JsonMethods.getString(json, PROPERTY_NAME, "missing_name");
-		blend = JsonMethods.getInt(json, PROPERTY_BLEND, 0);
+		blend = JsonMethods.getShort(json, PROPERTY_BLEND, (short) 0);
 		loop = JsonMethods.getBoolean(json, PROPERTY_LOOP, false);
-		framesStart = JsonMethods.getInt(json, PROPERTY_FRAMES_START, 0);
-		framesEnd = JsonMethods.getInt(json, PROPERTY_FRAMES_END, 0);
+		framesStart = JsonMethods.getShort(json, PROPERTY_FRAMES_START, (short) 0);
+		framesEnd = JsonMethods.getShort(json, PROPERTY_FRAMES_END, (short) 0);
 	}
 
 	@Override
