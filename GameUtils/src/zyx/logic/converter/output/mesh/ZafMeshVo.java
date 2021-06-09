@@ -2,13 +2,14 @@ package zyx.logic.converter.output.mesh;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.logic.converter.output.ISaveable;
 
 public class ZafMeshVo implements ISaveable
 {
 
-	public ZafSubMesh[] subMeshes;
+	public ArrayList<ZafSubMesh> subMeshes;
 	public ZafColliders colliders;
 	public Vector3f centerPosition;
 	public float radius;
@@ -16,7 +17,7 @@ public class ZafMeshVo implements ISaveable
 
 	public ZafMeshVo()
 	{
-		subMeshes = new ZafSubMesh[0];
+		subMeshes = new ArrayList<>();
 		colliders = new ZafColliders();
 		centerPosition = new Vector3f();
 		radius = 0;
@@ -26,7 +27,7 @@ public class ZafMeshVo implements ISaveable
 	@Override
 	public void save(DataOutputStream out) throws IOException
 	{
-		out.writeByte(subMeshes.length);
+		out.writeByte(subMeshes.size());
 		for (ZafSubMesh subMesh : subMeshes)
 		{
 			subMesh.save(out);

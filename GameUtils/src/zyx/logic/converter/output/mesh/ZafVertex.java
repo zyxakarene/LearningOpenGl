@@ -15,7 +15,7 @@ public class ZafVertex implements ISaveable
 	public Vector3f normal;
 	public Vector2f uv;
 
-	public int boneCount;
+	public short boneCount;
 	public byte[] indexes;
 	public float[] weights;
 
@@ -42,6 +42,8 @@ public class ZafVertex implements ISaveable
 
 		out.writeFloat(uv.x);
 		out.writeFloat(uv.y);
+		
+		System.out.println("Writing bonecount: " + boneCount);
 		
 		for (int i = 0; i < boneCount; i++)
 		{

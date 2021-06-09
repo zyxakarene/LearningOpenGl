@@ -88,7 +88,7 @@ class SmdLineReaderTriangle extends AbstractSmdLineReader
 
 		if (split.length > BONE_COUNT_INDEX)
 		{
-			vertex.boneCount = toShort(split, BONE_COUNT_INDEX);
+			vertex.boneCount = toByte(split, BONE_COUNT_INDEX);
 			
 			for (int i = 0; i < vertex.boneCount; i++)
 			{

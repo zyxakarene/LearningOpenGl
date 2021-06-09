@@ -24,6 +24,7 @@ import zyx.utils.GameConstants;
 public class TestScene extends DebugScene
 {
 
+	private AnimatedMesh character;
 	private Box floor;
 	private Box box;
 	private GameObject obj;
@@ -42,24 +43,28 @@ public class TestScene extends DebugScene
 	{
 		addPlayerControls();
 
-		floor = new Box(400, 400, 10);
-		floor.setZ(-40);
-		world.addChild(floor);
+//		floor = new Box(400, 400, 10);
+//		floor.setZ(-40);
+//		world.addChild(floor);
 		
+		character = new AnimatedMesh();
+		character.load("mesh.character");
+		character.setAnimation("idle");
+		world.addChild(character);
 		
-		obj = new GameObject();
-		obj.addBehavior(new JiggleBehavior());
-		
-		box = new Box();
-		obj.addChild(box);
-		
-		obj.setZ(20);
-		world.addChild(obj);
-		
-		objects.add(floor);
-		objects.add(box);
-		
-		box.onLoaded(this::onBoxLoaded);
+//		obj = new GameObject();
+//		obj.addBehavior(new JiggleBehavior());
+//		
+//		box = new Box();
+//		obj.addChild(box);
+//		
+//		obj.setZ(20);
+//		world.addChild(obj);
+//		
+//		objects.add(floor);
+//		objects.add(box);
+//		
+//		box.onLoaded(this::onBoxLoaded);
 	}
 	
 	private void onBoxLoaded(SimpleMesh mesh)
@@ -76,6 +81,6 @@ public class TestScene extends DebugScene
 	{
 		super.onUpdate(timestamp, elapsedTime);
 		
-		obj.update(timestamp, elapsedTime);
+//		obj.update(timestamp, elapsedTime);
 	}
 }

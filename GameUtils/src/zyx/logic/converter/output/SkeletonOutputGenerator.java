@@ -6,29 +6,22 @@ import java.util.HashMap;
 import zyx.logic.converter.output.skeleton.*;
 import zyx.logic.converter.smd.control.json.JsonMesh;
 import zyx.logic.converter.smd.control.json.JsonMeshAnimation;
-import zyx.logic.converter.smdV2.SmdFileParser;
 import zyx.logic.converter.smdV2.parsedVo.ParsedSmdBone;
 import zyx.logic.converter.smdV2.parsedVo.ParsedSmdFile;
 import zyx.logic.converter.smdV2.parsedVo.ParsedSmdFrame;
 
-public class SkeletonOutputGenerator
+public class SkeletonOutputGenerator extends AbstractOutputGenerator
 {
 
-	private final ParsedSmdFile skeletonRef;
-	private final HashMap<JsonMeshAnimation, ParsedSmdFile> animationToFile;
+	protected final ParsedSmdFile skeletonRef;
 
 	public SkeletonOutputGenerator(JsonMesh mesh)
 	{
-		animationToFile = new HashMap<>();
-		skeletonRef = SmdFileParser.parseFile(mesh.skeletonMesh);
-		
-		for (JsonMeshAnimation animation : mesh.meshAnimations.animations)
-		{
-			ParsedSmdFile animationFile = SmdFileParser.parseFile(animation.file);
-			animationToFile.put(animation, animationFile);
-		}
+		super(mesh);
+
+		skeletonRef = tryParse(mesh.skeletonMesh);
 	}
-	
+
 	public SkeletonMeshVo getSkeleton() throws IOException
 	{
 		SkeletonMeshVo vo = new SkeletonMeshVo();
@@ -38,18 +31,18 @@ public class SkeletonOutputGenerator
 
 		return vo;
 	}
-	
+
 	private void fillAnimations(SkeletonMeshVo vo)
 	{
 		for (JsonMeshAnimation jsonAnimation : animationToFile.keySet())
 		{
 			ParsedSmdFile file = animationToFile.get(jsonAnimation);
-			
+
 			SkeletonAnimation anim = new SkeletonAnimation();
 			anim.blendTime = jsonAnimation.blend;
 			anim.looping = jsonAnimation.loop;
 			anim.name = jsonAnimation.name;
-			
+
 			short start = jsonAnimation.framesStart;
 			short end = jsonAnimation.framesEnd;
 			for (short i = start; i <= end; i++)
@@ -63,13 +56,13 @@ public class SkeletonOutputGenerator
 					frameTransform.boneId = fileFrame.boneIds.get(j);
 					frameTransform.position.set(fileFrame.positions.get(j));
 					frameTransform.rotation.set(fileFrame.rotations.get(j));
-					
+
 					skeletonFrame.transforms.add(frameTransform);
 				}
-				
+
 				anim.frames.add(skeletonFrame);
 			}
-			
+
 			vo.animations.add(anim);
 		}
 	}
@@ -77,20 +70,20 @@ public class SkeletonOutputGenerator
 	private void fillBones(SkeletonMeshVo vo)
 	{
 		ArrayList<SkeletonBoneInfo> boneInfo = new ArrayList<>();
-		
+
 		for (int i = 0; i < skeletonRef.bones.size(); i++)
 		{
 			ParsedSmdBone bone = skeletonRef.bones.get(i);
-			
+
 			SkeletonBoneInfo skeletonBoneInfo = new SkeletonBoneInfo();
 			skeletonBoneInfo.name = bone.name;
 			skeletonBoneInfo.id = bone.id;
-			
+
 			boneInfo.add(skeletonBoneInfo);
 		}
-		
+
 		SkeletonBone rootBone = createRootBone();
-		
+
 		vo.boneInfo = boneInfo;
 		vo.rootBone = rootBone;
 	}
@@ -98,30 +91,30 @@ public class SkeletonOutputGenerator
 	private SkeletonBone createRootBone()
 	{
 		HashMap<Byte, SkeletonBone> skeletonBoneById = new HashMap<>();
-				
+
 		for (ParsedSmdBone bone : skeletonRef.bones)
 		{
 			SkeletonBone child = new SkeletonBone();
-			
+
 			child.id = bone.id;
 			getRestInfoTo(child);
-			
+
 			SkeletonBone parent = skeletonBoneById.get(bone.parentId);
 			if (parent != null)
 			{
 				parent.childBones.add(child);
 			}
-			
+
 			skeletonBoneById.put(child.id, child);
 		}
-		
-		return skeletonBoneById.get((byte)1);
+
+		return skeletonBoneById.get((byte) 1);
 	}
 
 	private void getRestInfoTo(SkeletonBone bone)
 	{
 		ParsedSmdFrame restFrame = skeletonRef.frames.get(0);
-	
+
 		for (int i = 0; i < restFrame.boneIds.size(); i++)
 		{
 			byte restBoneId = restFrame.boneIds.get(i);

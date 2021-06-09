@@ -2,14 +2,15 @@ package zyx.logic.converter.output.mesh;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import zyx.logic.converter.output.ISaveable;
 
 public class ZafSubMesh implements ISaveable
 {
 
 	public byte boneCount;
-	public ZafVertex[] vertecies;
-	public short[] elementData;
+	public ArrayList<ZafVertex> vertecies;
+	public ArrayList<Short> elementData;
 	public String diffuseTexture;
 	public String normalTexture;
 	public String specularTexture;
@@ -18,12 +19,12 @@ public class ZafSubMesh implements ISaveable
 	public ZafSubMesh()
 	{
 		boneCount = 0;
-		vertecies = new ZafVertex[0];
-		elementData = new short[0];
+		vertecies = new ArrayList<>();
+		elementData = new ArrayList<>();
 
-		diffuseTexture = "texture.default";
-		normalTexture = "normal.default";
-		specularTexture = "specular.default";
+		diffuseTexture = "texture.default_diffuse";
+		normalTexture = "normal.default_normal";
+		specularTexture = "specular.default_specular";
 		material = new ZafMaterial();
 	}
 
@@ -32,13 +33,13 @@ public class ZafSubMesh implements ISaveable
 	{
 		out.writeByte(boneCount);
 		
-		out.writeInt(vertecies.length);
+		out.writeInt(vertecies.size());
 		for (ZafVertex vertex : vertecies)
 		{
 			vertex.save(out);
 		}
 		
-		out.writeInt(elementData.length);
+		out.writeInt(elementData.size());
 		for (short element : elementData)
 		{
 			out.writeShort(element);

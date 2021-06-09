@@ -8,11 +8,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTextArea;
 import zyx.gui.UtilsGui;
+import zyx.logic.converter.output.MeshOutputGenerator;
 import zyx.logic.converter.output.SkeletonOutputGenerator;
 import zyx.logic.converter.output.mesh.ZafMeshVo;
 import zyx.logic.converter.output.skeleton.SkeletonMeshVo;
 import zyx.logic.converter.smd.SingleWriteFileOutputStream;
-import zyx.logic.converter.smd.SmdParser;
 import zyx.logic.converter.smd.control.json.JsonMesh;
 
 public class UtilsCompiler
@@ -36,7 +36,23 @@ public class UtilsCompiler
 
 					if (mesh.isMesh())
 					{
-//						ZafMeshVo output = SkeletonOutputGenerator.getMesh(mesh);
+						ZafMeshVo output = new MeshOutputGenerator(mesh).getMesh();
+						
+						try (SingleWriteFileOutputStream outBuffer = new SingleWriteFileOutputStream())
+						{
+							output.save(outBuffer);
+							byte[] data = outBuffer.getData();
+
+							try (DataOutputStream out = new DataOutputStream
+									(
+										new FileOutputStream("D:\\Programmering\\LearningOpenGl\\MainGame\\assets\\models\\character.zaf")
+									)
+								)
+							{
+								out.write(data);
+								out.flush();
+							}
+						}
 					}
 					else if (mesh.isSkeleton())
 					{

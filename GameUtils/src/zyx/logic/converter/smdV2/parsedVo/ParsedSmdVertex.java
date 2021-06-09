@@ -1,5 +1,6 @@
 package zyx.logic.converter.smdV2.parsedVo;
 
+import java.util.Arrays;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -12,7 +13,7 @@ public class ParsedSmdVertex
 	public final Vector3f norm;
 	public final Vector2f uv;
 
-	public int boneCount;
+	public byte boneCount;
 	public final byte[] boneIndexes;
 	public final float[] boneWeights;
 
@@ -27,4 +28,9 @@ public class ParsedSmdVertex
 		boneWeights = new float[MAX_BONES];
 	}
 
+	@Override
+	public String toString()
+	{
+		return pos + "-" + norm + "-" + uv + "-" + Arrays.toString(boneIndexes) + "-" + Arrays.toString(boneWeights);
+	}
 }
