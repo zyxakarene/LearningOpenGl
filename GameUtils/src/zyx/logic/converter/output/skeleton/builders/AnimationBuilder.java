@@ -32,6 +32,13 @@ public class AnimationBuilder
 
 			short start = jsonAnimation.framesStart;
 			short end = jsonAnimation.framesEnd;
+			
+			if (jsonAnimation.isFullFileAnimation())
+			{
+				start = 0;
+				end = (short) (file.frames.size() - 1);
+			}
+			
 			for (short i = start; i <= end; i++)
 			{
 				ParsedSmdFrame fileFrame = file.frames.get(i);
