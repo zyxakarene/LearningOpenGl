@@ -6,8 +6,8 @@ import zyx.logic.converter.output.mesh.builders.BoundingBoxBuilder;
 import zyx.logic.converter.output.mesh.builders.ColliderBuilder;
 import zyx.logic.converter.output.mesh.builders.MaterialBuilder;
 import zyx.logic.converter.output.mesh.builders.VertexDataBuilder;
-import zyx.logic.converter.smd.control.json.JsonMesh;
-import zyx.logic.converter.smdV2.parsedVo.ParsedSmdFile;
+import zyx.logic.converter.json.JsonMesh;
+import zyx.logic.converter.smd.parsedVo.ParsedSmdFile;
 
 public class MeshOutputGenerator extends AbstractOutputGenerator
 {

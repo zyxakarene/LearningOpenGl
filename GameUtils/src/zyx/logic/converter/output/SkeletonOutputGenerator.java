@@ -4,8 +4,8 @@ import java.io.IOException;
 import zyx.logic.converter.output.skeleton.*;
 import zyx.logic.converter.output.skeleton.builders.AnimationBuilder;
 import zyx.logic.converter.output.skeleton.builders.BoneBuilder;
-import zyx.logic.converter.smd.control.json.JsonMesh;
-import zyx.logic.converter.smdV2.parsedVo.ParsedSmdFile;
+import zyx.logic.converter.json.JsonMesh;
+import zyx.logic.converter.smd.parsedVo.ParsedSmdFile;
 
 public class SkeletonOutputGenerator extends AbstractOutputGenerator
 {

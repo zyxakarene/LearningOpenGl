@@ -4,8 +4,8 @@ import java.awt.Frame;
 import java.util.HashMap;
 import javax.swing.JComboBox;
 import org.lwjgl.opengl.GL11;
-import zyx.logic.converter.smd.control.json.JsonMeshProperties;
-import zyx.logic.converter.smd.control.json.JsonMeshPropertyEntry;
+import zyx.logic.converter.json.JsonMeshProperties;
+import zyx.logic.converter.json.JsonMeshPropertyEntry;
 
 
 public class MeshPropertiesDialog extends javax.swing.JDialog

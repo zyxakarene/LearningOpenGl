@@ -5,9 +5,9 @@ import zyx.logic.UtilsLogger;
 import zyx.logic.converter.output.mesh.ZafColliderBox;
 import zyx.logic.converter.output.mesh.ZafColliderTriangle;
 import zyx.logic.converter.output.mesh.ZafMeshVo;
-import zyx.logic.converter.smdV2.parsedVo.ParsedSmdFile;
-import zyx.logic.converter.smdV2.parsedVo.ParsedSmdSurface;
-import zyx.logic.converter.smdV2.parsedVo.ParsedSmdTriangle;
+import zyx.logic.converter.smd.parsedVo.ParsedSmdFile;
+import zyx.logic.converter.smd.parsedVo.ParsedSmdSurface;
+import zyx.logic.converter.smd.parsedVo.ParsedSmdTriangle;
 
 public class ColliderBuilder
 {

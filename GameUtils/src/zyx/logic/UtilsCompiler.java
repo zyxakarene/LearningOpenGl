@@ -14,10 +14,10 @@ import zyx.logic.converter.output.MeshOutputGenerator;
 import zyx.logic.converter.output.SkeletonOutputGenerator;
 import zyx.logic.converter.output.mesh.ZafMeshVo;
 import zyx.logic.converter.output.skeleton.SkeletonMeshVo;
-import zyx.logic.converter.smd.SingleWriteFileOutputStream;
-import zyx.logic.converter.smd.control.json.JsonMesh;
-import zyx.logic.converter.smd.control.json.JsonMeshTextureEntry;
-import zyx.logic.converter.smd.control.json.JsonMeshTextures;
+import zyx.logic.io.SingleWriteFileOutputStream;
+import zyx.logic.converter.json.JsonMesh;
+import zyx.logic.converter.json.JsonMeshTextureEntry;
+import zyx.logic.converter.json.JsonMeshTextures;
 
 public class UtilsCompiler
 {

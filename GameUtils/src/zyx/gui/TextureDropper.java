@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import zyx.logic.DragDropper;
 import zyx.logic.IFilesDropped;
-import zyx.logic.converter.smd.control.json.JsonMeshTextureEntry;
+import zyx.logic.converter.json.JsonMeshTextureEntry;
 
 public class TextureDropper implements IFilesDropped
 {

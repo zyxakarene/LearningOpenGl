@@ -6,10 +6,10 @@ import zyx.logic.UtilsLogger;
 import zyx.logic.converter.output.mesh.ZafMeshVo;
 import zyx.logic.converter.output.mesh.ZafSubMesh;
 import zyx.logic.converter.output.mesh.ZafVertex;
-import zyx.logic.converter.smdV2.parsedVo.ParsedSmdFile;
-import zyx.logic.converter.smdV2.parsedVo.ParsedSmdSurface;
-import zyx.logic.converter.smdV2.parsedVo.ParsedSmdTriangle;
-import zyx.logic.converter.smdV2.parsedVo.ParsedSmdVertex;
+import zyx.logic.converter.smd.parsedVo.ParsedSmdFile;
+import zyx.logic.converter.smd.parsedVo.ParsedSmdSurface;
+import zyx.logic.converter.smd.parsedVo.ParsedSmdTriangle;
+import zyx.logic.converter.smd.parsedVo.ParsedSmdVertex;
 
 public class VertexDataBuilder
 {

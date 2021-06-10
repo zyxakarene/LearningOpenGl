@@ -2,9 +2,9 @@ package zyx.logic.converter.output.mesh.builders;
 
 import zyx.logic.converter.output.mesh.ZafMeshVo;
 import zyx.logic.converter.output.mesh.ZafSubMesh;
-import zyx.logic.converter.smd.control.json.JsonMesh;
-import zyx.logic.converter.smd.control.json.JsonMeshPropertyEntry;
-import zyx.logic.converter.smd.control.json.JsonMeshTextureEntry;
+import zyx.logic.converter.json.JsonMesh;
+import zyx.logic.converter.json.JsonMeshPropertyEntry;
+import zyx.logic.converter.json.JsonMeshTextureEntry;
 
 public class MaterialBuilder
 {

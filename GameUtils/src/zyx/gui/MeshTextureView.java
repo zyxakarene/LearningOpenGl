@@ -1,8 +1,8 @@
 package zyx.gui;
 
 import javax.swing.JFrame;
-import zyx.logic.converter.smd.control.json.JsonMeshTextureEntry;
-import zyx.logic.converter.smd.control.json.JsonMeshTextures;
+import zyx.logic.converter.json.JsonMeshTextureEntry;
+import zyx.logic.converter.json.JsonMeshTextures;
 
 
 public class MeshTextureView extends javax.swing.JDialog

@@ -15,8 +15,8 @@ import zyx.UtilConstants;
 import zyx.gui.files.FileSelector;
 import zyx.gui.files.FileSelectorType;
 import zyx.logic.UtilsCompiler;
-import zyx.logic.converter.smd.control.json.JsonMesh;
-import zyx.logic.converter.smd.control.json.JsonMeshAnimation;
+import zyx.logic.converter.json.JsonMesh;
+import zyx.logic.converter.json.JsonMeshAnimation;
 
 public class MeshView extends javax.swing.JFrame
 {

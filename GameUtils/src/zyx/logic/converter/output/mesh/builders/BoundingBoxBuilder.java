@@ -2,9 +2,9 @@ package zyx.logic.converter.output.mesh.builders;
 
 import org.lwjgl.util.vector.Vector3f;
 import zyx.logic.converter.output.mesh.ZafMeshVo;
-import zyx.logic.converter.smdV2.parsedVo.ParsedSmdFile;
-import zyx.logic.converter.smdV2.parsedVo.ParsedSmdSurface;
-import zyx.logic.converter.smdV2.parsedVo.ParsedSmdTriangle;
+import zyx.logic.converter.smd.parsedVo.ParsedSmdFile;
+import zyx.logic.converter.smd.parsedVo.ParsedSmdSurface;
+import zyx.logic.converter.smd.parsedVo.ParsedSmdTriangle;
 
 public class BoundingBoxBuilder
 {

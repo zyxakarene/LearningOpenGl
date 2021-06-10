@@ -11,7 +11,7 @@ import zyx.gui.tree.JsonTree;
 import zyx.logic.UtilsCompiler;
 import zyx.logic.UtilsLogger;
 import zyx.logic.converter.fnt.FntConverter;
-import zyx.logic.converter.smd.control.json.JsonMesh;
+import zyx.logic.converter.json.JsonMesh;
 import zyx.logic.watcher.WatcherManager;
 
 public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListener.IWindowOpened

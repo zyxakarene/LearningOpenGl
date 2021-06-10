@@ -5,9 +5,9 @@ import zyx.logic.converter.output.skeleton.SkeletonAnimation;
 import zyx.logic.converter.output.skeleton.SkeletonAnimationFrame;
 import zyx.logic.converter.output.skeleton.SkeletonAnimationTransform;
 import zyx.logic.converter.output.skeleton.SkeletonMeshVo;
-import zyx.logic.converter.smd.control.json.JsonMeshAnimation;
-import zyx.logic.converter.smdV2.parsedVo.ParsedSmdFile;
-import zyx.logic.converter.smdV2.parsedVo.ParsedSmdFrame;
+import zyx.logic.converter.json.JsonMeshAnimation;
+import zyx.logic.converter.smd.parsedVo.ParsedSmdFile;
+import zyx.logic.converter.smd.parsedVo.ParsedSmdFrame;
 
 public class AnimationBuilder
 {

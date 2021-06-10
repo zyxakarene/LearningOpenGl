@@ -6,9 +6,9 @@ import zyx.logic.UtilsLogger;
 import zyx.logic.converter.output.skeleton.SkeletonBone;
 import zyx.logic.converter.output.skeleton.SkeletonBoneInfo;
 import zyx.logic.converter.output.skeleton.SkeletonMeshVo;
-import zyx.logic.converter.smdV2.parsedVo.ParsedSmdBone;
-import zyx.logic.converter.smdV2.parsedVo.ParsedSmdFile;
-import zyx.logic.converter.smdV2.parsedVo.ParsedSmdFrame;
+import zyx.logic.converter.smd.parsedVo.ParsedSmdBone;
+import zyx.logic.converter.smd.parsedVo.ParsedSmdFile;
+import zyx.logic.converter.smd.parsedVo.ParsedSmdFrame;
 
 public class BoneBuilder
 {
