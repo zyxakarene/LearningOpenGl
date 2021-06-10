@@ -1,6 +1,7 @@
 package zyx.logic.converter.output.mesh.builders;
 
 import org.lwjgl.util.vector.Vector3f;
+import zyx.logic.UtilsLogger;
 import zyx.logic.converter.output.mesh.ZafColliderBox;
 import zyx.logic.converter.output.mesh.ZafColliderTriangle;
 import zyx.logic.converter.output.mesh.ZafMeshVo;
@@ -43,6 +44,7 @@ public class ColliderBuilder
 				if (boneId == -1)
 				{
 					boneId = triangle.v1.boneIndexes[0];
+					UtilsLogger.log("Adding collider box to bone " + boneId);
 				}
 				
 				colliderBox.triangles.add(colliderTriangle);

@@ -33,4 +33,9 @@ public class UtilsLogger
 		
 		output.append("\n");
 	}
+
+	static void clear()
+	{
+		output.setText("");
+	}
 }

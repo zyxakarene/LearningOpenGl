@@ -24,15 +24,32 @@ public class TextureDropper implements IFilesDropped
 	private int type;
 	private JsonMeshTextureEntry textureEntry;
 
-	public TextureDropper(JLabel label, JLabel textLabel, JsonMeshTextureEntry textures, int type)
+	public TextureDropper(JLabel label, JLabel textLabel, int type)
 	{
 		this.label = label;
 		this.textLabel = textLabel;
-		this.textureEntry = textures;
 		this.type = type;
 		dropper = new DragDropper("png", this);
 
 		textLabel.setVisible(false);
+	}
+
+	public void setTexture(JsonMeshTextureEntry entry)
+	{
+		textureEntry = entry;
+		
+		switch (type)
+		{
+			case DIFFUSE:
+				loadFileInner(textureEntry.diffuseFile);
+				break;
+			case NORMAL:
+				loadFileInner(textureEntry.normalFile);
+				break;
+			case SPECULAR:
+				loadFileInner(textureEntry.specularFile);
+				break;
+		}
 	}
 
 	public void clear()

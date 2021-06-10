@@ -144,6 +144,7 @@ public class MeshView extends javax.swing.JFrame
         filesButton = new javax.swing.JButton();
         propertiesButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
+        textureBtn = new javax.swing.JButton();
         skeletonPanel = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -241,7 +242,7 @@ public class MeshView extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(meshSkeletonTextfield, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -278,15 +279,29 @@ public class MeshView extends javax.swing.JFrame
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        textureBtn.setText("Textures");
+        textureBtn.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                textureBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 384, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(143, 143, 143)
+                .addComponent(textureBtn)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 175, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(textureBtn)
+                .addGap(0, 152, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout meshPanelLayout = new javax.swing.GroupLayout(meshPanel);
@@ -603,6 +618,11 @@ public class MeshView extends javax.swing.JFrame
 		UtilsCompiler.compile(mesh.file);
     }//GEN-LAST:event_compileBtnActionPerformed
 
+    private void textureBtnActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_textureBtnActionPerformed
+    {//GEN-HEADEREND:event_textureBtnActionPerformed
+        new MeshTextureView(this, mesh.textureFiles).setVisible(true);
+    }//GEN-LAST:event_textureBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addAnimationBtn;
@@ -634,6 +654,7 @@ public class MeshView extends javax.swing.JFrame
     private javax.swing.JTextField skeletonOutputTextfield;
     private javax.swing.JPanel skeletonPanel;
     private javax.swing.JRadioButton skeletonRadioBtn;
+    private javax.swing.JButton textureBtn;
     private javax.swing.ButtonGroup typeBtnGroup;
     private javax.swing.JLabel typeLabel;
     // End of variables declaration//GEN-END:variables

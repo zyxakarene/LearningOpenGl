@@ -67,7 +67,7 @@ public class JsonMesh
 		skeletonMesh = new File(UtilConstants.BASE_FOLDER + skeletonRefMesh);
 		SkeletonOutput = new File(UtilConstants.ASSETS_OUTPUT + skeletonOut);
 
-		if (meshOutput.exists() == false || meshOutput.isDirectory())
+		if (meshOutput.exists() == false && meshOutput.isDirectory())
 		{
 			meshOutput = null;
 		}
@@ -77,7 +77,7 @@ public class JsonMesh
 			skeletonMesh = null;
 		}
 
-		if (SkeletonOutput.exists() == false || SkeletonOutput.isDirectory())
+		if (SkeletonOutput.exists() == false && SkeletonOutput.isDirectory())
 		{
 			SkeletonOutput = null;
 		}

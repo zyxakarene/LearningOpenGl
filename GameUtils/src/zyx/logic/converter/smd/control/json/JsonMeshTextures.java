@@ -38,6 +38,8 @@ public class JsonMeshTextures
 		{
 			JSONObject jsonEntry = new JSONObject();
 			textureEntry.save(jsonEntry);
+			
+			array.add(jsonEntry);
 		}
 		
 		json.put(PROPERTY_ENTRIES, array);

@@ -28,7 +28,6 @@ public class UtilsGui extends javax.swing.JFrame implements WindowCreatedListene
 	public UtilsGui()
 	{
 		initComponents();
-		UtilsCompiler.logArea = logArea;
 		
 		jsonTree = new JsonTree();
 		jsonMeshScrollPanel.setViewportView(jsonTree);

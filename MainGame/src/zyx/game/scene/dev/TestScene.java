@@ -43,37 +43,26 @@ public class TestScene extends DebugScene
 	{
 		addPlayerControls();
 
-//		floor = new Box(400, 400, 10);
-//		floor.setZ(-40);
-//		world.addChild(floor);
+		floor = new Box(400, 400, 10);
+		floor.setZ(-40);
+		world.addChild(floor);
 		
 		character = new AnimatedMesh();
 		character.load("mesh.character");
 		character.setAnimation("idle");
 		world.addChild(character);
 		
-//		obj = new GameObject();
-//		obj.addBehavior(new JiggleBehavior());
-//		
-//		box = new Box();
-//		obj.addChild(box);
-//		
-//		obj.setZ(20);
-//		world.addChild(obj);
-//		
-//		objects.add(floor);
-//		objects.add(box);
-//		
-//		box.onLoaded(this::onBoxLoaded);
-	}
-	
-	private void onBoxLoaded(SimpleMesh mesh)
-	{
-		WorldModelMaterial mat1 = mesh.cloneMaterial(0);
-		WorldModelMaterial mat2 = mesh.cloneMaterial(1);
+		obj = new GameObject();
+		obj.addBehavior(new JiggleBehavior());
 		
-		mat1.culling = Culling.NONE;
-		mat2.culling = Culling.FRONT;
+		box = new Box();
+		obj.addChild(box);
+		
+		obj.setZ(20);
+		world.addChild(obj);
+		
+		objects.add(floor);
+		objects.add(box);
 	}
 
 	@Override

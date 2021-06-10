@@ -2,6 +2,7 @@ package zyx.logic.converter.output.mesh.builders;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import zyx.logic.UtilsLogger;
 import zyx.logic.converter.output.mesh.ZafMeshVo;
 import zyx.logic.converter.output.mesh.ZafSubMesh;
 import zyx.logic.converter.output.mesh.ZafVertex;
@@ -37,6 +38,7 @@ public class VertexDataBuilder
 			ArrayList<Short> elements = subMesh.elementData;
 
 			subMesh.boneCount = getMaxBoneCount(surface.triangles);
+			UtilsLogger.log("MaxBoneCount now at: " + subMesh.boneCount);
 			
 			for (ParsedSmdTriangle triangle : surface.triangles)
 			{

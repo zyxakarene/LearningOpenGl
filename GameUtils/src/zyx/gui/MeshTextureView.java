@@ -2,6 +2,7 @@ package zyx.gui;
 
 import javax.swing.JFrame;
 import zyx.logic.converter.smd.control.json.JsonMeshTextureEntry;
+import zyx.logic.converter.smd.control.json.JsonMeshTextures;
 
 
 public class MeshTextureView extends javax.swing.JDialog
@@ -10,18 +11,41 @@ public class MeshTextureView extends javax.swing.JDialog
 	private final TextureDropper diffuseDropper;
 	private final TextureDropper normalDropper;
 	private final TextureDropper specularDropper;
+	
+	private final JsonMeshTextures textures;
+	
+	private JsonMeshTextureEntry currentEntry;
 
-	public MeshTextureView(JFrame parent, JsonMeshTextureEntry textureEntry)
+	public MeshTextureView(JFrame parent, JsonMeshTextures textures)
 	{
 		super(parent, true);
 		initComponents();
 		
-		diffuseDropper = new TextureDropper(diffuseLabel, diffuseText, textureEntry, TextureDropper.DIFFUSE);
-		normalDropper = new TextureDropper(normalLabel, normalText, textureEntry, TextureDropper.NORMAL);
-		specularDropper = new TextureDropper(specularLabel, specularText, textureEntry, TextureDropper.SPECULAR);
-
+		diffuseDropper = new TextureDropper(diffuseLabel, diffuseText, TextureDropper.DIFFUSE);
+		normalDropper = new TextureDropper(normalLabel, normalText, TextureDropper.NORMAL);
+		specularDropper = new TextureDropper(specularLabel, specularText, TextureDropper.SPECULAR);
+		
+		this.textures = textures;
+		
+		for (JsonMeshTextureEntry entry : textures.entries)
+		{
+			materialDropdown.addItem(entry.name);
+		}
+		
+		int index = materialDropdown.getSelectedIndex();
+		if (index >= 0)
+		{
+			currentEntry = textures.entries[index];
+			setupValues();
+		}
 	}
 
+	private void setupValues()
+	{
+		diffuseDropper.setTexture(currentEntry);
+		normalDropper.setTexture(currentEntry);
+		specularDropper.setTexture(currentEntry);
+	}
 
 	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -29,6 +53,7 @@ public class MeshTextureView extends javax.swing.JDialog
     {
 
         jPanel2 = new javax.swing.JPanel();
+        materialDropdown = new javax.swing.JComboBox<>();
         texturePanel = new javax.swing.JPanel();
         diffusePreview = new javax.swing.JPanel();
         diffuseText = new javax.swing.JLabel();
@@ -49,6 +74,28 @@ public class MeshTextureView extends javax.swing.JDialog
         specularClearBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        materialDropdown.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                materialDropdownActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(materialDropdown, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(materialDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         texturePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -218,11 +265,12 @@ public class MeshTextureView extends javax.swing.JDialog
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(texturePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -230,22 +278,15 @@ public class MeshTextureView extends javax.swing.JDialog
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(specularPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(normalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(texturePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(specularPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(normalPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(texturePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(specularPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         pack();
@@ -266,6 +307,16 @@ public class MeshTextureView extends javax.swing.JDialog
         specularDropper.clear();
     }//GEN-LAST:event_specularClearBtnActionPerformed
 
+    private void materialDropdownActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_materialDropdownActionPerformed
+    {//GEN-HEADEREND:event_materialDropdownActionPerformed
+        int index = materialDropdown.getSelectedIndex();
+        if (index >= 0)
+        {
+            currentEntry = textures.entries[index];
+        }
+        setupValues();
+    }//GEN-LAST:event_materialDropdownActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton diffuseClearBtn;
@@ -273,6 +324,7 @@ public class MeshTextureView extends javax.swing.JDialog
     private javax.swing.JPanel diffusePreview;
     private javax.swing.JLabel diffuseText;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JComboBox<String> materialDropdown;
     private javax.swing.JButton normalClearBtn;
     private javax.swing.JLabel normalLabel;
     private javax.swing.JPanel normalPanel;

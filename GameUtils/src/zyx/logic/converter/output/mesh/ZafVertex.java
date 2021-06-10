@@ -43,8 +43,6 @@ public class ZafVertex implements ISaveable
 		out.writeFloat(uv.x);
 		out.writeFloat(uv.y);
 		
-		System.out.println("Writing bonecount: " + boneCount);
-		
 		for (int i = 0; i < boneCount; i++)
 		{
 			out.writeFloat(indexes[i]);
