@@ -6,10 +6,6 @@ import zyx.opengl.models.AbstractMultiModel;
 import zyx.opengl.models.implementations.IParticleModel;
 import zyx.opengl.models.implementations.LoadableParticleVO;
 import zyx.opengl.models.implementations.renderers.MeshRenderer;
-import zyx.opengl.particles.ParticleSystem;
-import zyx.opengl.shaders.SharedShaderObjects;
-import zyx.opengl.shaders.implementations.ParticleShader;
-import zyx.opengl.shaders.implementations.WorldParticleShader;
 
 public abstract class AbstractParticleModelWrapper
 		<
@@ -20,32 +16,15 @@ public abstract class AbstractParticleModelWrapper
 		extends MeshWrapper<TMaterial, TModel, TRenderer> implements IParticleModel
 {
 
-	private ParticleSystem system;
-
 	public AbstractParticleModelWrapper(TRenderer[] renderers, TModel model)
 	{
 		super(renderers, model);
 	}
 	
 	@Override
-	protected void onPreDraw()
+	public void setup(WorldObject system)
 	{
-		super.onPreDraw();
-		
-		if (system != null)
-		{
-			ParticleShader.parentScale = system.parentScale;
-			WorldParticleShader.parentScale = system.parentScale;
-			SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM.load(system.worldMatrix());
-		}
-	}
-	
-	public void setup(ParticleSystem system)
-	{
-		this.system = system;
-		
 		model.setParent(system);
-		
 		super.setup(system);
 	}
 

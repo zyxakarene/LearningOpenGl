@@ -23,12 +23,7 @@ public abstract class MeshWrapper
 		this.renderers = renderers;
 		this.model = model;
 	}
-	
-	protected TRenderer getRenderer(int index)
-	{
-		return renderers[index];
-	}
-	
+		
 	public void setup(WorldObject drawParent)
 	{
 		this.parent = drawParent;
@@ -73,10 +68,5 @@ public abstract class MeshWrapper
 		}
 		
 		parent = null;
-	}
-
-	protected void onPreDraw()
-	{
-		
 	}
 }

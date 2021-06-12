@@ -14,6 +14,9 @@ public class MeshBatchModelWrapper extends MeshWrapper<WorldModelMaterial, MeshB
 	
 	public void setMeshBatchData(float[] batchData)
 	{
-		model.setMeshBatchData(batchData);
+		for (MeshBatchRenderer renderer : renderers)
+		{
+			renderer.setMeshBatchData(batchData);
+		}
 	}
 }

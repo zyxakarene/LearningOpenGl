@@ -13,9 +13,13 @@ import zyx.utils.interfaces.IUpdateable;
 
 class MeshBatch<E extends MeshBatchEntity> implements IResourceReady<MeshBatchResource>, IUpdateable, IDisposeable
 {
-
+	private static final int MAX_ENTITIES = 3000;
+	
 	private MeshBatchResource meshResource;
 	private MeshBatchModelWrapper wrapper;
+	
+	private ArrayList<E> entitiesToAdd;
+	private ArrayList<E> entitiesToRemove;
 	
 	private ArrayList<E> entities;
 	private int entityCount;
@@ -29,6 +33,14 @@ class MeshBatch<E extends MeshBatchEntity> implements IResourceReady<MeshBatchRe
 		entityCount = 0;
 		entities = new ArrayList<>();
 		batchData = new float[entityCount];
+		
+		entitiesToAdd = new ArrayList<>();
+		entitiesToRemove = new ArrayList<>();
+	}
+	
+	public boolean canAddMore()
+	{
+		return entities.size() + entitiesToAdd.size() < MAX_ENTITIES;
 	}
 
 	@Override
@@ -39,21 +51,27 @@ class MeshBatch<E extends MeshBatchEntity> implements IResourceReady<MeshBatchRe
 
 	public void addEntity(E entity)
 	{
-		entities.add(entity);
-		entityCount = entities.size();
-		batchData = new float[entityCount * MeshBatchModel.INSTANCE_DATA_AMOUNT];
+		if (entitiesToAdd.contains(entity) == false)
+		{
+			entitiesToAdd.add(entity);
+		}
 	}
 
 	public void removeEntity(E entity)
 	{
-		entities.remove(entity);
-		entityCount = entities.size();
-		batchData = new float[entityCount * MeshBatchModel.INSTANCE_DATA_AMOUNT];
+		if (entitiesToRemove.contains(entity) == false)
+		{
+			entitiesToRemove.add(entity);
+		}
+		
+		entitiesToAdd.remove(entity);
 	}
 	
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{
+		addAndRemoveEntities();
+		
 		final int offset = MeshBatchModel.INSTANCE_DATA_AMOUNT;
 		E entity;
 		Vector3f pos;
@@ -110,8 +128,40 @@ class MeshBatch<E extends MeshBatchEntity> implements IResourceReady<MeshBatchRe
 			wrapper = null;
 		}
 		
+		if (entitiesToRemove != null)
+		{
+			entitiesToRemove.clear();
+			entitiesToRemove = null;
+		}
+		
+		if (entitiesToAdd != null)
+		{
+			entitiesToAdd.clear();
+			entitiesToAdd = null;
+		}
+		
 		entityCount = 0;
 		entities = null;
 		batchData = null;
+	}
+
+	private void addAndRemoveEntities()
+	{
+		boolean removedAny = entities.removeAll(entitiesToRemove);
+		boolean addedAny = entities.addAll(entitiesToAdd);
+		
+		if (removedAny || addedAny)
+		{
+			entitiesToRemove.clear();
+			entitiesToAdd.clear();
+			
+			entityCount = entities.size();
+			batchData = new float[entityCount * MeshBatchModel.INSTANCE_DATA_AMOUNT];
+		}
+	}
+
+	boolean contains(E entity)
+	{
+		return entitiesToAdd.contains(entity) || entities.contains(entity);
 	}
 }

@@ -2,7 +2,6 @@ package zyx.engine.components.meshbatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import zyx.opengl.GLUtils;
 import zyx.utils.interfaces.IUpdateable;
 
 public class MeshBatchManager implements IUpdateable
@@ -15,7 +14,7 @@ public class MeshBatchManager implements IUpdateable
 	}
 
 	private ArrayList<MeshBatch> meshBatchesList;
-	private HashMap<String, MeshBatch> meshBatchesMap;
+	private HashMap<String, ArrayList<MeshBatch>> meshBatchesMap;
 	
 	private MeshBatchManager()
 	{
@@ -26,12 +25,32 @@ public class MeshBatchManager implements IUpdateable
 	public void addEntity(MeshBatchEntity entity)
 	{
 		String view = entity.viewId;
-		MeshBatch batch = meshBatchesMap.get(view);
+		ArrayList<MeshBatch> batchList = meshBatchesMap.get(view);
+		if (batchList == null)
+		{
+			batchList = new ArrayList<>();
+			meshBatchesMap.put(view, batchList);
+		}
 	
+		MeshBatch batch = null;
+		if (!batchList.isEmpty())
+		{
+			int listLen = batchList.size();
+			for (int i = 0; i < listLen; i++)
+			{
+				MeshBatch batchCheck = batchList.get(i);
+				if (batchCheck.canAddMore())
+				{	
+					batch = batchCheck;
+					break;
+				}
+			}
+		}
+		
 		if (batch == null)
 		{
 			batch = new MeshBatch(view);
-			meshBatchesMap.put(view, batch);
+			batchList.add(batch);
 			meshBatchesList.add(batch);
 		}
 		
@@ -41,19 +60,31 @@ public class MeshBatchManager implements IUpdateable
 	public void removeEntity(MeshBatchEntity entity)
 	{
 		String view = entity.viewId;
-		MeshBatch batch = meshBatchesMap.get(view);
+		ArrayList<MeshBatch> batchList = meshBatchesMap.get(view);
 	
-		if (batch != null)
+		if (batchList != null)
 		{
-			batch.removeEntity(entity);
-			
-			
-			if (batch.isEmpty())
+			int listLen = batchList.size();
+			for (int i = 0; i < listLen; i++)
 			{
-				meshBatchesList.remove(batch);
+				MeshBatch batch = batchList.get(i);
+				if (batch.contains(entity))
+				{
+					batch.removeEntity(entity);
+					
+					if (batch.isEmpty())
+					{
+						batchList.remove(i);
+						
+						meshBatchesList.remove(batch);
+						batch.dispose();
+					}
+				}
+			}
+			
+			if (batchList.isEmpty())
+			{
 				meshBatchesMap.remove(view);
-				
-				batch.dispose();
 			}
 		}
 	}
