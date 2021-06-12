@@ -1,7 +1,6 @@
 package zyx.opengl.models.implementations.renderers;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import zyx.opengl.buffers.DeferredRenderer;
 import zyx.opengl.materials.RenderQueue;
 import zyx.utils.interfaces.IDrawable;

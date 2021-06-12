@@ -6,14 +6,8 @@ import zyx.opengl.models.implementations.MeshBatchModel;
 public class MeshBatchRenderer extends MeshRenderer<WorldModelMaterial, MeshBatchModel>
 {
 
-	public MeshBatchRenderer(MeshBatchModel model, WorldModelMaterial defaultMaterial)
+	public MeshBatchRenderer(MeshBatchModel model, int meshIndex, WorldModelMaterial defaultMaterial)
 	{
-		super(model, defaultMaterial);
+		super(model, meshIndex, defaultMaterial);
 	}
-
-	public void setMeshBatchData(float[] batchData)
-	{
-		model.setMeshBatchData(batchData);
-	}
-
 }

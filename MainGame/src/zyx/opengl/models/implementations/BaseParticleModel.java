@@ -2,17 +2,15 @@ package zyx.opengl.models.implementations;
 
 import zyx.opengl.materials.impl.ParticleModelMaterial;
 import zyx.opengl.models.AbstractInstancedModel;
-import zyx.opengl.models.implementations.renderers.AbstractParticleRenderer;
+import zyx.opengl.models.implementations.renderers.wrappers.AbstractParticleModelWrapper;
 
 public abstract class BaseParticleModel extends AbstractInstancedModel<ParticleModelMaterial> implements IParticleModel
 {
 
-	public BaseParticleModel(ParticleModelMaterial material)
+	public BaseParticleModel()
 	{
-		super(material);
-		setup();
 	}
-
+	
 	@Override
-	public abstract AbstractParticleRenderer createRenderer();
+	public abstract AbstractParticleModelWrapper createWrapper();
 }

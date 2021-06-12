@@ -2,6 +2,7 @@ package zyx.opengl.models.implementations;
 
 import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.implementations.renderers.PhysicsModelRenderer;
+import zyx.opengl.models.implementations.renderers.wrappers.WorldModelWrapper;
 
 public class PhysicsModel extends WorldModel
 {
@@ -12,19 +13,24 @@ public class PhysicsModel extends WorldModel
 	}
 	
 	@Override
-	public void draw(WorldModelMaterial material)
+	public void draw(int index, WorldModelMaterial material)
 	{
-		meshShader.bind();
-		meshShader.upload();
+		modelData[0].meshShader.bind();
+		modelData[0].meshShader.upload();
 		
-		super.draw(material);
+		super.draw(index, material);
 	}
-
+	
 	@Override
-	public PhysicsModelRenderer createRenderer()
+	public WorldModelWrapper createWrapper()
 	{
-		return new PhysicsModelRenderer(this, defaultMaterial);
+		PhysicsModelRenderer[] array = new PhysicsModelRenderer[subMeshCount];
+		for (int i = 0; i < subMeshCount; i++)
+		{
+			WorldModelMaterial material = getDefaultMaterial(i);
+			array[i] = new PhysicsModelRenderer(this, i, material);
+		}
+
+		return new WorldModelWrapper(array, this);
 	}
-	
-	
 }

@@ -2,48 +2,63 @@ package zyx.opengl.models;
 
 import zyx.opengl.materials.Material;
 
-public abstract class AbstractInstancedModel<TMaterial extends Material> extends AbstractModel<TMaterial>
+public abstract class AbstractInstancedModel<TMaterial extends Material> extends AbstractMultiModel<TMaterial>
 {
 
-	private int instanceVbo;
-	
-	private int instanceCount;
+	private int[] instanceVbos;
+	private int[] instanceCounts;
 
-	public AbstractInstancedModel(TMaterial material)
+	public AbstractInstancedModel()
 	{
-		super(material);
+		super();
 	}
 
+	@Override
+	protected void setSubMeshCount(int count)
+	{
+		super.setSubMeshCount(count);
+		
+		instanceVbos = new int[count];
+		instanceCounts = new int[count];
+	}
+	
 	@Override
 	protected void createObjects()
 	{
 		super.createObjects();
-		instanceVbo = ModelUtils.generateBufferObject();
+		
+		for (int i = 0; i < subMeshCount; i++)
+		{
+			instanceVbos[i] = ModelUtils.generateBufferObject();
+		}
 	}
 
-	protected void setInstanceData(float[] data, int count)
+	protected void setInstanceData(int index, float[] data, int count)
 	{
-		ModelUtils.bindBufferObject_Array(instanceVbo);
+		ModelUtils.bindBufferObject_Array(instanceVbos[index]);
 		ModelUtils.fillVBO_Dynamic(data);
-		instanceCount = count;
+		instanceCounts[index] = count;
 	}
 	
-	protected final void addInstanceAttribute(String attributeName, int components, int stride, int offset)
+	protected final void addInstanceAttribute(int index, String attributeName, int components, int stride, int offset)
 	{
-		ModelUtils.bindBufferObject_Array(instanceVbo);
-		ModelUtils.addInstanceAttribute(meshShader.program, attributeName, components, stride, offset);
+		ModelUtils.bindBufferObject_Array(instanceVbos[index]);
+		ModelUtils.addInstanceAttribute(modelData[index].meshShader.program, attributeName, components, stride, offset);
 	}
 	
 	@Override
-	public void draw(TMaterial material)
+	public void draw(int index, TMaterial material)
 	{
-		if (elementCount > 0 && instanceCount > 0)
+		ModelData drawData = modelData[index];
+		int instanceCount = instanceCounts[index];
+
+		if (drawData.elementCount > 0 && instanceCount > 0)
 		{
 			if (canDraw())
 			{
 				material.bind();
 				
-				ModelUtils.drawInstancedElements(vao, elementCount, instanceCount);
+				ModelUtils.drawInstancedElements(drawData.vao, drawData.elementCount, instanceCount);
 			}
 		}
 	}
@@ -57,7 +72,12 @@ public abstract class AbstractInstancedModel<TMaterial extends Material> extends
 	@Override
 	public void dispose()
 	{
-		ModelUtils.disposeBuffer(instanceVbo);
+		int len = instanceVbos.length;
+		for (int i = 0; i < len; i++)
+		{
+			ModelUtils.disposeBuffer(instanceVbos[i]);
+		}
+		
 		super.dispose();
 	}
 

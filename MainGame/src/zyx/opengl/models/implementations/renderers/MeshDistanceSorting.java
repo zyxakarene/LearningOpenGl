@@ -28,23 +28,37 @@ class MeshDistanceSorting implements Comparator<MeshRenderer>
 	@Override
 	public int compare(MeshRenderer a, MeshRenderer b)
 	{
-		//Someone doesn't have a parent. So that should always be further back.. Probably
-		if (a.parent == null || b.parent == null)
-		{
-			return Boolean.compare(a.parent != null, b.parent != null);
-		}
-		
 		//Make sure we only compare equal priorities
 		if (a.drawMaterial.priority != b.drawMaterial.priority)
 		{
 			return sortByPriority(a, b);
 		}
 
-		a.parent.getPosition(false, A_POSITION);
-		b.parent.getPosition(false, B_POSITION);
+		float distanceToA;
+		float distanceToB;
 		
-		float distanceToA = FloatMath.distance(A_POSITION, CAM_POSITION);
-		float distanceToB = FloatMath.distance(B_POSITION, CAM_POSITION);
+		if (a.parent == null)
+		{
+			//No parent? It is probably very far away!
+			distanceToA = Float.MAX_VALUE;
+		}
+		else
+		{
+			a.parent.getPosition(false, A_POSITION);
+			distanceToA = FloatMath.distance(A_POSITION, CAM_POSITION);
+		}
+		
+		if (b.parent == null)
+		{
+			//No parent? It is probably very far away!
+			distanceToB = Float.MAX_VALUE;
+		}
+		else
+		{
+			b.parent.getPosition(false, B_POSITION);
+			distanceToB = FloatMath.distance(B_POSITION, CAM_POSITION);
+		}
+		
 
 		if (distanceToA < distanceToB)
 		{

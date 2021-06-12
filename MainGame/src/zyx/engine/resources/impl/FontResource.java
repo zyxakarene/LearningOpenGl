@@ -37,13 +37,14 @@ public class FontResource extends BaseRequiredSubResource implements ISubResourc
 			generator = new BitmapFontGenerator(fontData);
 
 			addResourceBatch(new SubResourceBatch(this, textureResource));
+			loadBatches();
 		}
 		catch (IOException ex)
 		{
 			throw new RuntimeException("Could not read from FrontData", ex);
 		}
 	}
-
+	
 	@Override
 	protected void onDispose()
 	{

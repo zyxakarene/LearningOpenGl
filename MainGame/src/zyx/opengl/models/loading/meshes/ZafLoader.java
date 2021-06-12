@@ -7,6 +7,7 @@ import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.models.loading.meshes.fallback.FakeMesh;
 import zyx.utils.PrintBuilder;
 import zyx.utils.cheats.Print;
+import zyx.opengl.models.implementations.ISubMeshVO;
 
 public class ZafLoader
 {
@@ -22,19 +23,25 @@ public class ZafLoader
 			ZafObject obj = new ZafObject();
 			obj.read(in, builder);
 
-			PhysBox phys = createPhysBox(obj.physInformation);
-
 			builder.append("========");
 			Print.out(builder);
 
-			LoadableWorldModelVO vo = new LoadableWorldModelVO();
-			vo.setBoneCount(obj.boneCount);
-			vo.setVertexData(obj.vertexData, obj.elementData);
+			LoadableWorldModelVO vo = new LoadableWorldModelVO(obj.subMeshCount);
+			for (int i = 0; i < obj.subMeshCount; i++)
+			{
+				SubMeshObject subMesh = obj.subMeshes[i];
+				ISubMeshVO meshBuilder = vo.getSubMeshVO(i);
+				
+				meshBuilder.setBoneCount(subMesh.boneCount);
+				meshBuilder.setVertexData(subMesh.vertexData, subMesh.elementData);
+				
+				meshBuilder.setTextureIds(subMesh.diffuseTexture, subMesh.normalTexture, subMesh.specularTexture);
+				meshBuilder.setMaterialData(subMesh.materialInformation);
+			}
+			PhysBox phys = createPhysBox(obj.physInformation);
 			vo.setPhysBox(phys);
-			vo.setTextureIds(obj.diffuseTexture, obj.normalTexture, obj.specularTexture);
-			vo.setRadius(obj.radiusCenter, obj.radius);
 			vo.setSkeletonId(obj.skeletonId);
-			vo.setMaterialData(obj.materialInformation);
+			vo.setRadius(obj.radiusCenter, obj.radius);
 			
 			return vo;
 			

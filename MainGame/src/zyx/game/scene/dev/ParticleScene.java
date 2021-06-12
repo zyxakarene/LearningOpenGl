@@ -5,11 +5,13 @@ import org.lwjgl.input.Keyboard;
 import zyx.engine.components.meshbatch.MeshBatchManager;
 import zyx.engine.components.world.World3D;
 import zyx.engine.scene.loading.LoadingScreenProcess;
+import zyx.game.behavior.misc.JiggleBehavior;
 import zyx.game.components.MeshObject;
 import zyx.game.components.world.meshbatch.CubeEntity;
 import zyx.game.controls.input.KeyboardData;
 import zyx.opengl.GLUtils;
 import zyx.opengl.models.implementations.shapes.Box;
+import zyx.opengl.particles.ParticleSystem;
 import zyx.utils.FloatMath;
 
 public class ParticleScene extends DebugScene
@@ -68,7 +70,7 @@ public class ParticleScene extends DebugScene
 	@Override
 	protected void onInitialize()
 	{
-		for (int i = 0; i < 0; i++)
+		for (int i = 0; i < 20; i++)
 		{
 			CubeEntity cube = new CubeEntity();
 			float x = (FloatMath.random() * 200f) - 100f;
@@ -84,26 +86,26 @@ public class ParticleScene extends DebugScene
 		model.setScale(0.1f, 0.1f, 0.1f);
 
 		objects.add(model);
-//		ParticleSystem localSystem1 = new ParticleSystem();
-//		localSystem1.load("particles.particle2");
-//		localSystem1.setZ(40);
-//		localSystem1.setX(-20);
-//		localSystem1.setScale(10, 10, 10);
-//		model.addChild(localSystem1);
-//
-//		ParticleSystem worldSystem1 = new ParticleSystem();
-//		worldSystem1.load("particles.world");
-//		worldSystem1.setZ(40);
-//		worldSystem1.setX(20);
-//		worldSystem1.setScale(10, 10, 10);
-//		model.addChild(worldSystem1);
+		ParticleSystem localSystem1 = new ParticleSystem();
+		localSystem1.load("particles.particle2");
+		localSystem1.setZ(40);
+		localSystem1.setX(-20);
+		localSystem1.setScale(10, 10, 10);
+		model.addChild(localSystem1);
 
-//		model.addBehavior(new JiggleBehavior());
+		ParticleSystem worldSystem1 = new ParticleSystem();
+		worldSystem1.load("particles.world");
+		worldSystem1.setZ(40);
+		worldSystem1.setX(20);
+		worldSystem1.setScale(10, 10, 10);
+		model.addChild(worldSystem1);
+
+		model.addBehavior(new JiggleBehavior());
 		addPlayerControls();
 
 		GLUtils.errorCheck();
 		
-		addLoadingScreenProcess(new AddBoxProcess(world, 20, boxes));
+//		addLoadingScreenProcess(new AddBoxProcess(world, 20, boxes));
 		
 	}
 

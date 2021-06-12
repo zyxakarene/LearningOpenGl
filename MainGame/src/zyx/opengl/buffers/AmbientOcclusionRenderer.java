@@ -26,6 +26,7 @@ import zyx.opengl.textures.enums.TextureFormat;
 import zyx.opengl.textures.enums.TextureSlot;
 import static org.lwjgl.opengl.GL11.glTexImage2D;
 import zyx.opengl.materials.impl.AmbientOcclusionMaterial;
+import static org.lwjgl.opengl.GL11.glTexImage2D;
 
 public class AmbientOcclusionRenderer extends BaseFrameBuffer
 {

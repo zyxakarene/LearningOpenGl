@@ -42,6 +42,8 @@ public class WorldModelMaterial extends Material
 				break;
 			case WORLD_4:
 				forwardShaderType = Shader.WORLD_FORWARD_4;
+			case MESH_BATCH:
+				forwardShaderType = Shader.MESH_BATCH_FORWARD;
 				break;
 		}
 		

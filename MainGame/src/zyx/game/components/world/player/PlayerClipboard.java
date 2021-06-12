@@ -1,12 +1,8 @@
 package zyx.game.components.world.player;
 
 import org.lwjgl.util.vector.Matrix4f;
-import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.components.GameObject;
 import zyx.game.components.SimpleMesh;
-import zyx.opengl.materials.StencilLayer;
-import zyx.opengl.materials.StencilMode;
-import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.utils.interfaces.IPhysbox;
 
@@ -27,18 +23,6 @@ public class PlayerClipboard extends GameObject implements IPhysbox
 		board.load("mesh.player.clipboard");
 		paper.load("mesh.player.paper");
 		paper.setScale(25, 17, 1);
-		ICallback<SimpleMesh> callback = new ICallback<SimpleMesh>()
-		{
-			@Override
-			public void onCallback(SimpleMesh data)
-			{
-				WorldModelMaterial material = board.cloneMaterial();
-				material.stencilMode = StencilMode.WRITING;
-				material.stencilLayer = StencilLayer.PLAYER_CHARACTER;
-			}
-		};
-		
-		board.onLoaded(callback);
 		
 		addChild(board);
 		addChild(paper);

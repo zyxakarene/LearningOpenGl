@@ -2,7 +2,7 @@ package zyx;
 
 public class UtilConstants
 {
-	public static final String BASE_FOLDER = "C:\\Users\\Rene\\Desktop\\Game Assets\\";
+	public static final String BASE_FOLDER = "C:\\Users\\Rene\\Desktop\\MainGame-Assets\\";
 	
 	public static final String MESH_FOLDER = BASE_FOLDER + "meshes\\";
 	public static final String TEXTURES_FOLDER = BASE_FOLDER + "textures\\";

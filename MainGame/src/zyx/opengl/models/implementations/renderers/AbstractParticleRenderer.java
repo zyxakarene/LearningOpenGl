@@ -2,20 +2,26 @@ package zyx.opengl.models.implementations.renderers;
 
 import zyx.opengl.materials.impl.ParticleModelMaterial;
 import zyx.opengl.models.AbstractInstancedModel;
-import zyx.opengl.models.implementations.IParticleModel;
 import zyx.opengl.particles.ParticleSystem;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.opengl.shaders.implementations.ParticleShader;
 import zyx.opengl.shaders.implementations.WorldParticleShader;
 
-public abstract class AbstractParticleRenderer<TModel extends AbstractInstancedModel<ParticleModelMaterial>> extends MeshRenderer<ParticleModelMaterial, TModel> implements IParticleModel
+public abstract class AbstractParticleRenderer<TModel extends AbstractInstancedModel<ParticleModelMaterial>> extends MeshRenderer<ParticleModelMaterial, TModel>
 {
 
 	private ParticleSystem system;
 	
-	public AbstractParticleRenderer(TModel model, ParticleModelMaterial defaultMaterial)
+	public AbstractParticleRenderer(TModel model, int meshIndex, ParticleModelMaterial defaultMaterial)
 	{
-		super(model, defaultMaterial);
+		super(model, meshIndex, defaultMaterial);
+	}
+
+	public void setup(ParticleSystem system)
+	{
+		this.system = system;
+		
+		super.setParent(system);
 	}
 
 	@Override
@@ -29,13 +35,5 @@ public abstract class AbstractParticleRenderer<TModel extends AbstractInstancedM
 			WorldParticleShader.parentScale = system.parentScale;
 			SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM.load(system.worldMatrix());
 		}
-	}
-	
-	public void setup(ParticleSystem system)
-	{
-		this.system = system;
-		setParent(system);
-		
-		super.setup(system);
 	}
 }

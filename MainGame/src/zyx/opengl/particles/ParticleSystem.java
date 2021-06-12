@@ -6,8 +6,7 @@ import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.ParticleResource;
 import zyx.opengl.camera.Camera;
-import zyx.opengl.models.implementations.renderers.AbstractParticleRenderer;
-import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.opengl.models.implementations.renderers.wrappers.AbstractParticleModelWrapper;
 import zyx.utils.FloatMath;
 
 public class ParticleSystem extends WorldObject implements IResourceReady<ParticleResource>
@@ -19,7 +18,7 @@ public class ParticleSystem extends WorldObject implements IResourceReady<Partic
 
 	protected boolean loaded;
 	protected String resource;
-	protected AbstractParticleRenderer renderer;
+	protected AbstractParticleModelWrapper wrapper;
 	
 	private ParticleResource particleResource;
 
@@ -38,7 +37,7 @@ public class ParticleSystem extends WorldObject implements IResourceReady<Partic
 			getScale(false, HELPER_VECTOR);
 			
 			parentScale = HELPER_VECTOR.y;
-			renderer.update(timestamp, elapsedTime);
+			wrapper.update(timestamp, elapsedTime);
 		}
 	}
 
@@ -58,13 +57,13 @@ public class ParticleSystem extends WorldObject implements IResourceReady<Partic
 	@Override
 	public void onResourceReady(ParticleResource resource)
 	{
-		renderer = resource.getContent();
-		if (renderer.isWorldParticle() == false)
+		wrapper = resource.getContent();
+		if (wrapper.isWorldParticle() == false)
 		{
 			particleTime += (1000 * FloatMath.random());
 		}
 		
-		renderer.setup(this);
+		wrapper.setup(this);
 		loaded = true;
 	}
 
@@ -73,20 +72,10 @@ public class ParticleSystem extends WorldObject implements IResourceReady<Partic
 	{
 		getPosition(false, HELPER_VECTOR);
 		
-		float radius = renderer.getRadius() * parentScale;
+		float radius = wrapper.getRadius() * parentScale;
 		
 		boolean visible = Camera.getInstance().isInView(HELPER_VECTOR, radius);
 		return visible;
-	}
-
-	void drawParticle()
-	{
-		if (loaded && inView())
-		{
-			SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM.load(worldMatrix());
-			
-			renderer.draw();
-		}
 	}
 
 	@Override
@@ -94,15 +83,15 @@ public class ParticleSystem extends WorldObject implements IResourceReady<Partic
 	{
 		ParticleManager.getInstance().remove(this);
 		
-		if (renderer != null)
+		if (wrapper != null)
 		{
-			if (renderer.isWorldParticle())
+			if (wrapper.isWorldParticle())
 			{
-				particleResource.removeParticleInstance(renderer);
+				particleResource.removeParticleInstance(wrapper);
 			}
 			
-			renderer.dispose();
-			renderer = null;
+			wrapper.dispose();
+			wrapper = null;
 		}
 		
 		if (particleResource != null)

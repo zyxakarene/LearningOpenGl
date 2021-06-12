@@ -1,11 +1,12 @@
 package zyx.opengl.models.implementations;
 
 import zyx.opengl.materials.impl.WorldModelMaterial;
-import zyx.opengl.models.AbstractModel;
+import zyx.opengl.models.AbstractMultiModel;
 import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.models.implementations.renderers.SkyboxRenderer;
+import zyx.opengl.models.implementations.renderers.wrappers.*;
 
-public class SkyboxModel extends AbstractModel<WorldModelMaterial>
+public class SkyboxModel extends AbstractMultiModel<WorldModelMaterial>
 {
 
 	private static final int POSITION_LENGTH = 3;
@@ -13,15 +14,25 @@ public class SkyboxModel extends AbstractModel<WorldModelMaterial>
 	private static final int TEX_COORDS_LENGTH = 2;
 	private static final int BONE_LENGTH = 2;
 
-	private int boneCount;
+	private int[] boneCounts;
 
 	public SkyboxModel(LoadableWorldModelVO vo)
 	{
-		super(vo.material);
-		boneCount = vo.boneCount;
-		setup();
+		setSubMeshCount(vo.subMeshCount);
+		boneCounts = new int[vo.subMeshCount];
+		
+		setDefaultMaterials(vo.getDefaultMaterials());
+		
+		createObjects();
 
-		setVertexData(vo.vertexData, vo.elementData);
+		for (int i = 0; i < subMeshCount; i++)
+		{
+			AbstractLoadableSubMeshModelVO subMesh = vo.subMeshes[i];
+			boneCounts[i] = subMesh.boneCount;
+			setVertexData(i, subMesh.vertexData, subMesh.elementData);
+		}
+		
+		setupAttributes();
 	}
 
 	@Override
@@ -33,16 +44,29 @@ public class SkyboxModel extends AbstractModel<WorldModelMaterial>
 	@Override
 	protected void setupAttributes()
 	{
-		int stride = POSITION_LENGTH + NORMALS_LENGTH + TEX_COORDS_LENGTH + (BONE_LENGTH * boneCount);
+		for (int i = 0; i < subMeshCount; i++)
+		{
+			bindVao(i);
 
-		addAttribute("position", POSITION_LENGTH, stride, 0);
-//		addAttribute("normals", NORMALS_LENGTH, stride, 3);
-		addAttribute("texcoord", TEX_COORDS_LENGTH, stride, 6);
+			int stride = POSITION_LENGTH + NORMALS_LENGTH + TEX_COORDS_LENGTH + (BONE_LENGTH * boneCounts[i]);
+			
+			addAttribute(i, "position", POSITION_LENGTH, stride, 0);
+	//		addAttribute(i, "normals", NORMALS_LENGTH, stride, 3);
+			addAttribute(i, "texcoord", TEX_COORDS_LENGTH, stride, 6);
+		}
+
 	}
 
 	@Override
-	public SkyboxRenderer createRenderer()
+	public SkyboxModelWrapper createWrapper()
 	{
-		return new SkyboxRenderer(this, defaultMaterial);
+		SkyboxRenderer[] array = new SkyboxRenderer[subMeshCount];
+		for (int i = 0; i < subMeshCount; i++)
+		{
+			WorldModelMaterial material = getDefaultMaterial(i);
+			array[i] = new SkyboxRenderer(this, i, material);
+		}
+
+		return new SkyboxModelWrapper(array, this);
 	}
 }

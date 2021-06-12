@@ -3,14 +3,14 @@ package zyx.opengl.textures.bitmapfont;
 import java.nio.FloatBuffer;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.materials.impl.BitmapTextMaterial;
-import zyx.opengl.models.AbstractModel;
+import zyx.opengl.models.AbstractSingleModel;
 import zyx.opengl.models.BufferWrapper;
 import zyx.opengl.models.DebugDrawCalls;
-import zyx.opengl.models.implementations.renderers.MeshRenderer;
+import zyx.opengl.models.implementations.renderers.wrappers.MeshWrapper;
 import zyx.opengl.textures.bitmapfont.alignment.HAlignment;
 import zyx.opengl.textures.bitmapfont.alignment.VAlignment;
 
-public class Text extends AbstractModel<BitmapTextMaterial>
+public class Text extends AbstractSingleModel<BitmapTextMaterial>
 {
 
 	private int characterCount;
@@ -31,7 +31,8 @@ public class Text extends AbstractModel<BitmapTextMaterial>
 	public Text(BitmapTextMaterial material, float fontScale, float width, float height)
 	{
 		super(material);
-		setup();
+		createObjects();
+		setupAttributes();
 		
 		this.fontScale = fontScale;
 		this.width = width;
@@ -116,8 +117,8 @@ public class Text extends AbstractModel<BitmapTextMaterial>
 		{
 			bindVao();
 			
-			Vector3f colors = defaultMaterial.color;
-			float alpha = defaultMaterial.alpha;
+			Vector3f colors = modelData.defaultMaterial.color;
+			float alpha = modelData.defaultMaterial.alpha;
 			
 			float vertexData[] = new float[]
 			{
@@ -178,7 +179,7 @@ public class Text extends AbstractModel<BitmapTextMaterial>
 	}
 
 	@Override
-	public MeshRenderer createRenderer()
+	public MeshWrapper createWrapper()
 	{
 		throw new UnsupportedOperationException("Not supported yet.");
 	}

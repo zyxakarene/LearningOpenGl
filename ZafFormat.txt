@@ -1,23 +1,30 @@
 zaf
 {
-	byte							bonesPerVertexCount
-	
-	int								vertexCount
-	float[vertexCount * 12]			vertexData
-	
-	int								elementCount
-	short[elementCount]				elementData
+	byte							SubMeshCount
+	SubMesh[SubMeshCount]			SubMeshes
 	
 	SmdPhysInformation				physInformation
-	
-	UtfString						diffuseTexture
-	UtfString						normalTexture
-	UtfString						specularTexture
-	
+
 	Vector3F						CenterPosition
 	float							radius
 	
 	UtfString						skeleton
+}
+
+SubMesh
+{
+	byte							bonesPerVertexCount
+	
+	int								vertexCount
+	float[vertexCount]				vertexData
+	
+	int								elementCount
+	short[elementCount]				elementData
+		
+	UtfString						diffuseTexture
+	UtfString						normalTexture
+	UtfString						specularTexture
+	
 	MaterialInformation				materialInfo
 }
 

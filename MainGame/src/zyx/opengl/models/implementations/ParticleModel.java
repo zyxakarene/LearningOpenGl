@@ -1,8 +1,10 @@
 package zyx.opengl.models.implementations;
 
 import zyx.engine.components.world.WorldObject;
+import zyx.opengl.GLUtils;
 import zyx.opengl.materials.impl.ParticleModelMaterial;
 import zyx.opengl.models.implementations.renderers.ParticleRenderer;
+import zyx.opengl.models.implementations.renderers.wrappers.*;
 import zyx.opengl.shaders.implementations.ParticleShader;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.FloatMath;
@@ -19,22 +21,26 @@ public class ParticleModel extends BaseParticleModel
 	private ParticleShader shader;
 	private LoadableParticleVO vo;
 
-	public ParticleModel(LoadableParticleVO loadableVo)
+	public ParticleModel(LoadableParticleVO loadedVo)
 	{
-		super(loadableVo.materialLocal);
-
-		shader = (ParticleShader) meshShader;
-		refresh(loadableVo);
+		setSubMeshCount(1);
+		
+		setDefaultMaterials(loadedVo.materialLocal);
+		createObjects();
+		
+		refresh(loadedVo);
+		
+		setupAttributes();
 	}
 
 	@Override
 	public void refresh(LoadableParticleVO loadedVo)
 	{
 		vo = loadedVo;
+		shader = (ParticleShader) loadedVo.materialLocal.shader;
 		
-		defaultMaterial = vo.materialLocal;
 
-		AbstractTexture t = defaultMaterial.getDiffuse();
+		AbstractTexture t = vo.materialLocal.getDiffuse();
 
 		float[] vertexData =
 		{
@@ -54,8 +60,10 @@ public class ParticleModel extends BaseParticleModel
 				instanceData[i + j] = FloatMath.random();
 			}
 		}
-		setInstanceData(instanceData, instanceData.length / instanceDataAmount);
-		setVertexData(vertexData, SHARED_ELEMENT_DATA);
+		
+		setInstanceData(0, instanceData, instanceData.length / instanceDataAmount);
+		GLUtils.errorCheck();
+		setVertexData(0, vertexData, SHARED_ELEMENT_DATA);
 	}
 
 	@Override
@@ -65,25 +73,25 @@ public class ParticleModel extends BaseParticleModel
 	}
 
 	@Override
-	public void draw(ParticleModelMaterial material)
+	public void draw(int index, ParticleModelMaterial material)
 	{
 		shader.bind();
 		shader.uploadFromVo(vo);
 		shader.upload();
-		super.draw(material);
+		super.draw(index, material);
 	}
 
 	@Override
 	protected void setupAttributes()
 	{
-		addAttribute("position", 2, 4, 0);
-		addAttribute("texcoord", 2, 4, 2);
+		addAttribute(0, "position", 2, 4, 0);
+		addAttribute(0, "texcoord", 2, 4, 2);
 
-		addInstanceAttribute("lifespanRandom", 1, 9, 0);
-		addInstanceAttribute("areaRandom", 3, 9, 1);
-		addInstanceAttribute("speedRandom", 3, 9, 4);
-		addInstanceAttribute("scaleRandom", 1, 9, 7);
-		addInstanceAttribute("rotRandom", 1, 9, 8);
+		addInstanceAttribute(0, "lifespanRandom", 1, 9, 0);
+		addInstanceAttribute(0, "areaRandom", 3, 9, 1);
+		addInstanceAttribute(0, "speedRandom", 3, 9, 4);
+		addInstanceAttribute(0, "scaleRandom", 1, 9, 7);
+		addInstanceAttribute(0, "rotRandom", 1, 9, 8);
 	}
 
 	@Override
@@ -106,9 +114,16 @@ public class ParticleModel extends BaseParticleModel
 	}
 	
 	@Override
-	public ParticleRenderer createRenderer()
+	public ParticleModelWrapper createWrapper()
 	{
-		return new ParticleRenderer(this, defaultMaterial);
+		ParticleRenderer[] array = new ParticleRenderer[subMeshCount];
+		for (int i = 0; i < subMeshCount; i++)
+		{
+			ParticleModelMaterial material = getDefaultMaterial(i);
+			array[i] = new ParticleRenderer(this, i, material);
+		}
+
+		return new ParticleModelWrapper(array, this);
 	}
 
 	@Override

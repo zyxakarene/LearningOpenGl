@@ -7,20 +7,11 @@ import zyx.utils.PrintBuilder;
 
 class ZafObject
 {
-	private static final int POSITION_DATA = 3;
-	private static final int NORMAL_DATA = 3;
-	private static final int UV_DATA = 2;
-	private static final int BONE_DATA = 2;
+	int subMeshCount;
+	SubMeshObject[] subMeshes;
 	
-	int boneCount;
-	float[] vertexData;
-	int[] elementData;
 	PhysObject physInformation;
-	String diffuseTexture;
-	String normalTexture;
-	String specularTexture;
-	MaterialObject materialInformation;
-	
+
 	Vector3f radiusCenter;
 	float radius;
 	
@@ -28,35 +19,24 @@ class ZafObject
 	
 	public void read(DataInputStream in, PrintBuilder builder) throws IOException
 	{
-		boneCount = in.readByte();
+		subMeshCount = in.readByte();
+		subMeshes = new SubMeshObject[subMeshCount];
 		
-		int vertexCount = in.readInt();
-		int floatCount = vertexCount * (POSITION_DATA + NORMAL_DATA + UV_DATA + (BONE_DATA * boneCount));
-		vertexData = new float[floatCount];
-		builder.append("↳", vertexCount, "verticies");
-		builder.append("↳", vertexData.length, "floats");
-		for (int i = 0; i < vertexData.length; i++)
+		builder.append("↳", "Submeshes:", subMeshCount);
+		
+		for (int i = 0; i < subMeshCount; i++)
 		{
-			vertexData[i] = in.readFloat();
+			builder.append("↳", "Submesh", i);
+			SubMeshObject sub = new SubMeshObject();
+			sub.read(in, builder);
+			
+			subMeshes[i] = sub;
 		}
 		
-		int elementCount = in.readInt();
-		elementData = new int[elementCount];
-		builder.append("↳", elementData.length, "elements");
-		for (int i = 0; i < elementData.length; i++)
-		{
-			elementData[i] = in.readShort();
-		}
-				
 		physInformation = new PhysObject();
 		physInformation.read(in);
 		
 		builder.append("↳", physInformation.physBoxes.length, "physboxes");
-		
-		diffuseTexture = in.readUTF();
-		normalTexture = in.readUTF();
-		specularTexture = in.readUTF();
-		builder.append("↳", "Textures:", diffuseTexture, normalTexture, specularTexture);
 		
 		radiusCenter = new Vector3f();
 		radiusCenter.x = in.readFloat();
@@ -66,8 +46,5 @@ class ZafObject
 		
 		skeletonId = in.readUTF();
 		builder.append("↳", "Skeleton:", skeletonId);
-		
-		materialInformation = new MaterialObject();
-		materialInformation.read(in);
 	}
 }

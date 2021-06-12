@@ -1,13 +1,10 @@
 package zyx.opengl.models.implementations.renderers;
 
-import org.lwjgl.util.vector.ReadableVector3f;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.implementations.WorldModel;
 import zyx.opengl.models.implementations.bones.animation.AnimationController;
-import zyx.opengl.models.implementations.bones.skeleton.Joint;
-import zyx.opengl.models.implementations.physics.PhysBox;
 import zyx.opengl.shaders.implementations.WorldShader;
 import zyx.utils.FloatMath;
 
@@ -19,9 +16,9 @@ public class WorldModelRenderer extends MeshRenderer<WorldModelMaterial, WorldMo
 	private int cubemapIndex;
 	private AnimationController animController;
 
-	public WorldModelRenderer(WorldModel model, WorldModelMaterial material)
+	public WorldModelRenderer(WorldModel model, int meshIndex, WorldModelMaterial material)
 	{
-		super(model, material);
+		super(model, meshIndex, material);		
 		animController = DEFAULT_CONTROLLER;
 	}
 	
@@ -40,12 +37,13 @@ public class WorldModelRenderer extends MeshRenderer<WorldModelMaterial, WorldMo
 		}
 
 		WorldShader.cubemapIndex = cubemapIndex;
+		
 		if (model.ready)
 		{
 			model.setAnimation(animController);
 		}
 	}
-
+	
 	@Override
 	public void draw()
 	{
@@ -61,44 +59,13 @@ public class WorldModelRenderer extends MeshRenderer<WorldModelMaterial, WorldMo
 		}
 	}
 
-	public float getRadius()
-	{
-		return model.getRadius();
-	}
-
-	public ReadableVector3f getRadiusCenter()
-	{
-		return model.getRadiusCenter();
-	}
-
-	public Joint getBoneByName(String attachmentPoint)
-	{
-		return model.getBoneByName(attachmentPoint);
-	}
-
-	public WorldShader getShader()
-	{
-		return model.getShader();
-	}
-
-	public PhysBox getPhysbox()
-	{
-		return model.getPhysbox();
-	}
-
-	public Joint getBoneById(int boneId)
-	{
-		return model.getBoneById(boneId);
-	}
-
-	public void setAnimation(AnimationController animationController)
+	public void setAnimationController(AnimationController animationController)
 	{
 		animController = animationController;
 	}
 
-	public void SetCubemapIndex(int index)
+	public void setCubemapIndex(int index)
 	{
 		cubemapIndex = index;
 	}
-
 }

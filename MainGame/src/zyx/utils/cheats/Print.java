@@ -10,7 +10,7 @@ public class Print
 	
 	public static void out(Object... args)
 	{
-//		print(System.out, args);
+		print(System.out, args);
 	}
 	
 	public static void err(Object... args)

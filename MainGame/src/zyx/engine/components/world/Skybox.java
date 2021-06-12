@@ -4,11 +4,10 @@ import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.engine.resources.impl.SkyboxResource;
 import zyx.engine.resources.impl.textures.TextureResource;
-import zyx.opengl.materials.RenderQueue;
 import zyx.opengl.materials.ZTest;
 import zyx.opengl.materials.ZWrite;
 import zyx.opengl.materials.impl.WorldModelMaterial;
-import zyx.opengl.models.implementations.renderers.SkyboxRenderer;
+import zyx.opengl.models.implementations.renderers.wrappers.SkyboxModelWrapper;
 import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.shaders.implementations.SkyboxShader;
@@ -20,7 +19,7 @@ public class Skybox extends WorldObject
 	private SkyboxResource meshResource;
 	private TextureResource textureResource;
 
-	private SkyboxRenderer renderer;
+	private SkyboxModelWrapper wrapper;
 	private AbstractTexture texture;
 	private boolean loaded;
 	
@@ -36,8 +35,8 @@ public class Skybox extends WorldObject
 
 		onMeshLoaded = (SkyboxResource resource) ->
 		{
-			renderer = resource.getContent();
-			skyboxMaterial = renderer.cloneMaterial();
+			wrapper = resource.getContent();
+			skyboxMaterial = wrapper.cloneMaterial(0);
 			skyboxMaterial.zWrite = ZWrite.DISABLED;
 			skyboxMaterial.zTest = ZTest.ALWAYS;
 			skyboxMaterial.priority = -9999;
@@ -88,10 +87,10 @@ public class Skybox extends WorldObject
 			meshResource = null;
 		}
 		
-		if (renderer != null)
+		if (wrapper != null)
 		{
-			renderer.dispose();
-			renderer = null;
+			wrapper.dispose();
+			wrapper = null;
 		}
 		
 		texture = null;

@@ -2,6 +2,7 @@ package zyx.engine.components.meshbatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import zyx.opengl.GLUtils;
 import zyx.utils.interfaces.IUpdateable;
 
 public class MeshBatchManager implements IUpdateable

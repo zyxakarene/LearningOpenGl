@@ -1,36 +1,36 @@
 package zyx.opengl.models.implementations.renderers;
 
 import zyx.engine.components.world.WorldObject;
-import zyx.opengl.GLUtils;
 import zyx.opengl.materials.Material;
-import zyx.opengl.models.AbstractModel;
+import zyx.opengl.models.AbstractMultiModel;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.interfaces.IDisposeable;
 import zyx.utils.interfaces.IDrawable;
 
-public abstract class MeshRenderer<TMaterial extends Material, TModel extends AbstractModel<TMaterial>> implements IDrawable, IDisposeable
+//TODO: Make sure this works with asset reloading
+public abstract class MeshRenderer<TMaterial extends Material, TModel extends AbstractMultiModel<TMaterial>> implements IDrawable, IDisposeable
 {
 	protected TModel model;
 	protected WorldObject parent;
 	
+	private int meshIndex;
 	private TMaterial defaultMaterial;
-	private TMaterial clonedMaterial;
 	
 	TMaterial drawMaterial;
 
-	public MeshRenderer(TModel model, TMaterial defaultMaterial)
+	public MeshRenderer(TModel model, int meshIndex, TMaterial defaultMaterial)
 	{
 		this.model = model;
+		this.meshIndex = meshIndex;
 		this.defaultMaterial = defaultMaterial;
 		
-		clonedMaterial = null;
 		drawMaterial = defaultMaterial;
 		MeshRenderList.getInstance().add(this);
 	}
-	
-	public void setup(WorldObject drawParent)
+
+	public void setParent(WorldObject parent)
 	{
-		parent = drawParent;
+		this.parent = parent;
 	}
 	
 	@Override
@@ -47,7 +47,7 @@ public abstract class MeshRenderer<TMaterial extends Material, TModel extends Ab
 		}
 		onPreDraw();
 
-		model.draw(drawMaterial);
+		model.draw(meshIndex, drawMaterial);
 		
 		if (parent != null)
 		{
@@ -62,26 +62,19 @@ public abstract class MeshRenderer<TMaterial extends Material, TModel extends Ab
 	
 	public TMaterial getActiveMaterial()
 	{
-		if (clonedMaterial != null)
-		{
-			return clonedMaterial;
-		}
-		
 		return drawMaterial;
 	}
 	
 	public void setCustomMaterial(TMaterial material)
 	{
-		clonedMaterial = null;
 		drawMaterial = material;
 	}
 	
 	public TMaterial cloneMaterial()
 	{
-		if (clonedMaterial == null)
+		if (drawMaterial == defaultMaterial)
 		{
-			clonedMaterial = (TMaterial) defaultMaterial.cloneMaterial();
-			drawMaterial = clonedMaterial;
+			drawMaterial = (TMaterial) defaultMaterial.cloneMaterial();
 		}
 		
 		return drawMaterial;
@@ -92,10 +85,8 @@ public abstract class MeshRenderer<TMaterial extends Material, TModel extends Ab
 	{
 		MeshRenderList.getInstance().remove(this);
 		
-		parent = null;
 		model = null;
 		drawMaterial = null;
-		clonedMaterial = null;
 		defaultMaterial = null;
 	}
 

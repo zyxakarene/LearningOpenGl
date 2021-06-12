@@ -5,7 +5,7 @@ import zyx.engine.resources.IResourceReady;
 import zyx.engine.resources.ResourceManager;
 import zyx.game.controls.resourceloader.requests.vo.ResourceDataInputStream;
 import zyx.opengl.models.implementations.*;
-import zyx.opengl.models.implementations.renderers.AbstractParticleRenderer;
+import zyx.opengl.models.implementations.renderers.wrappers.AbstractParticleModelWrapper;
 import zyx.opengl.models.loading.ParticleLoadingTask;
 import zyx.opengl.textures.AbstractTexture;
 import zyx.utils.tasks.ITaskCompleted;
@@ -17,7 +17,7 @@ public class ParticleResource extends ExternalResource implements IResourceReady
 	private Resource textureResource;
 
 	private BaseParticleModel model;
-	private ArrayList<AbstractParticleRenderer> clones;
+	private ArrayList<AbstractParticleModelWrapper> clones;
 	private ParticleLoadingTask particleTask;
 
 	public ParticleResource(String path)
@@ -28,9 +28,9 @@ public class ParticleResource extends ExternalResource implements IResourceReady
 	}
 
 	@Override
-	public AbstractParticleRenderer getContent()
+	public AbstractParticleModelWrapper getContent()
 	{
-		AbstractParticleRenderer renderer = model.createRenderer();
+		AbstractParticleModelWrapper renderer = model.createWrapper();
 		if (renderer.isWorldParticle())
 		{
 			clones.add(renderer);
@@ -129,7 +129,7 @@ public class ParticleResource extends ExternalResource implements IResourceReady
 		}
 	}
 
-	public void removeParticleInstance(AbstractParticleRenderer model)
+	public void removeParticleInstance(AbstractParticleModelWrapper model)
 	{
 		clones.remove(model);
 	}
