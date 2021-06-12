@@ -30,6 +30,10 @@ public abstract class AbstractMultiModel<TMaterial extends Material> extends Abs
 		
 		subMeshCount = count;
 		modelData = new ModelData[subMeshCount];
+		for (int i = 0; i < subMeshCount; i++)
+		{
+			modelData[i] = new ModelData<>();
+		}
 	}
 	
 	protected void setDefaultMaterials(TMaterial... materials)
@@ -41,7 +45,7 @@ public abstract class AbstractMultiModel<TMaterial extends Material> extends Abs
 		
 		for (int i = 0; i < subMeshCount; i++)
 		{
-			modelData[i] = new ModelData<>(materials[i]);
+			modelData[i].setFrom(materials[i]);
 		}
 	}
 	

@@ -3,7 +3,6 @@ package zyx.game.controls.lights;
 import java.util.ArrayList;
 import org.lwjgl.util.vector.Vector3f;
 import zyx.engine.components.world.WorldObject;
-import zyx.opengl.GLUtils;
 import zyx.opengl.lighs.ILight;
 import zyx.opengl.lighs.ISun;
 import zyx.opengl.lighs.LightsProvider;
@@ -32,6 +31,7 @@ public class LightsManager
 	private DepthShader[] depthShaders;
 	private WorldForwardShader[] forwardShaders;
 	private MeshBatchDepthShader batchedDepthShader;
+	private MeshBatchForwardShader meshBatchForwardShader;
 	
 	private Vector3f sunDir;
 
@@ -65,6 +65,8 @@ public class LightsManager
 		forwardShaders[1] = ShaderManager.getInstance().<WorldForwardShader>get(Shader.WORLD_FORWARD_2);
 		forwardShaders[2] = ShaderManager.getInstance().<WorldForwardShader>get(Shader.WORLD_FORWARD_3);
 		forwardShaders[3] = ShaderManager.getInstance().<WorldForwardShader>get(Shader.WORLD_FORWARD_4);
+		
+		meshBatchForwardShader = ShaderManager.getInstance().<MeshBatchForwardShader>get(Shader.MESH_BATCH_FORWARD);
 	}
 
 	public void addLight(ILight light)
@@ -125,6 +127,9 @@ public class LightsManager
 				forwardShader.uploadLightDirection(sunDir);
 				forwardShader.uploadSunMatrix();
 			}
+			
+			meshBatchForwardShader.uploadLightDirection(sunDir);
+			meshBatchForwardShader.uploadSunMatrix();
 		}
 	}
 }

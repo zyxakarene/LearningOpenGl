@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+import zyx.utils.cheats.Print;
 
 class UniformUtils
 {
@@ -26,7 +27,12 @@ class UniformUtils
 	 */
 	static int createUniform(int program, String name)
 	{
-		return GL20.glGetUniformLocation(program, name);
+		int uniform = GL20.glGetUniformLocation(program, name);
+		if (uniform == -1)
+		{
+			Print.err("Uniform named", name, "in program", program, "was not found!");
+		}
+		return uniform;
 	}
 
 	/**

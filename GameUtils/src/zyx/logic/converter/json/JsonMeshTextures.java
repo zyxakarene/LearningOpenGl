@@ -14,6 +14,11 @@ public class JsonMeshTextures
 
 	public JsonMeshTextureEntry[] entries;
 
+	public JsonMeshTextures()
+	{
+		entries = new JsonMeshTextureEntry[0];
+	}
+	
 	void read(JSONObject json)
 	{
 		JSONArray entries = JsonMethods.getArray(json, PROPERTY_ENTRIES);

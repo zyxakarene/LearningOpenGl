@@ -6,8 +6,8 @@ import zyx.opengl.shaders.AbstractShader;
 
 public class ModelData<TMaterial extends Material>
 {
-	public final AbstractShader meshShader;
-	public final TMaterial defaultMaterial;
+	public AbstractShader meshShader;
+	public TMaterial defaultMaterial;
 
 	protected int vao;
 	protected int vbo;
@@ -15,12 +15,23 @@ public class ModelData<TMaterial extends Material>
 
 	protected int elementCount;
 	
-	public ModelData(TMaterial material)
+	public ModelData()
 	{
-		this.meshShader = material.shader;
-		this.defaultMaterial = material;
 	}
 
+	void setFrom(TMaterial material)
+	{
+		meshShader = material.shader;
+		if (defaultMaterial == null)
+		{
+			this.defaultMaterial = material;	
+		}
+		else
+		{
+			defaultMaterial.copyFrom(material);
+		}
+	}
+	
 	void createObjects()
 	{
 		vao = ModelUtils.generateVertexArray();

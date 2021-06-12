@@ -26,7 +26,7 @@ public class TestScene extends DebugScene
 
 	private AnimatedMesh character;
 	private Box floor;
-	private Box box;
+	private SimpleMesh box;
 	private GameObject obj;
 
 	public TestScene()
@@ -55,7 +55,9 @@ public class TestScene extends DebugScene
 		obj = new GameObject();
 		obj.addBehavior(new JiggleBehavior());
 		
-		box = new Box();
+		box = new SimpleMesh();
+		box.setZ(-24/2);
+		box.load("mesh.double_cube");
 		obj.addChild(box);
 		
 		obj.setZ(20);
@@ -70,6 +72,6 @@ public class TestScene extends DebugScene
 	{
 		super.onUpdate(timestamp, elapsedTime);
 		
-//		obj.update(timestamp, elapsedTime);
+		obj.update(timestamp, elapsedTime);
 	}
 }

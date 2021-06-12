@@ -10,7 +10,8 @@ public abstract class AbstractSingleModel<TMaterial extends Material> extends Ab
 
 	protected AbstractSingleModel(TMaterial defaultMaterial)
 	{
-		modelData = new ModelData(defaultMaterial);
+		modelData = new ModelData();
+		modelData.setFrom(defaultMaterial);
 	}
 	
 	@Override
