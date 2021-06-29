@@ -5,4 +5,5 @@ import zyx.engine.components.screen.base.events.IEventListener;
 public interface IFocusable extends IEventListener
 {
 	void onKeyPressed(char character);
+	void onFocusChanged(boolean hasFocus);
 }

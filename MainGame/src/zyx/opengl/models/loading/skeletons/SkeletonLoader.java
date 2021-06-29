@@ -28,10 +28,6 @@ public class SkeletonLoader
 
 		try
 		{
-			if (id.contains("character"))
-			{
-				Print.out("!");
-			}
 			builder.append("==== Parsing skeleton data from byte count:", in.available(), "====");
 			builder.append("↳ Id", id);
 

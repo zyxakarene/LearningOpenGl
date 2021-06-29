@@ -113,7 +113,7 @@ public class ComposedImage extends DisplayObjectContainer implements IComposedIm
 	}
 
 	@Override
-	public void setWidth(float value)
+	protected void onSetWidth(float value)
 	{
 		if (loaded)
 		{
@@ -129,7 +129,7 @@ public class ComposedImage extends DisplayObjectContainer implements IComposedIm
 	}
 
 	@Override
-	public void setHeight(float value)
+	protected void onSetHeight(float value)
 	{
 		if (loaded)
 		{

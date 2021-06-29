@@ -9,7 +9,6 @@ import zyx.engine.components.screen.image.Image;
 import zyx.engine.components.screen.image.MultiSheetImage;
 import zyx.engine.components.screen.interactable.InteractableContainer;
 import zyx.engine.utils.callbacks.ICallback;
-import zyx.utils.FloatMath;
 
 final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer implements IFocusable
 {
@@ -61,6 +60,19 @@ final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer impleme
 		makeFocusable(this);
 	}
 
+	@Override
+	public void onFocusChanged(boolean hasFocus)
+	{
+		if (hasFocus)
+		{
+			bg.setColor(0xCCCCCC);
+		}
+		else
+		{
+			bg.setColor(0xFFFFFF);
+		}
+	}
+	
 	float getRendererHeight()
 	{
 		return renderer.getRendererHeight();
@@ -172,6 +184,5 @@ final class WindowsTreeRowRenderer<TData> extends DisplayObjectContainer impleme
 	@Override
 	public void onKeyPressed(char character)
 	{
-		bg.setColor((int) (0xFFFFFF * FloatMath.random()));
 	}
 }

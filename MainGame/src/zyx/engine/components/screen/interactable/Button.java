@@ -130,7 +130,7 @@ public class Button extends InteractableContainer implements IComposedButton
 	}
 
 	@Override
-	public void setWidth(float value)
+	protected void onSetWidth(float value)
 	{
 		if (loaded)
 		{
@@ -146,7 +146,7 @@ public class Button extends InteractableContainer implements IComposedButton
 	}
 
 	@Override
-	public void setHeight(float value)
+	protected void onSetHeight(float value)
 	{
 		if (loaded)
 		{

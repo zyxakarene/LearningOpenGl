@@ -13,7 +13,6 @@ import zyx.opengl.materials.StencilLayer;
 import zyx.opengl.materials.StencilMode;
 import zyx.opengl.materials.impl.DeferredMaterial;
 import zyx.opengl.models.implementations.FullScreenQuadModel;
-import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.implementations.Shader;
 import zyx.opengl.textures.FrameBufferTexture;
 import zyx.opengl.textures.TextureFromInt;
@@ -100,8 +99,6 @@ public class LightingPassRenderer extends BaseFrameBuffer
 	public void draw()
 	{
 		BufferBinder.bindBuffer(Buffer.LIGHTING_PASS);
-		ShaderManager.getInstance().bind(Shader.DEFERED_LIGHT_PASS);
-		ShaderManager.getInstance().get(Shader.DEFERED_LIGHT_PASS).upload();
 
 		model.draw();
 

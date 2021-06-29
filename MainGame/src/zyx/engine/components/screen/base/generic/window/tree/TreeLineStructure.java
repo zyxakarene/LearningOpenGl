@@ -2,9 +2,6 @@ package zyx.engine.components.screen.base.generic.window.tree;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import zyx.game.components.MeshObject;
-import zyx.game.components.SimpleMesh;
-import zyx.utils.cheats.Print;
 
 class TreeLineStructure
 {
@@ -36,11 +33,6 @@ class TreeLineStructure
 				HELPER_LIST.addAll(0, OUT_LIST);
 				
 				OUT_LIST.clear();
-			}
-			
-			if (node.data instanceof SimpleMesh || node.data instanceof MeshObject)
-			{
-				Print.out("!");
 			}
 			
 			int len = node.level;

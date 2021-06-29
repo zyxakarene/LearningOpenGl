@@ -205,7 +205,7 @@ public class DisplayObjectContainer extends DisplayObject
 	}
 
 	@Override
-	public void setWidth(float value)
+	protected void onSetWidth(float value)
 	{
 		getScale(true, HELPER_VEC2);
 		
@@ -215,7 +215,7 @@ public class DisplayObjectContainer extends DisplayObject
 	}
 
 	@Override
-	public void setHeight(float value)
+	protected void onSetHeight(float value)
 	{
 		getScale(true, HELPER_VEC2);
 		

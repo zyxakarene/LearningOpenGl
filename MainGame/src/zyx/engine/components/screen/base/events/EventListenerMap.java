@@ -16,6 +16,7 @@ public class EventListenerMap implements IEventListener, IDisposeable
 		dispatchers.add(new TouchDispatcher());
 		dispatchers.add(new StageDispatcher());
 		dispatchers.add(new FocusDispatcher());
+		dispatchers.add(new SizeDispatcher());
 	}
 
 	@Override

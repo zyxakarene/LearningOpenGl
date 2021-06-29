@@ -7,6 +7,8 @@ import zyx.engine.components.screen.base.events.types.focus.FocusEvent;
 import zyx.engine.components.screen.base.events.types.focus.FocusEventType;
 import zyx.engine.components.screen.base.events.types.mouse.MouseEvent;
 import zyx.engine.components.screen.base.events.types.mouse.MouseEventType;
+import zyx.engine.components.screen.base.events.types.size.SizeEvent;
+import zyx.engine.components.screen.base.events.types.size.SizeEventType;
 import zyx.engine.components.screen.base.events.types.stage.StageEvent;
 import zyx.engine.components.screen.base.events.types.stage.StageEventType;
 
@@ -18,10 +20,12 @@ public class EventCache
 		ArrayList<MouseEvent> mouseEvents = new ArrayList<>();
 		ArrayList<StageEvent> stageEvents = new ArrayList<>();
 		ArrayList<FocusEvent> focusEvents = new ArrayList<>();
+		ArrayList<SizeEvent> sizeEvents = new ArrayList<>();
 		
 		EVENT_LIST.put(MouseEventType.class, mouseEvents);
 		EVENT_LIST.put(StageEventType.class, stageEvents);
 		EVENT_LIST.put(FocusEventType.class, focusEvents);
+		EVENT_LIST.put(SizeEventType.class, sizeEvents);
 	}
 	
 	public static MouseEvent get(MouseEventType type)
@@ -70,6 +74,23 @@ public class EventCache
 		else
 		{
 			FocusEvent event = (FocusEvent) list.remove(len - 1);
+			event.type = type;
+			return event;
+		}
+	}
+	
+	public static SizeEvent get(SizeEventType type)
+	{
+		ArrayList<? extends DisplayObjectEvent> list = EVENT_LIST.get(SizeEventType.class);
+		
+		int len = list.size();
+		if (len == 0)
+		{
+			return new SizeEvent(type);
+		}
+		else
+		{
+			SizeEvent event = (SizeEvent) list.remove(len - 1);
 			event.type = type;
 			return event;
 		}

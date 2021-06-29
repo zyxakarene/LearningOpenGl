@@ -35,7 +35,7 @@ public class WindowsScrollView extends DisplayObjectContainer implements IScroll
 	
 	private ICallback<InteractableContainer> scrollBtnClicked;
 	private ICallback<Integer> scrollViewHeightChanged;
-	private final int containerHeight;
+	private int containerHeight;
 	
 	public WindowsScrollView(int width, int height)
 	{
@@ -75,6 +75,27 @@ public class WindowsScrollView extends DisplayObjectContainer implements IScroll
 		scrollDownBtn.onButtonClicked.addCallback(scrollBtnClicked);
 	}
 	
+	public void resize(int width, int height)
+	{
+		bg.setSize(width, height);
+		
+		scrollBackground.setHeight(height);
+		
+		viewContainer.setClipRect(0, 0, width - FRAME_PADDING_2, height - FRAME_PADDING_2);
+		scrollBackground.setX(width - SCROLL_BTN_SIZE);
+		scrollUpBtn.setX(width - SCROLL_BTN_SIZE);
+		scrollDownBtn.setX(width - SCROLL_BTN_SIZE);
+		scroller.setX(width - SCROLL_BTN_SIZE);
+		
+		scrollDownBtn.setY(height - SCROLL_BTN_SIZE);
+		
+		containerHeight = height;
+		scrollHeight = height - FRAME_PADDING_2;
+		leftoverScroll = scrollHeight - SCROLLER_SIZE - SCROLL_BTN_SIZE - SCROLL_BTN_SIZE + FRAME_PADDING_2;
+		
+		rescaleComponents();
+	}
+	
 	public void setView(DisplayObject disp)
 	{
 		view = disp;
@@ -93,12 +114,6 @@ public class WindowsScrollView extends DisplayObjectContainer implements IScroll
 		}
 		
 		rescaleComponents();
-	}
-
-	@Override
-	protected void onDraw()
-	{
-		super.onDraw();
 	}
 
 	private void rescaleComponents()
@@ -174,5 +189,17 @@ public class WindowsScrollView extends DisplayObjectContainer implements IScroll
 		view.setY(fraction * toScroll);
 		
 		currentScroll = (int) -((fraction * toScroll) / scrollPerClick);
+	}
+
+	@Override
+	public float getWidth()
+	{
+		return 0;
+	}
+
+	@Override
+	public float getHeight()
+	{
+		return 0;
 	}
 }

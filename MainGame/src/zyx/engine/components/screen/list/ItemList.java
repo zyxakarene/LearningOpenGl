@@ -87,14 +87,14 @@ public class ItemList<T extends ItemRenderer> extends DisplayObjectContainer
 	}
 
 	@Override
-	public void setWidth(float value)
+	protected void onSetWidth(float value)
 	{
 		background.setWidth(value);
 		clipRect.width = value;
 	}
 
 	@Override
-	public void setHeight(float value)
+	protected void onSetHeight(float value)
 	{
 		background.setHeight(value);
 		clipRect.height = value;

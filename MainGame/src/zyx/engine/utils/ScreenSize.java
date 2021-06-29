@@ -30,7 +30,7 @@ public class ScreenSize
 			height = 128;
 		}
 		
-		Print.out(width, height);
+		Print.out("Window size:", width, "x", height);
 		
 		ScreenSize.windowWidth = width;
 		ScreenSize.windowHeight = height;

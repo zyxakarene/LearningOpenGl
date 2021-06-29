@@ -50,9 +50,9 @@ public class WindowsButton extends Button
 	}
 
 	@Override
-	public void setWidth(float value)
+	protected void onSetWidth(float value)
 	{
-		super.setWidth(value);
+		super.onSetWidth(value);
 		
 		if (label != null)
 		{
@@ -61,9 +61,9 @@ public class WindowsButton extends Button
 	}
 
 	@Override
-	public void setHeight(float value)
+	protected void onSetHeight(float value)
 	{
-		super.setHeight(value);
+		super.onSetHeight(value);
 		
 		if (label != null)
 		{

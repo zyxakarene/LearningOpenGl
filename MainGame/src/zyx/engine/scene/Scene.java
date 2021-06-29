@@ -65,12 +65,12 @@ public class Scene implements ILoadingScreenDone
 
 	final void initialize()
 	{
-		debugPanel = new DebugPanel();
+//		debugPanel = new DebugPanel();
 		
 		world.addChild(debugContainer);
 		hud = createHud();
 		stage.hudLayer.addChild(hud);
-		stage.hudLayer.addChild(debugPanel);
+//		stage.hudLayer.addChild(debugPanel);
 
 		onPreloadResources();
 

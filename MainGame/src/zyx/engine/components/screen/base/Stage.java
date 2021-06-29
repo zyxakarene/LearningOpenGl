@@ -163,6 +163,11 @@ public final class Stage extends DisplayObjectContainer implements IFocusable, I
 	}
 
 	@Override
+	public void onFocusChanged(boolean hasFocus)
+	{
+	}
+
+	@Override
 	public String getDebugIcon()
 	{
 		return "stage.png";

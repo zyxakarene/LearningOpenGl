@@ -41,13 +41,13 @@ public class Strut extends DisplayObject
 	}
 
 	@Override
-	public void setWidth(float value)
+	protected void onSetWidth(float value)
 	{
 		width = value;
 	}
 
 	@Override
-	public void setHeight(float value)
+	protected void onSetHeight(float value)
 	{
 		height = value;
 	}

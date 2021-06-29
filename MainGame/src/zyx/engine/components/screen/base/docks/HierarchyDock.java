@@ -9,9 +9,10 @@ import zyx.engine.components.world.WorldObject;
 
 public class HierarchyDock extends EditorDock
 {
-	
+
 	private WindowsTree<WorldObject> tree;
 	private DebugWorldObjectLink info;
+	private WindowsScrollView scrollView;
 
 	public HierarchyDock()
 	{
@@ -22,17 +23,25 @@ public class HierarchyDock extends EditorDock
 	protected void setup()
 	{
 		super.setup();
-		
+
 		info = DebugInfo.worldObjects;
 		WindowsTreeNode<WorldObject> root = info.getGlRootNode();
 		tree = new WindowsTree<>(root);
-		
-		WindowsScrollView scrollView = new WindowsScrollView((int) getWidth(), 200);
+
+		scrollView = new WindowsScrollView((int) getWidth(), (int) getHeight());
 		scrollView.setView(tree);
-		
+
 		addChild(scrollView);
 	}
 
+	@Override
+	protected void onSizeChanged()
+	{
+		super.onSizeChanged();
+		
+		scrollView.resize((int) getWidth(), (int) getHeight());
+	}
+	
 	@Override
 	public void update(long timestamp, int elapsedTime)
 	{

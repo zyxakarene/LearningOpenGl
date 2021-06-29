@@ -164,7 +164,7 @@ public class Textfield extends DisplayObjectContainer implements IResourceReady<
 	}
 	
 	@Override
-	public void setWidth(float value)
+	protected void onSetWidth(float value)
 	{
 		width = value;
 		updateBorders();
@@ -176,7 +176,7 @@ public class Textfield extends DisplayObjectContainer implements IResourceReady<
 	}
 
 	@Override
-	public void setHeight(float value)
+	protected void onSetHeight(float value)
 	{
 		height = value;
 		updateBorders();
@@ -330,6 +330,11 @@ public class Textfield extends DisplayObjectContainer implements IResourceReady<
 
 	@Override
 	public void onKeyPressed(char character)
+	{
+	}
+
+	@Override
+	public void onFocusChanged(boolean hasFocus)
 	{
 	}
 }

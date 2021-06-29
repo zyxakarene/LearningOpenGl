@@ -99,7 +99,7 @@ public abstract class AbstractQuad extends DisplayObject
 	}
 
 	@Override
-	public void setWidth(float value)
+	protected void onSetWidth(float value)
 	{
 		if (loaded)
 		{
@@ -113,7 +113,7 @@ public abstract class AbstractQuad extends DisplayObject
 	}
 
 	@Override
-	public void setHeight(float value)
+	protected void onSetHeight(float value)
 	{
 		if (loaded)
 		{

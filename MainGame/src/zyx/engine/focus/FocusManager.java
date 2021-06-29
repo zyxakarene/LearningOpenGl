@@ -57,7 +57,13 @@ public class FocusManager implements IUpdateable
 		DisplayObject target = event.target;
 		if (target instanceof IFocusable)
 		{
+			if (currentFocus != null)
+			{
+				currentFocus.onFocusChanged(false);
+			}
+			
 			currentFocus = (IFocusable) target;
+			currentFocus.onFocusChanged(true);
 		}
 	}
 

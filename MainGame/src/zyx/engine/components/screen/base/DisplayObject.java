@@ -11,6 +11,7 @@ import zyx.engine.components.screen.base.events.EventListenerMap;
 import zyx.engine.components.screen.base.events.IEventListener;
 import zyx.engine.components.screen.base.events.types.DisplayObjectEvent;
 import zyx.engine.components.screen.base.events.types.IDisplayObjectEventListener;
+import zyx.engine.components.screen.base.events.types.size.SizeEventType;
 import zyx.engine.components.screen.base.events.types.stage.StageEventType;
 import zyx.engine.curser.GameCursor;
 import zyx.engine.focus.FocusManager;
@@ -183,9 +184,29 @@ public abstract class DisplayObject implements IPositionable2D, IDisposeable, ID
 
 	public abstract float getHeight();
 
-	public abstract void setWidth(float value);
+	public final void setWidth(float value)
+	{
+		onSetWidth(value);
+		onSizeChanged();
+	}
+	
+	protected abstract void onSetWidth(float value);
 
-	public abstract void setHeight(float value);
+	public final void setHeight(float value)
+	{
+		onSetHeight(value);
+		onSizeChanged();
+	}
+	
+	protected abstract void onSetHeight(float value);
+	
+	private void onSizeChanged()
+	{
+		int width = (int) getWidth(true);
+		int height = (int) getHeight(true);
+		
+		dispatchEvent(EventCache.get(SizeEventType.Changed).setup(this, width, height));
+	}
 
 	protected abstract void onDraw();
 
