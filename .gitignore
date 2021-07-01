@@ -22,3 +22,7 @@ hs_err_pid*
 */build/
 */dist/
 */nbproject/private/
+
+# yGuard
+*/log/MainGame_shrinklog.xml
+*/log/MainGame_renamelog.xml
