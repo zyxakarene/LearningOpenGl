@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import org.lwjgl.util.vector.Vector3f;
-import zyx.engine.components.world.WorldObject;
 import zyx.engine.touch.MouseTouchManager;
 import zyx.engine.utils.worldpicker.calculating.*;
 import zyx.opengl.camera.Camera;
@@ -54,6 +53,11 @@ public class WorldPicker implements IDisposeable
 
 	public void addObject(IPhysbox obj, IWorldPickedItem clickCallback)
 	{
+		addObject(obj, clickCallback, MAX_DISTANCE);
+	}
+	
+	public void addObject(IPhysbox obj, IWorldPickedItem clickCallback, int maxDistance)
+	{
 		PickEntity entity = pickableMap.get(obj);
 		if (entity == null)
 		{
@@ -62,7 +66,7 @@ public class WorldPicker implements IDisposeable
 			pickableMap.put(obj, entity);
 		}
 
-		entity.callbacks.add(clickCallback);
+		entity.add(clickCallback, maxDistance);
 	}
 
 	public void removeObject(IPhysbox obj, IWorldPickedItem clickCallback)
@@ -70,9 +74,9 @@ public class WorldPicker implements IDisposeable
 		PickEntity entity = pickableMap.get(obj);
 		if (entity != null)
 		{
-			entity.callbacks.remove(clickCallback);
+			entity.remove(clickCallback);
 
-			if (entity.callbacks.isEmpty())
+			if (entity.isEmpty())
 			{
 				pickables.remove(entity);
 				pickableMap.remove(obj);
@@ -132,20 +136,14 @@ public class WorldPicker implements IDisposeable
 			positionPool.releaseInstance(pos);
 		}
 
-		if (closestDistance <= MAX_DISTANCE && closestObject != null)
+		if (closestObject != null)
 		{
 			ClickedInfo info = new ClickedInfo();
 			info.position = closestPos;
 			info.target = closestObject.target;
-			if (closestObject.target instanceof WorldObject)
-			{
-				info.worldObject = (WorldObject) closestObject.target;
-			}
-			else
-			{
-				info.worldObject = null;
-			}
-
+			info.distance = closestDistance;
+			info.worldObject = closestObject.targetAsWorldObject();
+			
 			closestObject.onGeometryPicked(info);
 		}
 	}
@@ -153,9 +151,15 @@ public class WorldPicker implements IDisposeable
 	@Override
 	public void dispose()
 	{
-		for (PickEntity entity : pickables)
+		if (pickables != null)
 		{
-			entity.callbacks.clear();
+			for (PickEntity entity : pickables)
+			{
+				entity.dispose();
+			}
+			
+			pickables.clear();
+			pickables = null;
 		}
 		
 		pickableMap.clear();
@@ -164,7 +168,6 @@ public class WorldPicker implements IDisposeable
 
 		positionPool.dispose();
 
-		pickables = null;
 		pickableMap = null;
 		collidedPositions = null;
 		collidedObjects = null;

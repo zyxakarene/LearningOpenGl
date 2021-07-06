@@ -9,4 +9,5 @@ public final class ClickedInfo
 	public WorldObject worldObject;
 	public IPhysbox target;
 	public Vector3f position;
+	public float distance;
 }
