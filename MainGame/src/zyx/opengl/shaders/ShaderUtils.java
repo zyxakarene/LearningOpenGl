@@ -1,9 +1,12 @@
 package zyx.opengl.shaders;
 
+import java.nio.FloatBuffer;
 import java.util.Scanner;
 import org.lwjgl.opengl.GL11;
+import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL31.*;
 import zyx.utils.cheats.Print;
 
 public class ShaderUtils
@@ -11,6 +14,51 @@ public class ShaderUtils
 
 	private static final int BYTES_PER_FLOAT = Float.SIZE / 8;
 
+	/**
+	 * Generates a new buffer object. For example a UBO
+	 *
+	 * @return the newly created bufferObject
+	 */
+	static int generateBufferObject()
+	{
+		return glGenBuffers();
+	}
+	
+	/**
+	 * Fills the given bufferId with the data from the buffer
+	 * 
+	 * @param bufferId The bufferId to use
+	 * @param buffer The data to fill with
+	 */
+	static void fillBufferObject(int bufferId, FloatBuffer buffer)
+	{
+		buffer.flip();
+		
+		glBindBuffer(GL_UNIFORM_BUFFER, bufferId);
+		glBufferSubData(GL_UNIFORM_BUFFER, 0, buffer);
+		glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	}
+	
+	/**
+	 * Creates a uniform block with the given parameters
+	 * 
+	 * @param program The shader program to use
+	 * @param name The name of the block in the shader source
+	 * @param index The binding index
+	 */
+	static void createBlockUniform(int program, String name, int index)
+	{
+		int uniform = glGetUniformBlockIndex(program, name);
+		if (uniform == -1)
+		{
+			Print.err("Block Uniform named", name, "in program", program, "was not found!");
+		}
+		else
+		{
+			glUniformBlockBinding(program, uniform, index);
+		}
+	}
+	
 	/**
 	 * Creates a new vertex data attribute link to the shader program
 	 *

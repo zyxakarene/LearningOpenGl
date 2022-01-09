@@ -19,6 +19,7 @@ import zyx.game.controls.lights.LightsManager;
 import zyx.net.io.controllers.BaseNetworkController;
 import zyx.opengl.camera.Camera;
 import zyx.opengl.particles.ParticleManager;
+import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.SharedShaderObjects;
 import zyx.utils.cheats.DebugContainer;
 
@@ -130,6 +131,8 @@ public class Scene implements ILoadingScreenDone
 			SharedShaderObjects.combineMatrices();
 			Camera.getInstance().setViewFrustum(SharedShaderObjects.WORLD_PROJECTION_VIEW_TRANSFORM);
 
+			ShaderManager.getInstance().draw();
+			
 			LightsManager.getInstane().uploadLights();
 			world.drawScene();
 

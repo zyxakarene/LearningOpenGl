@@ -1,6 +1,8 @@
 package zyx.opengl.shaders;
 
 import java.util.HashMap;
+import zyx.opengl.shaders.blocks.ShaderBlock;
+import zyx.opengl.shaders.blocks.ShaderMatricesBlock;
 import zyx.opengl.shaders.implementations.*;
 import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IUpdateable;
@@ -10,10 +12,13 @@ public class ShaderManager implements IUpdateable
 
 	private static final ShaderManager INSTANCE = new ShaderManager();
 
+	private final HashMap<ShaderBlock, AbstractShaderBlock> shaderBlockMap;
 	private final HashMap<Shader, AbstractShader> shaderMap;
 	private final AbstractShader[] shaderArray;
+	private final AbstractShaderBlock[] blockArray;
 
 	private final Shader[] shaders;
+	private final ShaderBlock[] blocks;
 
 	public static ShaderManager getInstance()
 	{
@@ -23,12 +28,18 @@ public class ShaderManager implements IUpdateable
 	private ShaderManager()
 	{
 		shaders = Shader.values();
+		blocks = ShaderBlock.values();
+		
 		shaderMap = new HashMap<>();
+		shaderBlockMap = new HashMap<>();
 		shaderArray = new AbstractShader[shaders.length];
+		blockArray = new AbstractShaderBlock[blocks.length];
 	}
 
 	public void initialize()
 	{
+		shaderBlockMap.put(ShaderBlock.MATRICES, new ShaderMatricesBlock(AbstractShaderBlock.LOCK));
+		
 		shaderMap.put(Shader.DRAW, new DrawShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.DEPTH_1, new DepthShader(AbstractShader.LOCK, 1));
 		shaderMap.put(Shader.DEPTH_2, new DepthShader(AbstractShader.LOCK, 2));
@@ -52,6 +63,20 @@ public class ShaderManager implements IUpdateable
 		shaderMap.put(Shader.MESH_BATCH_FORWARD, new MeshBatchForwardShader(AbstractShader.LOCK));
 		shaderMap.put(Shader.DEFERED_LIGHT_PASS, new LightingPassShader(AbstractShader.LOCK));
 
+		AbstractShaderBlock block;
+		int blockLen = blocks.length;
+		for (int i = 0; i < blockLen; i++)
+		{
+			block = shaderBlockMap.get(blocks[i]);
+			
+			if (block != null)
+			{
+				Print.out("Building shaderBlock:", blocks[i]);
+				block.build();
+				blockArray[i] = block;
+			}
+		}
+		
 		AbstractShader shader;
 		int length = shaders.length;
 		for (int i = 0; i < length; i++)
@@ -100,6 +125,13 @@ public class ShaderManager implements IUpdateable
 		
 		return (T) abstractShader;
 	}
+
+	public <T extends AbstractShaderBlock> T get(ShaderBlock shader)
+	{
+		AbstractShaderBlock abstractBlock = shaderBlockMap.get(shader);
+		
+		return (T) abstractBlock;
+	}
 	
 	@Override
 	public void update(long timestamp, int elapsedTime)
@@ -107,6 +139,14 @@ public class ShaderManager implements IUpdateable
 		for (AbstractShader shader : shaderArray)
 		{
 			shader.update(timestamp, elapsedTime);
+		}
+	}
+
+	public void draw()
+	{
+		for (AbstractShaderBlock block : blockArray)
+		{
+			block.upload();
 		}
 	}
 }
