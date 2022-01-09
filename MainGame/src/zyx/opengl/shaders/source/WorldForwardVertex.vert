@@ -5,6 +5,8 @@ layout(location = 2) in vec2 texcoord;
 layout(location = 3) in %BoneCount% indexes;
 layout(location = 4) in %BoneCount% weights;
 
+#include "SharedMatricesShaderLibrary.glsl";
+
 #include "BonesShaderLibrary.glsl";
 
 out vec4 WorldPos;
@@ -14,18 +16,13 @@ out vec3 Debug;
 
 uniform mat4 model;
 uniform mat4 modelInverseTranspose;
-uniform mat4 viewModelInverseTranspose;
-uniform mat4 projectionView;
-uniform mat4 view;
 
 void main()
 {
-    vec4 transformedPos = vec4(position, 1);
-    vec4 transformedNorm = vec4(normals, 1);
+    vec4 transformedPos = vec4(0);
+    vec4 transformedNorm = vec4(0);
 
-	vec4 dummyPos = vec4(0);
-    vec4 dummyNorm = vec4(0);
-    calculateBones(position, normals, indexes, weights, dummyPos, dummyNorm);
+    calculateBones(position, normals, indexes, weights, transformedPos, transformedNorm);
 
 	vec4 worldPosition = model * transformedPos;
 	
@@ -33,5 +30,5 @@ void main()
 	WorldPos = worldPosition;
     TexCoords = texcoord;
 	WorldNormal = normalize(mat3(modelInverseTranspose) * transformedNorm.xyz);
-    gl_Position = projectionView * worldPosition;
+    gl_Position = projView * worldPosition;
 }

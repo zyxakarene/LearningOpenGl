@@ -1,25 +1,22 @@
 package zyx.opengl.shaders.implementations;
 
 import org.lwjgl.util.vector.Matrix4f;
-import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.models.implementations.LoadableParticleVO;
 import zyx.opengl.shaders.AbstractShader;
+import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.opengl.shaders.blocks.ShaderBlock;
+import zyx.opengl.shaders.blocks.ShaderMatricesBlock;
 import zyx.utils.DeltaTime;
 
 public class ParticleShader extends AbstractShader
 {
 
-	private static final Matrix4f MATRIX_PROJECTION = SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION;
-	private static final Matrix4f MATRIX_VIEW = SharedShaderObjects.SHARED_WORLD_VIEW_TRANSFORM;
 	private static final Matrix4f MATRIX_MODEL = SharedShaderObjects.SHARED_WORLD_MODEL_TRANSFORM;
 
 	public static float parentScale = 1;
 	
-	private int projectionMatrixTrans;
-	private int viewMatrixTrans;
 	private int modelMatrixTrans;
-	private int debugColorTrans;
 
 	private int parentScaleUniform;
 	
@@ -69,10 +66,7 @@ public class ParticleShader extends AbstractShader
 	@Override
 	protected void postLoading()
 	{
-		projectionMatrixTrans = UniformUtils.createUniform(program, "projection");
-		viewMatrixTrans = UniformUtils.createUniform(program, "view");
 		modelMatrixTrans = UniformUtils.createUniform(program, "model");
-		debugColorTrans = UniformUtils.createUniform(program, "debugColor");
 		
 		timeUniform = UniformUtils.createUniform(program, "time");
 		parentScaleUniform = UniformUtils.createUniform(program, "parentScale");
@@ -92,18 +86,18 @@ public class ParticleShader extends AbstractShader
 		lifespanVarianceUniform = UniformUtils.createUniform(program, "lifespanVariance");
 		rotationUniform = UniformUtils.createUniform(program, "rotation");
 		rotationVarianceUniform = UniformUtils.createUniform(program, "rotationVariance");
+		
+		ShaderMatricesBlock matriceBlock = ShaderManager.getInstance().get(ShaderBlock.MATRICES);
+		matriceBlock.link(program);
 	}
 
 	@Override
 	public void upload()
 	{
-		UniformUtils.setUniformMatrix(projectionMatrixTrans, MATRIX_PROJECTION);
-		UniformUtils.setUniformMatrix(viewMatrixTrans, MATRIX_VIEW);
 		UniformUtils.setUniformMatrix(modelMatrixTrans, MATRIX_MODEL);
 		
 		UniformUtils.setUniformFloat(timeUniform, DeltaTime.getTimestamp());
 		UniformUtils.setUniformFloat(parentScaleUniform, parentScale);
-		UniformUtils.setUniformInt(debugColorTrans, DebugDrawCalls.shouldHighlightWorld() ? 1 : 0);
 	}
 
 	@Override

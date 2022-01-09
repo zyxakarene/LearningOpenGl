@@ -12,7 +12,6 @@ layout (binding = 0) uniform sampler2D tex;
 layout (binding = 1) uniform sampler2D norm;
 layout (binding = 2) uniform sampler2D spec;
 
-uniform int debugColor;
 uniform float cubemapColor;
 
 layout (location = 0) out vec3 gPosition;
@@ -30,7 +29,6 @@ void main()
 	normValue = (normValue - 0.5) * 2;
 
 	vec4 materialColor =  texture(tex, vec2(Texcoord.x, -Texcoord.y));
-	materialColor += (100 * debugColor);
 
 	vec3 worldNorms = normalize(vec3(WorldNormal.xy + normValue.xy, WorldNormal.z));
 	vec3 screenNorms = normalize(vec3(ScreenNormal.xy + normValue.xy, ScreenNormal.z));

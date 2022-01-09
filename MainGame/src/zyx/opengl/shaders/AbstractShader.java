@@ -3,6 +3,7 @@ package zyx.opengl.shaders;
 import zyx.opengl.GLUtils;
 import zyx.opengl.shaders.source.ShaderReplacement;
 import zyx.opengl.shaders.source.ShaderSourceLoader;
+import zyx.utils.cheats.Print;
 import zyx.utils.interfaces.IUpdateable;
 
 public abstract class AbstractShader implements IUpdateable
@@ -42,6 +43,8 @@ public abstract class AbstractShader implements IUpdateable
 		fragmentShader = ShaderUtils.createFragmentShader(fragmentSource);
 
 		program = ShaderUtils.createProgram(vertexShader, fragmentShader);
+		
+		Print.out("shader", program, "=", getName());
 		GLUtils.errorCheck();
 		
 		bind();

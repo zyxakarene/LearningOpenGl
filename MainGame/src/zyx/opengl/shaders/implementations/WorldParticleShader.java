@@ -1,27 +1,16 @@
 package zyx.opengl.shaders.implementations;
 
-import org.lwjgl.util.vector.Matrix4f;
-import zyx.opengl.models.DebugDrawCalls;
 import zyx.opengl.models.implementations.LoadableParticleVO;
 import zyx.opengl.shaders.AbstractShader;
-import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.opengl.shaders.ShaderManager;
+import zyx.opengl.shaders.blocks.ShaderBlock;
+import zyx.opengl.shaders.blocks.ShaderMatricesBlock;
 import zyx.utils.DeltaTime;
 
 public class WorldParticleShader extends AbstractShader
 {
 
-	private static final Matrix4f MATRIX_PROJECTION = SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION;
-	private static final Matrix4f MATRIX_VIEW = SharedShaderObjects.SHARED_WORLD_VIEW_TRANSFORM;
-
-	public static float parentScale = 0;
-	
-	private int projectionMatrixTrans;
-	private int viewMatrixTrans;
-	private int debugColorTrans;
-
 	private int timeUniform;
-	private int parentScaleUniform;
-	private int instancesUniform;
 	private int gravityUniform;
 	private int speedUniform;
 	private int areaXUniform;
@@ -38,7 +27,6 @@ public class WorldParticleShader extends AbstractShader
 
 	public void uploadFromVo(LoadableParticleVO vo)
 	{
-		UniformUtils.setUniformFloat(instancesUniform, vo.instanceCount);
 		UniformUtils.setUniform3F(gravityUniform, vo.gravity.x, vo.gravity.y, vo.gravity.z);
 		UniformUtils.setUniform2F(areaXUniform, vo.areaX.x, vo.areaX.y);
 		UniformUtils.setUniform2F(areaYUniform, vo.areaY.x, vo.areaY.y);
@@ -62,13 +50,7 @@ public class WorldParticleShader extends AbstractShader
 	@Override
 	protected void postLoading()
 	{
-		projectionMatrixTrans = UniformUtils.createUniform(program, "projection");
-		viewMatrixTrans = UniformUtils.createUniform(program, "view");
-		debugColorTrans = UniformUtils.createUniform(program, "debugColor");
-
 		timeUniform = UniformUtils.createUniform(program, "time");
-		parentScaleUniform = UniformUtils.createUniform(program, "parentScale");
-		instancesUniform = UniformUtils.createUniform(program, "instances");
 		gravityUniform = UniformUtils.createUniform(program, "gravity");
 		speedUniform = UniformUtils.createUniform(program, "speed");
 		areaXUniform = UniformUtils.createUniform(program, "areaX");
@@ -82,17 +64,15 @@ public class WorldParticleShader extends AbstractShader
 		scaleVarianceUniform = UniformUtils.createUniform(program, "scaleVariance");
 		rotationUniform = UniformUtils.createUniform(program, "rotation");
 		rotationVarianceUniform = UniformUtils.createUniform(program, "rotationVariance");
+		
+		ShaderMatricesBlock matriceBlock = ShaderManager.getInstance().get(ShaderBlock.MATRICES);
+		matriceBlock.link(program);
 	}
 
 	@Override
 	public void upload()
 	{
-		UniformUtils.setUniformMatrix(projectionMatrixTrans, MATRIX_PROJECTION);
-		UniformUtils.setUniformMatrix(viewMatrixTrans, MATRIX_VIEW);
-		
 		UniformUtils.setUniformFloat(timeUniform, DeltaTime.getTimestamp());
-		UniformUtils.setUniformFloat(parentScaleUniform, parentScale);
-		UniformUtils.setUniformInt(debugColorTrans, DebugDrawCalls.shouldHighlightWorld() ? 1 : 0);
 	}
 
 	@Override

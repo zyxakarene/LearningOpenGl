@@ -14,13 +14,10 @@ in vec3 areaRandom;
 in float scaleRandom;
 in float rotRandom;
 
+#include "SharedMatricesShaderLibrary.glsl";
+
 out vec2 Texcoord;
 out vec4 Color;
-
-uniform mat4 view;
-uniform mat4 projection;
-
-uniform float instances = 200;
 
 uniform float time;
 uniform vec3 gravity = vec3(0, 0, 0); //xyz
@@ -34,8 +31,6 @@ uniform vec3 speedVariance = vec3(0.2, 0.2, 0.2); //xyz
 
 uniform vec4 startColor = vec4(0.2, 0.2, 0.2, 1); //RGBA
 uniform vec4 endColor = vec4(0.2, 0.2, 0.2, 1); //RGBA
-
-uniform float parentScale = 0.1;
 
 uniform float startScale = 1;
 uniform float endScale = 0.1;
@@ -126,7 +121,7 @@ void main(void)
 
 	Color = getColor(percentDone, startColor, endColor);
 	Texcoord = texcoord;
-	gl_Position = projection * (view * translateMatrix * vec4(0, 0, 0, 1) + vec4(position.x * scale, position.y * scale, 0, 0) * R);
+	gl_Position = proj * (view * translateMatrix * vec4(0, 0, 0, 1) + vec4(position.x * scale, position.y * scale, 0, 0) * R);
 }
 
 /*
