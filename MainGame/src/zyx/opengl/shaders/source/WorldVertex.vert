@@ -5,6 +5,8 @@ layout(location = 2) in vec2 texcoord;
 layout(location = 3) in %BoneCount% indexes;
 layout(location = 4) in %BoneCount% weights;
 
+#include "SharedMatricesShaderLibrary.glsl";
+
 #include "BonesShaderLibrary.glsl";
 
 out vec2 Texcoord;
@@ -18,8 +20,6 @@ out float CubemapAddition;
 uniform mat4 model;
 uniform mat4 modelInverseTranspose;
 uniform mat4 viewModelInverseTranspose;
-uniform mat4 projectionView;
-uniform mat4 view;
 
 void main()
 {
@@ -40,6 +40,6 @@ void main()
 	CubemapAddition = 0;
 
     Texcoord = texcoord;
-    gl_Position = projectionView * worldPosition;
+    gl_Position = projView * worldPosition;
 	Z = gl_Position.z;
 }

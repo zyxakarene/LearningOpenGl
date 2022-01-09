@@ -9,11 +9,11 @@ in vec3 speedRandom;
 in float scaleRandom;
 in float rotRandom;
 
+#include "SharedMatricesShaderLibrary.glsl";
+
 out vec2 Texcoord;
 out vec4 Color;
 
-uniform mat4 view;
-uniform mat4 projection;
 uniform mat4 model;
 
 uniform float instances = 200;
@@ -123,7 +123,7 @@ void main(void)
 
 	Color = getColor(localTime / actualLifespan, startColor, endColor);
 	Texcoord = texcoord;
-	gl_Position = projection * (view * translateMatrix * model * vec4(0, 0, 0, 1) + vec4(position.x * scale, position.y * scale, 0, 0) * R);
+	gl_Position = proj * (view * translateMatrix * model * vec4(0, 0, 0, 1) + vec4(position.x * scale, position.y * scale, 0, 0) * R);
 }
 
 /*

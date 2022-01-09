@@ -2,18 +2,17 @@ package zyx.opengl.shaders.implementations;
 
 import org.lwjgl.util.vector.Matrix4f;
 import zyx.opengl.shaders.AbstractShader;
+import zyx.opengl.shaders.ShaderManager;
 import zyx.opengl.shaders.SharedShaderObjects;
+import zyx.opengl.shaders.blocks.ShaderBlock;
+import zyx.opengl.shaders.blocks.ShaderMatricesBlock;
 
 public class SkyboxShader extends AbstractShader
 {
 
 	private static final Matrix4f MATRIX_VIEW = new Matrix4f();
-	private static final Matrix4f MATRIX_PROJECTION = SharedShaderObjects.WORLD_PERSPECTIVE_PROJECTION;
-	private static final Matrix4f MATRIX_VIEW_PROJECTION = SharedShaderObjects.WORLD_PROJECTION_VIEW_TRANSFORM;
 
-	private int projectionViewMatsUniform;
 	private int viewMatrixTrans;
-	private int projectionMatrixTrans;
 
 	public SkyboxShader(Object lock)
 	{
@@ -23,9 +22,10 @@ public class SkyboxShader extends AbstractShader
 	@Override
 	protected void postLoading()
 	{
-		projectionViewMatsUniform = UniformUtils.createUniform(program, "projView");
-		viewMatrixTrans = UniformUtils.createUniform(program, "view");
-		projectionMatrixTrans = UniformUtils.createUniform(program, "proj");
+		viewMatrixTrans = UniformUtils.createUniform(program, "viewPos");
+		
+		ShaderMatricesBlock matriceBlock = ShaderManager.getInstance().get(ShaderBlock.MATRICES);
+		matriceBlock.link(program);
 	}
 	
 	@Override
@@ -36,9 +36,7 @@ public class SkyboxShader extends AbstractShader
 		MATRIX_VIEW.m31 = 0;
 		MATRIX_VIEW.m32 = 0;
 		
-		UniformUtils.setUniformMatrix(projectionViewMatsUniform, MATRIX_VIEW_PROJECTION);
 		UniformUtils.setUniformMatrix(viewMatrixTrans, MATRIX_VIEW);
-		UniformUtils.setUniformMatrix(projectionMatrixTrans, MATRIX_PROJECTION);
 	}
 
 	@Override

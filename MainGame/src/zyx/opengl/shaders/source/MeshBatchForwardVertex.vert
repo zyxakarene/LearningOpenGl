@@ -8,12 +8,12 @@ in vec4 insRotation;
 in float insScale;
 in float insCubemap;
 
+#include "SharedMatricesShaderLibrary.glsl";
+
 out vec4 WorldPos;
 out vec2 TexCoords;
 out vec3 WorldNormal;
 out vec3 Debug;
-
-uniform mat4 projectionView;
 
 void main()
 {
@@ -28,5 +28,5 @@ void main()
 	vec4 worldPosition = vec4(totalPosition, 1);
 
     WorldNormal = vec3(totalNormal);
-    gl_Position = projectionView * worldPosition;
+    gl_Position = projView * worldPosition;
 }
