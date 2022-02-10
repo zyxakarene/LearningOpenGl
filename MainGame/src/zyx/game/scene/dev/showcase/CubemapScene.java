@@ -1,6 +1,7 @@
 package zyx.game.scene.dev.showcase;
 
 import org.lwjgl.input.Keyboard;
+import zyx.engine.utils.callbacks.ICallback;
 import zyx.game.behavior.Behavior;
 import zyx.game.behavior.BehaviorType;
 import zyx.game.behavior.misc.RotateBehavior;
@@ -9,7 +10,9 @@ import zyx.game.components.MeshObject;
 import zyx.game.components.SimpleMesh;
 import zyx.game.controls.input.KeyboardData;
 import zyx.game.scene.dev.DebugScene;
+import zyx.opengl.materials.impl.WorldModelMaterial;
 import zyx.opengl.models.implementations.shapes.Sphere;
+import zyx.opengl.textures.ColorTexture;
 
 public class CubemapScene extends DebugScene
 {
@@ -21,6 +24,12 @@ public class CubemapScene extends DebugScene
 	protected void onInitialize()
 	{
 		addPlayerControls();
+
+		SimpleMesh failure = new SimpleMesh();
+		failure.load("mesh.test.failure");
+		failure.setScale(0.5f, 0.5f, 0.5f);
+		failure.setPosition(true, 0, 0, -50);
+		world.addChild(failure);
 
 		SimpleMesh dragon = new SimpleMesh();
 		dragon.load("mesh.dragon");
@@ -40,7 +49,7 @@ public class CubemapScene extends DebugScene
 		Sphere sphere2 = new Sphere(5);
 		Sphere sphere3 = new Sphere(5);
 		Sphere sphere4 = new Sphere(5);
-
+		
 		sphere1.setPosition(false, -20, -20, 10);
 		sphere2.setPosition(false, 20, -20, 10);
 		sphere3.setPosition(false, 20, 20, 10);
@@ -55,6 +64,7 @@ public class CubemapScene extends DebugScene
 		objects.add(spinner);
 		objects.add(dragon);
 		objects.add(platform);
+		objects.add(failure);
 	}
 
 	@Override

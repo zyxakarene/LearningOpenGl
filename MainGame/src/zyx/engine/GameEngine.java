@@ -114,15 +114,15 @@ public class GameEngine
 			{
 				sceneManager.changeScene(SceneType.SHOWCASE_CUBEMAPS);
 			}
-			else if (KeyboardData.data.wasPressed(Keyboard.KEY_NUMPAD1))
+			else if (KeyboardData.data.wasPressed(Keyboard.KEY_P))
 			{
 				sceneManager.changeScene(SceneType.SHOWCASE_DEFERRED);
 			}
-			else if (KeyboardData.data.wasPressed(Keyboard.KEY_NUMPAD2))
+			else if (KeyboardData.data.wasPressed(Keyboard.KEY_O))
 			{
 				sceneManager.changeScene(SceneType.SHOWCASE_DRAWING);
 			}
-			else if (KeyboardData.data.wasPressed(Keyboard.KEY_NUMPAD3))
+			else if (KeyboardData.data.wasPressed(Keyboard.KEY_I))
 			{
 				sceneManager.changeScene(SceneType.SHOWCASE_LOADING);
 			}

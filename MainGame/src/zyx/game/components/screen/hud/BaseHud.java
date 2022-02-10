@@ -56,8 +56,8 @@ public class BaseHud extends JsonSprite implements ICallback<Vector2Int>
 			return;
 		}
 		
-		int screenWidth = ScreenSize.width;
-		int screenHeight = ScreenSize.height;
+		int screenWidth = ScreenSize.gameWidth;
+		int screenHeight = ScreenSize.gameHeight;
 		int sizeX = screenWidth / 10;
 		int sizeY = screenHeight / 5;
 				

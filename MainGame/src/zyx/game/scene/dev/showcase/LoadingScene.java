@@ -11,9 +11,9 @@ public class LoadingScene extends DebugScene
 	{
 		addPlayerControls();
 
-		addLoadingScreenProcess(new WaitingProcess(200, "Initializing Nebula"));
-		addLoadingScreenProcess(new WaitingProcess(200, "Booting up Unity"));
-		addLoadingScreenProcess(new WaitingProcess(200, "Building Assets"));
-		addLoadingScreenProcess(new WaitingProcess(200, "Other witty loading text"));
+		addLoadingScreenProcess(new WaitingProcess(200, "Refilling Spray Can"));
+		addLoadingScreenProcess(new WaitingProcess(200, "Painting Trains"));
+		addLoadingScreenProcess(new WaitingProcess(200, "Alerting the Guard"));
+		addLoadingScreenProcess(new WaitingProcess(200, "Achieving Highscore"));
 	}
 }

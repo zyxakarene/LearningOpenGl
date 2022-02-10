@@ -1,5 +1,5 @@
-const float AMBIENT_LIGHT = 0.25;//The default light everything is receiving
-const float DIRECT_LIGHT = 1.0 - AMBIENT_LIGHT;//The light recieved when facing the light
+const float AMBIENT_LIGHT = 0.25;// 0.0;//The default light everything is receiving
+const float DIRECT_LIGHT = 1.0 - AMBIENT_LIGHT;// 0.05;//The light recieved when facing the light
 const int LIGHT_COUNT = 100;//How many lights do we support
 const int SHADOW_QUADRANTS = 4;//Amount of quadrants
 
@@ -117,6 +117,24 @@ vec3 getSunBrightness(vec4 FragPos, vec3 Normal, float CascadeDepth, float cubem
 {
 	int quadrant = getQuadrant(CascadeDepth);
 	
+	vec3 col;
+	if(quadrant == 0)
+	{
+		col = vec3(1, 0, 0);
+	}
+	else if(quadrant == 1)
+	{
+		col = vec3(0, 1, 0);
+	}
+	else if(quadrant == 2)
+	{
+		col = vec3(0, 0, 1);
+	}
+	else if(quadrant == 3)
+	{
+		col = vec3(1, 1, 1);
+	}
+
 	mat4 sunProjection = sunProjViews[quadrant];
 	vec4 FragPosSunSpace = sunProjection * FragPos;
 	float shadowValue = ShadowCalculation(FragPosSunSpace, quadrant, shadowMap);
@@ -142,5 +160,6 @@ vec3 getSunBrightness(vec4 FragPos, vec3 Normal, float CascadeDepth, float cubem
     vec3 R = reflect(I, Normal);
     Reflect = texture(cubemapArray, vec4(R, cube)).rgb * sunBrightness;
 
+	//return sunBrightness * col;
 	return sunBrightness;
 }
